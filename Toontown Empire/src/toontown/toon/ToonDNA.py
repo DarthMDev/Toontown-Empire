@@ -1,4 +1,3 @@
-# GITHUB WORK
 import random
 from pandac.PandaModules import *
 from direct.directnotify.DirectNotifyGlobal import *

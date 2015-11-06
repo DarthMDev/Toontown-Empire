@@ -1,4 +1,3 @@
-# GITHUB WORK
 import CatalogItem
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer

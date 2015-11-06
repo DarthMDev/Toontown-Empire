@@ -1,4 +1,3 @@
-# GITHUB WORK
 from toontown.toonbase.TTLocalizerEnglishProperty import *
 from toontown.catalog import CatalogAccessoryItemGlobals
 from otp.otpbase import OTPLocalizer as OL
