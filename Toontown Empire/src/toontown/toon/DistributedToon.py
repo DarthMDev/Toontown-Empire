@@ -181,6 +181,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.gmNameTagColor = 'whiteGM'
         self.gmNameTagString = ''
         self.buffs = []
+        self.houseType = 0
         self.redeemedCodes = []
         self.ignored = []
         self.reported = []
@@ -1116,9 +1117,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.monthlyCatalog = CatalogItemList.CatalogItemList(monthlyCatalog)
         self.weeklyCatalog = CatalogItemList.CatalogItemList(weeklyCatalog)
         self.backCatalog = CatalogItemList.CatalogItemList(backCatalog)
-        if config.GetBool('want-house-types', False):
-            from toontown.catalog import CatalogHouseItem
-            self.backCatalog.extend(CatalogHouseItem.getAllHouses())
         if self.catalogNotify == ToontownGlobals.NewItems:
             self.catalogNotify = ToontownGlobals.OldItems
 
@@ -2626,6 +2624,12 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                     ToontownGlobals.ToonJumpForce,
                     ToontownGlobals.ToonReverseSpeed * ToontownGlobals.BMovementSpeedMultiplier,
                     ToontownGlobals.ToonRotateSpeed * ToontownGlobals.BMovementSpeedMultiplier)
+
+    def getHouseType(self):
+        return self.houseType
+
+    def setHouseType(self, houseType):
+        self.houseType = houseType
 
 @magicWord(category=CATEGORY_COMMUNITY_MANAGER)
 def globalTeleport():
