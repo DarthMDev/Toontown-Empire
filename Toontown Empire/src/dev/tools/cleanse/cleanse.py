@@ -11,7 +11,8 @@ extensions = ('.pyc',)
 trashFiles = ('parsetab.py',)
 
 print 'Changing to root directory...'
-os.chdir('../')
+os.chdir('../../')
+os.chdir('..')
 
 print 'Scanning for garbage files...'
 
