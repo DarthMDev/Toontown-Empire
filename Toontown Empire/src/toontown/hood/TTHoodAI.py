@@ -30,7 +30,7 @@ class TTHoodAI(HoodAI.HoodAI):
         
         NPCToons.createNPC(
             simbase.air, 2021,
-            (ToontownGlobals.ToontownCentral, TTLocalizer.NPCToonNames[2021], ('rls', 'ls', 'l', 'm', 26, 0, 26, 26, 0, 11, 0, 11, 34, 27, 0), 'm', 1, NPCToons.NPC_GLOVE),
+            (ToontownGlobals.ToontownCentral, TTLocalizer.NPCToonNames[2021], ('rls', 'ls', 'l', 'm', 26, 0, 26, 26, 152, 27, 139, 27, 58, 27, 0), 'm', 1, NPCToons.NPC_GLOVE),
              ToontownGlobals.ToontownCentral, posIndex=0)
 
         if simbase.air.wantHalloween:
