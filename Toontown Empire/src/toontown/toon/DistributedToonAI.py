@@ -157,6 +157,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.teleportOverride = 0
         self._gmDisabled = False
         self.buffs = []
+        self.houseType = 0
         self.redeemedCodes = []
         self.ignored = []
         self.reported = []
@@ -4079,6 +4080,18 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.redeemedCodes.remove(code)
             self.b_setRedeemedCodes(self.redeemedCodes)
 
+    def getHouseType(self):
+        return self.houseType
+
+    def setHouseType(self, houseType):
+        self.houseType = houseType
+
+    def d_setHouseType(self, houseType):
+        self.sendUpdate('setHouseType', [houseType])
+
+    def b_setHouseType(self, houseType):
+        self.setHouseType(houseType)
+        self.d_setHouseType(houseType)
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str, int, int])
 def cheesyEffect(value, hood=0, expire=0):

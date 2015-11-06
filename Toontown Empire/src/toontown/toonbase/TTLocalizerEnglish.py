@@ -2,6 +2,7 @@ from toontown.toonbase.TTLocalizerEnglishProperty import *
 from toontown.catalog import CatalogAccessoryItemGlobals
 from otp.otpbase import OTPLocalizer as OL
 import random
+from toontown.estate import HouseGlobals
 OL.SpeedChatStaticText = OL.SpeedChatStaticTextToontown.copy()
 for key in OL.SpeedChatStaticTextCommon.iterkeys():
     OL.SpeedChatStaticText[key] = OL.SpeedChatStaticTextCommon[key]
@@ -8486,3 +8487,19 @@ RestockNoMoneyMessage = "You need more jellybeans to restock your laff!"
 RestockLaffMessage = "Have fun!"
 RestockAskMessage = "Would you like to\nrestock %s laff for %s jellybeans?"
 RestockCheaterMessage = "No cheaters allowed! Your transaction has been declined."
+
+
+# Different house types
+
+
+HouseTypeName = 'House'
+
+
+houseNames = {
+  HouseGlobals.HOUSE_DEFAULT: 'Classic House',
+  HouseGlobals.HOUSE_CABIN: 'Cabin House'
+}
+
+
+def getHouseNameById(houseId):
+    return houseNames[houseId]

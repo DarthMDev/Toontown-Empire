@@ -2,6 +2,7 @@ import TTLocalizer
 from otp.otpbase.OTPGlobals import *
 from direct.showbase.PythonUtil import Enum, invertDict
 from pandac.PandaModules import BitMask32, Vec4
+from toontown.estate import HouseGlobals
 MapHotkeyOn = 'alt'
 MapHotkeyOff = 'alt-up'
 MapHotkey = 'alt'
@@ -1632,6 +1633,17 @@ BMovementSpeedMultiplier = 1.3
 
 BGagAccuracy = 1
 BGagAccuracyMultiplier = 1.3
+
+
+# House catalog prices
+
+housePrices = {
+    HouseGlobals.HOUSE_DEFAULT: 10000,
+    HouseGlobals.HOUSE_CABIN: 20000
+}
+
+def getHousePriceById(houseId):
+    return housePrices[houseId]
 
 BugReportSite = 'https://bugs.launchpad.net/toontown-united/+filebug'
 CostPerLaffRestock = 3
