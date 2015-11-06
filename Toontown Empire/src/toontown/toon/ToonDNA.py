@@ -299,7 +299,8 @@ Shirts = [
  'phase_4/maps/tt_t_chr_avt_shirt_saveBuilding4.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_saveBuilding05.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_anniversary.jpg',
- 'phase_4/maps/PinkToberShirt.jpg']	#150 - PinkTober Shirt
+ 'phase_4/maps/PinkToberShirt.jpg',	#150 - PinkTober Shirt
+ 'phase_4/maps/SplatterShirt.jpg'] # 151 - Xentel NPC shirt
 BoyShirts = [(0, 0),
  (1, 1),
  (2, 2),
@@ -485,7 +486,8 @@ Sleeves = ['phase_3/maps/desat_sleeve_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_saveBuilding4.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_saveBuilding05.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_anniversary.jpg',
- 'phase_4/maps/Pinktober_sleeve.jpg'] 					#138 - Pinktober
+ 'phase_4/maps/Pinktober_sleeve.jpg', 					#138 - Pinktober
+ 'phase_4/maps/SplatterShirtSleeve.jpg'] # 139 - Xentel NPC design
  
 BoyShorts = ['phase_3/maps/desat_shorts_1.jpg',
  'phase_3/maps/desat_shorts_2.jpg',
@@ -544,7 +546,8 @@ BoyShorts = ['phase_3/maps/desat_shorts_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_golf04.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_golf05.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_racing04.jpg',
- 'phase_4/maps/tt_t_chr_avt_shorts_racing05.jpg']	#58
+ 'phase_4/maps/tt_t_chr_avt_shorts_racing05.jpg',	#58
+ 'phase_4/maps/SplatterShorts.jpg']	# 59  Xentel NPC shorts
 SHORTS = 0
 SKIRT = 1
 GirlBottoms = [('phase_3/maps/desat_skirt_1.jpg', SKIRT),
@@ -1195,6 +1198,7 @@ ShirtStyles = {'bss1': [0, 0, [(0, 0),
  'sa_ss54': [149, 136, [(27, 27)]],
  'sa_ss55': [150, 137, [(27, 27)]],
  'sa_ss56': [151, 138, [(27, 27)]],	#PinkTober Code
+ 'splat': [152, 139, [(27, 27)]], # Xentel NPC Shirt Code
  'sc_1': [97, 86, [(27, 27)]],
  'sc_2': [98, 86, [(27, 27)]],
  'sc_3': [99, 86, [(27, 27)]],
@@ -1557,6 +1561,7 @@ BottomStyles = {'bbs1': [0, [0,
            25,
            26,
            27]],
+ 'splat1': [59, [27]], # Xentel NPC Shorts
  'c_gsk1': [10, [27]],
  'c_gsk2': [11, [27]],
  'c_gsk3': [12, [27]],
@@ -1639,13 +1644,7 @@ BottomStyles = {'bbs1': [0, [0,
  'hw_gs5': [54, [27]],
  'hw_gs6': [55, [27]],
  'hw_gs7': [56, [27]],
- 'hw_gsk1': [53, [27]],
- 'toonfest_b': [60, [27]],
- 'toonfest_g': [63, [27]],
- 'beta_b': [61, [27]],
- 'beta_g': [64, [27]],
- 'playtime_b': [62, [27]],
- 'playtime_g': [65, [27]]}
+ 'hw_gsk1': [53, [27]]}
 MAKE_A_TOON = 1
 TAMMY_TAILOR = 2004
 LONGJOHN_LEROY = 1007
