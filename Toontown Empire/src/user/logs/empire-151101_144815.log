@@ -1,0 +1,131 @@
+TTLocalizer: Running in language: English
+OTPLocalizer: Running in language: English
+Preloading suits...
+Preloading Toon heads...
+Preloading avatars...
+{401000001: <toontown.distributed.ToontownDistrict.ToontownDistrict instance at 0x162DC558>}
+__handleAvatarChooserDone: 100000007, 'Dynamite', ('dss', 'ms', 's', 'm', 26, 26, 26, 26, 2, 4, 2, 4, 5, 4, 0), 0
+0
+Reading DNA file... phase_4/dna/storage.pdna
+Reading DNA file... phase_3.5/dna/storage_interior.pdna
+Reading DNA file... phase_8/dna/storage_DL.pdna
+Reading DNA file... phase_8/dna/storage_DL_sz.pdna
+Reading DNA file... phase_8/dna/donalds_dreamland_sz.pdna
+Traceback (most recent call last):
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\distributed\ConnectionRepository.py", line 617, in readerPollUntilEmpty
+    while self.readerPollOnce():
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\distributed\ConnectionRepository.py", line 624, in readerPollOnce
+    self.handleDatagram(self.private__di)
+  File "otp\distributed\OTPClientRepository.py", line 1265, in handleDatagram
+    self.handler(msgType, di)
+  File "toontown\hood\QuietZoneState.py", line 152, in handleWaitForQuietZoneResponse
+    base.cr.handlePlayGame(msgType, di)
+  File "otp\distributed\OTPClientRepository.py", line 1022, in handlePlayGame
+    self.handleMessageType(msgType, di)
+  File "otp\distributed\OTPClientRepository.py", line 1160, in handleMessageType
+    self.gotInterestDoneMessage(di)
+  File "otp\distributed\OTPClientRepository.py", line 1186, in gotInterestDoneMessage
+    self.handleInterestDoneMessage(di)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\distributed\DoInterestManager.py", line 618, in handleInterestDoneMessage
+    messenger.send(event)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 397, in send
+    self.__dispatch(acceptorDict, event, sentArgs, foundWatch)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 482, in __dispatch
+    method (*(extraArgs + sentArgs))
+  File "toontown\distributed\ToontownClientRepository.py", line 896, in _handleEmuSetZoneDone
+    messenger.send(event)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 397, in send
+    self.__dispatch(acceptorDict, event, sentArgs, foundWatch)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 482, in __dispatch
+    method (*(extraArgs + sentArgs))
+  File "toontown\hood\QuietZoneState.py", line 195, in _handleQuietZoneComplete
+    self.fsm.request('waitForZoneRedirect')
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\fsm\ClassicFSM.py", line 284, in request
+    exitArgList)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\fsm\ClassicFSM.py", line 231, in __transition
+    self.__enter(aState, enterArgList)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\fsm\ClassicFSM.py", line 217, in __enter
+    aState.enter(argList)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\fsm\State.py", line 203, in enter
+    apply(self.__enterFunc, argList)
+  File "toontown\hood\QuietZoneState.py", line 236, in enterWaitForZoneRedirect
+    self.fsm.request('waitForSetZoneResponse')
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\fsm\ClassicFSM.py", line 284, in request
+    exitArgList)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\fsm\ClassicFSM.py", line 231, in __transition
+    self.__enter(aState, enterArgList)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\fsm\ClassicFSM.py", line 217, in __enter
+    aState.enter(argList)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\fsm\State.py", line 203, in enter
+    apply(self.__enterFunc, argList)
+  File "toontown\hood\QuietZoneState.py", line 255, in enterWaitForSetZoneResponse
+    messenger.send(self.getEnterWaitForSetZoneResponseMsg(), [self._requestStatus])
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 397, in send
+    self.__dispatch(acceptorDict, event, sentArgs, foundWatch)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 482, in __dispatch
+    method (*(extraArgs + sentArgs))
+  File "toontown\hood\Hood.py", line 171, in handleWaitForSetZoneResponse
+    toPhrase = StreetNames[ZoneUtil.getCanonicalBranchZone(zoneId)][0]
+KeyError: 9300
+Traceback (most recent call last):
+  File "otp\otpbase\OTPBase.py", line 178, in run
+    taskMgr.run()
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\task\Task.py", line 502, in run
+    self.step()
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\task\Task.py", line 460, in step
+    self.mgr.poll()
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\distributed\ConnectionRepository.py", line 617, in readerPollUntilEmpty
+    while self.readerPollOnce():
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\distributed\ConnectionRepository.py", line 624, in readerPollOnce
+    self.handleDatagram(self.private__di)
+  File "otp\distributed\OTPClientRepository.py", line 1265, in handleDatagram
+    self.handler(msgType, di)
+  File "toontown\hood\QuietZoneState.py", line 152, in handleWaitForQuietZoneResponse
+    base.cr.handlePlayGame(msgType, di)
+  File "otp\distributed\OTPClientRepository.py", line 1022, in handlePlayGame
+    self.handleMessageType(msgType, di)
+  File "otp\distributed\OTPClientRepository.py", line 1160, in handleMessageType
+    self.gotInterestDoneMessage(di)
+  File "otp\distributed\OTPClientRepository.py", line 1186, in gotInterestDoneMessage
+    self.handleInterestDoneMessage(di)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\distributed\DoInterestManager.py", line 618, in handleInterestDoneMessage
+    messenger.send(event)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 397, in send
+    self.__dispatch(acceptorDict, event, sentArgs, foundWatch)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 482, in __dispatch
+    method (*(extraArgs + sentArgs))
+  File "toontown\distributed\ToontownClientRepository.py", line 896, in _handleEmuSetZoneDone
+    messenger.send(event)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 397, in send
+    self.__dispatch(acceptorDict, event, sentArgs, foundWatch)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 482, in __dispatch
+    method (*(extraArgs + sentArgs))
+  File "toontown\hood\QuietZoneState.py", line 195, in _handleQuietZoneComplete
+    self.fsm.request('waitForZoneRedirect')
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\fsm\ClassicFSM.py", line 284, in request
+    exitArgList)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\fsm\ClassicFSM.py", line 231, in __transition
+    self.__enter(aState, enterArgList)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\fsm\ClassicFSM.py", line 217, in __enter
+    aState.enter(argList)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\fsm\State.py", line 203, in enter
+    apply(self.__enterFunc, argList)
+  File "toontown\hood\QuietZoneState.py", line 236, in enterWaitForZoneRedirect
+    self.fsm.request('waitForSetZoneResponse')
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\fsm\ClassicFSM.py", line 284, in request
+    exitArgList)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\fsm\ClassicFSM.py", line 231, in __transition
+    self.__enter(aState, enterArgList)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\fsm\ClassicFSM.py", line 217, in __enter
+    aState.enter(argList)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\fsm\State.py", line 203, in enter
+    apply(self.__enterFunc, argList)
+  File "toontown\hood\QuietZoneState.py", line 255, in enterWaitForSetZoneResponse
+    messenger.send(self.getEnterWaitForSetZoneResponseMsg(), [self._requestStatus])
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 397, in send
+    self.__dispatch(acceptorDict, event, sentArgs, foundWatch)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 482, in __dispatch
+    method (*(extraArgs + sentArgs))
+  File "toontown\hood\Hood.py", line 171, in handleWaitForSetZoneResponse
+    toPhrase = StreetNames[ZoneUtil.getCanonicalBranchZone(zoneId)][0]
+KeyError: 9300

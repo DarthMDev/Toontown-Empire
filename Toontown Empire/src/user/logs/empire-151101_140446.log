@@ -1,0 +1,23 @@
+TTLocalizer: Running in language: English
+OTPLocalizer: Running in language: English
+Preloading suits...
+Preloading Toon heads...
+Preloading avatars...
+Traceback (most recent call last):
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\python\lib\runpy.py", line 162, in _run_module_as_main
+    "__main__", fname, loader, pkg_name)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\python\lib\runpy.py", line 72, in _run_code
+    exec code in run_globals
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\toontown\toonbase\ClientStart.py", line 156, in <module>
+    from toontown.distributed import ToontownClientRepository
+  File "toontown\distributed\ToontownClientRepository.py", line 32, in <module>
+    from toontown.makeatoon import MakeAToon
+  File "toontown\makeatoon\MakeAToon.py", line 21, in <module>
+    from toontown.toon import LocalToon
+  File "toontown\toon\LocalToon.py", line 27, in <module>
+    from toontown.chat import ToontownChatManager
+  File "toontown\chat\ToontownChatManager.py", line 9, in <module>
+    from TTChatInputSpeedChat import TTChatInputSpeedChat
+  File "toontown\chat\TTChatInputSpeedChat.py", line 20, in <module>
+    [OTPLocalizer.SCMenuAlphaTesting,
+AttributeError: 'module' object has no attribute 'SCMenuAlphaTesting'

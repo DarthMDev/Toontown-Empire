@@ -1,0 +1,40 @@
+TTLocalizer: Running in language: English
+OTPLocalizer: Running in language: English
+Preloading suits...
+Preloading Toon heads...
+Preloading avatars...
+{401000001: <toontown.distributed.ToontownDistrict.ToontownDistrict instance at 0x141B0D78>}
+__handleAvatarChooserDone: 100000010, 'Presto', ('css', 'ms', 's', 'm', 37, 39, 37, 37, 10, 1, 0, 1, 1, 0, 0), 0
+:(ToontownControlManager) WASD support was enabled.
+0
+Reading DNA file... phase_4/dna/storage.pdna
+Reading DNA file... phase_3.5/dna/storage_interior.pdna
+Reading DNA file... phase_8/dna/storage_BR.pdna
+Reading DNA file... phase_8/dna/storage_BR_sz.pdna
+Reading DNA file... phase_8/dna/the_burrrgh_sz.pdna
+:(ToontownControlManager) WASD support was enabled.
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+Reading DNA file... phase_4/dna/storage.pdna
+Reading DNA file... phase_3.5/dna/storage_interior.pdna
+:(ToontownControlManager) WASD support was enabled.
+********
+Creating Lobby GUI...
+********
+********
+GUI Complete.
+Sending Confirmation...
+********
+:(ToontownControlManager) WASD support was enabled.
+Battle Event localtoon-battle-event-3
+disableWASD()
+enableWASD
+:(ToontownControlManager) WASD support was enabled.
+:(ToontownControlManager) WASD support was enabled.
+:(ToontownControlManager) WASD support was enabled.
+:(ToontownControlManager) WASD support was enabled.
+:(ToontownControlManager) WASD support was enabled.
+:(ToontownControlManager) WASD support was enabled.
+:(ToontownControlManager) WASD support was enabled.

@@ -1,0 +1,131 @@
+TTLocalizer: Running in language: English
+OTPLocalizer: Running in language: English
+Preloading suits...
+Preloading Toon heads...
+Preloading avatars...
+{401000001: <toontown.distributed.ToontownDistrict.ToontownDistrict instance at 0x16473B98>}
+0
+Reading DNA file... phase_4/dna/storage.pdna
+Reading DNA file... phase_3.5/dna/storage_interior.pdna
+Reading DNA file... phase_4/dna/storage_TT.pdna
+Reading DNA file... phase_4/dna/storage_TT_sz.pdna
+Reading DNA file... phase_4/dna/toontown_central_sz.pdna
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+Reading DNA file... phase_4/dna/storage.pdna
+Reading DNA file... phase_3.5/dna/storage_interior.pdna
+Reading DNA file... phase_5.5/dna/storage_estate.pdna
+Reading DNA file... phase_5.5/dna/estate_1.pdna
+adjusting item index -1
+exiting due to lack of items
+avid: 100000002, gender: m
+current hat = (0, 0, 0), glasses = (0, 0, 0), backpack = (0, 0, 0), shoes = (0, 0, 0)
+hatList = []
+glassesList = []
+backpackList = []
+shoesList = []
+adjusting item index -1
+exiting due to lack of items
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+Warning: NodePath.remove() is deprecated.  Use remove_node() instead.
+Warning: NodePath.remove() is deprecated.  Use remove_node() instead.
+Warning: NodePath.remove() is deprecated.  Use remove_node() instead.
+adjusting item index -1
+exiting due to lack of items
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+Reading DNA file... phase_4/dna/storage.pdna
+Reading DNA file... phase_3.5/dna/storage_interior.pdna
+Reading DNA file... phase_4/dna/storage_TT.pdna
+Reading DNA file... phase_4/dna/storage_TT_sz.pdna
+Reading DNA file... phase_4/dna/toontown_central_sz.pdna
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+Reading DNA file... phase_4/dna/storage.pdna
+Reading DNA file... phase_3.5/dna/storage_interior.pdna
+Reading DNA file... phase_8/dna/storage_BR.pdna
+Reading DNA file... phase_8/dna/storage_BR_sz.pdna
+Reading DNA file... phase_8/dna/the_burrrgh_sz.pdna
+Reading DNA file... phase_5/dna/storage_town.pdna
+Reading DNA file... phase_8/dna/storage_BR_town.pdna
+Reading DNA file... phase_8/dna/the_burrrgh_3300.pdna
+Battle Event localtoon-battle-event-3
+chooseFireOpenShot <function avatarCloseUpThrowShot at 0x11DC5F70>
+chooseFireOpenShot <function avatarCloseUpThreeQuarterLeftFireShot at 0x11EBD5B0>
+:10-30-2015 15:50:01: setTalk: 100000002, 'Loud Picklehoffer', "You're fired!"
+Warning: NodePath.remove() is deprecated.  Use remove_node() instead.
+Traceback (most recent call last):
+  File "C:\Users\Joshua\Documents\Toontown Empire\src\dependencies\panda\direct\showbase\EventManager.py", line 61, in eventLoopTask
+    self.doEvents()
+  File "C:\Users\Joshua\Documents\Toontown Empire\src\dependencies\panda\direct\showbase\EventManager.py", line 55, in doEvents
+    processFunc(self.eventQueue.dequeueEvent())
+  File "C:\Users\Joshua\Documents\Toontown Empire\src\dependencies\panda\direct\showbase\EventManager.py", line 122, in processEvent
+    messenger.send(eventName, paramList)
+  File "C:\Users\Joshua\Documents\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 397, in send
+    self.__dispatch(acceptorDict, event, sentArgs, foundWatch)
+  File "C:\Users\Joshua\Documents\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 482, in __dispatch
+    method (*(extraArgs + sentArgs))
+  File "C:\Users\Joshua\Documents\Toontown Empire\src\dependencies\panda\direct\gui\DirectButton.py", line 103, in commandFunc
+    apply(self['command'], self['extraArgs'])
+  File "toontown\battle\FireCogPanel.py", line 74, in __handleAvatar
+    messenger.send(self.doneEvent, [doneStatus])
+  File "C:\Users\Joshua\Documents\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 397, in send
+    self.__dispatch(acceptorDict, event, sentArgs, foundWatch)
+  File "C:\Users\Joshua\Documents\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 482, in __dispatch
+    method (*(extraArgs + sentArgs))
+  File "toontown\town\TownBattle.py", line 649, in __handleCogFireDone
+    messenger.send(self.battleEvent, [response])
+  File "C:\Users\Joshua\Documents\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 397, in send
+    self.__dispatch(acceptorDict, event, sentArgs, foundWatch)
+  File "C:\Users\Joshua\Documents\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 482, in __dispatch
+    method (*(extraArgs + sentArgs))
+  File "toontown\battle\DistributedBattleBase.py", line 1159, in __handleLocalToonBattleEvent
+    targetId = self.activeSuits[target].doId
+IndexError: list index out of range
+Traceback (most recent call last):
+  File "otp\otpbase\OTPBase.py", line 178, in run
+    taskMgr.run()
+  File "C:\Users\Joshua\Documents\Toontown Empire\src\dependencies\panda\direct\task\Task.py", line 502, in run
+    self.step()
+  File "C:\Users\Joshua\Documents\Toontown Empire\src\dependencies\panda\direct\task\Task.py", line 460, in step
+    self.mgr.poll()
+  File "C:\Users\Joshua\Documents\Toontown Empire\src\dependencies\panda\direct\showbase\EventManager.py", line 61, in eventLoopTask
+    self.doEvents()
+  File "C:\Users\Joshua\Documents\Toontown Empire\src\dependencies\panda\direct\showbase\EventManager.py", line 55, in doEvents
+    processFunc(self.eventQueue.dequeueEvent())
+  File "C:\Users\Joshua\Documents\Toontown Empire\src\dependencies\panda\direct\showbase\EventManager.py", line 122, in processEvent
+    messenger.send(eventName, paramList)
+  File "C:\Users\Joshua\Documents\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 397, in send
+    self.__dispatch(acceptorDict, event, sentArgs, foundWatch)
+  File "C:\Users\Joshua\Documents\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 482, in __dispatch
+    method (*(extraArgs + sentArgs))
+  File "C:\Users\Joshua\Documents\Toontown Empire\src\dependencies\panda\direct\gui\DirectButton.py", line 103, in commandFunc
+    apply(self['command'], self['extraArgs'])
+  File "toontown\battle\FireCogPanel.py", line 74, in __handleAvatar
+    messenger.send(self.doneEvent, [doneStatus])
+  File "C:\Users\Joshua\Documents\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 397, in send
+    self.__dispatch(acceptorDict, event, sentArgs, foundWatch)
+  File "C:\Users\Joshua\Documents\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 482, in __dispatch
+    method (*(extraArgs + sentArgs))
+  File "toontown\town\TownBattle.py", line 649, in __handleCogFireDone
+    messenger.send(self.battleEvent, [response])
+  File "C:\Users\Joshua\Documents\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 397, in send
+    self.__dispatch(acceptorDict, event, sentArgs, foundWatch)
+  File "C:\Users\Joshua\Documents\Toontown Empire\src\dependencies\panda\direct\showbase\Messenger.py", line 482, in __dispatch
+    method (*(extraArgs + sentArgs))
+  File "toontown\battle\DistributedBattleBase.py", line 1159, in __handleLocalToonBattleEvent
+    targetId = self.activeSuits[target].doId
+IndexError: list index out of range

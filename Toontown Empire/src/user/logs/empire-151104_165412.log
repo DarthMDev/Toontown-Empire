@@ -1,0 +1,30 @@
+TTLocalizer: Running in language: English
+OTPLocalizer: Running in language: English
+Preloading suits...
+Preloading Toon heads...
+Preloading avatars...
+Traceback (most recent call last):
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\python\lib\runpy.py", line 162, in _run_module_as_main
+    "__main__", fname, loader, pkg_name)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\python\lib\runpy.py", line 72, in _run_code
+    exec code in run_globals
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\Toontown Empire\src\toontown\toonbase\ClientStart.py", line 157, in <module>
+    cr = ToontownClientRepository.ToontownClientRepository(serverVersion)
+  File "toontown\distributed\ToontownClientRepository.py", line 56, in __init__
+    OTPClientRepository.OTPClientRepository.__init__(self, serverVersion, playGame=PlayGame.PlayGame)
+  File "otp\distributed\OTPClientRepository.py", line 31, in __init__
+    ClientRepositoryBase.__init__(self)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\distributed\ClientRepositoryBase.py", line 49, in __init__
+    self.readDCFile(dcFileNames)
+  File "otp\distributed\OTPClientRepository.py", line 278, in readDCFile
+    self.importModule(dcImports, moduleName, importSymbols)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\direct\distributed\ConnectionRepository.py", line 412, in importModule
+    module = __import__(moduleName, globals(), locals(), importSymbols)
+  File "toontown\cogdominium\DistCogdoFlyingGame.py", line 3, in <module>
+    from CogdoFlyingGame import CogdoFlyingGame
+  File "toontown\cogdominium\CogdoFlyingGame.py", line 9, in <module>
+    from CogdoFlyingLocalPlayer import CogdoFlyingLocalPlayer
+  File "toontown\cogdominium\CogdoFlyingLocalPlayer.py", line 887
+    else
+       ^
+SyntaxError: invalid syntax

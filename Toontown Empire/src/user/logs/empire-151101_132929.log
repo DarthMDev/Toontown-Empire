@@ -1,0 +1,25 @@
+TTLocalizer: Running in language: English
+OTPLocalizer: Running in language: English
+Preloading suits...
+Preloading Toon heads...
+Preloading avatars...
+Traceback (most recent call last):
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\python\lib\runpy.py", line 162, in _run_module_as_main
+    "__main__", fname, loader, pkg_name)
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\dependencies\panda\python\lib\runpy.py", line 72, in _run_code
+    exec code in run_globals
+  File "C:\Users\Josh\Documents\Toontown Empire\Toontown Empire\Toontown Empire\src\toontown\toonbase\ClientStart.py", line 156, in <module>
+    from toontown.distributed import ToontownClientRepository
+  File "toontown\distributed\ToontownClientRepository.py", line 30, in <module>
+    from toontown.friends import FriendsListPanel
+  File "toontown\friends\FriendsListPanel.py", line 5, in <module>
+    from toontown.toon import ToonAvatarPanel
+  File "toontown\toon\ToonAvatarPanel.py", line 13, in <module>
+    import ToonAvatarDetailPanel
+  File "toontown\toon\ToonAvatarDetailPanel.py", line 9, in <module>
+    import DistributedToon
+  File "toontown\toon\DistributedToon.py", line 69, in <module>
+    class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, DistributedSmoothNode.DistributedSmoothNode, DelayDeletable):
+  File "toontown\toon\DistributedToon.py", line 72, in DistributedToon
+    chatGarbler = ToonChatGarbler.ToonChatGarbler()
+TypeError: __init__() takes exactly 2 arguments (1 given)

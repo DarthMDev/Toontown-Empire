@@ -1,0 +1,39 @@
+TTLocalizer: Running in language: English
+OTPLocalizer: Running in language: English
+Preloading suits...
+Preloading Toon heads...
+Preloading avatars...
+{401000001: <toontown.distributed.ToontownDistrict.ToontownDistrict instance at 0x14F4B5D0>}
+__handleAvatarChooserDone: 100000007, 'Dynamite', ('dss', 'ms', 's', 'm', 26, 26, 26, 26, 2, 4, 2, 4, 5, 4, 0), 0
+0
+Reading DNA file... phase_4/dna/storage.pdna
+Reading DNA file... phase_3.5/dna/storage_interior.pdna
+Reading DNA file... phase_6/dna/storage_GS.pdna
+Reading DNA file... phase_6/dna/storage_GS_sz.pdna
+Reading DNA file... phase_6/dna/goofy_speedway_sz.pdna
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+OnscreenText.configure: mayChange == 0
+Reading DNA file... phase_4/dna/storage.pdna
+Reading DNA file... phase_3.5/dna/storage_interior.pdna
+Reading DNA file... phase_8/dna/storage_BR.pdna
+Reading DNA file... phase_8/dna/storage_BR_sz.pdna
+Reading DNA file... phase_8/dna/the_burrrgh_sz.pdna
+Reading DNA file... phase_5/dna/storage_town.pdna
+Reading DNA file... phase_8/dna/storage_BR_town.pdna
+Reading DNA file... phase_8/dna/the_burrrgh_3300.pdna
+Battle Event localtoon-battle-event-3
+Battle Event localtoon-battle-event-8
+### newVec3 =  LVector3f(0, 10, 1.5)
+### newVec3 =  LVector3f(0, 10, 0)
+### newVec3 =  LVector3f(0, 10, 0.375)
+### newVec3 =  LVector3f(0, 10, 0)
+Battle Event localtoon-battle-event-13
+Battle Event localtoon-battle-event-18
+Reading DNA file... phase_8/dna/storage_BR_sz.pdna
+Reading DNA file... phase_8/dna/the_burrrgh_sz.pdna

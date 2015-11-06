@@ -1,0 +1,23 @@
+TTLocalizer: Running in language: English
+OTPLocalizer: Running in language: English
+Preloading suits...
+Preloading Toon heads...
+Preloading avatars...
+{401000001: <toontown.distributed.ToontownDistrict.ToontownDistrict instance at 0x16455B98>}
+__handleAvatarChooserDone: 100000002, 'Loud Picklehoffer', ('dss', 'ms', 's', 'm', 18, 26, 18, 18, 104, 27, 91, 27, 13, 27, 0), 3
+0
+Reading DNA file... phase_4/dna/storage.pdna
+Reading DNA file... phase_3.5/dna/storage_interior.pdna
+Reading DNA file... phase_8/dna/storage_BR.pdna
+Reading DNA file... phase_8/dna/storage_BR_sz.pdna
+Reading DNA file... phase_8/dna/the_burrrgh_sz.pdna
+Reading DNA file... phase_5/dna/storage_town.pdna
+Reading DNA file... phase_8/dna/storage_BR_town.pdna
+Reading DNA file... phase_8/dna/the_burrrgh_3300.pdna
+__handleAvatarChooserDone: 100000002, 'Loud Picklehoffer', ('dss', 'ms', 's', 'm', 18, 26, 18, 18, 104, 27, 91, 27, 13, 27, 0), 3
+0
+Reading DNA file... phase_4/dna/storage.pdna
+Reading DNA file... phase_3.5/dna/storage_interior.pdna
+Reading DNA file... phase_8/dna/storage_BR.pdna
+Reading DNA file... phase_8/dna/storage_BR_sz.pdna
+Reading DNA file... phase_8/dna/the_burrrgh_sz.pdna
