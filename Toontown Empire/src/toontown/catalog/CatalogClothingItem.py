@@ -292,7 +292,9 @@ ClothingTypes = {
  1818: (AGirlsSkirt, 'sa_gs20', 5000),
  1819: (AGirlsSkirt, 'sa_gs21', 5000),
  1820: (AShirt, 'sa_ss55', 5000),
- 1821: (AShirt, 'sa_ss56', 5000)} #Pinktober
+ 1821: (AShirt, 'sa_ss56', 5000), #Pinktober
+ 1822: (AShirt, 'splat', 5000), # Xentel NPC Shirt
+ 1822: (AShorts, 'splat1', 5000)} # Xentel NPC Shorts
 
 class CatalogClothingItem(CatalogItem.CatalogItem):
 
