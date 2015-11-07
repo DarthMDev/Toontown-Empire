@@ -13,3 +13,4 @@ Staff Positions:
 7. Spike- Community Manager
 8. Tanner- 3D Modeler
 9. Jacob- 3D Modeler
+10. Trevor- Composor 
