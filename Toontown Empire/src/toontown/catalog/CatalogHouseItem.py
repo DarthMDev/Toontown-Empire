@@ -5,47 +5,47 @@ from toontown.estate import HouseGlobals
 
 
 class CatalogHouseItem(CatalogItem):
-    def makeNewItem(self, houseType):
-        self.houseType = houseType
+    def makeNewItem(self, houseId):
+        self.houseId = houseId
 
         CatalogItem.makeNewItem(self)
 
     def decodeDatagram(self, di, versionNumber, store):
         CatalogItem.decodeDatagram(self, di, versionNumber, store)
 
-        self.houseType = di.getUint8()
+        self.houseId = di.getUint8()
 
     def encodeDatagram(self, dg, store):
         CatalogItem.encodeDatagram(self, dg, store)
 
-        dg.addUint8(self.houseType)
+        dg.addUint8(self.houseId)
 
     def compareTo(self, other):
-        return self.houseType - other.houseType
+        return self.houseId - other.houseId
 
     def getHashContents(self):
-        return (self.houseType,)
+        return (self.houseId)
 
     def output(self, store = -1):
-        return 'CatalogHouseItem(%s%s)' % (self.houseType, self.formatOptionalData(store))
+        return 'CatalogHouseItem(%s%s)' % (self.houseId, self.formatOptionalData(store))
 
-    def getBasePrice(self):
-        return ToontownGlobals.getHousePriceById(self.houseType)
+    def getEmblemPrices(self):
+        return HouseGlobals.HouseEmblemPrices[self.houseId]
 
     def getTypeName(self):
         return TTLocalizer.HouseTypeName
 
     def getName(self):
-        return TTLocalizer.getHouseNameById(self.houseType)
+        return TTLocalizer.getHouseNameById(self.houseId)
 
     def reachedPurchaseLimit(self, avatar):
-        return avatar.getHouseType() == self.houseType or self in avatar.onOrder or self in avatar.mailboxContents
+        return avatar.getHouseId() == self.houseId or self in avatar.onOrder or self in avatar.mailboxContents
 
     def isGift(self):
         return False
 
     def getPicture(self, avatar):
-        self.model = loader.loadModel(HouseGlobals.houseModels[self.houseType])
+        self.model = loader.loadModel(HouseGlobals.houseModels[self.houseId])
         frame = self.makeFrame()
         self.model.reparentTo(frame)
         self.model.setScale(0.1)
@@ -64,5 +64,5 @@ class CatalogHouseItem(CatalogItem):
         if avatar:
             house = simbase.air.doId2do.get(avatar.getHouseId())
             if house:
-                house.b_setHouseType(self.houseType)
+                house.b_setHouseType(self.houseId)
         return ToontownGlobals.P_ItemAvailable

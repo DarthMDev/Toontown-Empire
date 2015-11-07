@@ -7,8 +7,8 @@ set ASTRON_IP=127.0.0.1:7100
 set EVENTLOGGER_IP=127.0.0.1:7198
 
 rem Get the user input:
-set /P DISTRICT_NAME="District name (DEFAULT: Nutty Falls): " || ^
-set DISTRICT_NAME=Nutty Falls
+set /P DISTRICT_NAME="District name (DEFAULT: Gravity Falls): " || ^
+set DISTRICT_NAME=Gravity Falls
 set /P BASE_CHANNEL="Base channel (DEFAULT: 401000000): " || ^
 set BASE_CHANNEL=401000000
 

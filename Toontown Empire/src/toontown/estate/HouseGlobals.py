@@ -114,3 +114,12 @@ HALF_DAY_PERIOD = 1050
 HALF_NIGHT_PERIOD = 300
 FIREWORKS_MOVIE_CLEAR = 0
 FIREWORKS_MOVIE_GUI = 1
+
+HouseEmblemPrices = (
+    (50, 20), 
+    (200, 75), 
+    (200, 75), 
+    (500, 250), 
+    (350, 150), 
+    (400, 200) 
+)

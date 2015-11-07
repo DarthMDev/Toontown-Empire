@@ -1634,17 +1634,6 @@ BMovementSpeedMultiplier = 1.3
 BGagAccuracy = 1
 BGagAccuracyMultiplier = 1.3
 
-
-# House catalog prices
-
-housePrices = {
-    HouseGlobals.HOUSE_DEFAULT: 10000,
-    HouseGlobals.HOUSE_CABIN: 20000
-}
-
-def getHousePriceById(houseId):
-    return housePrices[houseId]
-
 BugReportSite = 'https://bugs.launchpad.net/toontown-united/+filebug'
 CostPerLaffRestock = 3
 FISHSALE_NONE = 0
