@@ -1117,6 +1117,9 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.monthlyCatalog = CatalogItemList.CatalogItemList(monthlyCatalog)
         self.weeklyCatalog = CatalogItemList.CatalogItemList(weeklyCatalog)
         self.backCatalog = CatalogItemList.CatalogItemList(backCatalog)
+        from toontown.catalog import CatalogHouseItem
+        self.backCatalog.extend(CatalogHouseItem.getAllHouses())
+
         if self.catalogNotify == ToontownGlobals.NewItems:
             self.catalogNotify = ToontownGlobals.OldItems
 

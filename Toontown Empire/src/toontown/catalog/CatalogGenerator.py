@@ -87,11 +87,6 @@ class Sale:
     def __init__(self, *args):
         self.args = args
  
-CatalogHouseItems = [
-  CatalogHouseItem(HouseGlobals.HOUSE_DEFAULT),
-  CatalogHouseItem(HouseGlobals.HOUSE_CABIN)
-]
-
 MonthlySchedule = ((7,
   1,
   8,

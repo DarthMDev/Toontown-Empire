@@ -8409,6 +8409,8 @@ LanguageSelectorConfirm = 'Are you sure you want to change your language to %s? 
 LanguageSelectorSameLanguage = "You're already using that language!"
 CogLevelLabelOn = 'The cog level GUI is on.'
 CogLevelLabelOff = 'The cog level GUI is off.'
+HouseNames = ("Bungalow", "Tiki", "Teepee", "Castle", "Cupcake", "Cabin")
+CatalogPurchaseHouseType = "When you buy a new house type, the current one is replaced by it. To recover the old type, you'll need to buy it back. Continue?"
 BugReportButton = 'Report a Bug'
 BugReportNotice = 'Attention!\n\nThis button will open a browser which will send you to a third party bug tracker website. This site requires an Ubuntu One account to login. It may ask you to create an account.\n\nAre you sure you want to continue?'
 # Buffs
@@ -8483,25 +8485,8 @@ DonaldChatter = ["I'm glad you're here today!",
  'I like what you are wearing.',
  'I love to play tag. Do you?']
 NPCFriendUnavailable = 'Unavailable'
-# FireTalkMessage = "You're fired!"
 RestockFullLaffMessage = "You're already happy!"
 RestockNoMoneyMessage = "You need more jellybeans to restock your laff!"
 RestockLaffMessage = "Have fun!"
 RestockAskMessage = "Would you like to\nrestock %s laff for %s jellybeans?"
 RestockCheaterMessage = "No cheaters allowed! Your transaction has been declined."
-
-
-# Different house types
-
-
-HouseTypeName = 'House'
-
-
-houseNames = {
-  HouseGlobals.HOUSE_DEFAULT: 'Classic House',
-  HouseGlobals.HOUSE_CABIN: 'Cabin House'
-}
-
-
-def getHouseNameById(houseId):
-    return houseNames[houseId]

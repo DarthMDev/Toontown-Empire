@@ -1,68 +1,72 @@
-from toontown.catalog.CatalogItem import CatalogItem
-from toontown.toonbase import ToontownGlobals
+import CatalogItem
 from toontown.toonbase import TTLocalizer
+from direct.showbase import PythonUtil
+from direct.gui.DirectGui import *
+from toontown.toonbase import ToontownGlobals
 from toontown.estate import HouseGlobals
-
 
 class CatalogHouseItem(CatalogItem):
     def makeNewItem(self, houseId):
         self.houseId = houseId
-
         CatalogItem.makeNewItem(self)
+        
+    def notOfferedTo(self, avatar):
+        return 1
+        
+    def requestPurchase(self, phone, callback):
+        from toontown.toontowngui import TTDialog
+        avatar = base.localAvatar
 
+        self.requestPurchaseCleanup()
+        buttonCallback = PythonUtil.Functor(self.__handleFullPurchaseDialog, phone, callback)
+        self.dialog = TTDialog.TTDialog(style=TTDialog.YesNo, text=TTLocalizer.CatalogPurchaseHouseType, text_wordwrap=15, command=buttonCallback)
+        self.dialog.show()
+
+    def requestPurchaseCleanup(self):
+        if hasattr(self, 'dialog'):
+            self.dialog.cleanup()
+            del self.dialog
+
+    def __handleFullPurchaseDialog(self, phone, callback, buttonValue):
+        from toontown.toontowngui import TTDialog
+        self.requestPurchaseCleanup()
+        if buttonValue == DGG.DIALOG_OK:
+            CatalogItem.CatalogItem.requestPurchase(self, phone, callback)
+        else:
+            callback(ToontownGlobals.P_UserCancelled, self)
+
+    def getTypeName(self):
+        return "House Type"
+
+    def getName(self):
+        return TTLocalizer.HouseNames[self.houseId]
+
+    def getDeliveryTime(self):
+        return 1
+        
+    def getEmblemPrices(self):
+        return HouseGlobals.HouseEmblemPrices[self.houseId]
+        
+    def getPicture(self, avatar):
+        model = loader.loadModel(HouseGlobals.houseModels[self.houseId])
+        model.setBin('unsorted', 0, 1)
+        self.hasPicture = True
+        return self.makeFrameModel(model)
+        
     def decodeDatagram(self, di, versionNumber, store):
-        CatalogItem.decodeDatagram(self, di, versionNumber, store)
-
+        CatalogItem.CatalogItem.decodeDatagram(self, di, versionNumber, store)
         self.houseId = di.getUint8()
 
     def encodeDatagram(self, dg, store):
-        CatalogItem.encodeDatagram(self, dg, store)
-
+        CatalogItem.CatalogItem.encodeDatagram(self, dg, store)
         dg.addUint8(self.houseId)
-
-    def compareTo(self, other):
-        return self.houseId - other.houseId
-
-    def getHashContents(self):
-        return (self.houseId)
-
-    def output(self, store = -1):
-        return 'CatalogHouseItem(%s%s)' % (self.houseId, self.formatOptionalData(store))
-
-    def getEmblemPrices(self):
-        return HouseGlobals.HouseEmblemPrices[self.houseId]
-
-    def getTypeName(self):
-        return TTLocalizer.HouseTypeName
-
-    def getName(self):
-        return TTLocalizer.getHouseNameById(self.houseId)
-
-    def reachedPurchaseLimit(self, avatar):
-        return avatar.getHouseId() == self.houseId or self in avatar.onOrder or self in avatar.mailboxContents
-
-    def isGift(self):
-        return False
-
-    def getPicture(self, avatar):
-        self.model = loader.loadModel(HouseGlobals.houseModels[self.houseId])
-        frame = self.makeFrame()
-        self.model.reparentTo(frame)
-        self.model.setScale(0.1)
-        self.model.setH(90)
-        self.model.setZ(-1)
-        self.hasPicture = True
-        return (frame, None)
-
-    def cleanupPicture(self):
-        CatalogItem.cleanupPicture(self)
-
-        self.model.detachNode()
-        self.model = None
-
-    def recordPurchase(self, avatar, optional):
-        if avatar:
-            house = simbase.air.doId2do.get(avatar.getHouseId())
-            if house:
-                house.b_setHouseType(self.houseId)
+        
+    def recordPurchase(self, av, optional):
+        house = simbase.air.doId2do.get(av.getHouseId())
+        if house:
+            house.b_setHouseType(self.houseId)
         return ToontownGlobals.P_ItemAvailable
+        
+def getAllHouses():
+    return [CatalogHouseItem(i) for i in xrange(6)]
+    
