@@ -1635,7 +1635,9 @@ BMovementSpeedMultiplier = 1.3
 BGagAccuracy = 1
 BGagAccuracyMultiplier = 1.3
 
+<<<<<<< HEAD
 BugReportSite = 'https://bugs.launchpad.net/toontown-empire/+filebug'
+=======
 
 # House catalog prices
 
@@ -1647,6 +1649,8 @@ housePrices = {
 def getHousePriceById(houseId):
     return housePrices[houseId]
 
+BugReportSite = 'https://bugs.launchpad.net/toontown-united/+filebug'
+>>>>>>> master
 CostPerLaffRestock = 3
 FISHSALE_NONE = 0
 FISHSALE_COMPLETE = 1

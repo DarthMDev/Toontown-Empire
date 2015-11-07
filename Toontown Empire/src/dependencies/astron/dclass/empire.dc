@@ -1361,7 +1361,7 @@ dclass DistributedEstate : DistributedObject {
 dclass DistributedHouse : DistributedObject {
   string DcObjectType db;
   setHousePos(uint8) required broadcast;
-  setHouseType(uint8 type = 0) required broadcast db;
+  setHouseType(uint8 type = 0) required ownrecv db;
   setGardenPos(uint8 index = 0) required broadcast db;
   setAvatarId(uint32 toonId = 0) required broadcast db;
   setName(string toonName = "") required broadcast db;
