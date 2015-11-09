@@ -1,5 +1,4 @@
-from direct.showbase.PythonUtil import contains, lerp
-from toontown.toonbase.PythonUtil import clampScalar
+from direct.showbase.PythonUtil import contains, lerp, clampScalar
 from direct.distributed import DistributedObjectAI
 from direct.directnotify import DirectNotifyGlobal
 from toontown.pets import PetTraits, PetTricks

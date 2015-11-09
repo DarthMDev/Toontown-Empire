@@ -17,7 +17,7 @@ sys.path.append(
     )
 )
 
-
+from direct.showbase import PythonUtil
 
 import argparse
 
@@ -67,6 +67,6 @@ try:
 except SystemExit:
     raise
 except Exception:
-    info = describeException()
+    info = PythonUtil.describeException()
     simbase.air.writeServerEvent('uberdog-exception', simbase.air.getAvatarIdFromSender(), simbase.air.getAccountIdFromSender(), info)
     raise
