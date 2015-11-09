@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/bin/sh
+=======
+
+>>>>>>> master
 cd ../..
 cd ..
 export DYLD_LIBRARY_PATH=`pwd`/Libraries.bundle

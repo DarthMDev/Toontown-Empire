@@ -1637,16 +1637,6 @@ BGagAccuracyMultiplier = 1.3
 
 BugReportSite = 'https://bugs.launchpad.net/toontown-empire/+filebug'
 
-# House catalog prices
-
-housePrices = {
-    HouseGlobals.HOUSE_DEFAULT: 10000,
-    HouseGlobals.HOUSE_CABIN: 20000
-}
-
-def getHousePriceById(houseId):
-    return housePrices[houseId]
-
 CostPerLaffRestock = 3
 FISHSALE_NONE = 0
 FISHSALE_COMPLETE = 1
