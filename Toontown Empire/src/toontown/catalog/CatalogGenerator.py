@@ -1520,10 +1520,6 @@ class CatalogGenerator:
 
     def generateWeeklyCatalog(self, avatar, week, monthlyCatalog):
         weeklyCatalog = CatalogItemList.CatalogItemList()
-    
-        # Add the different house types:
-        weeklyCatalog += CatalogHouseItems
-
         self.notify.debug('Generating catalog for %s for week %s.' % (avatar.doId, week))
         if week >= 1 and week <= len(WeeklySchedule):
             saleItem = 0
