@@ -1,5 +1,5 @@
 from src.toontown.suit import Suit
-from src.toontown.town import DLStreet
+from src.toontown.town import FGStreet
 from src.toontown.town import TownLoader
 
 
@@ -14,7 +14,7 @@ class DLTownLoader(TownLoader.TownLoader):
     def load(self, zoneId):
         TownLoader.TownLoader.load(self, zoneId)
         Suit.loadSuits(3)
-        dnaFile = 'phase_8/dna/donalds_dreamland_' + str(self.canonicalBranchZone) + '.pdna'
+        dnaFile = 'phase_2/dna/forest_grove_' + str(self.canonicalBranchZone) + '.pdna'
         self.createHood(dnaFile)
 
     def unload(self):

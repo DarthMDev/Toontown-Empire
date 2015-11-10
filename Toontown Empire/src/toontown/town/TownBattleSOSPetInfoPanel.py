@@ -1,12 +1,11 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.fsm import StateData
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
-from toontown.toonbase import TTLocalizer
-from toontown.pets import Pet, PetTricks, PetDetailPanel
-from toontown.speedchat import TTSCPetTrickMenu
-from otp.speedchat import SpeedChatGlobals, SCSettings
-from otp.otpbase import OTPLocalizer
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.pets import Pet, PetTricks, PetDetailPanel
+from src.toontown.speedchat import TTSCPetTrickMenu
+from src.otp.speedchat import SpeedChatGlobals, SCSettings
+from src.otp.otpbase import OTPLocalizer
 
 class TownBattleSOSPetInfoPanel(StateData.StateData):
 
@@ -147,6 +146,7 @@ class TownBattleSOSPetInfoPanel(StateData.StateData):
             self.petModel.reparentTo(self.petView)
             self.petModel.enterNeutralHappy()
             self.petModel.startBlink()
+            self.petModel.setScale(0.75)
             self.nameLabel = DirectLabel(parent=self.frame, pos=(0, 0, 5.2), relief=None, text=avatar.getName(), text_font=avatar.getFont(), text_fg=Vec4(0, 0, 0, 1), text_pos=(0, 0), text_scale=0.4, text_wordwrap=7.5, text_shadow=(1, 1, 1, 1))
             self.stateLabel = DirectLabel(parent=self.frame, pos=(0.7, 0, 3.5), relief=None, text='', text_font=avatar.getFont(), text_fg=Vec4(0, 0, 0, 1), text_scale=0.4, text_wordwrap=7.5, text_shadow=(1, 1, 1, 1))
         self.__refreshPetInfo(avatar)

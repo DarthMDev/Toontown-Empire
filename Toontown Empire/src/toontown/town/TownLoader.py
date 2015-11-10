@@ -1,26 +1,25 @@
-from pandac.PandaModules import *
-from toontown.battle.BattleProps import *
-from toontown.battle.BattleSounds import *
-from toontown.distributed.ToontownMsgTypes import *
-from toontown.toonbase.ToontownGlobals import *
+from panda3d.core import *
+from src.toontown.battle.BattleProps import *
+from src.toontown.battle.BattleSounds import *
+from src.toontown.distributed.ToontownMsgTypes import *
+from src.toontown.toonbase.ToontownGlobals import *
 from direct.gui.DirectGui import cleanupDialog
 from direct.directnotify import DirectNotifyGlobal
-from toontown.hood import Place
+from src.toontown.hood import Place
 from direct.showbase import DirectObject
 from direct.fsm import StateData
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.task import Task
 import TownBattle
-from toontown.toon import Toon
-from toontown.toon.Toon import teleportDebug
-from toontown.battle import BattleParticles
+from src.toontown.toon import Toon
+from src.toontown.toon.Toon import teleportDebug
+from src.toontown.battle import BattleParticles
 from direct.fsm import StateData
-from toontown.building import ToonInterior
-from toontown.hood import QuietZoneState
-from toontown.hood import ZoneUtil
+from src.toontown.building import ToonInterior
+from src.toontown.hood import QuietZoneState, ZoneUtil, HydrantInteractiveProp, MailboxInteractiveProp, TrashcanInteractiveProp
 from direct.interval.IntervalGlobal import *
-from toontown.dna.DNAParser import DNABulkLoader
+from src.toontown.dna.DNAParser import DNABulkLoader
 
 class TownLoader(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('TownLoader')
@@ -233,7 +232,6 @@ class TownLoader(StateData.StateData):
             visGroup = dnaStore.getDNAVisGroupAI(i)
             groupName = base.cr.hoodMgr.extractGroupName(groupFullName)
             zoneId = int(groupName)
-            zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
             groupNode = self.geom.find('**/' + groupFullName)
             if groupNode.isEmpty():
                 self.notify.error('Could not find visgroup')
@@ -259,12 +257,10 @@ class TownLoader(StateData.StateData):
         for i in xrange(numVisGroups):
             groupFullName = dnaStore.getDNAVisGroupName(i)
             zoneId = int(base.cr.hoodMgr.extractGroupName(groupFullName))
-            zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
             for j in xrange(dnaStore.getNumVisiblesInDNAVisGroup(i)):
                 visName = dnaStore.getVisibleName(i, j)
                 groupName = base.cr.hoodMgr.extractGroupName(visName)
                 nextZoneId = int(groupName)
-                nextZoneId = ZoneUtil.getTrueZoneId(nextZoneId, self.zoneId)
                 visNode = self.zoneDict[nextZoneId]
                 self.nodeDict[zoneId].append(visNode)
 
@@ -287,6 +283,7 @@ class TownLoader(StateData.StateData):
     def createAnimatedProps(self, nodeList):
         self.animPropDict = {}
         self.zoneIdToInteractivePropDict = {}
+
         for i in nodeList:
             animPropNodes = i.findAllMatches('**/animated_prop_*')
             numAnimPropNodes = animPropNodes.getNumPaths()
@@ -301,39 +298,33 @@ class TownLoader(StateData.StateData):
                 else:
                     className = animPropNode.getName()[14:-8]
                 symbols = {}
-                base.cr.importModule(symbols, 'toontown.hood', [className])
+                base.cr.importModule(symbols, 'src.toontown.hood', [className])
                 classObj = getattr(symbols[className], className)
                 animPropObj = classObj(animPropNode)
                 animPropList = self.animPropDict.setdefault(i, [])
                 animPropList.append(animPropObj)
 
             interactivePropNodes = i.findAllMatches('**/interactive_prop_*')
-            numInteractivePropNodes = interactivePropNodes.getNumPaths()
-            for j in xrange(numInteractivePropNodes):
-                interactivePropNode = interactivePropNodes.getPath(j)
-                className = 'InteractiveAnimatedProp'
-                if 'hydrant' in interactivePropNode.getName():
-                    className = 'HydrantInteractiveProp'
-                elif 'trashcan' in interactivePropNode.getName():
-                    className = 'TrashcanInteractiveProp'
-                elif 'mailbox' in interactivePropNode.getName():
-                    className = 'MailboxInteractiveProp'
-                symbols = {}
-                base.cr.importModule(symbols, 'toontown.hood', [className])
-                classObj = getattr(symbols[className], className)
-                interactivePropObj = classObj(interactivePropNode)
-                animPropList = self.animPropDict.get(i)
-                if animPropList is None:
-                    animPropList = self.animPropDict.setdefault(i, [])
-                animPropList.append(interactivePropObj)
-                if interactivePropObj.getCellIndex() == 0:
-                    zoneId = int(i.getName())
-                    if zoneId not in self.zoneIdToInteractivePropDict:
-                        self.zoneIdToInteractivePropDict[zoneId] = interactivePropObj
-                    else:
-                        self.notify.error('already have interactive prop %s in zone %s' % (self.zoneIdToInteractivePropDict, zoneId))
 
-        return
+            for j in xrange(interactivePropNodes.getNumPaths()):
+                propNode = interactivePropNodes.getPath(j)
+                propName = propNode.getName()
+
+                if 'hydrant' in propName:
+                    prop = HydrantInteractiveProp.HydrantInteractiveProp(propNode)
+                elif 'trashcan' in propName:
+                    prop = TrashcanInteractiveProp.TrashcanInteractiveProp(propNode)
+                elif 'mailbox' in propName:
+                    prop = MailboxInteractiveProp.MailboxInteractiveProp(propNode)
+                else:
+                    continue
+
+                if i in self.animPropDict:
+                    self.animPropDict[i].append(prop)
+                else:
+                    self.animPropDict[i] = [prop]
+
+                self.zoneIdToInteractivePropDict[int(i.getName())] = prop
 
     def deleteAnimatedProps(self):
         for zoneNode, animPropList in self.animPropDict.items():
@@ -351,7 +342,6 @@ class TownLoader(StateData.StateData):
             animProp.exit()
 
     def getInteractiveProp(self, zoneId):
-        result = None
         if zoneId in self.zoneIdToInteractivePropDict:
-            result = self.zoneIdToInteractivePropDict[zoneId]
-        return result
+            return self.zoneIdToInteractivePropDict[zoneId]
+        return None
