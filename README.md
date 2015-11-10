@@ -2,7 +2,7 @@
 
 Official Repo for Toontown Empire, a new Toontown game based on Disney's Toontown Online. Thanks to Disney, Toontown Rewritten, Toontown Infinite, and all other Toontown games for making this game possible. :)
 
-Staff Positions:
+# Staff Positions:
 
 1. Dynamite- Leader and Game Developer
 2. Dubito: Server Administrator and Launcher Developer
@@ -14,3 +14,5 @@ Staff Positions:
 8. Tanner- 3D Modeler
 9. Jacob- 3D Modeler
 10. Trevor- Composor 
+
+# Do not push broken code to the master branch, because it messes up the game and makes it harder for the developers to add features, and fix bugs in the game!
