@@ -6,11 +6,11 @@ from src.toontown.toonbase import ToontownGlobals
 from src.toontown.estate import HouseGlobals
 
 
-class CatalogHouseItem(CatalogItem):
+class CatalogHouseItem(CatalogItem.CatalogItem):
     def makeNewItem(self, houseId):
         self.houseId = houseId
 
-        CatalogItem.makeNewItem(self)
+        CatalogItem.CatalogItem.makeNewItem(self)
 
     def notOfferedTo(self, avatar):
         return 1

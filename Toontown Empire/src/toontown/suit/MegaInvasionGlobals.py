@@ -519,8 +519,9 @@ invasions = [
     ['2016-12-30 10:00', '2016-12-31 9:00', RANDOM, RANDOM, RANDOM, True, None],
     ['2016-12-31 10:00', '2017-01-01 9:00', RANDOM, RANDOM, RANDOM, True, None]
 ]
+
 #These are districts no mega invasions will auto start, the ones not listed here will!
-safeShards = ['Barbaric Boomerang', Gravity Falls', 'Cheerful Haystack', 'Freaky Frostbite', 'Grizzly Biscuit', 'Merry Maple', 'Thunder Falls', 'Toon Lagoon']
+safeShards = ['Barbaric Boomerang', 'Gravity Falls', 'Cheerful Haystack', 'Freaky Frostbite', 'Grizzly Biscuit', 'Merry Maple', 'Thunder Falls', 'Toon Lagoon']
 
 
 
