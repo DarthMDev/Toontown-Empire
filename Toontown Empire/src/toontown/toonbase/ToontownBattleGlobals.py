@@ -3,8 +3,8 @@ import math
 import TTLocalizer
 BattleCamFaceOffFov = 30.0
 BattleCamFaceOffPos = Point3(0, -10, 4)
-BattleCamDefaultPos = Point3(0, -8.6, 16.5)
-BattleCamDefaultHpr = Vec3(0, -61, 0)
+BattleCamDefaultPos = Point3(0, -12, 16.5)
+BattleCamDefaultHpr = Vec3(0, -45, 0)
 BattleCamDefaultFov = 80.0
 BattleCamMenuFov = 65.0
 BattleCamJoinPos = Point3(0, -12, 13)
@@ -92,10 +92,10 @@ Levels = [[0,
 regMaxSkill = 10000
 UberSkill = 500
 MaxSkill = UberSkill + regMaxSkill
-ExperienceCap = 1000 *10
 
 
-MaxToonAcc = 95
+
+MaxToonAcc = 100
 StartingLevel = 0
 CarryLimits = (((10,
    0,
