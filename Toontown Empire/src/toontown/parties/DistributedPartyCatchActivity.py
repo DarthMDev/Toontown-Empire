@@ -10,19 +10,19 @@ from direct.task.Task import Task
 from direct.distributed import DistributedSmoothNode
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.FunctionInterval import Wait, Func
-from toontown.toonbase import TTLocalizer
-from toontown.toon import Toon
-from toontown.toonbase import ToontownGlobals
-from toontown.minigame.Trajectory import Trajectory
-from toontown.minigame.OrthoDrive import OrthoDrive
-from toontown.minigame.OrthoWalk import OrthoWalk
-from toontown.minigame.DropPlacer import PartyRegionDropPlacer
-from toontown.parties import PartyGlobals
-from toontown.parties.PartyCatchActivityToonSD import PartyCatchActivityToonSD
-from toontown.parties.DistributedPartyActivity import DistributedPartyActivity
-from toontown.parties.DistributedPartyCatchActivityBase import DistributedPartyCatchActivityBase
-from toontown.parties.DistributedPartyCannonActivity import DistributedPartyCannonActivity
-from toontown.parties.activityFSMs import CatchActivityFSM
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toon import Toon
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.minigame.Trajectory import Trajectory
+from src.toontown.minigame.OrthoDrive import OrthoDrive
+from src.toontown.minigame.OrthoWalk import OrthoWalk
+from src.toontown.minigame.DropPlacer import PartyRegionDropPlacer
+from src.toontown.parties import PartyGlobals
+from src.toontown.parties.PartyCatchActivityToonSD import PartyCatchActivityToonSD
+from src.toontown.parties.DistributedPartyActivity import DistributedPartyActivity
+from src.toontown.parties.DistributedPartyCatchActivityBase import DistributedPartyCatchActivityBase
+from src.toontown.parties.DistributedPartyCannonActivity import DistributedPartyCannonActivity
+from src.toontown.parties.activityFSMs import CatchActivityFSM
 
 class DistributedPartyCatchActivity(DistributedPartyActivity, DistributedPartyCatchActivityBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPartyCatchActivity')
@@ -118,6 +118,25 @@ class DistributedPartyCatchActivity(DistributedPartyActivity, DistributedPartyCa
         self.notify.info('load()')
         DistributedPartyCatchActivity.notify.debug('PartyCatch: load')
         self.activityFSM = CatchActivityFSM(self)
+        if __dev__:
+            for o in xrange(3):
+                print {0: 'SPOTS PER PLAYER',
+                 1: 'DROPS PER MINUTE PER SPOT DURING NORMAL DROP PERIOD',
+                 2: 'DROPS PER MINUTE PER PLAYER DURING NORMAL DROP PERIOD'}[o]
+                for i in xrange(1, self.FallRateCap_Players + 10):
+                    self.defineConstants(forceNumPlayers=i)
+                    numDropLocations = self.DropRows * self.DropColumns
+                    numDropsPerMin = 60.0 / self.DropPeriod
+                    if o == 0:
+                        spotsPerPlayer = numDropLocations / float(i)
+                        print '%2d PLAYERS: %s' % (i, spotsPerPlayer)
+                    elif o == 1:
+                        numDropsPerMinPerSpot = numDropsPerMin / numDropLocations
+                        print '%2d PLAYERS: %s' % (i, numDropsPerMinPerSpot)
+                    elif i > 0:
+                        numDropsPerMinPerPlayer = numDropsPerMin / i
+                        print '%2d PLAYERS: %s' % (i, numDropsPerMinPerPlayer)
+
         self.defineConstants()
         self.treesAndFence = loader.loadModel('phase_13/models/parties/%s' % arenaModel)
         self.treesAndFence.setScale(0.9)
@@ -196,7 +215,7 @@ class DistributedPartyCatchActivity(DistributedPartyActivity, DistributedPartyCa
         self.stopDropTask()
         del self.activityFSM
         del self.__textGen
-        for avId in self.toonSDs.keys():
+        for avId in self.toonSDs:
             if avId in self.toonSDs:
                 toonSD = self.toonSDs[avId]
                 toonSD.unload()
@@ -260,7 +279,7 @@ class DistributedPartyCatchActivity(DistributedPartyActivity, DistributedPartyCa
 
     def takeLocalAvatarOutOfActivity(self):
         self.notify.debug('localToon has left the circle')
-        camera.reparentTo(base.localAvatar)
+        base.camera.reparentTo(base.localAvatar)
         base.localAvatar.startUpdateSmartCamera()
         base.localAvatar.enableSmartCameraViews()
         base.localAvatar.setCameraPositionByIndex(base.localAvatar.cameraIndex)
@@ -449,8 +468,8 @@ class DistributedPartyCatchActivity(DistributedPartyActivity, DistributedPartyCa
         else:
             self.notify.info("Avoided crash: toontown.parties.DistributedPartyCatchActivity:632, toontown.parties.DistributedPartyCatchActivity:1198, toontown.parties.activityFSMMixins:49, direct.fsm.FSM:423, AttributeError: 'NoneType' object has no attribute 'fsm'")
         base.localAvatar.stopUpdateSmartCamera()
-        camera.reparentTo(self.treesAndFence)
-        camera.setPosHpr(0.0, -63.0, 30.0, 0.0, -20.0, 0.0)
+        base.camera.reparentTo(self.treesAndFence)
+        base.camera.setPosHpr(0.0, -63.0, 30.0, 0.0, -20.0, 0.0)
         if not hasattr(self, 'ltLegsCollNode'):
             self.createCatchCollisions()
 

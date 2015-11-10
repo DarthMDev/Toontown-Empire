@@ -1,7 +1,7 @@
 import CatalogItem
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from otp.otpbase import OTPLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.otp.otpbase import OTPLocalizer
 from direct.interval.IntervalGlobal import *
 
 class CatalogBeanItem(CatalogItem.CatalogItem):
@@ -16,9 +16,7 @@ class CatalogBeanItem(CatalogItem.CatalogItem):
         return 0
 
     def reachedPurchaseLimit(self, avatar):
-        if self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder or self in avatar.awardMailboxContents or self in avatar.onAwardOrder:
-            return 1
-        return 0
+        return self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder
 
     def getAcceptItemErrorText(self, retcode):
         if retcode == ToontownGlobals.P_ItemAvailable:

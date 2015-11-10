@@ -1,5 +1,5 @@
-from pandac.PandaModules import *
-from otp.level import BasicEntities
+from panda3d.core import *
+from src.otp.level import BasicEntities
 from direct.directnotify import DirectNotifyGlobal
 
 class ActiveCell(BasicEntities.DistributedNodePathEntity):

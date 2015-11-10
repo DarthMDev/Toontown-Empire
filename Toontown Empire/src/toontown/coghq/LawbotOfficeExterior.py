@@ -1,9 +1,9 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM
 from direct.fsm import State
-from toontown.toonbase import ToontownGlobals
-from toontown.building import Elevator
-from pandac.PandaModules import *
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.building import Elevator
+from panda3d.core import *
 import FactoryExterior
 
 class LawbotOfficeExterior(FactoryExterior.FactoryExterior):

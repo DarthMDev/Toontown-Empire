@@ -4,7 +4,7 @@ import DistributedSwitchBase
 from direct.task import Task
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from otp.level import DistributedEntityAI
+from src.otp.level import DistributedEntityAI
 
 class DistributedSwitchAI(DistributedSwitchBase.DistributedSwitchBase, DistributedEntityAI.DistributedEntityAI):
 

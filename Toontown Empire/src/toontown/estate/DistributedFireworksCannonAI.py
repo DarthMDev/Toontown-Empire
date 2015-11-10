@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-from toontown.effects.DistributedFireworkShowAI import DistributedFireworkShowAI
+from src.toontown.effects.DistributedFireworkShowAI import DistributedFireworkShowAI
 
 class DistributedFireworksCannonAI(DistributedFireworkShowAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedFireworksCannonAI")

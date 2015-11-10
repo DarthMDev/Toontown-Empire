@@ -1,7 +1,7 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-from toontown.toonbase.ToonBaseGlobal import *
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase.ToonBaseGlobal import *
+from src.toontown.toonbase import TTLocalizer
 from direct.gui.DirectFrame import DirectFrame
 from direct.gui.DirectGui import DGG
 from direct.task.Task import Task
@@ -10,7 +10,7 @@ from direct.directnotify import DirectNotifyGlobal
 from DistributedMinigame import *
 import MinigameAvatarScorePanel, ArrowKeys, ToonBlitzAssetMgr, TwoDCamera
 import TwoDSectionMgr, ToonBlitzGlobals, TwoDGameToonSD
-from toontown.toonbase import ToontownTimer
+from src.toontown.toonbase import ToontownTimer
 from TwoDWalk import *
 from TwoDDrive import *
 COLOR_RED = VBase4(1, 0, 0, 0.3)
@@ -474,10 +474,8 @@ class DistributedTwoDGame(DistributedMinigame):
                     self.updateScore(avId, ToonBlitzGlobals.ScoreGainPerTreasure * treasure.value)
                 else:
                     self.notify.error('WHOA!! treasureIndex %s is out of range; numTreasures = %s' % (treasureIndex, numTreasures))
-                    base.localAvatar.sendLogMessage('treasureIndex %s is out of range; numTreasures = %s' % (treasureIndex, numTreasures))
             else:
                 self.notify.error('WHOA!! sectionIndex %s is out of range; numSections = %s' % (sectionIndex, numSections))
-                base.localAvatar.sendLogMessage('sectionIndex %s is out of range; numSections = %s' % (sectionIndex, numSections))
 
     def __enemyShot(self, sectionIndex, enemyIndex):
         self.sectionMgr.sections[sectionIndex].enemyMgr.enemies[enemyIndex].doShotTrack()

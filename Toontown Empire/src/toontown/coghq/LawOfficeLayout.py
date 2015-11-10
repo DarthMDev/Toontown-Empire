@@ -3,8 +3,8 @@ import random
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.PythonUtil import invertDictLossless
 from direct.showbase.PythonUtil import normalDistrib, lerp
-from toontown.coghq import MintRoomSpecs
-from toontown.toonbase import ToontownGlobals
+from src.toontown.coghq import MintRoomSpecs
+from src.toontown.toonbase import ToontownGlobals
 
 
 OfficeBuildingFloorSequences = {
@@ -15,7 +15,7 @@ Index2Spec = {
     1: 'LawOffice_Spec_Tier0_b' }
 LawbotFloorSpecs = {}
 for floorIndex, floorSpec in Index2Spec.items():
-    LawbotFloorSpecs[floorIndex] = __import__('toontown.coghq.' + floorSpec)
+    LawbotFloorSpecs[floorIndex] = __import__('src.toontown.coghq.' + floorSpec)
 
 
 class LawOfficeLayout:
@@ -41,5 +41,3 @@ class LawOfficeLayout:
 
     def getFloorIds(self):
         return self.floorIds
-
-

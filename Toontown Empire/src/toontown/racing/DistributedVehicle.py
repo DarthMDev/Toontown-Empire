@@ -1,26 +1,25 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
 from direct.fsm import FSM
 from direct.distributed import DistributedSmoothNode
 from direct.interval.IntervalGlobal import *
-from direct.showbase.PythonUtil import clampScalar
-from otp.otpbase import OTPGlobals
-from otp.avatar import ShadowCaster
-from toontown.racing import Kart
-from toontown.racing.KartDNA import *
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.effects.Drift import Drift
-from toontown.effects.Sparks import Sparks
+from src.toontown.toonbase.PythonUtil import clampScalar
+from src.otp.otpbase import OTPGlobals
+from src.otp.avatar import ShadowCaster
+from src.toontown.racing import Kart
+from src.toontown.racing.KartDNA import *
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.effects.Drift import Drift
+from src.toontown.effects.Sparks import Sparks
 from direct.interval.ProjectileInterval import *
-from toontown.battle.BattleProps import *
+from src.toontown.battle.BattleProps import *
 import random
 from direct.showbase.PythonUtil import randFloat
 from direct.task.Task import Task
-from toontown.nametag import NametagGlobals
+from src.otp.nametag import NametagGlobals
 import math
 iceTurnFactor = 0.25
 iceAccelFactor = 0.4
@@ -498,7 +497,7 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
                 self.toon.sendCurrentPosition()
             self.doHeadScale(self.toon, 1.75)
             self.toon.setShear(0, 0, 0)
-        NametagGlobals.setForceOnscreenChat(True)
+        NametagGlobals.setOnscreenChatForced(1)
         if self.localVehicle:
             camera.reparentTo(self.cameraNode)
             camera.setPosHpr(0, -33, 16, 0, -10, 0)
@@ -538,9 +537,8 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
             self.toon.reparentTo(render)
             self.toon.loop('neutral')
             self.toon.startSmooth()
-        NametagGlobals.setForceOnscreenChat(False)
-        base.camLens.setMinFov(ToontownGlobals.DefaultCameraFov/(4./3.))
-        return
+        NametagGlobals.setOnscreenChatForced(0)
+        base.camLens.setMinFov(settings['fov']/(4./3.))
 
     def doHeadScale(self, model, scale):
         if scale == None:
@@ -685,7 +683,7 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         newCameraPos = Point3(0, -25, 16)
         newCameraFov = 70
         turboDuration = 3
-        startFov = ToontownGlobals.DefaultCameraFov/(4./3.)
+        startFov = settings['fov']/(4./3.)
         if self.cameraTrack:
             self.cameraTrack.pause()
         cameraZoomIn = Parallel(LerpPosInterval(camera, 2, newCameraPos), LerpFunc(base.camLens.setMinFov, fromData=startFov, toData=newCameraFov, duration=2))

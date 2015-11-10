@@ -1,5 +1,5 @@
 from SpecImports import *
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 CogParent = 110400
 BattleCellId = 0
 BattleCells = {BattleCellId: {'parentEntId': CogParent,
@@ -10,10 +10,10 @@ CogData = [{'parentEntId': CogParent,
   'battleCell': BattleCellId,
   'pos': Point3(-6, 0, 0),
   'h': 180,
-  'revives': 1,
   'behavior': 'stand',
   'path': None,
-  'skeleton': 0},
+  'skeleton': 0,
+  'revives': 1},
  {'parentEntId': CogParent,
   'boss': 0,
   'level': ToontownGlobals.BossbotCountryClubCogLevel,
@@ -22,7 +22,8 @@ CogData = [{'parentEntId': CogParent,
   'h': 180,
   'behavior': 'stand',
   'path': None,
-  'skeleton': 0},
+  'skeleton': 0,
+  'revives': 1},
  {'parentEntId': CogParent,
   'boss': 0,
   'level': ToontownGlobals.BossbotCountryClubCogLevel,

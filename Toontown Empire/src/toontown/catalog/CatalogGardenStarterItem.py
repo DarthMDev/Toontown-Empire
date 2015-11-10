@@ -1,11 +1,11 @@
 import CatalogItem
 import time
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from otp.otpbase import OTPLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.otp.otpbase import OTPLocalizer
 from direct.interval.IntervalGlobal import *
-from toontown.toontowngui import TTDialog
-from toontown.estate import GardenTutorial
+from src.toontown.toontowngui import TTDialog
+from src.toontown.estate import GardenTutorial
 
 class CatalogGardenStarterItem(CatalogItem.CatalogItem):
 
@@ -15,7 +15,7 @@ class CatalogGardenStarterItem(CatalogItem.CatalogItem):
     def getPurchaseLimit(self):
         return 0
 
-    def reachedPurchaseLimit(self, avatar):
+    def reachedPurchaseLimit(self, avatar):            
         if self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder or self in avatar.awardMailboxContents or self in avatar.onAwardOrder or hasattr(avatar, 'gardenStarted') and avatar.getGardenStarted():
             return 1
         return 0
@@ -31,13 +31,13 @@ class CatalogGardenStarterItem(CatalogItem.CatalogItem):
 
     def recordPurchase(self, avatar, optional):
         if avatar:
-            estate = simbase.air.estateManager.toon2estate.get(avatar)
+            self.notify.debug('rental -- has avatar')
+            estate = simbase.air.estateManager._lookupEstate(avatar)
             if estate:
-                av = simbase.air.doId2do.get(avatar)
-                if av:
-                    av.b_setGardenStarted(True)
-                    print('garden saved')
-                estate.placeStarterGarden(avatar)
+                self.notify.debug('rental -- has estate')
+                estate.placeStarterGarden(avatar.doId)
+            else:
+                self.notify.warning('rental -- something not there')
         return ToontownGlobals.P_ItemAvailable
 
     def getPicture(self, avatar):

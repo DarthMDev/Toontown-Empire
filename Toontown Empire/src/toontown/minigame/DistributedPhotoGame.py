@@ -1,34 +1,34 @@
 from direct.directnotify import DirectNotifyGlobal
 from pandac.PandaModules import *
-from toontown.toonbase.ToonBaseGlobal import *
+from src.toontown.toonbase.ToonBaseGlobal import *
 from DistributedMinigame import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownTimer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownTimer
 from direct.task.Task import Task
 import math
-from toontown.toon import ToonHead
+from src.toontown.toon import ToonHead
 import PhotoGameGlobals
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
-from toontown.toonbase import TTLocalizer
-from toontown.golf import BuildGeometry
-from toontown.toon import Toon
-from toontown.toon import ToonDNA
-from toontown.dna.DNAParser import *
-from toontown.nametag import NametagGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.golf import BuildGeometry
+from src.toontown.toon import Toon
+from src.toontown.toon import ToonDNA
+from src.toontown.dna.DNAParser import *
+from src.toontown.nametag import NametagGlobals
 from direct.interval.IntervalGlobal import *
 import random
 from direct.showbase import PythonUtil
 import math
 import time
-from toontown.makeatoon import NameGenerator
-from otp.otpbase import OTPGlobals
-from toontown.battle import BattleParticles
-from toontown.minigame import PhotoGameBase
+from src.toontown.makeatoon import NameGenerator
+from src.otp.otpbase import OTPGlobals
+from src.toontown.battle import BattleParticles
+from src.toontown.minigame import PhotoGameBase
 WORLD_SCALE = 2.0
 FAR_PLANE_DIST = 600 * WORLD_SCALE
 STAGE_Z_OFFSET = 7.0
@@ -1620,7 +1620,7 @@ class DistributedPhotoGame(DistributedMinigame, PhotoGameBase.PhotoGameBase):
                 else:
                     className = animPropNode.getName()[14:-8]
                 symbols = {}
-                base.cr.importModule(symbols, 'toontown.hood', [className])
+                base.cr.importModule(symbols, 'src.toontown.hood', [className])
                 classObj = getattr(symbols[className], className)
                 animPropObj = classObj(animPropNode)
                 animPropList = self.animPropDict.setdefault(i, [])
@@ -1632,7 +1632,7 @@ class DistributedPhotoGame(DistributedMinigame, PhotoGameBase.PhotoGameBase):
                 interactivePropNode = interactivePropNodes.getPath(j)
                 className = 'GenericAnimatedProp'
                 symbols = {}
-                base.cr.importModule(symbols, 'toontown.hood', [className])
+                base.cr.importModule(symbols, 'src.toontown.hood', [className])
                 classObj = getattr(symbols[className], className)
                 interactivePropObj = classObj(interactivePropNode)
                 animPropList = self.animPropDict.get(i)

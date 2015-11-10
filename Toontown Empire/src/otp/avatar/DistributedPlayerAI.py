@@ -1,28 +1,24 @@
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.MsgTypes import CLIENTAGENT_EJECT
 
-from otp.ai.AIBaseGlobal import *
-from otp.ai.MagicWordGlobal import *
-from otp.avatar import DistributedAvatarAI
-from otp.avatar import PlayerBase
-from otp.distributed import OtpDoGlobals
-from otp.distributed.ClsendTracker import ClsendTracker
-from otp.otpbase import OTPLocalizer
+from src.otp.ai.AIBaseGlobal import *
+from src.otp.ai.MagicWordGlobal import *
+from src.otp.avatar import DistributedAvatarAI
+from src.otp.avatar import PlayerBase
+from src.otp.distributed import OtpDoGlobals
+from src.otp.otpbase import OTPLocalizer
 
+class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.PlayerBase):
 
-class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.PlayerBase, ClsendTracker):
     def __init__(self, air):
         DistributedAvatarAI.DistributedAvatarAI.__init__(self, air)
         PlayerBase.PlayerBase.__init__(self)
-        ClsendTracker.__init__(self)
         self.friendsList = []
-        self.DISLname = ''
         self.DISLid = 0
         self.adminAccess = 0
 
     def announceGenerate(self):
         DistributedAvatarAI.DistributedAvatarAI.announceGenerate(self)
-        ClsendTracker.announceGenerate(self)
         self._doPlayerEnter()
 
     def _announceArrival(self):
@@ -36,7 +32,6 @@ class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.Pl
 
     def delete(self):
         self._doPlayerExit()
-        ClsendTracker.destroy(self)
         DistributedAvatarAI.DistributedAvatarAI.delete(self)
 
     def isPlayerControlled(self):
@@ -64,16 +59,6 @@ class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.Pl
     def decrementPopulation(self):
         simbase.air.decrementPopulation()
 
-    def b_setChat(self, chatString, chatFlags):
-        self.setChat(chatString, chatFlags)
-        self.d_setChat(chatString, chatFlags)
-
-    def d_setChat(self, chatString, chatFlags):
-        self.sendUpdate('setChat', [chatString, chatFlags])
-
-    def setChat(self, chatString, chatFlags):
-        pass
-
     def d_setMaxHp(self, maxHp):
         DistributedAvatarAI.DistributedAvatarAI.d_setMaxHp(self, maxHp)
         self.air.writeServerEvent('setMaxHp', self.doId, '%s' % maxHp)
@@ -81,23 +66,11 @@ class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.Pl
     def d_setSystemMessage(self, aboutId, chatString):
         self.sendUpdate('setSystemMessage', [aboutId, chatString])
 
-    def d_setCommonChatFlags(self, flags):
-        self.sendUpdate('setCommonChatFlags', [flags])
-
-    def setCommonChatFlags(self, flags):
-        pass
-
     def d_friendsNotify(self, avId, status):
         self.sendUpdate('friendsNotify', [avId, status])
 
     def friendsNotify(self, avId, status):
         pass
-
-    def setAccountName(self, accountName):
-        self.accountName = accountName
-
-    def getAccountName(self):
-        return self.accountName
 
     def setDISLid(self, id):
         self.DISLid = id
@@ -128,15 +101,14 @@ class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.Pl
     def getAdminAccess(self):
         return self.adminAccess
 
-    def extendFriendsList(self, friendId, friendCode):
-        for i in xrange(len(self.friendsList)):
-            friendPair = self.friendsList[i]
-            if friendPair[0] == friendId:
-                self.friendsList[i] = (friendId, friendCode)
-                return
+    def isAdmin(self):
+        return self.adminAccess >= MINIMUM_MAGICWORD_ACCESS
 
-        self.friendsList.append((friendId, friendCode))
+    def extendFriendsList(self, friendId):
+        if friendId in self.friendsList:
+            return
 
+        self.friendsList.append(friendId)
 
 @magicWord(category=CATEGORY_SYSTEM_ADMINISTRATOR, types=[str])
 def system(message):
@@ -249,3 +221,34 @@ def accessLevel(accessLevel, storage='PERSISTENT', showGM=1):
     else:
         target.d_setSystemMessage(0, '%s set your access level to %d temporarily!' % (invoker.getName(), accessLevel))
         return "%s's access level has been set to %d temporarily." % (target.getName(), accessLevel)
+
+@magicWord(category=CATEGORY_COMMUNITY_MANAGER)
+def disableGM():
+    """
+    Temporarily disable GM features.
+    """
+    target = spellbook.getTarget()
+
+    if hasattr(target, 'oldAccess'):
+        return 'GM features are already disabled!\nTo enable, use ~enableGM.'
+
+    if not target.isAdmin():
+        return 'Target is not an admin!'
+
+    target.oldAccess = target.adminAccess
+    target.d_setAdminAccess(100)
+    return 'GM features are disabled!'
+
+@magicWord(category=CATEGORY_COMMUNITY_MANAGER)
+def enableGM():
+    """
+    Enable GM features.
+    """
+    target = spellbook.getTarget()
+
+    if not hasattr(target, 'oldAccess'):
+        return 'GM features are not disabled!'
+
+    target.d_setAdminAccess(target.oldAccess)
+    del target.oldAccess
+    return 'GM features are enabled!'

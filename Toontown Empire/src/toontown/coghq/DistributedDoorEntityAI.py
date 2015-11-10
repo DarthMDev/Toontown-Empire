@@ -3,7 +3,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.showbase import DirectObject
 import DistributedDoorEntityBase
 from direct.distributed import DistributedObjectAI
-from otp.level import DistributedEntityAI
+from src.otp.level import DistributedEntityAI
 from direct.fsm import FourStateAI
 from direct.fsm import ClassicFSM
 from direct.fsm import State

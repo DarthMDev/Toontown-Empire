@@ -1,9 +1,9 @@
-from otp.ai.AIBaseGlobal import *
+from src.otp.ai.AIBaseGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 import random
-from toontown.suit import SuitDNA
-from toontown.coghq import CogDisguiseGlobals
-from toontown.toonbase.ToontownBattleGlobals import getInvasionMultiplier
+from src.toontown.suit import SuitDNA
+from src.toontown.coghq import CogDisguiseGlobals
+from src.toontown.toonbase.ToontownBattleGlobals import getInvasionMultiplier
 MeritMultiplier = 0.5
 
 class PromotionManagerAI:

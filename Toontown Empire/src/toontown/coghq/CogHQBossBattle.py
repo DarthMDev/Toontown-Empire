@@ -1,16 +1,16 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from direct.directnotify import DirectNotifyGlobal
-from toontown.hood import Place
+from src.toontown.hood import Place
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.battle import BattlePlace
-from toontown.suit import Suit
-from toontown.nametag.NametagGlobals import *
-from toontown.nametag import NametagGlobals
+from src.otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownBattleGlobals
+from src.toontown.battle import BattlePlace
+from src.toontown.suit import Suit
+from src.otp.nametag.NametagConstants import *
+from src.otp.nametag import NametagGlobals
 import math
 
 class CogHQBossBattle(BattlePlace.BattlePlace):
@@ -109,7 +109,7 @@ class CogHQBossBattle(BattlePlace.BattlePlace):
         if self.bossCog:
             self.bossCog.d_avatarEnter()
         self._telemLimiter = TLGatherAllAvs('CogHQBossBattle', RotationLimitToH)
-        NametagGlobals.setWant2dNametags(True)
+        NametagGlobals.setMasterArrowsOn(1)
         base.localAvatar.inventory.setRespectInvasions(0)
         self.fsm.request(requestStatus['how'], [requestStatus])
 

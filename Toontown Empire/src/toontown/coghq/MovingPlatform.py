@@ -1,7 +1,7 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from direct.showbase import DirectObject
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 import types
 

@@ -1,10 +1,10 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.distributed.ClockDelta import *
 from direct.task.Task import Task
 from direct.interval.IntervalGlobal import *
 from TrolleyConstants import *
 from direct.gui.DirectGui import *
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
 from direct.distributed import DistributedNode
 from direct.distributed.ClockDelta import globalClockDelta
 from ChineseCheckersBoard import ChineseCheckersBoard
@@ -12,11 +12,11 @@ from GameTutorials import *
 from GameMenu import GameMenu
 from direct.fsm import ClassicFSM, State
 from direct.fsm import StateData
-from toontown.distributed import DelayDelete
-from toontown.toonbase.ToontownTimer import ToontownTimer
-from toontown.toonbase import ToontownGlobals
+from src.toontown.distributed import DelayDelete
+from src.toontown.toonbase.ToontownTimer import ToontownTimer
+from src.toontown.toonbase import ToontownGlobals
 from direct.showbase import PythonUtil
-from otp.otpbase import OTPGlobals
+from src.otp.otpbase import OTPGlobals
 
 class DistributedPicnicTable(DistributedNode.DistributedNode):
 
@@ -500,10 +500,10 @@ class DistributedPicnicTable(DistributedNode.DistributedNode):
         self.tableclothSphereNode.setCollideMask(BitMask32(0))
 
     def enterOff(self):
-        base.setCellsActive(base.leftCells + base.bottomCells, 0)
+        base.setCellsAvailable(base.leftCells + base.bottomCells, 0)
 
     def exitOff(self):
-        base.setCellsActive(base.bottomCells, 0)
+        base.setCellsAvailable(base.bottomCells, 0)
 
     def enterChooseMode(self):
         self.winTrack = Sequence(autoFinish=1)

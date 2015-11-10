@@ -1,5 +1,5 @@
 from PurchaseBase import *
-from toontown.toonbase import ToontownTimer
+from src.toontown.toonbase import ToontownTimer
 COUNT_UP_RATE = 0.15
 DELAY_BEFORE_COUNT_UP = 1.25
 DELAY_AFTER_COUNT_UP = 1.75
@@ -22,7 +22,6 @@ class ClerkPurchase(PurchaseBase):
         self.timer.reparentTo(self.frame)
         self.timer.posInTopRightCorner()
         purchaseModels.removeNode()
-        return
 
     def unload(self):
         PurchaseBase.unload(self)
@@ -36,7 +35,7 @@ class ClerkPurchase(PurchaseBase):
         self.handleDone(0)
 
     def __timerExpired(self):
-        self.handleDone(0)
+        self.handleDone(2)
 
     def enterPurchase(self):
         PurchaseBase.enterPurchase(self)

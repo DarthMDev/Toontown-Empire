@@ -1,21 +1,21 @@
-from pandac.PandaModules import *
-from toontown.toonbase.ToonBaseGlobal import *
+from panda3d.core import *
+from src.toontown.toonbase.ToonBaseGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
-from direct.showbase.PythonUtil import PriorityCallbacks
-from toontown.safezone import PublicWalk
+from src.toontown.toonbase.PythonUtil import PriorityCallbacks
+from src.toontown.safezone import PublicWalk
 import ZoneUtil
-from toontown.friends import FriendsListManager
-from toontown.toonbase import ToontownGlobals
-from toontown.toon.Toon import teleportDebug
-from toontown.estate import HouseGlobals
-from toontown.toonbase import TTLocalizer
-from otp.otpbase import OTPLocalizer
-from otp.avatar import Emote
-from otp.avatar.Avatar import teleportNotify
+from src.toontown.friends import FriendsListManager
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toon.Toon import teleportDebug
+from src.toontown.estate import HouseGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.otp.otpbase import OTPLocalizer
+from src.otp.avatar import Emote
+from src.otp.avatar.Avatar import teleportNotify
 from direct.task import Task
 import QuietZoneState
-from toontown.distributed import ToontownDistrictStats
+from src.toontown.distributed import ToontownDistrictStats
 
 class Place(StateData.StateData, FriendsListManager.FriendsListManager):
     notify = DirectNotifyGlobal.directNotify.newCategory('Place')
@@ -427,8 +427,8 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
     def doRequestLeave(self, requestStatus):
         if requestStatus.get('tutorial', 0):
             out = {'teleportIn': 'tunnelOut'}
-            requestStatus['zoneId'] = 22000
-            requestStatus['hoodId'] = 22000
+            requestStatus['zoneId'] = 2000
+            requestStatus['hoodId'] = 2000
         else:
             out = {'teleportIn': 'teleportOut',
              'tunnelIn': 'tunnelOut',
@@ -436,7 +436,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         self.fsm.request(out[requestStatus['how']], [requestStatus])
 
     def enterDoorIn(self, requestStatus):
-        NametagGlobals.setWant2dNametags(False)
+        NametagGlobals.setMasterArrowsOn(0)
         door = base.cr.doId2do.get(requestStatus['doorDoId'])
         if not door is None:
             door.readyToExit()
@@ -444,7 +444,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         base.localAvatar.startQuestMap()
 
     def exitDoorIn(self):
-        NametagGlobals.setWant2dNametags(True)
+        NametagGlobals.setMasterArrowsOn(1)
         base.localAvatar.obscureMoveFurnitureButton(-1)
 
     def enterDoorOut(self):
@@ -600,32 +600,42 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
 
     def _placeTeleportInPostZoneComplete(self, requestStatus):
         teleportDebug(requestStatus, '_placeTeleportInPostZoneComplete(%s)' % (requestStatus,))
-        NametagGlobals.setWant2dNametags(False)
+        NametagGlobals.setMasterArrowsOn(0)
         base.localAvatar.laffMeter.start()
         base.localAvatar.startQuestMap()
         base.localAvatar.reconsiderCheesyEffect()
         base.localAvatar.obscureMoveFurnitureButton(1)
         avId = requestStatus.get('avId', -1)
         if avId != -1:
-            if avId in base.cr.doId2do:
-                teleportDebug(requestStatus, 'teleport to avatar')
-                avatar = base.cr.doId2do[avId]
-                avatar.forceToTruePosition()
-                base.localAvatar.gotoNode(avatar)
-                base.localAvatar.b_teleportGreeting(avId)
-            else:
-                friend = base.cr.identifyAvatar(avId)
-                if friend == None:
-                    teleportDebug(requestStatus, 'friend not here, giving up')
-                    base.localAvatar.setSystemMessage(avId, OTPLocalizer.WhisperTargetLeftVisit % (friend.getName(),))
-                    friend.d_teleportGiveup(base.localAvatar.doId)
+            def doTeleport(avId, teleported):
+                if avId in base.cr.doId2do:
+                    teleportDebug(requestStatus, 'teleport to avatar')
+                    avatar = base.cr.doId2do[avId]
+                    avatar.forceToTruePosition()
+                    base.localAvatar.gotoNode(avatar)
+                    base.localAvatar.b_teleportGreeting(avId)
                 else:
-                    def doTeleport(task):
-                        avatar = base.cr.doId2do[friend.getDoId()]
-                        base.localAvatar.gotoNode(avatar)
-                        base.localAvatar.b_teleportGreeting(friend.getDoId())
-                        return task.done
-                    self.acceptOnce('generate-%d' % friend.getDoId(), lambda x: taskMgr.doMethodLater(1, doTeleport, uniqueName('doTeleport')))
+                    friend = base.cr.identifyAvatar(avId)
+                    if friend is not None:
+                        # The avatar might be in another zone or not generated yet.
+                        if not teleported:
+                            # Try again one more time.
+                            teleportDebug(requestStatus, 'Retrying teleport...')
+                            taskMgr.doMethodLater(0.2, doTeleport, uniqueName('doTeleport'), extraArgs=[avId, True])
+                            return
+
+                        teleportDebug(requestStatus, 'friend not here, giving up')
+                        base.localAvatar.setSystemMessage(avId, OTPLocalizer.WhisperTargetLeftVisit % (friend.getName(),))
+                        friend.d_teleportGiveup(base.localAvatar.doId)
+
+
+
+
+
+
+
+            taskMgr.doMethodLater(0.3, doTeleport, uniqueName('doTeleport'), extraArgs=[avId, False])
+
         base.transitions.irisIn()
         self.nextState = requestStatus.get('nextState', 'walk')
         base.localAvatar.attachCamera()
@@ -645,7 +655,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
     def exitTeleportIn(self):
         self.removeSetZoneCompleteCallback(self._tiToken)
         self._tiToken = None
-        NametagGlobals.setWant2dNametags(True)
+        NametagGlobals.setMasterArrowsOn(1)
         base.localAvatar.laffMeter.stop()
         base.localAvatar.obscureMoveFurnitureButton(-1)
         base.localAvatar.stopUpdateSmartCamera()

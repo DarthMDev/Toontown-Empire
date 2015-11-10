@@ -1,21 +1,21 @@
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.DirectObject import DirectObject
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownTimer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownTimer
 from direct.task import Task
-from otp.namepanel import NameTumbler
-from otp.otpbase import OTPGlobals
-from otp.otpbase import OTPLocalizer
-from toontown.fishing import FishSellGUI
-from toontown.pets import Pet, PetConstants
-from toontown.pets import PetDNA
-from toontown.pets import PetUtil
-from toontown.pets import PetDetail
-from toontown.pets import PetTraits
-from toontown.hood import ZoneUtil
+from src.otp.namepanel import NameTumbler
+from src.otp.otpbase import OTPGlobals
+from src.otp.otpbase import OTPLocalizer
+from src.toontown.fishing import FishSellGUI
+from src.toontown.pets import Pet, PetConstants
+from src.toontown.pets import PetDNA
+from src.toontown.pets import PetUtil
+from src.toontown.pets import PetDetail
+from src.toontown.pets import PetTraits
+from src.toontown.hood import ZoneUtil
 import string
 import random
 Dialog_MainMenu = 0
@@ -66,6 +66,7 @@ class PetshopGUI(DirectObject):
             self.petModel.fitAndCenterHead(0.435, forGui=1)
             self.petModel.reparentTo(self.petView)
             self.petModel.setH(225)
+            self.petModel.setScale(0.125)
             self.petModel.enterNeutralHappy()
             self.allNames = TTLocalizer.NeutralPetNames
             if gender == 0:
@@ -217,6 +218,7 @@ class PetshopGUI(DirectObject):
             self.petModel.fitAndCenterHead(0.395, forGui=1)
             self.petModel.reparentTo(self.petView)
             self.petModel.setH(130)
+            self.petModel.setScale(0.125)
             self.petModel.enterNeutralHappy()
             self.moneyDisplay = DirectLabel(parent=self, relief=None, text=str(base.localAvatar.getTotalMoney()), text_scale=0.075, text_fg=(0.95, 0.95, 0, 1), text_shadow=(0, 0, 0, 1), text_pos=(0.225, 0.33), text_font=ToontownGlobals.getSignFont())
             self.accept(localAvatar.uniqueName('moneyChange'), self.__moneyChange)
@@ -265,6 +267,7 @@ class PetshopGUI(DirectObject):
                 self.petModel.fitAndCenterHead(0.395, forGui=1)
                 self.petModel.reparentTo(self.petView)
                 self.petModel.setH(130)
+                self.petModel.setScale(0.125)
                 self.petModel.enterNeutralSad()
                 model.removeNode()
                 self.initialized = True
@@ -324,7 +327,7 @@ class PetshopGUI(DirectObject):
             self.petName = []
             self.petDesc = []
             self.petCost = []
-            for i in range(self.numPets):
+            for i in xrange(self.numPets):
                 random.seed(self.petSeeds[i])
                 zoneId = ZoneUtil.getCanonicalSafeZoneId(base.localAvatar.getZoneId())
                 name, dna, traitSeed = PetUtil.getPetInfoFromSeed(self.petSeeds[i], zoneId)
@@ -373,6 +376,7 @@ class PetshopGUI(DirectObject):
             self.petModel.fitAndCenterHead(0.57, forGui=1)
             self.petModel.reparentTo(self.petView)
             self.petModel.setH(130)
+            self.petModel.setScale(0.125)
             self.petModel.enterNeutralHappy()
             self.descLabel = DirectLabel(parent=self, pos=(-0.4, 0, 0.72), relief=None, scale=0.05, text=self.petDesc[self.curPet], text_align=TextNode.ALeft, text_wordwrap=TTLocalizer.PGUIwordwrap, text_scale=TTLocalizer.PGUIdescLabel)
             if self.petCost[self.curPet] > base.localAvatar.getTotalMoney():

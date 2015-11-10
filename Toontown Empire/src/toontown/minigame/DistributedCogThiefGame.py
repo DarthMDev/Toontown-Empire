@@ -6,18 +6,18 @@ from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.showbase import RandomNumGen
 from direct.task import Task
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownTimer
-from toontown.minigame import CogThiefGameToonSD
-from toontown.minigame.OrthoDrive import OrthoDrive
-from toontown.minigame.OrthoWalk import OrthoWalk
-from toontown.minigame import CogThiefGameGlobals
-from toontown.minigame import CogThief
-from toontown.minigame.DistributedMinigame import DistributedMinigame
-from toontown.minigame import Trajectory
-from toontown.minigame import MinigameGlobals
-from toontown.minigame import CogThiefWalk
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownTimer
+from src.toontown.minigame import CogThiefGameToonSD
+from src.toontown.minigame.OrthoDrive import OrthoDrive
+from src.toontown.minigame.OrthoWalk import OrthoWalk
+from src.toontown.minigame import CogThiefGameGlobals
+from src.toontown.minigame import CogThief
+from src.toontown.minigame.DistributedMinigame import DistributedMinigame
+from src.toontown.minigame import Trajectory
+from src.toontown.minigame import MinigameGlobals
+from src.toontown.minigame import CogThiefWalk
 CTGG = CogThiefGameGlobals
 
 class DistributedCogThiefGame(DistributedMinigame):
@@ -176,8 +176,8 @@ class DistributedCogThiefGame(DistributedMinigame):
             pos = self.cogInfo[cogIndex]['pos']
             suit.reparentTo(self.gameBoard)
             suit.setPos(pos)
-            suit.nametag.setNametag2d(None)
-            suit.nametag.setNametag3d(None)
+            suit.nametag3d.stash()
+            suit.nametag.destroy()
 
         for avId in self.avIdList:
             self.toonHitTracks[avId] = Wait(0.1)
@@ -692,8 +692,8 @@ class DistributedCogThiefGame(DistributedMinigame):
             self.toonPieTracks[avId] = pieTrack
 
     def getTossPieInterval(self, toon, x, y, z, h, p, r, power, beginFlyIval = Sequence()):
-        from toontown.toonbase import ToontownBattleGlobals
-        from toontown.battle import BattleProps
+        from src.toontown.toonbase import ToontownBattleGlobals
+        from src.toontown.battle import BattleProps
         pie = toon.getPieModel()
         pie.setScale(0.9)
         flyPie = pie.copyTo(NodePath('a'))

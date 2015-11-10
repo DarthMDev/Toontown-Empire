@@ -1,8 +1,8 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-from toontown.suit import DistributedCashbotBoss
+from src.toontown.suit import DistributedCashbotBoss
 from direct.directnotify import DirectNotifyGlobal
-from toontown.coghq import CogHQBossBattle
+from src.toontown.coghq import CogHQBossBattle
 
 class CashbotHQBossBattle(CogHQBossBattle.CogHQBossBattle):
     notify = DirectNotifyGlobal.directNotify.newCategory('CashbotHQBossBattle')

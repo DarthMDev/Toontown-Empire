@@ -3,8 +3,8 @@ from direct.gui.DirectGui import DirectFrame
 from direct.gui.DirectGui import DirectButton
 from direct.gui.DirectGui import DirectLabel
 from direct.gui import DirectGuiGlobals
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
 
 class JellybeanRewardGui(DirectFrame):
     notify = directNotify.newCategory('JellybeanRewardGui')

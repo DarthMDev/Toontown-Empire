@@ -18,9 +18,11 @@ sys.path.append(
     )
 )
 
-from direct.showbase import PythonUtil
-
 import argparse
+import gc
+
+# Panda3D 1.10.0 is 63.
+gc.disable()
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--base-channel', help='The base channel that the server may use.')
@@ -29,14 +31,14 @@ parser.add_argument('--stateserver', help="The control channel of this AI's desi
 parser.add_argument('--district-name', help="What this AI Server's district will be named.")
 parser.add_argument('--astron-ip', help="The IP address of the Astron Message Director to connect to.")
 parser.add_argument('--eventlogger-ip', help="The IP address of the Astron Event Logger to log to.")
-parser.add_argument('config', nargs='*', default=['dependencies/config/general.prc', 'dependencies/config/release/dev.prc'], help="PRC file(s) to load.")
+parser.add_argument('config', nargs='*', default=['src/dependencies/config/general.prc', 'src/dependencies/config/release/dev.prc'], help="PRC file(s) to load.")
 args = parser.parse_args()
 
 for prc in args.config:
     loadPrcFile(prc)
 
-if os.path.isfile('dependencies/config/local.prc'):
-    loadPrcFile('dependencies/config/local.prc')
+if os.path.isfile('src/dependencies/config/local.prc'):
+    loadPrcFile('src/dependencies/config/local.prc')
 
 localconfig = ''
 if args.base_channel: localconfig += 'air-base-channel %s\n' % args.base_channel
@@ -47,9 +49,9 @@ if args.astron_ip: localconfig += 'air-connect %s\n' % args.astron_ip
 if args.eventlogger_ip: localconfig += 'eventlog-host %s\n' % args.eventlogger_ip
 loadPrcFileData('Command-line', localconfig)
 
-from otp.ai.AIBaseGlobal import *
+from src.otp.ai.AIBaseGlobal import *
 
-from toontown.ai.ToontownAIRepository import ToontownAIRepository
+from src.toontown.ai.ToontownAIRepository import ToontownAIRepository
 simbase.air = ToontownAIRepository(config.GetInt('air-base-channel', 401000000),
                                    config.GetInt('air-stateserver', 4002),
                                    config.GetString('district-name', 'Devhaven'))
@@ -62,9 +64,10 @@ simbase.air.connect(host, port)
 
 try:
     run()
+    gc.enable()
 except SystemExit:
     raise
 except Exception:
-    info = PythonUtil.describeException()
+    info = describeException()
     simbase.air.writeServerEvent('ai-exception', avId=simbase.air.getAvatarIdFromSender(), accId=simbase.air.getAccountIdFromSender(), exception=info)
     raise

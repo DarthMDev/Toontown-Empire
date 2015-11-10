@@ -1,11 +1,11 @@
-from toontown.building import DistributedVPElevatorAI
-from toontown.building import FADoorCodes
-from toontown.building.DistributedBoardingPartyAI import DistributedBoardingPartyAI
-from toontown.coghq.DistributedFactoryElevatorExtAI import DistributedFactoryElevatorExtAI
-from toontown.hood import CogHQAI
-from toontown.suit import DistributedSellbotBossAI
-from toontown.suit import DistributedSuitPlannerAI
-from toontown.toonbase import ToontownGlobals
+from src.toontown.building import DistributedVPElevatorAI
+from src.toontown.building import FADoorCodes
+from src.toontown.building.DistributedBoardingPartyAI import DistributedBoardingPartyAI
+from src.toontown.coghq.DistributedFactoryElevatorExtAI import DistributedFactoryElevatorExtAI
+from src.toontown.hood import CogHQAI
+from src.toontown.suit import DistributedSellbotBossAI
+from src.toontown.suit import DistributedSuitPlannerAI
+from src.toontown.toonbase import ToontownGlobals
 
 
 class SellbotHQAI(CogHQAI.CogHQAI):
@@ -48,7 +48,7 @@ class SellbotHQAI(CogHQAI.CogHQAI):
                 self.air, self.air.factoryMgr, ToontownGlobals.SellbotFactoryInt, i)
             factoryElevator.generateWithRequired(ToontownGlobals.SellbotFactoryExt)
             self.factoryElevators.append(factoryElevator)
-      
+
         if simbase.config.GetBool('want-megacorp', True):
             factoryElevator = DistributedFactoryElevatorExtAI(
                 self.air, self.air.factoryMgr, ToontownGlobals.SellbotMegaCorpInt, 2)
@@ -56,9 +56,7 @@ class SellbotHQAI(CogHQAI.CogHQAI):
             self.factoryElevators.append(factoryElevator)
 
     def createFactoryBoardingParty(self):
-        factoryIdList = []
-        for factoryElevator in self.factoryElevators:
-            factoryIdList.append(factoryElevator.doId)
+        factoryIdList = [elevator.doId for elevator in self.factoryElevators]
         self.factoryBoardingParty = DistributedBoardingPartyAI(self.air, factoryIdList, 4)
         self.factoryBoardingParty.generateWithRequired(ToontownGlobals.SellbotFactoryExt)
 

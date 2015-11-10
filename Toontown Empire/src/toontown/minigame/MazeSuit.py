@@ -4,9 +4,9 @@ from direct.interval.LerpInterval import LerpPosInterval, LerpHprInterval
 from direct.showbase.RandomNumGen import RandomNumGen
 from pandac.PandaModules import Point3, WaitInterval
 from pandac.PandaModules import CollisionSphere, CollisionNode
-from toontown.suit import Suit
-from toontown.suit import SuitDNA
-from toontown.toonbase import ToontownGlobals
+from src.toontown.suit import Suit
+from src.toontown.suit import SuitDNA
+from src.toontown.toonbase import ToontownGlobals
 import MazeGameGlobals
 
 class MazeSuit(DirectObject):
@@ -43,8 +43,8 @@ class MazeSuit(DirectObject):
         d = SuitDNA.SuitDNA()
         d.newSuit(suitDnaName)
         self.suit.setDNA(d)
-        self.suit.nametag.setNametag2d(None)
-        self.suit.nametag.setNametag3d(None)
+        self.suit.nametag3d.stash()
+        self.suit.nametag.destroy()
         if startTile is None:
             defaultStartPos = MazeGameGlobals.SUIT_START_POSITIONS[self.serialNum]
             self.startTile = (defaultStartPos[0] * self.maze.width, defaultStartPos[1] * self.maze.height)

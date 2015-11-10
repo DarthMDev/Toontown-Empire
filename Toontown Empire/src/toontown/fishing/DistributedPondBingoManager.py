@@ -3,20 +3,20 @@ from direct.distributed.ClockDelta import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import FSM
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.task import Task
-from toontown.fishing import BingoGlobals
-from toontown.fishing import BingoCardGui
-from toontown.fishing import FishGlobals
-from toontown.fishing import NormalBingo
-from toontown.fishing import FourCornerBingo
-from toontown.fishing import DiagonalBingo
-from toontown.fishing import ThreewayBingo
-from toontown.fishing import BlockoutBingo
+from src.toontown.fishing import BingoGlobals
+from src.toontown.fishing import BingoCardGui
+from src.toontown.fishing import FishGlobals
+from src.toontown.fishing import NormalBingo
+from src.toontown.fishing import FourCornerBingo
+from src.toontown.fishing import DiagonalBingo
+from src.toontown.fishing import ThreewayBingo
+from src.toontown.fishing import BlockoutBingo
 from direct.showbase import RandomNumGen
-from toontown.toonbase import ToontownTimer
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownTimer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
 import time
 
 class DistributedPondBingoManager(DistributedObject.DistributedObject, FSM.FSM):
@@ -154,7 +154,7 @@ class DistributedPondBingoManager(DistributedObject.DistributedObject, FSM.FSM):
             self.setPond(self.cr.doId2do[pondId])
         else:
             self.acceptOnce('generate-%d' % pondId, self.setPond)
-            
+
     def setPond(self, pond):
         self.pond = pond
         self.pond.setPondBingoManager(self)

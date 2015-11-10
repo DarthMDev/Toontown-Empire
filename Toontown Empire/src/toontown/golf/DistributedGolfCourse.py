@@ -3,18 +3,18 @@ from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from direct.task.Task import Task
 from direct.showbase import PythonUtil
-from toontown.distributed import DelayDelete
-from toontown.distributed.DelayDeletable import DelayDeletable
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from pandac.PandaModules import *
+from src.toontown.distributed import DelayDelete
+from src.toontown.distributed.DelayDeletable import DelayDeletable
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from panda3d.core import *
 from direct.gui.DirectGui import *
 from direct.distributed.ClockDelta import *
 from direct.fsm.FSM import FSM
-from toontown.golf import GolfGlobals
-from toontown.golf import GolfScoreBoard
-from toontown.golf import GolfRewardDialog
-from toontown.toon import ToonHeadFrame
+from src.toontown.golf import GolfGlobals
+from src.toontown.golf import GolfScoreBoard
+from src.toontown.golf import GolfRewardDialog
+from src.toontown.toon import ToonHeadFrame
 
 class DistributedGolfCourse(DistributedObject.DistributedObject, FSM, DelayDeletable):
     notify = directNotify.newCategory('DistributedGolfCourse')
@@ -157,7 +157,7 @@ class DistributedGolfCourse(DistributedObject.DistributedObject, FSM, DelayDelet
                 else:
                     color += 1
 
-            base.setCellsActive(base.leftCells, 0)
+            base.setCellsAvailable(base.leftCells, 0)
 
         else:
             self.toonPanels = None
@@ -201,7 +201,7 @@ class DistributedGolfCourse(DistributedObject.DistributedObject, FSM, DelayDelet
             else:
                 self.notify.warning('GOLF COURSE: Attempting to clean up twice')
 
-            base.setCellsActive(base.leftCells, 1)
+            base.setCellsAvailable(base.leftCells, 1)
 
     def onstage(self):
         self.notify.debug('GOLF COURSE: onstage')

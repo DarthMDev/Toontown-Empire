@@ -967,6 +967,10 @@ group "daisysGarden" [
     title [ "Clothing Shop" ]
     pos [ 85 40 0 ]
     nhpr [ -105 0 0 ]
+    door [
+     code [ "door_double_clothesshop_ur" ]
+     color [ 1 0.55 0.65 1 ]
+    ]
     sign [
      baseline [
       code [ "mickey" ]
@@ -1017,111 +1021,117 @@ group "daisysGarden" [
       ]
      ]
     ]
-    door [
-     code [ "door_double_clothesshop_ur" ]
-     color [ 1 0.55 0.65 1 ]
-    ]
    ]
    prop "linktunnel_dg_5301_DNARoot" [
     code [ "prop_safe_zone_tunnel" ]
-    pos [ -60.12 -94.82 -6.63 ]
+    pos [  -60.12 -94.82 -6.63]
     nhpr [ 0 0 0 ]
     sign [
-     code [ "tunnel_sign_green" ]
+     code [ "sign_cogHQ" ]
      pos [ 0 0 0.53 ]
-     scale [ 1.39066 1 1.61989 ]
+     scale [ 1.6 1 1.2 ]
      baseline [
-      code [ "mickey" ]
-      color [ 1 1 0 1 ]
-      pos [ -0.17 0 -0.62297 ]
-      scale [ 1.87057 1 1.51598 ]
-      width [ 34.4253 ]
-      height [ 34.4253 ]
+      code [ "humanist" ]
+      color [ 1 0 0 1 ]
+      pos [ -0.17 0 0.32 ]
+      scale [ 2 1 2.2  ]
+      wiggle [ 1.5802 ]
+      stomp [ 0.050618 ]
       flags [ "d" ]
       text [
-       letters [ "O" ]
-      ]
-      text [
-       letters [ "A" ]
-      ]
-      text [
-       letters [ "K" ]
-      ]
-      text [
-       letters [ " " ]
-      ]
-      text [
-       letters [ "S" ]
-      ]
-      text [
-       letters [ "T" ]
-      ]
-      text [
-       letters [ "R" ]
-      ]
-      text [
-       letters [ "E" ]
-      ]
-      text [
-       letters [ "E" ]
-      ]
-      text [
-       letters [ "T" ]
-      ]
-     ]
-     baseline [
-      code [ "mickey" ]
-      color [ 1 1 0 1 ]
-      pos [ 0 0 -1.73655 ]
-      scale [ 0.95104 1 0.902303 ]
-      width [ 35.468 ]
-      height [ 35.468 ]
-      flags [ "d" ]
-      text [
-       letters [ "D" ]
-      ]
-      text [
-       letters [ "A" ]
-      ]
-      text [
-       letters [ "I" ]
-      ]
-      text [
-       letters [ "S" ]
-      ]
-      text [
-       letters [ "Y" ]
-      ]
-      text [
-       letters [ " " ]
-      ]
-      text [
-       letters [ "G" ]
+        letters [ "W" ]
       ]
       text [
        letters [ "A" ]
       ]
       text [
        letters [ "R" ]
-      ]
-      text [
-       letters [ "D" ]
-      ]
-      text [
-       letters [ "E" ]
       ]
       text [
        letters [ "N" ]
       ]
       text [
-       letters [ "S" ]
+       letters [ "I" ]
+      ]
+      text [
+       letters [ "N" ]
+      ]
+      text [
+       letters [ "G" ]
+      ]
+      text [
+       letters [ "!" ]
+      ]
+      text [
+       letters [ "!" ]
       ]
      ]
      baseline [
-      pos [ 0 0 1.706 ]
-      scale [ 2.34951 1 1.88988 ]
-      graphic [
-       code [ "daisySZ" ]
+      code [ "suit" ]
+      pos [ 0 0 -1.47 ]
+      scale [ 0.8 1 1.2 ]
+      kern [ 0.052004 ]
+      wiggle [ 0.73348 ]
+      stomp [ 0.024927 ]
+      width [ 236.742 ]
+      height [ 236.742 ]
+      flags [ "d" ]
+      text [
+       letters [ "T" ]
+      ]
+      text [
+       letters [ "O" ]
+      ]
+      text [
+       letters [ " " ]
+      ]
+      text [
+       letters [ "C" ]
+      ]
+      text [
+       letters [ "O" ]
+      ]
+      text [
+       letters [ "G" ]
+      ]
+      text [
+       letters [ " " ]
+      ]
+      text [
+       letters [ "H" ]
+      ]
+      text [
+       letters [ "E" ]
+      ]
+      text [
+       letters [ "A" ]
+      ]
+      text [
+       letters [ "D" ]
+      ]
+      text [
+       letters [ "Q" ]
+      ]
+      text [
+       letters [ "U" ]
+      ]
+      text [
+       letters [ "A" ]
+      ]
+      text [
+       letters [ "R" ]
+      ]
+      text [
+       letters [ "T" ]
+      ]
+      text [
+       letters [ "E" ]
+      ]
+      text [
+       letters [ "R" ]
+      ]
+      text [
+       letters [ "S" ]
       ]
      ]
     ]
@@ -1249,19 +1259,9 @@ group "daisysGarden" [
      text [
       letters [ "p" ]
      ]
+	 ]
     ]
    ]
-  ]
- prop "neighborhood_sign_sellBotHQ_DNARoot" [
-  code [ "neighborhood_sign_sellBotHQ" ]
-  pos [ -12.0904 1.48476 0 ]
-  nhpr [ 0 0 0 ]
- ]
- prop "neighborhood_sign_sellBotHQ_DNARoot" [
-  code [ "neighborhood_sign_sellBotHQ" ]
-  pos [ 11.7463 1.19921 0 ]
-  nhpr [ 180 0 0 ]
- ]
  prop "daisys_garden_ext_DNARoot" [
   code [ "daisys_garden_ext" ]
   pos [ -49.7454 233.211 9.99 ]

@@ -2,11 +2,11 @@
 distribution dev
 
 # Art assets:
-model-path ../resources/
+model-path resources/
 
 # Server:
-server-version TTE-1.0.0-Alpha!
-min-access-level 700
+server-version tte-dev
+min-access-level 0
 accountdb-type developer
 shard-low-pop 50
 shard-mid-pop 100
@@ -16,15 +16,12 @@ want-rpc-server #f
 rpc-server-endpoint http://localhost:8080/
 
 # DClass file:
-dc-file dependencies/astron/dclass/empire.dc
-
-# News in-game
-want-news-tab #t
-want-news-page #t
+dc-file src/dependencies/astron/dclass/empire.dc
 
 # Core features:
 want-pets #t
-want-parties #t
+#Parties work if you revert the commit called "district reset on estate parties no longer load" but then estates dont work.
+want-parties #f
 want-cogdominiums #t
 want-lawbot-cogdo #t
 want-anim-props #t
@@ -33,16 +30,15 @@ want-find-four #t
 want-chinese-checkers #t
 want-checkers #t
 want-house-types #t
+want-gifting #t
 
 # Chat:
 want-whitelist #t
 
-# Optional:
-want-jor-el-cam #f
-
 # Developer options:
 show-population #t
 want-instant-parties #t
-cogdo-pop-factor 1.5
-cogdo-ratio 0.5
+want-instant-delivery #t
+cogdo-pop-factor 1.0
+cogdo-ratio 1.0
 default-directnotify-level info

@@ -1,14 +1,14 @@
 from direct.showbase.ShowBaseGlobal import *
-from toontown.toonbase.ToonBaseGlobal import *
+from src.toontown.toonbase.ToonBaseGlobal import *
 from direct.interval.IntervalGlobal import *
-from toontown.toonbase import ToontownTimer
+from src.toontown.toonbase import ToontownTimer
 from DistributedMinigame import *
 from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.task import Task
 from direct.actor import Actor
-from toontown.toon import LaffMeter
+from src.toontown.toon import LaffMeter
 from direct.distributed import DistributedSmoothNode
 import ArrowKeys
 import Ring
@@ -22,9 +22,9 @@ import DivingFishSpawn
 import DivingTreasure
 import math
 import TreasureScorePanel
-from otp.distributed.TelemetryLimiter import TelemetryLimiter, TLGatherAllAvs
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from src.otp.distributed.TelemetryLimiter import TelemetryLimiter, TLGatherAllAvs
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
 
 class DivingGameRotationLimiter(TelemetryLimiter):
 
@@ -295,7 +295,7 @@ class DistributedDivingGame(DistributedMinigame):
             self.toonSDs[avId].exit()
 
         base.camLens.setFar(ToontownGlobals.DefaultCameraFar)
-        base.camLens.setMinFov(ToontownGlobals.DefaultCameraFov/(4./3.))
+        base.camLens.setMinFov(settings['fov']/(4./3.))
         base.setBackgroundColor(ToontownGlobals.DefaultBackgroundColor)
         self.arrowKeys.destroy()
         del self.arrowKeys

@@ -1,6 +1,6 @@
-from toontown.town.TutorialTownLoader import TutorialTownLoader
-from toontown.toonbase import ToontownGlobals
-from toontown.hood.ToonHood import ToonHood
+from src.toontown.town.TutorialTownLoader import TutorialTownLoader
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.hood.ToonHood import ToonHood
 
 
 class TutorialHood(ToonHood):

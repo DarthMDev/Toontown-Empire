@@ -2,15 +2,15 @@ import math
 from pandac.PandaModules import CollisionSphere, CollisionNode, Vec3, Point3, deg2Rad
 from direct.interval.IntervalGlobal import Sequence, Func, Parallel, ActorInterval, Wait, Parallel, LerpHprInterval, ProjectileInterval, LerpPosInterval
 from direct.directnotify import DirectNotifyGlobal
-from toontown.building import ElevatorConstants
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.safezone import DistributedGolfKart
-from toontown.building import DistributedElevatorExt
-from toontown.building import ElevatorConstants
-from toontown.distributed import DelayDelete
+from src.toontown.building import ElevatorConstants
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.safezone import DistributedGolfKart
+from src.toontown.building import DistributedElevatorExt
+from src.toontown.building import ElevatorConstants
+from src.toontown.distributed import DelayDelete
 from direct.showbase import PythonUtil
-from toontown.building import BoardingGroupShow
+from src.toontown.building import BoardingGroupShow
 
 class DistributedCogKart(DistributedElevatorExt.DistributedElevatorExt):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCogKart')
@@ -152,7 +152,7 @@ class DistributedCogKart(DistributedElevatorExt.DistributedElevatorExt):
     def setCountryClubInteriorZoneForce(self, zoneId):
         place = self.cr.playGame.getPlace()
         if place:
-            place.fsm.request('elevator', [self, 1])
+            place.fsm.request('elevator', [self])
             hoodId = self.cr.playGame.hood.hoodId
             countryClubId = self.countryClubId
             if bboard.has('countryClubIdOverride'):
@@ -359,8 +359,6 @@ class DistributedCogKart(DistributedElevatorExt.DistributedElevatorExt):
                 base.localAvatar.elevatorNotifier.showMe(TTLocalizer.KartMinLaff % self.minLaff)
             elif reason == ElevatorConstants.REJECT_PROMOTION:
                 base.localAvatar.elevatorNotifier.showMe(TTLocalizer.BossElevatorRejectMessage)
-            elif reason == ElevatorConstants.REJECT_NOT_YET_AVAILABLE:
-                base.localAvatar.elevatorNotifier.showMe(TTLocalizer.NotYetAvailable)
         doneStatus = {'where': 'reject'}
         elevator = self.getPlaceElevator()
         if elevator:

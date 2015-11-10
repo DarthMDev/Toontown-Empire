@@ -18,8 +18,8 @@ import DistributedTargetGameAI
 import DistributedTugOfWarGameAI
 import DistributedTwoDGameAI
 import DistributedVineGameAI
-from otp.ai.MagicWordGlobal import *
-from toontown.toonbase import ToontownGlobals
+from src.otp.ai.MagicWordGlobal import *
+from src.toontown.toonbase import ToontownGlobals
 
 
 simbase.forcedMinigameId = simbase.config.GetInt('force-minigame', 0)

@@ -1,21 +1,19 @@
-from pandac.PandaModules import *
-from toontown.toonbase.ToontownGlobals import *
+from panda3d.core import *
+from src.toontown.toonbase.ToontownGlobals import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 import random
-from otp.level import DistributedLevel
+from src.otp.level import DistributedLevel
 from direct.directnotify import DirectNotifyGlobal
 import FactoryBase
 import FactoryEntityCreator
 import FactorySpecs
-from otp.level import LevelSpec
-from otp.level import LevelConstants
-from toontown.toonbase import TTLocalizer
-from toontown.coghq import FactoryCameraViews
-from direct.controls.ControlManager import CollisionHandlerRayStart
-from otp.ai.MagicWordGlobal import *
-from toontown.nametag.NametagGlobals import *
-from toontown.chat.ChatGlobals import CFThought, CFTimeout
+from src.otp.level import LevelSpec
+from src.otp.level import LevelConstants
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.coghq import FactoryCameraViews
+from src.otp.nametag.NametagConstants import *
+from src.otp.ai.MagicWordGlobal import *
 
 class DistributedFactory(DistributedLevel.DistributedLevel, FactoryBase.FactoryBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFactory')
@@ -29,7 +27,6 @@ class DistributedFactory(DistributedLevel.DistributedLevel, FactoryBase.FactoryB
         self.joiningReserves = []
         self.suitsInitialized = 0
         self.goonClipPlanes = {}
-        base.localAvatar.physControls.setCollisionRayHeight(10.0)
 
     def createEntityCreator(self):
         return FactoryEntityCreator.FactoryEntityCreator(level=self)
@@ -47,7 +44,6 @@ class DistributedFactory(DistributedLevel.DistributedLevel, FactoryBase.FactoryB
         self.factoryViews.delete()
         del self.factoryViews
         self.ignore('SOSPanelEnter')
-        base.localAvatar.physControls.setCollisionRayHeight(CollisionHandlerRayStart)
 
     def setFactoryId(self, id):
         FactoryBase.FactoryBase.setFactoryId(self, id)
@@ -81,7 +77,7 @@ class DistributedFactory(DistributedLevel.DistributedLevel, FactoryBase.FactoryB
 
         self.acceptOnce(firstSetZoneDoneEvent, handleFirstSetZoneDone)
         modelCount = len(levelSpec.getAllEntIds())
-        loader.beginBulkLoad('factory', TTLocalizer.HeadingToFactoryTitle % TTLocalizer.FactoryNames[self.factoryId], modelCount, 1, TTLocalizer.TIP_COGHQ)
+        loader.beginBulkLoad('factory', TTLocalizer.HeadingToFactoryTitle % TTLocalizer.FactoryNames[self.factoryId], modelCount, 1, TTLocalizer.TIP_COGHQ, self.factoryId)
         DistributedLevel.DistributedLevel.privGotSpec(self, levelSpec)
         loader.endBulkLoad('factory')
 

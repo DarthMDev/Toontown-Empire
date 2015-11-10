@@ -1,26 +1,26 @@
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
-from toontown.building.ElevatorConstants import *
-from toontown.building.ElevatorUtils import *
-from toontown.building import DistributedElevatorExt
-from toontown.building import DistributedElevator
-from toontown.toonbase import ToontownGlobals
+from src.toontown.building.ElevatorConstants import *
+from src.toontown.building.ElevatorUtils import *
+from src.toontown.building import DistributedElevatorExt
+from src.toontown.building import DistributedElevator
+from src.toontown.toonbase import ToontownGlobals
 from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.gui import DirectGui
-from toontown.hood import ZoneUtil
-from toontown.toonbase import TTLocalizer
-from toontown.toontowngui import TTDialog
+from src.toontown.hood import ZoneUtil
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toontowngui import TTDialog
 from direct.distributed import DistributedObject
 from direct.distributed import DistributedSmoothNode
 from direct.actor import Actor
 from direct.fsm.FSM import FSM
 from direct.showbase import PythonUtil
-from toontown.toonbase.ToontownTimer import ToontownTimer
-from toontown.racing.Kart import Kart
-from toontown.racing.KartShopGlobals import KartGlobals
-from toontown.racing import RaceGlobals
-from toontown.toontowngui.TTDialog import TTGlobalDialog
+from src.toontown.toonbase.ToontownTimer import ToontownTimer
+from src.toontown.racing.Kart import Kart
+from src.toontown.racing.KartShopGlobals import KartGlobals
+from src.toontown.racing import RaceGlobals
+from src.toontown.toontowngui.TTDialog import TTGlobalDialog
 
 class DistributedStartingBlock(DistributedObject.DistributedObject, FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedStartingBlock')
@@ -115,7 +115,7 @@ class DistributedStartingBlock(DistributedObject.DistributedObject, FSM):
             self.setPad(self.cr.doId2do[padDoId])
         else:
             self.acceptOnce('generate-%d' % padDoId, self.setPad)
-        
+
     def setPad(self, pad):
         self.kartPad = pad
         self.kartPad.addStartingBlock(self)

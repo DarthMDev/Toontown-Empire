@@ -1,18 +1,17 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.task.Task import Task
-from toontown.toonbase.ToontownGlobals import *
+from src.toontown.toonbase.ToontownGlobals import *
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
 from direct.showbase import DirectObject
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import TTLocalizer
-from toontown.toon import ToonTeleportPanel
-from toontown.suit import Suit
-from toontown.pets import Pet
-from otp.otpbase import OTPLocalizer
-from otp.otpbase import OTPGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toon import ToonTeleportPanel
+from src.toontown.suit import Suit
+from src.toontown.pets import Pet
+from src.otp.otpbase import OTPLocalizer
+from src.otp.otpbase import OTPGlobals
 globalFriendInviter = None
 
 def showFriendInviter(avId, avName, avDisableName):
@@ -52,7 +51,6 @@ class FriendInviter(DirectFrame):
         self.avDisableName = avDisableName
         self.fsm = ClassicFSM.ClassicFSM('FriendInviter', [State.State('off', self.enterOff, self.exitOff),
          State.State('getNewFriend', self.enterGetNewFriend, self.exitGetNewFriend),
-         State.State('begin', self.enterBegin, self.exitBegin),
          State.State('check', self.enterCheck, self.exitCheck),
          State.State('tooMany', self.enterTooMany, self.exitTooMany),
          State.State('checkAvailability', self.enterCheckAvailability, self.exitCheckAvailability),
@@ -74,7 +72,7 @@ class FriendInviter(DirectFrame):
          State.State('down', self.enterDown, self.exitDown),
          State.State('cancel', self.enterCancel, self.exitCancel)], 'off', 'off')
         self.context = None
-        from toontown.toon import ToonAvatarDetailPanel
+        from src.toontown.toon import ToonAvatarDetailPanel
         ToonTeleportPanel.hideTeleportPanel()
         ToonAvatarDetailPanel.hideAvatarDetail()
         buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
@@ -89,17 +87,13 @@ class FriendInviter(DirectFrame):
         self.bYes.hide()
         self.bNo = DirectButton(self, image=(buttons.find('**/CloseBtn_UP'), buttons.find('**/CloseBtn_DN'), buttons.find('**/CloseBtn_Rllvr')), relief=None, text=OTPLocalizer.FriendInviterNo, text_scale=0.05, text_pos=(0.0, -0.1), pos=(0.15, 0.0, -0.1), command=self.__handleNo)
         self.bNo.hide()
-        self.bToon = DirectButton(self, image=(buttons.find('**/ChtBx_OKBtn_UP'), buttons.find('**/ChtBx_OKBtn_DN'), buttons.find('**/ChtBx_OKBtn_Rllvr')), relief=None, text=TTLocalizer.FriendInviterToon, text_scale=0.05, text_pos=(0.0, -0.1), pos=(-0.35, 0.0, -0.05), command=self.__handleToon)
-        toonText = DirectLabel(parent=self, relief=None, pos=Vec3(0.35, 0, -0.2), text='Hello niggers', text_fg=(0, 0, 0, 1), text_pos=(0, 0), text_scale=0.045, text_align=TextNode.ACenter)
-        toonText.reparentTo(self.bToon.stateNodePath[2])
-        self.bToon.hide()
         buttons.removeNode()
         gui.removeNode()
         self.fsm.enterInitialState()
         if self.avId == None:
             self.fsm.request('getNewFriend')
         else:
-            self.fsm.request('begin')
+            self.fsm.request('check')
         return
 
     def cleanup(self):
@@ -109,10 +103,10 @@ class FriendInviter(DirectFrame):
 
     def getName(self):
         name = self.toonName
-        
+
         if name == None:
             name = TTLocalizer.FriendInviterThatToon
-        
+
         return name
 
     def enterOff(self):
@@ -134,22 +128,7 @@ class FriendInviter(DirectFrame):
         self.avId = avatar.doId
         self.toonName = avatar.getName()
         self.avDisableName = avatar.uniqueName('disable')
-        self.fsm.request('begin')
-
-    def enterBegin(self):
-        myId = base.localAvatar.doId
-        self['text'] = TTLocalizer.FriendInviterBegin
-        self.bCancel.setPos(0.35, 0.0, -0.05)
-        self.bCancel.show()
-        self.bToon.show()
-        self.__handleToon()
-        self.accept(self.avDisableName, self.__handleDisableAvatar)
-
-    def exitBegin(self):
-        self.ignore(self.avDisableName)
-        self.bToon.hide()
-        self.bCancel.setPos(0.0, 0.0, -0.1)
-        self.bCancel.hide()
+        self.fsm.request('check')
 
     def enterCheck(self):
         myId = base.localAvatar.doId
@@ -396,12 +375,6 @@ class FriendInviter(DirectFrame):
     def __handleYes(self):
         if self.fsm.getCurrentState().getName() == 'endFriendship':
             self.fsm.request('friendsNoMore')
-        else:
-            unloadFriendInviter()
-
-    def __handleToon(self):
-        if self.fsm.getCurrentState().getName() == 'begin':
-            self.fsm.request('check')
         else:
             unloadFriendInviter()
 

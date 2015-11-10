@@ -95,18 +95,6 @@ hood_model "phase_6/models/char/tt_r_ara_dod_mailbox" [
 	store_node [ "interactive_prop" "interactive_prop_phase_6_models_char__dod_mailbox" ""]
 	]
 
-hood_model "phase_6/models/char/tt_r_ara_dod_mailbox" [
-	store_node [ "anim_prop" "animated_prop_MailboxZeroAnimatedProp_phase_6_models_char__dod_mailbox" ""]
-	]
-
-hood_model "phase_6/models/char/tt_r_ara_dod_mailbox" [
-	store_node [ "anim_prop" "animated_prop_MailboxOneAnimatedProp_phase_6_models_char__dod_mailbox" ""]
-	]
-
-hood_model "phase_6/models/char/tt_r_ara_dod_mailbox" [
-	store_node [ "anim_prop" "animated_prop_MailboxTwoAnimatedProp_phase_6_models_char__dod_mailbox" ""]
-	]
-
 hood_model "phase_6/models/char/tt_r_ara_dod_trashcan" [
 	store_node [ "anim_prop" "animated_prop_generic_phase_6_models_char__dod_trashcan" ""]
 	]

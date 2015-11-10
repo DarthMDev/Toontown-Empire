@@ -10,13 +10,15 @@ from direct.directnotify.DirectNotifyGlobal import *
 from direct.showbase import ExceptionVarDump
 from direct.showbase.PythonUtil import *
 from direct.showbase.MessengerGlobal import messenger
-import signal
 import types
-import time
 import random
-import string
 
-from pandac.PandaModules import *
+try:
+    import signal
+except ImportError:
+    signal = None
+
+from panda3d.core import *
 
 def print_exc_plus():
     """
@@ -114,7 +116,7 @@ class TaskManager:
 
         self._frameProfileQueue = Queue()
 
-        # this will be set when it's safe to import StateVar 
+        # this will be set when it's safe to import StateVar
         self._profileFrames = None
         self._frameProfiler = None
         self._profileTasks = None
@@ -136,6 +138,7 @@ class TaskManager:
 
     def destroy(self):
         # This should be safe to call multiple times.
+        self.running = False
         self.notify.info("TaskManager.destroy()")
         self.destroyed = True
         self._frameProfileQueue.clear()
@@ -148,7 +151,8 @@ class TaskManager:
     def invokeDefaultHandler(self, signalNumber, stackFrame):
         print '*** allowing mid-frame keyboard interrupt.'
         # Restore default interrupt handler
-        signal.signal(signal.SIGINT, signal.default_int_handler)
+        if signal:
+            signal.signal(signal.SIGINT, signal.default_int_handler)
         # and invoke it
         raise KeyboardInterrupt
 
@@ -230,7 +234,7 @@ class TaskManager:
         in proportion to their time used and to their priority value.
         See AsyncTaskManager.setTimeslicePriority() for more.
         """
-        
+
         chain = self.mgr.makeTaskChain(chainName)
         if numThreads is not None:
             chain.setNumThreads(numThreads)
@@ -248,7 +252,7 @@ class TaskManager:
     def hasTaskNamed(self, taskName):
         """Returns true if there is at least one task, active or
         sleeping, with the indicated name. """
-        
+
         return bool(self.mgr.findTask(taskName))
 
     def getTasksNamed(self, taskName):
@@ -260,7 +264,7 @@ class TaskManager:
         """Returns a list of all tasks, active or sleeping, with a
         name that matches the pattern, which can include standard
         shell globbing characters like *, ?, and []. """
-        
+
         return self.__makeTaskList(self.mgr.findTasksMatching(GlobPattern(taskPattern)))
 
     def getAllTasks(self):
@@ -297,7 +301,7 @@ class TaskManager:
         wish to specify a task that will run in the next frame, use a
         delayTime of 0.
         """
-        
+
         if delayTime < 0:
             assert self.notify.warning('doMethodLater: added task: %s with negative delay: %s' % (name, delayTime))
 
@@ -309,7 +313,7 @@ class TaskManager:
     def add(self, funcOrTask, name = None, sort = None, extraArgs = None,
             priority = None, uponDeath = None, appendTask = False,
             taskChain = None, owner = None):
-        
+
         """
         Add a new task to the taskMgr.  The task will begin executing
         immediately, or next frame if its sort value has already
@@ -362,7 +366,7 @@ class TaskManager:
         added, or the original Task object that was passed in.
 
         """
-        
+
         task = self.__setupTask(funcOrTask, name, priority, sort, extraArgs, taskChain, appendTask, owner, uponDeath)
         self.mgr.add(task)
         return task
@@ -411,7 +415,7 @@ class TaskManager:
             task.setUponDeath(uponDeath)
 
         return task
-        
+
     def remove(self, taskOrName):
         """Removes a task from the task manager.  The task is stopped,
         almost as if it had returned task.done.  (But if the task is
@@ -420,7 +424,7 @@ class TaskManager:
         Task object, or the name of a task.  If you specify a name,
         all tasks with the indicated name are removed.  Returns the
         number of tasks removed. """
-        
+
         if isinstance(taskOrName, types.StringTypes):
             tasks = self.mgr.findTasks(taskOrName)
             return self.mgr.remove(tasks)
@@ -453,7 +457,8 @@ class TaskManager:
         # after task list processing is complete.
         self.fKeyboardInterrupt = 0
         self.interruptCount = 0
-        signal.signal(signal.SIGINT, self.keyboardInterruptHandler)
+        if signal:
+            signal.signal(signal.SIGINT, self.keyboardInterruptHandler)
 
         startFrameTime = self.globalClock.getRealTime()
 
@@ -462,16 +467,17 @@ class TaskManager:
         # This is the spot for an internal yield function
         nextTaskTime = self.mgr.getNextWakeTime()
         self.doYield(startFrameTime, nextTaskTime)
-        
+
         # Restore default interrupt handler
-        signal.signal(signal.SIGINT, signal.default_int_handler)
+        if signal:
+            signal.signal(signal.SIGINT, signal.default_int_handler)
         if self.fKeyboardInterrupt:
             raise KeyboardInterrupt
 
     def run(self):
         """Starts the task manager running.  Does not return until an
         exception is encountered (including KeyboardInterrupt). """
-        
+
         # Set the clock to have last frame's time in case we were
         # Paused at the prompt for a long time
         t = self.globalClock.getFrameTime()
@@ -553,7 +559,7 @@ class TaskManager:
     def __tryReplaceTaskMethod(self, task, oldMethod, newFunction):
         if not isinstance(task, PythonTask):
             return 0
-        
+
         method = task.getFunction()
         if (type(method) == types.MethodType):
             function = method.im_func
@@ -729,10 +735,10 @@ class TaskManager:
         delta = minFinTime - self.globalClock.getRealTime()
         while(delta > 0.002):
             print ' sleep %s'% (delta)
-            time.sleep(delta)           
+            time.sleep(delta)
             delta = minFinTime - self.globalClock.getRealTime()
     """
-    
+
     if __debug__:
         # to catch memory leaks during the tests at the bottom of the file
         def _startTrackingMemLeaks(self):

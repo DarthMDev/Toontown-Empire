@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 QuietZone = 1
 UberZone = 2
 WallBitmask = BitMask32(1)
@@ -10,17 +10,14 @@ SafetyGateBitmask = BitMask32(1024)
 GhostBitmask = BitMask32(2048)
 PathFindingBitmask = BitMask32.bit(29)
 PickerBitmask = BitMask32(4096)
-OriginalCameraFov = 52.0
 DefaultCameraFov = 52.0
+MaxCameraFov = 120.0
 DefaultCameraFar = 800.0
 DefaultCameraNear = 1.0
 AICollisionPriority = 10
 AICollMovePriority = 8
-MaxFriends = 200
+MaxFriends = 10000
 MaxBackCatalog = 48
-FriendChat = 1
-CommonChat = 1
-SuperChat = 2
 MaxCustomMessages = 25
 SPInvalid = 0
 SPHidden = 1
@@ -42,6 +39,9 @@ CEPumpkin = 12
 CEBigWhite = 13
 CESnowMan = 14
 CEGreenToon = 15
+CETinyToon = 16
+CEGiantToon = 17
+CEBeanToon = 109
 CEGhost = 'g'
 CEName2Id = {
     'normal': CENormal,
@@ -59,10 +59,16 @@ CEName2Id = {
     'pumpkin': CEPumpkin,
     'bigwhite': CEBigWhite,
     'snowman': CESnowMan,
-    'greentoon': CEGreenToon
+    'greentoon': CEGreenToon,
+    'tinytoon': CETinyToon,
+    'gianttoon': CEGiantToon,
+    'beantoon': CEBeanToon
 }
-BigToonScale = 1.5
-SmallToonScale = 0.5
+BeanToonScale = 2.9
+GiantToonScale = 2.1
+BigToonScale = 1.4
+SmallToonScale = 0.4
+TinyToonScale = 0.2
 DisconnectNone = 0
 DisconnectBookExit = 1
 DisconnectCloseWindow = 2
@@ -150,14 +156,14 @@ def setNametagFont(index, path):
 def getDialogClass():
     global DialogClass
     if DialogClass == None:
-        from otp.otpgui.OTPDialog import OTPDialog
+        from src.otp.otpgui.OTPDialog import OTPDialog
         DialogClass = OTPDialog
     return DialogClass
 
 def getGlobalDialogClass():
     global GlobalDialogClass
     if DialogClass == None:
-        from otp.otpgui.OTPDialog import GlobalDialog
+        from src.otp.otpgui.OTPDialog import GlobalDialog
         GlobalDialogClass = GlobalDialog
     return GlobalDialogClass
 
@@ -301,9 +307,3 @@ AvatarFriendRejectInviteEvent = 'avatarFriendRejectInviteEvent'
 AvatarFriendRetractInviteEvent = 'avatarFriendRetractInviteEvent'
 AvatarFriendRejectRemoveEvent = 'avatarFriendRejectRemoveEvent'
 WhisperIncomingEvent = 'whisperIncomingEvent'
-ChatFeedback_PassedBlacklist = 32
-ChatFeedback_Whitelist = 64
-ChatFeedback_OpenChat = 128
-AvatarPendingCreate = -1
-AvatarSlotUnavailable = -2
-AvatarSlotAvailable = -3

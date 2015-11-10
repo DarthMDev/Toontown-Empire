@@ -1,8 +1,8 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from BattleBase import *
 from BattleProps import *
-from toontown.toonbase.ToontownBattleGlobals import *
+from src.toontown.toonbase.ToontownBattleGlobals import *
 from SuitBattleGlobals import *
 from direct.directnotify import DirectNotifyGlobal
 import random
@@ -120,7 +120,7 @@ def chooseLureCloseShot(lures, openDuration, openName, attackDuration):
             hasTrainTrackTrap = True
 
     if hasTrainTrackTrap:
-        shotChoices = [avatarBehindHighRightShot]
+        shotChoices = [avatarLureTrainTrackShot]
         av = lures[0]['toon']
     else:
         shotChoices = [allGroupLowShot]
@@ -339,10 +339,36 @@ def chooseNPCExitShot(exits, exitsDuration):
 
 
 def chooseSuitShot(attack, attackDuration):
+    duration = attackDuration
+    if duration < 0:
+        duration = 1e-06
+    diedTrack = None
     groupStatus = attack['group']
     target = attack['target']
     if groupStatus == ATK_TGT_SINGLE:
         toon = target['toon']
+        died = attack['target']['died']
+        if died != 0:
+            pbpText = attack['playByPlayText']
+            diedText = toon.getName() + ' was defeated!'
+            diedTextList = [diedText]
+            diedTrack = pbpText.getToonsDiedInterval(diedTextList, duration)
+    elif groupStatus == ATK_TGT_GROUP:
+        deadToons = []
+        targetDicts = attack['target']
+        for targetDict in targetDicts:
+            died = targetDict['died']
+            if died != 0:
+                deadToons.append(targetDict['toon'])
+
+        if len(deadToons) > 0:
+            pbpText = attack['playByPlayText']
+            diedTextList = []
+            for toon in deadToons:
+                pbpText = attack['playByPlayText']
+                diedTextList.append(toon.getName() + ' was defeated!')
+
+            diedTrack = pbpText.getToonsDiedInterval(diedTextList, duration)
     suit = attack['suit']
     name = attack['id']
     battle = attack['battle']
@@ -486,53 +512,12 @@ def chooseSuitShot(attack, attackDuration):
     pbpText = attack['playByPlayText']
     displayName = TTLocalizer.SuitAttackNames[attack['name']]
     pbpTrack = pbpText.getShowInterval(displayName, 3.5)
-    return Parallel(camTrack, pbpTrack)
-
-
-def chooseSuitCloseShot(attack, openDuration, openName, attackDuration):
-    av = None
-    duration = attackDuration - openDuration
-    if duration < 0:
-        duration = 1e-06
-    groupStatus = attack['group']
-    diedTrack = None
-    if groupStatus == ATK_TGT_SINGLE:
-        av = attack['target']['toon']
-        shotChoices = [avatarCloseUpThreeQuarterRightShot, suitGroupThreeQuarterLeftBehindShot]
-        died = attack['target']['died']
-        if died != 0:
-            pbpText = attack['playByPlayText']
-            diedText = av.getName() + ' was defeated!'
-            diedTextList = [diedText]
-            diedTrack = pbpText.getToonsDiedInterval(diedTextList, duration)
-    elif groupStatus == ATK_TGT_GROUP:
-        av = None
-        shotChoices = [allGroupLowShot, suitGroupThreeQuarterLeftBehindShot]
-        deadToons = []
-        targetDicts = attack['target']
-        for targetDict in targetDicts:
-            died = targetDict['died']
-            if died != 0:
-                deadToons.append(targetDict['toon'])
-
-        if len(deadToons) > 0:
-            pbpText = attack['playByPlayText']
-            diedTextList = []
-            for toon in deadToons:
-                pbpText = attack['playByPlayText']
-                diedTextList.append(toon.getName() + ' was defeated!')
-
-            diedTrack = pbpText.getToonsDiedInterval(diedTextList, duration)
-    else:
-        notify.error('Bad groupStatus: %s' % groupStatus)
-    track = apply(random.choice(shotChoices), [av, duration])
+    track = Parallel(camTrack, pbpTrack)
     if diedTrack == None:
         return track
-    else:
-        mtrack = Parallel(track, diedTrack)
-        return mtrack
-    return
-
+    pbpTrackDied = Sequence(pbpTrack, diedTrack)
+    mtrack = Parallel(track, pbpTrackDied)
+    return mtrack 
 
 def makeShot(x, y, z, h, p, r, duration, other = None, name = 'makeShot'):
     if other:
@@ -743,6 +728,8 @@ def avatarBehindShot(avatar, duration):
 def avatarBehindHighShot(avatar, duration):
     return heldRelativeShot(avatar, -4, -7, 5 + avatar.getHeight(), -30, -35, 0, duration, 'avatarBehindHighShot')
 
+def avatarLureTrainTrackShot(avatar, duration):
+    return heldRelativeShot(avatar, 0, -7.5, 1 + avatar.getHeight(), 0, 0, 0, duration, 'avatarLureTrainTrackShot')
 
 def avatarBehindHighRightShot(avatar, duration):
     return heldRelativeShot(avatar, 4, -7, 5 + avatar.getHeight(), 30, -35, 0, duration, 'avatarBehindHighShot')
@@ -886,20 +873,6 @@ def randomOverShoulderShot(suit, toon, battle, duration, focus):
     if MovieUtil.shotDirection == 'left':
         x = -x
     return focusShot(x, y, z, duration, toonCentralPoint, splitFocusPoint=suitCentralPoint)
-
-
-def randomCameraSelection(suit, attack, attackDuration, openShotDuration):
-    shotChoices = [avatarCloseUpThrowShot,
-     avatarCloseUpThreeQuarterLeftShot,
-     allGroupLowShot,
-     suitGroupLowLeftShot,
-     avatarBehindHighShot]
-    if openShotDuration > attackDuration:
-        openShotDuration = attackDuration
-    closeShotDuration = attackDuration - openShotDuration
-    openShot = apply(random.choice(shotChoices), [suit, openShotDuration])
-    closeShot = chooseSuitCloseShot(attack, closeShotDuration, openShot.getName(), attackDuration)
-    return Sequence(openShot, closeShot)
 
 
 def randomToonGroupShot(toons, suit, duration, battle):

@@ -1,4 +1,4 @@
-from otp.ai.AIBaseGlobal import *
+from src.otp.ai.AIBaseGlobal import *
 from direct.distributed.ClockDelta import *
 from direct.distributed import DistributedObjectAI
 import Level

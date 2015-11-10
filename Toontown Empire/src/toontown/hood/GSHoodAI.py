@@ -1,13 +1,13 @@
-from toontown.dna.DNAParser import DNAGroup, DNAVisGroup
-from toontown.hood import HoodAI
-from toontown.hood import ZoneUtil
-from toontown.racing import RaceGlobals
-from toontown.racing.DistributedRacePadAI import DistributedRacePadAI
-from toontown.racing.DistributedStartingBlockAI import DistributedStartingBlockAI
-from toontown.racing.DistributedViewPadAI import DistributedViewPadAI
-from toontown.racing.DistributedStartingBlockAI import DistributedViewingBlockAI
-from toontown.toonbase import ToontownGlobals
-
+from src.toontown.dna.DNAParser import DNAGroup, DNAVisGroup
+from src.toontown.hood import HoodAI
+from src.toontown.hood import ZoneUtil
+from src.toontown.racing import RaceGlobals
+from src.toontown.racing.DistributedRacePadAI import DistributedRacePadAI
+from src.toontown.racing.DistributedStartingBlockAI import DistributedStartingBlockAI
+from src.toontown.racing.DistributedViewPadAI import DistributedViewPadAI
+from src.toontown.racing.DistributedStartingBlockAI import DistributedViewingBlockAI
+from src.toontown.racing.DistributedLeaderBoardAI import DistributedLeaderBoardAI
+from src.toontown.toonbase import ToontownGlobals
 
 class GSHoodAI(HoodAI.HoodAI):
     def __init__(self, air):
@@ -28,7 +28,6 @@ class GSHoodAI(HoodAI.HoodAI):
 
         self.createStartingBlocks()
         self.createLeaderBoards()
-        self.cycleLeaderBoards()
 
     def shutdown(self):
         HoodAI.HoodAI.shutdown(self)
@@ -62,7 +61,7 @@ class GSHoodAI(HoodAI.HoodAI):
 
             racingPads.append(racingPad)
         elif isinstance(dnaGroup, DNAVisGroup):
-            zoneId = ZoneUtil.getTrueZoneId(int(dnaGroup.getName().split(':')[0]), zoneId)
+            zoneId = int(dnaGroup.getName().split(':')[0])
         for i in xrange(dnaGroup.getNumChildren()):
             (foundRacingPads, foundRacingPadGroups) = self.findRacingPads(dnaGroup.at(i), zoneId, area, padType=padType)
             racingPads.extend(foundRacingPads)
@@ -98,7 +97,6 @@ class GSHoodAI(HoodAI.HoodAI):
         viewingPadGroups = []
         for zoneId in self.getZoneTable():
             dnaData = self.air.dnaDataMap.get(zoneId, None)
-            zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
             if dnaData.getName() == 'root':
                 area = ZoneUtil.getCanonicalZoneId(zoneId)
                 (foundRacingPads, foundRacingPadGroups) = self.findRacingPads(dnaData, zoneId, area, padType='racing_pad')
@@ -120,26 +118,37 @@ class GSHoodAI(HoodAI.HoodAI):
             for viewingBlock in foundViewingBlocks:
                 viewPad.addStartingBlock(viewingBlock)
 
-    def findLeaderBoards(self, dnaData, zoneId):
-        return []  # TODO
+    def findLeaderBoards(self, dnaGroup, zoneId):
+        if not self.air.wantKarts:
+            return
+
+        leaderBoards = []
+
+        if isinstance(dnaGroup, DNAGroup) and ('leader_board' in dnaGroup.getName()):
+            for i in xrange(dnaGroup.getNumChildren()):
+                childDnaGroup = dnaGroup.at(i)
+
+                if 'leaderBoard' in childDnaGroup.getName():
+                    pos = childDnaGroup.getPos()
+                    hpr = childDnaGroup.getHpr()
+                    nameInfo = childDnaGroup.getName().split('_')
+
+                    if nameInfo[1] in RaceGlobals.LBSubscription:
+                        leaderBoard = DistributedLeaderBoardAI(simbase.air, RaceGlobals.LBSubscription[nameInfo[1]])
+                        leaderBoard.setPosHpr(pos[0], pos[1], pos[2], hpr[0], hpr[1], hpr[2])
+                        leaderBoard.generateWithRequired(zoneId)
+                        leaderBoards.append(leaderBoard)
+        elif isinstance(dnaGroup, DNAVisGroup):
+            zoneId = int(dnaGroup.getName().split(':')[0])
+
+        for i in xrange(dnaGroup.getNumChildren()):
+            foundLeaderBoards = self.findLeaderBoards(dnaGroup.at(i), zoneId)
+            leaderBoards.extend(foundLeaderBoards)
+
+        return leaderBoards
 
     def createLeaderBoards(self):
         self.leaderBoards = []
         dnaData = self.air.dnaDataMap[self.zoneId]
         if dnaData.getName() == 'root':
             self.leaderBoards = self.findLeaderBoards(dnaData, self.zoneId)
-        for leaderBoard in self.leaderBoards:
-            if not leaderBoard:
-                continue
-            if 'city' in leaderBoard.getName():
-                leaderBoardType = 'city'
-            elif 'stadium' in leaderBoard.getName():
-                leaderBoardType = 'stadium'
-            elif 'country' in leaderBoard.getName():
-                leaderBoardType = 'country'
-            for subscription in RaceGlobals.LBSubscription[leaderBoardType]:
-                leaderBoard.subscribeTo(subscription)
-
-    def cycleLeaderBoards(self, task=None):
-        messenger.send('leaderBoardSwap-' + str(self.zoneId))
-        taskMgr.doMethodLater(10, self.cycleLeaderBoards, 'leaderBoardSwitch')

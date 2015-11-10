@@ -1,7 +1,7 @@
-from pandac.PandaModules import Vec4
-from toontown.safezone.OZSafeZoneLoader import OZSafeZoneLoader
-from toontown.toonbase import ToontownGlobals
-from toontown.hood.ToonHood import ToonHood
+from panda3d.core import Fog, Vec4
+from src.toontown.safezone.OZSafeZoneLoader import OZSafeZoneLoader
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.hood.ToonHood import ToonHood
 
 class OZHood(ToonHood):
     notify = directNotify.newCategory('OZHood')
@@ -12,7 +12,6 @@ class OZHood(ToonHood):
     SKY_FILE = 'phase_3.5/models/props/TT_sky'
     SPOOKY_SKY_FILE = 'phase_3.5/models/props/BR_sky'
     TITLE_COLOR = (1.0, 0.5, 0.4, 1.0)
-    underwaterColor = Vec4(0.0, 0.0, 0.6, 1.0)
 
     def __init__(self, parentFSM, doneEvent, dnaStore, hoodId):
         ToonHood.__init__(self, parentFSM, doneEvent, dnaStore, hoodId)

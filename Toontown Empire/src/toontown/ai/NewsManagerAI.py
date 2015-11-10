@@ -1,97 +1,114 @@
-from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
-from otp.ai.MagicWordGlobal import *
-
+from direct.distributed.ClockDelta import globalClockDelta
+from direct.task import Task
+from src.toontown.effects.DistributedFireworkShowAI import DistributedFireworkShowAI
+from src.toontown.effects import FireworkShows
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.parties import PartyGlobals
+import HolidayGlobals
+import datetime, random
 
 class NewsManagerAI(DistributedObjectAI):
-    notify = directNotify.newCategory('NewsManagerAI')
+
+    def __init__(self, air):
+        DistributedObjectAI.__init__(self, air)
+        self.activeHolidays = []
+        self.fireworkTasks = []
 
     def announceGenerate(self):
         DistributedObjectAI.announceGenerate(self)
-
+        self.__checkHolidays()
+        self.checkTask = taskMgr.doMethodLater(15, self.__checkHolidays, 'holidayCheckTask')
         self.accept('avatarEntered', self.__handleAvatarEntered)
 
-    def __handleAvatarEntered(self, avatar):
+    def delete(self):
+        DistributedObjectAI.delete(self)
+        taskMgr.remove(self.checkTask)
+        self.deleteFireworkTasks()
+
+    def deleteFireworkTasks(self):
+        if self.fireworkTasks:
+            for task in self.fireworkTasks:
+                taskMgr.remove(task)
+            self.fireworkTasks = []
+
+    def __handleAvatarEntered(self, av):
+        avId = av.getDoId()
+
         if self.air.suitInvasionManager.getInvading():
-            self.air.suitInvasionManager.notifyInvasionBulletin(avatar.getDoId())
+            self.air.suitInvasionManager.notifyInvasionBulletin(avId)
 
-    def setPopulation(self, todo0):
-        pass
+        self.sendUpdateToAvatarId(avId, 'setActiveHolidays', [self.activeHolidays])
 
-    def setBingoWin(self, todo0):
-        pass
+    def getActiveHolidays(self):
+        return self.activeHolidays
 
-    def setBingoStart(self):
-        pass
+    def __checkHolidays(self, task=None):
+        date = datetime.datetime.utcnow().replace(tzinfo=HolidayGlobals.TIME_ZONE)
 
-    def setBingoEnd(self):
-        pass
+        for id in HolidayGlobals.Holidays:
+            holiday = HolidayGlobals.Holidays[id]
+            running = self.isHolidayRunning(id)
 
-    def setCircuitRaceStart(self):
-        pass
+            if self.isHolidayInRange(holiday, date):
+                if not running:
+                    self.startHoliday(id)
+            elif running:
+                self.endHoliday(id)
 
-    def setCircuitRaceEnd(self):
-        pass
+        return Task.again
 
-    def setTrolleyHolidayStart(self):
-        pass
+    def isHolidayInRange(self, holiday, date):
+        if 'weekDay' in holiday:
+            return holiday['weekDay'] == date.weekday()
+        else:
+            return HolidayGlobals.getStartDate(holiday) <= date <= HolidayGlobals.getEndDate(holiday)
 
-    def setTrolleyHolidayEnd(self):
-        pass
+    def isHolidayRunning(self, id):
+        return id in self.activeHolidays
 
-    def setTrolleyWeekendStart(self):
-        pass
+    def startHoliday(self, id):
+        if id in self.activeHolidays or id not in HolidayGlobals.Holidays:
+            return
 
-    def setTrolleyWeekendEnd(self):
-        pass
+        self.activeHolidays.append(id)
+        self.startSpecialHoliday(id)
+        self.sendUpdate('startHoliday', [id])
 
-    def setInvasionStatus(self, msgType, cogType, numRemaining, skeleton):
-        self.sendUpdate('setInvasionStatus', args=[msgType, cogType, numRemaining, skeleton])
+    def endHoliday(self, id):
+        if id not in self.activeHolidays or id not in HolidayGlobals.Holidays:
+            return
 
-    def setHolidayIdList(self, holidays):
-        self.sendUpdate('setHolidayIdList', holidays)
+        self.activeHolidays.remove(id)
+        self.endSpecialHoliday(id)
+        self.sendUpdate('endHoliday', [id])
 
-    def holidayNotify(self):
-        pass
+    def startSpecialHoliday(self, id):
+        if id == ToontownGlobals.FISH_BINGO or id == ToontownGlobals.SILLY_SATURDAY:
+            messenger.send('checkBingoState')
+        elif id in [ToontownGlobals.SUMMER_FIREWORKS, ToontownGlobals.NEW_YEAR_FIREWORKS]:
+            self.fireworkTasks.append(taskMgr.doMethodLater((60 - datetime.datetime.now().minute) * 60, self.startFireworkTask, 'initialFireworkTask-%s' % id, extraArgs=[id]))
 
-    def setWeeklyCalendarHolidays(self, todo0):
-        pass
+    def endSpecialHoliday(self, id):
+        if id == ToontownGlobals.FISH_BINGO or id == ToontownGlobals.SILLY_SATURDAY:
+            messenger.send('checkBingoState')
+        elif id in [ToontownGlobals.SUMMER_FIREWORKS, ToontownGlobals.NEW_YEAR_FIREWORKS]:
+            self.deleteFireworkTasks()
 
-    def getWeeklyCalendarHolidays(self):
-        return []
+    def startFireworkTask(self, id, task=None):
+        self.startFireworks(id)
+        self.fireworkTasks.append(taskMgr.doMethodLater(3600, self.startFireworks, 'fireworkTask-%s' % id, extraArgs=[id]))
+        return Task.done
 
-    def setYearlyCalendarHolidays(self, todo0):
-        pass
+    def startFireworks(self, type, task=None):
+        maxShow = len(FireworkShows.shows.get(type, [])) - 1
 
-    def getYearlyCalendarHolidays(self):
-        return []
+        for hood in self.air.hoods:
+            if hood.zoneId == ToontownGlobals.GolfZone:
+                continue
 
-    def setOncelyCalendarHolidays(self, todo0):
-        pass
+            fireworkShow = DistributedFireworkShowAI(self.air)
+            fireworkShow.generateWithRequired(hood.zoneId)
+            fireworkShow.b_startShow(type, random.randint(0, maxShow), globalClockDelta.getRealNetworkTime())
 
-    def getOncelyCalendarHolidays(self):
-        return []
-
-    def setRelativelyCalendarHolidays(self, todo0):
-        pass
-
-    def getRelativelyCalendarHolidays(self):
-        return []
-
-    def setMultipleStartHolidays(self, todo0):
-        pass
-
-    def getMultipleStartHolidays(self):
-        return []
-
-    def sendSystemMessage(self, todo0, todo1):
-        pass
-        
-
-@magicWord(category=CATEGORY_PROGRAMMER)
-def invasionstatus():
-    """ Returns the number of cogs available in an invasion in a pretty way. """
-    simbase.air.newsManager.sendUpdateToAvatarId(spellbook.getInvoker().getDoId(), 'setInvasionStatus', [
-        ToontownGlobals.SuitInvasionUpdate, simbase.air.suitInvasionManager.suitName,
-        simbase.air.suitInvasionManager.numSuits, simbase.air.suitInvasionManager.specialSuit
-    ])
+        return Task.again

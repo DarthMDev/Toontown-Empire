@@ -1,12 +1,12 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
 from direct.gui.DirectScrolledList import *
 from direct.gui.DirectGui import *
-from toontown.toonbase.ToonBaseGlobal import *
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-from toontown.estate import GardenGlobals
+from src.toontown.toonbase.ToonBaseGlobal import *
+from src.toontown.toonbase import ToontownGlobals, TTLocalizer
+from src.toontown.estate import GardenGlobals
 
 SHOVEL = 0
 WATERINGCAN = 1

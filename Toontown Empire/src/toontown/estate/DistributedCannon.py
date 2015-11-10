@@ -1,29 +1,28 @@
-from pandac.PandaModules import *
-from toontown.toonbase.ToonBaseGlobal import *
-from toontown.toonbase import ToontownGlobals
+from panda3d.core import *
+from src.toontown.toonbase.ToonBaseGlobal import *
+from src.toontown.toonbase import ToontownGlobals
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownTimer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownTimer
 from direct.task.Task import Task
-from toontown.minigame import Trajectory
+from src.toontown.minigame import Trajectory
 import math
-from toontown.toon import ToonHead
-from toontown.effects import Splash
-from toontown.effects import DustCloud
-from toontown.minigame import CannonGameGlobals
+from src.toontown.toon import ToonHead
+from src.toontown.effects import Splash
+from src.toontown.effects import DustCloud
+from src.toontown.minigame import CannonGameGlobals
 import CannonGlobals
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
 from direct.distributed import DistributedObject
-from toontown.effects import Wake
+from src.toontown.effects import Wake
 from direct.controls.ControlManager import CollisionHandlerRayStart
 
-from toontown.nametag.NametagFloat3d import NametagFloat3d
-from toontown.nametag.Nametag import Nametag
+from src.otp.nametag.NametagFloat3d import NametagFloat3d
+from src.otp.nametag.Nametag import Nametag
 
 LAND_TIME = 2
 WORLD_SCALE = 2.0
@@ -62,11 +61,11 @@ class DistributedCannon(DistributedObject.DistributedObject):
     HIT_GROUND = 0
     HIT_TOWER = 1
     HIT_WATER = 2
-    FIRE_KEY = 'control'
-    UP_KEY = 'arrow_up'
-    DOWN_KEY = 'arrow_down'
-    LEFT_KEY = 'arrow_left'
-    RIGHT_KEY = 'arrow_right'
+    FIRE_KEY = base.JUMP
+    UP_KEY = base.Move_Up
+    DOWN_KEY = base.Move_Down
+    LEFT_KEY = base.Move_Left
+    RIGHT_KEY = base.Move_Right
     BUMPER_KEY = 'delete'
     BUMPER_KEY2 = 'insert'
     INTRO_TASK_NAME = 'CannonGameIntro'
@@ -267,7 +266,7 @@ class DistributedCannon(DistributedObject.DistributedObject):
                 self.curPinballScore = 0
                 self.curPinballMultiplier = 1
                 self.incrementPinballInfo(0, 0)
-            if self.cr.doId2do.has_key(self.avId):
+            if self.avId in self.cr.doId2do:
                 self.av = self.cr.doId2do[self.avId]
                 self.acceptOnce(self.av.uniqueName('disable'), self.__avatarGone)
                 self.av.stopSmooth()
@@ -1240,19 +1239,19 @@ class DistributedCannon(DistributedObject.DistributedObject):
     def __calcHitTreasures(self, trajectory):
         estate = self.cr.doId2do.get(self.estateId)
         self.hitTreasures = []
-        if estate:
+        '''if estate:
             doIds = estate.flyingTreasureId
             for id in doIds:
                 t = self.cr.doId2do.get(id)
                 if t:
-                    pos = t.nodePath.getPos()
+                    pos = t.pos
                     rad = 10.5
                     height = 10.0
                     t_impact = trajectory.checkCollisionWithCylinderSides(pos, rad, height)
                     if t_impact > 0:
                         self.hitTreasures.append([t_impact, t])
 
-        del estate
+        del estate'''
         return None
 
     def __shootTask(self, task):
@@ -1511,7 +1510,7 @@ class DistributedCannon(DistributedObject.DistributedObject):
          (0, 1, 5, 4),
          (0, 4, 7, 3),
          (1, 2, 6, 5)]
-        for i in range(len(vertices)):
+        for i in xrange(len(vertices)):
             vertex = vertices[i]
             vertexWriter.addData3f(vertex[0], vertex[1], vertex[2])
             colorWriter.addData4f(*colors[i])
@@ -1581,4 +1580,3 @@ class DistributedCannon(DistributedObject.DistributedObject):
     def turnOnBumperCollision(self, whatever = 0):
         if self.bumperCol:
             self.bumperCol.setCollideMask(ToontownGlobals.WallBitmask)
-            

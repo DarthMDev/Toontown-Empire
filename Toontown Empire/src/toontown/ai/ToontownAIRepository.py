@@ -1,58 +1,58 @@
 from direct.distributed.PyDatagram import *
-from pandac.PandaModules import *
+from panda3d.core import *
 
-from otp.ai.AIZoneData import AIZoneDataStore
-from otp.ai.MagicWordManagerAI import MagicWordManagerAI
-from otp.ai.TimeManagerAI import TimeManagerAI
-from otp.ai import BanManagerAI
-from otp.distributed.OtpDoGlobals import *
-from otp.friends.FriendManagerAI import FriendManagerAI
-from toontown.ai import CogPageManagerAI
-from toontown.ai import CogSuitManagerAI
-from toontown.ai import PromotionManagerAI
-from toontown.ai.FishManagerAI import  FishManagerAI
-from toontown.ai.HolidayManagerAI import HolidayManagerAI
-from toontown.ai.NewsManagerAI import NewsManagerAI
-from toontown.ai.QuestManagerAI import QuestManagerAI
-from toontown.ai.DistributedBlackCatMgrAI import DistributedBlackCatMgrAI
-from toontown.ai.DistributedReportMgrAI import DistributedReportMgrAI
-from toontown.catalog.AccountDateAI import AccountDateAI
-from toontown.building.DistributedBuildingQueryMgrAI import DistributedBuildingQueryMgrAI
-from toontown.building.DistributedTrophyMgrAI import DistributedTrophyMgrAI
-from toontown.catalog.CatalogManagerAI import CatalogManagerAI
-from toontown.coghq import CountryClubManagerAI
-from toontown.coghq import FactoryManagerAI
-from toontown.coghq import LawOfficeManagerAI
-from toontown.coghq import MintManagerAI
-from toontown.distributed.ToontownDistrictAI import ToontownDistrictAI
-from toontown.distributed.ToontownDistrictStatsAI import ToontownDistrictStatsAI
-from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
-from toontown.coderedemption.TTCodeRedemptionMgrAI import TTCodeRedemptionMgrAI
-from toontown.dna.DNAParser import loadDNAFileAI
-from toontown.estate.EstateManagerAI import EstateManagerAI
-from toontown.hood import BRHoodAI
-from toontown.hood import BossbotHQAI
-from toontown.hood import CashbotHQAI
-from toontown.hood import DDHoodAI
-from toontown.hood import DGHoodAI
-from toontown.hood import DLHoodAI
-from toontown.hood import GSHoodAI
-from toontown.hood import GZHoodAI
-from toontown.hood import LawbotHQAI
-from toontown.hood import MMHoodAI
-from toontown.hood import OZHoodAI
-from toontown.hood import SellbotHQAI
-from toontown.hood import TTHoodAI
-from toontown.hood import ZoneUtil
-from toontown.pets.PetManagerAI import PetManagerAI
-from toontown.safezone.SafeZoneManagerAI import SafeZoneManagerAI
-from toontown.suit.SuitInvasionManagerAI import SuitInvasionManagerAI
-from toontown.groups.GroupManagerAI import GroupManagerAI
-from toontown.toon import NPCToons
-from toontown.toonbase import ToontownGlobals
-from toontown.tutorial.TutorialManagerAI import TutorialManagerAI
-from toontown.uberdog.DistributedPartyManagerAI import DistributedPartyManagerAI
-from toontown.uberdog.DistributedLobbyManagerAI import DistributedLobbyManagerAI
+from src.otp.ai.AIZoneData import AIZoneDataStore
+from src.otp.ai.MagicWordManagerAI import MagicWordManagerAI
+from src.otp.ai.TimeManagerAI import TimeManagerAI
+from src.otp.ai import BanManagerAI
+from src.otp.distributed.OtpDoGlobals import *
+from src.otp.friends.FriendManagerAI import FriendManagerAI
+from src.toontown.ai import CogPageManagerAI
+from src.toontown.ai import CogSuitManagerAI
+from src.toontown.ai import PromotionManagerAI
+from src.toontown.ai.FishManagerAI import FishManagerAI
+from src.toontown.ai.NewsManagerAI import NewsManagerAI
+from src.toontown.ai.QuestManagerAI import QuestManagerAI
+from src.toontown.ai.DistributedBlackCatMgrAI import DistributedBlackCatMgrAI
+from src.toontown.ai.DistributedReportMgrAI import DistributedReportMgrAI
+from src.toontown.building.DistributedBuildingQueryMgrAI import DistributedBuildingQueryMgrAI
+from src.toontown.building.DistributedTrophyMgrAI import DistributedTrophyMgrAI
+from src.toontown.catalog.CatalogManagerAI import CatalogManagerAI
+from src.toontown.coghq import CountryClubManagerAI
+from src.toontown.coghq import FactoryManagerAI
+from src.toontown.coghq import LawOfficeManagerAI
+from src.toontown.coghq import MintManagerAI
+from src.toontown.distributed.ToontownDistrictAI import ToontownDistrictAI
+from src.toontown.distributed.ToontownDistrictStatsAI import ToontownDistrictStatsAI
+from src.toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
+from src.toontown.coderedemption.TTCodeRedemptionMgrAI import TTCodeRedemptionMgrAI
+from src.toontown.dna.DNAParser import loadDNAFileAI
+from src.toontown.estate.EstateManagerAI import EstateManagerAI
+from src.toontown.hood import BRHoodAI
+from src.toontown.hood import BossbotHQAI
+from src.toontown.hood import CashbotHQAI
+from src.toontown.hood import DDHoodAI
+from src.toontown.hood import DGHoodAI
+from src.toontown.hood import DLHoodAI
+from src.toontown.hood import GSHoodAI
+from src.toontown.hood import GZHoodAI
+from src.toontown.hood import LawbotHQAI
+from src.toontown.hood import MMHoodAI
+from src.toontown.hood import OZHoodAI
+from src.toontown.hood import SellbotHQAI
+from src.toontown.hood import TTHoodAI
+from src.toontown.hood import ZoneUtil
+from src.toontown.racing.LeaderboardMgrAI import LeaderboardMgrAI
+from src.toontown.parties.ToontownTimeManagerAI import ToontownTimeManagerAI
+from src.toontown.pets.PetManagerAI import PetManagerAI
+from src.toontown.safezone.SafeZoneManagerAI import SafeZoneManagerAI
+from src.toontown.suit.SuitInvasionManagerAI import SuitInvasionManagerAI
+from src.toontown.groups.GroupManagerAI import GroupManagerAI
+from src.toontown.toon import NPCToons
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.tutorial.TutorialManagerAI import TutorialManagerAI
+from src.toontown.uberdog.DistributedPartyManagerAI import DistributedPartyManagerAI
+#from src.toontown.uberdog.DistributedLobbyManagerAI import DistributedLobbyManagerAI
 
 class ToontownAIRepository(ToontownInternalRepository):
     def __init__(self, baseChannel, stateServerChannel, districtName):
@@ -68,6 +68,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.dnaDataMap = {}
         self.suitPlanners = {}
         self.buildingManagers = {}
+        self.disconnectedToons = {}
         self.factoryMgr = None
         self.mintMgr = None
         self.lawOfficeMgr = None
@@ -81,21 +82,20 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.wantFishing = self.config.GetBool('want-fishing', True)
         self.wantHousing = self.config.GetBool('want-housing', True)
         self.wantPets = self.config.GetBool('want-pets', True)
+        self.wantKarts = self.config.GetBool('want-karts', True)
         self.wantParties = self.config.GetBool('want-parties', True)
         self.wantEmblems = self.config.GetBool('want-emblems', True)
         self.wantCogbuildings = self.config.GetBool('want-cogbuildings', True)
         self.wantCogdominiums = self.config.GetBool('want-cogdominiums', True)
         self.wantTrackClsends = self.config.GetBool('want-track-clsends', False)
         self.baseXpMultiplier = self.config.GetFloat('base-xp-multiplier', 1.0)
-        self.wantHalloween = self.config.GetBool('want-halloween', False)
-        self.wantChristmas = self.config.GetBool('want-christmas', False)
-        self.wantJorElCam = self.config.GetBool('want-jor-el-cam', False)
 
         self.cogSuitMessageSent = False
 
     def createManagers(self):
         self.timeManager = TimeManagerAI(self)
         self.timeManager.generateWithRequired(2)
+        self.toontownTimeManager = ToontownTimeManagerAI()
         self.magicWordManager = MagicWordManagerAI(self)
         self.magicWordManager.generateWithRequired(2)
         self.newsManager = NewsManagerAI(self)
@@ -106,7 +106,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.tutorialManager.generateWithRequired(2)
         self.friendManager = FriendManagerAI(self)
         self.friendManager.generateWithRequired(2)
-        self.questManager = QuestManagerAI(self)
+        self.questManager = QuestManagerAI(self)       
         self.banManager = BanManagerAI.BanManagerAI(self)
         self.suitInvasionManager = SuitInvasionManagerAI(self)
         self.blackCatMgr = DistributedBlackCatMgrAI(self)
@@ -115,17 +115,16 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.reportMgr.generateWithRequired(2)
         self.trophyMgr = DistributedTrophyMgrAI(self)
         self.trophyMgr.generateWithRequired(2)
-        self.cogSuitMgr = CogSuitManagerAI.CogSuitManagerAI(self)
+        self.cogSuitMgr = CogSuitManagerAI.CogSuitManagerAI()
         self.promotionMgr = PromotionManagerAI.PromotionManagerAI(self)
         self.cogPageManager = CogPageManagerAI.CogPageManagerAI()
-        self.holidayManager = HolidayManagerAI(self)
         self.codeRedemptionMgr = TTCodeRedemptionMgrAI(self)
         self.codeRedemptionMgr.generateWithRequired(2)
-        self.accountDateMgr = AccountDateAI(self)
-        self.accountDateMgr.generateWithRequired(2)
         self.buildingQueryMgr = DistributedBuildingQueryMgrAI(self)
         self.buildingQueryMgr.generateWithRequired(2)
         self.groupManager.generateWithRequired(2)
+        if self.wantKarts:
+            self.leaderboardMgr = LeaderboardMgrAI(self)
         if self.wantFishing:
             self.fishManager = FishManagerAI(self)
         if self.wantHousing:
@@ -140,10 +139,12 @@ class ToontownAIRepository(ToontownInternalRepository):
             self.partyManager.generateWithRequired(2)
             self.globalPartyMgr = self.generateGlobalObject(
                 OTP_DO_ID_GLOBAL_PARTY_MANAGER, 'GlobalPartyManager')
-        self.lobbyManager = DistributedLobbyManagerAI(self)
-        self.lobbyManager.generateWithRequired(2)
-        self.globalLobbyMgr = self.generateGlobalObject(
-            OTP_DO_ID_GLOBAL_LOBBY_MANAGER, 'GlobalLobbyManager')
+        #self.lobbyManager = DistributedLobbyManagerAI(self)
+        #self.lobbyManager.generateWithRequired(2)
+        #self.globalLobbyMgr = self.generateGlobalObject(
+        #    OTP_DO_ID_GLOBAL_LOBBY_MANAGER, 'GlobalLobbyManager')
+        self.megaInvasionManager = simbase.air.generateGlobalObject(
+            OTP_DO_ID_MEGA_INVASION_MANAGER, 'MegaInvasionManager')
 
     def createSafeZones(self):
         NPCToons.generateZone2NpcDict()
@@ -182,6 +183,7 @@ class ToontownAIRepository(ToontownInternalRepository):
             self.cogHeadquarters.append(BossbotHQAI.BossbotHQAI(self))
 
     def handleConnected(self):
+        ToontownInternalRepository.handleConnected(self)
         self.districtId = self.allocateChannel()
         self.notify.info('Creating ToontownDistrictAI(%d)...' % self.districtId)
         self.distributedDistrict = ToontownDistrictAI(self)
@@ -192,7 +194,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.claimOwnership(self.districtId)
 
         self.districtStats = ToontownDistrictStatsAI(self)
-        self.districtStats.settoontownDistrictId(self.districtId)
+        self.districtStats.setDistrictId(self.districtId)
         self.districtStats.generateWithRequiredAndId(
             self.allocateChannel(), self.getGameDoId(), 3)
         self.notify.info('Created ToontownDistrictStats(%d)' % self.districtStats.doId)
@@ -253,3 +255,11 @@ class ToontownAIRepository(ToontownInternalRepository):
 
     def trueUniqueName(self, name):
         return self.uniqueName(name)
+
+    def setAvatarDisconnectReason(self, avId, reason):
+        self.disconnectedToons[avId] = reason
+
+    def getAvatarDisconnectReason(self, avId):
+        reason = self.disconnectedToons[avId]
+        del self.disconnectedToons[avId]
+        return reason

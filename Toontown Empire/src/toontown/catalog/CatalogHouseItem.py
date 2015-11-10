@@ -1,15 +1,17 @@
 import CatalogItem
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
 from direct.showbase import PythonUtil
 from direct.gui.DirectGui import *
-from toontown.toonbase import ToontownGlobals
-from toontown.estate import HouseGlobals
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.estate import HouseGlobals
 
-class CatalogHouseItem(CatalogItem.CatalogItem):
+
+class CatalogHouseItem(CatalogItem):
     def makeNewItem(self, houseId):
         self.houseId = houseId
-        CatalogItem.CatalogItem.makeNewItem(self)
-        
+
+        CatalogItem.makeNewItem(self)
+
     def notOfferedTo(self, avatar):
         return 1
         
@@ -46,7 +48,7 @@ class CatalogHouseItem(CatalogItem.CatalogItem):
         
     def getEmblemPrices(self):
         return HouseGlobals.HouseEmblemPrices[self.houseId]
-        
+
     def getPicture(self, avatar):
         model = loader.loadModel(HouseGlobals.houseModels[self.houseId])
         model.setBin('unsorted', 0, 1)
@@ -69,4 +71,3 @@ class CatalogHouseItem(CatalogItem.CatalogItem):
         
 def getAllHouses():
     return [CatalogHouseItem(i) for i in xrange(6)]
-    

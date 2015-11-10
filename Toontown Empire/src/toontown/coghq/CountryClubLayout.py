@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.PythonUtil import invertDictLossless
-from toontown.coghq import CountryClubRoomSpecs
-from toontown.toonbase import ToontownGlobals
+from src.toontown.coghq import CountryClubRoomSpecs
+from src.toontown.toonbase import ToontownGlobals
 from direct.showbase.PythonUtil import normalDistrib, lerp
 import random
 
@@ -23,7 +23,7 @@ def printAllBossbotInfo():
 
 
 def iterateBossbotCountryClubs(func):
-    from toontown.toonbase import ToontownGlobals
+    from src.toontown.toonbase import ToontownGlobals
     for countryClubId in [ToontownGlobals.BossbotCountryClubIntA, ToontownGlobals.BossbotCountryClubIntB, ToontownGlobals.BossbotCountryClubIntC]:
         for floorNum in xrange(ToontownGlobals.CountryClubNumFloors[countryClubId]):
             func(CountryClubLayout(countryClubId, floorNum))

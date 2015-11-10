@@ -4,10 +4,10 @@ from direct.task.Task import Task
 from direct.interval.MetaInterval import Sequence, Parallel
 from direct.interval.FunctionInterval import Wait, Func
 from pandac.PandaModules import TextNode, NodePath, Point3, CardMaker
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownIntervals
-from toontown.minigame.MazeMapGui import MazeMapGui
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownIntervals
+from src.toontown.minigame.MazeMapGui import MazeMapGui
 import CogdoMazeGameGlobals as Globals
 import CogdoUtil
 
@@ -189,7 +189,7 @@ class CogdoMazeBossGui(DirectFrame):
         self._openDoor.stash()
         spacingX = codeFrameWidth + codeFrameGap
         startX = -0.5 * ((self._codeLength - 1) * spacingX - codeFrameGap)
-        for i in range(self._codeLength):
+        for i in xrange(self._codeLength):
             marker = CogdoMazeBossCodeFrame(i, self._code[i], bossCard)
             marker.reparentTo(self)
             marker.setPos(bossCard, startX + spacingX * i, 0, 0)

@@ -1,8 +1,8 @@
 from pandac.PandaModules import NodePath
 from direct.interval.MetaInterval import Sequence
 from direct.interval.FunctionInterval import Func
-from toontown.toonbase.ToontownTimer import ToontownTimer
-from toontown.toonbase import ToontownIntervals
+from src.toontown.toonbase.ToontownTimer import ToontownTimer
+from src.toontown.toonbase import ToontownIntervals
 from CogdoMazeGameGuis import CogdoMazeHud, CogdoMazeMapGui, CogdoMazeBossGui
 from CogdoGameMessageDisplay import CogdoGameMessageDisplay
 import CogdoMazeGameGlobals as Globals

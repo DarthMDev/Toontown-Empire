@@ -1,5 +1,5 @@
 from DistributedMinigameAI import *
-from toontown.ai.ToonBarrier import *
+from src.toontown.ai.ToonBarrier import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 import CatchGameGlobals

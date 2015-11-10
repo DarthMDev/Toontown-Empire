@@ -3,17 +3,18 @@ from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from direct.distributed.ClockDelta import *
 from direct.fsm import FSM
 from direct.task import Timer
-from toontown.battle import BattleBase
-from toontown.building.ElevatorConstants import *
-from toontown.toonbase.ToontownGlobals import *
-from toontown.toonbase.ToontownBattleGlobals import *
+from src.toontown.battle import BattleBase
+from src.toontown.building.ElevatorConstants import *
+from src.toontown.toonbase.ToontownGlobals import *
+from src.toontown.toonbase.ToontownBattleGlobals import *
 import DistCogdoMazeGameAI, CogdoMazeGameGlobals, DistributedCogdoElevatorIntAI
 import DistCogdoFlyingGameAI, DistributedCogdoBarrelAI
 from DistributedCogdoBattleBldgAI import DistributedCogdoBattleBldgAI
 from SuitPlannerCogdoInteriorAI import SuitPlannerCogdoInteriorAI
-from toontown.cogdominium import CogdoBarrelRoomConsts
+from src.toontown.cogdominium import CogdoBarrelRoomConsts
 
-from toontown.toon import NPCToons
+from src.toontown.toon import NPCToons
+from src.toontown.quest import Quests
 import random, math
 
 NUM_FLOORS_DICT = {
@@ -197,7 +198,7 @@ class DistributedCogdoInteriorAI(DistributedObjectAI, FSM.FSM):
         if not avId in self.toons:
             self.toons.append(avId)
 
-        if self.air.doId2do.has_key(avId):
+        if avId in self.air.doId2do:
             event = self.air.getAvatarExitEvent(avId)
             self.accept(event, self.__handleUnexpectedExit, [avId])
 
@@ -464,7 +465,7 @@ class DistributedCogdoInteriorAI(DistributedObjectAI, FSM.FSM):
             toon = self.air.doId2do.get(v)
             if toon:
                 if self.FOType == 's':
-                    if not toon.attemptAddNPCFriend(self.sosNPC):
+                    if not toon.attemptAddNPCFriend(self.sosNPC, Quests.InFO):
                         self.notify.info('%s unable to add NPCFriend %s to %s.' % (self.doId, self.sosNPC, v))
                 elif self.FOType == 'l':
                     reward = self.getEmblemsReward()

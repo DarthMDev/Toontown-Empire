@@ -1,8 +1,8 @@
 from pandac.PandaModules import NodePath
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from toontown.estate import DistributedStatuary
-from toontown.estate import GardenGlobals
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.estate import DistributedStatuary
+from src.toontown.estate import GardenGlobals
 from direct.actor import Actor
 
 class DistributedAnimatedStatuary(DistributedStatuary.DistributedStatuary):

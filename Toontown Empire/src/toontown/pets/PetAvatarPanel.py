@@ -1,19 +1,17 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify.DirectNotifyGlobal import *
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
 from direct.showbase import DirectObject
 from direct.showbase.PythonUtil import Functor
 from direct.task.Task import Task
 from direct.distributed import DistributedObject
-from otp.avatar import Avatar, AvatarPanel
-from toontown.toon import ToonHead
-from toontown.toon import LaffMeter
-from toontown.toon import ToonAvatarDetailPanel
-from toontown.friends import FriendHandle
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.pets import Pet, PetConstants, PetDetailPanel
+from src.otp.avatar import Avatar, AvatarPanel
+from src.toontown.toon import ToonHead
+from src.toontown.toon import LaffMeter
+from src.toontown.toon import ToonAvatarDetailPanel
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.pets import Pet, PetConstants, PetDetailPanel
 
 class PetAvatarPanel(AvatarPanel.AvatarPanel):
     notify = directNotify.newCategory('PetAvatarPanel')
@@ -27,7 +25,7 @@ class PetAvatarPanel(AvatarPanel.AvatarPanel):
         else:
             self.avatar = avatar
             self.petIsLocal = False
-        from toontown.friends import FriendsListPanel
+        from src.toontown.friends import FriendsListPanel
         AvatarPanel.AvatarPanel.__init__(self, self.avatar, FriendsListPanel=FriendsListPanel)
         base.localAvatar.obscureFriendsListButton(1)
         base.panel = self
@@ -205,7 +203,7 @@ class PetAvatarPanel(AvatarPanel.AvatarPanel):
             messenger.send('clickedNametag', [handle])
         else:
             self.disableAll()
-            from toontown.toon import ToonDetail
+            from src.toontown.toon import ToonDetail
             self.toonDetail = ToonDetail.ToonDetail(self.avatar.ownerId, self.__ownerDetailsLoaded)
         return
 
@@ -272,7 +270,7 @@ class PetAvatarPanel(AvatarPanel.AvatarPanel):
     def __fillPetInfo(self, avatar):
         self.notify.debug('__fillPetInfo(): doId=%s' % avatar.doId)
         self.petView = self.frame.attachNewNode('petView')
-        self.petView.setPos(0, 0, 5.4)
+        self.petView.setPos(0, 0, 5)
         if hasattr(avatar, 'announceGenerate'):
             avatar.announceGenerate()
         self.petModel = Pet.Pet(forGui=1)
@@ -281,6 +279,7 @@ class PetAvatarPanel(AvatarPanel.AvatarPanel):
         self.petModel.reparentTo(self.petView)
         self.petModel.enterNeutralHappy()
         self.petModel.startBlink()
+        self.petModel.setScale(0.75)
         self.nameLabel = DirectLabel(parent=self.frame, pos=(0, 0, 5.2), relief=None, text=avatar.getName(), text_font=avatar.getFont(), text_fg=Vec4(0, 0, 0, 1), text_pos=(0, 0), text_scale=0.4, text_wordwrap=7.5, text_shadow=(1, 1, 1, 1))
         self.stateLabel = DirectLabel(parent=self.frame, pos=TTLocalizer.PAPstateLabelPos, relief=None, text='', text_font=avatar.getFont(), text_fg=Vec4(0, 0, 0, 1), text_scale=TTLocalizer.PAPstateLabel, text_wordwrap=TTLocalizer.PAPstateLabelWordwrap, text_shadow=(1, 1, 1, 1))
         self.__refreshPetInfo(avatar)

@@ -1,39 +1,24 @@
 from direct.directnotify import DirectNotifyGlobal
-from direct.distributed import DistributedObject
-from direct.interval.IntervalGlobal import *
-from toontown.effects import DustCloud
+from direct.distributed.DistributedObject import DistributedObject
+from src.toontown.toonbase import ToontownGlobals
 
-def getDustCloudIval(toon):
-    dustCloud = DustCloud.DustCloud(fBillboard=0)
-    dustCloud.setBillboardAxis(2.0)
-    dustCloud.setZ(3)
-    dustCloud.setScale(0.4)
-    dustCloud.createTrack()
-
-    if hasattr(toon, 'laffMeter'):
-        toon.laffMeter.color = toon.style.getBlackColor()
-
-    sequence = Sequence(Wait(0.5), Func(dustCloud.reparentTo, toon), dustCloud.track, Func(dustCloud.destroy))
-
-    if hasattr(toon, 'laffMeter'):
-        sequence.append(Func(toon.laffMeter.adjustFace, toon.hp, toon.maxHp))
-
-    return sequence
-
-class DistributedBlackCatMgr(DistributedObject.DistributedObject):
+class DistributedBlackCatMgr(DistributedObject):
     neverDisable = 1
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBlackCatMgr')
 
     def announceGenerate(self):
-        DistributedObject.DistributedObject.announceGenerate(self)
+        DistributedObject.announceGenerate(self)
         base.cr.blackCatMgr = self
 
     def delete(self):
         base.cr.blackCatMgr = None
-        DistributedObject.DistributedObject.delete(self)
+        DistributedObject.delete(self)
 
     def requestBlackCatTransformation(self):
+        if not base.cr.newsManager.isHolidayRunning(ToontownGlobals.BLACK_CAT_DAY):
+            return
+
         self.sendUpdate('requestBlackCatTransformation')
 
     def doBlackCatTransformation(self):
-        getDustCloudIval(base.localAvatar).start()
+        base.localAvatar.getDustCloud(0.0, color=base.localAvatar.style.getBlackColor()).start()

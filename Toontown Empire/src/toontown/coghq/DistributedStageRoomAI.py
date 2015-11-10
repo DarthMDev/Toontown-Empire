@@ -1,12 +1,12 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.task import Task
-from otp.level import DistributedLevelAI, LevelSpec
-from otp.level import LevelSpec
-from toontown.coghq import DistributedStageBattleAI
-from toontown.coghq import FactoryEntityCreatorAI, StageRoomSpecs
-from toontown.coghq import StageRoomBase, LevelSuitPlannerAI
-from toontown.suit import DistributedStageSuitAI
-from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
+from src.otp.level import DistributedLevelAI, LevelSpec
+from src.otp.level import LevelSpec
+from src.toontown.coghq import DistributedStageBattleAI
+from src.toontown.coghq import FactoryEntityCreatorAI, StageRoomSpecs
+from src.toontown.coghq import StageRoomBase, LevelSuitPlannerAI
+from src.toontown.suit import DistributedStageSuitAI
+from src.toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
 
 
 class DistributedStageRoomAI(DistributedLevelAI.DistributedLevelAI, StageRoomBase.StageRoomBase):
@@ -111,7 +111,7 @@ class DistributedStageRoomAI(DistributedLevelAI.DistributedLevelAI, StageRoomBas
         for avId in activeVictorIds:
             self.air.writeServerEvent('stageDefeated', avId, description)
         for toon in activeVictors:
-            simbase.air.questManager.toonDefeatedStage(toon, self.stageId, activeVictors)
+            simbase.air.questManager.toonDefeatedStage(toon, self.stageId)
 
     def b_setDefeated(self):
         self.d_setDefeated()

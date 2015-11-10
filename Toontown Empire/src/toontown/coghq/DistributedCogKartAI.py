@@ -1,8 +1,8 @@
 from direct.directnotify import DirectNotifyGlobal
-from toontown.building import DistributedElevatorExtAI
-from toontown.building import ElevatorConstants
-from toontown.safezone import DistributedGolfKartAI
-from toontown.toonbase import ToontownGlobals
+from src.toontown.building import DistributedElevatorExtAI
+from src.toontown.building import ElevatorConstants
+from src.toontown.safezone import DistributedGolfKartAI
+from src.toontown.toonbase import ToontownGlobals
 
 
 class DistributedCogKartAI(DistributedElevatorExtAI.DistributedElevatorExtAI):

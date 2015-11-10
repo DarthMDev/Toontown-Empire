@@ -1,9 +1,9 @@
-from pandac.PandaModules import *
-from toontown.dna.DNAParser import DNAGroup, DNAVisGroup
-from toontown.hood import HoodAI
-from toontown.hood import ZoneUtil
-from toontown.safezone.DistributedGolfKartAI import DistributedGolfKartAI
-from toontown.toonbase import ToontownGlobals
+from panda3d.core import *
+from src.toontown.dna.DNAParser import DNAGroup, DNAVisGroup
+from src.toontown.hood import HoodAI
+from src.toontown.hood import ZoneUtil
+from src.toontown.safezone.DistributedGolfKartAI import DistributedGolfKartAI
+from src.toontown.toonbase import ToontownGlobals
 
 
 class GZHoodAI(HoodAI.HoodAI):
@@ -37,7 +37,7 @@ class GZHoodAI(HoodAI.HoodAI):
                     golfKart.generateWithRequired(zoneId)
                     golfKarts.append(golfKart)
         elif isinstance(dnaGroup, DNAVisGroup) and (not overrideDNAZone):
-            zoneId = ZoneUtil.getTrueZoneId(int(dnaGroup.getName().split(':')[0]), zoneId)
+            zoneId = int(dnaGroup.getName().split(':')[0])
         for i in xrange(dnaGroup.getNumChildren()):
             foundGolfKarts = self.findGolfKarts(dnaGroup.at(i), zoneId, area, overrideDNAZone=overrideDNAZone)
             golfKarts.extend(foundGolfKarts)
@@ -47,7 +47,6 @@ class GZHoodAI(HoodAI.HoodAI):
         self.golfKarts = []
         for zoneId in self.getZoneTable():
             dnaData = self.air.dnaDataMap.get(zoneId, None)
-            zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
             if dnaData.getName() == 'root':
                 area = ZoneUtil.getCanonicalZoneId(zoneId)
                 foundGolfKarts = self.findGolfKarts(dnaData, zoneId, area, overrideDNAZone=True)

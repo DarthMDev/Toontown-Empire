@@ -1,10 +1,10 @@
 from direct.actor import Actor
 from direct.interval.IntervalGlobal import *
 from direct.showbase import Audio3DManager
-from otp.ai.MagicWordGlobal import *
-from toontown.dna.DNAParser import *
-from toontown.hood import ZoneUtil
-from toontown.toon import DistributedNPCToonBase
+from src.otp.ai.MagicWordGlobal import *
+from src.toontown.dna.DNAParser import *
+from src.toontown.hood import ZoneUtil
+from src.toontown.toon import DistributedNPCToonBase
 from DistributedToonInterior import DistributedToonInterior
 import ToonInteriorColors, random
 
@@ -40,7 +40,7 @@ class DistributedToonHallInterior(DistributedToonInterior):
         self.interior.flattenMedium()
         for npcToon in self.cr.doFindAllInstances(DistributedNPCToonBase.DistributedNPCToonBase):
             npcToon.initToonState()
-        
+
         self.createSillyMeter()
 
     def createSillyMeter(self):
@@ -83,19 +83,19 @@ class DistributedToonHallInterior(DistributedToonInterior):
         self.arrowSfx = self.audio3d.loadSfx('phase_4/audio/sfx/tt_s_prp_sillyMeterArrow.ogg')
         self.arrowSfx.setLoop(False)
         self.audio3d.setDropOffFactor(0.1)
-        
+
         self.startSillyMeter(config.GetInt('silly-meter-phase', 12))
-    
+
     def startSillyMeter(self, phase):
         self.stopSillyMeter()
-        
+
         if hasattr(self, 'enterPhase%s' % phase):
             getattr(self, 'enterPhase%s' % phase)()
             self.phase = phase
-    
+
     def stopSillyMeter(self):
         if hasattr(self, 'phase') and hasattr(self, 'exitPhase%s' % self.phase):
-                getattr(self, 'exitPhase%s' % self.phase)()
+            getattr(self, 'exitPhase%s' % self.phase)()
 
     def enterPhase0(self):
         self.animSeq = Parallel(ActorInterval(self.sillyMeter, 'arrowTube', partName='arrow', duration=604800, constrainedLoop=1, startFrame=1, endFrame=30), Sequence(Func(self.phase1Sfx.play), Func(self.audio3d.attachSoundToObject, self.phase1Sfx, self.sillyMeter)))
@@ -421,9 +421,9 @@ def sillyPhase(phase):
     """
     Set the silly meter phase.
     """
-    
+
     if phase < -1 or phase > 14:
         return 'Phase number must be between 0 and 14!'
-    
+
     messenger.send('SillyMeterPhase', [phase])
     return 'Successfully set the silly meter phase!'

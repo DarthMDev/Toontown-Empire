@@ -1,10 +1,9 @@
-from pandac.PandaModules import *
-from toontown.toonbase import ToontownGlobals
-from toontown.language import LanguageSelector
+from panda3d.core import *
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.language import LanguageSelector
 from direct.fsm import StateData
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
 import random, AvatarChoice
@@ -39,8 +38,6 @@ class AvatarChooser(StateData.StateData):
         base.disableMouse()
         self.title.reparentTo(aspect2d)
         self.quitButton.show()
-        if config.GetBool('want-language-selection', False):
-            self.languageButton.show()
         self.pickAToonBG.setBin('background', 1)
         self.pickAToonBG.reparentTo(aspect2d)
         base.setBackgroundColor(Vec4(0.145, 0.368, 0.78, 1))
@@ -93,7 +90,7 @@ class AvatarChooser(StateData.StateData):
             used_position_indexs.append(av.position)
             self.panelList.append(panel)
 
-        for panelNum in range(0, MAX_AVATARS):
+        for panelNum in xrange(0, MAX_AVATARS):
             if panelNum not in used_position_indexs:
                 panel = AvatarChoice.AvatarChoice(position=panelNum)
                 panel.setPos(POSITIONS[panelNum])
@@ -123,7 +120,7 @@ class AvatarChooser(StateData.StateData):
             return toonHead.getRandomForwardLookAtPoint()
         else:
             other_toon_idxs = []
-            for i in range(len(self.IsLookingAt)):
+            for i in xrange(len(self.IsLookingAt)):
                 if self.IsLookingAt[i] == toonidx:
                     other_toon_idxs.append(i)
 
@@ -172,7 +169,7 @@ class AvatarChooser(StateData.StateData):
         if len(self.used_panel_indexs) == 0:
             return
         self.IsLookingAt = []
-        for i in range(MAX_AVATARS):
+        for i in xrange(MAX_AVATARS):
             self.IsLookingAt.append('f')
 
         for panel in self.panelList:
@@ -210,8 +207,6 @@ class AvatarChooser(StateData.StateData):
         self.doneStatus['mode'] = panelDoneStatus
         self.choice = panelChoice
         if panelDoneStatus == 'chose':
-            self.__handleChoice()
-        elif panelDoneStatus == 'nameIt':
             self.__handleChoice()
         elif panelDoneStatus == 'delete':
             self.__handleDelete()

@@ -1,5 +1,5 @@
-from otp.otpbase import OTPGlobals
-from toontown.toonbase import ToontownGlobals
+from src.otp.otpbase import OTPGlobals
+from src.toontown.toonbase import ToontownGlobals
 import copy
 BOARDCODE_OKAY = 1
 BOARDCODE_MISSING = 0

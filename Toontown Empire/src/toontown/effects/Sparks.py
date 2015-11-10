@@ -1,7 +1,7 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.particles import ParticleEffect
 from direct.directnotify import DirectNotifyGlobal
-from toontown.battle import BattleParticles
+from src.toontown.battle import BattleParticles
 
 class Sparks(NodePath):
 

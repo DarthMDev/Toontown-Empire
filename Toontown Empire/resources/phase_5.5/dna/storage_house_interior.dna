@@ -156,6 +156,14 @@ model "phase_5.5/models/estate/closetBoy" [
         store_node [ "prop" "closetBoy" "" ]
         ]
 
+model "phase_5.5/models/estate/tt_m_ara_est_accessoryTrunkBoy" [
+        store_node [ "prop" "trunkBoy" "" ]
+        ]
+
+model "phase_5.5/models/estate/tt_m_ara_est_accessoryTrunkGirl" [
+        store_node [ "prop" "trunkGirl" "" ]
+        ]
+
 model "phase_5.5/models/estate/Piano" [
         store_node [ "prop" "Piano" "" ]
         ]

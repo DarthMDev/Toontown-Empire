@@ -5,13 +5,12 @@ from direct.distributed.ClockDelta import globalClockDelta
 from direct.distributed.DistributedObject import DistributedObject
 from direct.fsm import ClassicFSM, State
 from direct.fsm.StatePush import StateVar, FunctionCall
-from toontown.cogdominium import CogdoGameConsts
-from toontown.cogdominium.DistCogdoGameBase import DistCogdoGameBase
-from toontown.minigame.MinigameRulesPanel import MinigameRulesPanel
-from toontown.cogdominium.CogdoGameRulesPanel import CogdoGameRulesPanel
-from toontown.minigame import MinigameGlobals
-from toontown.toonbase import TTLocalizer as TTL
-SCHELLGAMES_DEV = __debug__ and base.config.GetBool('cogdo-enable-cheat', True)
+from src.toontown.cogdominium import CogdoGameConsts
+from src.toontown.cogdominium.DistCogdoGameBase import DistCogdoGameBase
+from src.toontown.minigame.MinigameRulesPanel import MinigameRulesPanel
+from src.toontown.cogdominium.CogdoGameRulesPanel import CogdoGameRulesPanel
+from src.toontown.minigame import MinigameGlobals
+from src.toontown.toonbase import TTLocalizer as TTL
 
 class DistCogdoGame(DistCogdoGameBase, DistributedObject):
     notify = directNotify.newCategory('DistCogdoGame')
@@ -72,7 +71,7 @@ class DistCogdoGame(DistCogdoGameBase, DistributedObject):
         return
 
     def getToon(self, toonId):
-        if self.cr.doId2do.has_key(toonId):
+        if toonId in self.cr.doId2do:
             return self.cr.doId2do[toonId]
         else:
             return None
@@ -231,12 +230,10 @@ class DistCogdoGame(DistCogdoGameBase, DistributedObject):
         return self._startTime
 
     def enterGame(self):
-        if SCHELLGAMES_DEV:
-            self.acceptOnce('escape', messenger.send, ['magicWord', ['~endMaze']])
+        pass
 
     def exitGame(self):
-        if SCHELLGAMES_DEV:
-            self.ignore('escape')
+        pass
 
     def setGameFinish(self, timestamp):
         self._finishTime = globalClockDelta.networkToLocalTime(timestamp)

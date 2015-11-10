@@ -5,7 +5,7 @@ from BattleSounds import *
 import MovieUtil
 import MovieCamera
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownBattleGlobals
+from src.toontown.toonbase import ToontownBattleGlobals
 from direct.actor import Actor
 from direct.particles import ParticleEffect
 import BattleParticles

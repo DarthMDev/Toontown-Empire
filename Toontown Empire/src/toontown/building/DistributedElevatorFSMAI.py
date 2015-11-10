@@ -4,8 +4,8 @@ from direct.distributed import DistributedObjectAI
 from direct.distributed.ClockDelta import *
 from direct.fsm.FSM import FSM
 from direct.task import Task
-from otp.ai.AIBase import *
-from toontown.toonbase import ToontownGlobals
+from src.otp.ai.AIBase import *
+from src.toontown.toonbase import ToontownGlobals
 
 
 class DistributedElevatorFSMAI(DistributedObjectAI.DistributedObjectAI, FSM):

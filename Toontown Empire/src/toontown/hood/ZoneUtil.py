@@ -1,4 +1,4 @@
-from toontown.toonbase.ToontownGlobals import *
+from src.toontown.toonbase.ToontownGlobals import *
 
 
 zoneUtilNotify = directNotify.newCategory('ZoneUtil')
@@ -109,7 +109,7 @@ def getWhereName(zoneId, isToon):
                 if getHoodId(zoneId) == SellbotHQ:
                     if suffix == 600:
                         where = 'megaCorpInterior'
-                    else:    
+                    else:
                         where = 'factoryInterior'
                 elif getHoodId(zoneId) == CashbotHQ:
                     where = 'mintInterior'
@@ -144,32 +144,7 @@ def getCanonicalBranchZone(zoneId):
     return getBranchZone(getCanonicalZoneId(zoneId))
 
 
-def isWelcomeValley(zoneId):
-    return zoneId == WelcomeValleyToken or zoneId >= WelcomeValleyBegin and zoneId < WelcomeValleyEnd
-
-
 def getCanonicalZoneId(zoneId):
-    if zoneId == WelcomeValleyToken:
-        zoneId = ToontownCentral
-    elif zoneId >= WelcomeValleyBegin and zoneId < WelcomeValleyEnd:
-        zoneId = zoneId % 2000
-        if zoneId < 1000:
-            zoneId = zoneId + ToontownCentral
-        else:
-            zoneId = zoneId - 1000 + GoofySpeedway
-    return zoneId
-
-
-def getTrueZoneId(zoneId, currentZoneId):
-    if zoneId >= WelcomeValleyBegin and zoneId < WelcomeValleyEnd or zoneId == WelcomeValleyToken:
-        zoneId = getCanonicalZoneId(zoneId)
-    if currentZoneId >= WelcomeValleyBegin and currentZoneId < WelcomeValleyEnd:
-        hoodId = getHoodId(zoneId)
-        offset = currentZoneId - currentZoneId % 2000
-        if hoodId == ToontownCentral:
-            return zoneId - ToontownCentral + offset
-        elif hoodId == GoofySpeedway:
-            return zoneId - GoofySpeedway + offset + 1000
     return zoneId
 
 
@@ -245,5 +220,5 @@ def getWakeInfo(hoodId = None, zoneId = None):
 
 def canWearSuit(zoneId):
     zoneId = getCanonicalHoodId(zoneId)
-        
+
     return zoneId >= DynamicZonesBegin or zoneId in [LawbotHQ, CashbotHQ, SellbotHQ, BossbotHQ]

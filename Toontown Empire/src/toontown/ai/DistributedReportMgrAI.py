@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
-from toontown.uberdog.ClientServicesManagerUD import executeHttpRequestAndLog
+from src.toontown.uberdog.ClientServicesManagerUD import executeHttpRequestAndLog
 import ReportGlobals, threading, time
 
 class DistributedReportMgrAI(DistributedObjectAI):

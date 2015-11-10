@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 import DistributedFactoryAI
-from toontown.toon import NPCToons
+from src.toontown.toon import NPCToons
 import random
 
 class DistributedMegaCorpAI(DistributedFactoryAI.DistributedFactoryAI):
@@ -21,3 +21,5 @@ class DistributedMegaCorpAI(DistributedFactoryAI.DistributedFactoryAI):
         for toon in activeVictors:
             toon.attemptAddNPCFriend(npcId)
             toon.d_setSystemMessage(0, 'You got a %s SOS card.' % (NPCToons.getNPCName(npcId)))
+			
+			

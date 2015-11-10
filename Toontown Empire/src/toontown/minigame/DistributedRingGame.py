@@ -1,5 +1,5 @@
-from pandac.PandaModules import *
-from toontown.toonbase.ToonBaseGlobal import *
+from panda3d.core import *
+from src.toontown.toonbase.ToonBaseGlobal import *
 from direct.interval.IntervalGlobal import *
 from DistributedMinigame import *
 from direct.distributed.ClockDelta import *
@@ -12,8 +12,8 @@ import RingTrack
 import RingGameGlobals
 import RingGroup
 import RingTrackGroups
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
 
 class DistributedRingGame(DistributedMinigame):
     UPDATE_ENVIRON_TASK = 'RingGameUpdateEnvironTask'
@@ -190,7 +190,7 @@ class DistributedRingGame(DistributedMinigame):
         self.__removeAllToonDropShadows()
         render.clearFog()
         base.camLens.setFar(ToontownGlobals.DefaultCameraFar)
-        base.camLens.setMinFov(ToontownGlobals.DefaultCameraFov/(4./3.))
+        base.camLens.setMinFov(settings['fov']/(4./3.))
         base.setBackgroundColor(ToontownGlobals.DefaultBackgroundColor)
         self.arrowKeys.destroy()
         del self.arrowKeys

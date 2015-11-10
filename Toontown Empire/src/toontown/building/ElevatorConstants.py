@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 ELEVATOR_NORMAL = 0
 ELEVATOR_VP = 1
 ELEVATOR_MINT = 2
@@ -15,8 +15,7 @@ REJECT_MINLAFF = 2
 REJECT_NOSEAT = 3
 REJECT_PROMOTION = 4
 REJECT_BLOCKED_ROOM = 5
-REJECT_NOT_YET_AVAILABLE = 6
-REJECT_BOARDINGPARTY = 7
+REJECT_BOARDINGPARTY = 6
 MAX_GROUP_BOARDING_TIME = 6.0
 ElevatorData = {ELEVATOR_NORMAL: {'openTime': 2.0,
                    'closeTime': 2.0,

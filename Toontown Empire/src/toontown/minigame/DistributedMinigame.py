@@ -1,25 +1,24 @@
-from pandac.PandaModules import *
-from toontown.toonbase.ToonBaseGlobal import *
+from panda3d.core import *
+from src.toontown.toonbase.ToonBaseGlobal import *
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
 from direct.distributed.ClockDelta import *
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 import MinigameRulesPanel
 from direct.task.Task import Task
-from toontown.toon import Toon
+from src.toontown.toon import Toon
 from direct.showbase import RandomNumGen
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
 import random
 import MinigameGlobals
 from direct.showbase import PythonUtil
-from toontown.toon import TTEmote
-from otp.avatar import Emote
-from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
-from otp.ai.MagicWordGlobal import *
+from src.toontown.toon import TTEmote
+from src.otp.avatar import Emote
+from src.otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
+from src.otp.ai.MagicWordGlobal import *
 
 class DistributedMinigame(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedMinigame')
@@ -102,7 +101,7 @@ class DistributedMinigame(DistributedObject.DistributedObject):
         self.normalExit = 1
         count = self.modelCount
         zoneId = 0 #TODO: Make a system for picking minigame backgrounds
-        loader.beginBulkLoad('minigame', TTLocalizer.HeadingToMinigameTitle % self.getTitle(), count, 1, TTLocalizer.TIP_MINIGAME)
+        loader.beginBulkLoad('minigame', TTLocalizer.HeadingToMinigameTitle % self.getTitle(), count, 1, TTLocalizer.TIP_MINIGAME, zoneId)
         self.load()
         loader.endBulkLoad('minigame')
         globalClock.syncFrameTime()
@@ -342,6 +341,7 @@ class DistributedMinigame(DistributedObject.DistributedObject):
         self.notify.debug('BASE: handleRulesDone')
         self.sendUpdate('setAvatarReady', [])
         self.frameworkFSM.request('frameworkWaitServerStart')
+
 
     def enterFrameworkWaitServerStart(self):
         self.notify.debug('BASE: enterFrameworkWaitServerStart')

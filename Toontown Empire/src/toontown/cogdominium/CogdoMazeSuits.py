@@ -2,9 +2,9 @@ from pandac.PandaModules import Point3, VBase4
 from direct.fsm.FSM import FSM
 from direct.interval.IntervalGlobal import Sequence, Parallel, ActorInterval, Func, Wait, ParticleInterval, Track, LerpColorScaleInterval, LerpScaleInterval, LerpHprInterval
 from direct.task.Task import Task
-from toontown.battle import BattleParticles
-from toontown.battle import MovieUtil
-from toontown.minigame.MazeSuit import MazeSuit
+from src.toontown.battle import BattleParticles
+from src.toontown.battle import MovieUtil
+from src.toontown.minigame.MazeSuit import MazeSuit
 from CogdoMazeGameObjects import CogdoMazeSplattable
 import CogdoMazeGameGlobals as Globals
 import random
@@ -19,7 +19,7 @@ class CogdoMazeSuit(MazeSuit, FSM, CogdoMazeSplattable):
         MazeSuit.__init__(self, serialNum, maze, randomNumGen, data['cellWalkPeriod'], difficulty, data['dnaName'], startTile=startTile, walkSameDirectionProb=Globals.SuitWalkSameDirectionProb, walkTurnAroundProb=Globals.SuitWalkTurnAroundProb, uniqueRandomNumGen=False, walkAnimName=walkAnimName)
         FSM.__init__(self, 'CogdoMazeSuit')
         CogdoMazeSplattable.__init__(self, self.suit, '%s-%i' % (Globals.SuitCollisionName, self.serialNum), 1.5)
-        if data.has_key('scale'):
+        if 'scale' in data:
             self.suit.setScale(data['scale'])
         self.hp = data['hp']
         self.type = cogdoSuitType
@@ -228,8 +228,8 @@ class CogdoMazeBossSuit(CogdoMazeSuit):
 
     def pickRandomValidSpot(self, r = 5):
         validSpots = []
-        for x in range(self.TX - r, self.TX + r):
-            for y in range(self.TY - r, self.TY + r):
+        for x in xrange(self.TX - r, self.TX + r):
+            for y in xrange(self.TY - r, self.TY + r):
                 if self.maze.isWalkable(x, y):
                     validSpots.append([x, y])
 

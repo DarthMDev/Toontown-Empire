@@ -1,32 +1,29 @@
 from direct.distributed import DistributedObject/AI/UD
+from direct.distributed import DistributedObjectGlobal
 from direct.distributed import DistributedNode/AI/UD
 from direct.distributed import DistributedSmoothNode/AI
 from direct.distributed import DistributedCartesianGrid/AI
 from direct.distributed import DistributedCamera/AI/OV
-from otp.distributed import Account/AI/UD
-from otp.ai import TimeManager/AI
-from otp.ai import MagicWordManager/AI
-from otp.avatar import DistributedAvatar/AI/UD
-from otp.avatar import DistributedPlayer/AI
-from otp.friends import FriendManager/AI
-from otp.distributed import DistributedDistrict/AI/UD
-from otp.distributed import DistributedDirectory/AI
-from otp.chat import ChatAgent/UD
-from otp.avatar import AvatarHandle
+from src.otp.distributed import Account/AI/UD
+from src.otp.ai import TimeManager/AI
+from src.otp.ai import MagicWordManager/AI
+from src.otp.avatar import DistributedAvatar/AI/UD
+from src.otp.avatar import DistributedPlayer/AI
+from src.otp.friends import FriendManager/AI
+from src.otp.distributed import DistributedDistrict/AI/UD
+from src.otp.distributed import DistributedDirectory/AI
+from src.otp.chat import ChatAgent/UD
 
 typedef uint8 bool;
-
 typedef uint32 DoId;
-
 typedef DoId DoIdList[];
 
 struct AvatarPendingDel {
-  uint32 Avatar;
+  uint32 avId;
   uint32 date;
 };
 
 dclass Account {
-  string DcObjectType db;
   uint32 ACCOUNT_AV_SET[] required db;
   uint32 ESTATE_ID db;
   AvatarPendingDel ACCOUNT_AV_SET_DEL[] db;
@@ -34,7 +31,7 @@ dclass Account {
   string LAST_LOGIN db;
   string ACCOUNT_ID db;
   uint16 ACCESS_LEVEL db;
-  uint64 LAST_LOGIN_TS db;
+  uint32 LAST_LOGIN_TS db;
 };
 
 struct BarrierData {
@@ -46,14 +43,16 @@ struct BarrierData {
 dclass DistributedObject {
   setBarrierData(BarrierData []) broadcast ram;
   setBarrierReady(uint16 barrierContext) airecv clsend;
-  execCommand(string command, DoId magicWordMgr,
-              DoId avatar, uint32 zoneId);
+  execCommand(string command, DoId magicWordMgr, DoId avatar, uint32 zoneId);
   broadcastMessage() broadcast;
+};
+
+dclass DistributedObjectGlobal : DistributedObject {
 };
 
 dclass TimeManager : DistributedObject {
   requestServerTime(uint8 context) airecv clsend;
-  serverTime(uint8 context, int32 timestap, uint32 timeOfDay);
+  serverTime(uint8 context, int32 timestamp, uint32 timeOfDay);
   setDisconnectReason(uint8) airecv clsend;
   setExceptionInfo(string(0-1024)) airecv clsend;
 };
@@ -128,37 +127,13 @@ dclass DistributedCamera : DistributedNode {
   setFixtures(Fixture []) required broadcast ram ownsend airecv;
 };
 
-struct TalkModification {
-  uint16 offset;
-  uint16 size;
-};
-
-dclass TalkPath_owner {
-  setTalk(DoId fromAv, DoId fromAcc, string(0-256) avName,
-          string(0-400) chat, TalkModification [], uint8 flags) broadcast ownsend;
-};
-
-dclass TalkPath_whisper {
-  setTalkWhisper(DoId fromAv, DoId fromAcc, string(0-256) avName,
-                 string(0-400) chat, TalkModification [], uint8 flags) ownrecv clsend;
-};
-
-dclass TalkPath_group {
-  setTalkGroup(DoId fromAv, DoId fromAcc, string(0-256) avName,
-               string(0-400) chat, TalkModification [], uint8 flags) clsend airecv;
-};
-
-dclass AvatarHandle : TalkPath_whisper {
-};
-
-dclass DistributedAvatar : DistributedSmoothNode, TalkPath_whisper {
-  string DcObjectType db;
+dclass DistributedAvatar : DistributedSmoothNode {
   setName(string = "[Name not set]") required broadcast db airecv;
   friendsNotify(DoId avId, int8 status) ownrecv airecv;
   checkAvOnShard(DoId) clsend airecv;
   confirmAvOnShard(DoId avId, int8 isOnShard);
-  setTalk(DoId fromAv, DoId fromAcc, string(0-256) avName,
-          string(0-400) chat, TalkModification [], uint8 flags) broadcast;
+  setTalk(string(0-400) chat) broadcast;
+  setTalkWhisper(uint32 avId, string(0-400) chat) ownrecv clsend;
 };
 
 struct FriendEntry {
@@ -168,24 +143,17 @@ struct FriendEntry {
 
 dclass DistributedPlayer : DistributedAvatar {
   arrivedOnDistrict(DoId districtId) ownrecv ram;
-  setAccountName(string name = "") required ownrecv db;
   setWhisperSCFrom(DoId fromAv, uint16 msgIndex) ownrecv clsend;
   setWhisperSCCustomFrom(DoId fromAv, uint16 msgIndex) ownrecv clsend;
   setWhisperSCEmoteFrom(DoId fromAv, uint16 emoteId) ownrecv clsend;
   setSystemMessage(DoId aboutId, string(0-256) chatString) ownrecv;
-  setCommonChatFlags(uint8) broadcast ownrecv ram airecv;
-  setWhitelistChatFlags(uint8) broadcast ownrecv ram airecv;
   setSC(uint16 msgIndex) broadcast ownsend airecv;
   setSCCustom(uint16 msgIndex) broadcast ownsend airecv;
-  setFriendsList(FriendEntry[] = []) ownrecv required db airecv;
-  setDISLname(string) broadcast ownrecv ram;
-  setDISLid(uint32 = 0) broadcast ownrecv ram db airecv required;
-  OwningAccount(DoId);
-  WishName(string = "") db ram;
-  WishNameState(string = "OPEN") db ram;
-  setPreviousAccess(uint8 = 0) required db airecv;
-  setAccess(uint8 = 2) broadcast ownrecv required ram airecv;
-  setAdminAccess(uint16 = 0) broadcast ownrecv required airecv;
+  setFriendsList(uint32[] = []) ownrecv required db airecv;
+  setDISLid(uint32 = 0) airecv ram db;
+  setWishName(string = "") db ram;
+  setWishNameState(string = "OPEN") db ram;
+  setAdminAccess(uint16 = 0) required broadcast ownrecv db;
   setAsGM(bool = 0) required ram broadcast ownrecv airecv;
 };
 
@@ -195,10 +163,7 @@ dclass MagicWordManager : DistributedObject {
 };
 
 dclass ChatAgent : DistributedObject {
-  adminChat(uint32 aboutId, string message);
   chatMessage(string(0-256) message, uint8 chatMode) clsend;
-  whisperMessage(uint32 receiverAvId, string(0-256) message) clsend;
-  sfWhisperMessage(uint32 receiverAvId, string(0-256) message) clsend;
 };
 
 dclass FriendManager : DistributedObject {
@@ -213,318 +178,273 @@ dclass FriendManager : DistributedObject {
   inviteeCancelFriendQuery(int32);
 };
 
-struct leaderBoardRecordResponces {
-  char found;
-  uint32 id;
-  string text;
-  int32 value;
-};
-
-struct leaderBoardRecord {
-  uint32 id;
-  string text;
-  int32 value;
-};
-
-dclass LeaderBoardReceiver {
-  getTopTenResponce(string, leaderBoardRecord []);
-  getValuesResponce(string, leaderBoardRecordResponces []);
-};
-
-dclass LeaderBoard : LeaderBoardReceiver {
-  setValue(string [], uint32, string, int32);
-  alterValue(string [], uint32, string, int32);
-  setHighScore(string [], uint32, string, int32);
-  getValues(string, uint32 []);
-  getTopTen(string);
-  getValuesRespondTo(string, uint32 [], uint32);
-  getTopTenRespondTo(string, uint32);
-};
-
-dclass CallbackObject {
-  callback(uint32, bool, uint8);
-};
-
-from direct.distributed import DistributedObjectGlobal
-from toontown.ai import WelcomeValleyManager/AI
-from toontown.building import DistributedAnimatedProp/AI
-from toontown.toon import DistributedToon/AI/UD
-from toontown.safezone import DistributedTrolley/AI
-from toontown.safezone import DistributedPillow/AI
-from toontown.safezone import DistributedPartyGate/AI
-from toontown.suit import DistributedSuitPlanner/AI
-from toontown.suit import DistributedSuitBase/AI
-from toontown.suit import DistributedSuit/AI
-from toontown.suit import DistributedTutorialSuit/AI
-from toontown.suit import DistributedFactorySuit/AI
-from toontown.suit import DistributedMintSuit/AI
-from toontown.suit import DistributedStageSuit/AI
-from toontown.suit import DistributedSellbotBoss/AI
-from toontown.suit import DistributedCashbotBoss/AI
-from toontown.coghq import DistributedCashbotBossSafe/AI
-from toontown.coghq import DistributedCashbotBossCrane/AI
-from toontown.suit import DistributedCashbotBossGoon/AI
-from toontown.battle import DistributedBattleBase/AI
-from toontown.battle import DistributedBattle/AI
-from toontown.battle import DistributedBattleBldg/AI
-from toontown.tutorial import DistributedBattleTutorial/AI
-from toontown.coghq import DistributedBattleFactory/AI
-from toontown.battle import DistributedBattleFinal/AI
-from toontown.safezone import DistributedBoat/AI
-from toontown.safezone import DistributedButterfly/AI
-from toontown.safezone import DistributedMMPiano/AI
-from toontown.safezone import DistributedDGFlower/AI
-from toontown.fishing import DistributedFishingPond/AI
-from toontown.fishing import DistributedFishingTarget/AI
-from toontown.fishing import DistributedPondBingoManager/AI
-from toontown.safezone import DistributedFishingSpot/AI
-from toontown.estate import DistributedCannon/AI
-from toontown.estate import DistributedTarget/AI
-from toontown.minigame import DistributedMinigame/AI
-from toontown.minigame import DistributedMinigameTemplate/AI
-from toontown.minigame import DistributedRaceGame/AI
-from toontown.minigame import DistributedCannonGame/AI
-from toontown.minigame import DistributedPatternGame/AI
-from toontown.minigame import DistributedRingGame/AI
-from toontown.minigame import DistributedTagGame/AI
-from toontown.minigame import DistributedMazeGame/AI
-from toontown.minigame import DistributedTugOfWarGame/AI
-from toontown.minigame import DistributedCatchGame/AI
-from toontown.minigame import DistributedDivingGame/AI
-from toontown.minigame import DistributedTargetGame/AI
-from toontown.estate import EstateManager/AI
-from toontown.estate import DistributedEstate/AI
-from toontown.estate import DistributedHouse/AI
-from toontown.estate import DistributedHouseInterior/AI
-from toontown.estate import DistributedGarden/AI
-from toontown.shtiker import DeleteManager/AI
-from toontown.groups import GroupManager/AI/UD
-from toontown.ai import NewsManager/AI
-from toontown.shtiker import PurchaseManager/AI
-from toontown.shtiker import NewbiePurchaseManager/AI
-from toontown.safezone import SafeZoneManager/AI
-from toontown.tutorial import TutorialManager/AI
-from toontown.catalog import CatalogManager/AI
-from toontown.catalog import AccountDate/AI
-from toontown.safezone import DistributedTreasure/AI
-from toontown.coghq import DistributedCashbotBossTreasure/AI
-from toontown.building import DistributedTrophyMgr/AI
-from toontown.building import DistributedBuilding/AI
-from toontown.building import DistributedBuildingQueryMgr/AI
-from toontown.building import DistributedToonInterior/AI
-from toontown.building import DistributedToonHallInterior/AI
-from toontown.building import DistributedSuitInterior/AI
-from toontown.building import DistributedHQInterior/AI
-from toontown.building import DistributedGagshopInterior/AI
-from toontown.building import DistributedPetshopInterior/AI
-from toontown.building import DistributedKartShopInterior/AI
-from toontown.building import DistributedDoor/AI
-from toontown.estate import DistributedHouseDoor/AI
-from toontown.coghq import DistributedCogHQDoor/AI
-from toontown.coghq import DistributedCogHQExteriorDoor/AI
-from toontown.coghq import DistributedSellbotHQDoor/AI
-from toontown.toon import DistributedNPCToonBase/AI
-from toontown.toon import DistributedNPCToon/AI
-from toontown.toon import DistributedSmartNPC/AI
-from toontown.toon import DistributedNPCSpecialQuestGiver/AI
-from toontown.toon import DistributedNPCFlippyInToonHall/AI
-from toontown.toon import DistributedNPCScientist/AI
-from toontown.toon import DistributedNPCClerk/AI
-from toontown.toon import DistributedNPCTailor/AI
-from toontown.toon import DistributedNPCBlocker/AI
-from toontown.toon import DistributedNPCFisherman/AI
-from toontown.toon import DistributedNPCPartyPerson/AI
-from toontown.toon import DistributedNPCPetclerk/AI
-from toontown.toon import DistributedNPCKartClerk/AI
-from toontown.toon import DistributedNPCGlove/AI
-from toontown.toon import DistributedNPCLaffRestock/AI
-from toontown.building import DistributedKnockKnockDoor/AI
-from toontown.building import DistributedElevator/AI
-from toontown.building import DistributedElevatorFSM/AI
-from toontown.building import DistributedElevatorExt/AI
-from toontown.building import DistributedElevatorInt/AI
-from toontown.coghq import DistributedFactoryElevatorExt/AI
-from toontown.coghq import DistributedMintElevatorExt/AI
-from toontown.coghq import DistributedLawOfficeElevatorExt/AI
-from toontown.coghq import DistributedLawOfficeElevatorInt/AI
-from toontown.building import DistributedElevatorFloor/AI
-from toontown.building import DistributedBossElevator/AI
-from toontown.building import DistributedVPElevator/AI
-from toontown.building import DistributedCFOElevator/AI
-from toontown.building import DistributedCJElevator/AI
-from toontown.building import DistributedBBElevator/AI
-from toontown.building import DistributedBoardingParty/AI
-from toontown.building import DistributedTutorialInterior/AI
-from toontown.estate import DistributedMailbox/AI
-from toontown.estate import DistributedFurnitureManager/AI
-from toontown.estate import DistributedFurnitureItem/AI
-from toontown.estate import DistributedBank/AI
-from toontown.estate import DistributedCloset/AI
-from toontown.estate import DistributedTrunk/AI
-from toontown.estate import DistributedPhone/AI
-from toontown.effects import DistributedFireworkShow/AI
-from toontown.estate import DistributedFireworksCannon/AI
-from toontown.coghq import LobbyManager/AI
-from otp.level import DistributedLevel/AI
-from otp.level import DistributedEntity/AI
-from otp.level import DistributedInteractiveEntity/AI
-from toontown.coghq import DistributedMegaCorp/AI
-from toontown.coghq import DistributedFactory/AI
-from toontown.coghq import DistributedLawOffice/AI
-from toontown.coghq import DistributedLawOfficeFloor/AI
-from toontown.coghq import DistributedLift/AI
-from toontown.coghq import DistributedDoorEntity/AI
-from toontown.coghq import DistributedSwitch/AI
-from toontown.coghq import DistributedButton/AI
-from toontown.coghq import DistributedTrigger/AI
-from toontown.coghq import DistributedCrushableEntity/AI
-from toontown.coghq import DistributedCrusherEntity/AI
-from toontown.coghq import DistributedStomper/AI
-from toontown.coghq import DistributedStomperPair/AI
-from toontown.coghq import DistributedLaserField/AI
-from toontown.coghq import DistributedGolfGreenGame/AI
-from toontown.coghq import DistributedSecurityCamera/AI
-from toontown.coghq import DistributedMover/AI
-from toontown.coghq import DistributedElevatorMarker/AI
-from toontown.coghq import DistributedBarrelBase/AI
-from toontown.coghq import DistributedGagBarrel/AI
-from toontown.coghq import DistributedBeanBarrel/AI
-from toontown.coghq import DistributedHealBarrel/AI
-from toontown.coghq import DistributedGrid/AI
-from toontown.coghq import ActiveCell/AI
-from toontown.coghq import DirectionalCell/AI
-from toontown.coghq import CrusherCell/AI
-from toontown.coghq import DistributedCrate/AI
-from toontown.coghq import DistributedSinkingPlatform/AI
-from toontown.suit import DistributedGoon/AI
-from toontown.suit import DistributedGridGoon/AI
-from toontown.coghq import BattleBlocker/AI
-from toontown.ai import DistributedAprilToonsMgr/AI
-from toontown.ai import DistributedBlackCatMgr/AI
-from toontown.ai import DistributedReportMgr/AI
-from toontown.ai import DistributedPolarPlaceEffectMgr/AI
-from toontown.ai import DistributedGreenToonEffectMgr/AI
-from toontown.ai import DistributedResistanceEmoteMgr/AI
-from toontown.ai import DistributedScavengerHuntTarget/AI
-from toontown.ai import DistributedTrickOrTreatTarget/AI
-from toontown.ai import DistributedWinterCarolingTarget/AI
-from toontown.ai import DistributedJorElCam/AI
-from toontown.coghq import DistributedMint/AI
-from toontown.coghq import DistributedMintRoom/AI
-from toontown.coghq import DistributedMintBattle/AI
-from toontown.coghq import DistributedStage/AI
-from toontown.coghq import DistributedStageRoom/AI
-from toontown.coghq import DistributedStageBattle/AI
-from toontown.pets.DistributedPet/AI import *
-from toontown.pets import DistributedPetProxy/AI
-from toontown.distributed import ToontownDistrict/AI
-from toontown.distributed import ToontownDistrictStats/AI
-from toontown.racing import DistributedVehicle/AI
-from toontown.racing import DistributedStartingBlock/AI
-from toontown.racing import DistributedRace/AI
-from toontown.racing import DistributedKartPad/AI
-from toontown.racing import DistributedRacePad/AI
-from toontown.racing import DistributedViewPad/AI
-from toontown.racing import DistributedStartingBlock/AI
-from toontown.racing import DistributedLeaderBoard/AI
-from toontown.racing import DistributedGag/AI
-from toontown.racing import DistributedProjectile/AI
-from toontown.racing.DistributedStartingBlock/AI import DistributedViewingBlock/AI
-from toontown.uberdog.ClientServicesManager/UD import ClientServicesManager/UD
-from toontown.suit import DistributedLawbotBoss/AI
-from toontown.coghq import DistributedLawbotBossGavel/AI
-from toontown.suit import DistributedLawbotBossSuit/AI
-from toontown.coghq import DistributedLawbotCannon/AI
-from toontown.coghq import DistributedLawbotChair/AI
-from toontown.estate import DistributedLawnDecor/AI
-from toontown.estate import DistributedGardenPlot/AI
-from toontown.estate import DistributedGardenBox/AI
-from toontown.estate import DistributedFlower/AI
-from toontown.estate import DistributedGagTree/AI
-from toontown.estate import DistributedStatuary/AI
-from toontown.estate import DistributedToonStatuary/AI
-from toontown.estate import DistributedChangingStatuary/AI
-from toontown.estate import DistributedAnimatedStatuary/AI
-from toontown.estate import DistributedPlantBase/AI
-from toontown.estate import DistributedLawnDecor/AI
-from toontown.minigame import DistributedVineGame/AI
-from toontown.golf import DistributedPhysicsWorld/AI
-from toontown.golf import DistributedGolfHole/AI
-from toontown.golf import DistributedGolfCourse/AI
-from toontown.parties import DistributedParty/AI
-from toontown.parties import DistributedPartyActivity/AI
-from toontown.parties import DistributedPartyTeamActivity/AI
-from toontown.parties import DistributedPartyCannon/AI
-from toontown.parties import DistributedPartyCannonActivity/AI
-from toontown.parties import DistributedPartyCatchActivity/AI
-from toontown.parties import DistributedPartyWinterCatchActivity/AI
-from toontown.parties import DistributedPartyCogActivity/AI
-from toontown.parties import DistributedPartyWinterCogActivity/AI
-from toontown.parties import DistributedPartyFireworksActivity/AI
-from toontown.parties import DistributedPartyDanceActivityBase/AI
-from toontown.parties import DistributedPartyDanceActivity/AI
-from toontown.parties import DistributedPartyDance20Activity/AI
-from toontown.parties import DistributedPartyValentineDanceActivity/AI
-from toontown.parties import DistributedPartyValentineDance20Activity/AI
-from toontown.parties import DistributedPartyTrampolineActivity/AI
-from toontown.parties import DistributedPartyValentineTrampolineActivity/AI
-from toontown.parties import DistributedPartyVictoryTrampolineActivity/AI
-from toontown.parties import DistributedPartyWinterTrampolineActivity/AI
-from toontown.parties import DistributedPartyTugOfWarActivity/AI
-from toontown.parties import DistributedPartyJukeboxActivityBase/AI
-from toontown.parties import DistributedPartyJukeboxActivity/AI
-from toontown.parties import DistributedPartyJukebox40Activity/AI
-from toontown.parties import DistributedPartyValentineJukeboxActivity/AI
-from toontown.parties import DistributedPartyValentineJukebox40Activity/AI
-from toontown.friends import TTEFriendsManager/UD
-from toontown.safezone import DistributedGolfKart/AI
-from toontown.safezone import DistributedPicnicBasket/AI
-from toontown.distributed import DistributedTimer/AI
-from toontown.suit import DistributedBossbotBoss/AI
-from toontown.coghq import DistributedCogKart/AI
-from toontown.coghq import DistributedCountryClub/AI
-from toontown.coghq import DistributedCountryClubRoom/AI
-from toontown.coghq import DistributedMoleField/AI
-from toontown.coghq import DistributedCountryClubBattle/AI
-from toontown.building import DistributedClubElevator/AI
-from toontown.coghq import DistributedMaze/AI
-from toontown.battle import DistributedBattleWaiters/AI
-from toontown.coghq import DistributedFoodBelt/AI
-from toontown.coghq import DistributedBanquetTable/AI
-from toontown.battle import DistributedBattleDiners/AI
-from toontown.coghq import DistributedGolfSpot/AI
-from toontown.minigame import DistributedIceGame/AI
-from toontown.minigame import DistributedCogThiefGame/AI
-from toontown.minigame import DistributedTwoDGame/AI
-from toontown.safezone import DistributedPicnicTable/AI
-from toontown.safezone import DistributedChineseCheckers/AI
-from toontown.safezone import DistributedCheckers/AI
-from toontown.safezone import DistributedFindFour/AI
-from toontown.uberdog.DistributedPartyManager/AI/UD import DistributedPartyManager/AI/UD
-from toontown.uberdog.DistributedLobbyManager/AI/UD import DistributedLobbyManager/AI/UD
-from toontown.coderedemption.TTCodeRedemptionMgr/AI import TTCodeRedemptionMgr/AI
-from toontown.cogdominium import DistributedCogdoInterior/AI
-from toontown.cogdominium import DistributedCogdoBattleBldg/AI
-from toontown.cogdominium import DistributedCogdoElevatorExt/AI
-from toontown.cogdominium import DistributedCogdoElevatorInt/AI
-from toontown.cogdominium import DistributedCogdoBarrel/AI
-from toontown.cogdominium import DistCogdoGame/AI
-from toontown.cogdominium import DistCogdoLevelGame/AI
-from toontown.cogdominium import DistCogdoBoardroomGame/AI
-from toontown.cogdominium import DistCogdoCraneGame/AI
-from toontown.cogdominium import DistCogdoMazeGame/AI
-from toontown.cogdominium import DistCogdoFlyingGame/AI
-from toontown.cogdominium import DistCogdoCrane/AI
-from toontown.cogdominium import DistCogdoCraneMoneyBag/AI
-from toontown.cogdominium import DistCogdoCraneCog/AI
-from toontown.parties.GlobalPartyManager/AI/UD import GlobalPartyManager/AI/UD
-from toontown.uberdog.GlobalLobbyManager/AI/UD import GlobalLobbyManager/AI/UD
-from toontown.uberdog.ARGManager/AI/UD import ARGManager/AI/UD
-
-struct GiftItem {
-  blob Item;
-  string giftTag;
-};
+from src.toontown.building import DistributedAnimatedProp/AI
+from src.toontown.building import DistributedTrophyMgr/AI
+from src.toontown.building import DistributedBuilding/AI
+from src.toontown.building import DistributedBuildingQueryMgr/AI
+from src.toontown.building import DistributedToonInterior/AI
+from src.toontown.building import DistributedToonHallInterior/AI
+from src.toontown.building import DistributedSuitInterior/AI
+from src.toontown.building import DistributedHQInterior/AI
+from src.toontown.building import DistributedGagshopInterior/AI
+from src.toontown.building import DistributedPetshopInterior/AI
+from src.toontown.building import DistributedKartShopInterior/AI
+from src.toontown.building import DistributedDoor/AI
+from src.toontown.building import DistributedKnockKnockDoor/AI
+from src.toontown.building import DistributedElevator/AI
+from src.toontown.building import DistributedElevatorFSM/AI
+from src.toontown.building import DistributedElevatorExt/AI
+from src.toontown.building import DistributedElevatorInt/AI
+from src.toontown.building import DistributedElevatorFloor/AI
+from src.toontown.building import DistributedBossElevator/AI
+from src.toontown.building import DistributedVPElevator/AI
+from src.toontown.building import DistributedCFOElevator/AI
+from src.toontown.building import DistributedCJElevator/AI
+from src.toontown.building import DistributedBBElevator/AI
+from src.toontown.building import DistributedBoardingParty/AI
+from src.toontown.building import DistributedTutorialInterior/AI
+from src.toontown.building import DistributedClubElevator/AI
+from src.toontown.suit import DistributedSuitPlanner/AI
+from src.toontown.suit import DistributedBossbotBoss/AI
+from src.toontown.suit import DistributedSuitBase/AI
+from src.toontown.suit import DistributedSuit/AI
+from src.toontown.suit import DistributedTutorialSuit/AI
+from src.toontown.suit import DistributedFactorySuit/AI
+from src.toontown.suit import DistributedMintSuit/AI
+from src.toontown.suit import DistributedStageSuit/AI
+from src.toontown.suit import DistributedSellbotBoss/AI
+from src.toontown.suit import DistributedCashbotBoss/AI
+from src.toontown.suit import DistributedCashbotBossGoon/AI
+from src.toontown.suit import DistributedGoon/AI
+from src.toontown.suit import DistributedGridGoon/AI
+from src.toontown.suit import DistributedLawbotBoss/AI
+from src.toontown.suit import DistributedLawbotBossSuit/AI
+from src.toontown.toon import DistributedToon/AI/UD
+from src.toontown.toon import DistributedNPCToonBase/AI
+from src.toontown.toon import DistributedNPCToon/AI
+from src.toontown.toon import DistributedSmartNPC/AI
+from src.toontown.toon import DistributedNPCSpecialQuestGiver/AI
+from src.toontown.toon import DistributedNPCFlippyInToonHall/AI
+from src.toontown.toon import DistributedNPCScientist/AI
+from src.toontown.toon import DistributedNPCClerk/AI
+from src.toontown.toon import DistributedNPCTailor/AI
+from src.toontown.toon import DistributedNPCBlocker/AI
+from src.toontown.toon import DistributedNPCFisherman/AI
+from src.toontown.toon import DistributedNPCPartyPerson/AI
+from src.toontown.toon import DistributedNPCPetclerk/AI
+from src.toontown.toon import DistributedNPCKartClerk/AI
+from src.toontown.toon import DistributedNPCGlove/AI
+from src.toontown.toon import DistributedNPCLaffRestock/AI
+from src.toontown.safezone import DistributedTrolley/AI
+from src.toontown.safezone import DistributedPartyGate/AI
+from src.toontown.safezone import DistributedBoat/AI
+from src.toontown.safezone import DistributedButterfly/AI
+from src.toontown.safezone import DistributedMMPiano/AI
+from src.toontown.safezone import DistributedDGFlower/AI
+from src.toontown.safezone import DistributedFishingSpot/AI
+from src.toontown.safezone import SafeZoneManager/AI
+from src.toontown.safezone import DistributedGolfKart/AI
+from src.toontown.safezone import DistributedPicnicBasket/AI
+from src.toontown.safezone import DistributedPicnicTable/AI
+from src.toontown.safezone import DistributedChineseCheckers/AI
+from src.toontown.safezone import DistributedCheckers/AI
+from src.toontown.safezone import DistributedFindFour/AI
+from src.toontown.safezone import DistributedTreasure/AI
+from src.toontown.minigame import DistributedMinigame/AI
+from src.toontown.minigame import DistributedVineGame/AI
+from src.toontown.minigame import DistributedMinigameTemplate/AI
+from src.toontown.minigame import DistributedRaceGame/AI
+from src.toontown.minigame import DistributedCannonGame/AI
+from src.toontown.minigame import DistributedPatternGame/AI
+from src.toontown.minigame import DistributedRingGame/AI
+from src.toontown.minigame import DistributedTagGame/AI
+from src.toontown.minigame import DistributedMazeGame/AI
+from src.toontown.minigame import DistributedTugOfWarGame/AI
+from src.toontown.minigame import DistributedCatchGame/AI
+from src.toontown.minigame import DistributedDivingGame/AI
+from src.toontown.minigame import DistributedTargetGame/AI
+from src.toontown.minigame import DistributedIceGame/AI
+from src.toontown.minigame import DistributedCogThiefGame/AI
+from src.toontown.minigame import DistributedTwoDGame/AI
+from src.toontown.coghq import DistributedCashbotBossSafe/AI
+from src.toontown.coghq import DistributedCashbotBossCrane/AI
+from src.toontown.coghq import DistributedCogHQDoor/AI
+//from src.toontown.coghq import DistributedCogHQExteriorDoor/AI
+from src.toontown.coghq import DistributedSellbotHQDoor/AI
+from src.toontown.coghq import DistributedFactoryElevatorExt/AI
+from src.toontown.coghq import DistributedMintElevatorExt/AI
+from src.toontown.coghq import DistributedLawOfficeElevatorExt/AI
+from src.toontown.coghq import DistributedLawOfficeElevatorInt/AI
+from src.toontown.coghq import DistributedCashbotBossTreasure/AI
+from src.toontown.coghq import DistributedBattleFactory/AI
+from src.toontown.coghq import LobbyManager/AI
+from src.toontown.coghq import DistributedMegaCorp/AI
+from src.toontown.coghq import DistributedFactory/AI
+from src.toontown.coghq import DistributedLawOffice/AI
+from src.toontown.coghq import DistributedLawOfficeFloor/AI
+from src.toontown.coghq import DistributedLift/AI
+from src.toontown.coghq import DistributedDoorEntity/AI
+from src.toontown.coghq import DistributedSwitch/AI
+from src.toontown.coghq import DistributedButton/AI
+from src.toontown.coghq import DistributedTrigger/AI
+from src.toontown.coghq import DistributedCrushableEntity/AI
+from src.toontown.coghq import DistributedCrusherEntity/AI
+from src.toontown.coghq import DistributedStomper/AI
+from src.toontown.coghq import DistributedStomperPair/AI
+from src.toontown.coghq import DistributedLaserField/AI
+from src.toontown.coghq import DistributedGolfGreenGame/AI
+from src.toontown.coghq import DistributedSecurityCamera/AI
+from src.toontown.coghq import DistributedMover/AI
+from src.toontown.coghq import DistributedElevatorMarker/AI
+from src.toontown.coghq import DistributedBarrelBase/AI
+from src.toontown.coghq import DistributedGagBarrel/AI
+from src.toontown.coghq import DistributedBeanBarrel/AI
+from src.toontown.coghq import DistributedHealBarrel/AI
+from src.toontown.coghq import DistributedGrid/AI
+from src.toontown.coghq import ActiveCell/AI
+from src.toontown.coghq import DirectionalCell/AI
+from src.toontown.coghq import CrusherCell/AI
+from src.toontown.coghq import DistributedCrate/AI
+from src.toontown.coghq import DistributedSinkingPlatform/AI
+from src.toontown.coghq import BattleBlocker/AI
+from src.toontown.coghq import DistributedMint/AI
+from src.toontown.coghq import DistributedMintRoom/AI
+from src.toontown.coghq import DistributedMintBattle/AI
+from src.toontown.coghq import DistributedStage/AI
+from src.toontown.coghq import DistributedStageRoom/AI
+from src.toontown.coghq import DistributedStageBattle/AI
+from src.toontown.coghq import DistributedLawbotBossGavel/AI
+from src.toontown.coghq import DistributedLawbotCannon/AI
+from src.toontown.coghq import DistributedLawbotChair/AI
+from src.toontown.coghq import DistributedCogKart/AI
+from src.toontown.coghq import DistributedCountryClub/AI
+from src.toontown.coghq import DistributedCountryClubRoom/AI
+from src.toontown.coghq import DistributedMoleField/AI
+from src.toontown.coghq import DistributedCountryClubBattle/AI
+from src.toontown.coghq import DistributedMaze/AI
+from src.toontown.coghq import DistributedFoodBelt/AI
+from src.toontown.coghq import DistributedGolfSpot/AI
+from src.toontown.coghq import DistributedBanquetTable/AI
+from src.toontown.battle import DistributedBattleBase/AI
+from src.toontown.battle import DistributedBattle/AI
+from src.toontown.battle import DistributedBattleBldg/AI
+from src.toontown.battle import DistributedBattleFinal/AI
+from src.toontown.battle import DistributedBattleWaiters/AI
+from src.toontown.battle import DistributedBattleDiners/AI
+from src.toontown.estate import DistributedCannon/AI
+from src.toontown.estate import DistributedTarget/AI
+from src.toontown.estate import EstateManager/AI
+from src.toontown.estate import DistributedEstate/AI
+from src.toontown.estate import DistributedHouse/AI
+from src.toontown.estate import DistributedHouseInterior/AI
+from src.toontown.estate import DistributedGarden/AI
+from src.toontown.estate import DistributedHouseDoor/AI
+from src.toontown.estate import DistributedMailbox/AI
+from src.toontown.estate import DistributedFurnitureManager/AI
+from src.toontown.estate import DistributedFurnitureItem/AI
+from src.toontown.estate import DistributedBank/AI
+from src.toontown.estate import DistributedCloset/AI
+from src.toontown.estate import DistributedTrunk/AI
+from src.toontown.estate import DistributedPhone/AI
+from src.toontown.estate import DistributedFireworksCannon/AI
+from src.toontown.estate import DistributedLawnDecor/AI
+from src.toontown.estate import DistributedGardenPlot/AI
+from src.toontown.estate import DistributedGardenBox/AI
+from src.toontown.estate import DistributedFlower/AI
+from src.toontown.estate import DistributedGagTree/AI
+from src.toontown.estate import DistributedStatuary/AI
+from src.toontown.estate import DistributedToonStatuary/AI
+from src.toontown.estate import DistributedChangingStatuary/AI
+from src.toontown.estate import DistributedAnimatedStatuary/AI
+from src.toontown.estate import DistributedPlantBase/AI
+from src.toontown.estate import DistributedLawnDecor/AI
+from src.toontown.shtiker import DeleteManager/AI
+from src.toontown.shtiker import PurchaseManager/AI
+from src.toontown.shtiker import NewbiePurchaseManager/AI
+from src.toontown.ai import NewsManager/AI
+from src.toontown.ai import DistributedBlackCatMgr/AI
+from src.toontown.ai import DistributedReportMgr/AI
+from src.toontown.ai import DistributedPolarPlaceEffectMgr/AI
+from src.toontown.ai import DistributedEffectMgr/AI
+from src.toontown.ai import DistributedResistanceEmoteMgr/AI
+from src.toontown.tutorial import DistributedBattleTutorial/AI
+from src.toontown.tutorial import TutorialManager/AI
+from src.toontown.fishing import DistributedFishingPond/AI
+from src.toontown.fishing import DistributedFishingTarget/AI
+from src.toontown.fishing import DistributedPondBingoManager/AI
+from src.toontown.groups import GroupManager/AI/UD
+from src.toontown.catalog import CatalogManager/AI
+from src.toontown.effects import DistributedFireworkShow/AI
+from src.otp.level import DistributedLevel/AI
+from src.otp.level import DistributedEntity/AI
+from src.otp.level import DistributedInteractiveEntity/AI
+from src.toontown.pets.DistributedPet/AI import *
+from src.toontown.pets import DistributedPetProxy/AI
+from src.toontown.racing import DistributedVehicle/AI
+from src.toontown.racing import DistributedStartingBlock/AI
+from src.toontown.racing import DistributedRace/AI
+from src.toontown.racing import DistributedKartPad/AI
+from src.toontown.racing import DistributedRacePad/AI
+from src.toontown.racing import DistributedViewPad/AI
+from src.toontown.racing import DistributedStartingBlock/AI
+from src.toontown.racing import DistributedLeaderBoard/AI
+from src.toontown.racing import DistributedGag/AI
+from src.toontown.racing import DistributedProjectile/AI
+from src.toontown.racing.DistributedStartingBlock/AI import DistributedViewingBlock/AI
+from src.toontown.golf import DistributedPhysicsWorld/AI
+from src.toontown.golf import DistributedGolfHole/AI
+from src.toontown.golf import DistributedGolfCourse/AI
+from src.toontown.parties import DistributedParty/AI
+from src.toontown.parties import DistributedPartyActivity/AI
+from src.toontown.parties import DistributedPartyTeamActivity/AI
+from src.toontown.parties import DistributedPartyCannon/AI
+from src.toontown.parties import DistributedPartyCannonActivity/AI
+from src.toontown.parties import DistributedPartyCatchActivity/AI
+from src.toontown.parties import DistributedPartyWinterCatchActivity/AI
+from src.toontown.parties import DistributedPartyCogActivity/AI
+from src.toontown.parties import DistributedPartyWinterCogActivity/AI
+from src.toontown.parties import DistributedPartyFireworksActivity/AI
+from src.toontown.parties import DistributedPartyDanceActivityBase/AI
+from src.toontown.parties import DistributedPartyDanceActivity/AI
+from src.toontown.parties import DistributedPartyDance20Activity/AI
+from src.toontown.parties import DistributedPartyValentineDanceActivity/AI
+from src.toontown.parties import DistributedPartyValentineDance20Activity/AI
+from src.toontown.parties import DistributedPartyTrampolineActivity/AI
+from src.toontown.parties import DistributedPartyValentineTrampolineActivity/AI
+from src.toontown.parties import DistributedPartyVictoryTrampolineActivity/AI
+from src.toontown.parties import DistributedPartyWinterTrampolineActivity/AI
+from src.toontown.parties import DistributedPartyTugOfWarActivity/AI
+from src.toontown.parties import DistributedPartyJukeboxActivityBase/AI
+from src.toontown.parties import DistributedPartyJukeboxActivity/AI
+from src.toontown.parties import DistributedPartyJukebox40Activity/AI
+from src.toontown.parties import DistributedPartyValentineJukeboxActivity/AI
+from src.toontown.parties import DistributedPartyValentineJukebox40Activity/AI
+from src.toontown.parties.GlobalPartyManager/AI/UD import GlobalPartyManager/AI/UD
+from src.toontown.uberdog import MegaInvasionManager/AI/UD
+from src.toontown.friends import tteFriendsManager/UD
+from src.toontown.distributed import DistributedTimer/AI
+from src.toontown.distributed import ToontownDistrict/AI
+from src.toontown.distributed import ToontownDistrictStats/AI
+from src.toontown.uberdog.DistributedPartyManager/AI/UD import DistributedPartyManager/AI/UD
+//from src.toontown.uberdog.DistributedLobbyManager/AI/UD import DistributedLobbyManager/AI/UD
+from src.toontown.uberdog.ClientServicesManager/UD import ClientServicesManager/UD
+//from src.toontown.uberdog.GlobalLobbyManager/AI/UD import GlobalLobbyManager/AI/UD
+from src.toontown.uberdog.ARGManager import ARGManager
+from src.toontown.coderedemption.TTCodeRedemptionMgr/AI import TTCodeRedemptionMgr/AI
+from src.toontown.cogdominium import DistributedCogdoInterior/AI
+from src.toontown.cogdominium import DistributedCogdoBattleBldg/AI
+from src.toontown.cogdominium import DistributedCogdoElevatorExt/AI
+from src.toontown.cogdominium import DistributedCogdoElevatorInt/AI
+from src.toontown.cogdominium import DistributedCogdoBarrel/AI
+from src.toontown.cogdominium import DistCogdoGame/AI
+from src.toontown.cogdominium import DistCogdoLevelGame/AI
+from src.toontown.cogdominium import DistCogdoBoardroomGame/AI
+from src.toontown.cogdominium import DistCogdoCraneGame/AI
+from src.toontown.cogdominium import DistCogdoMazeGame/AI
+from src.toontown.cogdominium import DistCogdoFlyingGame/AI
+from src.toontown.cogdominium import DistCogdoCrane/AI
+from src.toontown.cogdominium import DistCogdoCraneMoneyBag/AI
+from src.toontown.cogdominium import DistCogdoCraneCog/AI
 
 struct gardenSpecial {
   uint8 index;
@@ -560,10 +480,10 @@ struct activity {
   uint8 h;
 };
 
-struct lobby {
-  uint64 lobbyId;
-  uint32 hostId;
-};
+//struct lobby {
+//  uint64 lobbyId;
+//  uint32 hostId;
+//};
 
 struct party {
   uint64 partyId;
@@ -627,21 +547,12 @@ struct datetime {
 
 dclass ToontownDistrict : DistributedDistrict {
   setParentingRules(string, string) broadcast ram;
-  allowAHNNLog(bool) broadcast required ram;
 };
 
 dclass ToontownDistrictStats : DistributedObject {
-  settoontownDistrictId(uint32) broadcast required ram;
+  setDistrictId(uint32) broadcast required ram;
   setAvatarCount(uint32) broadcast required ram;
-  setNewAvatarCount(uint32) broadcast required ram;
   setInvasionStatus(uint8) broadcast required ram;
-  setStats : setAvatarCount, setNewAvatarCount;
-};
-
-dclass WelcomeValleyManager : DistributedObject {
-  clientSetZone(uint32) airecv clsend;
-  requestZoneIdMessage(uint32, uint16) airecv clsend;
-  requestZoneIdResponse(uint32, uint16);
 };
 
 dclass DistributedAnimatedProp : DistributedObject {
@@ -669,27 +580,22 @@ dclass DistributedToon : DistributedPlayer {
   takeDamage(uint16) broadcast ownrecv;
   setBattleId(uint32 = 0) required broadcast ram;
   setExperience(blob = [0*14]) required broadcast db;
-  setIgnored(uint32[]) required clsend airecv ownrecv db;
-  setReported(uint32[]) required ownrecv db;
+  setIgnored(uint32[] = []) required clsend airecv ownrecv db;
+  setReported(uint32[] = []) required ownrecv db;
   setMaxCarry(uint8 = 20) required ownrecv db;
   setTrackAccess(uint16[] = [0,0,0,0,1,1,0]) required broadcast ownrecv db;
   setTrackProgress(int8 = -1, uint32 = 0) required ownrecv db;
   setTrackBonusLevel(int8[] = [-1,-1,-1,-1,-1,-1,-1]) required broadcast ownrecv db;
   setInventory(blob = [0*7, 0*7, 0*7, 0*7, 0, 0*6, 0, 0*6, 0*7]) required ownrecv db;
-  setMaxNPCFriends(uint16 = 16) required ownrecv db;
   setNPCFriendsDict(FriendEntry[] = []) required ownrecv db;
   setDefaultShard(uint32 = 0) required ownrecv broadcast db;
   setDefaultZone(uint32 = 0) required ownrecv broadcast db;
-  setShtickerBook(blob = []) required ownrecv db;
-  setZonesVisited(uint32[] = [ 2000 ]) required ownrecv db;
   setHoodsVisited(uint32[] = [ 2000 ]) required ownrecv db;
-  setInterface(blob = []) required ownrecv db;
   setLastHood(uint32 = 0) required ownrecv broadcast db;
   setTutorialAck(uint8) required ownrecv db;
   setMaxClothes(uint32 = 10) required ownrecv db;
   setClothesTopsList(uint8[] = []) required ownrecv db;
   setClothesBottomsList(uint8[] = []) required ownrecv db;
-  setMaxAccessories(uint32 = 0) required ownrecv db;
   setHatList(uint8[] = []) required ownrecv db;
   setGlassesList(uint8[] = []) required ownrecv db;
   setBackpackList(uint8[] = []) required ownrecv db;
@@ -704,7 +610,7 @@ dclass DistributedToon : DistributedPlayer {
   setTunnelOut(int16, int16/10, int16/10, int16/10, int16/10, int16/100, int32/100) ownsend broadcast;
   setAnimState(char [0-1024], int16/1000, int16) broadcast ram ownsend airecv;
   setEmoteState(int16, int16/1000, int16) broadcast ram ownsend;
-  setEmoteAccess(uint8[] = [1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]) required ownrecv db;
+  setEmoteAccess(uint8[] = [1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]) required ownrecv db;
   setCustomMessages(uint16[] = []) required ownrecv db;
   setSleepAutoReply(uint32) broadcast clsend ownrecv;
   setResistanceMessages(pair16 [] = []) required ownrecv db;
@@ -726,7 +632,7 @@ dclass DistributedToon : DistributedPlayer {
   setSpeedChatStyleIndex(uint8 = 1) required ownsend broadcast db;
   setTrophyScore(uint16) broadcast ownrecv ram;
   setTeleportAccess(uint32[] = []) required ownrecv db;
-  setScavengerHunt(uint32[] = []) required ownrecv db;
+  setScavengerHunt(uint16[] = []) required ownrecv db;
   checkTeleportAccess(uint16) airecv ownsend;
   setTeleportOverride(uint8) clsend airecv;
   battleSOS(uint32) ownrecv clsend;
@@ -742,7 +648,7 @@ dclass DistributedToon : DistributedPlayer {
   setCogLevels(uint8[] = [0 * 4]) required broadcast ownrecv db;
   setCogTypes(uint8[] = [0 * 4]) required broadcast ownrecv db;
   setCogParts(uint32[] = [0 * 4]) required broadcast ownrecv db;
-  setCogMerits(uint16[] = [0 * 4]) required ownrecv db;
+  setCogMerits(uint16[] = [0 * 4]) required broadcast ownrecv db;
   setCogIndex(int8) broadcast ram;
   setDisguisePageFlag(int8) ownrecv;
   setSosPageFlag(int8) ownrecv;
@@ -754,7 +660,6 @@ dclass DistributedToon : DistributedPlayer {
   requestDeleteQuest(uint32[]) ownsend airecv;
   setCheesyEffect(int16 = 0, uint32 = 0, uint32 = 0) required broadcast ownrecv db;
   setGhostMode(uint8) broadcast ownrecv ram;
-  setPosIndex(uint8 = 0) required ownrecv db;
   setFishCollection(uint8[] = [], uint8[] = [], uint16[] = []) required ownrecv db;
   setMaxFishTank(uint8 = 20) required ownrecv db;
   setFishTank(uint8[] = [], uint8[] = [], uint16[] = []) required ownrecv db;
@@ -804,9 +709,6 @@ dclass DistributedToon : DistributedPlayer {
   setCurrentKart(uint32) broadcast ownrecv ram;
   squish(uint8) ownsend airecv;
   announceBingo() broadcast ownrecv;
-  trickOrTreatTargetMet(uint32) ownrecv;
-  trickOrTreatMilestoneMet() ownrecv;
-  winterCarolingTargetMet(uint32) ownrecv;
   setCogSummonsEarned(uint8[] = [0*32]) required ownrecv db;
   reqCogSummons(char [0-256], uint32) ownsend airecv;
   cogSummonsResponse(string, uint32, uint32) ownrecv;
@@ -819,10 +721,10 @@ dclass DistributedToon : DistributedPlayer {
   setGolfCourseBest(uint8 [3] = [0*3]) required ownrecv db;
   setUnlimitedSwing(uint8) broadcast ownrecv ram;
   logSuspiciousEvent(char [0-1024]) ownsend airecv;
-  logMessage(char [0-1024]) ownsend airecv;
   forceLogoutWithNotify() ownrecv;
   setPinkSlips(uint8 = 0) required ownrecv db;
   setNametagStyle(uint8 = 0) required broadcast ownrecv db;
+  setNametagStyles(uint8[] = [0]) required broadcast ownrecv db;
   setMail(simpleMail []) ownrecv;
   setNumMailItems(uint32) airecv;
   setSimpleMailNotify(uint8) ownrecv airecv;
@@ -836,12 +738,21 @@ dclass DistributedToon : DistributedPlayer {
   setPartyStatus(uint64, uint8) ownrecv airecv;
   announcePartyStarted(uint64) ownrecv;
   setNeverStartedPartyRefunded(uint64, int8, uint16) ownrecv;
-  setDISLname(string) ram;
-  setDISLid(uint32) ram db airecv;
   setAnimalSound(uint8 index) ram broadcast ownrecv;
   setBuffs(uint32[] = []) required ownrecv db;
+  refundParty(uint16) ownrecv airecv ram;
   setRedeemedCodes(string [] = []) required ownrecv db;
   setEmblems(uint32[] = [0, 0]) required ownrecv db;
+  attemptSubtractNPCFriend(uint32 npcId) ownsend airecv;
+  setTrueFriends(uint32[] = []) required clsend ownrecv db;
+  setNextKnockHeal(uint32) ram airecv;
+  setEPP(uint8[] = []) required ownrecv db;
+  requestNametagStyle(uint8) airecv ownsend;
+  setFirstTrackPicked(uint8) required ownrecv db;
+  setSecondTrackPicked(uint8) required ownrecv db;
+  freezeToon() ownrecv;
+  unfreezeToon() ownrecv;
+  warnLocalToon(string) ownrecv;
 };
 
 dclass DistributedPartyGate : DistributedObject {
@@ -866,9 +777,6 @@ dclass DistributedTrolley : DistributedObject {
   rejectBoard(uint32);
   requestExit() airecv clsend;
   setMinigameZone(uint32, uint16);
-};
-
-dclass DistributedPillow : DistributedObject {
 };
 
 dclass DistributedSuitPlanner : DistributedObject {
@@ -934,6 +842,7 @@ dclass DistributedBossCog : DistributedNode {
   zapToon(int16/10, int16/10, int16/10, int16/10, int16/10, int16/10, int8/100, int8/100, uint8, int16) airecv clsend;
   showZapToon(uint32, int16/10, int16/10, int16/10, int16/10, int16/10, int16/10, uint8, int16) broadcast;
   setAttackCode(uint8, uint32) broadcast;
+  setAttackSpeed(uint16/100) broadcast ram;
 };
 
 dclass DistributedSellbotBoss : DistributedBossCog {
@@ -1186,9 +1095,11 @@ dclass DistributedMinigame : DistributedObject {
   setTrolleyZone(uint32) broadcast ram required;
   setDifficultyOverrides(int32, int32) broadcast ram required;
   setAvatarJoined() airecv clsend;
-  setAvatarReady() airecv clsend;
+  setAvatarReady() broadcast airecv clsend;
   setAvatarExited() airecv clsend;
   requestExit() airecv clsend;
+  requestSkip() airecv clsend;
+  setSkipCount(uint8) broadcast;
   setGameReady() broadcast;
   setGameStart(int16) broadcast;
   setGameExit() broadcast;
@@ -1294,8 +1205,6 @@ dclass DistributedTargetGame : DistributedMinigame {
 };
 
 dclass EstateManager : DistributedObject {
-  startAprilFools() broadcast;
-  stopAprilFools() broadcast;
   getEstateZone(uint32 avId) airecv clsend;
   setEstateZone(uint32 ownerId, uint32 zoneId);
   setAvHouseId(uint32, uint32[]) broadcast;
@@ -1311,46 +1220,41 @@ struct decorItem {
 };
 
 struct lawnItem {
-  int8 plot;
   uint8 type;
-  uint8 species;
-  uint8 variety;
+  uint8 hardPoint;
   int8 waterLevel;
   int8 growthLevel;
   uint16 optional;
-  uint64 plantedAt;
-  uint64 wateredAt;
 };
 
 dclass DistributedEstate : DistributedObject {
-  string DcObjectType db;
   setEstateReady() broadcast;
   setClientReady() airecv clsend;
+  setEstateType(uint8 type = 0) required broadcast db;
   setClosestHouse(uint8) airecv clsend;
   setTreasureIds(uint32[]) broadcast ram;
   requestServerTime() airecv clsend;
   setServerTime(uint32);
   setDawnTime(uint32) required broadcast ram;
   placeOnGround(uint32) broadcast ram;
-  setDecorData(lawnItem items[] = []) required airecv db;
   setLastEpochTimeStamp(uint32 timestamp = 0) required airecv db;
   setRentalTimeStamp(uint32 timestamp = 0) required airecv db;
   setRentalType(uint8 type = 0) required airecv db;
   setSlot0ToonId(uint32 toonId = 0) required airecv db;
-  setSlot0Items(lawnItem items[] = []) required broadcast ownrecv db;
+  setSlot0Garden(blob g) required airecv db;
   setSlot1ToonId(uint32 toonId = 0) required airecv db;
-  setSlot1Items(lawnItem items[] = []) required broadcast ownrecv db;
+  setSlot1Garden(blob g) required airecv db;
   setSlot2ToonId(uint32 toonId = 0) required airecv db;
-  setSlot2Items(lawnItem items[] = []) required broadcast ownrecv db;
+  setSlot2Garden(blob g) required airecv db;
   setSlot3ToonId(uint32 toonId = 0) required airecv db;
-  setSlot3Items(lawnItem items[] = []) required broadcast ownrecv db;
+  setSlot3Garden(blob g) required airecv db;
   setSlot4ToonId(uint32 toonId = 0) required airecv db;
-  setSlot4Items(lawnItem items[] = []) required broadcast ownrecv db;
+  setSlot4Garden(blob g) required airecv db;
   setSlot5ToonId(uint32 toonId = 0) required airecv db;
-  setSlot5Items(lawnItem items[] = []) required broadcast ownrecv db;
+  setSlot5Garden(blob g) required airecv db;
   setIdList(uint32 []) broadcast ram;
   completeFlowerSale(uint8) airecv clsend;
-  completeFishSale(uint8) airecv clsend;
+  completeFishSale() airecv clsend;
   thankSeller(int8, int8, int8);
   awardedTrophy(uint32) broadcast;
   setClouds(uint8) required broadcast ram;
@@ -1359,13 +1263,13 @@ dclass DistributedEstate : DistributedObject {
 };
 
 dclass DistributedHouse : DistributedObject {
-  string DcObjectType db;
   setHousePos(uint8) required broadcast;
   setHouseType(uint8 type = 0) required ownrecv db;
   setGardenPos(uint8 index = 0) required broadcast db;
   setAvatarId(uint32 toonId = 0) required broadcast db;
   setName(string toonName = "") required broadcast db;
   setColor(uint8 colorIndex = 0) required broadcast db;
+  setGender(uint8 = 0) required broadcast db;
   setAtticItems(blob = "") required db;
   setInteriorItems(blob = "") required db;
   setAtticWallpaper(blob = "") required db;
@@ -1386,8 +1290,7 @@ dclass DistributedHouseInterior : DistributedObject {
 };
 
 dclass DistributedGarden : DistributedObject {
-  sendNewProp(uint8, int16/10, int16/10, int16/10) broadcast;
-  setProps(uint8[]) airecv clsend;
+  sendNewProp(uint8 prop, int16/10 x, int16/10 y, int16/10 z) broadcast;
 };
 
 dclass DistributedParty : DistributedObject {
@@ -1415,7 +1318,7 @@ dclass DistributedPartyActivity : DistributedObject {
   exitRequestDenied(uint8);
   setToonsPlaying(uint32 []) broadcast ram;
   setState(string, int16) broadcast ram;
-  showJellybeanReward(uint32, uint32, string);
+  showJellybeanReward(uint8, uint32, string);
 };
 
 dclass DistributedPartyTeamActivity : DistributedPartyActivity {
@@ -1425,7 +1328,7 @@ dclass DistributedPartyTeamActivity : DistributedPartyActivity {
   setPlayersPerTeam(uint8, uint8) broadcast required;
   setDuration(uint8) broadcast required;
   setCanSwitchTeams(bool) broadcast required;
-  setState(string, int16, uint32) broadcast ram;
+  setState(string, int16, uint32 []) broadcast ram;
   setToonsPlaying(uint32 [0-8], uint32 [0-8]) required broadcast ram;
   setAdvantage(uint16/100);
   switchTeamRequestDenied(uint8);
@@ -1455,6 +1358,7 @@ dclass DistributedPartyCogActivity : DistributedPartyTeamActivity {
   pieHitsCog(uint32, int32, int8(0-2), int32/100, int32/100, int32/100, int32, bool) clsend broadcast airecv;
   setCogDistances(int8/100 [3]) broadcast ram;
   setHighScore(string, uint16) broadcast ram;
+  awardBeans() clsend airecv;
 };
 
 dclass DistributedPartyWinterCogActivity : DistributedPartyCogActivity {
@@ -1584,61 +1488,11 @@ dclass GroupManager : DistributedObject {
   removePlayerFromGroup(uint32, uint32) clsend airecv;
 };
 
-struct weeklyCalendarHoliday {
-  uint8 holidayId;
-  uint8 dayOfTheWeek;
-};
-
-struct yearlyCalendarHoliday {
-  uint8 holidayId;
-  uint8[] firstStartTime;
-  uint8[] lastEndTime;
-};
-
-struct oncelyCalendarHoliday {
-  uint8 holidayId;
-  uint16[] firstStartTime;
-  uint16[] lastEndTime;
-};
-
-struct relativelyCalendarHoliday {
-  uint8 holidayId;
-  uint16[] firstStartTime;
-  uint16[] lastEndTime;
-};
-
-struct startAndEndTime {
-  uint16[] startTime;
-  uint16[] endTime;
-};
-
-struct multipleStartHoliday {
-  uint8 holidayId;
-  startAndEndTime times[];
-};
-
 dclass NewsManager : DistributedObject {
-  setPopulation(uint32) broadcast ram;
-  setBingoWin(uint32) broadcast ram;
-  setBingoStart() broadcast;
-  setBingoEnd() broadcast;
-  setCircuitRaceStart() broadcast;
-  setCircuitRaceEnd() broadcast;
-  setTrolleyHolidayStart() broadcast;
-  setTrolleyHolidayEnd() broadcast;
-  setTrolleyWeekendStart() broadcast;
-  setTrolleyWeekendEnd() broadcast;
-  setRoamingTrialerWeekendStart() broadcast;
-  setRoamingTrialerWeekendEnd() broadcast;
+  startHoliday(uint8) broadcast;
+  endHoliday(uint8) broadcast;
+  setActiveHolidays(uint8[]);
   setInvasionStatus(uint8, string, uint32, uint8) broadcast;
-  setHolidayIdList(uint32[]) broadcast ram;
-  holidayNotify() broadcast;
-  setWeeklyCalendarHolidays(weeklyCalendarHoliday []) required broadcast ram;
-  setYearlyCalendarHolidays(yearlyCalendarHoliday []) required broadcast ram;
-  setOncelyCalendarHolidays(oncelyCalendarHoliday []) required broadcast ram;
-  setRelativelyCalendarHolidays(relativelyCalendarHoliday []) required broadcast ram;
-  setMultipleStartHolidays(multipleStartHoliday []) required broadcast ram;
-  sendSystemMessage(string, uint8) broadcast ram;
 };
 
 dclass PurchaseManager : DistributedObject {
@@ -1675,11 +1529,6 @@ dclass TutorialManager : DistributedObject {
 
 dclass CatalogManager : DistributedObject {
   startCatalog() airecv clsend;
-};
-
-dclass AccountDate : DistributedObject {
-  requestDate() airecv clsend;
-  requestDateResult(string);
 };
 
 dclass DistributedTreasure : DistributedObject {
@@ -1792,8 +1641,8 @@ dclass DistributedCogdoBattleBldg : DistributedBattleBldg {
 
 dclass DistCogdoGame : DistributedObject {
   setInteriorId(uint32) required broadcast ram;
-  setExteriorZone(uint32) broadcast ram required;
-  setDifficultyOverrides(int32, int32) broadcast ram required;
+  setExteriorZone(uint32) required broadcast ram;
+  setDifficultyOverrides(int32, int32) required broadcast ram;
   setVisible() broadcast;
   setIntroStart() broadcast;
   setToonSad(uint32) broadcast;
@@ -1882,10 +1731,10 @@ dclass DistributedHouseDoor : DistributedDoor {
 dclass DistributedCogHQDoor : DistributedDoor {
 };
 
-dclass DistributedCogHQExteriorDoor : DistributedCogHQDoor {
-  selectLobby(uint32) broadcast ram;
-  confirmEntrance(uint32, bool) airecv clsend;
-};
+//dclass DistributedCogHQExteriorDoor : DistributedCogHQDoor {
+//  selectLobby(uint32) broadcast;
+//  confirmEntrance(uint32, bool) airecv clsend;
+//};
 
 dclass DistributedSellbotHQDoor : DistributedCogHQDoor {
   informPlayer(uint8) broadcast ram;
@@ -1933,8 +1782,8 @@ dclass DistributedNPCScientist : DistributedNPCToonBase {
 };
 
 dclass DistributedNPCClerk : DistributedNPCToonBase {
-  setMovie(uint8, uint32, uint32, int16) broadcast ram;
-  setInventory(blob, int16, uint8) airecv clsend;
+  setState(uint32, uint8) broadcast airecv clsend;
+  setInventory(blob, int16) airecv clsend;
 };
 
 dclass DistributedNPCTailor : DistributedNPCToonBase {
@@ -1974,17 +1823,17 @@ dclass DistributedNPCKartClerk : DistributedNPCToonBase {
 };
 
 dclass DistributedNPCLaffRestock : DistributedNPCToonBase {
-  setMovie(uint8, uint32, uint32, uint32[], int16) broadcast ram;
-  restock(uint32, uint16, uint16) airecv clsend;
-  transactionDone() airecv clsend;
+  restock(uint8) airecv clsend;
+  restockResult(uint8) broadcast;
 };
 
 dclass DistributedNPCGlove : DistributedNPCToonBase {
-  doTransformation(uint32 avId, uint32) broadcast;
-  requestTransformation(uint32) airecv clsend;
+  changeGlove(uint8) airecv clsend;
+  changeGloveResult(uint32 avId, uint8) broadcast;
 };
 
 dclass DistributedKnockKnockDoor : DistributedAnimatedProp {
+  requestToonup() airecv clsend;
 };
 
 dclass DistributedElevator : DistributedObject {
@@ -2244,6 +2093,8 @@ dclass DistributedPhone : DistributedFurnitureItem {
   requestGiftPurchaseMessage(uint16, uint32, blob, int32) airecv clsend;
   requestGiftPurchaseResponse(uint16, int8);
   purchaseItemComplete();
+  requestGiftAvatar(uint32) airecv clsend;
+  setGiftAvatar(blob);
 };
 
 dclass DistributedFireworkShow : DistributedObject {
@@ -2472,7 +2323,6 @@ dclass DistributedMover : DistributedEntity {
 typedef uint16/10000 PetTrait;
 
 dclass DistributedPet : DistributedSmoothNode {
-  string DcObjectType db;
   setOwnerId(uint32) required broadcast db;
   setPetName(string) required broadcast db;
   setTraitSeed(uint32) required broadcast db;
@@ -2526,12 +2376,6 @@ dclass DistributedPetProxy : DistributedPet {
   setDominantMood(string) broadcast ram;
 };
 
-dclass DistributedAprilToonsMgr : DistributedObject {
-  setEventActive(uint8 eventId, bool) broadcast;
-  requestEventsList() clsend airecv;
-  requestEventsListResp(uint8 []);
-};
-
 dclass DistributedBlackCatMgr : DistributedObject {
   doBlackCatTransformation() broadcast;
   requestBlackCatTransformation() airecv clsend;
@@ -2545,29 +2389,14 @@ dclass DistributedPolarPlaceEffectMgr : DistributedObject {
   addPolarPlaceEffect() airecv clsend;
 };
 
-dclass DistributedGreenToonEffectMgr : DistributedObject {
-  addGreenToonEffect() airecv clsend;
+dclass DistributedEffectMgr : DistributedObject {
+  setHoliday(uint8) required broadcast;
+  requestEffect() airecv clsend;
+  effectDone(uint8);
 };
 
 dclass DistributedResistanceEmoteMgr : DistributedObject {
   addResistanceEmote() clsend airecv;
-};
-
-dclass DistributedScavengerHuntTarget : DistributedObject {
-  attemptScavengerHunt() airecv clsend;
-};
-
-dclass DistributedTrickOrTreatTarget : DistributedObject {
-  doScavengerHunt(int8);
-  requestScavengerHunt() airecv clsend;
-};
-
-dclass DistributedWinterCarolingTarget : DistributedObject {
-  doScavengerHunt(int8) broadcast;
-  requestScavengerHunt() airecv clsend;
-};
-
-dclass DistributedJorElCam : DistributedObject {
 };
 
 dclass DistributedVehicle : DistributedSmoothNode {
@@ -2669,9 +2498,14 @@ dclass DistributedStartingBlock : DistributedObject {
 dclass DistributedViewingBlock : DistributedStartingBlock {
 };
 
+struct LeaderboardResult {
+  string name;
+  uint16 time;
+};
+
 dclass DistributedLeaderBoard : DistributedObject {
   setPosHpr(int16/10, int16/10, int16/10, int16/10, int16/10, int16/10) required broadcast ram;
-  setDisplay(blob) broadcast ram;
+  setDisplay(uint8, uint8, LeaderboardResult[]) required broadcast ram;
 };
 
 dclass DistributedLawbotBoss : DistributedBossCog {
@@ -2728,27 +2562,24 @@ dclass DistributedLawbotChair : DistributedObject {
 };
 
 dclass DistributedLawnDecor : DistributedNode {
-  setEstate(uint32) required broadcast ram;
   setPlot(int8) required broadcast ram;
   setHeading(int16/10) required broadcast ram;
-  setPosition(int16/10, int16/10, int16/10) required broadcast ram;
   setOwnerIndex(int8) required broadcast ram;
+  setPosition(int16/10, int16/10, int16/10) required broadcast ram;
   plotEntered() airecv clsend;
-  removeItem(uint32) airecv clsend;
+  removeItem() airecv clsend;
   setMovie(uint8, uint32) broadcast ram;
   movieDone() airecv clsend;
   interactionDenied(uint32) broadcast ram;
+  setBoxDoId(uint32, uint8) broadcast ram;
 };
 
 dclass DistributedGardenPlot : DistributedLawnDecor {
-  plantedItem(uint32) broadcast ram;
-  finishPlanting(uint32) airecv clsend;
-  finishRemoving(uint32) airecv clsend;
-  plantFlower(uint8, uint8, uint32) airecv clsend;
-  plantGagTree(uint8, uint8, uint32) airecv clsend;
-  plantStatuary(uint8, uint32) airecv clsend;
-  plantToonStatuary(uint8, uint16, uint32) airecv clsend;
-  plantNothing(uint8, uint32) airecv clsend;
+  plantFlower(uint8, uint8) airecv clsend;
+  plantGagTree(uint8, uint8) airecv clsend;
+  plantStatuary(uint8) airecv clsend;
+  plantToonStatuary(uint8, uint16) airecv clsend;
+  plantNothing(uint8) airecv clsend;
 };
 
 dclass DistributedGardenBox : DistributedLawnDecor {
@@ -2756,7 +2587,6 @@ dclass DistributedGardenBox : DistributedLawnDecor {
 };
 
 dclass DistributedStatuary : DistributedLawnDecor {
-  setOwnerPlot(uint32) required broadcast ram;
   setTypeIndex(uint8) required broadcast ram;
   setWaterLevel(int8) required broadcast ram;
   setGrowthLevel(int8) required broadcast ram;
@@ -2774,11 +2604,10 @@ dclass DistributedChangingStatuary : DistributedStatuary {
 };
 
 dclass DistributedPlantBase : DistributedLawnDecor {
-  setOwnerPlot(uint32) required broadcast ram;
   setTypeIndex(uint8) required broadcast ram;
   setWaterLevel(int8) required broadcast ram;
   setGrowthLevel(int8) required broadcast ram;
-  waterPlant(uint32) airecv clsend;
+  waterPlant() airecv clsend;
   waterPlantDone() airecv clsend;
 };
 
@@ -2789,7 +2618,8 @@ dclass DistributedFlower : DistributedPlantBase {
 
 dclass DistributedGagTree : DistributedPlantBase {
   setWilted(int8) required broadcast ram;
-  requestHarvest(uint32) airecv clsend;
+  setFruiting(bool) required broadcast ram;
+  requestHarvest() airecv clsend;
 };
 
 struct golfData {
@@ -2970,6 +2800,8 @@ dclass DistributedBossbotBoss : DistributedBossCog {
   toonGotHealed(uint32) broadcast;
   requestGetToonup(int8, int8, uint32) airecv clsend;
   toonGotToonup(uint32, int8, int8, uint32) broadcast;
+  finishedChasing(int8, uint32) airecv clsend;
+  saySomething(string) broadcast ram;
 };
 
 dclass DistributedCogKart : DistributedElevatorExt {
@@ -3046,7 +2878,7 @@ dclass DistributedBanquetTable : DistributedObject {
   setIndex(uint8) required broadcast ram;
   setNumDiners(uint8) required broadcast ram;
   setBossCogId(uint32) required broadcast ram;
-  setDinerInfo(uint8[], uint8[], uint8[]) required broadcast ram;
+  setDinerInfo(uint8[], uint8[], uint8[], char[]) required broadcast ram;
   setState(char, uint32, int8) broadcast ram;
   setDinerStatus(uint8, uint8) broadcast;
   requestControl() airecv clsend;
@@ -3212,35 +3044,34 @@ dclass DistributedFindFour : DistributedNode {
   tie() broadcast;
 };
 
-
-dclass DistributedLobbyManager : DistributedObject {
-  addLobby(uint32, uint32, string, string, int8, int8, activity [], decoration [], uint32[], uint16);
-  addLobbyRequest(uint32) airecv clsend;
-  addLobbyResponse(uint32, int8);
-  addLobbyResponseUdToAi(uint64, int8, lobby) airecv;
+//dclass DistributedLobbyManager : DistributedObject {
+//  addLobby(uint32, uint32, string, string, int8, int8, activity [], decoration [], uint32[], uint16);
+//  addLobbyRequest(uint32) airecv clsend;
+//  addLobbyResponse(uint32, int8);
+//  addLobbyResponseUdToAi(uint64, int8, lobby) airecv;
   
-  getLobbyZone(uint32, uint32, uint8) clsend airecv;
-  receiveLobbyZone(uint32, uint64, uint32);
-  freeZoneIdFromCreatedLobby(uint32, uint32) clsend airecv;
+//  getLobbyZone(uint32, uint32, uint8) clsend airecv;
+//  receiveLobbyZone(uint32, uint64, uint32);
+//  freeZoneIdFromCreatedLobby(uint32, uint32) clsend airecv;
   
-  sendAvToPlayground(uint32, uint8);
-  exitParty(uint32) clsend airecv;
+//  sendAvToPlayground(uint32, uint8);
+//  exitParty(uint32) clsend airecv;
   
-  toonHasEnteredPartyAiToUd(uint32);
-  toonHasExitedPartyAiToUd(uint32);
+//  toonHasEnteredPartyAiToUd(uint32);
+//  toonHasExitedPartyAiToUd(uint32);
   
-  lobbyManagerAIStartingUp(uint32, uint32);
-  lobbyManagerAIGoingDown(uint32, uint32);
-  lobbyHasFinishedUdToAllAi(uint64 lobbyId) airecv;
+//  lobbyManagerAIStartingUp(uint32, uint32);
+//  lobbyManagerAIGoingDown(uint32, uint32);
+//  lobbyHasFinishedUdToAllAi(uint64 lobbyId) airecv;
   
-  requestShardIdZoneIdForHostId(uint32) clsend airecv;
-  sendShardIdZoneIdToAvatar(uint32, uint32);
+//  requestShardIdZoneIdForHostId(uint32) clsend airecv;
+//  sendShardIdZoneIdToAvatar(uint32, uint32);
   
-  lobbyManagerUdStartingUp() airecv;
-  lobbyManagerUdLost() airecv;
+//  lobbyManagerUdStartingUp() airecv;
+//  lobbyManagerUdLost() airecv;
   
-  receiveId(uint64 ids[]) airecv;
-};
+//  receiveId(uint64 ids[]) airecv;
+//};
 
 dclass DistributedPartyManager : DistributedObject {
   addParty(uint32, uint32, string, string, int8, int8, activity [], decoration [], uint32[], uint16);
@@ -3253,13 +3084,11 @@ dclass DistributedPartyManager : DistributedObject {
   respondToInviteResponse(uint32, uint16, uint64, int8, uint8) airecv;
 
   changePrivateRequest(uint64, int8) airecv clsend;
-  changePrivateRequestAiToUd(uint32, uint64, int8);
   changePrivateResponseUdToAi(uint32, uint64, int8, int8) airecv;
   changePrivateResponse(uint64, int8, int8);
 
   changePartyStatusRequest(uint64, int8) airecv clsend;
-  changePartyStatusRequestAiToUd(uint32, uint64, int8);
-  changePartyStatusResponseUdToAi(uint32, uint64, int8, int8) airecv;
+  changePartyStatusResponseUdToAi(uint32, uint64, int8, int8, int16) airecv;
   changePartyStatusResponse(uint64, int8, int8, uint16);
 
   partyInfoOfHostRequestAiToUd(uint32, uint32);
@@ -3293,31 +3122,37 @@ dclass DistributedPartyManager : DistributedObject {
   receiveId(uint64 ids[]) airecv;
 };
 
-dclass DistributedObjectGlobal : DistributedObject {
-};
-
-dclass GlobalLobbyManager : DistributedObjectGlobal {
-    lobbyManagerAIHello(uint32 channel);
-    queryLobby(uint32 hostId);
-    addLobby(DoId avId, uint64 lobbyId);
-    toonJoinedLobby(uint64 lobbyId, uint32 avId);
-    toonLeftLobby(uint64 lobbyId, uint32 avId);
-    requestLobbySlot(uint64 lobbyId, uint32 avId);
-    lobbyDone(uint64 lobbyId);
-    allocIds(uint16 count);
-};
+//dclass GlobalLobbyManager : DistributedObjectGlobal {
+//  lobbyManagerAIHello(uint32 channel);
+//  queryLobby(uint32 hostId);
+//  addLobby(DoId avId, uint64 lobbyId);
+//  toonJoinedLobby(uint64 lobbyId, uint32 avId);
+//  toonLeftLobby(uint64 lobbyId, uint32 avId);
+//  requestLobbySlot(uint64 lobbyId, uint32 avId);
+//  lobbyDone(uint64 lobbyId);
+//  allocIds(uint16 count);
+//};
 
 dclass GlobalPartyManager : DistributedObjectGlobal {
-    partyManagerAIHello(uint32 channel);
-    queryParty(uint32 hostId);
-    addParty(DoId avId, uint64 partyId, string start, string end, int8 isPrivate,
-             int8 inviteTheme, activity [], decoration [], DoIdList inviteeIds);
-    partyHasStarted(uint64 partyId, uint32 shardId, uint32 zoneId, string hostName);
-    toonJoinedParty(uint64 partyId, uint32 avId);
-    toonLeftParty(uint64 partyId, uint32 avId);
-    requestPartySlot(uint64 partyId, uint32 avId, uint32 gateId);
-    partyDone(uint64 partyId);
-    allocIds(uint16 count);
+  partyManagerAIHello(uint32 channel);
+  heartbeat(uint32 channel);
+  heartbeatResponse() airecv;
+  queryParty(uint32 hostId);
+  addParty(DoId avId, uint64 partyId, string start, string end, int8 isPrivate,
+           int8 inviteTheme, activity [], decoration [], DoIdList inviteeIds);
+  partyHasStarted(uint64 partyId, uint32 shardId, uint32 zoneId, string hostName);
+  toonJoinedParty(uint64 partyId, uint32 avId);
+  toonLeftParty(uint64 partyId, uint32 avId);
+  requestPartySlot(uint64 partyId, uint32 avId, uint32 gateId);
+  partyDone(uint64 partyId);
+  allocIds(uint16 count);
+
+  changePrivateRequest(uint32 hostId, uint64 partyId, int8 isPrivate);
+  changePartyStatusRequest(uint32 hostId, uint64 partyId, int8 partyStatus);
+
+  markInviteAsReadButNotReplied(uint32 avId, uint64 inviteKey);
+  respondToInvite(uint32 fromId, uint32 todo0, uint16 context, uint64 inviteKey, uint8 inviteStatus);
+
 };
 
 struct PotentialToon {
@@ -3355,27 +3190,26 @@ dclass ClientServicesManager : DistributedObjectGlobal {
 
 dclass TTCodeRedemptionMgr : DistributedObject {
   redeemCode(char [0-50]) airecv clsend;
-  redeemCodeResult(uint32);
+  redeemCodeResult(uint8);
 };
 
 struct Friend
 {
-uint32 doId;
-string name;
-blob dna;
-uint32 petId;
+  uint32 doId;
+  string name;
+  blob dna;
+  uint16 adminAccess;
+  uint32 petId;
 };
 
-dclass TTEFriendsManager : DistributedObjectGlobal {
+dclass tteFriendsManager : DistributedObjectGlobal {
   removeFriend(uint32) clsend;
-  requestAvatarInfo(uint32[]) clsend;
 
   requestFriendsList() clsend;
 
-  friendInfo(Friend);
   friendList(Friend []);
 
-  friendOnline(uint32, uint8, uint8);
+  friendOnline(uint32);
   friendOffline(uint32);
 
   goingOffline(uint32 avId);
@@ -3418,4 +3252,10 @@ dclass TTEFriendsManager : DistributedObjectGlobal {
 };
 
 dclass ARGManager : DistributedObjectGlobal {
+};
+
+dclass MegaInvasionManager : DistributedObjectGlobal {
+  callInvasion(int16 index) airecv;
+  endInvasion(int16 index) airecv;
+  hello();
 };

@@ -1,7 +1,7 @@
 import CatalogItem
 import CatalogAtticItem
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
 from CatalogSurfaceColors import *
 STWallpaper = 0
 STMoulding = 1
@@ -24,12 +24,10 @@ class CatalogSurfaceItem(CatalogAtticItem.CatalogAtticItem):
         return 1
 
     def recordPurchase(self, avatar, optional):
-        self.giftTag = None
         house, retcode = self.getHouseInfo(avatar)
         if retcode >= 0:
             house.addWallpaper(self)
         return retcode
 
     def getDeliveryTime(self):
-        return 1
- 
+        return 60

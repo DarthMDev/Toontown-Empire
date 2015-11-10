@@ -1,8 +1,8 @@
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
-from toontown.toonbase import TTLocalizer
+from panda3d.core import *
+from src.toontown.toonbase import TTLocalizer
 import FlowerPanel
 
 class FlowerPicker(DirectScrolledList):

@@ -1,6 +1,6 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-from toontown.toonbase.ToontownGlobals import *
+from src.toontown.toonbase.ToontownGlobals import *
 from CrateGlobals import *
 from direct.showbase.PythonUtil import fitSrcAngle2Dest
 from direct.distributed import DistributedObject
@@ -97,8 +97,8 @@ class DistributedCrate(DistributedCrushableEntity.DistributedCrushableEntity):
         self.upPressed = 1
 
     def __upKeyReleased(self):
+        self.ignore('arrow_up-up')
         self.accept(base.Move_Up, self.__upKeyPressed)
-        self.accept('arrow_up', self.__upKeyPressed)
         self.upPressed = 0
         if self.stuckToCrate:
             self.__resetStick()
@@ -207,9 +207,9 @@ class DistributedCrate(DistributedCrushableEntity.DistributedCrushableEntity):
             self.accept(base.Move_Left, self.__resetStick)
             self.accept(base.Move_Right, self.__resetStick)
         else:
-            self.accept(base.Move_Down, self.__resetStick)
-            self.accept(base.Move_Left, self.__resetStick)
-            self.accept(base.Move_Right, self.__resetStick)
+            self.ignore(base.Move_Down)
+            self.ignore(base.Move_Left)
+            self.ignore(base.Move_Right)
 
     def setMoveTo(self, avId, x0, y0, z0, x1, y1, z1):
         self.notify.debug('setMoveTo')

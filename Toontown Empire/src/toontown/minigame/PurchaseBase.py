@@ -1,13 +1,13 @@
-from toontown.toonbase.ToontownBattleGlobals import *
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase.ToontownBattleGlobals import *
+from src.toontown.toonbase import ToontownGlobals
 from direct.fsm import StateData
-from toontown.shtiker.PurchaseManagerConstants import *
+from src.toontown.shtiker.PurchaseManagerConstants import *
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.task import Task
 from direct.fsm import State
 from direct.fsm import ClassicFSM, State
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
 
 class PurchaseBase(StateData.StateData):
     activateMode = 'purchase'
@@ -100,7 +100,7 @@ class PurchaseBase(StateData.StateData):
         return Task.done
 
     def handleDone(self, playAgain):
-        messenger.send(self.doneEvent)
+        messenger.send(self.doneEvent, [playAgain])
 
     def enter(self):
         self.fsm.request('purchase')

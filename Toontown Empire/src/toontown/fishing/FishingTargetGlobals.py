@@ -1,4 +1,4 @@
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 OFF = 0
 MOVING = 1
 StepTime = 5.0

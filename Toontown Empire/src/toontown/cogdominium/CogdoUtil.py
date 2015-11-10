@@ -1,4 +1,7 @@
 from pandac.PandaModules import ColorBlendAttrib
+from src.toontown.suit import SuitDNA
+import random
+
 ModelPhase = 5
 ModelTypes = {'animation': 'a',
  'model': 'm',
@@ -8,6 +11,26 @@ ModelGroups = {'area': 'ara',
 Games = {'flying': 'cfg',
  'maze': 'cmg',
  'shared': 'csa'}
+
+def getAllowedTracks():
+    tracks = []
+
+    if config.GetBool('want-sellbot-cogdo', True):
+        tracks.append('s')
+    if config.GetBool('want-lawbot-cogdo', True):
+        tracks.append('l')
+
+    return tracks
+
+def getCogdoTrack(suitName):
+    tracks = getAllowedTracks()
+
+    if not tracks:
+        return None
+
+    track = SuitDNA.getSuitDept(suitName)
+
+    return track if track in tracks else random.choice(tracks)
 
 def loadFlyingModel(baseName, type = 'model', group = 'area'):
     return loadModel(baseName, 'flying', type=type, group=group)
@@ -57,7 +80,7 @@ class CogdoGameMovie:
         return
 
     def load(self):
-        from toontown.toonbase import ToontownGlobals
+        from src.toontown.toonbase import ToontownGlobals
         from pandac.PandaModules import TextNode
         textNode = TextNode('moviedialogue')
         textNode.setTextColor(0, 0, 0, 1)
@@ -120,9 +143,9 @@ def rotateTable(table, angle):
         t = []
         width = len(table[0])
         height = len(table)
-        for j in range(width):
+        for j in xrange(width):
             row = []
-            for i in range(height):
+            for i in xrange(height):
                 row.append(table[height - 1 - i][j])
 
             t.append(row)
@@ -137,9 +160,9 @@ def rotateTable(table, angle):
         t = []
         width = len(table[0])
         height = len(table)
-        for j in range(width):
+        for j in xrange(width):
             row = []
-            for i in range(height):
+            for i in xrange(height):
                 row.append(table[i][width - 1 - j])
 
             t.append(row)

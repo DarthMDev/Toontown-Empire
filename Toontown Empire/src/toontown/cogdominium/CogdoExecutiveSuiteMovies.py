@@ -6,10 +6,10 @@ from direct.showbase.RandomNumGen import RandomNumGen
 from direct.interval.MetaInterval import Sequence, Parallel
 from direct.interval.FunctionInterval import Func, Wait
 from direct.gui.DirectGui import *
-from toontown.toonbase.ToontownGlobals import *
-from toontown.toonbase import TTLocalizer
-from toontown.suit import Suit, SuitDNA
-from toontown.toon import Toon, ToonHead, ToonDNA
+from src.toontown.toonbase.ToontownGlobals import *
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.suit import Suit, SuitDNA
+from src.toontown.toon import Toon, ToonHead, ToonDNA
 from CogdoUtil import CogdoGameMovie
 import CogdoUtil
 
@@ -91,7 +91,7 @@ class CogdoExecutiveSuiteIntro(CogdoGameMovie):
 
         def start():
             self.frame.show()
-            base.setCellsActive(base.bottomCells + base.leftCells + base.rightCells, 0)
+            base.setCellsAvailable(base.bottomCells + base.leftCells + base.rightCells, 0)
 
         def showShopOwner():
             self._setCamTarget(self._shopOwner, -10, offset=Point3(0, 0, 5))
@@ -100,7 +100,7 @@ class CogdoExecutiveSuiteIntro(CogdoGameMovie):
             self._dialogueLabel.reparentTo(hidden)
             self.toonHead.reparentTo(hidden)
             self.frame.hide()
-            base.setCellsActive(base.bottomCells + base.leftCells + base.rightCells, 1)
+            base.setCellsAvailable(base.bottomCells + base.leftCells + base.rightCells, 1)
             self._stopUpdateTask()
 
         self._ival = Sequence(Func(start), Func(self.displayLine, dialogue), Func(showShopOwner), ParallelEndTogether(camera.posInterval(self.cameraMoveDuration, Point3(8, 0, 13), blendType='easeInOut'), camera.hprInterval(0.5, self._camHelperNode.getHpr(), blendType='easeInOut')), Wait(self.introDuration), Func(end))

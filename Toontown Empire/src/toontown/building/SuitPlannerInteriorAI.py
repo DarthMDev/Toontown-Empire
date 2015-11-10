@@ -3,10 +3,10 @@ import random
 import types
 
 import SuitBuildingGlobals
-from otp.ai.AIBaseGlobal import *
-from toontown.suit import DistributedSuitAI
-from toontown.suit import SuitDNA
-from toontown.suit.SuitInvasionGlobals import IFSkelecog, IFWaiter, IFV2
+from src.otp.ai.AIBaseGlobal import *
+from src.toontown.suit import DistributedSuitAI
+from src.toontown.suit import SuitDNA
+from src.toontown.suit.SuitInvasionGlobals import IFSkelecog, IFWaiter, IFV2
 
 
 class SuitPlannerInteriorAI:

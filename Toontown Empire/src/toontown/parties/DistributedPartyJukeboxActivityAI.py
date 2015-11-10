@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-from toontown.parties.DistributedPartyJukeboxActivityBaseAI import DistributedPartyJukeboxActivityBaseAI
+from src.toontown.parties.DistributedPartyJukeboxActivityBaseAI import DistributedPartyJukeboxActivityBaseAI
 import PartyGlobals
 
 class DistributedPartyJukeboxActivityAI(DistributedPartyJukeboxActivityBaseAI):

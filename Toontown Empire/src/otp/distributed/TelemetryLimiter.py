@@ -1,5 +1,5 @@
 from direct.showbase.DirectObject import DirectObject
-from otp.avatar.DistributedPlayer import DistributedPlayer
+from src.otp.avatar.DistributedPlayer import DistributedPlayer
 from direct.task.Task import Task
 
 class TelemetryLimiter(DirectObject):

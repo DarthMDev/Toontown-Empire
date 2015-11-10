@@ -1,10 +1,10 @@
-from pandac.PandaModules import *
-from toontown.toonbase.ToontownBattleGlobals import *
+from panda3d.core import *
+from src.toontown.toonbase.ToontownBattleGlobals import *
 from direct.task.Timer import *
 import math
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toon import NPCToons
-from toontown.toonbase import TTLocalizer
+from src.toontown.toon import NPCToons
+from src.toontown.toonbase import TTLocalizer
 TOON_ID_COL = 0
 TOON_TRACK_COL = 1
 TOON_LVL_COL = 2
@@ -229,6 +229,8 @@ class BattleBase:
      posA]
     suitSpeed = 4.8
     toonSpeed = 8.0
+    maxTimeToon = 10.0
+    maxTimeSuit = 11.0
 
     def __init__(self):
         self.pos = Point3(0, 0, 0)
@@ -256,15 +258,15 @@ class BattleBase:
         facing.normalize()
         suitdest = Point3(centerpos - Point3(facing * 6.0))
         dist = Vec3(suitdest - suitpos).length()
-        return dist / BattleBase.suitSpeed
+        return min(dist / BattleBase.suitSpeed, BattleBase.maxTimeSuit)
 
     def calcSuitMoveTime(self, pos0, pos1):
         dist = Vec3(pos0 - pos1).length()
-        return dist / BattleBase.suitSpeed
+        return min(dist / BattleBase.suitSpeed, BattleBase.maxTimeSuit)
 
     def calcToonMoveTime(self, pos0, pos1):
         dist = Vec3(pos0 - pos1).length()
-        return dist / BattleBase.toonSpeed
+        return min(dist / BattleBase.toonSpeed, BattleBase.maxTimeToon)
 
     def buildJoinPointList(self, avPos, destPos, toon = 0):
         minDist = 999999.0

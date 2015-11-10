@@ -1,12 +1,12 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 import Playground
 from direct.task.Task import Task
 import random
 from direct.fsm import ClassicFSM, State
 from direct.actor import Actor
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
-from toontown.hood import Place
+from src.toontown.hood import Place
 
 class DDPlayground(Playground.Playground):
     notify = DirectNotifyGlobal.directNotify.newCategory('DDPlayground')
@@ -76,7 +76,6 @@ class DDPlayground(Playground.Playground):
         self.loader.seagullSound.stop()
         taskMgr.remove('dd-seagulls')
         self.cameraSubmerged = 1
-        self.walkStateData.setSwimSoundAudible(1)
 
     def __emergeCamera(self):
         if self.cameraSubmerged == 0:
@@ -86,7 +85,6 @@ class DDPlayground(Playground.Playground):
         self.nextSeagullTime = random.random() * 8.0
         taskMgr.add(self.__seagulls, 'dd-seagulls')
         self.cameraSubmerged = 0
-        self.walkStateData.setSwimSoundAudible(0)
 
     def __submergeToon(self):
         if self.toonSubmerged == 1:

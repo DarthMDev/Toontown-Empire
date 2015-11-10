@@ -1,12 +1,12 @@
 from direct.directnotify.DirectNotifyGlobal import *
 
-from otp.ai.AIBaseGlobal import *
-from toontown.building import DistributedBuildingAI
-from toontown.building import GagshopBuildingAI
-from toontown.building import HQBuildingAI
-from toontown.building import KartShopBuildingAI
-from toontown.building import PetshopBuildingAI
-from toontown.hood import ZoneUtil
+from src.otp.ai.AIBaseGlobal import *
+from src.toontown.building import DistributedBuildingAI
+from src.toontown.building import GagshopBuildingAI
+from src.toontown.building import HQBuildingAI
+from src.toontown.building import KartShopBuildingAI
+from src.toontown.building import PetshopBuildingAI
+from src.toontown.hood import ZoneUtil
 
 
 class DistributedBuildingMgrAI:
@@ -147,7 +147,6 @@ class DistributedBuildingMgrAI:
     def newHQBuilding(self, blockNumber):
         dnaStore = self.air.dnaStoreMap[self.canonicalBranchId]
         exteriorZoneId = dnaStore.getZoneFromBlockNumber(blockNumber)
-        exteriorZoneId = ZoneUtil.getTrueZoneId(exteriorZoneId, self.branchId)
         interiorZoneId = (self.branchId - (self.branchId%100)) + 500 + blockNumber
         building = HQBuildingAI.HQBuildingAI(
             self.air, exteriorZoneId, interiorZoneId, blockNumber)
@@ -157,7 +156,6 @@ class DistributedBuildingMgrAI:
     def newGagshopBuilding(self, blockNumber):
         dnaStore = self.air.dnaStoreMap[self.canonicalBranchId]
         exteriorZoneId = dnaStore.getZoneFromBlockNumber(blockNumber)
-        exteriorZoneId = ZoneUtil.getTrueZoneId(exteriorZoneId, self.branchId)
         interiorZoneId = (self.branchId - (self.branchId%100)) + 500 + blockNumber
         building = GagshopBuildingAI.GagshopBuildingAI(
             self.air, exteriorZoneId, interiorZoneId, blockNumber)
@@ -167,7 +165,6 @@ class DistributedBuildingMgrAI:
     def newPetshopBuilding(self, blockNumber):
         dnaStore = self.air.dnaStoreMap[self.canonicalBranchId]
         exteriorZoneId = dnaStore.getZoneFromBlockNumber(blockNumber)
-        exteriorZoneId = ZoneUtil.getTrueZoneId(exteriorZoneId, self.branchId)
         interiorZoneId = (self.branchId - (self.branchId%100)) + 500 + blockNumber
         building = PetshopBuildingAI.PetshopBuildingAI(
             self.air, exteriorZoneId, interiorZoneId, blockNumber)
@@ -177,7 +174,6 @@ class DistributedBuildingMgrAI:
     def newKartShopBuilding(self, blockNumber):
         dnaStore = self.air.dnaStoreMap[self.canonicalBranchId]
         exteriorZoneId = dnaStore.getZoneFromBlockNumber(blockNumber)
-        exteriorZoneId = ZoneUtil.getTrueZoneId(exteriorZoneId, self.branchId)
         interiorZoneId = (self.branchId - (self.branchId%100)) + 500 + blockNumber
         building = KartShopBuildingAI.KartShopBuildingAI(
             self.air, exteriorZoneId, interiorZoneId, blockNumber)

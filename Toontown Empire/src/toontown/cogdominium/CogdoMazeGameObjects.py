@@ -5,7 +5,7 @@ from direct.interval.IntervalGlobal import LerpScaleInterval, LerpColorScaleInte
 from direct.interval.IntervalGlobal import Func, Sequence, Parallel
 from direct.showbase.DirectObject import DirectObject
 from direct.task.Task import Task
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 import CogdoMazeGameGlobals as Globals
 from CogdoGameExit import CogdoGameExit
 import CogdoUtil

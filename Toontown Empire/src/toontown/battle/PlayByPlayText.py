@@ -1,7 +1,7 @@
-from pandac.PandaModules import *
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase.ToontownBattleGlobals import *
-from toontown.toonbase.ToontownGlobals import *
+from panda3d.core import *
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase.ToontownBattleGlobals import *
+from src.toontown.toonbase.ToontownGlobals import *
 from SuitBattleGlobals import *
 from direct.interval.IntervalGlobal import *
 from direct.directnotify import DirectNotifyGlobal
@@ -19,7 +19,7 @@ class PlayByPlayText(OnscreenText.OnscreenText):
         return Sequence(Func(self.hide), Wait(duration * 0.3), Func(self.setText, text), Func(self.show), Wait(duration * 0.7), Func(self.hide))
 
     def getToonsDiedInterval(self, textList, duration):
-        track = Sequence(Func(self.hide), Wait(duration * 0.3))
+        track = Sequence(Func(self.hide), Wait(duration * 0.1))
         waitGap = 0.6 / len(textList) * duration
         for text in textList:
             newList = [Func(self.setText, text),

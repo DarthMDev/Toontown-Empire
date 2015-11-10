@@ -1,10 +1,10 @@
-from toontown.toonbase.ToontownGlobals import *
+from src.toontown.toonbase.ToontownGlobals import *
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
-from toontown.catalog import CatalogItem
-from toontown.toonbase import ToontownGlobals
+from src.toontown.catalog import CatalogItem
+from src.toontown.toonbase import ToontownGlobals
 from direct.distributed import DistributedObject
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
 import DistributedHouseItem
 from direct.distributed import DistributedSmoothNode
 from direct.task import Task
@@ -47,6 +47,8 @@ class DistributedFurnitureItem(DistributedHouseItem.DistributedHouseItem, Distri
 
     def delete(self):
         self.removeNode()
+        if hasattr(self.item, 'videoSequence') and self.item.videoSequence:
+            self.item.videoSequence.pause()
         del self.item
         DistributedHouseItem.DistributedHouseItem.delete(self)
         DistributedSmoothNode.DistributedSmoothNode.delete(self)

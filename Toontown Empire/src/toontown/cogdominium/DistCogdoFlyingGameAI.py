@@ -1,8 +1,8 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
-from toontown.battle import BattleBase
-from toontown.building.ElevatorConstants import *
-from toontown.cogdominium.DistCogdoGameAI import DistCogdoGameAI
+from src.toontown.battle import BattleBase
+from src.toontown.building.ElevatorConstants import *
+from src.toontown.cogdominium.DistCogdoGameAI import DistCogdoGameAI
 import CogdoFlyingGameGlobals as Globals
 
 class DistCogdoFlyingGameAI(DistCogdoGameAI):
@@ -59,7 +59,7 @@ class DistCogdoFlyingGameAI(DistCogdoGameAI):
             damage = int(20 * self.getDifficulty())
             self.__damage(av, damage)
         else:
-            self.notify.warning('Client requested unknown action \'%s\'' %action)      
+            self.notify.warning('Client requested unknown action \'%s\'' %action)
 
     def requestPickUp(self, pickupNum, pickupType):
         avId = self.air.getAvatarIdFromSender()
@@ -74,7 +74,7 @@ class DistCogdoFlyingGameAI(DistCogdoGameAI):
             if pickupType == Globals.Level.GatherableTypes.Memo:
                 self.totalMemos += 1
         else:
-            self.notify.warning('Client requested unknown pickup \'%s\'' % pickupType)     
+            self.notify.warning('Client requested unknown pickup \'%s\'' % pickupType)
 
     def handleStart(self):
         for toon in self.toons:
@@ -108,7 +108,7 @@ class DistCogdoFlyingGameAI(DistCogdoGameAI):
     def getTotalMemos(self):
         return self.totalMemos
 
-from otp.ai.MagicWordGlobal import *
+from src.otp.ai.MagicWordGlobal import *
 @magicWord(category=CATEGORY_PROGRAMMER)
 def endFly():
     if hasattr(simbase.air, 'cogdoGame'):

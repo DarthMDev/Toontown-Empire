@@ -7345,8 +7345,10 @@ group "donaldsDreamland" [
      nhpr [ -88 0 -0 ]
      color [ 0.25 0.25 0.25 1 ]
     ]
-    prop "animated_prop_SleepingHydrantAnimatedProp_DNARoot" [
-     code [ "prop_DL_hydrant" ]
+    interactive_prop "interactive_prop_phase_8_models_char__ddl_hydrant_DNARoot" [
+     code [ "interactive_prop_phase_8_models_char__ddl_hydrant" ]
+     anim [ "tt_a_ara_ddl_hydrant_idle0" ]
+     cell_id [ 0 ]
      pos [ 14.8285 -8.31821 0 ]
      nhpr [ -0 0 -0 ]
     ]

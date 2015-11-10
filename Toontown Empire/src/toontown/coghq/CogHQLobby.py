@@ -1,11 +1,11 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from toontown.hood import Place
-from toontown.building import Elevator
-from toontown.toonbase import ToontownGlobals
-from pandac.PandaModules import *
-from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
+from src.toontown.hood import Place
+from src.toontown.building import Elevator
+from src.toontown.toonbase import ToontownGlobals
+from panda3d.core import *
+from src.otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
 
 class CogHQLobby(Place.Place):
     notify = DirectNotifyGlobal.directNotify.newCategory('CogHQLobby')

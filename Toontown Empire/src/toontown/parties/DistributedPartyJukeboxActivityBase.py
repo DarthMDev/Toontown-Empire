@@ -1,13 +1,13 @@
 from direct.actor.Actor import Actor
 from direct.task.Task import Task
 from pandac.PandaModules import *
-from otp.otpbase.OTPBase import OTPBase
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.parties.DistributedPartyActivity import DistributedPartyActivity
-from toontown.parties.PartyGlobals import ActivityIds, ActivityTypes, JUKEBOX_TIMEOUT
-from toontown.parties.PartyGlobals import getMusicRepeatTimes, MUSIC_PATH, sanitizePhase
-from toontown.parties.JukeboxGui import JukeboxGui
+from src.otp.otpbase.OTPBase import OTPBase
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.parties.DistributedPartyActivity import DistributedPartyActivity
+from src.toontown.parties.PartyGlobals import ActivityIds, ActivityTypes, JUKEBOX_TIMEOUT
+from src.toontown.parties.PartyGlobals import getMusicRepeatTimes, MUSIC_PATH, sanitizePhase
+from src.toontown.parties.JukeboxGui import JukeboxGui
 
 class DistributedPartyJukeboxActivityBase(DistributedPartyActivity):
     notify = directNotify.newCategory('DistributedPartyJukeboxActivityBase')
@@ -22,7 +22,6 @@ class DistributedPartyJukeboxActivityBase(DistributedPartyActivity):
         self.currentSongData = None
         self.localQueuedSongInfo = None
         self.localQueuedSongListItem = None
-        return
 
     def generateInit(self):
         self.gui = JukeboxGui(self.phaseToMusicData)
@@ -38,6 +37,7 @@ class DistributedPartyJukeboxActivityBase(DistributedPartyActivity):
         collTube.setTangible(1)
         self.collNode.addSolid(collTube)
         self.collNodePath = self.jukebox.attachNewNode(self.collNode)
+        self.sign.reparentTo(self.jukebox)
         self.sign.setPos(-5.0, 0, 0)
         self.activate()
 
@@ -50,7 +50,6 @@ class DistributedPartyJukeboxActivityBase(DistributedPartyActivity):
         self.jukebox.delete()
         self.jukebox = None
         self.ignoreAll()
-        return
 
     def getCollisionName(self):
         return self.uniqueName('jukeboxCollision')
@@ -91,7 +90,6 @@ class DistributedPartyJukeboxActivityBase(DistributedPartyActivity):
         self.accept(JukeboxGui.ADD_SONG_CLICK_EVENT, self.__handleQueueSong)
         if self.isUserHost():
             self.accept(JukeboxGui.MOVE_TO_TOP_CLICK_EVENT, self.__handleMoveSongToTop)
-        return
 
     def __localToonWillExitTask(self, task):
         self.localToonExiting()
@@ -103,8 +101,7 @@ class DistributedPartyJukeboxActivityBase(DistributedPartyActivity):
         if self.currentSongData is not None:
             self.gui.setSongCurrentlyPlaying(self.currentSongData[0], self.currentSongData[1])
         self.d_queuedSongsRequest()
-        return
-
+ 
     def __deactivateGui(self):
         self.ignore(JukeboxGui.CLOSE_EVENT)
         self.ignore(JukeboxGui.SONG_SELECT_EVENT)

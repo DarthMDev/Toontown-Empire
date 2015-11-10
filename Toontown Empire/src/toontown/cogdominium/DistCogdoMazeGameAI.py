@@ -1,10 +1,10 @@
 from direct.directnotify import DirectNotifyGlobal
-from toontown.cogdominium.DistCogdoGameAI import DistCogdoGameAI
+from src.toontown.cogdominium.DistCogdoGameAI import DistCogdoGameAI
 import CogdoMazeGameGlobals
 from direct.distributed.ClockDelta import *
 from direct.task import Timer
-from toontown.battle import BattleBase
-from toontown.building.ElevatorConstants import *
+from src.toontown.battle import BattleBase
+from src.toontown.building.ElevatorConstants import *
 
 ALL_ABOARD_LAG = 3.7
 
@@ -37,13 +37,13 @@ class DistCogdoMazeGameAI(DistCogdoGameAI):
         slowMiniHp = CogdoMazeGameGlobals.SuitData[2]['hp']
 
         serialNum = 0
-        for i in range(self.numSuits[0]):
+        for i in xrange(self.numSuits[0]):
             self.bosses[serialNum] = bossHp
             serialNum += 1
-        for i in range(self.numSuits[1]):
+        for i in xrange(self.numSuits[1]):
             self.fastMinions[serialNum] = fastMiniHp
             serialNum += 1
-        for i in range(self.numSuits[2]):
+        for i in xrange(self.numSuits[2]):
             self.slowMinions[serialNum] = slowMiniHp
             serialNum += 1
 
@@ -230,7 +230,7 @@ class DistCogdoMazeGameAI(DistCogdoGameAI):
         DistCogdoGameAI.disable(self)
         self.removeAll()
 
-from otp.ai.MagicWordGlobal import *
+from src.otp.ai.MagicWordGlobal import *
 @magicWord(category=CATEGORY_PROGRAMMER)
 def endMaze():
     if hasattr(simbase.air, 'cogdoGame'):

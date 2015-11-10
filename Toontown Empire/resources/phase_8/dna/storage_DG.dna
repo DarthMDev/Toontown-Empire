@@ -151,15 +151,3 @@ hood_model "phase_8/models/char/tt_r_ara_dga_trashcan" [
 hood_model "phase_8/models/char/tt_r_ara_dga_trashcan" [
 	store_node [ "interactive_prop" "interactive_prop_phase_8_models_char__dga_trashcan" ""]
 	]
-
-hood_model "phase_8/models/char/tt_r_ara_dga_trashcan" [
-	store_node [ "anim_prop" "animated_prop_TrashcanZeroAnimatedProp_phase_8_models_char__dga_trashcan" ""]
-	]
-
-hood_model "phase_8/models/char/tt_r_ara_dga_trashcan" [
-	store_node [ "anim_prop" "animated_prop_TrashcanOneAnimatedProp_phase_8_models_char__dga_trashcan" ""]
-	]
-
-hood_model "phase_8/models/char/tt_r_ara_dga_trashcan" [
-	store_node [ "anim_prop" "animated_prop_TrashcanTwoAnimatedProp_phase_8_models_char__dga_trashcan" ""]
-	]

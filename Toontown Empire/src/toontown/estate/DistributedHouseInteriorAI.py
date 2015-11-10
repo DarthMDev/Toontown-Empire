@@ -1,13 +1,13 @@
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from DistributedFurnitureManagerAI import *
-from toontown.catalog import CatalogItem
-from toontown.catalog.CatalogWindowItem import CatalogWindowItem
-from toontown.catalog.CatalogWallpaperItem import CatalogWallpaperItem
-from toontown.catalog.CatalogMouldingItem import CatalogMouldingItem
-from toontown.catalog.CatalogFlooringItem import CatalogFlooringItem
-from toontown.catalog.CatalogWainscotingItem import CatalogWainscotingItem
+from src.toontown.catalog import CatalogItem
+from src.toontown.catalog.CatalogWindowItem import CatalogWindowItem
+from src.toontown.catalog.CatalogWallpaperItem import CatalogWallpaperItem
+from src.toontown.catalog.CatalogMouldingItem import CatalogMouldingItem
+from src.toontown.catalog.CatalogFlooringItem import CatalogFlooringItem
+from src.toontown.catalog.CatalogWainscotingItem import CatalogWainscotingItem
 from DNAFurnitureReaderAI import DNAFurnitureReaderAI
-from toontown.dna.DNAParser import *
+from src.toontown.dna.DNAParser import *
 import HouseGlobals
 import random
 
@@ -70,7 +70,7 @@ class DistributedHouseInteriorAI(DistributedObjectAI):
         dnaData = loadDNAFileAI(dnaStorage, dnaFile)
 
         # Read it into furniture...
-        furnitureReader = DNAFurnitureReaderAI(dnaData, [-11, 2, 0, 0, 0, 0])
+        furnitureReader = DNAFurnitureReaderAI(dnaData, self.house.gender, [-11, 2, 0, 0, 0, 0])
 
         # Set furniture:
         self.furnitureManager.setItems(furnitureReader.getBlob())

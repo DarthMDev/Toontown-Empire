@@ -1,10 +1,10 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from BattleBase import *
 from BattleProps import *
 from BattleSounds import *
-from toontown.toon.ToonDNA import *
-from toontown.suit.SuitDNA import *
+from src.toontown.toon.ToonDNA import *
+from src.toontown.suit.SuitDNA import *
 from direct.directnotify import DirectNotifyGlobal
 import random
 import MovieCamera
@@ -290,8 +290,6 @@ def __throwPie(throw, delay, hitCount):
     pies = [pie, pie2]
     hands = toon.getRightHands()
     splatName = 'splat-' + pieName
-    if pieName == 'wedding-cake':
-        splatName = 'splat-birthday-cake'
     splat = globalPropPool.getProp(splatName)
     splatType = globalPropPool.getPropType(splatName)
     toonTrack = Sequence()
@@ -399,8 +397,6 @@ def __createWeddingCakeFlight(throw, groupHitDict, pie, pies):
     numTargets = len(throw['target'])
     pieName = pieNames[level]
     splatName = 'splat-' + pieName
-    if pieName == 'wedding-cake':
-        splatName = 'splat-birthday-cake'
     splat = globalPropPool.getProp(splatName)
     splats = [splat]
     for i in xrange(numTargets - 1):

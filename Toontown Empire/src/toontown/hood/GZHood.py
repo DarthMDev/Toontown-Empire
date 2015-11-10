@@ -1,6 +1,6 @@
-from toontown.safezone.GZSafeZoneLoader import GZSafeZoneLoader
-from toontown.toonbase import ToontownGlobals
-from toontown.hood.ToonHood import ToonHood
+from src.toontown.safezone.GZSafeZoneLoader import GZSafeZoneLoader
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.hood.ToonHood import ToonHood
 
 
 class GZHood(ToonHood):

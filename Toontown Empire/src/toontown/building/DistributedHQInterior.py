@@ -4,12 +4,12 @@ import ToonInteriorColors
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
 from direct.task.Task import Task
-from pandac.PandaModules import *
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase.ToonBaseGlobal import *
-from toontown.toonbase.ToontownGlobals import *
-from toontown.dna.DNAParser import *
-from toontown.toon.DistributedNPCToonBase import DistributedNPCToonBase
+from panda3d.core import *
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase.ToonBaseGlobal import *
+from src.toontown.toonbase.ToontownGlobals import *
+from src.toontown.dna.DNAParser import *
+from src.toontown.toon.DistributedNPCToonBase import DistributedNPCToonBase
 
 
 class DistributedHQInterior(DistributedObject.DistributedObject):

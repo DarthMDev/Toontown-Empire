@@ -1,8 +1,8 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 import CatalogAtticItem
 import CatalogItem
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
 WVTModelName = 0
 WVTBasePrice = 1
 WVTSkyName = 2
@@ -37,14 +37,13 @@ class CatalogWindowItem(CatalogAtticItem.CatalogAtticItem):
         return TTLocalizer.WindowViewNames.get(self.windowType)
 
     def recordPurchase(self, avatar, optional):
-        self.giftTag = None
         house, retcode = self.getHouseInfo(avatar)
         if retcode >= 0:
             house.addWindow(self)
         return retcode
 
     def getDeliveryTime(self):
-        return 1
+        return 4 * 60
 
     def getPicture(self, avatar):
         frame = self.makeFrame()
