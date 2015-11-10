@@ -1,8 +1,8 @@
 from direct.showbase import PythonUtil
-from otp.speedchat.SCMenu import SCMenu
-from otp.speedchat.SCMenuHolder import SCMenuHolder
-from otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
-from otp.otpbase import OTPLocalizer
+from src.otp.speedchat.SCMenu import SCMenu
+from src.otp.speedchat.SCMenuHolder import SCMenuHolder
+from src.otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
+from src.otp.otpbase import OTPLocalizer
 BoardingMenuGuide = [(OTPLocalizer.BoardingMenuSections[0], []),
  (OTPLocalizer.BoardingMenuSections[1], []),
  (OTPLocalizer.BoardingMenuSections[2], []),

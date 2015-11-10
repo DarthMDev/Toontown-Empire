@@ -1,9 +1,9 @@
 import SuitPlannerBase
 from direct.distributed import DistributedObject
-from otp.ai.MagicWordGlobal import *
-from pandac.PandaModules import *
-from toontown.dna.DNAParser import DNASuitPoint
-from toontown.toonbase import ToontownGlobals
+from src.otp.ai.MagicWordGlobal import *
+from panda3d.core import *
+from src.toontown.dna.DNAParser import DNASuitPoint
+from src.toontown.toonbase import ToontownGlobals
 
 
 class DistributedSuitPlanner(DistributedObject.DistributedObject, SuitPlannerBase.SuitPlannerBase):

@@ -1,9 +1,9 @@
-import time
+import time, random
 
-from toontown.battle import SuitBattleGlobals
-from toontown.suit import SuitDNA
-from toontown.suit.SuitInvasionGlobals import *
-from toontown.toonbase import ToontownGlobals
+from src.toontown.battle import SuitBattleGlobals
+from src.toontown.suit import SuitDNA
+from src.toontown.suit.SuitInvasionGlobals import *
+from src.toontown.toonbase import ToontownGlobals
 
 
 class SuitInvasionManagerAI:
@@ -17,15 +17,16 @@ class SuitInvasionManagerAI:
         self.suitDeptIndex = None
         self.suitTypeIndex = None
         self.flags = 0
+        self.type = None
 
-        self.air.netMessenger.accept(
-            'startInvasion', self, self.handleStartInvasion)
-        self.air.netMessenger.accept(
-            'stopInvasion', self, self.handleStopInvasion)
+        self.air.accept(
+            'startInvasion', self.handleStartInvasion)
+        self.air.accept(
+            'stopInvasion', self.handleStopInvasion)
 
         # We want to handle shard status queries so that a ShardStatusReceiver
         # being created after we're created will know where we're at:
-        self.air.netMessenger.accept('queryShardStatus', self, self.sendInvasionStatus)
+        self.air.accept('queryShardStatus', self.sendInvasionStatus)
 
         self.sendInvasionStatus()
 
@@ -36,7 +37,7 @@ class SuitInvasionManagerAI:
         return (self.suitDeptIndex, self.suitTypeIndex, self.flags)
 
     def startInvasion(self, suitDeptIndex=None, suitTypeIndex=None, flags=0,
-                      type=INVASION_TYPE_NORMAL):
+                      type=INVASION_TYPE_NORMAL, amount=None):
         if self.invading:
             # An invasion is currently in progress; ignore this request.
             return False
@@ -45,15 +46,11 @@ class SuitInvasionManagerAI:
             # This invasion is no-op.
             return False
 
-        if flags and ((suitDeptIndex is not None) or (suitTypeIndex is not None)):
-            # For invasion flags to be present, it must be a generic invasion.
-            return False
-
         if (suitDeptIndex is None) and (suitTypeIndex is not None):
             # It's impossible to determine the invading Cog.
             return False
 
-        if flags not in (0, IFV3, IFV2, IFSkelecog, IFWaiter):
+        if flags not in (0, IFV2, IFSkelecog, IFWaiter):
             # The provided flag combination is not possible.
             return False
 
@@ -75,14 +72,19 @@ class SuitInvasionManagerAI:
         self.suitDeptIndex = suitDeptIndex
         self.suitTypeIndex = suitTypeIndex
         self.flags = flags
+        self.type = type
 
         # How many suits do we want?
         if type == INVASION_TYPE_NORMAL:
-            self.total = 1000
+            self.total = random.randint(1000, 3000)
         elif type == INVASION_TYPE_MEGA:
-            self.total = 5000
+            self.total = 0xFFFFFFFF
         elif type == INVASION_TYPE_BRUTAL:
             self.total = 10000
+
+        if amount is not None:
+            self.total = amount
+
         self.remaining = self.total
 
         self.flySuits()
@@ -99,12 +101,12 @@ class SuitInvasionManagerAI:
         if type == INVASION_TYPE_NORMAL:
             timeout = config.GetInt('invasion-timeout', 1800)
             taskMgr.doMethodLater(timeout, self.stopInvasion, 'invasionTimeout')
-            
+
         # If this is a mega invasion, and the players take to long to defeat
         # all of the cogs, we want the invasion to take a bit longer to timeout:
         if type == INVASION_TYPE_MEGA:
             timeout = config.GetInt('invasion-timeout', 3200)
-            
+
         # If this is a brutal invasion, the players will have a very long time to
         # Defeat the cogs before the invasion times out:
         if type == INVASION_TYPE_BRUTAL:
@@ -133,6 +135,7 @@ class SuitInvasionManagerAI:
         self.flags = 0
         self.total = 0
         self.remaining = 0
+        self.type = None
         self.flySuits()
 
         self.sendInvasionStatus()
@@ -149,7 +152,9 @@ class SuitInvasionManagerAI:
 
     def notifyInvasionStarted(self):
         msgType = ToontownGlobals.SuitInvasionBegin
-        if self.flags & IFSkelecog:
+        if self.type == INVASION_TYPE_MEGA:
+            msgType = ToontownGlobals.MegaInvasionBegin
+        elif self.flags & IFSkelecog:
             msgType = ToontownGlobals.SkelecogInvasionBegin
         elif self.flags & IFWaiter:
             msgType = ToontownGlobals.WaiterInvasionBegin
@@ -161,7 +166,9 @@ class SuitInvasionManagerAI:
 
     def notifyInvasionEnded(self):
         msgType = ToontownGlobals.SuitInvasionEnd
-        if self.flags & IFSkelecog:
+        if self.type == INVASION_TYPE_MEGA:
+            msgType = ToontownGlobals.MegaInvasionEnd
+        elif self.flags & IFSkelecog:
             msgType = ToontownGlobals.SkelecogInvasionEnd
         elif self.flags & IFWaiter:
             msgType = ToontownGlobals.WaiterInvasionEnd
@@ -178,7 +185,9 @@ class SuitInvasionManagerAI:
 
     def notifyInvasionBulletin(self, avId):
         msgType = ToontownGlobals.SuitInvasionBulletin
-        if self.flags & IFSkelecog:
+        if self.type == INVASION_TYPE_MEGA:
+            msgType = ToontownGlobals.MegaInvasionBulletin
+        elif self.flags & IFSkelecog:
             msgType = ToontownGlobals.SkelecogInvasionBulletin
         elif self.flags & IFWaiter:
             msgType = ToontownGlobals.WaiterInvasionBulletin
@@ -228,4 +237,4 @@ class SuitInvasionManagerAI:
             }
         else:
             status = {'invasion': None}
-        self.air.netMessenger.send('shardStatus', [self.air.ourChannel, status])
+        self.air.sendNetEvent('shardStatus', [self.air.ourChannel, status])

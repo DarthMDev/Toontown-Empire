@@ -1,9 +1,9 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify.DirectNotifyGlobal import *
-from toontown.hood import ZoneUtil, HoodUtil
-from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
-from toontown.building import SuitBuildingGlobals
-from toontown.dna.DNAParser import DNASuitPoint, DNAInteractiveProp, DNAStorage, loadDNAFileAI
+from src.toontown.hood import ZoneUtil, HoodUtil
+from src.toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
+from src.toontown.building import SuitBuildingGlobals
+from src.toontown.dna.DNAParser import *
 
 class SuitPlannerBase:
     notify = directNotify.newCategory('SuitPlannerBase')
@@ -355,8 +355,8 @@ class SuitPlannerBase:
        9),
       []],
      [10000,
-      3,
-      15,
+      10,
+      25,
       0,
       5,
       15,
@@ -390,7 +390,7 @@ class SuitPlannerBase:
        0,
        0,
        100),
-      (4, 5, 6),
+      (3, 4, 5, 6),
       []],
      [11200,
       10,
@@ -428,7 +428,7 @@ class SuitPlannerBase:
        0,
        100,
        0),
-      (7, 8, 9),
+      (6, 7, 8, 9),
       []],
      [13000,
       10,
@@ -447,7 +447,7 @@ class SuitPlannerBase:
        100,
        0,
        0),
-      (8, 9, 10),
+      (7, 8, 9),
       []]]
     SUIT_HOOD_INFO_ZONE = 0
     SUIT_HOOD_INFO_MIN = 1
@@ -543,19 +543,34 @@ class SuitPlannerBase:
         for i in xrange(self.dnaStore.getNumDNAVisGroupsAI()):
             vg = self.dnaStore.getDNAVisGroupAI(i)
             zoneId = int(self.extractGroupName(vg.getName()))
-            
-            if vg.getNumBattleCells() >= 1:
+
+            if vg.getNumBattleCells() == 1:
                 battleCell = vg.getBattleCell(0)
-                self.battlePosDict[zoneId] = battleCell.getPos()
-            
-            for i in xrange(vg.getNumChildren()):
-                childDnaGroup = vg.at(i)
-                
-                if isinstance(childDnaGroup, DNAInteractiveProp) and not zoneId in self.cellToGagBonusDict:
-                    propType = HoodUtil.calcPropType(childDnaGroup.getName())
-                            
-                    if propType in ToontownBattleGlobals.PropTypeToTrackBonus:
-                        self.cellToGagBonusDict[zoneId] = ToontownBattleGlobals.PropTypeToTrackBonus[propType]
+                self.battlePosDict[zoneId] = vg.getBattleCell(0).getPos()
+            elif vg.getNumBattleCells() > 1:
+                self.notify.warning('multiple battle cells for zone: %d' % zoneId)
+                self.battlePosDict[zoneId] = vg.getBattleCell(0).getPos()
+
+            if True:
+                for i in xrange(vg.getNumChildren()):
+                    childDnaGroup = vg.at(i)
+
+                    if isinstance(childDnaGroup, DNAInteractiveProp):
+                        self.notify.debug('got interactive prop %s' % childDnaGroup)
+                        battleCellId = childDnaGroup.getCellId()
+
+                        if battleCellId == -1:
+                            self.notify.warning('interactive prop %s  at %s not associated with a a battle' % (childDnaGroup, zoneId))
+
+                        elif battleCellId == 0:
+                            if zoneId in self.cellToGagBonusDict:
+                                self.notify.error('FIXME battle cell at zone %s has two props %s %s linked to it' % (zoneId, self.cellToGagBonusDict[zoneId], childDnaGroup))
+                            else:
+                                name = childDnaGroup.getName()
+                                propType = HoodUtil.calcPropType(name)
+                                if propType in ToontownBattleGlobals.PropTypeToTrackBonus:
+                                    trackBonus = ToontownBattleGlobals.PropTypeToTrackBonus[propType]
+                                    self.cellToGagBonusDict[zoneId] = trackBonus
 
         self.dnaStore.resetDNAGroups()
         self.dnaStore.resetDNAVisGroups()
