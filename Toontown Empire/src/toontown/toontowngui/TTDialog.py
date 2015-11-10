@@ -1,4 +1,4 @@
-from otp.otpgui.OTPDialog import *
+from src.otp.otpgui.OTPDialog import *
 
 class TTDialog(OTPDialog):
 

@@ -1,13 +1,13 @@
-from pandac.PandaModules import *
-from toontown.toonbase.ToontownGlobals import *
+from panda3d.core import *
+from src.toontown.toonbase.ToontownGlobals import *
 from direct.showbase import DirectObject
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toontowngui import TTDialog
-from otp.otpbase import OTPLocalizer
-from toontown.toontowngui import ToonHeadDialog
+from src.toontown.toontowngui import TTDialog
+from src.otp.otpbase import OTPLocalizer
+from src.toontown.toontowngui import ToonHeadDialog
 from direct.gui.DirectGui import DGG
-from otp.otpbase import OTPGlobals
-from toontown.toonbase import TTLocalizer
+from src.otp.otpbase import OTPGlobals
+from src.toontown.toonbase import TTLocalizer
 
 class GroupInvitee(ToonHeadDialog.ToonHeadDialog):
     notify = DirectNotifyGlobal.directNotify.newCategory('GroupInvitee')
@@ -23,9 +23,9 @@ class GroupInvitee(ToonHeadDialog.ToonHeadDialog):
         self.avDNA = toon.getStyle()
         self.party = party
         if merger:
-          text = TTLocalizer.BoardingInviteeMergeMessage % self.avName
+            text = TTLocalizer.BoardingInviteeMergeMessage % self.avName
         else:
-          text = TTLocalizer.BoardingInviteeMessage % self.avName
+            text = TTLocalizer.BoardingInviteeMessage % self.avName
         style = TTDialog.TwoChoice
         buttonTextList = [OTPLocalizer.FriendInviteeOK, OTPLocalizer.FriendInviteeNo]
         command = self.__handleButton

@@ -1,9 +1,9 @@
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
-from toontown.toontowngui import TTDialog
+from panda3d.core import *
+from src.toontown.toontowngui import TTDialog
 
 class ElevatorNotifier:
     notify = DirectNotifyGlobal.directNotify.newCategory('CatalogNotifyDialog')

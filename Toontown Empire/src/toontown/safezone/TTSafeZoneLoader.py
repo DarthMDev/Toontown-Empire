@@ -1,5 +1,5 @@
-from toontown.safezone import SafeZoneLoader
-from toontown.safezone import TTPlayground
+from src.toontown.safezone import SafeZoneLoader
+from src.toontown.safezone import TTPlayground
 
 class TTSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
     def __init__(self, hood, parentFSM, doneEvent):
@@ -22,4 +22,3 @@ class TTSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
     def unload(self):
         SafeZoneLoader.SafeZoneLoader.unload(self)
         del self.birdSound
-

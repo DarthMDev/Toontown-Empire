@@ -1,14 +1,14 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 import random
 import string
 import sys, os
 
 import ToonDNA
-from toontown.hood import ZoneUtil
-from toontown.nametag import NametagGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.toonbase import ToontownGlobals
+from src.toontown.hood import ZoneUtil
+from src.otp.nametag.NametagGroup import *
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownBattleGlobals
+from src.toontown.toonbase import ToontownGlobals
 
 
 try:
@@ -177,7 +177,7 @@ def createLocalNPC(npcId):
     npc = Toon.Toon()
     npc.setName(name)
     npc.setPickable(0)
-    npc.setPlayerType(NametagGlobals.CCNonPlayer)
+    npc.setPlayerType(NametagGroup.CCNonPlayer)
     dna = ToonDNA.ToonDNA()
     if dnaType == 'r':
         dnaList = getRandomDNA(npcId, gender)
@@ -380,10 +380,10 @@ NPCToonDict = {20000: (-1,
         lnames[2011],
         ('rll',
          'ms',
-         'l',
-         'f',
-         2,
-         0,
+         's',
+         'm',
+         13,
+         45,
          2,
          2,
          1,
@@ -392,9 +392,9 @@ NPCToonDict = {20000: (-1,
          9,
          23,
          27),
-        'f',
-        1,
-        NPC_CLERK),
+        'm',
+        0,
+        NPC_REGULAR),
  2007: (2520,
         lnames[2007],
         ('dss',
@@ -9459,10 +9459,10 @@ NPCToonDict = {20000: (-1,
          'ms',
          'm',
          'm',
-         27,
+         8,
          0,
-         27,
-         27,
+         8,
+         8,
          1,
          6,
          1,
@@ -11536,20 +11536,21 @@ NPCToonDict = {20000: (-1,
         NPC_REGULAR),
  7010: (-1,
         lnames[7010],
-        ('dss',
+        ('rll',
          'ms',
-         's',
          'm',
-         13,
+         'm',
+         2,
          0,
+         2,
+         2,
+         19,
+         10,
          13,
-         13,
-         4,
-         4,
-         4,
-         4,
-         1,
-         4),
+         10,
+         7,
+         14,
+         0),
         'm',
         0,
         NPC_REGULAR),
@@ -11575,6 +11576,12 @@ NPCToonDict = {20000: (-1,
         NPC_REGULAR),
  10001: (10000,
          lnames[10001],
+         'r',
+         'f',
+         0,
+         NPC_LAFF_RESTOCK),
+ 10002: (10000,
+         lnames[10002],
          ('fss',
          'md',
          'l',
@@ -11592,67 +11599,43 @@ NPCToonDict = {20000: (-1,
          0),
          'f',
          0,
-         NPC_LAFF_RESTOCK),
+         NPC_CLERK),
  11001: (11000,
          lnames[11001],
-         ('dll',
-         'ls',
-         's',
-         'm',
-         6,
-         0,
-         6,
-         6,
-         9,
-         3,
-         9,
-         3,
-         2,
-         4,
-         0),
+         'r',
          'm',
          0,
          NPC_LAFF_RESTOCK),
+ 11002: (11000,
+         lnames[11002],
+         'r',
+         'm',
+         0,
+         NPC_CLERK),
  12001: (12000,
          lnames[12001],
-         ('mss',
-         'ls',
-         's',
-         'm',
-         8,
-         0,
-         8,
-         8,
-         5,
-         12,
-         5,
-         12,
-         7,
-         16,
-         0),
+         'r',
          'm',
          0,
          NPC_LAFF_RESTOCK),
+ 12002: (12000,
+         lnames[12002],
+         'r',
+         'm',
+         0,
+         NPC_CLERK),
  13001: (13000,
          lnames[13001],
-         ('dss',
-         'ld',
-         's',
-         'f',
-         17,
-         0,
-         17,
-         17,
-         1,
-         24,
-         1,
-         24,
-         0,
-         9,
-         0),
+         'r',
          'f',
          0,
-         NPC_LAFF_RESTOCK)}
+         NPC_LAFF_RESTOCK),
+ 13002: (13000,
+         lnames[13002],
+         'r',
+         'f',
+         0,
+         NPC_CLERK)}
 
 if config.GetBool('want-new-toonhall', 1):
     NPCToonDict[2001] = (2513,
@@ -11696,9 +11679,14 @@ else:
      NPC_REGULAR)
 BlockerPositions = {TTLocalizer.Flippy: (Point3(207.4, 18.81, -0.475), 90.0)}
 LaffRestockPositions = {lnames[11001]: ((-27.0, -170.0, -19.6), 215.0),
-                        lnames[12001]: ((361.9, -394.4, -23.5), 113.5),
+                        lnames[12001]: ((361.9, -394.4, -23.5), 120.0),
                         lnames[13001]: ((143.7, -381.4, -68.4), 0.0),
                         lnames[10001]: ((135.0, 128.8, 0.025), -212.8)}
+ClerkPositions = {lnames[11002]: ((37.3, -167.5, -19.6), 130.0),
+                  lnames[12002]: ((361.9, -460.4, -23.5), 60.0),
+                  lnames[13002]: ((38.3, -389.5, -68.4), 0.0),
+                  lnames[10002]: ((84, 127.8, 0.025), -180.0)}
+GlovePositions = {lnames[2021]: ((101, -14, 4), -305)}
 del lnames
 zone2NpcDict = {}
 
@@ -11787,7 +11775,7 @@ HQnpcFriends = {2001: (ToontownBattleGlobals.HEAL_TRACK,
         3),
  1116: (ToontownBattleGlobals.DROP_TRACK,
         5,
-        170,
+        200,
         5),
  2311: (ToontownBattleGlobals.DROP_TRACK,
         5,
@@ -11860,7 +11848,7 @@ FOnpcFriends = {9310: (ToontownBattleGlobals.LURE_TRACK,
  9311: (ToontownBattleGlobals.LURE_TRACK,
         1,
         0,
-        1),
+        1),     
  9312: (ToontownBattleGlobals.LURE_TRACK,
         3,
         0,
@@ -11915,6 +11903,7 @@ npcFriends.update(FOnpcFriends)
 
 def getNPCName(npcId):
     if npcId in NPCToonDict:
+        return NPCToonDict[npcId][1]
         return NPCToonDict[npcId][1]
     return None
 

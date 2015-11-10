@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 
 def makeCard(book=False):
     cardMaker = CardMaker('king-jake-cm')
@@ -32,17 +32,12 @@ def addHeadEffect(head, book=False):
     card = makeCard(book=book)
     card.setScale(1.45 if book else 2.5)
     card.setZ(0.05 if book else 0.5)
-    
+
     for nodePath in head.getChildren():
         nodePath.hide()
-    
+
     card.instanceTo(head)
 
 def addToonEffect(toon):
     for lod in toon.getLODNames():
         addHeadEffect(toon.getPart('head', lod))
-
-"""
-from toontown.toon import LaughingManGlobals
-LaughingManGlobals.addToonEffect(base.localAvatar)
-"""

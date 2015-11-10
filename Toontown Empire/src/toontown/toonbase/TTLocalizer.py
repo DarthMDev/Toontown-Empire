@@ -10,13 +10,13 @@ def getLanguage():
     return language
 
 print 'TTLocalizer: Running in language: %s' % language
-from toontown.toonbase.TTLocalizerEnglish import *
+from src.toontown.toonbase.TTLocalizerEnglish import *
 
 if language != 'English':
     l = {}
     g = {}
-    module = 'toontown.toonbase.TTLocalizer' + language
-    englishModule = __import__('toontown.toonbase.TTLocalizerEnglish', g, l)
+    module = 'src.toontown.toonbase.TTLocalizer' + language
+    englishModule = __import__('src.toontown.toonbase.TTLocalizerEnglish', g, l)
     foreignModule = __import__(module, g, l)
     for key, val in englishModule.__dict__.items():
         if key not in foreignModule.__dict__:

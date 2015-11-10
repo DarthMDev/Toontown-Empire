@@ -1,11 +1,11 @@
-from otp.ai.AIBaseGlobal import *
-from pandac.PandaModules import *
+from src.otp.ai.AIBaseGlobal import *
+from panda3d.core import *
 from DistributedNPCToonBaseAI import *
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
 from direct.task import Task
-from toontown.fishing import FishGlobals
-from toontown.pets import PetUtil, PetDNA, PetConstants
-from toontown.hood import ZoneUtil
+from src.toontown.fishing import FishGlobals
+from src.toontown.pets import PetUtil, PetDNA, PetConstants
+from src.toontown.hood import ZoneUtil
 
 class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
 
@@ -21,7 +21,7 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
 
     def avatarEnter(self):
         avId = self.air.getAvatarIdFromSender()
-        if not self.air.doId2do.has_key(avId):
+        if not avId in self.air.doId2do:
             self.notify.warning('Avatar: %s not found' % avId)
             return
         if self.isBusy():
@@ -40,7 +40,7 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
         self.d_setMovie(avId, flag)
         taskMgr.doMethodLater(PetConstants.PETCLERK_TIMER, self.sendTimeoutMovie, self.uniqueName('clearMovie'))
         DistributedNPCToonBaseAI.avatarEnter(self)
-        
+
     def rejectAvatar(self, avId):
         self.notify.warning('rejectAvatar: should not be called by a fisherman!')
 
@@ -91,7 +91,7 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
             return
         av = simbase.air.doId2do.get(avId)
         if av:
-            from toontown.hood import ZoneUtil
+            from src.toontown.hood import ZoneUtil
             zoneId = ZoneUtil.getCanonicalSafeZoneId(self.zoneId)
             if petNum not in xrange(0, len(self.petSeeds)):
                 self.air.writeServerEvent('suspicious', avId, 'DistributedNPCPetshopAI.petAdopted and no such pet!')
@@ -127,8 +127,8 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
         if av:
             simbase.air.petMgr.deleteToonsPet(avId)
             self.transactionType = 'return'
-            
-        self.transactionDone() 
+
+        self.transactionDone()
 
     def transactionDone(self):
         avId = self.air.getAvatarIdFromSender()

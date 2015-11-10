@@ -1,14 +1,9 @@
-from otp.ai.AIBaseGlobal import *
-from pandac.PandaModules import *
+from src.otp.ai.AIBaseGlobal import *
+from panda3d.core import *
 from DistributedNPCToonBaseAI import *
 import ToonDNA
 from direct.task.Task import Task
-from toontown.ai import DatabaseObject
-from toontown.estate import ClosetGlobals
-
-#Going to code this later. For now lets just have it return false.
-def isClosetAlmostFull(av):
-    return False
+from src.toontown.estate import ClosetGlobals
 
 class DistributedNPCTailorAI(DistributedNPCToonBaseAI):
     freeClothes = simbase.config.GetBool('free-clothes', 0)
@@ -26,8 +21,6 @@ class DistributedNPCTailorAI(DistributedNPCToonBaseAI):
         if self.freeClothes:
             self.useJellybeans = False
 
-        return
-
     def getTailor(self):
         return 1
 
@@ -37,7 +30,6 @@ class DistributedNPCTailorAI(DistributedNPCToonBaseAI):
         self.customerDNA = None
         self.customerId = None
         DistributedNPCToonBaseAI.delete(self)
-        return
 
     def avatarEnter(self):
         avId = self.air.getAvatarIdFromSender()
@@ -66,7 +58,7 @@ class DistributedNPCTailorAI(DistributedNPCToonBaseAI):
         elif self.air.questManager.hasTailorClothingTicket(av, self):
             flag = NPCToons.PURCHASE_MOVIE_START
 
-        if self.housingEnabled and isClosetAlmostFull(av):
+        if self.housingEnabled and self.isClosetAlmostFull(av):
             flag = NPCToons.PURCHASE_MOVIE_START_NOROOM
 
         self.sendShoppingMovie(avId, flag)
@@ -74,14 +66,10 @@ class DistributedNPCTailorAI(DistributedNPCToonBaseAI):
 
     def isClosetAlmostFull(self, av):
         numClothes = len(av.clothesTopsList) / 4 + len(av.clothesBottomsList) / 2
-        if numClothes >= av.maxClothes - 1:
-            return 1
-        return 0
+        return numClothes >= av.maxClothes - 1
 
     def hasEnoughJbs(self, av):
-        if av.getTotalMoney() >= self.jbCost:
-            return True
-        return False
+        return av.getTotalMoney() >= self.jbCost
 
     def sendShoppingMovie(self, avId, flag):
         self.busy = avId
@@ -129,7 +117,6 @@ class DistributedNPCTailorAI(DistributedNPCToonBaseAI):
         self.sendClearMovie(None)
         if self.air.questManager.hasTailorClothingTicket(av, self):
             self.air.questManager.removeClothingTicket(av, self)
-        return
 
     def setDNA(self, blob, finished, which):
         avId = self.air.getAvatarIdFromSender()
@@ -194,18 +181,11 @@ class DistributedNPCTailorAI(DistributedNPCToonBaseAI):
     def __handleUnexpectedExit(self, avId):
         self.notify.warning('avatar:' + str(avId) + ' has exited unexpectedly')
         if self.customerId == avId:
-            toon = self.air.doId2do.get(avId)
-            if toon == None:
-                toon = DistributedToonAI.DistributedToonAI(self.air)
-                toon.doId = avId
-            if self.customerDNA:
-                toon.b_setDNAString(self.customerDNA.makeNetString())
-                db = DatabaseObject.DatabaseObject(self.air, avId)
-                db.storeObject(toon, ['setDNAString'])
+            dna = self.customerDNA.makeNetString()
+            self.air.dbInterface.updateObject(self.air.dbId, avId, self.air.dclassesByName['DistributedToonAI'], {'setDNAString': [dna]})
         else:
             self.notify.warning('invalid customer avId: %s, customerId: %s ' % (avId, self.customerId))
         if self.busy == avId:
             self.sendClearMovie(None)
         else:
             self.notify.warning('not busy with avId: %s, busy: %s ' % (avId, self.busy))
-        return

@@ -1,13 +1,13 @@
-from pandac.PandaModules import *
-from toontown.toonbase import ToontownGlobals
+from panda3d.core import *
+from src.toontown.toonbase import ToontownGlobals
 import Playground
-from toontown.building import Elevator
-from toontown.toontowngui import TTDialog
-from toontown.toonbase import TTLocalizer
-from toontown.racing import RaceGlobals
+from src.toontown.building import Elevator
+from src.toontown.toontowngui import TTDialog
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.racing import RaceGlobals
 from direct.fsm import State
-from toontown.safezone import PicnicBasket
-from toontown.safezone import GolfKart
+from src.toontown.safezone import PicnicBasket
+from src.toontown.safezone import GolfKart
 from direct.task.Task import Task
 
 class OZPlayground(Playground.Playground):
@@ -65,7 +65,6 @@ class OZPlayground(Playground.Playground):
         self.loader.hood.setUnderwaterFog()
         base.playSfx(self.loader.underwaterSound, looping=1, volume=0.8)
         self.cameraSubmerged = 1
-        self.walkStateData.setSwimSoundAudible(1)
 
     def __emergeCamera(self):
         if self.cameraSubmerged == 0:
@@ -73,7 +72,6 @@ class OZPlayground(Playground.Playground):
         self.loader.hood.setNoFog()
         self.loader.underwaterSound.stop()
         self.cameraSubmerged = 0
-        self.walkStateData.setSwimSoundAudible(0)
 
     def __submergeToon(self):
         if self.toonSubmerged == 1:

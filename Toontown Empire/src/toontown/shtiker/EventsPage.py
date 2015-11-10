@@ -4,16 +4,16 @@ from direct.task.Task import Task
 from direct.gui.DirectGui import DirectFrame, DirectLabel, DirectButton, DirectScrolledList, DirectCheckButton
 from direct.gui import DirectGuiGlobals
 from direct.directnotify import DirectNotifyGlobal
-from otp.otpbase import OTPLocalizer
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
-from toontown.toontowngui import TTDialog
-from toontown.parties import PartyGlobals
-from toontown.parties import PartyUtils
-from toontown.parties.CalendarGuiMonth import CalendarGuiMonth
-from toontown.parties.PartyUtils import getPartyActivityIcon
-from toontown.parties.Party import Party
-from toontown.parties.ServerTimeGui import ServerTimeGui
+from src.otp.otpbase import OTPLocalizer
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toontowngui import TTDialog
+from src.toontown.parties import PartyGlobals
+from src.toontown.parties import PartyUtils
+from src.toontown.parties.CalendarGuiMonth import CalendarGuiMonth
+from src.toontown.parties.PartyUtils import getPartyActivityIcon
+from src.toontown.parties.Party import Party
+from src.toontown.parties.ServerTimeGui import ServerTimeGui
 import ShtikerPage
 EventsPage_Host = 0
 EventsPage_Invited = 1

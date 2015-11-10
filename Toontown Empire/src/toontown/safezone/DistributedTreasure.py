@@ -1,9 +1,9 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-from toontown.toonbase.ToontownGlobals import *
+from src.toontown.toonbase.ToontownGlobals import *
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from toontown.safezone import TreasureGlobals
+from src.toontown.safezone import TreasureGlobals
 
 class DistributedTreasure(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedTreasure')
@@ -58,6 +58,9 @@ class DistributedTreasure(DistributedObject.DistributedObject):
 
     def loadModel(self):
         modelPath, grabSoundPath = TreasureGlobals.TreasureModels[self.treasureType]
+
+        if base.cr.newsManager.isHolidayRunning(VALENTOONS_DAY):
+            modelPath = TreasureGlobals.ValentineTreasureModel
 
         self.grabSound = base.loadSfx(grabSoundPath)
         self.rejectSound = base.loadSfx(self.rejectSoundPath)

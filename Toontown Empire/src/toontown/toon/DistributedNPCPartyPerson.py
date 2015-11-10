@@ -1,16 +1,16 @@
 from direct.distributed import ClockDelta
 from direct.distributed.DistributedObject import DistributedObject
 from direct.task.Task import Task
-from pandac.PandaModules import *
+from panda3d.core import *
 
 from DistributedNPCToonBase import DistributedNPCToonBase
-from otp.otpbase import OTPLocalizer
-from toontown.chat.ChatGlobals import *
-from toontown.parties import PartyGlobals
-from toontown.toon import NPCToons
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
-from toontown.toontowngui import TTDialog
+from src.otp.otpbase import OTPLocalizer
+from src.otp.nametag.NametagConstants import *
+from src.toontown.parties import PartyGlobals
+from src.toontown.toon import NPCToons
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toontowngui import TTDialog
 
 
 class DistributedNPCPartyPerson(DistributedNPCToonBase):

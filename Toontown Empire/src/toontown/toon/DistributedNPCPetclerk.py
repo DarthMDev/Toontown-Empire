@@ -1,15 +1,13 @@
 from direct.gui.DirectGui import *
 from direct.task.Task import Task
-from pandac.PandaModules import *
-from pandac.PandaModules import *
+from panda3d.core import *
 
 from DistributedNPCToonBase import *
 import NPCToons
-from toontown.chat.ChatGlobals import *
-from toontown.hood import ZoneUtil
-from toontown.nametag.NametagGlobals import *
-from toontown.pets import PetshopGUI
-from toontown.toonbase import TTLocalizer
+from src.toontown.hood import ZoneUtil
+from src.toontown.pets import PetshopGUI
+from src.toontown.toonbase import TTLocalizer
+from src.otp.nametag.NametagConstants import *
 
 
 class DistributedNPCPetclerk(DistributedNPCToonBase):

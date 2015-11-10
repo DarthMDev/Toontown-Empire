@@ -4,6 +4,9 @@ from direct.distributed.DistributedObjectUD import DistributedObjectUD
 class DistributedToonUD(DistributedObjectUD):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedToonUD")
 
+    def setAdminAccess(self, todo0):
+        pass
+
     def setDNAString(self, todo0):
         pass
 
@@ -15,7 +18,7 @@ class DistributedToonUD(DistributedObjectUD):
 
     def setBankMoney(self, todo0):
         pass
-    
+
     def setMaxMoney(self, todo0):
         pass
 
@@ -55,9 +58,6 @@ class DistributedToonUD(DistributedObjectUD):
     def setInventory(self, todo0):
         pass
 
-    def setMaxNPCFriends(self, todo0):
-        pass
-
     def setNPCFriendsDict(self, todo0):
         pass
 
@@ -67,16 +67,7 @@ class DistributedToonUD(DistributedObjectUD):
     def setDefaultZone(self, todo0):
         pass
 
-    def setShtickerBook(self, todo0):
-        pass
-
-    def setZonesVisited(self, todo0):
-        pass
-
     def setHoodsVisited(self, todo0):
-        pass
-
-    def setInterface(self, todo0):
         pass
 
     def setLastHood(self, todo0):
@@ -92,9 +83,6 @@ class DistributedToonUD(DistributedObjectUD):
         pass
 
     def setClothesBottomsList(self, todo0):
-        pass
-
-    def setMaxAccessories(self, todo0):
         pass
 
     def setHatList(self, todo0):
@@ -207,7 +195,7 @@ class DistributedToonUD(DistributedObjectUD):
 
     def checkTeleportAccess(self, todo0):
         pass
-        
+
     def setScavengerHunt(self, todo0):
         pass
 
@@ -284,9 +272,6 @@ class DistributedToonUD(DistributedObjectUD):
         pass
 
     def setGhostMode(self, todo0):
-        pass
-
-    def setPosIndex(self, todo0):
         pass
 
     def setFishCollection(self, todo0, todo1, todo2):
@@ -436,15 +421,6 @@ class DistributedToonUD(DistributedObjectUD):
     def announceBingo(self):
         pass
 
-    def trickOrTreatTargetMet(self, todo0):
-        pass
-
-    def trickOrTreatMilestoneMet(self):
-        pass
-
-    def winterCarolingTargetMet(self, todo0):
-        pass
-
     def setCogSummonsEarned(self, todo0):
         pass
 
@@ -481,9 +457,6 @@ class DistributedToonUD(DistributedObjectUD):
     def logSuspiciousEvent(self, todo0):
         pass
 
-    def logMessage(self, todo0):
-        pass
-
     def forceLogoutWithNotify(self):
         pass
 
@@ -492,6 +465,9 @@ class DistributedToonUD(DistributedObjectUD):
 
     def setNametagStyle(self, todo0):
         pass
+    
+    def setNametagStyles(self, todo0):
+        return
 
     def setMail(self, todo0):
         pass
@@ -532,11 +508,20 @@ class DistributedToonUD(DistributedObjectUD):
     def setNeverStartedPartyRefunded(self, todo0, todo1, todo2):
         pass
 
-    def setDISLname(self, todo0):
-        pass
-
     def setDISLid(self, todo0):
         pass
 
     def setRedeemedCodes(self, redeemedCodes):
+        pass
+
+    def setTrueFriends(self, trueFriends):
+        pass
+    
+    def setWishName(self, todo0):
+        pass
+    
+    def setWishNameState(self, todo0):
+        pass
+
+    def refundParty(self, refund):
         pass

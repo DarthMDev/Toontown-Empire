@@ -1,10 +1,10 @@
-from otp.ai.AIBaseGlobal import *
-from pandac.PandaModules import *
+from src.otp.ai.AIBaseGlobal import *
+from panda3d.core import *
 from DistributedNPCToonBaseAI import *
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
 from direct.task import Task
-from toontown.racing.KartShopGlobals import *
-from toontown.racing.KartDNA import *
+from src.toontown.racing.KartShopGlobals import *
+from src.toontown.racing.KartDNA import *
 
 class DistributedNPCKartClerkAI(DistributedNPCToonBaseAI):
 
@@ -69,8 +69,8 @@ class DistributedNPCKartClerkAI(DistributedNPCToonBaseAI):
             extraArgs = []
             cost = getKartCost(whichKart)
             if cost == 'key error':
-                self.air.writeServerEvent('suspicious', avId, 'Player trying to buy non-existant kart %s' % whichKart)
-                self.notify.warning('somebody is trying to buy non-existant kart%s! avId: %s' % (whichKart, avId))
+                self.air.writeServerEvent('suspicious', avId, 'Player trying to buy non-existent kart %s' % whichKart)
+                self.notify.warning('somebody is trying to buy non-existent kart%s! avId: %s' % (whichKart, avId))
                 return
             elif cost > av.getTickets():
                 self.air.writeServerEvent('suspicious', avId, "DistributedNPCKartClerkAI.buyKart and toon doesn't have enough tickets!")

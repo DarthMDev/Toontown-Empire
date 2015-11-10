@@ -10,7 +10,7 @@ from direct.interval.IntervalGlobal import Sequence, Wait, Func, Parallel, Sound
 from direct.showbase import PythonUtil
 from direct.task.Task import Task
 import operator
-from pandac.PandaModules import *
+from panda3d.core import *
 import random
 import time
 
@@ -18,53 +18,51 @@ import Experience
 import InventoryNew
 import TTEmote
 import Toon
-from otp.ai.MagicWordGlobal import *
-from otp.avatar import Avatar, DistributedAvatar
-from otp.avatar import DistributedPlayer
-from otp.chat import TalkAssistant
-from otp.otpbase import OTPGlobals
-from otp.otpbase import OTPLocalizer
-from otp.speedchat import SCDecoders
-from toontown.catalog import CatalogItem
-from toontown.catalog import CatalogItemList
-from toontown.chat import ResistanceChat
-from toontown.chat import ToonChatGarbler
-from toontown.chat.ChatGlobals import *
-from toontown.chat.WhisperPopup import *
-from toontown.coghq import CogDisguiseGlobals
-from toontown.distributed import DelayDelete
-from toontown.distributed import DelayDelete
-from toontown.distributed.DelayDeletable import DelayDeletable
-from toontown.effects.ScavengerHuntEffects import *
-from toontown.estate import DistributedGagTree
-from toontown.estate import FlowerBasket
-from toontown.estate import FlowerCollection
-from toontown.estate import GardenDropGame
-from toontown.estate import GardenGlobals
-from toontown.fishing import FishCollection
-from toontown.fishing import FishTank
-from toontown.friends import FriendHandle
-from toontown.golf import GolfGlobals
-from toontown.hood import ZoneUtil
-from toontown.nametag import NametagGlobals
-from toontown.nametag.NametagGlobals import *
-from toontown.parties import PartyGlobals
-from toontown.parties.InviteInfo import InviteInfo
-from toontown.parties.PartyGlobals import InviteStatus, PartyStatus
-from toontown.parties.PartyInfo import PartyInfo
-from toontown.parties.PartyReplyInfo import PartyReplyInfoBase
-from toontown.parties.SimpleMailBase import SimpleMailBase
-from toontown.shtiker.OptionsPage import speedChatStyles
-from toontown.speedchat import TTSCDecoders
-from toontown.suit import SuitDNA
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
-from toontown.battle import BattleParticles
-
+from src.otp.ai.MagicWordGlobal import *
+from src.otp.avatar import Avatar, DistributedAvatar
+from src.otp.avatar import DistributedPlayer
+from src.otp.chat import TalkAssistant, ChatUtil
+from src.otp.otpbase import OTPGlobals
+from src.otp.otpbase import OTPLocalizer
+from src.otp.speedchat import SCDecoders
+from src.toontown.catalog import CatalogItem
+from src.toontown.catalog import CatalogItemList
+from src.toontown.chat import ResistanceChat
+from src.toontown.chat import ToonChatGarbler
+from src.otp.nametag.NametagConstants import *
+from src.otp.margins.WhisperPopup import *
+from src.toontown.coghq import CogDisguiseGlobals
+from src.toontown.distributed import DelayDelete
+from src.toontown.distributed import DelayDelete
+from src.toontown.distributed.DelayDeletable import DelayDeletable
+from src.toontown.effects.ScavengerHuntEffects import *
+from src.toontown.estate import DistributedGagTree
+from src.toontown.estate import FlowerBasket
+from src.toontown.estate import FlowerCollection
+from src.toontown.estate import GardenDropGame
+from src.toontown.estate import GardenGlobals
+from src.toontown.fishing import FishCollection
+from src.toontown.fishing import FishTank
+from src.toontown.friends import FriendHandle
+from src.toontown.golf import GolfGlobals
+from src.toontown.hood import ZoneUtil
+from src.otp.nametag import NametagGroup
+from src.otp.nametag.NametagGroup import *
+from src.toontown.parties import PartyGlobals
+from src.toontown.parties.InviteInfo import InviteInfo
+from src.toontown.parties.PartyGlobals import InviteStatus, PartyStatus
+from src.toontown.parties.PartyInfo import PartyInfo
+from src.toontown.parties.PartyReplyInfo import PartyReplyInfoBase
+from src.toontown.parties.SimpleMailBase import SimpleMailBase
+from src.toontown.shtiker.OptionsPage import speedChatStyles
+from src.toontown.speedchat import TTSCDecoders
+from src.toontown.suit import SuitDNA
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.battle import BattleParticles
 
 if base.wantKarts:
-    from toontown.racing.KartDNA import *
-
+    from src.toontown.racing.KartDNA import *
 
 class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, DistributedSmoothNode.DistributedSmoothNode, DelayDeletable):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedToon')
@@ -89,7 +87,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.trophyScore = 0
         self.trophyStar = None
         self.trophyStarSpeed = 0
-        self.safeZonesVisited = []
         self.NPCFriendsDict = {}
         self.earnedExperience = None
         self.track = None
@@ -100,6 +97,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.disguisePage = None
         self.sosPage = None
         self.gardenPage = None
+        self.emoteAccess = [0] * 27
         self.cogTypes = [0, 0, 0, 0]
         self.cogLevels = [0, 0, 0, 0]
         self.cogParts = [0, 0, 0, 0]
@@ -109,7 +107,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.savedCheesyExpireTime = 0
         if hasattr(base, 'wantPets') and base.wantPets:
             self.petTrickPhrases = []
-            self.petDNA = None
         self.customMessages = []
         self.resistanceMessages = []
         self.cogSummonsEarned = []
@@ -125,7 +122,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.onOrder = CatalogItemList.CatalogItemList(store=CatalogItem.Customization | CatalogItem.DeliveryDate)
         self.onGiftOrder = CatalogItemList.CatalogItemList(store=CatalogItem.Customization | CatalogItem.DeliveryDate)
         self.mailboxContents = CatalogItemList.CatalogItemList(store=CatalogItem.Customization)
-        self.deliveryboxContentsContents = CatalogItemList.CatalogItemList(store=CatalogItem.Customization | CatalogItem.GiftTag)
         self.awardMailboxContents = CatalogItemList.CatalogItemList(store=CatalogItem.Customization)
         self.onAwardOrder = CatalogItemList.CatalogItemList(store=CatalogItem.Customization | CatalogItem.DeliveryDate)
         self.splash = None
@@ -144,14 +140,12 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.tunnelCenterOffset = 9.0
         self.tunnelCenterInfluence = 0.6
         self.pivotAngle = 90 + 45
-        self.posIndex = 0
         self.houseId = 0
         self.money = 0
         self.bankMoney = 0
         self.maxMoney = 0
         self.maxBankMoney = 0
         self.emblems = [0, 0]
-        self.maxNPCFriends = 16
         self.petId = 0
         self.petTutorialDone = False
         self.fishBingoTutorialDone = False
@@ -185,6 +179,9 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.redeemedCodes = []
         self.ignored = []
         self.reported = []
+        self.trueFriends = []
+        self.firstTrackPicked = 0
+        self.secondTrackPicked = 0
 
     def disable(self):
         for soundSequence in self.soundSequenceList:
@@ -225,14 +222,12 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if self.doId in self.cr.toons:
             del self.cr.toons[self.doId]
         DistributedPlayer.DistributedPlayer.disable(self)
-        return
 
     def delete(self):
         try:
             self.DistributedToon_deleted
         except:
             self.DistributedToon_deleted = 1
-            del self.safeZonesVisited
             DistributedPlayer.DistributedPlayer.delete(self)
             Toon.Toon.delete(self)
             DistributedSmoothNode.DistributedSmoothNode.delete(self)
@@ -246,7 +241,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.startBlink()
         self.startSmooth()
         self.accept('clientCleanup', self._handleClientCleanup)
-        return
 
     def announceGenerate(self):
         DistributedPlayer.DistributedPlayer.announceGenerate(self)
@@ -260,17 +254,13 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def setDNAString(self, dnaString):
         Toon.Toon.setDNAString(self, dnaString)
 
+    def setAdminAccess(self, access):
+        DistributedPlayer.DistributedPlayer.setAdminAccess(self, access)
+        self.removeGMIcon()
+        if self.isAdmin():
+            self.setGMIcon(access)
+
     def setDNA(self, dna):
-        if base.cr.newsManager:
-            if base.cr.newsManager.isHolidayRunning(ToontownGlobals.SPOOKY_BLACK_CAT):
-                black = 26
-                heads = ['cls',
-                 'css',
-                 'csl',
-                 'cll']
-                dna.setTemporary(random.choice(heads), black, black, black)
-            else:
-                dna.restoreTemporary(self.style)
         oldHat = self.getHat()
         oldGlasses = self.getGlasses()
         oldBackpack = self.getBackpack()
@@ -370,7 +360,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         ResistanceChat.doEffect(msgIndex, self, nearbyToons)
 
     def d_battleSOS(self, sendToId):
-        self.cr.ttsFriendsManager.d_battleSOS(sendToId)
+        self.cr.tteFriendsManager.d_battleSOS(sendToId)
 
     def battleSOS(self, requesterId):
         avatar = base.cr.identifyAvatar(requesterId)
@@ -403,21 +393,16 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.defaultShard = shard
 
     def setDefaultZone(self, zoneId):
-        if zoneId >= 20000 and zoneId < 22000:
-            zoneId = zoneId + 2000
-        try:
-            hoodPhase = base.cr.hoodMgr.getPhaseFromHood(zoneId)
-        except:
+        if not ZoneUtil.getCanonicalHoodId(zoneId) in ToontownGlobals.hoodNameMap:
             self.defaultZone = ToontownGlobals.ToontownCentral
             return
-
-        if ZoneUtil.getCanonicalHoodId(zoneId) == ToontownGlobals.FunnyFarm:
+        if ZoneUtil.getCanonicalHoodId(zoneId) == ToontownGlobals.ForestGrove:
             self.defaultZone = ToontownGlobals.ToontownCentral
+            return
+        if self.getHp() <= 0 and zoneId in ToontownGlobals.HQToSafezone:
+            self.defaultZone = ToontownGlobals.HQToSafezone[zoneId]
             return
         self.defaultZone = zoneId
-
-    def setShtickerBook(self, string):
-        pass
 
     def setAsGM(self, state):
         self.notify.debug('Setting GM State: %s' % state)
@@ -440,7 +425,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             self.setDisplayName(self.gmNameTagString)
             self.setName(self.gmNameTagString)
             self.trophyStar1 = loader.loadModel('models/misc/smiley')
-            self.trophyStar1.reparentTo(self.nametag.getIcon())
+            self.trophyStar1.reparentTo(self.nametag.getNameIcon())
             self.trophyStar1.setScale(1)
             self.trophyStar1.setZ(2.25)
             self.trophyStar1.setColor(Vec4(0.75, 0.75, 0.75, 0.75))
@@ -455,47 +440,23 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.trophyStar1.setH(r)
         return Task.cont
 
-    def __refreshNameCallBack(self, task):
-        if hasattr(self, 'nametag') and self.nametag.getName() != '':
-            self.refreshName()
-            return Task.done
-        else:
-            return Task.cont
-
-    def setTalk(self, fromAV, fromAC, avatarName, chat, mods, flags):
-        if base.localAvatar.isIgnored(self.doId if fromAV == 0 else fromAV):
-            return
-        timestamp = time.strftime('%m-%d-%Y %H:%M:%S', time.localtime())
-        if fromAV == 0:
-            print ':%s: setTalk: %r, %r, %r' % (timestamp, self.doId, self.name, chat)
-        else:
-            print ':%s: setTalk: %r, %r, %r' % (timestamp, fromAV, avatarName, chat)
-        if base.config.GetBool('want-sleep-reply-on-regular-chat', 0):
-            if base.localAvatar.sleepFlag == 1:
-                base.cr.ttsFriendsManager.d_sleepAutoReply(fromAV)
-        newText, scrubbed = self.scrubTalk(chat, mods)
-        self.displayTalk(newText)
-        base.talkAssistant.receiveOpenTalk(fromAV, avatarName, fromAC, None, newText)
-
     def isAvFriend(self, avId):
         return base.cr.isFriend(avId)
 
-    def setTalkWhisper(self, fromAV, fromAC, avatarName, chat, mods, flags):
-        if not localAvatar.acceptingNonFriendWhispers:
-            if not self.isAvFriend(fromAV):
-                return
-        if base.localAvatar.isIgnored(fromAV):
+    def setTalkWhisper(self, avId, chat):
+        if not base.cr.chatAgent.verifyMessage(chat):
             return
-        if base.config.GetBool('ignore-whispers', 0):
+        if not localAvatar.acceptingNonFriendWhispers:
+            if not self.isAvFriend(avId):
+                return
+        if base.localAvatar.isIgnored(avId):
             return
         if base.localAvatar.sleepFlag == 1:
-            if not base.cr.identifyAvatar(fromAV) == base.localAvatar:
-                base.cr.ttsFriendsManager.d_sleepAutoReply(fromAV)
-        newText, scrubbed = self.scrubTalk(chat, mods)
-        self.displayTalkWhisper(fromAV, avatarName, chat, mods)
-        timestamp = time.strftime('%m-%d-%Y %H:%M:%S', time.localtime())
-        print ':%s: receiveWhisperTalk: %r, %r, %r, %r, %r, %r, %r' % (timestamp, fromAV, avatarName, fromAC, None, self.doId, self.getName(), newText)
-        base.talkAssistant.receiveWhisperTalk(fromAV, avatarName, fromAC, None, self.doId, self.getName(), newText)
+            if not base.cr.identifyAvatar(avId) == base.localAvatar:
+                base.cr.tteFriendsManager.d_sleepAutoReply(avId)
+        if base.whiteList:
+            chat = base.whiteList.processThroughAll(chat, self.chatGarbler)
+        self.displayTalkWhisper(avId, chat)
 
     def setSleepAutoReply(self, fromId):
         pass
@@ -504,7 +465,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         return isinstance(source, (DistributedToon, FriendHandle.FriendHandle))
 
     def setWhisperSCEmoteFrom(self, fromId, emoteId):
-        handle = base.cr.identifyFriend(fromId)
+        handle = base.cr.identifyAvatar(fromId)
         if handle == None:
             return
         if not self._isValidWhisperSource(handle):
@@ -516,8 +477,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if base.localAvatar.isIgnored(fromId):
             return
         if base.localAvatar.sleepFlag == 1:
-            if not base.cr.identifyAvatar(fromId) == base.localAvatar:
-                base.cr.ttsFriendsManager.d_sleepAutoReply(fromId)
+            if not handle == base.localAvatar:
+                base.cr.tteFriendsManager.d_sleepAutoReply(fromId)
         chatString = SCDecoders.decodeSCEmoteWhisperMsg(emoteId, handle.getName())
         if chatString:
             self.displayWhisper(fromId, chatString, WTEmote)
@@ -525,7 +486,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         return
 
     def setWhisperSCFrom(self, fromId, msgIndex):
-        handle = base.cr.identifyFriend(fromId)
+        handle = base.cr.identifyAvatar(fromId)
         if handle == None:
             return
         if not self._isValidWhisperSource(handle):
@@ -537,16 +498,16 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if base.localAvatar.isIgnored(fromId):
             return
         if base.localAvatar.sleepFlag == 1:
-            if not base.cr.identifyAvatar(fromId) == base.localAvatar:
-                base.cr.ttsFriendsManager.d_sleepAutoReply(fromId)
+            if not handle == base.localAvatar:
+                base.cr.tteFriendsManager.d_sleepAutoReply(fromId)
         chatString = SCDecoders.decodeSCStaticTextMsg(msgIndex)
         if chatString:
-            self.displayWhisper(fromId, chatString, WTQuickTalker)
+            self.displayWhisper(fromId, chatString, WTNormal)
             base.talkAssistant.receiveAvatarWhisperSpeedChat(TalkAssistant.SPEEDCHAT_NORMAL, msgIndex, fromId)
         return
 
     def setWhisperSCCustomFrom(self, fromId, msgIndex):
-        handle = base.cr.identifyFriend(fromId)
+        handle = base.cr.identifyAvatar(fromId)
         if handle == None:
             return
         if not localAvatar.acceptingNonFriendWhispers:
@@ -557,12 +518,12 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def whisperSCToontaskTo(self, taskId, toNpcId, toonProgress, msgIndex, sendToId):
         messenger.send('wakeup')
 
-        base.cr.ttsFriendsManager.d_whisperSCToontaskTo(sendToId, taskId,
+        base.cr.tteFriendsManager.d_whisperSCToontaskTo(sendToId, taskId,
             toNpcId, toonProgress, msgIndex
         )
 
     def setWhisperSCToontaskFrom(self, fromId, taskId, toNpcId, toonProgress, msgIndex):
-        sender = base.cr.identifyFriend(fromId)
+        sender = base.cr.identifyAvatar(fromId)
         if sender is None:
             return
 
@@ -575,18 +536,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
         chatString = TTSCDecoders.decodeTTSCToontaskMsg(taskId, toNpcId, toonProgress, msgIndex)
         if chatString:
-            self.displayWhisper(fromId, chatString, WTQuickTalker)
-
-    def setMaxNPCFriends(self, max):
-        max &= 32767
-        if max != self.maxNPCFriends:
-            self.maxNPCFriends = max
-            messenger.send(self.uniqueName('maxNPCFriendsChange'))
-        else:
-            self.maxNPCFriends = max
-
-    def getMaxNPCFriends(self):
-        return self.maxNPCFriends
+            self.displayWhisper(fromId, chatString, WTNormal)
 
     def getNPCFriendsDict(self):
         return self.NPCFriendsDict
@@ -597,12 +547,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             NPCFriendsDict[friendPair[0]] = friendPair[1]
 
         self.NPCFriendsDict = NPCFriendsDict
-
-    def setMaxAccessories(self, max):
-        self.maxAccessories = max
-
-    def getMaxAccessories(self):
-        return self.maxAccessories
 
     def setHatList(self, clothesList):
         self.hatList = clothesList
@@ -630,7 +574,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def isTrunkFull(self, extraAccessories = 0):
         numAccessories = (len(self.hatList) + len(self.glassesList) + len(self.backpackList) + len(self.shoesList)) / 3
-        return numAccessories + extraAccessories >= self.maxAccessories
+        return numAccessories + extraAccessories >= ToontownGlobals.MaxAccessories
 
     def setMaxClothes(self, max):
         self.maxClothes = max
@@ -685,15 +629,9 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                   'battle': 1}])
         return
 
-    def setInterface(self, string):
-        pass
-
-    def setZonesVisited(self, hoods):
-        self.safeZonesVisited = hoods
-
     def setHoodsVisited(self, hoods):
         self.hoodsVisited = hoods
-        if ToontownGlobals.SellbotHQ in hoods or ToontownGlobals.CashbotHQ in hoods or ToontownGlobals.LawbotHQ in hoods:
+        if ToontownGlobals.SellbotHQ in hoods or ToontownGlobals.CashbotHQ in hoods or ToontownGlobals.LawbotHQ in hoods or ToontownGlobals.BossbotHQ in hoods:
             self.setDisguisePageFlag(1)
 
     def wrtReparentTo(self, parent):
@@ -899,6 +837,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def setCogParts(self, parts):
         self.cogParts = parts
+        messenger.send(self.uniqueName('cogMeritsChange'))
         if self.disguisePage:
             self.disguisePage.updatePage()
 
@@ -907,8 +846,12 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def setCogMerits(self, merits):
         self.cogMerits = merits
+        messenger.send(self.uniqueName('cogMeritsChange'))
         if self.disguisePage:
             self.disguisePage.updatePage()
+
+    def getCogMerits(self):
+        return self.cogMerits
 
     def readyForPromotion(self, dept):
         merits = base.localAvatar.cogMerits[dept]
@@ -1117,9 +1060,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.monthlyCatalog = CatalogItemList.CatalogItemList(monthlyCatalog)
         self.weeklyCatalog = CatalogItemList.CatalogItemList(weeklyCatalog)
         self.backCatalog = CatalogItemList.CatalogItemList(backCatalog)
-        from toontown.catalog import CatalogHouseItem
-        self.backCatalog.extend(CatalogHouseItem.getAllHouses())
-
+            from src.toontown.catalog import CatalogHouseItem
+            self.backCatalog.extend(CatalogHouseItem.getAllHouses())
         if self.catalogNotify == ToontownGlobals.NewItems:
             self.catalogNotify = ToontownGlobals.OldItems
 
@@ -1188,7 +1130,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             if random.random() < 0.1:
                 self.sendLogSuspiciousEvent('AvatarHackWarning! playing hacked splash effect')
             return
-        from toontown.effects import Splash
+        from src.toontown.effects import Splash
         if self.splash == None:
             self.splash = Splash.Splash(render)
         self.splash.setPos(x, y, z)
@@ -1201,6 +1143,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         return
 
     def d_playSplashEffect(self, x, y, z):
+        self.playSplashEffect(x, y, z)
         self.sendUpdate('playSplashEffect', [x, y, z])
 
     def setTrackAccess(self, trackArray):
@@ -1283,12 +1226,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def getHouseId(self):
         return self.houseId
 
-    def setPosIndex(self, index):
-        self.posIndex = index
-
-    def getPosIndex(self):
-        return self.posIndex
-
     def b_setSpeedChatStyleIndex(self, index):
         realIndexToSend = 0
         if type(index) == type(0) and 0 <= index and index < len(speedChatStyles):
@@ -1306,10 +1243,11 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         realIndexToUse = 0
         if type(index) == type(0) and 0 <= index and index < len(speedChatStyles):
             realIndexToUse = index
+        else:
+            base.cr.centralLogger.writeClientEvent('Hacker victim setSpeedChatStyleIndex invalid attacking toon = %d' % self.doId)
         self.speedChatStyleIndex = realIndexToUse
         nameKey, arrowColor, rolloverColor, frameColor = speedChatStyles[realIndexToUse]
-        self.nametag.setSpeedChatColor(VBase4(frameColor[0], frameColor[1], frameColor[2], 1))
-        self.nametag.updateAll()
+        self.nametag.setQtColor(VBase4(frameColor[0], frameColor[1], frameColor[2], 1))
         if self.isLocal():
             messenger.send('SpeedChatStyleChange', [])
 
@@ -1318,7 +1256,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def setMaxMoney(self, maxMoney):
         self.maxMoney = maxMoney
-    
+
     def getMaxMoney(self):
         return self.maxMoney
 
@@ -1428,7 +1366,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         pie = Sequence(pie, Func(self.pieFinishedFlying, sequence))
         self.pieTracks[sequence] = pie
         pie.start(startTime)
-        return
 
     def pieFinishedFlying(self, sequence):
         if sequence in self.pieTracks:
@@ -1482,7 +1419,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             self.tossTrack.finish()
             self.tossTrack = None
         self.cleanupPieModel()
-        return
 
     def setNumPies(self, numPies):
         self.numPies = numPies
@@ -1508,35 +1444,32 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             return
         if self.trophyScore >= ToontownGlobals.TrophyStarLevels[4]:
             self.trophyStar = loader.loadModel('phase_3.5/models/gui/name_star')
-            np = NodePath(self.nametag.getIcon())
+            np = NodePath(self.nametag.getNameIcon())
             self.trophyStar.reparentTo(np)
             self.trophyStar.setScale(2)
-            self.trophyStar.setZ(2)
             self.trophyStar.setColor(ToontownGlobals.TrophyStarColors[4])
             self.trophyStarSpeed = 15
             if self.trophyScore >= ToontownGlobals.TrophyStarLevels[5]:
                 taskMgr.add(self.__starSpin, self.uniqueName('starSpin'))
         elif self.trophyScore >= ToontownGlobals.TrophyStarLevels[2]:
             self.trophyStar = loader.loadModel('phase_3.5/models/gui/name_star')
-            np = NodePath(self.nametag.getIcon())
+            np = NodePath(self.nametag.getNameIcon())
             self.trophyStar.reparentTo(np)
             self.trophyStar.setScale(1.5)
-            self.trophyStar.setZ(1.6)
             self.trophyStar.setColor(ToontownGlobals.TrophyStarColors[2])
             self.trophyStarSpeed = 10
             if self.trophyScore >= ToontownGlobals.TrophyStarLevels[3]:
                 taskMgr.add(self.__starSpin, self.uniqueName('starSpin'))
         elif self.trophyScore >= ToontownGlobals.TrophyStarLevels[0]:
             self.trophyStar = loader.loadModel('phase_3.5/models/gui/name_star')
-            np = NodePath(self.nametag.getIcon())
+            np = NodePath(self.nametag.getNameIcon())
             self.trophyStar.reparentTo(np)
             self.trophyStar.setScale(1.5)
-            self.trophyStar.setZ(1.6)
             self.trophyStar.setColor(ToontownGlobals.TrophyStarColors[0])
             self.trophyStarSpeed = 8
             if self.trophyScore >= ToontownGlobals.TrophyStarLevels[1]:
                 taskMgr.add(self.__starSpin, self.uniqueName('starSpin'))
-        return
+        self.setHeadPositions()
 
     def __starSpin(self, task):
         now = globalClock.getFrameTime()
@@ -1710,11 +1643,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
         def setPetId(self, petId):
             self.petId = petId
-            if petId == 0:
-                self.petDNA = None
-            elif self.isLocal():
+            if self.isLocal():
                 base.cr.addPetToFriendsMap()
-            return
 
         def getPetId(self):
             return self.petId
@@ -1764,22 +1694,17 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
         def lookupPetDNA(self):
             if self.petId and not self.petDNA:
-                from toontown.pets import PetDetail
+                from src.toontown.pets import PetDetail
                 PetDetail.PetDetail(self.petId, self.__petDetailsLoaded)
 
         def __petDetailsLoaded(self, pet):
             self.petDNA = pet.style
 
+
     def trickOrTreatTargetMet(self, beanAmount):
         if self.effect:
             self.effect.stop()
         self.effect = TrickOrTreatTargetEffect(beanAmount)
-        self.effect.play()
-
-    def trickOrTreatMilestoneMet(self):
-        if self.effect:
-            self.effect.stop()
-        self.effect = TrickOrTreatMilestoneEffect()
         self.effect.play()
 
     def winterCarolingTargetMet(self, beanAmount):
@@ -1789,12 +1714,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.effect.play()
 
     def d_reqCogSummons(self, type, suitIndex):
-        if type == 'single':
-            pass
-        elif type == 'building':
-            pass
-        elif type == 'invasion':
-            pass
         self.sendUpdate('reqCogSummons', [type, suitIndex])
 
     def cogSummonsResponse(self, returnCode, suitIndex, doId):
@@ -1809,12 +1728,18 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def hasCogSummons(self, suitIndex, type = None):
         summons = self.getCogSummonsEarned()
         curSetting = summons[suitIndex]
-        if type == 'single':
+        if type == 'building':
             return curSetting & 1
-        elif type == 'building':
-            return curSetting & 2
         elif type == 'invasion':
+            return curSetting & 2
+        elif type == 'cogdo':
             return curSetting & 4
+        elif type == 'skelinvasion':
+            return curSetting & 8
+        elif type == 'waiterinvasion':
+            return curSetting & 16
+        elif type == 'v2invasion':
+            return curSetting & 32
         return curSetting
 
     def setFlowerCollection(self, speciesList, varietyList):
@@ -2086,6 +2011,20 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             nametagStyle = 0
         self.nametagStyle = nametagStyle
         self.setDisplayName(self.getName())
+    
+    def getNametagStyles(self):
+        return self.nametagStyles
+    
+    def setNametagStyles(self, nametagStyles):
+        self.nametagStyles = nametagStyles
+        if self == base.localAvatar:
+            messenger.send('refreshNametagStyle')
+    
+    def requestNametagStyle(self, nametagStyle):
+        if nametagStyle not in self.nametagStyles:
+            return
+        
+        self.sendUpdate('requestNametagStyle', [nametagStyle])
 
     def getAvIdName(self):
         return '%s\n%s' % (self.getName(), self.doId)
@@ -2098,11 +2037,11 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             base.playSfx(dialogue, node=self)
         elif chatFlags & CFSpeech != 0:
             if self.nametag.getNumChatPages() > 0:
-                self.playDialogueForString(self.nametag.getChatText())
+                self.playDialogueForString(self.nametag.getChat())
                 if self.soundChatBubble != None:
                     base.playSfx(self.soundChatBubble, node=self)
-            elif self.nametag.getStompChatText():
-                self.playDialogueForString(self.nametag.getStompChatText(), self.nametag.CHAT_STOMP_DELAY)
+            elif self.nametag.getChatStomp():
+                self.playDialogueForString(self.nametag.getStompText(), self.nametag.getStompDelay())
 
     def playDialogueForString(self, chatString, delay = 0.0):
         if len(chatString) == 0:
@@ -2165,43 +2104,15 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         for soundSequence in removeList:
             self.soundSequenceList.remove(soundSequence)
 
-    def sendLogMessage(self, message):
-        self.sendUpdate('logMessage', [message])
-
     def setChatAbsolute(self, chatString, chatFlags, dialogue = None, interrupt = 1, quiet = 0):
         DistributedAvatar.DistributedAvatar.setChatAbsolute(self, chatString, chatFlags, dialogue, interrupt)
 
-    def setChatMuted(self, chatString, chatFlags, dialogue=None, interrupt=1, quiet=0):
-        if chatFlags & CFQuicktalker:
-            self.nametag.setChatType(NametagGlobals.SPEEDCHAT)
-        elif chatFlags & CFSpeech:
-            self.nametag.setChatType(NametagGlobals.CHAT)
-
-        if chatFlags & CFThought:
-            self.nametag.setChatBalloonType(NametagGlobals.THOUGHT_BALLOON)
-        else:
-            self.nametag.setChatBalloonType(NametagGlobals.CHAT_BALLOON)
-
-        if chatFlags & CFPageButton:
-            self.nametag.setChatButton(NametagGlobals.pageButton)
-        elif chatFlags & CFQuitButton:
-            self.nametag.setChatButton(NametagGlobals.quitButton)
-        else:
-            self.nametag.setChatButton(NametagGlobals.noButton)
-
-        self.nametag.setChatText(chatString, timeout=bool(chatFlags & CFTimeout))
-        self.playCurrentDialogue(dialogue, chatFlags - CFSpeech, interrupt)
-
-    def displayTalk(self, chatString, mods=None):
+    def displayTalk(self, chatString):
         flags = CFSpeech | CFTimeout
-        self.nametag.setChatType(NametagGlobals.CHAT)
-        if base.talkAssistant.isThought(chatString):
+        if ChatUtil.isThought(chatString):
             flags = CFThought
-            self.nametag.setChatBalloonType(NametagGlobals.THOUGHT_BALLOON)
-            chatString = base.talkAssistant.removeThoughtPrefix(chatString)
-        else:
-            self.nametag.setChatBalloonType(NametagGlobals.CHAT_BALLOON)
-        self.nametag.setChatText(chatString, timeout=(flags & CFTimeout))
+            chatString = ChatUtil.removeThoughtPrefix(chatString)
+        self.nametag.setChat(chatString, flags)
         if base.toonChatSounds:
             self.playCurrentDialogue(None, flags, interrupt=1)
 
@@ -2226,6 +2137,9 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if self.isLocal():
             self.gotCatalogNotify = 1
             self.refreshOnscreenButtons()
+
+    def addInvite(self, invite):
+        self.invites.append(InviteInfo(*invite))
 
     def setInvites(self, invites):
         DistributedToon.partyNotify.debug('setInvites called passing in %d invites.' % len(invites))
@@ -2272,7 +2186,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                         appendInvite = False
             if appendInvite:
                 result.append(invite)
-
         return result
 
     def getNumInvitesToShowInMailbox(self):
@@ -2286,6 +2199,9 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             hostedInfo = hostedParties[i]
             newParty = PartyInfo(*hostedInfo)
             self.hostedParties.append(newParty)
+
+    def addPartyInvitedTo(self, party):
+        self.partiesInvitedTo.append(PartyInfo(*party))
 
     def setPartiesInvitedTo(self, partiesInvitedTo):
         DistributedToon.partyNotify.debug('setPartiesInvitedTo called passing in %d parties.' % len(partiesInvitedTo))
@@ -2329,7 +2245,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         for partyInfo in self.hostedParties:
             if partyInfo.partyId == partyId:
                 partyInfo.status = PartyGlobals.PartyStatus.CanStart
-                from toontown.shtiker import EventsPage
+                from src.toontown.shtiker import EventsPage
                 if hasattr(self, 'eventsPage') and base.localAvatar.book.entered and base.localAvatar.book.isOnPage(self.eventsPage) and self.eventsPage.getMode() == EventsPage.EventsPage_Host:
                     base.localAvatar.eventsPage.loadHostedPartyInfo()
                 if hasattr(self, 'displaySystemClickableWhisper'):
@@ -2350,7 +2266,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             if partyInfo.partyId == partyId:
                 partyInfo.status = newStatus
                 found = True
-                from toontown.shtiker import EventsPage
+                from src.toontown.shtiker import EventsPage
                 if hasattr(self, 'eventsPage') and base.localAvatar.book.entered and base.localAvatar.book.isOnPage(self.eventsPage) and self.eventsPage.getMode() == EventsPage.EventsPage_Invited:
                     base.localAvatar.eventsPage.loadInvitations()
                 if newStatus == PartyStatus.Started and hasattr(self, 'displaySystemClickableWhisper'):
@@ -2373,7 +2289,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def announcePartyStarted(self, partyId):
         DistributedToon.partyNotify.debug('announcePartyStarted')
-        return
         for partyReplyInfo in self.partyReplyInfoBases:
             if partyReplyInfo.partyId == partyId:
                 for singleReply in partyReplyInfo.replies:
@@ -2401,56 +2316,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                     if reply.inviteeId == inviteeId:
                         reply.status = newStatus
                         break
-
-    def scrubTalk(self, message, mods):
-        scrubbed = 0
-        text = copy.copy(message)
-        for mod in mods:
-            index = mod[0]
-            length = mod[1] - mod[0] + 1
-            newText = text[0:index] + length * '\x07' + text[index + length:]
-            text = newText
-
-        words = text.split(' ')
-        newwords = []
-        for word in words:
-            if word == '':
-                newwords.append(word)
-            elif word[0] == '\x07' or len(word) > 1 and word[0] == '.' and word[1] == '\x07':
-                newwords.append('\x01WLDisplay\x01' + self.chatGarbler.garbleSingle(self, word) + '\x02')
-                scrubbed = 1
-            elif not self.whiteListEnabled or base.whiteList.isWord(word):
-                newwords.append(word)
-            else:
-                flag = 0
-                for friendId, flags in self.friendsList:
-                    if not flags & ToontownGlobals.FriendChat:
-                        flag = 1
-
-                if flag:
-                    scrubbed = 1
-                    newwords.append('\x01WLDisplay\x01' + word + '\x02')
-                else:
-                    newwords.append(word)
-
-        newText = ' '.join(newwords)
-        return (newText, scrubbed)
-
-    def replaceBadWords(self, text):
-        words = text.split(' ')
-        newwords = []
-        for word in words:
-            if word == '':
-                newwords.append(word)
-            elif word[0] == '\x07':
-                newwords.append('\x01WLRed\x01' + self.chatGarbler.garbleSingle(self, word) + '\x02')
-            elif not self.whiteListEnabled or base.whiteList.isWord(word):
-                newwords.append(word)
-            else:
-                newwords.append('\x01WLRed\x01' + word + '\x02')
-
-        newText = ' '.join(newwords)
-        return newText
 
     def toonUp(self, hpGained, hasInteractivePropBonus = False):
         if self.hp == None or hpGained < 0:
@@ -2533,7 +2398,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         icons = loader.loadModel('phase_3/models/props/gm_icons.bam')
         searchString = '**/access_level_' + str(gmType)
         self.gmIcon = icons.find(searchString)
-        np = NodePath(self.nametag.getIcon())
+        np = NodePath(self.nametag.getNameIcon())
         if np.isEmpty():
             return
         self.gmIcon.flattenStrong()
@@ -2550,7 +2415,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if gmType > len(iconInfo) - 1:
             return
         self.gmIcon = loader.loadModel(iconInfo[gmType])
-        self.gmIcon.reparentTo(NodePath(self.nametag.getIcon()))
+        self.gmIcon.reparentTo(NodePath(self.nametag.getNameIcon()))
         self.gmIcon.setScale(3.25)
         self.setTrophyScore(self.trophyScore)
         self.gmIcon.setZ(1.0)
@@ -2577,39 +2442,63 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def setRedeemedCodes(self, redeemedCodes):
         self.redeemedCodes = redeemedCodes
-    
+
     def b_setIgnored(self, ignored):
         self.setIgnored(ignored)
         self.d_setIgnored(ignored)
-    
+
     def setIgnored(self, ignored):
         self.ignored = ignored
-    
+
     def d_setIgnored(self, ignored):
         self.sendUpdate('setIgnored', [ignored])
-    
+
     def isIgnored(self, doId):
         return doId in self.ignored
-    
+
     def addIgnore(self, doId):
         if not self.isIgnored(doId):
             self.ignored.append(doId)
             self.d_setIgnored(self.ignored)
-    
+
     def removeIgnore(self, doId):
         if self.isIgnored(doId):
             self.ignored.remove(doId)
             self.d_setIgnored(self.ignored)
-    
+
     def setReported(self, reported):
         self.reported = reported
-    
+
     def isReported(self, doId):
         return doId in self.reported
-    
+
     def addReport(self, doId):
         if not self.isReported(doId):
             self.reported.append(doId)
+
+    def b_setTrueFriends(self, trueFriends):
+        self.setTrueFriends(trueFriends)
+        self.d_setTrueFriends(trueFriends)
+
+    def setTrueFriends(self, trueFriends):
+        Toon.reconsiderAllToonsUnderstandable()
+        self.trueFriends = trueFriends
+
+    def d_setTrueFriends(self, trueFriends):
+        self.sendUpdate('setTrueFriends', [trueFriends])
+
+    def isTrueFriends(self, doId):
+        return doId in self.trueFriends
+
+    def addTrueFriends(self, doId):
+        if not self.isTrueFriends(doId):
+            self.trueFriends.append(doId)
+            self.b_setTrueFriends(self.trueFriends)
+
+    def removeTrueFriends(self, doId):
+        if self.isTrueFriends(doId):
+            self.trueFriends.remove(doId)
+            self.b_setTrueFriends(self.trueFriends)
 
     def applyBuffs(self):
         for id, timestamp in enumerate(self.buffs):
@@ -2634,6 +2523,41 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def setHouseType(self, houseType):
         self.houseType = houseType
 
+    def freezeToon(self):
+        self.setSystemMessage(base.localAvatar.doId, 'You have been frozen by a moderator!')
+        self.controlManager.disable()
+        base.localAvatar.book.hideButton()
+        base.localAvatar.bFriendsList.hide()
+    
+    def unfreezeToon(self):
+        self.setSystemMessage(base.localAvatar.doId, 'You have been unfrozen by a moderator!')
+        self.controlManager.enable()
+        base.localAvatar.book.showButton()
+        base.localAvatar.bFriendsList.show()
+
+    def warnLocalToon(self, reason):
+        reason = 'You have been warned by a moderator for: %s' % reason
+        self.setSystemMessage(base.localAvatar.doId, reason)
+
+    def refundParty(self, beans):
+        pass
+
+    def setFirstTrackPicked(self, trackId):
+        self.firstTrackPicked = trackId
+        
+    def getFirstTrackPicked(self):
+        if hasattr(self, 'firstTrackPicked'):
+            return self.firstTrackPicked
+        return 0
+    
+    def setSecondTrackPicked(self, trackId):
+        self.secondTrackPicked = trackId
+        
+    def getSecondTrackPicked(self):
+        if hasattr(self, 'secondTrackPicked'):
+            return self.secondTrackPicked
+        return 0
+        
 @magicWord(category=CATEGORY_COMMUNITY_MANAGER)
 def globalTeleport():
     """
@@ -2664,11 +2588,11 @@ def showParticle(name):
     """
     Shows a particle.
     """
-    
+
     particle = BattleParticles.createParticleEffect(name)
-    
+
     if particle:
         particle.start(spellbook.getTarget())
         return 'Successfully started particle!'
-    
+
     return 'Particle %s does not exist.' % name

@@ -1,6 +1,6 @@
 from direct.fsm import ClassicFSM, State
-from toontown.safezone import Playground
-from toontown.toonbase import ToontownGlobals
+from src.toontown.safezone import Playground
+from src.toontown.toonbase import ToontownGlobals
 import random
 
 class MMPlayground(Playground.Playground):
@@ -20,5 +20,3 @@ class MMPlayground(Playground.Playground):
 
     def exitOnPiano(self):
         base.localAvatar.b_setParent(ToontownGlobals.SPRender)
-    
-
