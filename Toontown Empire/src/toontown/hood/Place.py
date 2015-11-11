@@ -628,12 +628,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
                         base.localAvatar.setSystemMessage(avId, OTPLocalizer.WhisperTargetLeftVisit % (friend.getName(),))
                         friend.d_teleportGiveup(base.localAvatar.doId)
 
-
-
-
-
-
-
             taskMgr.doMethodLater(0.3, doTeleport, uniqueName('doTeleport'), extraArgs=[avId, False])
 
         base.transitions.irisIn()

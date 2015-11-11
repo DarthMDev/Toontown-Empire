@@ -89,13 +89,15 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.wantCogdominiums = self.config.GetBool('want-cogdominiums', True)
         self.wantTrackClsends = self.config.GetBool('want-track-clsends', False)
         self.baseXpMultiplier = self.config.GetFloat('base-xp-multiplier', 1.0)
+        self.wantHalloween = self.config.GetBool('want-halloween', False)
+        self.wantChristmas = self.config.GetBool('want-christmas', False)
+        self.wantJorElCam = self.config.GetBool('want-jor-el-cam', False)
 
         self.cogSuitMessageSent = False
 
     def createManagers(self):
         self.timeManager = TimeManagerAI(self)
         self.timeManager.generateWithRequired(2)
-        self.toontownTimeManager = ToontownTimeManagerAI()
         self.magicWordManager = MagicWordManagerAI(self)
         self.magicWordManager.generateWithRequired(2)
         self.newsManager = NewsManagerAI(self)
@@ -120,6 +122,8 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.cogPageManager = CogPageManagerAI.CogPageManagerAI()
         self.codeRedemptionMgr = TTCodeRedemptionMgrAI(self)
         self.codeRedemptionMgr.generateWithRequired(2)
+        self.accountDateMgr = AccountDateAI(self)
+        self.accountDateMgr.generateWithRequired(2)
         self.buildingQueryMgr = DistributedBuildingQueryMgrAI(self)
         self.buildingQueryMgr.generateWithRequired(2)
         self.groupManager.generateWithRequired(2)
@@ -194,7 +198,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.claimOwnership(self.districtId)
 
         self.districtStats = ToontownDistrictStatsAI(self)
-        self.districtStats.setDistrictId(self.districtId)
+        self.districtStats.settoontownDistrictId(self.districtId)
         self.districtStats.generateWithRequiredAndId(
             self.allocateChannel(), self.getGameDoId(), 3)
         self.notify.info('Created ToontownDistrictStats(%d)' % self.districtStats.doId)
