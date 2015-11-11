@@ -600,7 +600,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
 
     def _placeTeleportInPostZoneComplete(self, requestStatus):
         teleportDebug(requestStatus, '_placeTeleportInPostZoneComplete(%s)' % (requestStatus,))
-        NametagGlobals.setMasterArrowsOn(0)
+        NametagGlobals.setWant2dNametags(False)
         base.localAvatar.laffMeter.start()
         base.localAvatar.startQuestMap()
         base.localAvatar.reconsiderCheesyEffect()
