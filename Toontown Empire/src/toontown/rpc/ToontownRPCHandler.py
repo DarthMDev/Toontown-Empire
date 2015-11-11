@@ -645,7 +645,7 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
             result['head-color'] = TTLocalizer.NumToColor[dna.headColor]
             result['max-hp'] = fields['setMaxHp'][0]
             result['online'] = (avId in self.air.friendsManager.onlineToons)
-
+            result['lastSeen'] = fields['setLastSeen'][0]
             return result
 
     @rpcmethod(accessLevel=MODERATOR)
