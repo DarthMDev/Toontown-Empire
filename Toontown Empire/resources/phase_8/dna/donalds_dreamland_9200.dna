@@ -742,6 +742,11 @@ group "donaldsDreamland" [
     ]
    ]
   ]
+  prop "prop_tt_m_ara_gen_tunnelAheadSign_DNARoot" [
+   code [ "prop_tt_m_ara_gen_tunnelAheadSign" ]
+   pos [ 107.562 123.285 -0.500004 ]
+   nhpr [ -45 0 0 ]
+  ]
  ]
  visgroup "9202" [
   vis [   "9202"   "9201"   "9203"   "9205"   "9206"   ]
@@ -17351,6 +17356,11 @@ group "donaldsDreamland" [
     nhpr [ -150 0 -0 ]
     color [ 0.47 0.49 0.66 1 ]
    ]
+  ]
+  prop "prop_tt_m_ara_gen_tunnelAheadSign_DNARoot" [
+   code [ "prop_tt_m_ara_gen_tunnelAheadSign" ]
+   pos [ -81.4582 -21.9902 3.8147e-006 ]
+   nhpr [ 75 0 -0 ]
   ]
  ]
  visgroup "9251" [

@@ -527,6 +527,11 @@ group "toontownCentral" [
     ]
    ]
   ]
+  prop "prop_tt_m_ara_gen_tunnelAheadSign_DNARoot" [
+   code [ "prop_tt_m_ara_gen_tunnelAheadSign" ]
+   pos [ 6.25549 28.9096 -0.5 ]
+   nhpr [ 90 0 0 ]
+  ]
   interactive_prop "interactive_prop_phase_5_models_char__ttc_trashcan_DNARoot" [
    code [ "interactive_prop_phase_5_models_char__ttc_trashcan" ]
    anim [ "tt_a_ara_ttc_trashcan_idleHiccup0" ]
@@ -14018,6 +14023,11 @@ group "toontownCentral" [
    ]
   ]
   group "props" [
+  ]
+  prop "prop_tt_m_ara_gen_tunnelAheadSign_DNARoot" [
+   code [ "prop_tt_m_ara_gen_tunnelAheadSign" ]
+   pos [ 773.275 81.3465 -0.499771 ]
+   nhpr [ -90 0 0 ]
   ]
  ]
  visgroup "2341" [

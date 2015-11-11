@@ -9931,6 +9931,11 @@ group "toontownCentral" [
   ]
   group "props" [
   ]
+  prop "prop_tt_m_ara_gen_tunnelAheadSign_DNARoot" [
+   code [ "prop_tt_m_ara_gen_tunnelAheadSign" ]
+   pos [ -368.577 -395.45 -0.499989 ]
+   nhpr [ 180 0 -0 ]
+  ]
   interactive_prop "interactive_prop_phase_5_models_char__ttc_hydrant_DNARoot" [
    code [ "interactive_prop_phase_5_models_char__ttc_hydrant" ]
    anim [ "tt_a_ara_ttc_hydrant_fightBoost" ]
@@ -10416,6 +10421,11 @@ group "toontownCentral" [
      nhpr [ 90 0 -0 ]
     ]
    ]
+  ]
+  prop "prop_tt_m_ara_gen_tunnelAheadSign_DNARoot" [
+   code [ "prop_tt_m_ara_gen_tunnelAheadSign" ]
+   pos [ -93.9915 -108.692 -0.500011 ]
+   nhpr [ -90.4703 0 -0 ]
   ]
   interactive_prop "interactive_prop_phase_5_models_char__ttc_hydrant_DNARoot" [
    code [ "interactive_prop_phase_5_models_char__ttc_hydrant" ]
