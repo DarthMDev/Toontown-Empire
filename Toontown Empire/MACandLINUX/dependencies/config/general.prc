@@ -73,7 +73,7 @@ want-butterflies #f
 want-minigames #t
 
 # Picnic table board games:
-want-game-tables #t
+want-game-tables #f
 
 # Cog headquarters:
 want-cog-headquarters #t
