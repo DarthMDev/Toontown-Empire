@@ -63,7 +63,7 @@ want-donalds-dreamland #t
 want-goofy-speedway #t
 want-outdoor-zone #t
 want-golf-zone #t
-
+want-photo-game #f 
 # Safe zone settings:
 want-treasure-planners #t
 want-suit-planners #t
@@ -103,7 +103,7 @@ want-news-page #t
 # Optional:
 show-total-population #t
 want-mat-all-tailors #t
-want-talkative-tyler #f
+want-talkative-tyler #f #Why isn’t he removed
 estate-day-night #t
 want-garden-game #f
 want-language-selection #f
