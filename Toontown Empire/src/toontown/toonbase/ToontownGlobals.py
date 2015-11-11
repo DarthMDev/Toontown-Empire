@@ -1617,6 +1617,8 @@ DG = 5
 BR = 6
 OZ = 7
 DL = 8
+DefaultWantNewsPageSetting = 0
+NewsPageScaleAdjust = 0.85
 AnimPropTypes = Enum(('Unknown',
  'Hydrant',
  'Mailbox',

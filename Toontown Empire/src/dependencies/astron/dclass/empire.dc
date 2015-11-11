@@ -430,6 +430,7 @@ from src.toontown.uberdog.DistributedPartyManager/AI/UD import DistributedPartyM
 from src.toontown.uberdog.ClientServicesManager/UD import ClientServicesManager/UD
 //from src.toontown.uberdog.GlobalLobbyManager/AI/UD import GlobalLobbyManager/AI/UD
 from src.toontown.uberdog.ARGManager import ARGManager
+from src.toontown.uberdog.DistributedInGameNewsMgr/AI/UD import DistributedInGameNewsMgr/AI/UD
 from src.toontown.coderedemption.TTCodeRedemptionMgr/AI import TTCodeRedemptionMgr/AI
 from src.toontown.cogdominium import DistributedCogdoInterior/AI
 from src.toontown.cogdominium import DistributedCogdoBattleBldg/AI
@@ -3191,6 +3192,12 @@ dclass ClientServicesManager : DistributedObjectGlobal {
 dclass TTCodeRedemptionMgr : DistributedObject {
   redeemCode(char [0-50]) airecv clsend;
   redeemCodeResult(uint8);
+};
+
+dclass DistributedInGameNewsMgr : DistributedObjectGlobal {
+  setLatestIssueStr(string) required broadcast ram;
+  inGameNewsMgrAIStartingUp(uint32, uint32);
+  newIssueUDtoAI(string) airecv;
 };
 
 struct Friend
