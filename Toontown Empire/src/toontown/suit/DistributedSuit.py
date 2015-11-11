@@ -24,7 +24,7 @@ from toontown.chat.ChatGlobals import *
 from toontown.distributed.DelayDeletable import DelayDeletable
 from toontown.nametag import NametagGlobals
 from toontown.nametag.NametagGlobals import *
-from libpandadna import *
+from SuitLegList import *
 from toontown.toonbase import ToontownGlobals
 
 
