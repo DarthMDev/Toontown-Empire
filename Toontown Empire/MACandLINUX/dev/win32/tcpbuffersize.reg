@@ -1,3 +1,0 @@
-[HKEY_LOCAL_MACHINESYSTEMCurrentControlSetservicesAFDParameters]
-DefaultReceiveWindow=dword000fa000
-DefaultSendWindow=dword000fa000

@@ -66,3 +66,4 @@ src/dependencies/MongoDB/GardeningDatabase/mongod.lock
 src/dependencies/MongoDB/GardeningDatabase/mongod.lock
 src/user/preferences.json
 *.mp
+news/
