@@ -11695,10 +11695,10 @@ else:
      1,
      NPC_REGULAR)
 BlockerPositions = {TTLocalizer.Flippy: (Point3(207.4, 18.81, -0.475), 90.0)}
-LaffRestockPositions = {lnames[11001]: ((-27.0, -170.0, -19.6), 215.0),
-                        lnames[12001]: ((361.9, -394.4, -23.5), 113.5),
-                        lnames[13001]: ((143.7, -381.4, -68.4), 0.0),
-                        lnames[10001]: ((135.0, 128.8, 0.025), -212.8)}
+#LaffRestockPositions = {lnames[11001]: ((-27.0, -170.0, -19.6), 215.0),
+                        #lnames[12001]: ((361.9, -394.4, -23.5), 113.5),
+                        #lnames[13001]: ((143.7, -381.4, -68.4), 0.0),
+                        #lnames[10001]: ((135.0, 128.8, 0.025), -212.8)}    - Storm Sellbot
 del lnames
 zone2NpcDict = {}
 
