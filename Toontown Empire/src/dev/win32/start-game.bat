@@ -58,13 +58,14 @@ echo Gameserver: %TTE_GAMESERVER%
 echo ===============================
 
 cd ../../
+cd ..
 
 if %INPUT%==2 (
-    "dependencies/panda/python/ppython.exe" -m toontown.toonbase.ToontownStartRemoteDB
+    "dependencies/panda/python/ppython.exe" -m src.toontown.toonbase.ToontownStartRemoteDB
 ) else if %INPUT%==4 (
-    "dependencies/panda/python/ppython.exe" -m toontown.toonbase.ToontownStartRemoteDB
+    "dependencies/panda/python/ppython.exe" -m src.toontown.toonbase.ToontownStartRemoteDB
 ) else (
-    "dependencies/panda/python/ppython.exe" -m toontown.toonbase.ToontownStart
+    "dependencies/panda/python/ppython.exe" -m src.toontown.toonbase.ToontownStart
 )
 
 pause
