@@ -591,7 +591,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.b_setNPCFriendsDict([])
 
     def attemptAddNPCFriend(self, npcFriend):
-        numCalls = simbase.air.config.GetInt('sos-card-reward', 2)
+        numCalls = simbase.air.config.GetInt('sos-card-reward', 1)
         
         if numCalls <= 0:
             self.notify.warning('invalid numCalls: %d' % numCalls)
