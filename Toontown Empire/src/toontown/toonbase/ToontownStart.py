@@ -51,12 +51,12 @@ from direct.directnotify.DirectNotifyGlobal import directNotify
 notify = directNotify.newCategory('ToontownStart')
 notify.setInfo(True)
 
-from otp.settings.Settings import Settings
-from otp.otpbase import OTPGlobals
+from src.otp.settings.Settings import Settings
+from src.otp.otpbase import OTPGlobals
 
 preferencesFilename = ConfigVariableString(
     'preferences-filename',
-    'src/user/preferences.json'
+    'user/preferences.json'
 ).getValue()
 
 notify.info('Reading %s...' % preferencesFilename)
