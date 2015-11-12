@@ -55,7 +55,7 @@ class DistributedNPCGlove(DistributedNPCToonBase):
         DistributedNPCToonBase.disable(self)
 
     def destroyGui(self):
-        for element in [self.title, self.notice, self.notice2, self.color, self.color2 self.buyButton, self.cancelButton, self.leftButton, self.rightButton, self.leftButton2, self.rightButton2]:
+        for element in [self.title, self.notice, self.color, self.buyButton, self.cancelButton, self.leftButton, self.rightButton]:
             if element:
                 element.destroy()
                 element = None
@@ -71,17 +71,9 @@ class DistributedNPCGlove(DistributedNPCToonBase):
                       text_fg=(1, 0, 0, 1), text_scale=0.11, text_font=ToontownGlobals.getSignFont(),
                       pos=(0, 0, -0.45), text_shadow=(1, 1, 1, 1))
 
-        self.notice2 = DirectLabel(aspect2d, relief=None, text=TTLocalizer.GloveGuiNotice % ToontownGlobals.ColorCost,
-                      text_fg=(1, 0, 0, 1), text_scale=0.11, text_font=ToontownGlobals.getSignFont(),
-                      pos=(0, 0, -0.70), text_shadow=(1, 1, 1, 1))
-                      
         self.color = DirectLabel(aspect2d, relief=None, text='',
                      text_scale=0.11, text_font=ToontownGlobals.getSignFont(),
                      pos=(0, 0, -0.70), text_shadow=(1, 1, 1, 1))
-                     
-        self.color2 = DirectLabel(aspect2d, relief=None, text='',
-                     text_scale=0.11, text_font=ToontownGlobals.getSignFont(),
-                     pos=(0, 0, -0.30), text_shadow=(1, 1, 1, 1))
 
         self.buyButton = DirectButton(aspect2d, relief=None, image=(self.shuffleUp, self.shuffleDown),
                          text=TTLocalizer.GloveGuiBuy, text_font=ToontownGlobals.getInterfaceFont(),
@@ -98,12 +90,6 @@ class DistributedNPCGlove(DistributedNPCToonBase):
 
         self.rightButton = DirectButton(aspect2d, relief=None, image=(self.shuffleArrowUp, self.shuffleArrowDown),
                            pos=(0.60, 0, -0.66), scale=-1, command=self.handleSetIndex, extraArgs=[1])
-       
-        self.leftButton2 = DirectButton(aspect2d, relief=None, image=(self.shuffleArrowUp, self.shuffleArrowDown),
-                          pos=(-0.50, 0, -0.56), command=self.handleSetIndex, extraArgs=[-1])
-
-        self.rightButton2 = DirectButton(aspect2d, relief=None, image=(self.shuffleArrowUp, self.shuffleArrowDown),
-                           pos=(0.50, 0, -0.56), scale=-1, command=self.handleSetIndex, extraArgs=[1])
 
         self.updateGuiByIndex()
 
@@ -147,7 +133,7 @@ class DistributedNPCGlove(DistributedNPCToonBase):
         taskMgr.doMethodLater(45, self.leave, 'npcSleepTask-%s' % self.doId)
         self.setChatAbsolute('', CFSpeech)
 
-        if base.localAvatar.getTotalMoney() < ToontownGlobals.GloveCost or  base.localAvatar.getTotalMoney() < ToontownGlobals.ColorCost:
+        if base.localAvatar.getTotalMoney() < ToontownGlobals.GloveCost:
             self.setChatAbsolute(self.getMessageById(2), CFSpeech|CFTimeout)
             self.reset()
         else:
