@@ -71,10 +71,6 @@ class DistributedNPCGlove(DistributedNPCToonBase):
                       text_fg=(1, 0, 0, 1), text_scale=0.11, text_font=ToontownGlobals.getSignFont(),
                       pos=(0, 0, -0.45), text_shadow=(1, 1, 1, 1))
 
-        self.notice2 = DirectLabel(aspect2d, relief=None, text=TTLocalizer.GloveGuiNotice % ToontownGlobals.ColorCost,
-                      text_fg=(1, 0, 0, 1), text_scale=0.11, text_font=ToontownGlobals.getSignFont(),
-                      pos=(0, 0, -0.70), text_shadow=(1, 1, 1, 1))
-                      
         self.color = DirectLabel(aspect2d, relief=None, text='',
                      text_scale=0.11, text_font=ToontownGlobals.getSignFont(),
                      pos=(0, 0, -0.70), text_shadow=(1, 1, 1, 1))
@@ -137,7 +133,7 @@ class DistributedNPCGlove(DistributedNPCToonBase):
         taskMgr.doMethodLater(45, self.leave, 'npcSleepTask-%s' % self.doId)
         self.setChatAbsolute('', CFSpeech)
 
-        if base.localAvatar.getTotalMoney() < ToontownGlobals.GloveCost or  base.localAvatar.getTotalMoney() < ToontownGlobals.ColorCost:
+        if base.localAvatar.getTotalMoney() < ToontownGlobals.GloveCost:
             self.setChatAbsolute(self.getMessageById(2), CFSpeech|CFTimeout)
             self.reset()
         else:
