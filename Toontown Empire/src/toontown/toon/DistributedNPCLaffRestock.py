@@ -10,12 +10,12 @@ from LaffShopGui import *
 
 class DistributedNPCLaffRestock(DistributedNPCToonBase):
 
-    zone2id = {
-        10000: 0,
-        13000: 1,
-        12000: 2,
-        11000: 3,
-    }
+    #zone2id = {
+        #10000: 0,
+        #13000: 1,
+        #12000: 2,
+        #11000: 3,
+    #} - Storm Sellbot
 
     def __init__(self, cr):
         DistributedNPCToonBase.__init__(self, cr)
@@ -31,13 +31,13 @@ class DistributedNPCLaffRestock(DistributedNPCToonBase):
         self.av = None
         DistributedNPCToonBase.disable(self)
 
-    def initToonState(self):
-        self.setAnimState('neutral', 0.9, None, None)
-        if self.name in NPCToons.LaffRestockPositions:
-            pos = NPCToons.LaffRestockPositions[self.name]
-            self.setPos(*pos[0])
-            self.setH(pos[1])
-        self.putOnSuit(self.zone2id.get(self.zoneId, -1), rental=True)
+    #def initToonState(self): - Storm Sellbot
+        #self.setAnimState('neutral', 0.9, None, None)
+        #if self.name in NPCToons.LaffRestockPositions:
+            #pos = NPCToons.LaffRestockPositions[self.name]
+            #self.setPos(*pos[0])
+            #self.setH(pos[1])
+        #self.putOnSuit(self.zone2id.get(self.zoneId, -1), rental=True)
 
     def getCollSphereRadius(self):
         return 3.0

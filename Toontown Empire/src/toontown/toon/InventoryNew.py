@@ -313,8 +313,8 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
     def setDetailCredit(self, track, credit):
         if credit != None:
             if self.toon.earnedExperience:
-                maxCredit =  self.toon.earnedExperience[track]
-                credit = maxCredit
+                maxCredit = ExperienceCap - self.toon.earnedExperience[track]
+                credit = min(credit, maxCredit)
             credit = int(credit * 10 + 0.5)
             if credit % 10 == 0:
                 credit /= 10
