@@ -200,7 +200,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         page.setPageName(pageName)
         page.reparentTo(self)
         self.addPageTab(page, pageIndex, pageName)
-        from toontown.shtiker import MapPage
+        from src.toontown.shtiker import MapPage
         if isinstance(page, MapPage.MapPage):
             self.pageBeforeNews = page
 
@@ -319,7 +319,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         if enterPage:
             self.showPageArrows()
             page.enter()
-        from toontown.shtiker import NewsPage
+        from src.toontown.shtiker import NewsPage
         if not isinstance(page, NewsPage.NewsPage):
             self.pageBeforeNews = page
         return
@@ -420,7 +420,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         self.setPageTabIndex(self.currPageIndex)
         self.showPageArrows()
         page = self.pages[self.currPageIndex]
-        from toontown.shtiker import NewsPage
+        from src.toontown.shtiker import NewsPage
         if isinstance(page, NewsPage.NewsPage):
             self.goToNewsPage(page)
         else:
@@ -442,7 +442,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
             self.nextArrow.show()
 
     def __checkForNewsPage(self):
-        from toontown.shtiker import NewsPage
+        from src.toontown.shtiker import NewsPage
         self.ignore('arrow_left')
         self.ignore('arrow_right')
         if isinstance(self.pages[self.currPageIndex], NewsPage.NewsPage):

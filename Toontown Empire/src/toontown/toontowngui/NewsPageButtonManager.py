@@ -67,7 +67,7 @@ class NewsPageButtonManager(FSM.FSM):
         currentState = base.localAvatar.animFSM.getCurrentState().getName()
         if currentState == 'jumpAirborne':
             return
-        from toontown.toon import LocalToon
+        from src.toontown.toon import LocalToon
         if not LocalToon.WantNewsPage:
             return
         if base.cr and base.cr.playGame and base.cr.playGame.getPlace() and base.cr.playGame.getPlace().fsm:
@@ -126,13 +126,9 @@ class NewsPageButtonManager(FSM.FSM):
     def enterNormalWalk(self):
         if not self.buttonsLoaded:
             return
-        if localAvatar.getLastTimeReadNews() < base.cr.inGameNewsMgr.getLatestIssue():
             self.__showNewIssueButton()
             self.__blinkIval.resume()
-        else:
-            self.hideNewIssueButton()
-        self.gotoPrevPageButton.hide()
-        self.goto3dWorldButton.hide()
+
 
     def exitNormalWalk(self):
         if not self.buttonsLoaded:
@@ -165,7 +161,7 @@ class NewsPageButtonManager(FSM.FSM):
 
     def showAppropriateButton(self):
         self.notify.debugStateCall(self)
-        from toontown.toon import LocalToon
+        from src.toontown.toon import LocalToon
         if not LocalToon.WantNewsPage:
             return
         if not self.buttonsLoaded:

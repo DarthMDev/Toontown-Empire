@@ -58,7 +58,6 @@ class NewsPage(ShtikerPage.ShtikerPage):
             base.setCellsActive(base.leftCells, 0)
             base.setCellsActive([base.rightCells[1]], 0)
             localAvatar.book.bookCloseButton.hide()
-            localAvatar.setLastTimeReadNews(base.cr.toontownTimeManager.getCurServerDateTime())
 
     def exit(self):
         self.clearPage()
