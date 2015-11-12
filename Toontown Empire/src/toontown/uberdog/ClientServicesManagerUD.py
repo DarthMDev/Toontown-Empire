@@ -13,7 +13,7 @@ from toontown.uberdog import NameJudgeBlacklist
 
 
 from pandac.PandaModules import *
-
+from sys import platform
 import hashlib, hmac, json
 import anydbm, math, os, dumbdbm
 import urllib2, time
