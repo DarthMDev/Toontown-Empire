@@ -11,10 +11,11 @@ from toontown.toon.ToonDNA import ToonDNA
 from toontown.toonbase import TTLocalizer
 from toontown.uberdog import NameJudgeBlacklist
 
+
 from pandac.PandaModules import *
 
 import hashlib, hmac, json
-import anydbm, math, os
+import anydbm, math, os, dumbdbm
 import urllib2, time
 
 def rejectConfig(issue, securityIssue=True, retarded=True):
@@ -133,8 +134,10 @@ class AccountDB:
 
         filename = config.GetString('account-bridge-filename', 'account-bridge.db')
         filename = os.path.join('dependencies', filename)
-
-        self.dbm = anydbm.open(filename, 'c')
+        if platform == 'darwin':
+            self.dbm = dumbdbm.open(filename, 'c')
+        else:
+            self.dbm = anydbm.open(filename, 'c')
 
     def addNameRequest(self, avId, name):
         return True
