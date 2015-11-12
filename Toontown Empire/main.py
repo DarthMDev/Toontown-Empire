@@ -7,4 +7,4 @@ os.environ["TTE_GAMESERVER"] = "server.toontownempire.com"
 os.environ["tteUsername"] = username
 os.environ["ttePassword"] = password
 
-runpy.run_module('src.toontown.toonbase.ClientStart', run_name='__main__', alter_sys=True)
+runpy.run_module('src.toontown.toonbase.ToontownStart', run_name='__main__', alter_sys=True)
