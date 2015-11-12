@@ -84,8 +84,8 @@ CatalogItemType2multipleAllowed = {INVALID_ITEM: False,
  NAMETAG_ITEM: False,
  TOON_STATUE_ITEM: False,
  ANIMATED_FURNITURE_ITEM: True,
- ACCESSORY_ITEM: False
- HOUSE_ITEM: False
+ ACCESSORY_ITEM: False,
+ HOUSE_ITEM: False,
  TANK_ITEM: False}
 SingleCodeRedemption = (BEAN_ITEM,)
 CatalogItemTypeMask = 31

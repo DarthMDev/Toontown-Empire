@@ -107,6 +107,8 @@ want-garden-game #f
 want-language-selection #t
 want-mongo #t
 want-toontorial #t
+want-news-tab #t
+want-news-page #t
 
 # Developer options:
 want-dev #f

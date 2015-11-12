@@ -16,7 +16,7 @@ class CatalogHouseItem(CatalogItem.CatalogItem):
         return 1
         
     def requestPurchase(self, phone, callback):
-        from toontown.toontowngui import TTDialog
+        from src.toontown.toontowngui import TTDialog
         avatar = base.localAvatar
 
         self.requestPurchaseCleanup()
@@ -30,7 +30,7 @@ class CatalogHouseItem(CatalogItem.CatalogItem):
             del self.dialog
 
     def __handleFullPurchaseDialog(self, phone, callback, buttonValue):
-        from toontown.toontowngui import TTDialog
+        from src.toontown.toontowngui import TTDialog
         self.requestPurchaseCleanup()
         if buttonValue == DGG.DIALOG_OK:
             CatalogItem.CatalogItem.requestPurchase(self, phone, callback)
