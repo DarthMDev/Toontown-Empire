@@ -142,8 +142,8 @@ def setFancyFont(path):
 def getNametagFont(index):
     global NametagFontPaths
     global NametagFonts
-    if (index not in NametagFonts) or (NametagFonts[index] is None):
-        if (index not in NametagFontPaths) or (NametagFontPaths[index] is None):
+    if index not in NametagFonts or NametagFonts[index] is None:
+        if index not in NametagFontPaths or NametagFontPaths[index] is None:
             InterfaceFont = TextNode.getDefaultFont()
             NametagFonts[index] = TextNode.getDefaultFont()
         else:

@@ -344,7 +344,7 @@ class OTPClientRepository(ClientRepositoryBase):
             # in the DC file.
             for i in xrange(dcFile.getNumClasses()):
                 dclass = dcFile.getClass(i)
-                if ((dclass.getName()+ownerDcSuffix) in ownerImportSymbols):
+                if (dclass.getName()+ownerDcSuffix) in ownerImportSymbols:
                     number = dclass.getNumber()
                     className = dclass.getName() + ownerDcSuffix
 
@@ -615,7 +615,7 @@ class OTPClientRepository(ClientRepositoryBase):
         self.__currentAvId = 0
         self.stopHeartbeat()
         self.stopReaderPollTask()
-        if (self.bootedIndex is not None) and (self.bootedIndex in OTPLocalizer.CRBootedReasons):
+        if self.bootedIndex is not None and self.bootedIndex in OTPLocalizer.CRBootedReasons:
             message = OTPLocalizer.CRBootedReasons[self.bootedIndex]
         elif self.bootedIndex == 155:
             message = self.bootedText
@@ -1264,7 +1264,7 @@ class OTPClientRepository(ClientRepositoryBase):
         else:
             interest = None
 
-        if (not interest) or (not interest.events):
+        if not interest or not interest.events:
             # This object can be generated right away:
             return self.__doGenerate(doId, parentId, zoneId, classId, di, other)
 

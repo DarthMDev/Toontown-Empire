@@ -439,7 +439,7 @@ class Avatar(Actor, ShadowCaster):
             messenger.send('doneChatPage', [elapsed])
 
     def advancePageNumber(self):
-        if (self.__chatAddressee == base.localAvatar.doId) and (
+        if self.__chatAddressee == base.localAvatar.doId and (
             self.__chatPageNumber is not None) and (
             self.__chatPageNumber[0] == self.__chatParagraph):
             pageNumber = self.__chatPageNumber[1]
@@ -453,7 +453,7 @@ class Avatar(Actor, ShadowCaster):
                     self.b_setPageNumber(self.__chatParagraph, pageNumber)
 
     def __updatePageChat(self):
-        if (self.__chatPageNumber is not None) and (
+        if self.__chatPageNumber is not None and (
             self.__chatPageNumber[0] == self.__chatParagraph):
             pageNumber = self.__chatPageNumber[1]
             if pageNumber >= 0:
