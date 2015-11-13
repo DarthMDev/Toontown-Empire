@@ -79,34 +79,34 @@ class PyVec3:
     def crossInto(self, other):
         self.x, self.y, self.z = self._crossResults(other)
 
-    def __lt__(a, b):
+    def __lt__(self, a, b):
         return a.length() < b.length()
 
-    def __le__(a, b):
+    def __le__(self, a, b):
         return a < b or a == b
 
-    def __eq__(a, b):
+    def __eq__(self, a, b):
         return abs(a.length() - b.length()) < PyVec3.Epsilon
 
-    def __ne__(a, b):
+    def __ne__(self, a, b):
         return not a == b
 
-    def __ge__(a, b):
+    def __ge__(self, a, b):
         return a > b or a == b
 
-    def __gt__(a, b):
+    def __gt__(self, a, b):
         return a.length() > b.length()
 
-    def __add__(a, b):
+    def __add__(self, a, b):
         return PyVec3(a.getX() + b.getX(), a.getY() + b.getY(), a.getZ() + b.getZ())
 
-    def __sub__(a, b):
+    def __sub__(self, a, b):
         return PyVec3(a.getX() - b.getX(), a.getY() - b.getY(), a.getZ() - b.getZ())
 
-    def __mul__(a, s):
+    def __mul__(self, a, s):
         return PyVec3(a.getX() * s, a.getY() * s, a.getZ() * s)
 
-    def __div__(a, s):
+    def __div__(self, a, s):
         return PyVec3(a.getX() / s, a.getY() / s, a.getZ() / s)
 
     def __iadd__(self, other):
