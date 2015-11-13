@@ -1,11 +1,11 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObjectAI
 from direct.task import Task
-from otp.level import DistributedLevelAI, LevelSpec
-from toontown.ai.ToonBarrier import *
-from toontown.coghq import DistributedBattleFactoryAI, DistributedLawOfficeElevatorIntAI, LawOfficeLayout
-from toontown.suit import DistributedFactorySuitAI
-from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
+from src.otp.level import DistributedLevelAI, LevelSpec
+from src.toontown.ai.ToonBarrier import *
+from src.toontown.coghq import DistributedBattleFactoryAI, DistributedLawOfficeElevatorIntAI, LawOfficeLayout
+from src.toontown.suit import DistributedFactorySuitAI
+from src.toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
 import FactoryEntityCreatorAI, FactorySpecs, LawOfficeBase, LevelSuitPlannerAI
 
 class DistributedLawOfficeFloorAI(DistributedLevelAI.DistributedLevelAI, LawOfficeBase.LawOfficeBase):
@@ -96,7 +96,7 @@ class DistributedLawOfficeFloorAI(DistributedLevelAI.DistributedLevelAI, LawOffi
         for avId in activeVictorIds:
             self.air.writeServerEvent('DAOffice Defeated', avId, description)
         for toon in activeVictors:
-            simbase.air.questManager.toonDefeatedFactory(toon, self.lawOfficeId, activeVictors)
+            simbase.air.questManager.toonDefeatedFactory(toon, self.lawOfficeId)
 
     def b_setDefeated(self):
         self.d_setDefeated()

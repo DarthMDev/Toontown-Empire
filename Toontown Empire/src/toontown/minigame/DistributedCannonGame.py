@@ -1,25 +1,24 @@
 from direct.directnotify import DirectNotifyGlobal
-from pandac.PandaModules import *
-from toontown.nametag.NametagFloat3d import NametagFloat3d
-from toontown.nametag.Nametag import Nametag
-from toontown.toonbase.ToonBaseGlobal import *
+from panda3d.core import *
+from src.otp.nametag.NametagFloat3d import NametagFloat3d
+from src.otp.nametag.Nametag import Nametag
+from src.toontown.toonbase.ToonBaseGlobal import *
 from DistributedMinigame import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownTimer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownTimer
 from direct.task.Task import Task
 import Trajectory
 import math
-from toontown.toon import ToonHead
-from toontown.effects import Splash
-from toontown.effects import DustCloud
+from src.toontown.toon import ToonHead
+from src.toontown.effects import Splash
+from src.toontown.effects import DustCloud
 import CannonGameGlobals
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
 LAND_TIME = 2
 WORLD_SCALE = 2.0
 GROUND_SCALE = 1.4 * WORLD_SCALE
@@ -199,7 +198,7 @@ class DistributedCannonGame(DistributedMinigame):
             if av:
                 av.loop('neutral')
                 av.setPlayRate(1.0, 'run')
-                av.nametag.remove(head.tag)
+                av.nametag.removeNametag(head.tag)
             head.delete()
 
         del self.toonHeadDict
@@ -346,11 +345,10 @@ class DistributedCannonGame(DistributedMinigame):
         self.toonHeadDict[avId] = head
         toon = self.getAvatar(avId)
         tag = NametagFloat3d()
-        tag.hideNametag()
-        tag.update()
+        tag.setContents(Nametag.CSpeech | Nametag.CThought)
         tag.setBillboardOffset(0)
         tag.setAvatar(head)
-        toon.nametag.add(tag)
+        toon.nametag.addNametag(tag)
         tagPath = head.attachNewNode(tag)
         tagPath.setPos(0, 0, 1)
         head.tag = tag

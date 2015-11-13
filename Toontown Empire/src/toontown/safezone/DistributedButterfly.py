@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from direct.directnotify import DirectNotifyGlobal
@@ -7,7 +7,7 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from pandac.PandaModules import NodePath
 from direct.directutil import Mopath
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 from direct.actor import Actor
 import ButterflyGlobals
 from direct.showbase import RandomNumGen

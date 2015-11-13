@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
@@ -6,9 +6,9 @@ from direct.directnotify import DirectNotifyGlobal
 import DistributedSuitBase
 from direct.task.Task import Task
 import random
-from toontown.toonbase import ToontownGlobals
-from otp.level import LevelConstants
-from toontown.distributed.DelayDeletable import DelayDeletable
+from src.toontown.toonbase import ToontownGlobals
+from src.otp.level import LevelConstants
+from src.toontown.distributed.DelayDeletable import DelayDeletable
 
 class DistributedFactorySuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFactorySuit')

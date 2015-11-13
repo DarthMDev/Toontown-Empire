@@ -1,11 +1,12 @@
 # Window settings:
-window-title Toontown Empire
+window-title Toontown Empire [Dev]
 win-origin -1 -1
 icon-filename phase_3/etc/icon.ico
 cursor-filename phase_3/etc/toonmono.cur
 
 # Audio:
-audio-library-name p3fmod_audio
+audio-library-name p3openal_audio
+video-library-name p3ffmpeg
 
 # Graphics:
 aux-display pandagl
@@ -13,18 +14,18 @@ aux-display pandadx9
 aux-display p3tinydisplay
 
 # Models:
-model-cache-models #f
-model-cache-textures #f
+model-cache-models #t
+model-cache-textures #t
 default-model-extension .bam
 
 # Textures:
 texture-anisotropic-degree 16
 
 # Preferences:
-preferences-filename user/preferences.json
+preferences-filename src/dependencies/pref.json
 
 # Backups:
-backups-filepath dependencies/backups/
+backups-filepath src/dependencies/backups/
 backups-extension .json
 
 # Server:
@@ -33,10 +34,9 @@ server-port 7199
 account-bridge-filename astron/databases/account-bridge.db
 
 # Performance:
-sync-video #f
 texture-power-2 none
 gl-check-errors #f
-garbage-collect-states #f
+garbage-collect-states #t
 
 # Egg object types:
 egg-object-type-barrier <Scalar> collide-mask { 0x01 } <Collide> { Polyset descend }
@@ -67,10 +67,12 @@ want-golf-zone #t
 # Safe zone settings:
 want-treasure-planners #t
 want-suit-planners #t
-want-butterflies #f
+want-butterflies #t
 
 # Trolley minigames:
 want-minigames #t
+want-pairing-game #f
+want-photo-game #f
 
 # Picnic table board games:
 want-game-tables #t
@@ -96,21 +98,17 @@ want-lawbot-cogdo #t
 # Cog buildings:
 want-cogbuildings #t
 
-# News in-game
-want-news-tab #t
-want-news-page #t
-
 # Optional:
 show-total-population #t
 want-mat-all-tailors #t
 want-talkative-tyler #f
 estate-day-night #t
 want-garden-game #f
-want-language-selection #f
-active-holidays 64, 65, 66
-
-# Chat:
-want-whitelist #t
+want-language-selection #t
+want-mongo #t
+want-toontorial #t
+want-news-tab #t
+want-news-page #t
 
 # Developer options:
 want-dev #f

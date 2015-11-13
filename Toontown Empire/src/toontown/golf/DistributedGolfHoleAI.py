@@ -1,13 +1,13 @@
 from direct.distributed import DistributedObjectAI
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from pandac.PandaModules import *
+from src.toontown.toonbase import ToontownGlobals
+from panda3d.core import *
 import DistributedPhysicsWorldAI
 from direct.fsm.FSM import FSM
-from toontown.ai.ToonBarrier import *
-from toontown.golf import GolfGlobals
+from src.toontown.ai.ToonBarrier import *
+from src.toontown.golf import GolfGlobals
 import random
-from toontown.golf import GolfHoleBase
+from src.toontown.golf import GolfHoleBase
 
 class DistributedGolfHoleAI(DistributedPhysicsWorldAI.DistributedPhysicsWorldAI, FSM, GolfHoleBase.GolfHoleBase):
     defaultTransitions = {'Off': ['Cleanup', 'WaitTee'],
@@ -277,7 +277,7 @@ class DistributedGolfHoleAI(DistributedPhysicsWorldAI.DistributedPhysicsWorldAI,
 
     def chooseAvatarToSimulate(self):
         stillPlaying = self.golfCourse.getStillPlayingAvIds()
-        
+
         return stillPlaying[0] if stillPlaying else 0
 
     def ballMovie2AI(self, cycleTime, avId, movie, spinMovie, ballInFrame, ballTouchedHoleFrame, ballFirstTouchedHoleFrame, commonObjectData):

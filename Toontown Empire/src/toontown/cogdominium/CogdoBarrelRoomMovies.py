@@ -6,10 +6,10 @@ from direct.showbase.RandomNumGen import RandomNumGen
 from direct.interval.MetaInterval import Sequence, Parallel
 from direct.interval.FunctionInterval import Func, Wait
 from direct.gui.DirectGui import *
-from toontown.toonbase.ToontownGlobals import *
-from toontown.toonbase import TTLocalizer
-from toontown.suit import Suit, SuitDNA
-from toontown.toon import Toon, ToonHead, ToonDNA
+from src.toontown.toonbase.ToontownGlobals import *
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.suit import Suit, SuitDNA
+from src.toontown.toon import Toon, ToonHead, ToonDNA
 from DistributedCogdoInterior import *
 from CogdoUtil import CogdoGameMovie
 import CogdoBarrelRoomConsts, CogdoUtil
@@ -87,13 +87,13 @@ class CogdoBarrelRoomIntro(CogdoGameMovie):
 
         def start():
             self.frame.show()
-            base.setCellsActive(base.bottomCells + base.leftCells + base.rightCells, 0)
+            base.setCellsAvailable(base.bottomCells + base.leftCells + base.rightCells, 0)
 
         def end():
             self._dialogueLabel.reparentTo(hidden)
             self.toonHead.reparentTo(hidden)
             self.frame.hide()
-            base.setCellsActive(base.bottomCells + base.leftCells + base.rightCells, 1)
+            base.setCellsAvailable(base.bottomCells + base.leftCells + base.rightCells, 1)
             self._stopUpdateTask()
 
         self._ival = Sequence(Func(start), Func(self.displayLine, dialogue), Wait(CogdoBarrelRoomConsts.BarrelRoomIntroTimeout), Func(end))

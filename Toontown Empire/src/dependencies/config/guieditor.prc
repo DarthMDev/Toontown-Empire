@@ -1,1 +1,1 @@
-model-path ../resources/
+model-path resources/

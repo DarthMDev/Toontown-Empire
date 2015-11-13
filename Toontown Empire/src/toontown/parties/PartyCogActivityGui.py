@@ -6,9 +6,9 @@ from direct.interval.MetaInterval import Sequence
 from direct.interval.FunctionInterval import Wait, Func
 from pandac.PandaModules import Point3, VBase4
 from pandac.PandaModules import TextNode
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownIntervals
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownIntervals
+from src.toontown.toonbase import TTLocalizer
 import PartyGlobals
 
 class PartyCogTrackerGui:
@@ -254,12 +254,12 @@ class PartyCogActivityGui(DirectObject):
     def disableToontownHUD(self):
         base.localAvatar.hideName()
         base.localAvatar.laffMeter.hide()
-        base.setCellsActive(base.bottomCells + [base.rightCells[1]], False)
+        base.setCellsAvailable(base.bottomCells + [base.rightCells[1]], False)
 
     def enableToontownHUD(self):
         base.localAvatar.showName()
         base.localAvatar.laffMeter.show()
-        base.setCellsActive(base.bottomCells + [base.rightCells[1]], True)
+        base.setCellsAvailable(base.bottomCells + [base.rightCells[1]], True)
 
     def setTeam(self, team):
         self.team = team

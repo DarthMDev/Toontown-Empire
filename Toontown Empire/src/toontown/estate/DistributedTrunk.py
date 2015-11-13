@@ -1,13 +1,13 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.gui.DirectGui import *
 from direct.task.Task import Task
 from direct.interval.IntervalGlobal import *
 import DistributedCloset
 import ClosetGlobals
 import TrunkGUI
-from toontown.toon import ToonDNA
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toon import ToonDNA
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
 N_A = 0
 
 class DistributedTrunk(DistributedCloset.DistributedCloset):

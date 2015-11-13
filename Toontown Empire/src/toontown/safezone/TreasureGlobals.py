@@ -1,4 +1,4 @@
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 
 TreasureTT = 0
 TreasureDD = 1
@@ -8,6 +8,8 @@ TreasureMM = 4
 TreasureDL = 5
 TreasureOZ = 6
 TreasureE  = 7
+
+ValentineTreasureModel = 'phase_4/models/props/tt_m_ara_ext_heart'
 
 TreasureModels = {
     TreasureTT: (
@@ -46,7 +48,7 @@ TreasureModels = {
 
 SafeZoneTreasureSpawns = {
     ToontownGlobals.ToontownCentral: (
-        TreasureTT, 3, # TTTreasure heals 3 each...
+        TreasureTT, 5, # TTTreasure heals 5 each...
         [
             (-60.976, -8.866, 1.3),
             (-90.632, -5.828, -0.63),
@@ -206,10 +208,10 @@ SafeZoneTreasureSpawns = {
             (-34, -88, 0.0),
         ],
         10, # Rate
-        2 #Maximum
+        5 #Maximum
     ),
     ToontownGlobals.OutdoorZone: (
-        TreasureOZ, 3, # +3 laff
+        TreasureOZ, 5, # +5 laff
         [
             (-156.9, -118.9, 0.025),
             (-35.6, 86.0, 1.25),
@@ -231,7 +233,7 @@ SafeZoneTreasureSpawns = {
         5 # Maximum
     ),
     ToontownGlobals.MyEstate: (
-        TreasureE, 2, # +2 laff
+        TreasureE, 5, # +5 laff
         [
             (102.9, 14.17, 0.57),
             (131.3, 45.31, 0.42),
@@ -250,6 +252,6 @@ SafeZoneTreasureSpawns = {
             (-125.6, -64.82, 0.5),
         ],
         10, # Rate
-        4 # Maximum
+        5 # Maximum
     ),
 }

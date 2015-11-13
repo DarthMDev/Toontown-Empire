@@ -1,10 +1,10 @@
 from direct.distributed import DistributedObjectAI
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from pandac.PandaModules import *
+from src.toontown.toonbase import ToontownGlobals
+from panda3d.core import *
 from direct.fsm.FSM import FSM
-from toontown.ai.ToonBarrier import *
-from toontown.golf import GolfGlobals
+from src.toontown.ai.ToonBarrier import *
+from src.toontown.golf import GolfGlobals
 import random
 import math
 

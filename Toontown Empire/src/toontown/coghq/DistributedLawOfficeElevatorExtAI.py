@@ -2,10 +2,10 @@ from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.task import Task
-from otp.ai.AIBase import *
-from toontown.building import DistributedElevatorExtAI
-from toontown.building.ElevatorConstants import *
-from toontown.toonbase import ToontownGlobals
+from src.otp.ai.AIBase import *
+from src.toontown.building import DistributedElevatorExtAI
+from src.toontown.building.ElevatorConstants import *
+from src.toontown.toonbase import ToontownGlobals
 
 
 class DistributedLawOfficeElevatorExtAI(DistributedElevatorExtAI.DistributedElevatorExtAI):

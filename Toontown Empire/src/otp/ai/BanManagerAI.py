@@ -1,10 +1,10 @@
 from direct.directnotify import DirectNotifyGlobal
-from toontown.uberdog.ClientServicesManagerUD import executeHttpRequest
+from src.toontown.uberdog.ClientServicesManagerUD import executeHttpRequest
 import datetime
 from direct.fsm.FSM import FSM
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.MsgTypes import *
-from otp.ai.MagicWordGlobal import *
+from src.otp.ai.MagicWordGlobal import *
 from direct.showbase.DirectObject import DirectObject
 
 
@@ -134,15 +134,15 @@ def kick(reason='No reason specified'):
     return "Kicked %s from the game server!" % target.getName()
 
 
-@magicWord(category=CATEGORY_MODERATOR, types=[str, int])
-def ban(reason, duration):
+@magicWord(category=CATEGORY_MODERATOR, types=[str, str])
+def ban(duration=0, reason='No reason specified'):
     """
     Ban the target from the game server.
+    arguments:  reason  hacking/language/other
+                time    10m  
     """
     target = spellbook.getTarget()
     if target == spellbook.getInvoker():
         return "You can't ban yourself!"
-    if reason not in ('hacking', 'language', 'other'):
-        return "'%s' is not a valid reason." % reason
-    simbase.air.banManager.ban(target.doId, duration, reason)
+    simbase.air.banManager.ban(target.doId, duration, reason, spellbook.getInvoker().doId)
     return "Banned %s from the game server!" % target.getName()

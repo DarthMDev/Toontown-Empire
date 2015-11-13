@@ -1,13 +1,13 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
 from direct.showbase import DirectObject
-from otp.speedchat import SpeedChatGlobals
-from toontown.chat.ChatGlobals import *
-from toontown.suit import Suit, SuitDNA
-from toontown.toon import ToonHeadFrame
-from toontown.toonbase import TTLocalizer, ToontownBattleGlobals
-from toontown.quest import QuestScripts
+from src.otp.speedchat import SpeedChatGlobals
+from src.otp.nametag.NametagConstants import *
+from src.toontown.suit import Suit, SuitDNA
+from src.toontown.toon import ToonHeadFrame
+from src.toontown.toonbase import TTLocalizer, ToontownBattleGlobals
+from src.toontown.quest import QuestScripts
 import copy, re, tokenize, BlinkingArrows, StringIO
 
 notify = DirectNotifyGlobal.directNotify.newCategory('QuestParser')
@@ -40,13 +40,13 @@ def clear():
 def readFile():
     global curId
     script = StringIO.StringIO(QuestScripts.script)
-    
+
     def readLine():
         return script.readline().replace('\r', '')
-    
+
     gen = tokenize.generate_tokens(readLine)
     line = getLineOfTokens(gen)
-    
+
     while line is not None:
         if line == []:
             line = getLineOfTokens(gen)
@@ -58,7 +58,7 @@ def readFile():
         else:
             lineDict[curId].append(line)
         line = getLineOfTokens(gen)
-    
+
     script.close()
 
 def getLineOfTokens(gen):
@@ -779,11 +779,11 @@ class NPCMoviePlayer(DirectObject.DirectObject):
             notify.error('invalid inventory detail level: %s' % val)
 
     def parseShowFriendsList(self, line):
-        from toontown.friends import FriendsListPanel
+        from src.toontown.friends import FriendsListPanel
         return Func(FriendsListPanel.showFriendsListTutorial)
 
     def parseHideFriendsList(self, line):
-        from toontown.friends import FriendsListPanel
+        from src.toontown.friends import FriendsListPanel
         return Func(FriendsListPanel.hideFriendsListTutorial)
 
     def parseShowBook(self, line):
@@ -882,18 +882,18 @@ class NPCMoviePlayer(DirectObject.DirectObject):
         minGagLevel = ToontownBattleGlobals.MIN_LEVEL_INDEX + 1
         maxGagLevel = ToontownBattleGlobals.MAX_LEVEL_INDEX + 1
         curGagLevel = minGagLevel
+        track1 = base.localAvatar.getFirstTrackPicked()
+        track2 = base.localAvatar.getSecondTrackPicked()
 
         def updateGagLevel(t, curGagLevel = curGagLevel):
             newGagLevel = int(round(t))
             if newGagLevel == curGagLevel:
                 return
             curGagLevel = newGagLevel
-            access = [0, 0, 0, 0, 0, 0, 0]
-            
-            for i in xrange(len(self.oldTrackAccess)):
-                access[i] = curGagLevel if self.oldTrackAccess[i] > 0 else 0
-            
-            base.localAvatar.setTrackAccess(access)
+            tempTracks = base.localAvatar.getTrackAccess()
+            tempTracks[track1] = curGagLevel
+            tempTracks[track2] = curGagLevel
+            base.localAvatar.setTrackAccess(tempTracks)
 
         return Sequence(Func(grabCurTrackAccess), LerpFunctionInterval(updateGagLevel, fromData=1, toData=7, duration=0.3), WaitInterval(3.5), LerpFunctionInterval(updateGagLevel, fromData=7, toData=1, duration=0.3), Func(restoreTrackAccess), Func(messenger.send, 'donePreview'))
 

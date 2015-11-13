@@ -1,7 +1,7 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-from toontown.effects.FireworkGlobals import *
-from toontown.effects.FireworkEffect import FireworkEffect
+from src.toontown.effects.FireworkGlobals import *
+from src.toontown.effects.FireworkEffect import FireworkEffect
 import random
 
 class Firework(NodePath):

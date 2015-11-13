@@ -1,6 +1,6 @@
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
 
 class DistributedTrophyMgr(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedTrophyMgr')

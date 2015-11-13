@@ -1,17 +1,17 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.task.Task import Task
-from pandac.PandaModules import *
-from otp.avatar import DistributedAvatar
-from toontown.toonbase.ToonBaseGlobal import *
-from toontown.toonbase.ToontownGlobals import *
-from toontown.distributed.ToontownMsgTypes import *
-from toontown.minigame import Purchase
-from toontown.parties import PartyLoader
-from toontown.parties import PartyGlobals
-from toontown.hood import SkyUtil
-from toontown.hood import Hood
-from toontown.hood import ZoneUtil
+from panda3d.core import *
+from src.otp.avatar import DistributedAvatar
+from src.toontown.toonbase.ToonBaseGlobal import *
+from src.toontown.toonbase.ToontownGlobals import *
+from src.toontown.distributed.ToontownMsgTypes import *
+from src.toontown.minigame import Purchase
+from src.toontown.parties import PartyLoader
+from src.toontown.parties import PartyGlobals
+from src.toontown.hood import SkyUtil
+from src.toontown.hood import Hood
+from src.toontown.hood import ZoneUtil
 
 class PartyHood(Hood.Hood):
     notify = DirectNotifyGlobal.directNotify.newCategory('PartyHood')
@@ -27,8 +27,7 @@ class PartyHood(Hood.Hood):
         self.safeZoneLoaderClass = PartyLoader.PartyLoader
         self.partyActivityDoneEvent = 'partyActivityDone'
         self.storageDNAFile = 'phase_13/dna/storage_party_sz.pdna'
-        self.holidayStorageDNADict = {WINTER_DECORATIONS: ['phase_5.5/dna/winter_storage_estate.pdna'],
-         WACKY_WINTER_DECORATIONS: ['phase_5.5/dna/winter_storage_estate.pdna']}
+        self.holidayStorageDNADict = {CHRISTMAS: ['phase_5.5/dna/winter_storage_estate.pdna']}
         self.skyFile = 'phase_3.5/models/props/TT_sky'
         self.popupInfo = None
         return

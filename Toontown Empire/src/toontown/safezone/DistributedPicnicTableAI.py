@@ -3,13 +3,13 @@ from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.fsm import StateData
-from toontown.safezone import DistributedChineseCheckersAI
-from toontown.safezone import DistributedCheckersAI
-from toontown.safezone import DistributedFindFourAI
-from toontown.safezone import GameGlobals
+from src.toontown.safezone import DistributedChineseCheckersAI
+from src.toontown.safezone import DistributedCheckersAI
+from src.toontown.safezone import DistributedFindFourAI
+from src.toontown.safezone import GameGlobals
 
 class DistributedPicnicTableAI(DistributedNodeAI):
-    
+
     def __init__(self, air, zone, name, x, y, z, h, p, r):
         DistributedNodeAI.__init__(self, air)
         self.name = name
@@ -103,7 +103,7 @@ class DistributedPicnicTableAI(DistributedNodeAI):
         self.notify.debug('acceptBoarder %d' % avId)
         if self.findAvatar(avId) != None:
             return None
-        
+
         isEmpty = True
         for xx in self.seats:
             if xx != None:
@@ -147,13 +147,13 @@ class DistributedPicnicTableAI(DistributedNodeAI):
             self.allowPickers = []
             self.pickGame(gameNum)
             if self.game:
-                for x in range(numPickers):
+                for x in xrange(numPickers):
                     self.game.informGameOfPlayer()
 
     def pickGame(self, gameNum):
         if self.game:
             return
-            
+
         x = 0
         for x in self.seats:
             if x != None:
@@ -183,7 +183,7 @@ class DistributedPicnicTableAI(DistributedNodeAI):
     def requestZone(self):
         if not self.game:
             return
-            
+
         avId = self.air.getAvatarIdFromSender()
         self.sendUpdateToAvatarId(avId, 'setZone', [
             self.game.zoneId])
@@ -313,7 +313,7 @@ class DistributedPicnicTableAI(DistributedNodeAI):
         self.hasPicked = False
 
     def findAvatar(self, avId):
-        for i in range(len(self.seats)):
+        for i in xrange(len(self.seats)):
             if self.seats[i] == avId:
                 return i
                 continue
@@ -328,17 +328,16 @@ class DistributedPicnicTableAI(DistributedNodeAI):
         return avCounter
 
     def findAvailableSeat(self):
-        for i in range(len(self.seats)):
+        for i in xrange(len(self.seats)):
             if self.seats[i] == None:
                 return i
                 continue
 
     def setCheckersZoneId(self, zoneId):
         self.checkersZoneId = zoneId
-        
+
     def setTableIndex(self, index):
         self._tableIndex = index
-        
+
     def getTableIndex(self):
         return self._tableIndex
-        

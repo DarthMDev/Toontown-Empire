@@ -2,17 +2,17 @@ from direct.directtools.DirectSelection import *
 from direct.directtools.DirectUtil import ROUND_TO
 from direct.directtools.DirectGeometry import LineNodePath
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.showbase.DirectObject import DirectObject
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 from direct.task import Task
-from toontown.catalog import CatalogFurnitureItem
-from toontown.catalog import CatalogItemTypes
+from src.toontown.catalog import CatalogFurnitureItem
+from src.toontown.catalog import CatalogItemTypes
 from direct.showbase import PythonUtil
-from toontown.toontowngui import TTDialog
-from toontown.toonbase import TTLocalizer
-from otp.otpbase import OTPLocalizer
+from src.toontown.toontowngui import TTDialog
+from src.toontown.toonbase import TTLocalizer
+from src.otp.otpbase import OTPLocalizer
 camPos50 = (Point3(0.0, -10.0, 50.0),
  Point3(0.0, -9.66, 49.06),
  Point3(0.0, 1.5, 12.38),
@@ -373,7 +373,7 @@ class ObjectManager(NodePath, DirectObject):
         self.createAtticPicker()
         self.initializeDistributedFurnitureItems(furnitureManager.dfitems)
         self.setCamPosIndex(DEFAULT_CAM_INDEX)
-        base.localAvatar.setGhostMode(1)
+        base.localAvatar.controlManager.collisionsOff()
         taskMgr.remove('editModeTransition')
         self.orientCamH(base.localAvatar.getH(self.targetNodePath))
         self.accept('mouse1', self.moveObjectStart)
@@ -383,7 +383,7 @@ class ObjectManager(NodePath, DirectObject):
         self.__updateDeleteButtons()
         self.showAtticPicker()
         base.localAvatar.laffMeter.stop()
-        base.setCellsActive(base.leftCells + [base.bottomCells[0]], 0)
+        base.setCellsAvailable(base.leftCells + [base.bottomCells[0]], 0)
         if self.guiInterval:
             self.guiInterval.finish()
         self.guiInterval = self.furnitureGui.posHprScaleInterval(1.0, Point3(0.155, -0.6, -1.045), Vec3(0), Vec3(0.06), startPos=Point3(0.115, 0.0, -0.66), startHpr=Vec3(0), startScale=Vec3(0.04), blendType='easeInOut', name='lerpFurnitureButton')
@@ -419,7 +419,7 @@ class ObjectManager(NodePath, DirectObject):
             self.inTrashPicker = None
         self.__cleanupVerifyDelete()
         self.furnitureGui.hide()
-        base.setCellsActive(base.leftCells + [base.bottomCells[0]], 1)
+        base.setCellsAvailable(base.leftCells + [base.bottomCells[0]], 1)
         base.localAvatar.laffMeter.start()
         taskMgr.remove('recenterButtonFrameTask')
         self.cleanupDialog()

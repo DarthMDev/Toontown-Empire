@@ -90,10 +90,13 @@ Levels = [[0,
   6000,
   10000]]
 regMaxSkill = 10000
-UberSkill = 500
+
+UberSkill = 250
 MaxSkill = UberSkill + regMaxSkill
 
-ExperienceCap = 1000 *10
+ExperienceCap = 1000 ** 10
+
+
 MaxToonAcc = 100
 StartingLevel = 0
 CarryLimits = (((10,
@@ -442,11 +445,10 @@ CarryLimits = (((10,
 MaxProps = ((15, 40), (30, 60), (75, 80))
 DLF_SKELECOG = 1
 DLF_FOREMAN = 2
-DLF_VP = 4
-DLF_CFO = 8
-DLF_SUPERVISOR = 16
-DLF_VIRTUAL = 32
-DLF_REVIVES = 64
+DLF_BOSS = 4
+DLF_SUPERVISOR = 8
+DLF_VIRTUAL = 16
+DLF_REVIVES = 32
 pieNames = ['tart',
  'fruitpie-slice',
  'creampie-slice',
@@ -556,12 +558,12 @@ AvPropsNew = (('inventory_feather',
 AvPropStrings = TTLocalizer.BattleGlobalAvPropStrings
 AvPropStringsSingular = TTLocalizer.BattleGlobalAvPropStringsSingular
 AvPropStringsPlural = TTLocalizer.BattleGlobalAvPropStringsPlural
-AvPropAccuracy = ((70,
-  70,
-  70,
-  70,
-  70,
-  70,
+AvPropAccuracy = ((80,
+  80,
+  80,
+  80,
+  80,
+  80,
   100),
  (0,
   0,
@@ -570,13 +572,13 @@ AvPropAccuracy = ((70,
   0,
   0,
   0),
- (50,
-  50,
-  60,
-  60,
-  70,
-  70,
-  90),
+ (80,
+  80,
+  80,
+  80,
+  80,
+  80,
+  100),
  (95,
   95,
   95,
@@ -584,13 +586,6 @@ AvPropAccuracy = ((70,
   95,
   95,
   95),
- (75,
-  75,
-  75,
-  75,
-  75,
-  75,
-  75),
  (95,
   95,
   95,
@@ -598,13 +593,20 @@ AvPropAccuracy = ((70,
   95,
   95,
   95),
- (50,
-  50,
-  50,
-  50,
-  50,
-  50,
-  50))
+ (95,
+  95,
+  95,
+  95,
+  95,
+  95,
+  95),
+ (90,
+  90,
+  90,
+  90,
+  90,
+  90,
+  90))
 AvLureBonusAccuracy = (60,
  60,
  70,
@@ -626,7 +628,7 @@ AvPropDamage = ((((8, 10), (Levels[0][0], Levels[0][1])),
   ((45, 50), (Levels[1][3], Levels[1][4])),
   ((60, 70), (Levels[1][4], Levels[1][5])),
   ((90, 180), (Levels[1][5], Levels[1][6])),
-  ((195, 195), (Levels[1][6], MaxSkill))),
+  ((200, 200), (Levels[1][6], MaxSkill))),
  (((0, 0), (0, 0)),
   ((0, 0), (0, 0)),
   ((0, 0), (0, 0)),
@@ -699,8 +701,17 @@ AvPropTarget = (0,
  3,
  3,
  3)
+NumRoundsLured = [2,
+ 2,
+ 3,
+ 3,
+ 4,
+ 4,
+ 15]
 
 def getAvPropDamage(attackTrack, attackLevel, exp, organicBonus = False, propBonus = False, propAndOrganicBonusStack = False):
+    if attackTrack == LURE_TRACK:
+        return NumRoundsLured[attackLevel]
     minD = AvPropDamage[attackTrack][attackLevel][0][0]
     maxD = AvPropDamage[attackTrack][attackLevel][0][1]
     minE = AvPropDamage[attackTrack][attackLevel][1][0]
@@ -767,7 +778,7 @@ def getBossBattleCreditMultiplier(battleNumber):
 
 
 def getInvasionMultiplier():
-    return 2.0
+    return 3.0
 
 
 def getMoreXpHolidayMultiplier():

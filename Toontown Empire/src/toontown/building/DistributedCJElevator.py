@@ -2,7 +2,7 @@ import DistributedElevator
 import DistributedBossElevator
 from ElevatorConstants import *
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
 
 class DistributedCJElevator(DistributedBossElevator.DistributedBossElevator):
 

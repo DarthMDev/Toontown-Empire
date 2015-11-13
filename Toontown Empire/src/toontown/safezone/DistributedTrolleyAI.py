@@ -5,12 +5,10 @@ from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.task import Task
-from otp.ai.AIBase import *
-from toontown.minigame import MinigameCreatorAI
-from toontown.minigame import TrolleyHolidayMgrAI
-from toontown.minigame import TrolleyWeekendMgrAI
-from toontown.quest import Quests
-from toontown.toonbase.ToontownGlobals import *
+from src.otp.ai.AIBase import *
+from src.toontown.minigame import MinigameCreatorAI
+from src.toontown.quest import Quests
+from src.toontown.toonbase.ToontownGlobals import *
 
 
 class DistributedTrolleyAI(DistributedObjectAI.DistributedObjectAI):

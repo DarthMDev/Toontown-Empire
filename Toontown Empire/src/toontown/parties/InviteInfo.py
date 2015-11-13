@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from toontown.parties.PartyGlobals import InviteStatus
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.parties.PartyGlobals import InviteStatus
+from src.toontown.toonbase import TTLocalizer
 
 class InviteInfoBase:
 

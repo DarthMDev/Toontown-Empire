@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-from toontown.fishing import FishGlobals
+from src.toontown.fishing import FishGlobals
 import GardenGlobals
 from direct.actor import Actor
 

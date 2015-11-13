@@ -1,16 +1,16 @@
-from pandac.PandaModules import *
-from toontown.toonbase.ToontownGlobals import *
+from panda3d.core import *
+from src.toontown.toonbase.ToontownGlobals import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 import random
-from otp.level import DistributedLevel
+from src.otp.level import DistributedLevel
 from direct.directnotify import DirectNotifyGlobal
 import StageRoomBase, StageRoom
 import FactoryEntityCreator
 import StageRoomSpecs
-from otp.level import LevelSpec, LevelConstants
-from toontown.toonbase import TTLocalizer
-from toontown.nametag.NametagGlobals import *
+from src.otp.level import LevelSpec, LevelConstants
+from src.otp.nametag.NametagConstants import *
+from src.toontown.toonbase import TTLocalizer
 
 def getStageRoomReadyPostName(doId):
     return 'stageRoomReady-%s' % doId
@@ -86,7 +86,7 @@ class DistributedStageRoom(DistributedLevel.DistributedLevel, StageRoomBase.Stag
 
     def setDefeated(self):
         self.notify.info('setDefeated')
-        from toontown.coghq import DistributedStage
+        from src.toontown.coghq import DistributedStage
         messenger.send(DistributedStage.DistributedStage.WinEvent)
 
     def initVisibility(self, *args, **kw):

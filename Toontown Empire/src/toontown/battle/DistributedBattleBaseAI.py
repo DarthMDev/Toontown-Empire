@@ -1,23 +1,21 @@
-from otp.ai.AIBase import *
+from src.otp.ai.AIBase import *
 from direct.distributed.ClockDelta import *
 from BattleBase import *
 from BattleCalculatorAI import *
-from toontown.toonbase.ToontownBattleGlobals import *
+from src.toontown.toonbase.ToontownBattleGlobals import *
 from SuitBattleGlobals import *
-from pandac.PandaModules import *
+from panda3d.core import *
 import BattleExperienceAI
 from direct.distributed import DistributedObjectAI
 from direct.fsm import ClassicFSM, State
-from direct.fsm import State
 from direct.task import Task
 from direct.directnotify import DirectNotifyGlobal
-from toontown.ai import DatabaseObject
-from toontown.toon import DistributedToonAI
-from toontown.toon import InventoryBase
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toon import InventoryBase
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.pets import DistributedPetProxyAI
 import random
-from toontown.toon import NPCToons
-from otp.ai.MagicWordGlobal import *
+from src.toontown.toon import NPCToons
+from src.otp.ai.MagicWordGlobal import *
 
 class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattleBaseAI')
@@ -52,7 +50,7 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
         if self.air.suitInvasionManager.getInvading():
             mult = getInvasionMultiplier()
             self.battleCalc.setSkillCreditMultiplier(mult)
-        if self.air.holidayManager.isMoreXpHolidayRunning():
+        if self.air.newsManager.isHolidayRunning(ToontownGlobals.MORE_XP_HOLIDAY):
             mult = getMoreXpHolidayMultiplier()
             self.battleCalc.setSkillCreditMultiplier(mult)
         self.fsm = None
@@ -699,23 +697,13 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                 toon.d_setInventory(toon.inventory.makeNetString())
                 self.air.cogPageManager.toonEncounteredCogs(toon, self.suitsEncountered, self.getTaskZoneId())
         elif len(self.suits) > 0 and not self.streetBattle:
-            self.notify.info('toon %d aborted non-street battle; clearing inventory and hp.' % toonId)
-            toon = DistributedToonAI.DistributedToonAI(self.air)
-            toon.doId = toonId
-            empty = InventoryBase.InventoryBase(toon)
-            toon.b_setInventory(empty.makeNetString())
-            toon.b_setHp(0)
-            db = DatabaseObject.DatabaseObject(self.air, toonId)
-            db.storeObject(toon, ['setInventory', 'setHp'])
-            self.notify.info('killing mem leak from temporary DistributedToonAI %d' % toonId)
-            toon.deleteDummy()
-        return
+            empty = InventoryBase.InventoryBase(None).makeNetString()
+            self.air.dbInterface.updateObject(self.air.dbId, toonId, self.air.dclassesByName['DistributedToonAI'], {'setHp': [0], 'setInventory': [empty]})
 
     def getToon(self, toonId):
         if toonId in self.air.doId2do:
             return self.air.doId2do[toonId]
-        else:
-            self.notify.warning('getToon() - toon: %d not in repository!' % toonId)
+        self.notify.warning('getToon() - toon: %d not in repository!' % toonId)
         return None
 
     def toonRequestRun(self):
@@ -1373,11 +1361,11 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                         pass
                     elif track != SOS:
                         toon = self.getToon(toonId)
-                        if toon != None:
+                        if toon != None and not toon.unlimitedGags:
                             check = toon.inventory.useItem(track, level)
                             if check == -1:
-                                self.air.writeServerEvent('suspicious', toonId, 'Toon generating movie for non-existant gag track %s level %s' % (track, level))
-                                self.notify.warning('generating movie for non-existant gag track %s level %s! avId: %s' % (track, level, toonId))
+                                self.air.writeServerEvent('suspicious', toonId, 'Toon generating movie for non-existent gag track %s level %s' % (track, level))
+                                self.notify.warning('generating movie for non-existent gag track %s level %s! avId: %s' % (track, level, toonId))
                             toon.d_setInventory(toon.inventory.makeNetString())
                     hps = attack[TOON_HP_COL]
                     if track == SOS:
@@ -1562,8 +1550,7 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                  'track': suit.dna.dept,
                  'isSkelecog': suit.getSkelecog(),
                  'isForeman': suit.isForeman(),
-                 'isVP': 0,
-                 'isCFO': 0,
+                 'isBoss': 0,
                  'isSupervisor': suit.isSupervisor(),
                  'isVirtual': suit.isVirtual(),
                  'hasRevives': suit.getMaxSkeleRevives(),
@@ -1647,8 +1634,6 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                     toon.inventory.zeroInv(1)
                     deadToons.append(activeToon)
                 self.notify.debug('AFTER ROUND: toon: %d setHp: %d' % (toon.doId, toon.hp))
-                if toon.unlimitedGags:
-                    toon.doRestock(noUber=0)
 
         for deadToon in deadToons:
             self.__removeToon(deadToon)

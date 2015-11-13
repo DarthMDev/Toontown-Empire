@@ -5,13 +5,12 @@ import random
 import BattleParticles
 from BattleProps import *
 from BattleSounds import *
-import HealJokes
 import MovieCamera
 import MovieUtil
-from toontown.chat.ChatGlobals import *
-from toontown.pets import Pet, PetTricks
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownBattleGlobals
+from src.otp.nametag.NametagConstants import *
+from src.toontown.pets import Pet, PetTricks
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownBattleGlobals
 
 
 notify = DirectNotifyGlobal.directNotify.newCategory('MoviePetSOS')

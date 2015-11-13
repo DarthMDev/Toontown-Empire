@@ -1,12 +1,12 @@
-from pandac.PandaModules import *
-from toontown.toonbase import ToontownGlobals
+from panda3d.core import *
+from src.toontown.toonbase import ToontownGlobals
 import Playground
-from toontown.building import Elevator
-from toontown.toontowngui import TTDialog
-from toontown.toonbase import TTLocalizer
-from toontown.racing import RaceGlobals
+from src.toontown.building import Elevator
+from src.toontown.toontowngui import TTDialog
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.racing import RaceGlobals
 from direct.fsm import State
-from toontown.safezone import GolfKart
+from src.toontown.safezone import GolfKart
 
 class GZPlayground(Playground.Playground):
 

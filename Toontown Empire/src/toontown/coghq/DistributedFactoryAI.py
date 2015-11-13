@@ -1,9 +1,9 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.task import Task
-from otp.level import DistributedLevelAI, LevelSpec
-from toontown.suit import DistributedFactorySuitAI
-from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
-from toontown.coghq import DistributedBattleFactoryAI
+from src.otp.level import DistributedLevelAI, LevelSpec
+from src.toontown.suit import DistributedFactorySuitAI
+from src.toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
+from src.toontown.coghq import DistributedBattleFactoryAI
 import FactoryBase, FactoryEntityCreatorAI, FactorySpecs, LevelSuitPlannerAI
 
 class DistributedFactoryAI(DistributedLevelAI.DistributedLevelAI, FactoryBase.FactoryBase):
@@ -86,7 +86,7 @@ class DistributedFactoryAI(DistributedLevelAI.DistributedLevelAI, FactoryBase.Fa
         for avId in activeVictorIds:
             self.air.writeServerEvent('factoryDefeated', avId, description)
         for toon in activeVictors:
-            simbase.air.questManager.toonDefeatedFactory(toon, self.factoryId, activeVictors)
+            simbase.air.questManager.toonDefeatedFactory(toon, self.factoryId)
 
     def b_setDefeated(self):
         self.d_setDefeated()

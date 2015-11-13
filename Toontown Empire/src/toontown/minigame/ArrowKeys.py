@@ -20,6 +20,7 @@ class ArrowKeys(DirectObject):
         self.setReleaseHandlers(self.NULL_HANDLERS)
         self.origMb = base.buttonThrowers[0].node().getModifierButtons()
         base.buttonThrowers[0].node().setModifierButtons(ModifierButtons())
+        
         self.enable()
 
     def enable(self):

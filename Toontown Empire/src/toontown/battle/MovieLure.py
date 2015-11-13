@@ -1,13 +1,13 @@
 from direct.interval.IntervalGlobal import *
 from BattleBase import *
 from BattleProps import *
-from toontown.suit.SuitBase import *
-from toontown.toon.ToonDNA import *
+from src.toontown.suit.SuitBase import *
+from src.toontown.toon.ToonDNA import *
 from BattleSounds import *
 import MovieCamera
 from direct.directnotify import DirectNotifyGlobal
 import MovieUtil
-from toontown.toonbase import ToontownBattleGlobals
+from src.toontown.toonbase import ToontownBattleGlobals
 import BattleParticles
 import BattleProps
 import MovieNPCSOS

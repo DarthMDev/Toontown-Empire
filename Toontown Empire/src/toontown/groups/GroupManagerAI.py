@@ -1,8 +1,8 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.task import Task
 from direct.distributed import DistributedObjectAI
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase.ToontownGlobals import *
+from src.toontown.toonbase.ToontownGlobals import *
 from GlobalGroup import GlobalGroup
 
 class GroupManagerAI(DistributedObjectAI.DistributedObjectAI):

@@ -2,11 +2,11 @@ from pandac.PandaModules import VBase4, VBase3
 from direct.fsm import FSM
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectButton import DirectButton
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
-from toontown.toonbase import TTLocalizer
-from toontown.coghq import CogHQBossBattle
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.coghq import CogHQBossBattle
 
 class NewsPageButtonManager(FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('NewsPageButtonManager')
@@ -34,17 +34,20 @@ class NewsPageButtonManager(FSM.FSM):
         oldScale = 0.5
         newScale = 0.9
         shtickerBookScale = 0.305
-        newPos = VBase3(-0.380, 0, -0.134)
+        newPos = VBase3(0.914, 0, 0.862)
         shtickerBookPos = VBase3(1.175, 0, -0.83)
         textScale = 0.06
-        self.newIssueButton = DirectButton(relief=None, sortOrder=DGG.BACKGROUND_SORT_INDEX - 1, image=(self.openNewNewsUp, self.openNewNewsHover, self.openNewNewsHover), text=('', TTLocalizer.EventsPageNewsTabName, TTLocalizer.EventsPageNewsTabName), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), text_scale=textScale, text_font=ToontownGlobals.getInterfaceFont(), parent=base.a2dTopRight, pos=newPos, scale=newScale, command=self.__handleGotoNewsButton)
+        self.newIssueButton = DirectButton(relief=None, sortOrder=DGG.BACKGROUND_SORT_INDEX - 1, image=(self.openNewNewsUp, self.openNewNewsHover, self.openNewNewsHover), text=('', TTLocalizer.EventsPageNewsTabName, TTLocalizer.EventsPageNewsTabName), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), text_scale=textScale, text_font=ToontownGlobals.getInterfaceFont(), pos=newPos, scale=newScale, command=self.__handleGotoNewsButton)
         self.gotoPrevPageButton = DirectButton(relief=None, image=(self.closeNewsUp, self.closeNewsHover, self.closeNewsHover), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), text_scale=textScale, text_font=ToontownGlobals.getInterfaceFont(), pos=shtickerBookPos, scale=shtickerBookScale, command=self.__handleGotoPrevPageButton)
         self.goto3dWorldButton = DirectButton(relief=None, image=(self.closeNewsUp, self.closeNewsHover, self.closeNewsHover), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), text_scale=textScale, text_font=ToontownGlobals.getInterfaceFont(), pos=shtickerBookPos, scale=shtickerBookScale, command=self.__handleGoto3dWorldButton)
         self.hideNewIssueButton()
         self.gotoPrevPageButton.hide()
         self.goto3dWorldButton.hide()
         self.accept('newIssueOut', self.handleNewIssueOut)
-        self.__blinkIval = Sequence(Func(self.__showOpenEyes), Wait(2), Func(self.__showClosedEyes), Wait(0.1), Func(self.__showOpenEyes), Wait(0.1), Func(self.__showClosedEyes), Wait(0.1))
+        bounce1Pos = VBase3(newPos.getX(), newPos.getY(), newPos.getZ() + 0.022)
+        bounce2Pos = VBase3(newPos.getX(), newPos.getY(), newPos.getZ() + 0.015)
+        bounceIval = Sequence(LerpPosInterval(self.newIssueButton, 0.1, bounce1Pos, blendType='easeOut'), LerpPosInterval(self.newIssueButton, 0.1, newPos, blendType='easeIn'), LerpPosInterval(self.newIssueButton, 0.07, bounce2Pos, blendType='easeOut'), LerpPosInterval(self.newIssueButton, 0.07, newPos, blendType='easeIn'))
+        self.__blinkIval = Sequence(Func(self.__showOpenEyes), Wait(2), bounceIval, Wait(0.5), Func(self.__showClosedEyes), Wait(0.1), Func(self.__showOpenEyes), Wait(0.1), Func(self.__showClosedEyes), Wait(0.1))
         self.__blinkIval.loop()
         self.__blinkIval.pause()
         self.buttonsLoaded = True
@@ -64,7 +67,7 @@ class NewsPageButtonManager(FSM.FSM):
         currentState = base.localAvatar.animFSM.getCurrentState().getName()
         if currentState == 'jumpAirborne':
             return
-        from toontown.toon import LocalToon
+        from src.toontown.toon import LocalToon
         if not LocalToon.WantNewsPage:
             return
         if base.cr and base.cr.playGame and base.cr.playGame.getPlace() and base.cr.playGame.getPlace().fsm:
@@ -72,13 +75,11 @@ class NewsPageButtonManager(FSM.FSM):
             curState = fsm.getCurrentState().getName()
             if curState == 'walk':
                 if hasattr(localAvatar, 'newsPage'):
-                    base.cr.centralLogger.writeClientEvent('news gotoNewsButton clicked')
                     localAvatar.book.setPage(localAvatar.newsPage)
                     fsm.request('stickerBook')
                     self.goingToNewsPageFrom3dWorld = True
             elif curState == 'stickerBook':
                 if hasattr(localAvatar, 'newsPage'):
-                    base.cr.centralLogger.writeClientEvent('news gotoNewsButton clicked')
                     fsm.request('stickerBook')
                     if hasattr(localAvatar, 'newsPage') and localAvatar.newsPage:
                         localAvatar.book.goToNewsPage(localAvatar.newsPage)
@@ -110,9 +111,9 @@ class NewsPageButtonManager(FSM.FSM):
         self.__blinkIval.pause()
 
     def isNewIssueButtonShown(self):
-        if not config.GetBool('want-news-tab', 1):
-            return False
-        if localAvatar.getLastTimeReadNews():
+        return False
+
+        if localAvatar.getLastTimeReadNews() < base.cr.inGameNewsMgr.getLatestIssue():
             return True
         return False
 
@@ -125,13 +126,9 @@ class NewsPageButtonManager(FSM.FSM):
     def enterNormalWalk(self):
         if not self.buttonsLoaded:
             return
-        if localAvatar.getLastTimeReadNews():
             self.__showNewIssueButton()
             self.__blinkIval.resume()
-        else:
-            self.hideNewIssueButton()
-        self.gotoPrevPageButton.hide()
-        self.goto3dWorldButton.hide()
+
 
     def exitNormalWalk(self):
         if not self.buttonsLoaded:
@@ -164,7 +161,7 @@ class NewsPageButtonManager(FSM.FSM):
 
     def showAppropriateButton(self):
         self.notify.debugStateCall(self)
-        from toontown.toon import LocalToon
+        from src.toontown.toon import LocalToon
         if not LocalToon.WantNewsPage:
             return
         if not self.buttonsLoaded:

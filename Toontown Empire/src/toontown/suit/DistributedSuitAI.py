@@ -1,20 +1,21 @@
-from otp.ai.AIBaseGlobal import *
-from pandac.PandaModules import *
+from src.otp.ai.AIBaseGlobal import *
+from panda3d.core import *
 from direct.distributed.ClockDelta import *
-from otp.avatar import DistributedAvatarAI
+from src.otp.avatar import DistributedAvatarAI
 import SuitTimings
 from direct.task import Task
 import SuitPlannerBase
 import SuitBase
 import SuitDialog
 import SuitDNA
+from SuitLegList import *
 from libpandadna import *
 from direct.directnotify import DirectNotifyGlobal
-from toontown.battle import SuitBattleGlobals
-from toontown.building import FADoorCodes
+from src.toontown.battle import SuitBattleGlobals
+from src.toontown.building import FADoorCodes
 import DistributedSuitBaseAI
-from toontown.hood import ZoneUtil
-from toontown.toon import NPCToons
+from src.toontown.hood import ZoneUtil
+from src.toontown.toon import NPCToons
 import random
 
 class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
@@ -216,7 +217,7 @@ class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
         self.setPathPosition(0, self.pathStartTime)
         self.pathState = 1
         self.currentLeg = 0
-        self.zoneId = ZoneUtil.getTrueZoneId(self.legList.getZoneId(0), self.branchId)
+        self.zoneId = self.legList.getZoneId(0)
         self.legType = self.legList.getType(0)
         if self.notify.getDebug():
             self.notify.debug('creating suit in zone %s' % self.zoneId)
@@ -236,7 +237,6 @@ class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
             self.currentLeg = nextLeg
             self.__beginLegType(self.legList.getType(nextLeg))
             zoneId = self.legList.getZoneId(nextLeg)
-            zoneId = ZoneUtil.getTrueZoneId(zoneId, self.branchId)
             if zoneId:
                 self.__enterZone(zoneId)
             self.notify.debug('Suit %s reached leg %s of %s in zone %s.' % (self.getDoId(),

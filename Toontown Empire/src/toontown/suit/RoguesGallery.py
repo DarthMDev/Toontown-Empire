@@ -1,8 +1,8 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.fsm import StateData
 import Suit
 import SuitDNA
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 import random
 
 class RoguesGallery(StateData.StateData):

@@ -1,13 +1,12 @@
-from pandac.PandaModules import *
-from toontown.battle import BattleProps
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase.ToontownBattleGlobals import *
+from panda3d.core import *
+from src.toontown.battle import BattleProps
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase.ToontownBattleGlobals import *
 from direct.directnotify import DirectNotifyGlobal
 import string
-from toontown.suit import Suit
+from src.toontown.suit import Suit
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
 from direct.task.Task import Task
 
 class TownBattleCogPanel(DirectFrame):
@@ -25,21 +24,21 @@ class TownBattleCogPanel(DirectFrame):
     healthGlowColors = (Vec4(0.25, 1, 0.25, 0.5),#Green
      Vec4(0.5, 1, 0.25, .5),#1 Green-Yellow
      Vec4(0.75, 1, 0.25, .5),#2 Yellow-Green
-     Vec4(1, 1, 0.25, 0.5),#Yellow 
+     Vec4(1, 1, 0.25, 0.5),#Yellow
      Vec4(1, 0.866, 0.25, .5),#4 Yellow-Orange
      Vec4(1, 0.6, 0.25, .5),#5 Orange-Yellow
      Vec4(1, 0.5, 0.25, 0.5),#6 Orange
-     Vec4(1, 0.25, 0.25, 0.5),#7 Red-Orange    
-     Vec4(1, 0.25, 0.25, 0.5),#8 Red     
+     Vec4(1, 0.25, 0.25, 0.5),#7 Red-Orange
+     Vec4(1, 0.25, 0.25, 0.5),#8 Red
      Vec4(0.3, 0.3, 0.3, 0))#9 Grey
-    
+
     def __init__(self, id):
         gui = loader.loadModel('phase_3.5/models/gui/battle_gui')
         DirectFrame.__init__(self, relief=None, image=gui.find('**/ToonBtl_Status_BG'), image_color=Vec4(0.86, 0.86, 0.86, 0.7))
         self.setScale(0.8)
         self.initialiseoptions(TownBattleCogPanel)
         self.levelText = DirectLabel(parent=self, text='', pos=(-0.06, 0, -0.075), text_scale=0.055)
-        self.suitType = DirectLabel(parent=self, text='', pos=(0.12, 0, -0.075), text_scale=0.055)
+        self.suitType = DirectLabel(parent=self, text='', pos=(0.12, 0, -0.075), text_scale=0.045)
         self.healthBar = None
         self.healthBarGlow = None
         self.hpChangeEvent = None
@@ -53,7 +52,7 @@ class TownBattleCogPanel(DirectFrame):
         self.hide()
         gui.removeNode()
         return
-        
+
     def setSuit(self, suit):
         if self.suit == suit:
             messenger.send(self.suit.uniqueName('hpChange'))
@@ -72,22 +71,22 @@ class TownBattleCogPanel(DirectFrame):
         self.accept(self.hpChangeEvent, self.updateHealthBar)
         self.updateHealthBar()
         self.healthBar.show()
-        if self.suit.isSkelecog == 1:
-            self.type = 'Skel'
-            self.setTypeText(self.type)
-        self.suitRevives = self.suit.getSkeleRevives()
-        if self.suitRevives == 1:
-            self.type = 'v2.0'
-            self.setTypeText(self.type)
-        if self.suitRevives < 1 and self.suit.isSkelecog == 0:
-            self.type = ''
-            self.setTypeText(self.type)
+        if self.suit.virtual:
+            self.setTypeText(TTLocalizer.CogPanelVirtual)
+        elif self.suit.isWaiter:
+            self.setTypeText(TTLocalizer.CogPanelWaiter)
+        elif self.suit.skeleRevives:
+            self.setTypeText(TTLocalizer.CogPanelRevives % (self.suit.skeleRevives + 1))
+        elif self.suit.isSkelecog:
+            self.setTypeText(TTLocalizer.CogPanelSkeleton)
+        else:
+            self.setTypeText('')
 
     def getSuit(self, suit):
         return self.suit
 
     def setLevelText(self, level):
-        self.levelText['text'] = 'Level '+ str(level)
+        self.levelText['text'] = TTLocalizer.CogPanelLevel % level
 
     def setTypeText(self, suitType):
         self.suitType['text'] = suitType
@@ -117,7 +116,7 @@ class TownBattleCogPanel(DirectFrame):
         button.flattenLight()
         self.healthBarGlow = glow
         self.healthBar.hide()
-        self.healthCondition = 0 
+        self.healthCondition = 0
 
     def updateHealthBar(self):
         if not self.suit:
@@ -133,27 +132,27 @@ class TownBattleCogPanel(DirectFrame):
         elif health > 0.7:
             condition = 3#Yellow
         elif health > 0.6:
-            condition = 4            
+            condition = 4
         elif health > 0.5:
-            condition = 5           
+            condition = 5
         elif health > 0.3:
             condition = 6#Orange
         elif health > 0.15:
             condition = 7
         elif health > 0.05:
-            condition = 8#Red           
+            condition = 8#Red
         elif health > 0.0:
             condition = 9#Blinking Red
         else:
             condition = 10
         if self.healthCondition != condition:
             if condition == 9:
-                self.blinkTask = self.uniqueName('blink-task')                
+                self.blinkTask = self.uniqueName('blink-task')
                 blinkTask = Task.loop(Task(self.__blinkRed), Task.pause(0.75), Task(self.__blinkGray), Task.pause(0.1))
                 taskMgr.add(blinkTask, self.blinkTask)
             elif condition == 10:
                 if self.healthCondition == 9:
-                    self.blinkTask = self.uniqueName('blink-task')    
+                    self.blinkTask = self.uniqueName('blink-task')
                     taskMgr.remove(self.blinkTask)
                     self.blinkTask = None
                 blinkTask = Task.loop(Task(self.__blinkRed), Task.pause(0.25), Task(self.__blinkGray), Task.pause(0.1))
@@ -168,7 +167,7 @@ class TownBattleCogPanel(DirectFrame):
 
     def __blinkRed(self, task):
         if not self.blinkTask or not self.healthBar:
-            return Task.done  
+            return Task.done
         self.healthBar.setColor(self.healthColors[8], 1)
         self.healthBarGlow.setColor(self.healthGlowColors[8], 1)
         if self.healthCondition == 7:
@@ -188,18 +187,18 @@ class TownBattleCogPanel(DirectFrame):
         if self.healthCondition == 9 or self.healthCondition == 10:
             if self.blinkTask:
                 taskMgr.remove(self.blinkTask)
-                self.blinkTask = None    
+                self.blinkTask = None
         if self.healthBar:
             self.healthBar.removeNode()
             self.healthBar = None
         self.healthCondition = 0
         return
-        
+
     def getDisplayedCurrHp(self):
         return self.currHP
-        
+
     def getDisplayedMaxHp(self):
-        return self.maxHP   
+        return self.maxHP
 
     def setMaxHp(self, hp):
         self.maxHP = hp
@@ -209,7 +208,7 @@ class TownBattleCogPanel(DirectFrame):
 
     def show(self):
         DirectFrame.show(self)
-        
+
     def cleanup(self):
         self.ignoreAll()
         self.removeHealthBar()

@@ -1,8 +1,8 @@
 import CatalogItem
-from toontown.pets import PetTricks
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from otp.otpbase import OTPLocalizer
+from src.toontown.pets import PetTricks
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.otp.otpbase import OTPLocalizer
 from direct.interval.IntervalGlobal import *
 
 class CatalogPetTrickItem(CatalogItem.CatalogItem):
@@ -17,7 +17,7 @@ class CatalogPetTrickItem(CatalogItem.CatalogItem):
         return 1
 
     def reachedPurchaseLimit(self, avatar):
-        if self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder or self in avatar.awardMailboxContents or self in avatar.onAwardOrder or not hasattr(avatar, 'petTrickPhrases'):
+        if self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder or not hasattr(avatar, 'petTrickPhrases'):
             return 1
         return self.trickId in avatar.petTrickPhrases
 
@@ -42,15 +42,15 @@ class CatalogPetTrickItem(CatalogItem.CatalogItem):
         return ToontownGlobals.P_ItemAvailable
 
     def getPicture(self, avatar):
-        from toontown.pets import PetDNA, Pet
+        from src.toontown.pets import PetDNA, Pet
         pet = Pet.Pet(forGui=1)
         dna = avatar.getPetDNA()
         if dna == None:
             dna = PetDNA.getRandomPetDNA()
         pet.setDNA(dna)
         pet.setH(180)
+        pet.setScale(1.25)
         model, ival = self.makeFrameModel(pet, 0)
-        pet.setScale(2.0)
         pet.setP(-40)
         track = PetTricks.getTrickIval(pet, self.trickId)
         name = 'petTrick-item-%s' % self.sequenceNumber

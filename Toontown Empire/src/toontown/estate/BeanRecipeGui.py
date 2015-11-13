@@ -1,9 +1,9 @@
 from direct.gui.DirectGui import *
 from direct.directnotify import DirectNotifyGlobal
-from pandac.PandaModules import *
-from toontown.estate import GardenGlobals
-from toontown.estate import PlantingGUI
-from toontown.toonbase import TTLocalizer
+from panda3d.core import *
+from src.toontown.estate import GardenGlobals
+from src.toontown.estate import PlantingGUI
+from src.toontown.toonbase import TTLocalizer
 
 class BeanRecipeGui(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('PlantingGUI')

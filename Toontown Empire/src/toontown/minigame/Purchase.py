@@ -5,12 +5,12 @@ from direct.task.Task import Task
 
 import MinigameGlobals
 from PurchaseBase import *
-from toontown.distributed import DelayDelete
-from toontown.nametag import NametagGlobals
-from toontown.nametag.NametagFloat2d import *
-from toontown.toon import ToonHead
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownTimer
+from src.toontown.distributed import DelayDelete
+from src.otp.nametag.NametagFloat2d import *
+from src.otp.nametag import NametagGlobals
+from src.toontown.toon import ToonHead
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownTimer
 
 
 COUNT_UP_RATE = 0.15
@@ -304,7 +304,7 @@ class Purchase(PurchaseBase):
         floorNode = CollisionNode('collision_floor')
         floorNode.addSolid(floor)
         self.collisionFloor = render.attachNewNode(floorNode)
-        NametagGlobals.setForceOnscreenChat(True)
+        NametagGlobals.setOnscreenChatForced(1)
         for index in xrange(len(self.ids)):
             avId = self.ids[index]
             if self.states[index] != PURCHASE_NO_CLIENT_STATE and self.states[index] != PURCHASE_DISCONNECTED_STATE and avId in base.cr.doId2do:
@@ -510,8 +510,8 @@ class Purchase(PurchaseBase):
         self.door.reparentTo(hidden)
         self.title.reparentTo(self.frame)
         self.rewardDoubledJellybeanLabel.hide()
-        base.camLens.setMinFov(ToontownGlobals.DefaultCameraFov/(4./3.))
-        NametagGlobals.setForceOnscreenChat(False)
+        base.camLens.setMinFov(settings['fov']/(4./3.))
+        NametagGlobals.setOnscreenChatForced(0)
 
     def _handleClientCleanup(self):
         if hasattr(self, 'toonsKeep'):
@@ -626,16 +626,13 @@ class PurchaseHeadFrame(DirectFrame):
         self.headModel.setupHead(self.av.style, forGui=1)
         self.headModel.reparentTo(self.head)
         self.tag2Node = NametagFloat2d()
-        self.tag2Node.hideChat()
-        self.tag2Node.hideThought()
-        self.tag2Node.update()
-        self.av.nametag.add(self.tag2Node)
+        self.tag2Node.setContents(Nametag.CName)
+        self.av.nametag.addNametag(self.tag2Node)
         self.tag2 = self.attachNewNode(self.tag2Node)
         self.tag2.setPosHprScale(-0.22, 10.0, 0.12, 0, 0, 0, 0.046, 0.046, 0.046)
         self.tag1Node = NametagFloat2d()
-        self.tag1Node.hideNametag()
-        self.tag1Node.update()
-        self.av.nametag.add(self.tag1Node)
+        self.tag1Node.setContents(Nametag.CSpeech | Nametag.CThought)
+        self.av.nametag.addNametag(self.tag1Node)
         self.tag1 = self.attachNewNode(self.tag1Node)
         self.tag1.setPosHprScale(-0.15, 0, -0.1, 0, 0, 0, 0.046, 0.046, 0.046)
         self.hide()
@@ -647,8 +644,8 @@ class PurchaseHeadFrame(DirectFrame):
         del self.headModel
         self.head.removeNode()
         del self.head
-        self.av.nametag.remove(self.tag1Node)
-        self.av.nametag.remove(self.tag2Node)
+        self.av.nametag.removeNametag(self.tag1Node)
+        self.av.nametag.removeNametag(self.tag2Node)
         self.tag1.removeNode()
         self.tag2.removeNode()
         del self.tag1

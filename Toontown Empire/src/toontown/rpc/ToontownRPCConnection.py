@@ -6,7 +6,7 @@ import json
 import socket
 import time
 
-from toontown.rpc.ToontownRPCDispatcher import ToontownRPCDispatcher
+from src.toontown.rpc.ToontownRPCDispatcher import ToontownRPCDispatcher
 
 
 class ToontownRPCConnection:
@@ -207,7 +207,7 @@ class ToontownRPCConnection:
 
         # Add the standard headers:
         response += 'Date: %s\r\n' % time.strftime('%a, %d %b %Y %H:%M:%S GMT', time.gmtime())
-        response += 'Server: TTS-RPCServer/0.1\r\n'
+        response += 'Server: tte-RPCServer/0.1\r\n'
 
         # Add the content headers:
         response += 'Content-Length: %d\r\n' % len(body)

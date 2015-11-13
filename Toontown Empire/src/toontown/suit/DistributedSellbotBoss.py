@@ -9,26 +9,25 @@ from direct.showbase.PythonUtil import Functor
 from direct.showutil import Rope
 from direct.task import Task
 import math
-from pandac.PandaModules import *
+from panda3d.core import *
 import random
 
 import DistributedBossCog
 import SuitDNA
-from toontown.battle import BattleBase
-from toontown.battle import MovieToonVictory
-from toontown.battle import RewardPanel
-from toontown.battle import SuitBattleGlobals
-from toontown.battle.BattleProps import *
-from toontown.chat.ChatGlobals import *
-from toontown.coghq import CogDisguiseGlobals
-from toontown.distributed import DelayDelete
-from toontown.nametag.NametagGlobals import *
-from toontown.suit import SellbotBossGlobals
-from toontown.toon import NPCToons
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.toonbase import ToontownGlobals
-
+from src.toontown.battle import BattleBase
+from src.toontown.battle import MovieToonVictory
+from src.toontown.battle import RewardPanel
+from src.toontown.battle import SuitBattleGlobals
+from src.toontown.battle.BattleProps import *
+from src.toontown.coghq import CogDisguiseGlobals
+from src.toontown.distributed import DelayDelete
+from src.toontown.suit import SellbotBossGlobals
+from src.toontown.toon import NPCToons
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownBattleGlobals
+from src.toontown.toonbase import ToontownGlobals
+from src.otp.nametag.NametagConstants import *
+from src.otp.nametag import NametagGlobals
 
 OneBossCog = None
 
@@ -66,7 +65,6 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.strafeInterval = None
         self.onscreenMessage = None
         self.toonMopathInterval = []
-        self.nerfed = ToontownGlobals.SELLBOT_NERF_HOLIDAY in base.cr.newsManager.getHolidayIdList()
         self.localToonPromoted = True
         self.resetMaxDamage()
 
@@ -85,7 +83,12 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.strafeSfx = []
         for i in xrange(10):
             self.strafeSfx.append(loader.loadSfx('phase_3.5/audio/sfx/SA_shred.ogg'))
+        
+        self.skyNode = self.cr.playGame.hood.loader.hood.sky
 
+        self.titleText = OnscreenText(TTLocalizer.SellbotBossArea, fg=(1, 1, 1, 1), shadow=(0, 0, 0, 1), font=ToontownGlobals.getSuitFont(), pos=(0, -0.5), scale=0.16, drawOrder=0, mayChange=1)
+        self.titleText.hide()
+        
         render.setTag('pieCode', str(ToontownGlobals.PieCodeNotBossCog))
         insidesA = CollisionPolygon(Point3(4.0, -2.0, 5.0), Point3(-4.0, -2.0, 5.0), Point3(-4.0, -2.0, 0.5), Point3(4.0, -2.0, 0.5))
         insidesANode = CollisionNode('BossZap')
@@ -143,6 +146,8 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.battleTwoMusic.stop()
         self.battleThreeMusic.stop()
         self.epilogueMusic.stop()
+        render.setColorScale(1, 1, 1, 1)
+        aspect2d.setColorScale(1, 1, 1, 1)
         while len(self.toonMopathInterval):
             toonMopath = self.toonMopathInterval[0]
             toonMopath.finish()
@@ -153,9 +158,6 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             OneBossCog = None
 
     def resetMaxDamage(self):
-        if self.nerfed:
-            self.bossMaxDamage = ToontownGlobals.SellbotBossMaxDamageNerfed
-        else:
             self.bossMaxDamage = ToontownGlobals.SellbotBossMaxDamage
 
     def d_hitBoss(self, bossDamage):
@@ -261,7 +263,8 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
     def makeIntroductionMovie(self, delayDeletes):
         track = Parallel()
         camera.reparentTo(render)
-        camera.setPosHpr(0, 25, 30, 0, 0, 0)
+        self.titleSeq = Sequence(Func(self.titleText.show), Wait(5), LerpColorScaleInterval(self.titleText, 1, VBase4(1, 1, 1, 0)))
+        track.append(Parallel(self.titleSeq, camera.posHprInterval(1.75, Point3(0, 25, 30), Point3(-10, -13, 0), blendType='easeInOut')))
         localAvatar.setCameraFov(ToontownGlobals.CogHQCameraFov)
         dooberTrack = Parallel()
         if self.doobers:
@@ -308,7 +311,7 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             ActorInterval(self, 'ltTurn2Wave', duration=2),
             ActorInterval(self, 'wave', duration=4, loop=1),
             ActorInterval(self, 'ltTurn2Wave', startTime=2, endTime=0),
-            ActorInterval(self, 'Ff_speech', duration=7, loop=1))
+            ActorInterval(self, 'Ff_speech', duration=8.5, loop=1))
         track.append(bossAnimTrack)
         dialogTrack = Track(
             (0, Parallel(
@@ -318,51 +321,59 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             (9, IndirectInterval(dooberTrack, 0, 9)),
             (10, Sequence(
                 Func(self.clearChat),
-                Func(camera.setPosHpr, -23.1, 15.7, 17.2, -160, -2.4, 0))),
+                camera.posHprInterval(5, Point3(0, -120, 0), Point3(0, 13, 0), blendType='easeInOut'))),
             (12, Func(self.setChatAbsolute, doobersAway, CFSpeech)),
-            (16, Parallel(
+            (18, Parallel(
                 Func(self.clearChat),
-                Func(camera.setPosHpr, -25, -99, 10, -14, 10, 0),
                 IndirectInterval(dooberTrack, 14),
+                camera.posHprInterval(4, Point3(-25, -99, 10), Point3(-14, 10, 0), blendType='easeInOut'),
                 IndirectInterval(toonTrack, 30))),
-            (18, Func(self.setChatAbsolute, welcomeToons, CFSpeech)),
-            (22, Func(self.setChatAbsolute, promoteToons, CFSpeech)),
-            (22.2, Sequence(
+            (20.5, Func(self.setChatAbsolute, welcomeToons, CFSpeech)),
+            (23, Func(self.setChatAbsolute, promoteToons, CFSpeech)),
+            (23.05, Sequence(
                 Func(self.cagedToon.nametag3d.setScale, 2),
                 Func(self.cagedToon.setChatAbsolute, interruptBoss, CFSpeech),
                 ActorInterval(self.cagedToon, 'wave'),
                 Func(self.cagedToon.loop, 'neutral'))),
-            (25, Sequence(
+            (26, Sequence(
                 Func(self.clearChat),
                 Func(self.cagedToon.clearChat),
                 Func(camera.setPosHpr, -12, -15, 27, -151, -15, 0),
                 ActorInterval(self, 'Ff_lookRt'))),
-            (27, Sequence(
+            (28, Sequence(
                 Func(self.cagedToon.setChatAbsolute, rescueQuery, CFSpeech),
                 Func(camera.setPosHpr, -12, 48, 94, -26, 20, 0),
                 ActorInterval(self.cagedToon, 'wave'),
                 Func(self.cagedToon.loop, 'neutral'))),
-            (31, Sequence(
-                Func(camera.setPosHpr, -20, -35, 10, -88, 25, 0),
+            (32, Sequence(
+                camera.posHprInterval(0.8, Point3(-20, -35, 10), Point3(-88, 25, 0), blendType='easeInOut'),
                 Func(self.setChatAbsolute, discoverToons, CFSpeech),
                 Func(self.cagedToon.nametag3d.setScale, 1),
-                Func(self.cagedToon.clearChat),
+                Func(self.cagedToon.clearChat),         
                 ActorInterval(self, 'turn2Fb'))),
-            (34, Sequence(
+            (35, Sequence(
                 Func(self.clearChat),
                 self.loseCogSuits(self.toonsA, self.battleANode, (0, 18, 5, -180, 0, 0)),
                 self.loseCogSuits(self.toonsB, self.battleBNode, (0, 18, 5, -180, 0, 0)))),
-            (37, Sequence(
-                self.toonNormalEyes(self.involvedToons),
-                Func(camera.setPosHpr, -23.4, -145.6, 44.0, -10.0, -12.5, 0),
-                Func(self.loop, 'Fb_neutral'),
-                Func(self.rampA.request, 'retract'),
-                Func(self.rampB.request, 'retract'),
-                Parallel(self.backupToonsToBattlePosition(self.toonsA, self.battleANode),
-                         self.backupToonsToBattlePosition(self.toonsB, self.battleBNode),
-                         Sequence(
-                             Wait(2),
-                             Func(self.setChatAbsolute, attackToons, CFSpeech))))))
+            (38, Parallel(
+                LerpColorScaleInterval(render, 3, Vec4(0.7, 0.7, 0.9, 1)),
+                LerpColorScaleInterval(aspect2d, 3, Vec4(0.7, 0.7, 0.9, 1)),
+                LerpColorScaleInterval(self.skyNode, 3, Vec4(0.6, 0.6, 0.8, 1)),
+                Sequence(
+                    self.toonNormalEyes(self.involvedToons),
+                    camera.posHprInterval(1, Point3(-13, -125, 35), Point3(-10.0, -12.5, 0), blendType='easeInOut'),
+                    Func(self.loop, 'Fb_neutral'),
+                    Func(self.rampA.request, 'retract'),
+                    Func(self.rampB.request, 'retract'),
+                    Parallel(self.backupToonsToBattlePosition(self.toonsA, self.battleANode),
+                             self.backupToonsToBattlePosition(self.toonsB, self.battleBNode),
+                             Sequence(
+                                 Wait(2),
+                                 Parallel(
+                                    Func(self.setChatAbsolute, attackToons, CFSpeech),
+                                    camera.posHprInterval(0.8, Point3(-25, -35, 20), Point3(-90, 0, 0))),
+                                 Wait(2.5)
+                                ))))))
         track.append(dialogTrack)
         return Sequence(Func(self.stickToonsToFloor), track, Func(self.unstickToons), name=self.uniqueName('Introduction'))
 
@@ -546,11 +557,14 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.rope.ropeNode.setUvScale(0.8)
         self.rope.setTexture(self.cage.findTexture('hq_chain'))
         self.rope.setTransparency(1)
-        self.promotionMusic = base.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
+        self.promotionMusic = base.loadMusic('phase_9/audio/bgm/encntr_head_suit_theme.ogg')
+        self.toonsDiscovered = base.loadMusic('phase_9/audio/bgm/encntr_sting_announce.ogg')
         self.betweenBattleMusic = base.loadMusic('phase_9/audio/bgm/encntr_toon_winning.ogg')
         self.battleTwoMusic = base.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
-        self.battleThreeMusic = base.loadMusic('phase_9/audio/bgm/encntr_vp_boss.ogg')
+        self.toonsDiscovered = base.loadMusic('phase_9/audio/bgm/encntr_sting_announce.ogg')
+        self.battleThreeMusic = base.loadMusic('phase_9/audio/bgm/encntr_head_suit_theme.ogg')
         self.geom.reparentTo(render)
+
 
     def unloadEnvironment(self):
         DistributedBossCog.DistributedBossCog.unloadEnvironment(self)
@@ -702,7 +716,7 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.rampB.request('extended')
         self.rampC.request('retracted')
         self.setCageIndex(0)
-        base.playMusic(self.promotionMusic, looping=1, volume=0.9)
+        Sequence(SoundInterval(self.promotionMusic, volume=1.8), SoundInterval(self.toonsDiscovered, volume=0.9)).start()
 
     def exitIntroduction(self):
         DistributedBossCog.DistributedBossCog.exitIntroduction(self)
@@ -939,6 +953,15 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.doAnimate()
         self.setDizzy(1)
         base.playMusic(self.battleThreeMusic, looping=1, volume=0.9, time=self.battleThreeMusicTime)
+        victoryTrack = Sequence(
+            Wait(6),
+            Parallel(
+                LerpColorScaleInterval(render, 3, Vec4(1, 1, 1, 1)),
+                LerpColorScaleInterval(aspect2d, 3, Vec4(1, 1, 1, 1)),
+                LerpColorScaleInterval(self.skyNode, 3, Vec4(1, 1, 1, 1))
+            )
+        )
+        victoryTrack.start()
 
     def exitNearVictory(self):
         self.ignore('enterCage')
@@ -1012,7 +1035,7 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         ival.delayDeletes = delayDeletes
         ival.start()
         self.storeInterval(ival, intervalName)
-        base.playMusic(self.battleThreeMusic, looping=1, volume=0.9, time=self.battleThreeMusicTime)
+        base.playMusic(self.battleThreeMusic, looping=1, volume=1.8, time=self.battleThreeMusicTime)
 
     def __doneReward(self):
         self.doneBarrier('Reward')

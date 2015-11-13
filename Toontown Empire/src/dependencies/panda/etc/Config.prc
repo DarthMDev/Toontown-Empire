@@ -14,7 +14,6 @@
 
 load-display pandagl
 #load-display pandadx9
-#load-display pandadx8
 #load-display pandagles
 #load-display p3tinydisplay
 
@@ -90,7 +89,7 @@ hardware-animated-vertices #f
 
 # Enable the model-cache, but only for models, not textures.
 
-model-cache-dir $USER_APPDATA/Panda3D-1.9/cache
+model-cache-dir $USER_APPDATA/Panda3D-1.10/cache
 model-cache-textures #f
 
 # This option specifies the default profiles for Cg shaders.

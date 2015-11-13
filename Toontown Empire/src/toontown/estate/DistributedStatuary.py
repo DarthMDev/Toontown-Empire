@@ -2,10 +2,10 @@ import DistributedLawnDecor
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.ShowBase import *
 import GardenGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
-from toontown.toontowngui import TTDialog
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toontowngui import TTDialog
+from src.toontown.toonbase import TTLocalizer
 from pandac.PandaModules import NodePath
 from pandac.PandaModules import Point3
 
@@ -36,12 +36,6 @@ class DistributedStatuary(DistributedLawnDecor.DistributedLawnDecor):
         self.model.reparentTo(self.rotateNode)
         attrib = GardenGlobals.PlantAttributes[self.typeIndex]
         self.stick2Ground()
-
-    def setOwnerPlot(self, owner):
-        self.ownerPlot = owner
-
-    def getOwnerPlot(self):
-        return self.ownerPlot
 
     def setTypeIndex(self, typeIndex):
         self.typeIndex = typeIndex

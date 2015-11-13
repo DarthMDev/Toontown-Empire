@@ -1,15 +1,15 @@
-from pandac.PandaModules import *
-from toontown.toonbase.ToonBaseGlobal import *
+from panda3d.core import *
+from src.toontown.toonbase.ToonBaseGlobal import *
 from direct.directnotify import DirectNotifyGlobal
-from toontown.hood import Place
+from src.toontown.hood import Place
 from direct.showbase import DirectObject
 from direct.fsm import StateData
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.task import Task
-from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from src.otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
 
 class House(Place.Place):
     notify = DirectNotifyGlobal.directNotify.newCategory('House')
@@ -77,7 +77,7 @@ class House(Place.Place):
         self.accept('doorDoneEvent', self.handleDoorDoneEvent)
         self.accept('DistributedDoor_doorTrigger', self.handleDoorTrigger)
         self._telemLimiter = TLGatherAllAvs('House', RotationLimitToH)
-        NametagGlobals.setWant2dNametags(True)
+        NametagGlobals.setMasterArrowsOn(1)
         self.fsm.request(requestStatus['how'], [requestStatus])
 
     def exit(self):
@@ -87,7 +87,7 @@ class House(Place.Place):
         self._telemLimiter.destroy()
         del self._telemLimiter
         messenger.send('exitHouse')
-        NametagGlobals.setWant2dNametags(False)
+        NametagGlobals.setMasterArrowsOn(0)
 
     def setState(self, state):
         if hasattr(self, 'fsm'):

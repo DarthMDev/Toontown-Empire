@@ -4,19 +4,17 @@ from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.interval.IntervalGlobal import *
-from pandac.PandaModules import *
+from panda3d.core import *
 import random
 
-from otp.avatar import Avatar
-from toontown.chat.ChatGlobals import *
-from toontown.nametag.NametagGroup import *
-from otp.otpbase import OTPGlobals
-from toontown.distributed import DelayDelete
-from toontown.effects import Bubbles
-from toontown.hood import ZoneUtil
-from toontown.safezone.OZPlayground import OZPlayground
-from toontown.safezone.SafeZoneLoader import SafeZoneLoader
-from toontown.toon import Toon, ToonDNA
+from src.otp.avatar import Avatar
+from src.otp.otpbase import OTPGlobals
+from src.toontown.distributed import DelayDelete
+from src.toontown.effects import Bubbles
+from src.toontown.hood import ZoneUtil
+from src.toontown.safezone.OZPlayground import OZPlayground
+from src.toontown.safezone.SafeZoneLoader import SafeZoneLoader
+from src.toontown.toon import Toon, ToonDNA
 
 
 class OZSafeZoneLoader(SafeZoneLoader):
@@ -47,7 +45,6 @@ class OZSafeZoneLoader(SafeZoneLoader):
         waterfallPlacer = self.geom.find('**/waterfall*')
         binMgr = CullBinManager.getGlobalPtr()
         binMgr.addBin('water', CullBinManager.BTFixed, 29)
-        binMgr = CullBinManager.getGlobalPtr()
         pool = self.geom.find('**/pPlane5*')
         pool.setTransparency(1)
         pool.setColorScale(1.0, 1.0, 1.0, 1.0)

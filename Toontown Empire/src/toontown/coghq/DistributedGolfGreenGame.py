@@ -1,27 +1,27 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from direct.particles import ParticleEffect
 from StomperGlobals import *
 from direct.distributed import ClockDelta
 from direct.showbase.PythonUtil import lerp
-from otp.level import DistributedEntity
+from src.otp.level import DistributedEntity
 from direct.directnotify import DirectNotifyGlobal
 from pandac.PandaModules import NodePath
-from otp.level import BasicEntities
+from src.otp.level import BasicEntities
 from direct.task import Task
-from toontown.toonbase import ToontownGlobals
-from toontown.coghq import BattleBlocker
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownBattleGlobals
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.coghq import BattleBlocker
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownBattleGlobals
 from direct.distributed.ClockDelta import *
-from toontown.golf import BuildGeometry
+from src.toontown.golf import BuildGeometry
 from direct.gui.DirectGui import *
 from direct.showbase import RandomNumGen
-from toontown.distributed import DelayDelete
-from toontown.toon import ToonHeadFrame
-from toontown.battle import BattleParticles
-from toontown.battle import MovieUtil
-from toontown.toonbase import ToontownTimer
+from src.toontown.distributed import DelayDelete
+from src.toontown.toon import ToonHeadFrame
+from src.toontown.battle import BattleParticles
+from src.toontown.battle import MovieUtil
+from src.toontown.toonbase import ToontownTimer
 from math import pi
 import GameSprite3D, math, random
 
@@ -419,7 +419,7 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         self.isActive = 1
         self.__setCamera()
         self.spriteNode.show()
-        base.setCellsActive([base.bottomCells[1], base.bottomCells[2], base.bottomCells[3]], 0)
+        base.setCellsAvailable([base.bottomCells[1], base.bottomCells[2], base.bottomCells[3]], 0)
         self.setupFlag = 1
 
     def startBoard(self, board, attackPattern):
@@ -557,7 +557,7 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         self.isActive = 0
         if self.standbySprite:
             self.standbySprite.nodeObj.hide()
-        base.setCellsActive([base.bottomCells[1], base.bottomCells[2], base.bottomCells[3]], 1)
+        base.setCellsAvailable([base.bottomCells[1], base.bottomCells[2], base.bottomCells[3]], 1)
         self.sendUpdate('leaveGame', [])
         return
 

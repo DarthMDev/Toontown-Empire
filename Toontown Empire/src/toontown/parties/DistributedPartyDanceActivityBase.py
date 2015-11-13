@@ -4,19 +4,19 @@ from direct.interval.FunctionInterval import Wait, Func
 from direct.interval.MetaInterval import Sequence, Parallel
 from direct.showbase.PythonUtil import lerp, Enum
 from direct.fsm import FSM
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
-from toontown.minigame.OrthoDrive import OrthoDrive
-from toontown.minigame.OrthoWalk import OrthoWalk
-from toontown.parties.activityFSMs import DanceActivityFSM
-from toontown.parties.PartyGlobals import ActivityIds, ActivityTypes
-from toontown.parties.PartyGlobals import DancePatternToAnims, DanceAnimToName
-from toontown.parties.DistributedPartyActivity import DistributedPartyActivity
-from toontown.parties.PartyDanceActivityToonFSM import PartyDanceActivityToonFSM
-from toontown.parties.PartyDanceActivityToonFSM import ToonDancingStates
-from toontown.parties.KeyCodes import KeyCodes
-from toontown.parties.KeyCodesGui import KeyCodesGui
-from toontown.parties import PartyGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.minigame.OrthoDrive import OrthoDrive
+from src.toontown.minigame.OrthoWalk import OrthoWalk
+from src.toontown.parties.activityFSMs import DanceActivityFSM
+from src.toontown.parties.PartyGlobals import ActivityIds, ActivityTypes
+from src.toontown.parties.PartyGlobals import DancePatternToAnims, DanceAnimToName
+from src.toontown.parties.DistributedPartyActivity import DistributedPartyActivity
+from src.toontown.parties.PartyDanceActivityToonFSM import PartyDanceActivityToonFSM
+from src.toontown.parties.PartyDanceActivityToonFSM import ToonDancingStates
+from src.toontown.parties.KeyCodes import KeyCodes
+from src.toontown.parties.KeyCodesGui import KeyCodesGui
+from src.toontown.parties import PartyGlobals
 DANCE_FLOOR_COLLISION = 'danceFloor_collision'
 DanceViews = Enum(('Normal', 'Dancing', 'Isometric'))
 
@@ -285,14 +285,14 @@ class DistributedPartyDanceActivityBase(DistributedPartyActivity):
                 node2.reparentTo(camNode)
                 node2.setPos(Point3(0, 15, 10))
                 node2.lookAt(camNode)
-                h = node2.getH() * (camera.getH(camNode) / abs(camera.getH(camNode)))
+                h = node2.getH() * (base.camera.getH(camNode) / abs(base.camera.getH(camNode)))
                 node2.removeNode
                 del node2
-                hpr = camera.getHpr()
-                pos = camera.getPos()
-                camParent = camera.getParent()
-                camera.wrtReparentTo(camNode)
-                self.localToonDanceSequence = Sequence(Func(self.__localDisableControls), Parallel(camera.posInterval(0.5, Point3(0, 15, 10), blendType='easeIn'), camera.hprInterval(0.5, Point3(h, -20, 0), blendType='easeIn')), camNode.hprInterval(4.0, Point3(camNode.getH() - 360, 0, 0)), Func(camera.wrtReparentTo, camParent), Func(camNode.removeNode), Parallel(camera.posInterval(0.5, pos, blendType='easeOut'), camera.hprInterval(0.5, hpr, blendType='easeOut')), Func(self.__localEnableControls))
+                hpr = base.camera.getHpr()
+                pos = base.camera.getPos()
+                camParent = base.camera.getParent()
+                base.camera.wrtReparentTo(camNode)
+                self.localToonDanceSequence = Sequence(Func(self.__localDisableControls), Parallel(base.camera.posInterval(0.5, Point3(0, 15, 10), blendType='easeIn'), base.camera.hprInterval(0.5, Point3(h, -20, 0), blendType='easeIn')), camNode.hprInterval(4.0, Point3(camNode.getH() - 360, 0, 0)), Func(base.camera.wrtReparentTo, camParent), Func(camNode.removeNode), Parallel(base.camera.posInterval(0.5, pos, blendType='easeOut'), base.camera.hprInterval(0.5, hpr, blendType='easeOut')), Func(self.__localEnableControls))
             else:
                 self.localToonDanceSequence = Sequence(Func(self.__localDisableControls), Wait(2.0), Func(self.__localEnableControls))
             self.localToonDanceSequence.start()
@@ -348,11 +348,11 @@ class DistributedPartyDanceActivityBase(DistributedPartyActivity):
             if self.cameraParallel is not None:
                 self.cameraParallel.pause()
                 self.cameraParallel = None
-            camera.reparentTo(toon)
+            base.camera.reparentTo(toon)
             base.localAvatar.startUpdateSmartCamera()
         elif mode == DanceViews.Dancing:
             base.localAvatar.stopUpdateSmartCamera()
-            camera.wrtReparentTo(self.danceFloor)
+            base.camera.wrtReparentTo(self.danceFloor)
             node = NodePath('temp')
             node.reparentTo(toon.getParent())
             node.setPos(Point3(0, -40, 20))
@@ -363,7 +363,7 @@ class DistributedPartyDanceActivityBase(DistributedPartyActivity):
             pos = node.getPos(self.danceFloor)
             node2.removeNode()
             node.removeNode()
-            self.cameraParallel = Parallel(camera.posInterval(0.5, pos, blendType='easeIn'), camera.hprInterval(0.5, Point3(0, -27, 0), other=toon.getParent(), blendType='easeIn'))
+            self.cameraParallel = Parallel(base.camera.posInterval(0.5, pos, blendType='easeIn'), base.camera.hprInterval(0.5, Point3(0, -27, 0), other=toon.getParent(), blendType='easeIn'))
             self.cameraParallel.start()
         self.currentCameraMode = mode
         return

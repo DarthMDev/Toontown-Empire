@@ -1,11 +1,11 @@
-from pandac.PandaModules import *
-from toontown.toonbase import ToontownGlobals
+from panda3d.core import *
+from src.toontown.toonbase import ToontownGlobals
 from direct.showbase import DirectObject
-from toontown.toon import ToonDNA
-from toontown.toon import ToonHead
-from toontown.toontowngui import TTDialog
+from src.toontown.toon import ToonDNA
+from src.toontown.toon import ToonHead
+from src.toontown.toontowngui import TTDialog
 from direct.gui.DirectGui import *
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
 NAME_ROTATIONS = (7, -11, 1, -5, 3.5, -5)
 NAME_POSITIONS = ((0, 0, 0.26),
@@ -74,7 +74,7 @@ class AvatarChoice(DirectButton):
             if self.approvedName != '':
                 self.nameText['text'] = self.approvedName
             guiButton = loader.loadModel('phase_3/models/gui/quit_button')
-            self.nameYourToonButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), text=(TTLocalizer.AvatarChoiceNameYourToon, TTLocalizer.AvatarChoiceNameYourToon, TTLocalizer.AvatarChoiceNameYourToon), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), text_scale=0.15, text_pos=(0, 0.03), text_font=ToontownGlobals.getInterfaceFont(), pos=(-0.2, 0, -0.3), scale=0.45, image_scale=(2, 1, 3), command=self.__handleNameYourToon)
+            self.nameYourToonButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), text=(TTLocalizer.AvatarChoiceNameYourToon, TTLocalizer.AvatarChoiceNameYourToon, TTLocalizer.AvatarChoiceNameYourToon), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), text_scale=0.15, text_pos=(0, 0.03), text_font=ToontownGlobals.getInterfaceFont(), pos=(-0.2, 0, -0.3), scale=0.45, image_scale=(2, 1, 3), command=self.__handleCreate)
             guiButton.removeNode()
             self.statusText = DirectLabel(parent=self, relief=None, scale=0.09, pos=(0, 0, -0.24), text='', text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), text_wordwrap=7.5, text_scale=TTLocalizer.ACstatusText, text_font=ToontownGlobals.getToonFont(), state=DGG.DISABLED)
             if self.wantName != '':
@@ -155,9 +155,6 @@ class AvatarChoice(DirectButton):
         self.verify = TTDialog.TTGlobalDialog(doneEvent='verifyDone', message=TTLocalizer.AvatarChoiceDeleteConfirm % self.name, style=TTDialog.TwoChoice)
         self.verify.show()
         self.accept('verifyDone', self.__handleVerifyDelete)
-
-    def __handleNameYourToon(self):
-        messenger.send(self.doneEvent, ['nameIt', self.position])
 
     def __handleVerifyDelete(self):
         status = self.verify.doneStatus

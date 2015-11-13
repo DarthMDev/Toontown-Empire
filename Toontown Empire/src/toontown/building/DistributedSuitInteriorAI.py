@@ -8,10 +8,10 @@ from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.task import Timer
-from otp.ai.AIBaseGlobal import *
-from toontown.battle import BattleBase
-from toontown.battle import DistributedBattleBldgAI
-from toontown.toonbase.ToontownBattleGlobals import *
+from src.otp.ai.AIBaseGlobal import *
+from src.toontown.battle import BattleBase
+from src.toontown.battle import DistributedBattleBldgAI
+from src.toontown.toonbase.ToontownBattleGlobals import *
 
 
 class DistributedSuitInteriorAI(DistributedObjectAI.DistributedObjectAI):

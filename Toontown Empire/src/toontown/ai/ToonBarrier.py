@@ -1,4 +1,4 @@
-from otp.ai.AIBase import *
+from src.otp.ai.AIBase import *
 from direct.task import Task
 from direct.showbase import DirectObject
 import random

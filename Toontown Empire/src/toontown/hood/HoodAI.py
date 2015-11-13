@@ -1,16 +1,17 @@
 from direct.directnotify.DirectNotifyGlobal import *
-from toontown.building import DistributedBuildingMgrAI
-from toontown.dna.DNAParser import DNAStorage, DNAGroup, DNAVisGroup
-from toontown.fishing.DistributedFishingPondAI import DistributedFishingPondAI
-from toontown.hood import ZoneUtil
-from toontown.safezone import TreasureGlobals
-from toontown.safezone.DistributedFishingSpotAI import DistributedFishingSpotAI
-from toontown.safezone.DistributedPartyGateAI import DistributedPartyGateAI
-from toontown.safezone.SZTreasurePlannerAI import SZTreasurePlannerAI
-from toontown.suit import DistributedSuitPlannerAI
-from toontown.toon import NPCToons
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from src.toontown.building import DistributedBuildingMgrAI
+from src.toontown.dna.DNAParser import DNAStorage, DNAGroup, DNAVisGroup
+from src.toontown.fishing.DistributedFishingPondAI import DistributedFishingPondAI
+from src.toontown.hood import ZoneUtil
+from src.toontown.safezone import TreasureGlobals
+from src.toontown.safezone.DistributedFishingSpotAI import DistributedFishingSpotAI
+from src.toontown.fishing.DistributedPondBingoManagerAI import DistributedPondBingoManagerAI
+from src.toontown.safezone.DistributedPartyGateAI import DistributedPartyGateAI
+from src.toontown.safezone.SZTreasurePlannerAI import SZTreasurePlannerAI
+from src.toontown.suit import DistributedSuitPlannerAI
+from src.toontown.toon import NPCToons
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
 
 
 class HoodAI:
@@ -90,9 +91,14 @@ class HoodAI:
             fishingPond.generateWithRequired(zoneId)
             fishingPond.start()
 
+            fishingPond.bingoMgr = DistributedPondBingoManagerAI(simbase.air)
+            fishingPond.bingoMgr.setPondDoId(fishingPond.getDoId())
+            fishingPond.bingoMgr.generateWithRequired(zoneId)
+            fishingPond.bingoMgr.initTasks()
+
             fishingPonds.append(fishingPond)
         elif isinstance(dnaGroup, DNAVisGroup):
-            zoneId = ZoneUtil.getTrueZoneId(int(dnaGroup.getName().split(':')[0]), zoneId)
+            zoneId = int(dnaGroup.getName().split(':')[0])
         for i in xrange(dnaGroup.getNumChildren()):
             (foundFishingPonds, foundFishingPondGroups) = self.findFishingPonds(dnaGroup.at(i), zoneId, area)
             fishingPonds.extend(foundFishingPonds)
@@ -120,7 +126,6 @@ class HoodAI:
         fishingPondGroups = []
         for zoneId in self.getZoneTable():
             dnaData = self.air.dnaDataMap.get(zoneId, None)
-            zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
             if dnaData.getName() == 'root':
                 area = ZoneUtil.getCanonicalZoneId(zoneId)
                 (foundFishingPonds, foundFishingPondGroups) = self.findFishingPonds(dnaData, zoneId, area)
@@ -149,7 +154,6 @@ class HoodAI:
         self.partyGates = []
         for zoneId in self.getZoneTable():
             dnaData = self.air.dnaDataMap.get(zoneId, None)
-            zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
             if dnaData.getName() == 'root':
                 foundPartyGates = self.findPartyGates(dnaData, zoneId)
                 self.partyGates.extend(foundPartyGates)
@@ -167,7 +171,6 @@ class HoodAI:
     def createBuildingManagers(self):
         for zoneId in self.getZoneTable():
             dnaStore = self.air.dnaStoreMap[zoneId]
-            zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
             buildingManager = DistributedBuildingMgrAI.DistributedBuildingMgrAI(
                 self.air, zoneId, dnaStore, self.air.trophyMgr)
             self.buildingManagers.append(buildingManager)
@@ -177,7 +180,6 @@ class HoodAI:
         for zoneId in self.getZoneTable():
             if zoneId == self.zoneId:
                 continue
-            zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
             suitPlanner = DistributedSuitPlannerAI.DistributedSuitPlannerAI(self.air, zoneId)
             suitPlanner.generateWithRequired(zoneId)
             suitPlanner.d_setZoneId(zoneId)

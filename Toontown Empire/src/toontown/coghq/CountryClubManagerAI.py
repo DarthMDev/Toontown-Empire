@@ -1,10 +1,10 @@
 import random
 
-from toontown.coghq import DistributedCountryClubAI
+from src.toontown.coghq import DistributedCountryClubAI
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase import DirectObject
-from toontown.coghq import CountryClubLayout
-from toontown.toonbase import ToontownGlobals
+from src.toontown.coghq import CountryClubLayout
+from src.toontown.toonbase import ToontownGlobals
 
 
 CountryClubId2Layouts = {

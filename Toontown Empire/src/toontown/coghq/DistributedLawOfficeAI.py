@@ -2,13 +2,13 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import *
 from direct.showbase import PythonUtil
 from direct.task import Task
-from otp.level import DistributedLevelAI
-from otp.level import LevelSpec
-from toontown.ai.ToonBarrier import *
-from toontown.building import DistributedElevatorFloorAI
-from toontown.coghq import DistributedBattleFactoryAI, DistributedLawOfficeElevatorIntAI, DistributedLawOfficeFloorAI, LawOfficeLayout
-from toontown.suit import DistributedFactorySuitAI
-from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
+from src.otp.level import DistributedLevelAI
+from src.otp.level import LevelSpec
+from src.toontown.ai.ToonBarrier import *
+from src.toontown.building import DistributedElevatorFloorAI
+from src.toontown.coghq import DistributedBattleFactoryAI, DistributedLawOfficeElevatorIntAI, DistributedLawOfficeFloorAI, LawOfficeLayout
+from src.toontown.suit import DistributedFactorySuitAI
+from src.toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
 import FactoryEntityCreatorAI, FactorySpecs, LawOfficeBase, LevelSuitPlannerAI
 
 class DistributedLawOfficeAI(DistributedObjectAI, LawOfficeBase.LawOfficeBase):

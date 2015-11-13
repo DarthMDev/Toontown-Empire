@@ -1,6 +1,7 @@
-from toontown.toonbase.ToonBaseGlobal import *
-from otp.otpbase import OTPGlobals
+from src.toontown.toonbase.ToonBaseGlobal import *
+from src.otp.otpbase import OTPGlobals
 from direct.interval.IntervalGlobal import *
+from direct.showbase.PythonUtil import fitSrcAngle2Dest
 import ArrowKeys
 from direct.task.Task import Task
 

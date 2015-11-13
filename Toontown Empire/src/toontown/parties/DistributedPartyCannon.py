@@ -1,12 +1,12 @@
 from pandac.PandaModules import *
 from direct.distributed.DistributedObject import DistributedObject
 from direct.task.Task import Task
-from toontown.minigame import CannonGameGlobals
-from toontown.minigame.CannonGameGlobals import *
-from toontown.parties.Cannon import Cannon
-from toontown.parties.CannonGui import CannonGui
-from toontown.parties import PartyGlobals
-from toontown.parties.DistributedPartyCannonActivity import DistributedPartyCannonActivity
+from src.toontown.minigame import CannonGameGlobals
+from src.toontown.minigame.CannonGameGlobals import *
+from src.toontown.parties.Cannon import Cannon
+from src.toontown.parties.CannonGui import CannonGui
+from src.toontown.parties import PartyGlobals
+from src.toontown.parties.DistributedPartyCannonActivity import DistributedPartyCannonActivity
 LAND_TIME = 2
 WORLD_SCALE = 2.0
 GROUND_SCALE = 1.4 * WORLD_SCALE
@@ -120,8 +120,8 @@ class DistributedPartyCannon(DistributedObject, Cannon):
         self.parentNode.setPosHpr(x, y, z, h, p, r)
 
     def setActivityDoId(self, doId):
-        self.activityDoId = doId
-        self.activity = base.cr.doId2do[doId]
+        self.activityDoId = int(doId)
+        self.activity = base.cr.doId2do.get(int(doId))
 
     def activate(self):
         self.accept(self.getEnterCollisionName(), self.__handleToonCollisionWithCannon)
@@ -176,9 +176,9 @@ class DistributedPartyCannon(DistributedObject, Cannon):
             base.localAvatar.pose('slip-forward', 25)
             base.cr.playGame.getPlace().setState('activity')
             base.localAvatar.collisionsOff()
-            camera.reparentTo(self.barrelNode)
-            camera.setPos(0, -2, 5)
-            camera.setP(-20)
+            base.camera.reparentTo(self.barrelNode)
+            base.camera.setPos(0, -2, 5)
+            base.camera.setP(-20)
             if not self.activity.hasPlayedBefore():
                 self.activity.displayRules()
                 self.acceptOnce(DistributedPartyCannonActivity.RULES_DONE_EVENT, self.__enableCannonControl)
@@ -224,7 +224,7 @@ class DistributedPartyCannon(DistributedObject, Cannon):
             if pos:
                 self.notify.debug('toon setting position to %s' % pos)
                 base.localAvatar.setPos(pos)
-            camera.reparentTo(base.localAvatar)
+            base.camera.reparentTo(base.localAvatar)
             base.localAvatar.collisionsOn()
             base.localAvatar.startPosHprBroadcast()
             base.localAvatar.enableAvatarControls()

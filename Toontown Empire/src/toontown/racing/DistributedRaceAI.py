@@ -3,12 +3,13 @@ from direct.distributed.ClockDelta import *
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from direct.fsm.FSM import FSM
 from direct.task import Task
+
 import random
 
-from toontown.racing import RaceGlobals
-from toontown.racing.DistributedGagAI import DistributedGagAI
-from toontown.racing.DistributedVehicleAI import DistributedVehicleAI
-from toontown.toonbase import TTLocalizer
+from src.toontown.racing import RaceGlobals
+from src.toontown.racing.DistributedGagAI import DistributedGagAI
+from src.toontown.racing.DistributedVehicleAI import DistributedVehicleAI
+from src.toontown.toonbase import TTLocalizer
 
 
 class DistributedRaceAI(DistributedObjectAI, FSM):
@@ -303,6 +304,7 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
         qualify = False
         if totalTime < RaceGlobals.getQualifyingTime(self.trackId):
             qualify = True
+            self.air.leaderboardMgr.submitRace(self.trackId, av.getName(), totalTime)
         if self.raceType == RaceGlobals.Practice:
             winnings = RaceGlobals.PracticeWinnings
             trophies = []

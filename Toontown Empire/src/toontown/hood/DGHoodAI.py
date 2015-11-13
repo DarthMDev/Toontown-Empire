@@ -1,14 +1,13 @@
-from toontown.hood import HoodAI
-from toontown.safezone import ButterflyGlobals
-from toontown.safezone import DistributedButterflyAI
-from toontown.safezone import DistributedDGFlowerAI
-from toontown.safezone import DistributedTrolleyAI
-from toontown.toonbase import ToontownGlobals
-#from toontown.ai import DistributedGreenToonEffectMgrAI
-from toontown.ai import DistributedTrickOrTreatTargetAI
-
+from src.toontown.hood import HoodAI
+from src.toontown.safezone import ButterflyGlobals
+from src.toontown.safezone import DistributedButterflyAI
+from src.toontown.safezone import DistributedDGFlowerAI
+from src.toontown.safezone import DistributedTrolleyAI
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.ai import DistributedEffectMgrAI
 
 class DGHoodAI(HoodAI.HoodAI):
+
     def __init__(self, air):
         HoodAI.HoodAI.__init__(self, air,
                                ToontownGlobals.DaisyGardens,
@@ -27,13 +26,15 @@ class DGHoodAI(HoodAI.HoodAI):
         self.createFlower()
         if simbase.config.GetBool('want-butterflies', True):
             self.createButterflies()
-            
-        #self.GreenToonEffectManager = DistributedGreenToonEffectMgrAI.DistributedGreenToonEffectMgrAI(self.air)
-        #self.GreenToonEffectManager.generateWithRequired(5819)
-        
-        if simbase.air.wantHalloween:
-            self.TrickOrTreatTargetManager = DistributedTrickOrTreatTargetAI.DistributedTrickOrTreatTargetAI(self.air)
-            self.TrickOrTreatTargetManager.generateWithRequired(5620)
+
+        self.greenToonMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.IDES_OF_MARCH, 15)
+        self.greenToonMgr.generateWithRequired(5819)
+
+        self.trickOrTreatMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.HALLOWEEN, 12)
+        self.trickOrTreatMgr.generateWithRequired(5620) # Rake It Inn, Elm Street
+
+        self.winterCarolingMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.CHRISTMAS, 14)
+        self.winterCarolingMgr.generateWithRequired(5626) # Pine Needle Crafts, Elm Street
 
     def shutdown(self):
         HoodAI.HoodAI.shutdown(self)
@@ -50,10 +51,12 @@ class DGHoodAI(HoodAI.HoodAI):
         self.flower.generateWithRequired(self.zoneId)
         self.flower.start()
 
-    def createButterflies(self, playground):
+    def createButterflies(self):
+        playground = ButterflyGlobals.DG
         ButterflyGlobals.generateIndexes(self.zoneId, ButterflyGlobals.DG)
+
         for i in xrange(0, ButterflyGlobals.NUM_BUTTERFLY_AREAS[ButterflyGlobals.DG]):
             for _ in xrange(0, ButterflyGlobals.NUM_BUTTERFLIES[ButterflyGlobals.DG]):
-                butterfly = DistributedButterflyAI(self.air, playground, i, self.zoneId)
+                butterfly = DistributedButterflyAI.DistributedButterflyAI(self.air, playground, i, self.zoneId)
                 butterfly.generateWithRequired(self.zoneId)
                 butterfly.start()

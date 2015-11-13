@@ -1,7 +1,7 @@
-from otp.speedchat.SCMenu import SCMenu
+from src.otp.speedchat.SCMenu import SCMenu
 from TTSCToontaskTerminal import TTSCToontaskTerminal
-from otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
-from toontown.quest import Quests
+from src.otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
+from src.toontown.quest import Quests
 
 class TTSCToontaskMenu(SCMenu):
 
@@ -30,7 +30,10 @@ class TTSCToontaskMenu(SCMenu):
 
         for task in lt.quests:
             taskId, fromNpcId, toNpcId, rewardId, toonProgress = task
-            q = Quests.getQuest(taskId)
+            try:
+               q = Quests.getQuest(taskId, base.localAvatar.doId)
+            except:
+                continue 
             if q is None:
                 continue
             msgs = q.getSCStrings(toNpcId, toonProgress)

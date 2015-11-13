@@ -1,8 +1,8 @@
 from direct.gui.DirectGui import *
 from direct.directnotify import DirectNotifyGlobal
 import string
-from otp.otpbase import OTPGlobals
-from otp.otpbase import OTPLocalizer
+from src.otp.otpbase import OTPGlobals
+from src.otp.otpbase import OTPLocalizer
 NoButtons = 0
 Acknowledge = 1
 CancelOnly = 2
@@ -69,7 +69,9 @@ class OTPDialog(DirectDialog):
          ('button_relief', None, None),
          ('button_text_pos', (0, -0.1), None),
          ('fadeScreen', 0.5, None),
-         ('image_color', OTPGlobals.GlobalDialogColor, None))
+         ('image_color', OTPGlobals.GlobalDialogColor, None),
+         ('image', DGG.getDefaultDialogGeom(), None),
+         ('relief', None, None))
         self.defineoptions(kw, optiondefs)
         DirectDialog.__init__(self, parent)
         self.initialiseoptions(OTPDialog)

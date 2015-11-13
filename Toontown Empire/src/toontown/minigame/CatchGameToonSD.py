@@ -1,8 +1,8 @@
-from pandac.PandaModules import *
-from toontown.toonbase.ToonBaseGlobal import *
+from panda3d.core import *
+from src.toontown.toonbase.ToonBaseGlobal import *
 from direct.interval.IntervalGlobal import *
-from toontown.toonbase.ToontownGlobals import *
-from toontown.distributed.DelayDelete import DelayDelete
+from src.toontown.toonbase.ToontownGlobals import *
+from src.toontown.distributed.DelayDelete import DelayDelete
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
 from direct.fsm import ClassicFSM, State

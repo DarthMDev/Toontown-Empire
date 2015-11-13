@@ -1,20 +1,20 @@
-from pandac.PandaModules import *
-from toontown.toonbase.ToonBaseGlobal import *
-from toontown.distributed.ToontownMsgTypes import *
-from toontown.hood import ZoneUtil
+from panda3d.core import *
+from src.toontown.toonbase.ToonBaseGlobal import *
+from src.toontown.distributed.ToontownMsgTypes import *
+from src.toontown.hood import ZoneUtil
 from direct.directnotify import DirectNotifyGlobal
-from toontown.hood import Place
+from src.toontown.hood import Place
 from direct.showbase import DirectObject
 from direct.fsm import StateData
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.task import Task
-from toontown.toon import HealthForceAcknowledge
-from toontown.toon.Toon import teleportDebug
-from toontown.toonbase.ToontownGlobals import *
-from toontown.building import ToonInterior
-from toontown.hood import QuietZoneState
-from toontown.dna.DNAParser import *
+from src.toontown.toon import HealthForceAcknowledge
+from src.toontown.toon.Toon import teleportDebug
+from src.toontown.toonbase.ToontownGlobals import *
+from src.toontown.building import ToonInterior
+from src.toontown.hood import QuietZoneState
+from src.toontown.dna.DNAParser import *
 from direct.stdpy.file import *
 
 class SafeZoneLoader(StateData.StateData):
@@ -216,27 +216,11 @@ class SafeZoneLoader(StateData.StateData):
                 else:
                     className = animPropNode.getName()[14:-8]
                 symbols = {}
-                base.cr.importModule(symbols, 'toontown.hood', [className])
+                base.cr.importModule(symbols, 'src.toontown.hood', [className])
                 classObj = getattr(symbols[className], className)
                 animPropObj = classObj(animPropNode)
                 animPropList = self.animPropDict.setdefault(i, [])
                 animPropList.append(animPropObj)
-
-            interactivePropNodes = i.findAllMatches('**/interactive_prop_*')
-            numInteractivePropNodes = interactivePropNodes.getNumPaths()
-            for j in xrange(numInteractivePropNodes):
-                interactivePropNode = interactivePropNodes.getPath(j)
-                className = 'GenericAnimatedProp'
-                symbols = {}
-                base.cr.importModule(symbols, 'toontown.hood', [className])
-                classObj = getattr(symbols[className], className)
-                interactivePropObj = classObj(interactivePropNode)
-                animPropList = self.animPropDict.get(i)
-                if animPropList is None:
-                    animPropList = self.animPropDict.setdefault(i, [])
-                animPropList.append(interactivePropObj)
-
-        return
 
     def deleteAnimatedProps(self):
         for zoneNode, animPropList in self.animPropDict.items():

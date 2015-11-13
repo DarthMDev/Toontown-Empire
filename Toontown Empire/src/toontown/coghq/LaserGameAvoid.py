@@ -2,7 +2,7 @@ import random
 
 from direct.distributed import ClockDelta
 from direct.task import Task
-from toontown.coghq import LaserGameBase
+from src.toontown.coghq import LaserGameBase
 
 
 class LaserGameAvoid(LaserGameBase.LaserGameBase):
@@ -79,5 +79,3 @@ class LaserGameAvoid(LaserGameBase.LaserGameBase):
             self.funcSendGrid()
 
         return Task.done
-
-

@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 import os
 import sys
@@ -19,8 +19,8 @@ class LogAndOutput:
         self.log.flush()
         self.orig.flush()
 
-class TTELauncher:
-    notify = DirectNotifyGlobal.directNotify.newCategory('TTELauncher')
+class tteLauncher:
+    notify = DirectNotifyGlobal.directNotify.newCategory('tteLauncher')
 
     def __init__(self):
         self.http = HTTPClient()
@@ -30,11 +30,11 @@ class TTELauncher:
         ltime = 1 and time.localtime()
         logSuffix = '%02d%02d%02d_%02d%02d%02d' % (ltime[0] - 2000,  ltime[1], ltime[2], ltime[3], ltime[4], ltime[5])
 
-        if not os.path.exists('user/logs/'):
-            os.mkdir('user/logs/client/')
+        if not os.path.exists('src/user/logs/'):
+            os.mkdir('src/user/logs/')
             self.notify.info('Made new directory to save logs.')
 
-        logfile = os.path.join('user/logs', self.logPrefix + logSuffix + '.log')
+        logfile = os.path.join('src/user/logs', self.logPrefix + logSuffix + '.log')
 
         log = open(logfile, 'a')
         logOut = LogAndOutput(sys.stdout, log)
@@ -43,20 +43,20 @@ class TTELauncher:
         sys.stderr = logErr
 
     def getPlayToken(self):
-        return self.getValue('TTE_PLAYCOOKIE')
+        return self.getValue('tte_PLAYCOOKIE')
 
     def getGameServer(self):
-        return self.getValue('TTE_GAMESERVER')
+        return self.getValue('tte_GAMESERVER')
 
     def getValue(self, key, default = None):
         return os.environ.get(key, default)
 
     def setPandaErrorCode(self):
         pass
-    
+
     def setDisconnectDetails(self, disconnectCode, disconnectMsg):
         self.disconnectCode = disconnectCode
         self.disconnectMsg = disconnectMsg
-    
+
     def setDisconnectDetailsNormal(self):
         self.setDisconnectDetails(0, 'normal')

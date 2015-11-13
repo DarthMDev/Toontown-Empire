@@ -1,6 +1,6 @@
-from toontown.coghq.SellbotCogHQLoader import SellbotCogHQLoader
-from toontown.toonbase import ToontownGlobals
-from toontown.hood.CogHood import CogHood
+from src.toontown.coghq.SellbotCogHQLoader import SellbotCogHQLoader
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.hood.CogHood import CogHood
 
 
 class SellbotHQ(CogHood):

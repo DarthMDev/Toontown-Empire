@@ -1,8 +1,8 @@
 from direct.directnotify import DirectNotifyGlobal
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
-from toontown.toonbase import ToontownGlobals
-from otp.otpbase import OTPGlobals
+from src.toontown.toonbase import ToontownGlobals
+from src.otp.otpbase import OTPGlobals
 from direct.fsm import FSM
 
 class DistributedLawbotBossGavelAI(DistributedObjectAI, FSM.FSM):

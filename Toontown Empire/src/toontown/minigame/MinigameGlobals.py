@@ -1,10 +1,10 @@
 from direct.showbase import PythonUtil
-from toontown.toonbase import ToontownGlobals
-from toontown.hood import ZoneUtil
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.hood import ZoneUtil
 from random import choice
 latencyTolerance = 10.0
 MaxLoadTime = 40.0
-rulesDuration = 16
+rulesDuration = 21
 JellybeanTrolleyHolidayScoreMultiplier = 2
 DifficultyOverrideMult = int(1 << 16)
 

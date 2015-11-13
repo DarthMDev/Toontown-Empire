@@ -1,8 +1,8 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify.DirectNotifyGlobal import *
 from direct.showbase import Loader
-from toontown.toontowngui import ToontownLoadingScreen
-from toontown.dna.DNAParser import *
+from src.toontown.toontowngui import ToontownLoadingScreen
+from src.toontown.dna.DNAParser import *
 
 class ToontownLoader(Loader.Loader):
     TickPeriod = 0.2
@@ -22,7 +22,7 @@ class ToontownLoader(Loader.Loader):
     def loadDNAFile(self, dnastore, filename):
         return loadDNAFile(dnastore, filename)
 
-    def beginBulkLoad(self, name, label, range, gui, tipCategory):
+    def beginBulkLoad(self, name, label, range, gui, tipCategory, zoneId):
         self._loadStartT = globalClock.getRealTime()
         Loader.Loader.notify.info("starting bulk load of block '%s'" % name)
         if self.inBulkBlock:
@@ -31,7 +31,7 @@ class ToontownLoader(Loader.Loader):
         self.inBulkBlock = 1
         self._lastTickT = globalClock.getRealTime()
         self.blockName = name
-        self.loadingScreen.begin(range, label, gui, tipCategory)
+        self.loadingScreen.begin(range, label, gui, tipCategory, zoneId)
         return None
 
     def endBulkLoad(self, name):

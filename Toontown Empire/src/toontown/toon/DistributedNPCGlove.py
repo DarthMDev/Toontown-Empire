@@ -5,11 +5,11 @@ from pandac.PandaModules import *
 import time
 
 from DistributedNPCToonBase import *
-from toontown.chat.ChatGlobals import *
-from toontown.effects import DustCloud
-from toontown.nametag.NametagGlobals import *
-from toontown.toonbase import TTLocalizer, ToontownGlobals
-from toontown.toon.ToonDNA import allColorsList
+from src.toontown.effects import DustCloud
+from src.toontown.toonbase import TTLocalizer, ToontownGlobals
+from src.toontown.toon.ToonDNA import allColorsList
+from src.otp.nametag.NametagConstants import CFSpeech, CFTimeout
+from src.toontown.toon import NPCToons
 
 def getDustCloud(toon):
     dustCloud = DustCloud.DustCloud(fBillboard=0)

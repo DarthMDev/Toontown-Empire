@@ -1,12 +1,10 @@
-class DistributedCashbotBossTreasureAI:
-    pass
-'''from toontown.safezone import DistributedSZTreasureAI
+from src.toontown.safezone import DistributedTreasureAI
 
-class DistributedCashbotBossTreasureAI(DistributedSZTreasureAI.DistributedSZTreasureAI):
+class DistributedCashbotBossTreasureAI(DistributedTreasureAI.DistributedTreasureAI):
 
     def __init__(self, air, boss, goon, style, fx, fy, fz):
         pos = goon.getPos()
-        DistributedSZTreasureAI.DistributedSZTreasureAI.__init__(self, air, boss, pos[0], pos[1], 0)
+        DistributedSZTreasureAI.DistributedTreasureAI.__init__(self, air, boss, pos[0], pos[1], 0)
         self.goonId = goon.doId
         self.style = style
         self.finalPosition = (fx, fy, fz)
@@ -48,4 +46,4 @@ class DistributedCashbotBossTreasureAI(DistributedSZTreasureAI.DistributedSZTrea
         self.d_setFinalPosition(x, y, z)
 
     def d_setFinalPosition(self, x, y, z):
-        self.sendUpdate('setFinalPosition', [x, y, z])'''
+        self.sendUpdate('setFinalPosition', [x, y, z])

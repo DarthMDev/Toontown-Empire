@@ -8,7 +8,7 @@ string rc4(const char* data, const char* key, int ds, int ks);
 extern "C" __declspec(dllexport) void initlibpandadna();
 void init_libpandadna();
 
-const char* header = "EMPIRETT";
+const char* header = "crystalTT";
 const int header_size = 8;
 
 const int keysize = 100;
@@ -24,7 +24,7 @@ int niraicall_onLoadGameData()
     fstream gd;
 
     // Open the file
-    gd.open("stride.dist", ios_base::in | ios_base::binary);
+    gd.open("crystal.dist", ios_base::in | ios_base::binary);
 	if (!gd.is_open())
     {
         std::cerr << "Unable to open game file!" << std::endl;

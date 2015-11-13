@@ -1,9 +1,9 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
-from toontown.hood import ZoneUtil
-from toontown.safezone.SafeZoneLoader import SafeZoneLoader
-from toontown.safezone.GSPlayground import GSPlayground
+from src.toontown.hood import ZoneUtil
+from src.toontown.safezone.SafeZoneLoader import SafeZoneLoader
+from src.toontown.safezone.GSPlayground import GSPlayground
 
 class GSSafeZoneLoader(SafeZoneLoader):
 

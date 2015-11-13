@@ -5,14 +5,14 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import ClockDelta
 from direct.interval.IntervalGlobal import *
 from direct.task import Task
-from otp.ai.AIBase import *
-from otp.level import BasicEntities
-from otp.level import DistributedEntityAI
-from toontown.coghq import BattleBlockerAI
-from toontown.coghq import LaserGameAvoid
-from toontown.coghq import LaserGameDrag
-from toontown.coghq import LaserGameMineSweeper
-from toontown.coghq import LaserGameRoll
+from src.otp.ai.AIBase import *
+from src.otp.level import BasicEntities
+from src.otp.level import DistributedEntityAI
+from src.toontown.coghq import BattleBlockerAI
+from src.toontown.coghq import LaserGameAvoid
+from src.toontown.coghq import LaserGameDrag
+from src.toontown.coghq import LaserGameMineSweeper
+from src.toontown.coghq import LaserGameRoll
 
 
 class DistributedLaserFieldAI(BattleBlockerAI.BattleBlockerAI, NodePath, BasicEntities.NodePathAttribs):

@@ -1,5 +1,5 @@
-from toontown.safezone import DistributedTreasure
-from toontown.toonbase import ToontownGlobals
+from src.toontown.safezone import DistributedTreasure
+from src.toontown.toonbase import ToontownGlobals
 from direct.interval.IntervalGlobal import *
 from pandac.PandaModules import Point3
 Models = {ToontownGlobals.ToontownCentral: 'phase_4/models/props/icecream',

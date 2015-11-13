@@ -9,8 +9,8 @@ from direct.showbase import RandomNumGen
 from direct.task.Task import Task
 from direct.distributed.ClockDelta import globalClockDelta
 from pandac.PandaModules import Point3, Vec3
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownTimer
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownTimer
 from DistributedMinigame import DistributedMinigame
 from MazeSuit import MazeSuit
 from OrthoWalk import OrthoWalk
@@ -621,7 +621,7 @@ class DistributedMazeGame(DistributedMinigame):
         self.scorePanels = []
         self.goalBar.destroy()
         del self.goalBar
-        base.setCellsActive(base.rightCells, 1)
+        base.setCellsAvailable(base.rightCells, 1)
         for suit in self.suits:
             suit.offstage()
 
@@ -700,7 +700,7 @@ class DistributedMazeGame(DistributedMinigame):
 
         self.goalBar.show()
         self.goalBar['value'] = 0.0
-        base.setCellsActive(base.rightCells, 0)
+        base.setCellsAvailable(base.rightCells, 0)
         self.__spawnUpdateSuitsTask()
         orthoDrive = OrthoDrive(self.TOON_SPEED, maxFrameMove=self.MAX_FRAME_MOVE, customCollisionCallback=self.__doMazeCollisions, priority=1)
         self.orthoWalk = OrthoWalk(orthoDrive, broadcast=not self.isSinglePlayer())

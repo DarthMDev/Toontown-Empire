@@ -1,4 +1,4 @@
-from toontown.makeatoon import ClothesGUI
+from src.toontown.makeatoon import ClothesGUI
 import ToonDNA
 
 class TailorClothesGUI(ClothesGUI.ClothesGUI):

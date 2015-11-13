@@ -1,8 +1,8 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.ShadowPlacer import ShadowPlacer
-from pandac.PandaModules import *
+from panda3d.core import *
 
-from otp.otpbase import OTPGlobals
+from src.otp.otpbase import OTPGlobals
 
 
 globalDropShadowFlag = 1

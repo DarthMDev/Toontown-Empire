@@ -1,8 +1,8 @@
 from direct.distributed import DistributedObjectAI
 from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
-from otp.ai.AIBase import *
-from toontown.toonbase.ToontownGlobals import *
+from src.otp.ai.AIBase import *
+from src.toontown.toonbase.ToontownGlobals import *
 
 
 class DistributedBoatAI(DistributedObjectAI.DistributedObjectAI):

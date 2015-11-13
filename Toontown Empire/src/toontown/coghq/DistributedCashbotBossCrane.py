@@ -1,5 +1,5 @@
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
 from direct.fsm import FSM
@@ -7,11 +7,11 @@ from direct.distributed import DistributedObject
 from direct.showutil import Rope
 from direct.showbase import PythonUtil
 from direct.task import Task
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from otp.otpbase import OTPGlobals
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.otp.otpbase import OTPGlobals
+from src.otp.nametag import NametagGlobals
 import random
-from toontown.nametag import NametagGlobals
 
 class DistributedCashbotBossCrane(DistributedObject.DistributedObject, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCashbotBossCrane')
@@ -407,7 +407,7 @@ class DistributedCashbotBossCrane(DistributedObject.DistributedObject, FSM.FSM):
         taskMgr.add(self.__watchControls, 'watchCraneControls')
         taskMgr.doMethodLater(5, self.__displayCraneAdvice, self.craneAdviceName)
         taskMgr.doMethodLater(10, self.__displayMagnetAdvice, self.magnetAdviceName)
-        NametagGlobals.setForceOnscreenChat(True)
+        NametagGlobals.setOnscreenChatForced(1)
         self.arrowVert = 0
         self.arrowHorz = 0
         return
@@ -428,7 +428,7 @@ class DistributedCashbotBossCrane(DistributedObject.DistributedObject, FSM.FSM):
         self.ignore('InputState-turnRight')
         self.arrowVert = 0
         self.arrowHorz = 0
-        NametagGlobals.setForceOnscreenChat(False)
+        NametagGlobals.setOnscreenChatForced(0)
         taskMgr.remove('watchCraneControls')
         self.__setMoveSound(None)
         return

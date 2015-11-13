@@ -1,25 +1,19 @@
 from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
-from otp.otpbase import OTPLocalizer
-from toontown.hood import ZoneUtil
+from src.otp.otpbase import OTPLocalizer
+from src.toontown.hood import ZoneUtil
 
-class TTEFriendsManager(DistributedObjectGlobal):
+class tteFriendsManager(DistributedObjectGlobal):
     def d_removeFriend(self, friendId):
         self.sendUpdate('removeFriend', [friendId])
-
-    def d_requestAvatarInfo(self, friendIds):
-        self.sendUpdate('requestAvatarInfo', [friendIds])
 
     def d_requestFriendsList(self):
         self.sendUpdate('requestFriendsList', [])
 
-    def friendInfo(self, resp):
-        base.cr.handleGetFriendsListExtended(resp)
-
     def friendList(self, resp):
         base.cr.handleGetFriendsList(resp)
 
-    def friendOnline(self, id, commonChatFlags, whitelistChatFlags):
-        base.cr.handleFriendOnline(id, commonChatFlags, whitelistChatFlags)
+    def friendOnline(self, id):
+        base.cr.handleFriendOnline(id)
 
     def friendOffline(self, id):
         base.cr.handleFriendOffline(id)
@@ -40,10 +34,10 @@ class TTEFriendsManager(DistributedObjectGlobal):
             ['setDNAString' , dnaString],
         ]
         base.cr.n_handleGetAvatarDetailsResp(avId, fields=fields)
-    
+
     def d_getPetDetails(self, avId):
         self.sendUpdate('getPetDetails', [avId])
- 
+
     def petDetails(self, avId, ownerId, petName, traitSeed, sz, traits, moods, dna, lastSeen):
         fields = list(zip(("setHead", "setEars", "setNose", "setTail", "setBodyTexture", "setColor", "setColorScale", "setEyeColor", "setGender"), dna))
         fields.extend(zip(("setBoredom", "setRestlessness", "setPlayfulness", "setLoneliness",
@@ -59,7 +53,7 @@ class TTEFriendsManager(DistributedObjectGlobal):
         fields.append(("setTraitSeed", traitSeed))
         fields.append(("setSafeZone", sz))
         fields.append(("setLastSeenTimestamp", lastSeen))
-        base.cr.n_handleGetAvatarDetailsResp(avId, fields=fields)    
+        base.cr.n_handleGetAvatarDetailsResp(avId, fields=fields)
 
     def d_teleportQuery(self, toId):
         self.sendUpdate('routeTeleportQuery', [toId])
@@ -71,15 +65,18 @@ class TTEFriendsManager(DistributedObjectGlobal):
         if not hasattr(base.localAvatar, 'getTeleportAvailable') or not hasattr(base.localAvatar, 'ghostMode'):
             self.sendUpdate('teleportResponse', [ fromId, 0, 0, 0, 0 ])
             return
+
+        friend = base.cr.identifyFriend(fromId)
+
         if not base.localAvatar.getTeleportAvailable() or base.localAvatar.ghostMode:
-            if hasattr(base.cr.identifyFriend(fromId), 'getName'):
-                base.localAvatar.setSystemMessage(fromId, OTPLocalizer.WhisperFailedVisit % base.cr.identifyFriend(fromId).getName())
+            if hasattr(friend, 'getName'):
+                base.localAvatar.setSystemMessage(fromId, OTPLocalizer.WhisperFailedVisit % friend.getName())
             self.sendUpdate('teleportResponse', [ fromId, 0, 0, 0, 0 ])
             return
 
         hoodId = base.cr.playGame.getPlaceId()
-        if hasattr(base.cr.identifyFriend(fromId), 'getName'):
-            base.localAvatar.setSystemMessage(fromId, OTPLocalizer.WhisperComingToVisit % base.cr.identifyFriend(fromId).getName())
+        if hasattr(friend, 'getName'):
+            base.localAvatar.setSystemMessage(fromId, OTPLocalizer.WhisperComingToVisit % friend.getName())
         self.sendUpdate('teleportResponse', [
             fromId,
             base.localAvatar.getTeleportAvailable(),
@@ -127,9 +124,7 @@ class TTEFriendsManager(DistributedObjectGlobal):
         base.localAvatar.setWhisperSCEmoteFrom(fromId, emoteId)
 
     def receiveTalkWhisper(self, fromId, message):
-        toon = base.cr.identifyAvatar(fromId)
-        if toon:
-            base.localAvatar.setTalkWhisper(fromId, 0, toon.getName(), message, [], 0)
+        base.localAvatar.setTalkWhisper(fromId, message)
 
     def d_battleSOS(self, toId):
         self.sendUpdate('battleSOS', [toId])

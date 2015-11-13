@@ -1,11 +1,11 @@
 import CatalogItem
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.toon import ToonDNA
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toon import ToonDNA
 import random
 from direct.showbase import PythonUtil
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 CTArticle = 0
 CTString = 1
 CTBasePrice = 2
@@ -17,8 +17,7 @@ ABoysShorts = 3
 AGirlsShorts = 4
 AGirlsSkirt = 5
 AShorts = 6
-ClothingTypes = {
- 101: (ABoysShirt, 'bss1', 40),
+ClothingTypes = {101: (ABoysShirt, 'bss1', 40),
  102: (ABoysShirt, 'bss2', 40),
  103: (ABoysShirt, 'bss3', 40),
  105: (ABoysShirt, 'bss4', 40),
@@ -341,8 +340,6 @@ class CatalogClothingItem(CatalogItem.CatalogItem):
             return 1
         if avatar.mailboxContents.count(self) != 0:
             return 1
-        if self in avatar.awardMailboxContents or self in avatar.onAwardOrder:
-            return 1
         str = ClothingTypes[self.clothingType][CTString]
         dna = avatar.getStyle()
         if self.isShirt():
@@ -350,7 +347,7 @@ class CatalogClothingItem(CatalogItem.CatalogItem):
             if dna.topTex == defn[0] and dna.topTexColor == defn[2][self.colorIndex][0] and dna.sleeveTex == defn[1] and dna.sleeveTexColor == defn[2][self.colorIndex][1]:
                 return 1
             l = avatar.clothesTopsList
-            for i in range(0, len(l), 4):
+            for i in xrange(0, len(l), 4):
                 if l[i] == defn[0] and l[i + 1] == defn[2][self.colorIndex][0] and l[i + 2] == defn[1] and l[i + 3] == defn[2][self.colorIndex][1]:
                     return 1
 
@@ -359,7 +356,7 @@ class CatalogClothingItem(CatalogItem.CatalogItem):
             if dna.botTex == defn[0] and dna.botTexColor == defn[1][self.colorIndex]:
                 return 1
             l = avatar.clothesBottomsList
-            for i in range(0, len(l), 2):
+            for i in xrange(0, len(l), 2):
                 if l[i] == defn[0] and l[i + 1] == defn[1][self.colorIndex]:
                     return 1
 
@@ -422,10 +419,10 @@ class CatalogClothingItem(CatalogItem.CatalogItem):
         return ToontownGlobals.P_ItemAvailable
 
     def getDeliveryTime(self):
-        return 1
+        return 60
 
     def getPicture(self, avatar):
-        from toontown.toon import Toon
+        from src.toontown.toon import Toon
         self.hasPicture = True
         dna = ToonDNA.ToonDNA(type='t', dna=avatar.style)
         str = ClothingTypes[self.clothingType][CTString]
@@ -453,7 +450,7 @@ class CatalogClothingItem(CatalogItem.CatalogItem):
         return self.makeFrameModel(model)
 
     def requestPurchase(self, phone, callback):
-        from toontown.toontowngui import TTDialog
+        from src.toontown.toontowngui import TTDialog
         avatar = base.localAvatar
         clothesOnOrder = 0
         for item in avatar.onOrder + avatar.mailboxContents:
@@ -474,7 +471,7 @@ class CatalogClothingItem(CatalogItem.CatalogItem):
             del self.dialog
 
     def __handleFullPurchaseDialog(self, phone, callback, buttonValue):
-        from toontown.toontowngui import TTDialog
+        from src.toontown.toontowngui import TTDialog
         self.requestPurchaseCleanup()
         if buttonValue == DGG.DIALOG_OK:
             CatalogItem.CatalogItem.requestPurchase(self, phone, callback)
@@ -580,7 +577,7 @@ def getAllClothes(*clothingTypes):
     for clothingType in clothingTypes:
         base = CatalogClothingItem(clothingType, 0)
         list.append(base)
-        for n in range(1, len(base.getColorChoices())):
+        for n in xrange(1, len(base.getColorChoices())):
             list.append(CatalogClothingItem(clothingType, n))
 
     return list

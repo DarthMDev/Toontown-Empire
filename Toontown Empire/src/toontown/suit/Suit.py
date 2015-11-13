@@ -1,11 +1,11 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.actor import Actor
 from direct.task.Task import Task
-from otp.avatar import Avatar
-from toontown.battle import BattleProps, SuitBattleGlobals
-from toontown.nametag import NametagGlobals
-from toontown.toonbase import TTLocalizer, ToontownGlobals
-from toontown.suit import SuitGlobals
+from src.otp.avatar import Avatar
+from src.toontown.battle import BattleProps, SuitBattleGlobals
+from src.otp.nametag.NametagGroup import NametagGroup
+from src.toontown.toonbase import TTLocalizer, ToontownGlobals
+from src.toontown.suit import SuitGlobals
 import SuitDNA, string
 
 aSize = 6.06
@@ -71,6 +71,7 @@ hh = (('pen-squirt', 'fountain-pen', 7),
 cr = (('pickpocket', 'pickpocket', 5), ('throw-paper', 'throw-paper', 3.5), ('glower', 'glower', 5))
 tbc = (('cigar-smoke', 'cigar-smoke', 8),
  ('glower', 'glower', 5),
+ ('magic1', 'magic1', 5),
  ('song-and-dance', 'song-and-dance', 8),
  ('golf-club-swing', 'golf-club-swing', 5))
 cc = (('speak', 'speak', 5),
@@ -206,21 +207,6 @@ def loadSuitModelsAndAnims(level, flag = 0):
             filepath = 'phase_' + str(phase) + model + 'heads'
             Preloaded[filepath] = loader.loadModel(filepath)
 
-def cogExists(filePrefix):
-    searchPath = DSearchPath()
-    if AppRunnerGlobal.appRunner:
-        searchPath.appendDirectory(Filename.expandFrom('$TT_3_5_ROOT/phase_3.5'))
-    else:
-        basePath = os.path.expandvars('$TTMODELS') or './ttmodels'
-        searchPath.appendDirectory(Filename.fromOsSpecific(basePath + '/built/phase_3.5'))
-    filePrefix = filePrefix.strip('/')
-    pfile = Filename(filePrefix)
-    found = vfs.resolveFilename(pfile, searchPath)
-    if not found:
-        return False
-    return True
-
-
 def loadSuitAnims(suit, flag = 1):
     if suit in SuitDNA.suitHeadTypes:
         try:
@@ -239,7 +225,6 @@ def loadSuitAnims(suit, flag = 1):
             loader.loadModel(animName)
         else:
             loader.unloadModel(animName)
-
 
 def loadDialog(level):
     global SuitDialogArray
@@ -327,12 +312,12 @@ class Suit(Avatar.Avatar):
     healthGlowColors = (Vec4(0.25, 1, 0.25, 0.5),#Green
      Vec4(0.5, 1, 0.25, .5),#1 Green-Yellow
      Vec4(0.75, 1, 0.25, .5),#2 Yellow-Green
-     Vec4(1, 1, 0.25, 0.5),#Yellow 
+     Vec4(1, 1, 0.25, 0.5),#Yellow
      Vec4(1, 0.866, 0.25, .5),#4 Yellow-Orange
      Vec4(1, 0.6, 0.25, .5),#5 Orange-Yellow
      Vec4(1, 0.5, 0.25, 0.5),#6 Orange
-     Vec4(1, 0.25, 0.25, 0.5),#7 Red-Orange    
-     Vec4(1, 0.25, 0.25, 0.5),#8 Red     
+     Vec4(1, 0.25, 0.25, 0.5),#7 Red-Orange
+     Vec4(1, 0.25, 0.25, 0.5),#8 Red
      Vec4(0.3, 0.3, 0.3, 0))#9 Grey
     medallionColors = {'c': Vec4(0.863, 0.776, 0.769, 1.0),
      's': Vec4(0.843, 0.745, 0.745, 1.0),
@@ -348,7 +333,8 @@ class Suit(Avatar.Avatar):
 
         Avatar.Avatar.__init__(self)
         self.setFont(ToontownGlobals.getSuitFont())
-        self.setPlayerType(NametagGlobals.CCSuit)
+        self.nametag.setSpeechFont(ToontownGlobals.getSuitFont())
+        self.setPlayerType(NametagGroup.CCSuit)
         self.setPickable(1)
         self.leftHand = None
         self.rightHand = None
@@ -415,21 +401,22 @@ class Suit(Avatar.Avatar):
         self.isSkeleton = 0
 
         if dna.name in SuitGlobals.suitProperties:
-            self.scale = SuitGlobals.suitProperties[dna.name][SuitGlobals.SCALE_INDEX]
-            self.handColor = SuitGlobals.suitProperties[dna.name][SuitGlobals.HAND_COLOR_INDEX]
+            properties = SuitGlobals.suitProperties[dna.name]
+            self.scale = properties[SuitGlobals.SCALE_INDEX]
+            self.handColor = properties[SuitGlobals.HAND_COLOR_INDEX]
 
             if dna.name == 'cc':
                 self.headColor = SuitGlobals.ColdCallerHead
 
             self.generateBody()
 
-            if SuitGlobals.suitProperties[dna.name][SuitGlobals.HEAD_TEXTURE_INDEX]:
-                self.headTexture = SuitGlobals.suitProperties[dna.name][SuitGlobals.HEAD_TEXTURE_INDEX]
+            if properties[SuitGlobals.HEAD_TEXTURE_INDEX]:
+                self.headTexture = properties[SuitGlobals.HEAD_TEXTURE_INDEX]
 
-            for head in SuitGlobals.suitProperties[dna.name][SuitGlobals.HEADS_INDEX]:
+            for head in properties[SuitGlobals.HEADS_INDEX]:
                 self.generateHead(head)
 
-            self.setHeight(SuitGlobals.suitProperties[dna.name][SuitGlobals.HEIGHT_INDEX])
+            self.setHeight(properties[SuitGlobals.HEIGHT_INDEX])
 
         self.setName(SuitBattleGlobals.SuitAttributes[dna.name]['name'])
         self.getGeomNode().setScale(self.scale)
@@ -591,14 +578,8 @@ class Suit(Avatar.Avatar):
         icons = loader.loadModel('phase_3/models/gui/cog_icons')
         dept = self.style.dept
         chestNull = self.find('**/joint_attachMeter')
-        if dept == 'c':
-            self.corpMedallion = icons.find('**/CorpIcon').copyTo(chestNull)
-        elif dept == 's':
-            self.corpMedallion = icons.find('**/SalesIcon').copyTo(chestNull)
-        elif dept == 'l':
-            self.corpMedallion = icons.find('**/LegalIcon').copyTo(chestNull)
-        elif dept == 'm':
-            self.corpMedallion = icons.find('**/MoneyIcon').copyTo(chestNull)
+        if dept in SuitDNA.suitDeptModelPaths:
+            self.corpMedallion = icons.find(SuitDNA.suitDeptModelPaths[dept]).copyTo(chestNull)
         self.corpMedallion.setPosHprScale(0.02, 0.05, 0.04, 180.0, 0.0, 0.0, 0.51, 0.51, 0.51)
         self.corpMedallion.setColor(self.medallionColors[dept])
         icons.removeNode()
@@ -642,15 +623,15 @@ class Suit(Avatar.Avatar):
         elif health > 0.7:
             condition = 3#Yellow
         elif health > 0.6:
-            condition = 4            
+            condition = 4
         elif health > 0.5:
-            condition = 5           
+            condition = 5
         elif health > 0.3:
             condition = 6#Orange
         elif health > 0.15:
             condition = 7
         elif health > 0.05:
-            condition = 8#Red           
+            condition = 8#Red
         elif health > 0.0:
             condition = 9#Blinking Red
         else:
@@ -671,7 +652,7 @@ class Suit(Avatar.Avatar):
 
     def __blinkRed(self, task):
         if not self.healthBar:
-            return Task.done    
+            return Task.done
         self.healthBar.setColor(self.healthColors[8], 1)
         self.healthBarGlow.setColor(self.healthGlowColors[8], 1)
         if self.healthCondition == 7:

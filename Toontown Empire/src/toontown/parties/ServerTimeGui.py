@@ -1,8 +1,8 @@
 from pandac.PandaModules import TextNode
 from direct.gui.DirectGui import DirectFrame, DirectLabel
 from direct.interval.IntervalGlobal import Func, Sequence, Wait
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
 
 class ServerTimeGui(DirectFrame):
 
@@ -33,11 +33,11 @@ class ServerTimeGui(DirectFrame):
     def updateTime(self):
         curServerDate = base.cr.toontownTimeManager.getCurServerDateTime()
         if TTLocalizer.HourFormat == '24':
-            self.hour = '%H'
-            self.ampm = ''
+        	self.hour = '%H'
+        	self.ampm = ''
         else:
-            self.hour = '%I'
-            self.ampm = '%p'
+        	self.hour = '%I'
+        	self.ampm = '%p'
         if self.hourCallback is not None:
             if curServerDate.hour != self.lastHour and self.lastHour != -1:
                 self.lastHour = curServerDate.hour

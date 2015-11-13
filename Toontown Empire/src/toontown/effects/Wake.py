@@ -1,6 +1,6 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-from toontown.battle.BattleProps import globalPropPool
+from src.toontown.battle.BattleProps import globalPropPool
 
 class Wake(NodePath):
     wakeCount = 0

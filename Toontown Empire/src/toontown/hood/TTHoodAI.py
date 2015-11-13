@@ -1,14 +1,11 @@
-from toontown.hood import HoodAI
-from toontown.safezone import ButterflyGlobals
-from toontown.safezone import DistributedButterflyAI
-from toontown.safezone import DistributedTrolleyAI
-from toontown.toon import NPCToons
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
-from toontown.ai import DistributedTrickOrTreatTargetAI
-from toontown.ai import DistributedWinterCarolingTargetAI
-from toontown.ai import DistributedJorElCamAI
-
+from src.toontown.hood import HoodAI
+from src.toontown.safezone import ButterflyGlobals
+from src.toontown.safezone import DistributedButterflyAI
+from src.toontown.safezone import DistributedTrolleyAI
+from src.toontown.toon import NPCToons
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.ai import DistributedEffectMgrAI
 
 class TTHoodAI(HoodAI.HoodAI):
     def __init__(self, air):
@@ -27,23 +24,17 @@ class TTHoodAI(HoodAI.HoodAI):
             self.createTrolley()
         if simbase.config.GetBool('want-butterflies', True):
             self.createButterflies()
-        
+
         NPCToons.createNPC(
             simbase.air, 2021,
             (ToontownGlobals.ToontownCentral, TTLocalizer.NPCToonNames[2021], ('rls', 'ls', 'l', 'm', 26, 0, 26, 26, 152, 27, 139, 27, 58, 27, 0), 'm', 1, NPCToons.NPC_GLOVE),
              ToontownGlobals.ToontownCentral, posIndex=0)
 
-        if simbase.air.wantHalloween:
-            self.TrickOrTreatTargetManager = DistributedTrickOrTreatTargetAI.DistributedTrickOrTreatTargetAI(self.air)
-            self.TrickOrTreatTargetManager.generateWithRequired(2649)
-        
-        if simbase.air.wantChristmas:
-            self.WinterCarolingTargetManager = DistributedWinterCarolingTargetAI.DistributedWinterCarolingTargetAI(self.air)
-            self.WinterCarolingTargetManager.generateWithRequired(2649)
+        self.trickOrTreatMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.HALLOWEEN, 12)
+        self.trickOrTreatMgr.generateWithRequired(2649) # All Fun and Games Shop, Silly Street
 
-        if simbase.air.wantJorElCam:
-            self.JorElCamManager = DistributedJorElCamAI.DistributedJorElCamAI(self.air)
-            self.JorElCamManager.generateWithRequired(self.zoneId)
+        self.winterCarolingMgr = DistributedEffectMgrAI.DistributedEffectMgrAI(self.air, ToontownGlobals.CHRISTMAS, 14)
+        self.winterCarolingMgr.generateWithRequired(2659) # Joy Buzzers to the World, Silly Street
 
     def shutdown(self):
         HoodAI.HoodAI.shutdown(self)
@@ -55,9 +46,11 @@ class TTHoodAI(HoodAI.HoodAI):
         self.trolley.start()
 
     def createButterflies(self):
+        playground = ButterflyGlobals.TTC
         ButterflyGlobals.generateIndexes(self.zoneId, ButterflyGlobals.TTC)
+
         for i in xrange(0, ButterflyGlobals.NUM_BUTTERFLY_AREAS[ButterflyGlobals.TTC]):
             for _ in xrange(0, ButterflyGlobals.NUM_BUTTERFLIES[ButterflyGlobals.TTC]):
-                butterfly = DistributedButterflyAI(self.air, playground, i, self.zoneId)
+                butterfly = DistributedButterflyAI.DistributedButterflyAI(self.air, playground, i, self.zoneId)
                 butterfly.generateWithRequired(self.zoneId)
                 butterfly.start()

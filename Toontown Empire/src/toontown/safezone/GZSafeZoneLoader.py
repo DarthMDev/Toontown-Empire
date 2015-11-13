@@ -2,12 +2,12 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.gui import DirectGui
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from pandac.PandaModules import *
-from toontown.hood import ZoneUtil
-from toontown.safezone.SafeZoneLoader import SafeZoneLoader
-from toontown.safezone.GZPlayground import GZPlayground
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from panda3d.core import *
+from src.toontown.hood import ZoneUtil
+from src.toontown.safezone.SafeZoneLoader import SafeZoneLoader
+from src.toontown.safezone.GZPlayground import GZPlayground
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
 import random
 
 class GZSafeZoneLoader(SafeZoneLoader):

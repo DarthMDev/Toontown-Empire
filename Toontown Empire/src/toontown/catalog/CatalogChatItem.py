@@ -1,8 +1,8 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 import CatalogItem
-from toontown.toonbase import ToontownGlobals
-from otp.otpbase import OTPLocalizer
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.otp.otpbase import OTPLocalizer
+from src.toontown.toonbase import TTLocalizer
 bannedPhrases = [11009]
 
 class CatalogChatItem(CatalogItem.CatalogItem):
@@ -15,9 +15,7 @@ class CatalogChatItem(CatalogItem.CatalogItem):
         return 1
 
     def reachedPurchaseLimit(self, avatar):
-        if self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder or self in avatar.awardMailboxContents or self in avatar.onAwardOrder:
-            return 1
-        return avatar.customMessages.count(self.customIndex) != 0
+        return self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder or avatar.customMessages.count(self.customIndex) != 0
 
     def getTypeName(self):
         return TTLocalizer.ChatTypeName

@@ -1,10 +1,10 @@
-from pandac.PandaModules import *
-from toontown.toon import ToonDNA
+from panda3d.core import *
+from src.toontown.toon import ToonDNA
 from direct.fsm import StateData
 from direct.gui.DirectGui import *
 from MakeAToonGlobals import *
 import random
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
 import ShuffleButton
 

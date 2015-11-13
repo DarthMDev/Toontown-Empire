@@ -1,13 +1,13 @@
-from toontown.estate import DistributedStatuary
-from toontown.estate import DistributedLawnDecor
+from src.toontown.estate import DistributedStatuary
+from src.toontown.estate import DistributedLawnDecor
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.ShowBase import *
 from pandac.PandaModules import *
-from toontown.toon import Toon
-from toontown.toon import ToonDNA
+from src.toontown.toon import Toon
+from src.toontown.toon import ToonDNA
 import GardenGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
 from pandac.PandaModules import NodePath
 from pandac.PandaModules import Point3
 

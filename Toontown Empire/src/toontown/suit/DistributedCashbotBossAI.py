@@ -1,22 +1,23 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from toontown.coghq import DistributedCashbotBossCraneAI
-from toontown.coghq import DistributedCashbotBossSafeAI
-from toontown.suit import DistributedCashbotBossGoonAI
-from toontown.coghq import DistributedCashbotBossTreasureAI
-from toontown.battle import BattleExperienceAI
-from toontown.chat import ResistanceChat
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.coghq import DistributedCashbotBossCraneAI
+from src.toontown.coghq import DistributedCashbotBossSafeAI
+from src.toontown.suit import DistributedCashbotBossGoonAI
+from src.toontown.coghq import DistributedCashbotBossTreasureAI
+from src.toontown.battle import BattleExperienceAI
+from src.toontown.chat import ResistanceChat
 from direct.fsm import FSM
 import DistributedBossCogAI
 import SuitDNA
 import random
-from otp.ai.MagicWordGlobal import *
+from src.otp.ai.MagicWordGlobal import *
 import math
 
 class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCashbotBossAI')
     maxGoons = 8
+    BossName = "CFO"
 
     def __init__(self, air):
         DistributedBossCogAI.DistributedBossCogAI.__init__(self, air, 'm')
@@ -386,21 +387,6 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
             if toon:
                 toon.doResistanceEffect(self.rewardId)
 
-            if simbase.config.GetBool('cfo-staff-event', False):
-
-                withStaff = False
-                for avId in self.involvedToons:
-                    av = self.air.doId2do.get(avId)
-                    if av:
-                        if av.adminAccess > 100:
-                            withStaff = True
-
-                if withStaff:
-                    participants = simbase.backups.load('cfo-staff-event', ('participants',), default={'doIds': []})
-                    if avId not in participants['doIds']:
-                        participants['doIds'].append(toon.doId)
-                    simbase.backups.save('cfo-staff-event', ('participants',), participants)
-
     def enterOff(self):
         DistributedBossCogAI.DistributedBossCogAI.enterOff(self)
         self.rewardedToons = []
@@ -473,8 +459,7 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
          'track': self.dna.dept,
          'isSkelecog': 0,
          'isForeman': 0,
-         'isVP': 0,
-         'isCFO': 1,
+         'isBoss': 1,
          'isSupervisor': 0,
          'isVirtual': 0,
          'activeToons': self.involvedToons[:]})
@@ -554,4 +539,4 @@ def killCFO():
     if not boss:
         return "You aren't in a CFO"
     boss.b_setState('Victory')
-    return 'Killed CFO.'    
+    return 'Killed CFO.'

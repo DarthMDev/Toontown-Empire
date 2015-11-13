@@ -1,7 +1,7 @@
 from direct.showbase.DirectObject import DirectObject
 from direct.gui.DirectGui import DirectFrame, DirectButton
 import direct.gui.DirectGuiGlobals as DGG
-from toontown.parties import PartyUtils
+from src.toontown.parties import PartyUtils
 
 class CannonGui(DirectObject):
     notify = directNotify.newCategory('CannonGui')
@@ -75,8 +75,8 @@ class CannonGui(DirectObject):
 
     def enable(self, timer = 0):
         self.__aimPad.show()
-        base.setCellsActive([base.bottomCells[2], base.bottomCells[3]], 0)
-        base.setCellsActive([base.rightCells[1]], 0)
+        base.setCellsAvailable([base.bottomCells[2], base.bottomCells[3]], 0)
+        base.setCellsAvailable([base.rightCells[1]], 0)
         if timer > 0:
             self.__timerPad.setTime(timer)
             self.__timerPad.countdown(timer)
@@ -85,8 +85,8 @@ class CannonGui(DirectObject):
 
     def disable(self):
         self.__aimPad.hide()
-        base.setCellsActive([base.bottomCells[2], base.bottomCells[3]], 1)
-        base.setCellsActive([base.rightCells[1]], 1)
+        base.setCellsAvailable([base.bottomCells[2], base.bottomCells[3]], 1)
+        base.setCellsAvailable([base.rightCells[1]], 1)
         self.__timerPad.hide()
         self.disableKeys()
 

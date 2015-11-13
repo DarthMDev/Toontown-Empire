@@ -1,5 +1,5 @@
-from toontown.suit import SuitDNA
-from toontown.shtiker.CogPageGlobals import *
+from src.toontown.suit import SuitDNA
+from src.toontown.shtiker.CogPageGlobals import *
 
 class CogPageManagerAI:
 
@@ -17,7 +17,7 @@ class CogPageManagerAI:
         cogCounts = toon.cogCounts
         cogs = toon.cogs
         for cog in killedCogs:
-            if cog['isSkelecog'] or cog['isVP'] or cog['isCFO']:
+            if cog['isSkelecog'] or cog['isBoss'] > 0:
                 continue
             if toon.getDoId() in cog['activeToons']:
                 deptIndex = SuitDNA.suitDepts.index(cog['track'])

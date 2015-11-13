@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.distributed.ClockDelta import *
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
@@ -6,12 +6,12 @@ from direct.gui.DirectLabel import *
 from direct.gui.DirectButton import *
 from direct.showbase import BulletinBoardWatcher
 from direct.interval.IntervalGlobal import *
-from otp.otpbase import OTPGlobals
+from src.otp.otpbase import OTPGlobals
 from direct.interval.IntervalGlobal import *
 from RaceGag import RaceGag
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-from toontown.toon import ToonHeadFrame
-from toontown.racing.KartDNA import InvalidEntry, getAccessory, getDefaultColor
+from src.toontown.toonbase import ToontownGlobals, TTLocalizer
+from src.toontown.toon import ToonHeadFrame
+from src.toontown.racing.KartDNA import InvalidEntry, getAccessory, getDefaultColor
 from pandac.PandaModules import CardMaker, OrthographicLens, LineSegs
 from direct.distributed import DistributedSmoothNode
 from math import fmod
@@ -19,16 +19,16 @@ from math import sqrt
 from RaceGUI import RaceGUI
 import RaceGlobals
 from direct.task.Task import Task
-from toontown.hood import SkyUtil
+from src.toontown.hood import SkyUtil
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from toontown.battle.BattleProps import *
-from toontown.minigame import MinigameRulesPanel
-from toontown.racing import Piejectile
-from toontown.racing import EffectManager
-from toontown.racing import PiejectileManager
-from toontown.dna.DNAParser import *
-from otp.ai.MagicWordGlobal import *
+from src.toontown.battle.BattleProps import *
+from src.toontown.minigame import MinigameRulesPanel
+from src.toontown.racing import Piejectile
+from src.toontown.racing import EffectManager
+from src.toontown.racing import PiejectileManager
+from src.toontown.dna.DNAParser import *
+from src.otp.ai.MagicWordGlobal import *
 
 class DistributedRace(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedRace')
@@ -74,6 +74,7 @@ class DistributedRace(DistributedObject.DistributedObject):
         self.bananaSound = base.loadSfx('phase_6/audio/sfx/KART_tossBanana.ogg')
         self.anvilFall = base.loadSfx('phase_6/audio/sfx/KART_Gag_Hit_Anvil.ogg')
         self.accept('leaveRace', self.leaveRace)
+        self.accept('finishRace', self.finishRace)
         self.toonsToLink = []
         self.curveTs = []
         self.curvePoints = []
@@ -550,14 +551,14 @@ class DistributedRace(DistributedObject.DistributedObject):
         newLapT = (newT - self.startT) / self.curve.getMaxT() % 1.0
         if newLapT - self.currLapT < -0.5:
             self.laps += 1
-            self.changeMusicTempo(1 + self.laps * 0.5)
+            self.changeMusicTempo(1 + self.laps * 0.33)
             self.notify.debug('crossed the start line: %s, %s, %s, %s' % (self.laps,
              self.startT,
              self.currT,
              newT))
         elif newLapT - self.currLapT > 0.5:
             self.laps -= 1
-            self.changeMusicTempo(1 + self.laps * 0.5)
+            self.changeMusicTempo(1 + self.laps * 0.33)
             self.notify.debug('crossed the start line - wrong way: %s, %s, %s, %s' % (self.laps,
              self.startT,
              self.currT,
@@ -569,11 +570,7 @@ class DistributedRace(DistributedObject.DistributedObject):
         now = globalClock.getFrameTime()
         timestamp = globalClockDelta.localToNetworkTime(now)
         if self.laps == self.lapCount:
-            self.sendUpdate('heresMyT', [localAvatar.doId,
-             self.laps,
-             self.currLapT,
-             timestamp])
-            self.fsm.request('finished')
+            self.finishRace()
         if self.laps > self.maxLap:
             self.maxLap = self.laps
             self.sendUpdate('heresMyT', [localAvatar.doId,
@@ -808,9 +805,9 @@ class DistributedRace(DistributedObject.DistributedObject):
             self.fog = Fog('TrackFog')
             self.fog.setColor(Vec4(0.6, 0.7, 0.8, 1.0))
             if self.isUrbanTrack:
-                self.fog.setLinearRange(200.0, 650.0)
+                self.fog.setLinearRange(1000.0, 1450.0)
             else:
-                self.fog.setLinearRange(200.0, 800.0)
+                self.fog.setLinearRange(1000.0, 1800.0)
             render.setFog(self.fog)
         self.sky.setScale(1.725)
         self.sky.reparentTo(self.dummyNode)
@@ -1088,6 +1085,10 @@ class DistributedRace(DistributedObject.DistributedObject):
 
     def leaveRace(self):
         self.fsm.request('leave')
+    
+    def finishRace(self):
+        self.sendUpdate('heresMyT', [localAvatar.doId, self.lapCount, self.currLapT, globalClockDelta.localToNetworkTime(globalClock.getFrameTime())])
+        self.fsm.request('finished')
 
     def racerLeft(self, avId):
         if avId != localAvatar.doId:
@@ -1211,12 +1212,9 @@ class DistributedRace(DistributedObject.DistributedObject):
         self.musicTrack.start()
 
     def changeMusicTempo(self, newPR):
-        return # TODO: Reenable when we have music change support.
         if self.musicTrack:
             self.musicTrack.finish()
-        curPR = self.raceMusic.getPlayRate()
-        interval = LerpFunctionInterval(self.raceMusic.setPlayRate, fromData=curPR, toData=newPR, duration=3)
-        self.musicTrack = Sequence(interval)
+        self.musicTrack = Sequence(LerpFunctionInterval(self.raceMusic.setPlayRate, fromData=self.raceMusic.getPlayRate(), toData=newPR, duration=3))
         self.musicTrack.start()
 
     def setRaceZone(self, zoneId, trackId):
@@ -1246,4 +1244,7 @@ def race(command):
     if command == 'leave':
         messenger.send('leaveRace')
         return 'You left the race!'
+    elif command == 'finish':
+        messenger.send('finishRace')
+        return 'You finished the race!'
     return 'Invalid command!'

@@ -140,14 +140,14 @@ class empirePackager(NiraiPackager):
     def generate_niraidata(self):
         print 'Generating niraidata'
 
-        config = self.get_file_contents('../dependencies/config/release/en.prc')
-        config += '\n\n' + self.get_file_contents('../dependencies/config/general.prc')
+        config = self.get_file_contents('../src/dependencies/config/release/en.prc')
+        config += '\n\n' + self.get_file_contents('../src/dependencies/config/general.prc')
         key = self.generate_key(128)
         rc4.rc4_setkey(key)
         config = key + rc4.rc4(config)
 
         niraidata = 'CONFIG = %r' % config
-        niraidata += '\nDC = %r' % self.get_file_contents('../dependencies/astron/dclass/empire.dc', 128)
+        niraidata += '\nDC = %r' % self.get_file_contents('../src/dependencies/astron/dclass/empire.dc', 128)
         self.add_module('niraidata', niraidata, compile=True)
 
     def process_modules(self):

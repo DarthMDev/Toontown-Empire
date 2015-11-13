@@ -1,16 +1,16 @@
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from pandac.PandaModules import *
+from src.toontown.toonbase import ToontownGlobals
+from panda3d.core import *
 from math import *
 import math
 from direct.fsm.FSM import FSM
-from toontown.minigame import ArrowKeys
+from src.toontown.minigame import ArrowKeys
 from direct.showbase import PythonUtil
 from direct.task import Task
 from direct.distributed.ClockDelta import *
 import BuildGeometry
-from toontown.golf import GolfGlobals
+from src.toontown.golf import GolfGlobals
 import random, time
 
 def scalp(vec, scal):
@@ -720,12 +720,3 @@ class PhysicsWorldBase:
             someNodePathGeom = None
             self.bodyList.append((None, body))
         return (someNodePathGeom, body)
-
-    def attachMarker(self, body):
-        if self.canRender:
-            testMarker = render.attachNewNode('Joint Marker')
-            ballmodel = loader.loadModel('models/misc/sphere')
-            ballmodel.reparentTo(testMarker)
-            ballmodel.setScale(0.25)
-            testMarker.setPos(0.0, 0.0, -100.0)
-            self.odePandaRelationList.append((testMarker, body))

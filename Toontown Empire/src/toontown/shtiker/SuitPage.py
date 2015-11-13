@@ -2,12 +2,12 @@ import ShtikerPage
 from direct.task.Task import Task
 import SummonCogDialog
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.suit import SuitDNA
-from toontown.suit import Suit
-from toontown.battle import SuitBattleGlobals
+from panda3d.core import *
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.suit import SuitDNA
+from src.toontown.suit import Suit
+from src.toontown.battle import SuitBattleGlobals
 from CogPageGlobals import *
 SCALE_FACTOR = 1.5
 RADAR_DELAY = 0.2

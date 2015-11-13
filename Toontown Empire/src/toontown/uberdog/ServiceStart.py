@@ -17,8 +17,6 @@ sys.path.append(
     )
 )
 
-from direct.showbase import PythonUtil
-
 import argparse
 
 parser = argparse.ArgumentParser()
@@ -27,14 +25,14 @@ parser.add_argument('--max-channels', help='The number of channels the server ma
 parser.add_argument('--stateserver', help="The control channel of this UD's designated State Server.")
 parser.add_argument('--astron-ip', help="The IP address of the Astron Message Director to connect to.")
 parser.add_argument('--eventlogger-ip', help="The IP address of the Astron Event Logger to log to.")
-parser.add_argument('config', nargs='*', default=['dependencies/config/general.prc', 'dependencies/config/release/dev.prc'], help="PRC file(s) to load.")
+parser.add_argument('config', nargs='*', default=['src/dependencies/config/general.prc', 'src/dependencies/config/release/dev.prc'], help="PRC file(s) to load.")
 args = parser.parse_args()
 
 for prc in args.config:
     loadPrcFile(prc)
 
-if os.path.isfile('dependencies/config/local.prc'):
-    loadPrcFile('dependencies/config/local.prc')
+if os.path.isfile('src/dependencies/config/local.prc'):
+    loadPrcFile('src/dependencies/config/local.prc')
 
 localconfig = ''
 if args.base_channel:
@@ -50,9 +48,9 @@ if args.eventlogger_ip:
 loadPrcFileData('Command-line', localconfig)
 
 
-from otp.ai.AIBaseGlobal import *
+from src.otp.ai.AIBaseGlobal import *
 
-from toontown.uberdog.ToontownUberRepository import ToontownUberRepository
+from src.toontown.uberdog.ToontownUberRepository import ToontownUberRepository
 simbase.air = ToontownUberRepository(config.GetInt('air-base-channel', 400000000),
                                      config.GetInt('air-stateserver', 4002))
 host = config.GetString('air-connect', '127.0.0.1')
@@ -67,6 +65,6 @@ try:
 except SystemExit:
     raise
 except Exception:
-    info = PythonUtil.describeException()
+    info = describeException()
     simbase.air.writeServerEvent('uberdog-exception', simbase.air.getAvatarIdFromSender(), simbase.air.getAccountIdFromSender(), info)
     raise

@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.gui.DirectGui import *
 from direct.task import Task
 from SCConstants import *
@@ -8,7 +8,6 @@ from direct.showbase.PythonUtil import makeTuple
 import types
 
 class SCMenu(SCObject, NodePath):
-    config = getConfigShowbase()
     SpeedChatRolloverTolerance = config.GetFloat('speedchat-rollover-tolerance', 0.08)
     WantFade = config.GetBool('want-speedchat-fade', 1)
     FadeDuration = config.GetFloat('speedchat-fade-duration', 0.4)
@@ -95,7 +94,7 @@ class SCMenu(SCObject, NodePath):
 
     def appendFromStructure(self, structure):
         from SpeedChatTypes import SCMenuHolder, SCStaticTextTerminal
-        from otp.otpbase import OTPLocalizer
+        from src.otp.otpbase import OTPLocalizer
 
         def addChildren(menu, childList):
             for child in childList:

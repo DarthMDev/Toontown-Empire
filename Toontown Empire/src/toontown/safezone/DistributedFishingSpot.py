@@ -1,30 +1,29 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
 from direct.directtools.DirectGeometry import LineNodePath
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from toontown.fishing import FishGlobals
-from toontown.shtiker import FishPage
-from toontown.toonbase import TTLocalizer
-from toontown.quest import Quests
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.fishing import FishGlobals
+from src.toontown.shtiker import FishPage
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.quest import Quests
 from direct.actor import Actor
 from direct.showutil import Rope
 import math
 from direct.task.Task import Task
 import random
 import random
-from toontown.fishing import FishingTargetGlobals
-from toontown.fishing import FishBase
-from toontown.fishing import FishPanel
-from toontown.effects import Ripples
-from toontown.toontowngui import TTDialog
-from toontown.toonbase import ToontownTimer
+from src.toontown.fishing import FishingTargetGlobals
+from src.toontown.fishing import FishBase
+from src.toontown.fishing import FishPanel
+from src.toontown.effects import Ripples
+from src.toontown.toontowngui import TTDialog
+from src.toontown.toonbase import ToontownTimer
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from toontown.hood import ZoneUtil
+from src.toontown.hood import ZoneUtil
 
 class DistributedFishingSpot(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFishingSpot')
@@ -224,7 +223,7 @@ class DistributedFishingSpot(DistributedObject.DistributedObject):
         else:
             self.collSphere.setTangible(1)
             if self.avId == base.localAvatar.doId:
-                base.setCellsActive(base.bottomCells, 0)
+                base.setCellsAvailable(base.bottomCells, 0)
                 self.localToonFishing = 1
                 if base.wantBingo:
                     self.pond.setLocalToonSpot(self)
@@ -241,8 +240,8 @@ class DistributedFishingSpot(DistributedObject.DistributedObject):
             self.__hideCastGui()
             if base.wantBingo:
                 self.pond.setLocalToonSpot()
-            base.setCellsActive([base.bottomCells[1], base.bottomCells[2]], 1)
-            base.setCellsActive(base.rightCells, 1)
+            base.setCellsAvailable([base.bottomCells[1], base.bottomCells[2]], 1)
+            base.setCellsAvailable(base.rightCells, 1)
             place = base.cr.playGame.getPlace()
             if place:
                 place.setState('walk')
@@ -588,6 +587,7 @@ class DistributedFishingSpot(DistributedObject.DistributedObject):
         self.timer.posInTopRightCorner()
         self.timer.hide()
         self.castGui = loader.loadModel('phase_4/models/gui/fishingGui')
+        self.castGui.setBin("background", 10)
         self.castGui.setScale(0.67)
         self.castGui.setPos(0, 1, 0)
         for nodeName in ('bucket', 'jar', 'display_bucket', 'display_jar'):
@@ -644,7 +644,7 @@ class DistributedFishingSpot(DistributedObject.DistributedObject):
             jar = self.castGui.find('**/jar')
             self.castGui.find('**/display_jar').reparentTo(jar)
             self.jar.reparentTo(jar)
-            base.setCellsActive(base.rightCells, 0)
+            base.setCellsAvailable(base.rightCells, 0)
             bucket.setScale(0.9)
             bucket.setX(-1.9)
             bucket.setZ(-.11)

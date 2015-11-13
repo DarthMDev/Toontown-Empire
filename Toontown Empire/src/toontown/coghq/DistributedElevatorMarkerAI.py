@@ -1,10 +1,10 @@
-from otp.ai.AIBase import *
+from src.otp.ai.AIBase import *
 from direct.interval.IntervalGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import ClockDelta
 from direct.task import Task
-from otp.level import DistributedEntityAI
-from otp.level import BasicEntities
+from src.otp.level import DistributedEntityAI
+from src.otp.level import BasicEntities
 from direct.directnotify import DirectNotifyGlobal
 
 class DistributedElevatorMarkerAI(DistributedEntityAI.DistributedEntityAI, NodePath, BasicEntities.NodePathAttribs):

@@ -1,10 +1,10 @@
 from pandac.PandaModules import Vec3
 from direct.gui.DirectGui import DirectButton, DirectLabel
 from direct.gui import DirectGuiGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.parties import PartyGlobals
-from toontown.parties.PartyEditorGridElement import PartyEditorGridElement
-from toontown.parties.PartyUtils import getPartyActivityIcon
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.parties import PartyGlobals
+from src.toontown.parties.PartyEditorGridElement import PartyEditorGridElement
+from src.toontown.parties.PartyUtils import getPartyActivityIcon
 
 class PartyEditorListElement(DirectButton):
     notify = directNotify.newCategory('PartyEditorListElement')
@@ -113,7 +113,9 @@ class PartyEditorListElement(DirectButton):
             self.partyEditor.partyPlanner.elementDescriptionNode.setText(TTLocalizer.PartyActivityNameDict[self.id]['description'])
             self.partyEditor.partyPlanner.elementPriceNode.setText('%d %s' % (PartyGlobals.ActivityInformationDict[self.id]['cost'], TTLocalizer.PartyPlannerBeans))
             self.partyEditor.partyPlanner.elementTitleLabel['text'] = self.name
+
         self.checkSoldOutAndAffordability()
+
 
     def checkSoldOutAndAffordability(self):
         if self.partyEditor.currentElement != self:
@@ -124,6 +126,9 @@ class PartyEditorListElement(DirectButton):
             infoDict = PartyGlobals.DecorationInformationDict
         else:
             infoDict = PartyGlobals.ActivityInformationDict
+
+
+
         if infoDict[self.id]['cost'] > self.partyEditor.partyPlanner.totalMoney - self.partyEditor.partyPlanner.totalCost:
             self.setTooExpensive(True)
             tooExpensive = True
@@ -138,6 +143,12 @@ class PartyEditorListElement(DirectButton):
 
         self.setSoldOut(True)
         return
+
+
+
+
+
+
 
     def setTooExpensive(self, value):
         self.partyEditor.partyPlanner.elementBuyButton['text'] = TTLocalizer.PartyPlannerBuy
@@ -178,6 +189,7 @@ class PartyEditorListElement(DirectButton):
                     self.activeGridElementIndex = i
                     return True
                 else:
+
                     self.checkSoldOutAndAffordability()
                     return False
 

@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedNodeAI import DistributedNodeAI
 from direct.distributed.ClockDelta import *
-from toontown.fishing import FishingTargetGlobals
+from src.toontown.fishing import FishingTargetGlobals
 from direct.task import Task
 import random
 import math

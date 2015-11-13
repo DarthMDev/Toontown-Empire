@@ -1,18 +1,17 @@
-from pandac.PandaModules import *
-from toontown.toonbase.ToonBaseGlobal import *
+from panda3d.core import *
+from src.toontown.toonbase.ToonBaseGlobal import *
 from DistributedMinigame import *
 from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from toontown.safezone import Walk
-from toontown.toonbase import ToontownTimer
+from src.toontown.safezone import Walk, SnowUtil
+from src.toontown.toonbase import ToontownTimer
 from direct.gui import OnscreenText
 import MinigameAvatarScorePanel
 from direct.distributed import DistributedSmoothNode
-import random
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from otp.otpbase import OTPGlobals
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.otp.otpbase import OTPGlobals
 import TagGameGlobals
 import Trajectory
 
@@ -27,10 +26,6 @@ class DistributedTagGame(DistributedMinigame):
         self.addChildGameFSM(self.gameFSM)
         self.walkStateData = Walk.Walk('walkDone')
         self.scorePanels = []
-        self.initialPositions = ((0, 10, 0, 180, 0, 0),
-         (10, 0, 0, 90, 0, 0),
-         (0, -10, 0, 0, 0, 0),
-         (-10, 0, 0, -90, 0, 0))
         base.localAvatar.isIt = 0
         self.modelCount = 4
 
@@ -48,15 +43,19 @@ class DistributedTagGame(DistributedMinigame):
         DistributedMinigame.load(self)
         self.itText = OnscreenText.OnscreenText('itText', fg=(0.95, 0.95, 0.65, 1), scale=0.14, font=ToontownGlobals.getSignFont(), pos=(0.0, -0.8), wordwrap=15, mayChange=1)
         self.itText.hide()
-        self.sky = loader.loadModel('phase_3.5/models/props/TT_sky')
-        self.groundList = ['phase_4/models/minigames/tag_arena', 'phase_6/models/neighborhoods/minnies_melody_land', 'phase_8/models/neighborhoods/the_burrrgh' 'phase_8/models/neighborhoods/daisys_garden']
-        self.groundRandom = random.choice(self.groundList)
-        self.ground = self.groundRandom
+        safezoneId = self.getSafezoneId()
+        self.sky = loader.loadModel(TagGameGlobals.getSky(safezoneId))
+        self.ground = loader.loadModel(TagGameGlobals.getGround(safezoneId))
         self.music = base.loadMusic('phase_4/audio/bgm/MG_toontag.ogg')
         self.tagSfx = base.loadSfx('phase_4/audio/sfx/MG_Tag_C.ogg')
         self.itPointer = loader.loadModel('phase_4/models/minigames/bboard-pointer')
         self.tracks = []
+        self.initialPositions = TagGameGlobals.getDropPoints(safezoneId)
         self.IT = None
+
+        if TagGameGlobals.isSnowHood(safezoneId):
+            self.snow, self.snowRender = SnowUtil.createSnow(self.ground)
+
         return
 
     def unload(self):
@@ -77,6 +76,14 @@ class DistributedTagGame(DistributedMinigame):
         del self.itText
         self.removeChildGameFSM(self.gameFSM)
         del self.gameFSM
+        self.destroySnow()
+
+    def destroySnow(self):
+        if hasattr(self, 'snow'):
+            self.snow.cleanup()
+            self.snowRender.removeNode()
+            del self.snow
+            del self.snowRender
 
     def onstage(self):
         self.notify.debug('onstage')
@@ -91,15 +98,19 @@ class DistributedTagGame(DistributedMinigame):
         camera.setPosHpr(0, -24, 16, 0, -30, 0)
         base.camLens.setFar(450.0)
         base.transitions.irisIn(0.4)
-        NametagGlobals.setWant2dNametags(True)
+        NametagGlobals.setMasterArrowsOn(1)
         DistributedSmoothNode.activateSmoothing(1, 1)
         self.IT = None
+
+        if hasattr(self, 'snow'):
+            self.snow.start(camera, self.snowRender)
+
         return
 
     def offstage(self):
         self.notify.debug('offstage')
         DistributedSmoothNode.activateSmoothing(1, 0)
-        NametagGlobals.setWant2dNametags(False)
+        NametagGlobals.setMasterArrowsOn(0)
         DistributedMinigame.offstage(self)
         self.sky.reparentTo(hidden)
         self.ground.reparentTo(hidden)
@@ -151,7 +162,7 @@ class DistributedTagGame(DistributedMinigame):
             scorePanel.reparentTo(base.a2dBottomRight)
             self.scorePanels.append(scorePanel)
 
-        base.setCellsActive(base.rightCells, 0)
+        base.setCellsAvailable(base.rightCells, 0)
         self.walkStateData.enter()
         self.walkStateData.fsm.request('walking')
         if base.localAvatar.isIt:
@@ -184,7 +195,7 @@ class DistributedTagGame(DistributedMinigame):
             panel.cleanup()
 
         self.scorePanels = []
-        base.setCellsActive(base.rightCells, 1)
+        base.setCellsAvailable(base.rightCells, 1)
         base.mouseInterfaceNode.setForwardSpeed(ToontownGlobals.ToonForwardSpeed)
         base.mouseInterfaceNode.setRotateSpeed(ToontownGlobals.ToonRotateSpeed)
         self.itPointer.reparentTo(hidden)

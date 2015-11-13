@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from ElevatorConstants import *
@@ -8,10 +8,10 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM
 from direct.distributed import DistributedObject
 from direct.fsm import State
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
 from direct.task.Task import Task
-from toontown.hood import ZoneUtil
+from src.toontown.hood import ZoneUtil
 from direct.fsm.FSM import FSM
 
 class DistributedElevatorFSM(DistributedObject.DistributedObject, FSM):

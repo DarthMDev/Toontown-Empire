@@ -8,24 +8,20 @@ from direct.fsm.ClassicFSM import ClassicFSM
 from direct.fsm.State import State
 from direct.gui.DirectGui import *
 from direct.task import Task
-from pandac.PandaModules import *
-from otp.avatar import Avatar, DistributedAvatar
-from otp.avatar.DistributedPlayer import DistributedPlayer
-from otp.distributed import OtpDoGlobals
-from otp.distributed.OtpDoGlobals import *
-from otp.distributed.TelemetryLimiter import TelemetryLimiter
-from otp.otpbase import OTPGlobals, OTPLocalizer
-from otp.otpgui import OTPDialog
-from toontown.chat.ChatGlobals import *
+from panda3d.core import *
+from src.otp.avatar import Avatar, DistributedAvatar
+from src.otp.avatar.DistributedPlayer import DistributedPlayer
+from src.otp.distributed import OtpDoGlobals
+from src.otp.distributed.OtpDoGlobals import *
+from src.otp.distributed.TelemetryLimiter import TelemetryLimiter
+from src.otp.otpbase import OTPGlobals, OTPLocalizer
+from src.otp.otpgui import OTPDialog
+from src.otp.nametag.NametagConstants import *
 import sys, time, types, random
 
 class OTPClientRepository(ClientRepositoryBase):
     notify = directNotify.newCategory('OTPClientRepository')
     avatarLimit = 6
-    WishNameResult = Enum(['Failure',
-     'PendingApproval',
-     'Approved',
-     'Rejected'])
 
     def __init__(self, serverVersion, playGame = None):
         ClientRepositoryBase.__init__(self)
@@ -34,7 +30,6 @@ class OTPClientRepository(ClientRepositoryBase):
         self.createAvatarClass = None
         self.systemMessageSfx = None
         self.playToken = launcher.getPlayToken()
-        self.wantMagicWords = False
 
         self.parentMgr.registerParent(OTPGlobals.SPRender, base.render)
         self.parentMgr.registerParent(OTPGlobals.SPHidden, NodePath())
@@ -248,7 +243,7 @@ class OTPClientRepository(ClientRepositoryBase):
         self.hashVal = dcFile.getHash()
 
         # Now import all of the modules required by the DC file.
-        for n in range(dcFile.getNumImportModules()):
+        for n in xrange(dcFile.getNumImportModules()):
             moduleName = dcFile.getImportModule(n)[:]
 
             # Maybe the module name is represented as "moduleName/AI".
@@ -261,7 +256,7 @@ class OTPClientRepository(ClientRepositoryBase):
                 moduleName += 'AI'
 
             importSymbols = []
-            for i in range(dcFile.getNumImportSymbols(n)):
+            for i in xrange(dcFile.getNumImportSymbols(n)):
                 symbolName = dcFile.getImportSymbol(n, i)
 
                 # Maybe the symbol name is represented as "symbolName/AI".
@@ -279,7 +274,7 @@ class OTPClientRepository(ClientRepositoryBase):
 
         # Now get the class definition for the classes named in the DC
         # file.
-        for i in range(dcFile.getNumClasses()):
+        for i in xrange(dcFile.getNumClasses()):
             dclass = dcFile.getClass(i)
             number = dclass.getNumber()
             className = dclass.getName() + self.dcSuffix
@@ -320,7 +315,7 @@ class OTPClientRepository(ClientRepositoryBase):
             ownerImportSymbols = {}
 
             # Now import all of the modules required by the DC file.
-            for n in range(dcFile.getNumImportModules()):
+            for n in xrange(dcFile.getNumImportModules()):
                 moduleName = dcFile.getImportModule(n)
 
                 # Maybe the module name is represented as "moduleName/AI".
@@ -331,7 +326,7 @@ class OTPClientRepository(ClientRepositoryBase):
                     moduleName = moduleName + ownerDcSuffix
 
                 importSymbols = []
-                for i in range(dcFile.getNumImportSymbols(n)):
+                for i in xrange(dcFile.getNumImportSymbols(n)):
                     symbolName = dcFile.getImportSymbol(n, i)
 
                     # Check for the OV suffix
@@ -347,7 +342,7 @@ class OTPClientRepository(ClientRepositoryBase):
 
             # Now get the class definition for the owner classes named
             # in the DC file.
-            for i in range(dcFile.getNumClasses()):
+            for i in xrange(dcFile.getNumClasses()):
                 dclass = dcFile.getClass(i)
                 if ((dclass.getName()+ownerDcSuffix) in ownerImportSymbols):
                     number = dclass.getNumber()
@@ -450,10 +445,6 @@ class OTPClientRepository(ClientRepositoryBase):
     def __handleLoginDone(self, doneStatus):
         mode = doneStatus['mode']
         if mode == 'success':
-            if hasattr(self, 'toontownTimeManager'):
-                timestamp = time.gmtime(doneStatus['timestamp'])
-                dateString = time.strftime(self.toontownTimeManager.formatStr, timestamp)
-                self.lastLoggedIn = self.toontownTimeManager.convertStrToToontownTime(dateString)
             self.loginFSM.request('waitForGameList')
         elif mode == 'reject':
             self.loginFSM.request('reject')
@@ -1077,10 +1068,10 @@ class OTPClientRepository(ClientRepositoryBase):
 
     def listActiveShards(self):
         list = []
+
         for s in self.activeDistrictMap.values():
             if s.available:
-                list.append((s.doId, s.name, s.avatarCount, s.newAvatarCount,
-                             s.invasionStatus))
+                list.append((s.doId, s.name, s.avatarCount, s.invasionStatus))
 
         return list
 
@@ -1198,48 +1189,6 @@ class OTPClientRepository(ClientRepositoryBase):
         else:
             self.handleObjectLocation(di)
 
-    def sendWishName(self, avId, name):
-        datagram = PyDatagram()
-        datagram.addUint16(CLIENT_SET_WISHNAME)
-        datagram.addUint32(avId)
-        datagram.addString(name)
-        self.send(datagram)
-
-    def sendWishNameAnonymous(self, name):
-        self.sendWishName(0, name)
-
-    def getWishNameResultMsg(self):
-        return 'OTPCR.wishNameResult'
-
-    def gotWishnameResponse(self, di):
-        avId = di.getUint32()
-        returnCode = di.getUint16()
-        pendingName = ''
-        approvedName = ''
-        rejectedName = ''
-        if returnCode == 0:
-            pendingName = di.getString()
-            approvedName = di.getString()
-            rejectedName = di.getString()
-        if approvedName:
-            name = approvedName
-        elif pendingName:
-            name = pendingName
-        elif rejectedName:
-            name = rejectedName
-        else:
-            name = ''
-        WNR = self.WishNameResult
-        if returnCode:
-            result = WNR.Failure
-        elif rejectedName:
-            result = WNR.Rejected
-        elif pendingName:
-            result = WNR.PendingApproval
-        elif approvedName:
-            result = WNR.Approved
-        messenger.send(self.getWishNameResultMsg(), [result, avId, name])
-
     def replayDeferredGenerate(self, msgType, extra):
         if msgType == CLIENT_DONE_INTEREST_RESP:
             dg, di = extra
@@ -1252,9 +1201,6 @@ class OTPClientRepository(ClientRepositoryBase):
 
     @exceptionLogged(append=False)
     def handleDatagram(self, di):
-        if self.notify.getDebug():
-            print 'ClientRepository received datagram:'
-            di.getDatagram().dumpHex(ostream)
         msgType = self.getMsgType()
         if msgType == 65535:
             self.lostConnection()
@@ -1266,22 +1212,13 @@ class OTPClientRepository(ClientRepositoryBase):
         self.considerHeartbeat()
         return
 
-    def askAvatarKnown(self, avId):
-        return 0
-
-    def queueRequestAvatarInfo(self, avId):
-        pass
-
     def identifyFriend(self, doId):
-        pass
+        return self.identifyAvatar(doId)
 
     def identifyAvatar(self, doId):
         info = self.doId2do.get(doId)
-        if info:
-            return info
-        else:
-            info = self.identifyFriend(doId)
-        return info
+
+        return info if info else self.identifyFriend(doId)
 
     def sendDisconnect(self):
         if self.isConnected():

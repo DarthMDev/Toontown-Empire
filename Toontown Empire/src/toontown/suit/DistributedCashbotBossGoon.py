@@ -1,13 +1,13 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from direct.task.TaskManagerGlobal import *
 from direct.distributed.ClockDelta import *
 from direct.directnotify import DirectNotifyGlobal
 import GoonGlobals
 from direct.task.Task import Task
-from toontown.toonbase import ToontownGlobals
-from otp.otpbase import OTPGlobals
-from toontown.coghq import DistributedCashbotBossObject
+from src.toontown.toonbase import ToontownGlobals
+from src.otp.otpbase import OTPGlobals
+from src.toontown.coghq import DistributedCashbotBossObject
 from direct.showbase import PythonUtil
 import DistributedGoon
 

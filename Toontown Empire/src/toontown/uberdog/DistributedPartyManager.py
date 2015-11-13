@@ -1,11 +1,11 @@
 from direct.distributed.DistributedObject import DistributedObject
 from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
 
-from toontown.chat.ChatGlobals import *
-from toontown.parties import PartyGlobals
-from toontown.toon import ToonDNA
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from src.otp.nametag.NametagConstants import *
+from src.toontown.parties import PartyGlobals
+from src.toontown.toon import ToonDNA
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
 
 
 class DistributedPartyManager(DistributedObject):
@@ -165,7 +165,7 @@ class DistributedPartyManager(DistributedObject):
             base.cr.playGame.getPlace().handleBookClose()
             return
         hoodId = ToontownGlobals.PartyHood
-        if shardId == base.localAvatar.defaultShard:
+        if shardId == base.localAvatar.defaultShard or shardId == (base.localAvatar.defaultShard - 1):
             shardId = None
         base.cr.playGame.getPlace().requestLeave({'loader': 'safeZoneLoader',
          'where': 'party',

@@ -5,9 +5,9 @@ from direct.interval.IntervalGlobal import WaitInterval, ActorInterval, Function
 from direct.task.Task import Task
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
-from toontown.minigame.OrthoWalk import OrthoWalk
-from toontown.minigame.MinigameRulesPanel import MinigameRulesPanel
-from toontown.parties import PartyGlobals
+from src.toontown.minigame.OrthoWalk import OrthoWalk
+from src.toontown.minigame.MinigameRulesPanel import MinigameRulesPanel
+from src.toontown.parties import PartyGlobals
 from direct.fsm import ClassicFSM, State
 
 class PartyCatchActivityToonSD(StateData.StateData):
@@ -109,7 +109,7 @@ class PartyCatchActivityToonSD(StateData.StateData):
             self.activity.orthoWalk.stop()
             self.accept(self.activity.rulesDoneEvent, self.handleRulesDone)
             self.rulesPanel = MinigameRulesPanel('PartyRulesPanel', self.activity.getTitle(), self.activity.getInstructions(), self.activity.rulesDoneEvent, PartyGlobals.DefaultRulesTimeout)
-            base.setCellsActive(base.bottomCells + [base.leftCells[0], base.rightCells[1]], False)
+            base.setCellsAvailable(base.bottomCells + [base.leftCells[0], base.rightCells[1]], False)
             self.rulesPanel.load()
             self.rulesPanel.enter()
         else:
@@ -125,7 +125,7 @@ class PartyCatchActivityToonSD(StateData.StateData):
             self.rulesPanel.exit()
             self.rulesPanel.unload()
             del self.rulesPanel
-            base.setCellsActive(base.bottomCells + [base.leftCells[0], base.rightCells[1]], True)
+            base.setCellsAvailable(base.bottomCells + [base.leftCells[0], base.rightCells[1]], True)
 
     def enterNormal(self):
         self.notify.debug('enterNormal')

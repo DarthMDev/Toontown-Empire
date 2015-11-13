@@ -2,10 +2,10 @@ from pandac.PandaModules import Point3, CollisionNode, CollisionSphere, Collisio
 from direct.interval.IntervalGlobal import Func, Sequence, Wait
 from direct.showbase.PythonUtil import bound as clamp
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import TTLocalizer
-from toontown.minigame.OrthoDrive import OrthoDrive
-from toontown.minigame.OrthoWalk import OrthoWalk
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.minigame.OrthoDrive import OrthoDrive
+from src.toontown.minigame.OrthoWalk import OrthoWalk
+from src.toontown.toonbase import ToontownGlobals
 import CogdoGameConsts
 import CogdoMazeGameGlobals as Globals
 from CogdoMazePlayer import CogdoMazePlayer
@@ -44,7 +44,7 @@ class CogdoMazeLocalPlayer(CogdoMazePlayer):
          'squashed': False,
          'boss': False,
          'minion': False}
-        self.accept('control', self.controlKeyPressed)
+        self.accept(base.JUMP, self.controlKeyPressed)
 
     def destroy(self):
         self.toon.showName()
@@ -132,7 +132,7 @@ class CogdoMazeLocalPlayer(CogdoMazePlayer):
     def enterDone(self):
         CogdoMazePlayer.enterDone(self)
         self._guiMgr.hideQuestArrow()
-        self.ignore('control')
+        self.ignore(base.JUMP)
         self._guiMgr.setMessage('')
         if self.exited == False:
             self.lostMemos()

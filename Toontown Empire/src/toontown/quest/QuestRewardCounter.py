@@ -1,12 +1,12 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 import Quests
-from toontown.toonbase import ToontownGlobals
-from toontown.fishing import FishGlobals
-from toontown.suit import SuitDNA
-from toontown.racing import RaceGlobals
-from toontown.estate import GardenGlobals
-from toontown.golf import GolfGlobals
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.fishing import FishGlobals
+from src.toontown.suit import SuitDNA
+from src.toontown.racing import RaceGlobals
+from src.toontown.estate import GardenGlobals
+from src.toontown.golf import GolfGlobals
 
 class QuestRewardCounter:
     notify = directNotify.newCategory('QuestRewardCounter')
@@ -78,7 +78,7 @@ class QuestRewardCounter:
                         suitHp += 1
                     else:
                         break
-                    
+
         self.notify.debug('Adding %s hp for cog suits' % suitHp)
         self.maxHp += suitHp
         kartingHp = int(av.kartingTrophies.count(1) / RaceGlobals.TrophiesPerCup)

@@ -1,17 +1,17 @@
-from pandac.PandaModules import *
-from toontown.toonbase.ToontownGlobals import *
+from panda3d.core import *
+from src.toontown.toonbase.ToontownGlobals import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 import random
-from otp.level import DistributedLevel
+from src.otp.level import DistributedLevel
 from direct.directnotify import DirectNotifyGlobal
 import LawOfficeBase
 import FactoryEntityCreator
 import FactorySpecs
-from otp.level import LevelSpec
-from otp.level import LevelConstants
-from toontown.toonbase import TTLocalizer
-from toontown.coghq import FactoryCameraViews
+from src.otp.level import LevelSpec
+from src.otp.level import LevelConstants
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.coghq import FactoryCameraViews
 from direct.distributed.DistributedObject import DistributedObject
 
 class DistributedLawOffice(DistributedObject, LawOfficeBase.LawOfficeBase):
@@ -63,5 +63,5 @@ class DistributedLawOffice(DistributedObject, LawOfficeBase.LawOfficeBase):
 
     def startSignal(self):
         base.camera.setScale(base.localAvatar.getScale())
-        localAvatar.setCameraFov(DefaultCameraFov)
+        localAvatar.setCameraFov(settings['fov'])
         base.camera.clearMat()
