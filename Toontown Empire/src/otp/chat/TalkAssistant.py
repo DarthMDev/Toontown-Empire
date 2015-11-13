@@ -216,9 +216,6 @@ class TalkAssistant(DirectObject.DirectObject):
             return True
         return False
 
-    def checkOpenSpeedChat(self):
-        return True
-
     def checkWhisperTypedChatAvatar(self, avatarId):
         remoteAvatar = base.cr.doId2do.get(avatarId)
         if remoteAvatar:
@@ -234,8 +231,6 @@ class TalkAssistant(DirectObject.DirectObject):
             return True
         return False
 
-    def checkWhisperSpeedChatAvatar(self, avatarId):
-        return True
 
     def checkOpenSpeedChat(self):
         return True
