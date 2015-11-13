@@ -64,7 +64,7 @@ class NewsPageButtonManager(FSM.FSM):
         currentState = base.localAvatar.animFSM.getCurrentState().getName()
         if currentState == 'jumpAirborne':
             return
-        from toontown.toon import LocalToon
+        from src.toontown.toon import LocalToon
         if not LocalToon.WantNewsPage:
             return
         if base.cr and base.cr.playGame and base.cr.playGame.getPlace() and base.cr.playGame.getPlace().fsm:
