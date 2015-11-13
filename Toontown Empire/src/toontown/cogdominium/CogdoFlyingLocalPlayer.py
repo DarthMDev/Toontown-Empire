@@ -526,7 +526,7 @@ class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
             minVal = -Globals.Gameplay.ToonVelMax['fallNoFuel']
         maxVal = Globals.Gameplay.ToonVelMax['boost']
         if self.controlVelocity[2] > minVal:
-            if (not self._inputMgr.arrowKeys.jumpPressed() or not self.isFuelLeft()) and not self.isToonOnFloor:
+            if not self._inputMgr.arrowKeys.jumpPressed() or not self.isFuelLeft() and not self.isToonOnFloor:
                 self.controlVelocity[2] -= Globals.Gameplay.ToonAcceleration['fall'] * dt
         if self.controlVelocity[2] < 0.0 and self.isToonOnFloor:
             self.controlVelocity[2] = 0.0
