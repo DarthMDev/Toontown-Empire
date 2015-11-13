@@ -94,7 +94,7 @@ class SCElement(SCObject, NodePath):
     def setDimensions(self, width, height):
         self.width = float(width)
         self.height = float(height)
-        if self.lastWidth, self.lastHeight != (self.width, self.height):
+        if (self.lastWidth, self.lastHeight) != (self.width, self.height):
             self.invalidate()
 
     def invalidate(self):

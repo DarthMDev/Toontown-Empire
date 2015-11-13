@@ -1,5 +1,5 @@
 import SuitDNA
-from toontown.suit.SuitLegList import *
+from src.toontown.suit.SuitLegList import *
 import SuitTimings
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
