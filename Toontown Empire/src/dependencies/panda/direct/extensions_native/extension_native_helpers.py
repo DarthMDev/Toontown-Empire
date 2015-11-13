@@ -101,9 +101,17 @@ def Dtool_PreloadDLL(module):
 # Nowadays, we can compile libpandaexpress with libpanda into a
 # .pyd file called panda3d/core.pyd which can be imported without
 # any difficulty.  Let's see if this is the case.
-if Dtool_FindModule("panda3d.core"):
+
+# In order to support things like py2exe that play games with the
+# physical python files on disk, we can't entirely rely on
+# Dtool_FindModule to find our panda3d.core module.  However, we
+# should be able to import it.  To differentiate the old-style Panda
+# build (with .dll's) from the new-style Panda build (with .pyd's), we
+# first try to import panda3d.core directly; if it succeeds we're in a
+# new-style build, and if it fails we must be in an old-style build.
+try:
     from panda3d.core import *
-else:
+except ImportError:
     Dtool_PreloadDLL("libpandaexpress")
     from libpandaexpress import *
 

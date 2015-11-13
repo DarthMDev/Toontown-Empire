@@ -1,5 +1,5 @@
-from toontown.safezone import Playground
-from toontown.safezone import SafeZoneLoader
+from src.toontown.safezone import Playground
+from src.toontown.safezone import SafeZoneLoader
 
 
 class DLSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):

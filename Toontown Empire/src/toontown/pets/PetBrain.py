@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.showbase.PythonUtil import weightedChoice, randFloat, Functor
 from direct.showbase.PythonUtil import list2dict
 from direct.showbase import DirectObject
@@ -6,8 +6,8 @@ from direct.distributed import DistributedObject, DistributedObjectAI
 from direct.directnotify import DirectNotifyGlobal
 from direct.task import Task
 from direct.fsm import FSM
-from toontown.pets import PetConstants, PetObserve, PetGoal, PetGoalMgr
-from toontown.pets import PetTricks, PetLookerAI
+from src.toontown.pets import PetConstants, PetObserve, PetGoal, PetGoalMgr
+from src.toontown.pets import PetTricks, PetLookerAI
 import random, types
 
 class PetBrain(DirectObject.DirectObject):
@@ -404,7 +404,6 @@ class PetBrain(DirectObject.DirectObject):
             if avatar:
                 if looked:
                     if not self.pet._willDoTrick(trickId):
-                        self.pet.trickFailLogger.addEvent(trickId)
                         trickId = PetTricks.Tricks.BALK
                     self._doTrick(trickId, avatar)
 

@@ -1,8 +1,9 @@
-from pandac.PandaModules import *
-from direct.showbase.PythonUtil import Functor, PriorityCallbacks
+from panda3d.core import *
+from direct.showbase.PythonUtil import Functor
+from src.toontown.toonbase.PythonUtil import PriorityCallbacks
 from direct.task import Task
-from toontown.distributed.ToontownMsgTypes import *
-from otp.otpbase import OTPGlobals
+from src.toontown.distributed.ToontownMsgTypes import *
+from src.otp.otpbase import OTPGlobals
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
 from direct.fsm import ClassicFSM, State
@@ -205,35 +206,14 @@ class QuietZoneState(StateData.StateData):
         return
 
     def enterWaitForZoneRedirect(self):
+        print 'entered wait for zone redirect'
         self.notify.debug('enterWaitForZoneRedirect(requestStatus=' + str(self._requestStatus) + ')')
         if not self.Disable:
             base.cr.handler = self.handleWaitForZoneRedirect
             base.cr.handlerArgs = self._requestStatus
             base.cr.setInQuietZone(True)
         self.waitForDatabase('WaitForZoneRedirect')
-        zoneId = self._requestStatus['zoneId']
-        avId = self._requestStatus.get('avId', -1)
-        allowRedirect = self._requestStatus.get('allowRedirect', 1)
-        if avId != -1:
-            allowRedirect = 0
-        if not base.cr.welcomeValleyManager:
-            newZoneId = ZoneUtil.getCanonicalZoneId(zoneId)
-            if newZoneId != zoneId:
-                self.gotZoneRedirect(newZoneId)
-                return
-        if allowRedirect and ZoneUtil.isWelcomeValley(zoneId):
-            self.notify.info('Requesting AI redirect from zone %s.' % zoneId)
-            if base.slowQuietZone:
-
-                def rZI(task, zoneId = zoneId, self = self):
-                    base.cr.welcomeValleyManager.requestZoneId(zoneId, self.gotZoneRedirect)
-                    return Task.done
-
-                taskMgr.doMethodLater(base.slowQuietZoneDelay, rZI, 'slowQuietZone-welcomeValleyRedirect')
-            else:
-                base.cr.welcomeValleyManager.requestZoneId(zoneId, self.gotZoneRedirect)
-        else:
-            self.fsm.request('waitForSetZoneResponse')
+        self.fsm.request('waitForSetZoneResponse')
 
     def gotZoneRedirect(self, zoneId):
         self.notify.info('Redirecting to zone %s.' % zoneId)
@@ -250,6 +230,7 @@ class QuietZoneState(StateData.StateData):
         return
 
     def enterWaitForSetZoneResponse(self):
+        print 'entered wait for set zone response - 2'
         self.notify.debug('enterWaitForSetZoneResponse(requestStatus=' + str(self._requestStatus) + ')')
         if not self.Disable:
             messenger.send(self.getEnterWaitForSetZoneResponseMsg(), [self._requestStatus])

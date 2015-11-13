@@ -22,7 +22,7 @@ uberdogs:
       id: 4501
       anonymous: false
 
-    - class: TTEFriendsManager
+    - class: tteFriendsManager
       id: 4666
       anonymous: false
 
@@ -33,7 +33,7 @@ uberdogs:
 roles:
     - type: clientagent
       bind: 0.0.0.0:7199
-      version: "TTE-1.0.0-Alpha!"
+      version: "tte-dev"
       client:
        relocate: true
        add_interest: enabled

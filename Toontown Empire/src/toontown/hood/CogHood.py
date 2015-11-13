@@ -1,6 +1,6 @@
 from direct.fsm import ClassicFSM, State
-from toontown.toonbase import ToontownGlobals
-from toontown.hood.Hood import Hood
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.hood.Hood import Hood
 
 
 class CogHood(Hood):
@@ -51,14 +51,14 @@ class CogHood(Hood):
         skyMiddle = self.sky.find('**/MiddleGroup')
         skyOuter = self.sky.find('**/OutterSky')
 
-        if not skyOuter.isEmpty():
-            skyOuter.setBin('background', 0)
-        if not skyMiddle.isEmpty():
-            skyMiddle.setDepthWrite(0)
-            skyMiddle.setBin('background', 10)
-        if not skyInner.isEmpty():
-            skyInner.setDepthWrite(0)
-            skyInner.setBin('background', 20)
+       # if not skyOuter.isEmpty():
+          #  skyOuter.setBin('background', 0)
+       # if not skyMiddle.isEmpty():
+         #   skyMiddle.setDepthWrite(0)
+           # skyMiddle.setBin('background', 10)
+      #  if not skyInner.isEmpty():
+          #  skyInner.setDepthWrite(0)
+            #skyInner.setBin('background', 20)
 
         self.parentFSM.getStateNamed(self.__class__.__name__).addChild(self.fsm)
 
@@ -92,7 +92,7 @@ class CogHood(Hood):
             messenger.send(self.doneEvent)
 
     def exit(self):
-        base.localAvatar.setCameraFov(ToontownGlobals.DefaultCameraFov)
+        base.localAvatar.setCameraFov(settings['fov'])
         base.camLens.setNearFar(ToontownGlobals.DefaultCameraNear, ToontownGlobals.DefaultCameraFar)
 
         Hood.exit(self)

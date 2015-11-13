@@ -6,8 +6,8 @@ from pandac.PandaModules import Point2
 from direct.showbase import DirectObject
 from direct.gui.DirectGui import DirectFrame, DirectButton, DGG, DirectLabel
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
 WEB_WIDTH_PIXELS = 784
 WEB_HEIGHT_PIXELS = 451
 WEB_WIDTH = 1024
@@ -323,14 +323,13 @@ class IssueFrame(DirectFrame):
         return
 
     def gotoPage(self, section, subsection):
-        if config.GetBool('want-qa-regression', 0):
+        if base.config.GetBool('want-qa-regression', 0):
             self.notify.info('QA-REGRESSION: INGAMENEWS: Goto Page')
         self.sectionFrames[self.curSection][self.curSubsection].hide()
         self.sectionFrames[section][subsection].show()
         self.curSection = section
         self.curSubsection = subsection
         messenger.send('wakeup')
-        base.cr.centralLogger.writeClientEvent('news gotoPage %s %s %s' % (self.dateStr, section, subsection))
 
     def loadFlatQuad(self, fullFilename):
         cm = CardMaker('cm-%s' % fullFilename)
@@ -386,6 +385,6 @@ class IssueFrame(DirectFrame):
         pass
 
     def changeWeek(self, newIssueWeek):
-        if config.GetBool('want-qa-regression', 0):
+        if base.config.GetBool('want-qa-regression', 0):
             self.notify.info('QA-REGRESSION: INGAMENEWS: Change Week')
         messenger.send('newsChangeWeek', [newIssueWeek])

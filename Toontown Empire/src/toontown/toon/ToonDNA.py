@@ -1,9 +1,8 @@
 import random
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify.DirectNotifyGlobal import *
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
-from otp.avatar import AvatarDNA
 notify = directNotify.newCategory('ToonDNA')
 mergeMATTailor = config.GetBool('want-mat-all-tailors', 0)
 toonSpeciesTypes = ['d',
@@ -147,8 +146,7 @@ toonTorsoTypes = ['ss',
  'm',
  'l']
 toonLegTypes = ['s', 'm', 'l']
-Shirts = [
- 'phase_3/maps/desat_shirt_1.jpg',
+Shirts = ['phase_3/maps/desat_shirt_1.jpg',
  'phase_3/maps/desat_shirt_2.jpg',
  'phase_3/maps/desat_shirt_3.jpg',
  'phase_3/maps/desat_shirt_4.jpg',
@@ -267,9 +265,6 @@ Shirts = [
  'phase_4/maps/tt_t_chr_avt_shirt_greentoon1.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_getConnectedMoverShaker.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_racingGrandPrix.jpg',
- 'phase_4/maps/tt_t_chr_avt_shirt_sellbotIcon.jpg',
- 'phase_4/maps/tt_t_chr_avt_shirt_sellbotVPIcon.jpg',
- 'phase_4/maps/tt_t_chr_avt_shirt_sellbotCrusher.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_bee.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_pirate.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_supertoon.jpg',
@@ -454,9 +449,6 @@ Sleeves = ['phase_3/maps/desat_sleeve_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_greentoon1.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_getConnectedMoverShaker.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_racingGrandPrix.jpg',
- 'phase_4/maps/tt_t_chr_avt_shirtSleeve_sellbotIcon.jpg',
- 'phase_4/maps/tt_t_chr_avt_shirtSleeve_sellbotVPIcon.jpg',
- 'phase_4/maps/tt_t_chr_avt_shirtSleeve_sellbotCrusher.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_bee.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_pirate.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_supertoon.jpg',
@@ -488,7 +480,6 @@ Sleeves = ['phase_3/maps/desat_sleeve_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_anniversary.jpg',
  'phase_4/maps/Pinktober_sleeve.jpg', 					#138 - Pinktober
  'phase_4/maps/SplatterShirtSleeve.jpg'] # 139 - Xentel NPC design
- 
 BoyShorts = ['phase_3/maps/desat_shorts_1.jpg',
  'phase_3/maps/desat_shorts_2.jpg',
  'phase_3/maps/desat_shorts_4.jpg',
@@ -535,7 +526,6 @@ BoyShorts = ['phase_3/maps/desat_shorts_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_halloweenTurtle.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_greentoon1.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_racingGrandPrix.jpg',
- 'phase_4/maps/tt_t_chr_avt_shorts_sellbotCrusher.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_bee.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_pirate.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_supertoon.jpg',
@@ -600,7 +590,6 @@ GirlBottoms = [('phase_3/maps/desat_skirt_1.jpg', SKIRT),
  ('phase_4/maps/tt_t_chr_avt_shorts_halloweenTurtle.jpg', SHORTS),
  ('phase_4/maps/tt_t_chr_avt_skirt_greentoon1.jpg', SKIRT),
  ('phase_4/maps/tt_t_chr_avt_skirt_racingGrandPrix.jpg', SKIRT),
- ('phase_4/maps/tt_t_chr_avt_shorts_sellbotCrusher.jpg', SHORTS),
  ('phase_4/maps/tt_t_chr_avt_shorts_bee.jpg', SHORTS),
  ('phase_4/maps/tt_t_chr_avt_shorts_pirate.jpg', SHORTS),
  ('phase_4/maps/tt_t_chr_avt_skirt_pirate.jpg', SKIRT),
@@ -647,7 +636,7 @@ ClothesColors = [VBase4(0.933594, 0.265625, 0.28125, 1.0),
  VBase4(0.3, 0.3, 0.35, 1.0),
  VBase4(0.196078, 0.803921, 0.196078, 1.0),
  VBase4(0.462745098039216, 0.0901960784313725, 0.0901960784313725, 1.0)]
- 
+
 ShirtStyles = {'bss1': [0, 0, [(0, 0),
            (1, 1),
            (2, 2),
@@ -1217,7 +1206,8 @@ ShirtStyles = {'bss1': [0, 0, [(0, 0),
  'jb_1': [112, 99, [(27, 27)]],
  'jb_2': [113, 100, [(27, 27)]],
  'ugcms': [117, 104, [(27, 27)]],
- 'lb_1': [119, 106, [(27, 27)]]}
+ 'lb_1': [119, 106, [(27, 27)]],
+ 'weed': [148, 135, [(27, 27)]]}
 BottomStyles = {'bbs1': [0, [0,
            1,
            2,
@@ -1644,7 +1634,8 @@ BottomStyles = {'bbs1': [0, [0,
  'hw_gs5': [54, [27]],
  'hw_gs6': [55, [27]],
  'hw_gs7': [56, [27]],
- 'hw_gsk1': [53, [27]]}
+ 'hw_gsk1': [53, [27]],
+ 'nig2': [57, [27]]}
 MAKE_A_TOON = 1
 TAMMY_TAILOR = 2004
 LONGJOHN_LEROY = 1007
@@ -1704,13 +1695,13 @@ if mergeMATTailor:
                 TailorCollections[MAKE_A_TOON][GIRL_BOTTOMS].append(girlBottoms)
         for boyShorts in TailorCollections[tailors][BOY_SHORTS]:
             if boyShorts not in TailorCollections[MAKE_A_TOON][BOY_SHORTS]:
-                 TailorCollections[MAKE_A_TOON][BOY_SHORTS].append(boyShorts)
+                TailorCollections[MAKE_A_TOON][BOY_SHORTS].append(boyShorts)
         for girlShirts in TailorCollections[tailors][GIRL_SHIRTS]:
             if girlShirts not in TailorCollections[MAKE_A_TOON][GIRL_SHIRTS]:
-                 TailorCollections[MAKE_A_TOON][GIRL_SHIRTS].append(girlShirts)
+                TailorCollections[MAKE_A_TOON][GIRL_SHIRTS].append(girlShirts)
         for boyShirts in TailorCollections[tailors][BOY_SHIRTS]:
             if boyShirts not in TailorCollections[MAKE_A_TOON][BOY_SHIRTS]:
-                 TailorCollections[MAKE_A_TOON][BOY_SHIRTS].append(boyShirts)
+                TailorCollections[MAKE_A_TOON][BOY_SHIRTS].append(boyShirts)
 
 for style in TailorCollections[MAKE_A_TOON][BOY_SHORTS]:
     index = BottomStyles[style][0]
@@ -1946,94 +1937,124 @@ allColorsList = [VBase4(1.0, 1.0, 1.0, 1.0),
  VBase4(0.862745, 0.078431, 0.235294, 1.0),
  VBase4(0.0, 0.635294, 0.513725, 1.0),
  VBase4(0.803921, 0.498039, 0.196078, 1.0),
- VBase4(0.0, 0.96, 1.0, 1.0),
- VBase4(0.13, 0.55, 0.13, 1.0),
- 
- ]
+ VBase4(0.70, 0.52, 0.75, 1.0),
+ VBase4(1.0, 0, 1.0, 1.0),
+ VBase4(0.5764, 0.4392, 0.8588, 1.0),
+ VBase4(1.0, 1.0, 0.94117, 1.0),
+ VBase4(0.9333, 0.8235, 0.9333, 1.0),
+ VBase4(0.0, 1.0, 0.4980, 1.0),
+ VBase4(0.8549, 0.6470, 0.1254, 1.0),
+ VBase4(1.0, 0.59607, 0.0705, 1.0),
+ VBase4(0.8039, 0.6862, 0.5843, 1.0),
+ VBase4(0.2196, 0.5568, 0.5568, 1.0),
+ VBase4(0.7764, 0.4431, 0.4431, 1.0),
+ VBase4(0.8901, 0.8117, 0.3411, 1.0),
+ VBase4(0.4117, 0.4117, 0.4117, 1.0)]
 defaultBoyColorList = [0,
  1,
- 2,
+ 32,
  3,
  4,
  5,
  6,
  7,
+ 29,
  8,
+ 37,
+ 35,
  9,
  10,
+ 33,
  11,
  12,
+ 30,
  13,
  14,
  15,
+ 39,
+ 27,
+ 28,
  16,
  17,
  18,
  19,
  20,
  21,
+ 38,
+ 40,
+ 41,
+ 42,
+ 43,
+ 44,
+ 45,
+ 46,
+ 47,
+ 48,
+ 49,
+ 50,
+ 51,
+ 52,
+ 36,
  22,
  23,
  24,
  25,
- 26,
- 27,
- 28,
- 29,
- 30,
- 31,
- 32,
- 33,
  34,
- 35,
- 36,
- 37,
- 38,
- 39,
- 40,
- 41]
+ 31,
+ 26]
 defaultGirlColorList = [0,
  1,
+ 32,
  2,
  3,
  4,
  5,
  6,
  7,
+ 29,
  8,
+ 37,
+ 35,
  9,
  10,
+ 33,
  11,
  12,
+ 30,
  13,
  14,
  15,
+ 39,
+ 27,
+ 28,
  16,
  17,
  18,
  19,
  20,
  21,
+ 38,
+ 40,
+ 41,
+ 42,
+ 43,
+ 44,
+ 45,
+ 46,
+ 47,
+ 48,
+ 49,
+ 50,
+ 51,
+ 52,
+ 36,
  22,
  23,
  24,
  25,
- 26,
- 27,
- 28,
- 29,
- 30,
- 31,
- 32,
- 33,
  34,
- 35,
- 36,
- 37,
- 38,
- 39,
- 40,
- 41]
+ 31,
+ 26]
 allColorsListApproximations = map(lambda x: VBase4(round(x[0], 3), round(x[1], 3), round(x[2], 3), round(x[3], 3)), allColorsList)
 allowedColors = set(map(lambda x: allColorsListApproximations[x], set([0] + defaultBoyColorList + defaultGirlColorList + [26])))
 HatModels = [None,
@@ -2137,7 +2158,8 @@ GlassesModels = [None,
  'phase_4/models/accessories/tt_m_chr_avt_acc_msk_mouthGlasses',
  'phase_4/models/accessories/tt_m_chr_avt_acc_msk_squareRims',
  'phase_4/models/accessories/tt_m_chr_avt_acc_msk_eyepatch',
- 'phase_4/models/accessories/tt_m_chr_avt_acc_msk_alienGlasses']
+ 'phase_4/models/accessories/tt_m_chr_avt_acc_msk_alienGlasses',
+ 'phase_4/models/accessories/tt_m_chr_avt_acc_msk_hypno_goggles17']
 GlassesTextures = [None,
  'phase_4/maps/tt_t_chr_avt_acc_msk_masqueradeTypeMask2.jpg',
  'phase_4/maps/tt_t_chr_avt_acc_msk_masqueradeTypeMask4.jpg',
@@ -2329,6 +2351,7 @@ GlassesStyles = {'none': [0, 0, 0],
  'gce1': [7, 0, 0],
  'gdk1': [8, 0, 0],
  'gag1': [21, 0, 0],
+ 'ghy1': [22, 0, 0],
  'ghw1': [20, 0, 0],
  'ghw2': [20, 4, 0]}
 BackpackStyles = {'none': [0, 0, 0],
@@ -2458,7 +2481,7 @@ def isValidAccessory(itemIdx, textureIdx, colorIdx, which):
         return False
 
 
-class ToonDNA(AvatarDNA.AvatarDNA):
+class ToonDNA:
 
     def __init__(self, str = None, type = None, dna = None, r = None, b = None, g = None):
         if str != None:
@@ -2532,7 +2555,7 @@ class ToonDNA(AvatarDNA.AvatarDNA):
             return dgi.getUint8()
         except:
             return fallback
-    
+
     def isValidNetString(self, string):
         dg = PyDatagram(string)
         dgi = PyDatagramIterator(dg)
@@ -2671,7 +2694,7 @@ class ToonDNA(AvatarDNA.AvatarDNA):
         self.botTexColor = bottomTextureColor
         self.laughingMan = laughingMan
 
-    def updateToonProperties(self, head = None, torso = None, legs = None, gender = None, armColor = None, gloveColor = None, legColor = None, headColor = None, topTexture = None, topTextureColor = None, sleeveTexture = None, sleeveTextureColor = None, bottomTexture = None, bottomTextureColor = None, shirt = None, bottom = None, laughingMan = None):
+    def updateToonProperties(self, head = None, torso = None, legs = None, gender = None, armColor = None, gloveColor = None, legColor = None, headColor = None, topTexture = None, topTextureColor = None, sleeveTexture = None, sleeveTextureColor = None, bottomTexture = None, bottomTextureColor = None, shirt = None, bottom = None, laughingMan = False):
         if head:
             self.head = head
         if torso:
@@ -2700,8 +2723,7 @@ class ToonDNA(AvatarDNA.AvatarDNA):
             self.botTex = bottomTexture
         if bottomTextureColor:
             self.botTexColor = bottomTextureColor
-        if laughingMan:
-            self.laughingMan = laughingMan
+        self.laughingMan = laughingMan
         if shirt:
             str, colorIndex = shirt
             defn = ShirtStyles[str]
@@ -2895,10 +2917,10 @@ class ToonDNA(AvatarDNA.AvatarDNA):
 
     def getWhiteColor(self):
         return allColorsList[0]
-    
+
     def isLaughingMan(self):
         return self.laughingMan
-    
+
     def setTemporary(self, newHead, newArmColor, newLegColor, newHeadColor):
         if not self.cache and self.getArmColor != newArmColor:
             self.cache = (self.head,

@@ -1,6 +1,6 @@
-from toontown.dna.DNAParser import DNASuitPoint
-from toontown.suit import SuitTimings
-from toontown.toonbase import ToontownGlobals
+from src.toontown.dna.DNAParser import DNASuitPoint
+from src.toontown.suit import SuitTimings
+from src.toontown.toonbase import ToontownGlobals
 
 
 class SuitLeg:

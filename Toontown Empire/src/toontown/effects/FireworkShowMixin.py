@@ -1,14 +1,14 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
-from toontown.toonbase.ToontownGlobals import *
-from toontown.toonbase import TTLocalizer
-from toontown.parties import PartyGlobals
-from toontown.hood import *
+from src.toontown.toonbase.ToontownGlobals import *
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.parties import PartyGlobals
+from src.toontown.hood import *
 import Fireworks
 import FireworkShows
 from FireworkGlobals import skyTransitionDuration, preShowPauseDuration, postShowPauseDuration, preNormalMusicPauseDuration
-from toontown.effects.FireworkShow import FireworkShow
+from src.toontown.effects.FireworkShow import FireworkShow
 
 class FireworkShowMixin:
     notify = DirectNotifyGlobal.directNotify.newCategory('FireworkShowMixin')
@@ -19,7 +19,7 @@ class FireworkShowMixin:
         self.startDelay = startDelay
         self.timestamp = None
         self.fireworkShow = None
-        self.eventId = JULY4_FIREWORKS
+        self.eventId = SUMMER_FIREWORKS
         self.accept('MusicEnabled', self.startMusic)
         return
 
@@ -31,7 +31,7 @@ class FireworkShowMixin:
                 ivalMgr.finishIntervalsMatching('shootFirework*')
             else:
                 self.destroyFireworkShow()
-        from toontown.hood import DDHood
+        from src.toontown.hood import DDHood
         if isinstance(self.getHood(), DDHood.DDHood):
             self.getHood().whiteFogColor = Vec4(0.8, 0.8, 0.8, 1)
         self.restoreCameraLens()
@@ -77,13 +77,13 @@ class FireworkShowMixin:
         return
 
     def preShow(self, eventId, songId, startT):
-        if eventId == JULY4_FIREWORKS:
+        if eventId == SUMMER_FIREWORKS:
             instructionMessage = TTLocalizer.FireworksInstructions
             startMessage = TTLocalizer.FireworksJuly4Beginning
             endMessage = TTLocalizer.FireworksJuly4Ending
             songs = ['tt_summer', 'firework_music']
             musicFile = 'phase_4/audio/bgm/%s.ogg' % songs[songId]
-        elif eventId == NEWYEARS_FIREWORKS:
+        elif eventId == NEW_YEAR_FIREWORKS:
             instructionMessage = TTLocalizer.FireworksInstructions
             startMessage = TTLocalizer.FireworksNewYearsEveBeginning
             endMessage = TTLocalizer.FireworksNewYearsEveEnding
@@ -146,9 +146,9 @@ class FireworkShowMixin:
                 base.camLens.setFar(DefaultCameraFar)
 
     def postShow(self, eventId):
-        if eventId == JULY4_FIREWORKS:
+        if eventId == SUMMER_FIREWORKS:
             endMessage = TTLocalizer.FireworksJuly4Ending
-        elif eventId == NEWYEARS_FIREWORKS:
+        elif eventId == NEW_YEAR_FIREWORKS:
             endMessage = TTLocalizer.FireworksNewYearsEveEnding
         elif eventId == PartyGlobals.FireworkShows.Summer:
             endMessage = TTLocalizer.FireworksActivityEnding
@@ -257,7 +257,7 @@ class FireworkShowMixin:
         return None
 
     def __checkDDFog(self):
-        from toontown.hood import DDHood
+        from src.toontown.hood import DDHood
         if isinstance(self.getHood(), DDHood.DDHood):
             self.getHood().whiteFogColor = Vec4(0.2, 0.2, 0.2, 1)
             if hasattr(base.cr.playGame.getPlace(), 'cameraSubmerged'):
@@ -265,7 +265,7 @@ class FireworkShowMixin:
                     self.getHood().setWhiteFog()
 
     def __restoreDDFog(self):
-        from toontown.hood import DDHood
+        from src.toontown.hood import DDHood
         if isinstance(self.getHood(), DDHood.DDHood):
             self.getHood().whiteFogColor = Vec4(0.8, 0.8, 0.8, 1)
             if hasattr(base.cr.playGame.getPlace(), 'cameraSubmerged'):

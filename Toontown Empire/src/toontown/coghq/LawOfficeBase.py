@@ -1,6 +1,6 @@
 import FactorySpecs
-from otp.level import LevelSpec
-from toontown.toonbase import ToontownGlobals
+from src.otp.level import LevelSpec
+from src.toontown.toonbase import ToontownGlobals
 
 class LawOfficeBase:
 

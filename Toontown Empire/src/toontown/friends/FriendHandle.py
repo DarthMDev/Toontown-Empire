@@ -1,22 +1,26 @@
-from otp.avatar.Avatar import teleportNotify
-from toontown.toonbase import ToontownGlobals
-import copy
-from toontown.chat import ToonChatGarbler
-
+from src.otp.ai.MagicWordGlobal import *
+from src.otp.avatar.Avatar import teleportNotify
+from src.toontown.chat import ToonChatGarbler
+from src.toontown.toonbase import ToontownGlobals
 
 class FriendHandle:
-    def __init__(self, doId, name, style, petId, isAPet = False):
+    def __init__(self, doId, name, style, adminAccess, petId, isAPet = False):
         self.doId = doId
         self.style = style
-        self.commonChatFlags = 0
-        self.whitelistChatFlags = 0
         self.petId = petId
+        self.adminAccess = adminAccess
         self.isAPet = isAPet
         self.chatGarbler = ToonChatGarbler.ToonChatGarbler()
         self.name = name
 
     def getDoId(self):
         return self.doId
+
+    def getAdminAccess(self):
+        return self.adminAccess
+
+    def isAdmin(self):
+        return self.adminAccess >= MINIMUM_MAGICWORD_ACCESS
 
     def getPetId(self):
         return self.petId
@@ -40,84 +44,30 @@ class FriendHandle:
         return idString + '-' + str(self.getDoId())
 
     def d_battleSOS(self, sendToId):
-        base.cr.ttsFriendsManager.d_battleSOS(self.doId)
+        base.cr.tteFriendsManager.d_battleSOS(self.doId)
 
     def d_teleportQuery(self, requesterId):
         teleportNotify.debug('sending d_teleportQuery(%s)' % (requesterId,))
 
-        base.cr.ttsFriendsManager.d_teleportQuery(self.doId)
+        base.cr.tteFriendsManager.d_teleportQuery(self.doId)
 
     def d_teleportResponse(self, avId, available, shardId, hoodId, zoneId):
         teleportNotify.debug('sending teleportResponse%s' % ((avId, available,
             shardId, hoodId, zoneId),)
         )
 
-        base.cr.ttsFriendsManager.d_teleportResponse(self.doId, available,
+        base.cr.tteFriendsManager.d_teleportResponse(self.doId, available,
             shardId, hoodId, zoneId
         )
 
     def d_teleportGiveup(self, requesterId):
         teleportNotify.debug('sending d_teleportGiveup(%s)' % (requesterId,))
 
-        base.cr.ttsFriendsManager.d_teleportGiveup(self.doId)
+        base.cr.tteFriendsManager.d_teleportGiveup(self.doId)
 
     def isUnderstandable(self):
-        if self.commonChatFlags & base.localAvatar.commonChatFlags & ToontownGlobals.CommonChat:
-            understandable = 1
-        elif self.commonChatFlags & ToontownGlobals.SuperChat:
-            understandable = 1
-        elif base.localAvatar.commonChatFlags & ToontownGlobals.SuperChat:
-            understandable = 1
-        elif base.cr.getFriendFlags(self.doId) & ToontownGlobals.FriendChat:
-            understandable = 1
-        elif self.whitelistChatFlags & base.localAvatar.whitelistChatFlags:
-            understandable = 1
-        else:
-            understandable = 0
-        return understandable
-
-    def scrubTalk(self, message, mods):
-        scrubbed = 0
-        text = copy.copy(message)
-        for mod in mods:
-            index = mod[0]
-            length = mod[1] - mod[0] + 1
-            newText = text[0:index] + length * '\x07' + text[index + length:]
-            text = newText
-
-        words = text.split(' ')
-        newwords = []
-        for word in words:
-            if word == '':
-                newwords.append(word)
-            elif word[0] == '\x07':
-                newwords.append('\x01WLDisplay\x01' + self.chatGarbler.garbleSingle(self, word) + '\x02')
-                scrubbed = 1
-            elif base.whiteList.isWord(word):
-                newwords.append(word)
-            else:
-                newwords.append('\x01WLDisplay\x01' + word + '\x02')
-                scrubbed = 1
-
-        newText = ' '.join(newwords)
-        return (newText, scrubbed)
-
-    def replaceBadWords(self, text):
-        words = text.split(' ')
-        newwords = []
-        for word in words:
-            if word == '':
-                newwords.append(word)
-            elif word[0] == '\x07':
-                newwords.append('\x01WLRed\x01' + self.chatGarbler.garbleSingle(self, word) + '\x02')
-            elif base.whiteList.isWord(word):
-                newwords.append(word)
-            else:
-                newwords.append('\x01WLRed\x01' + word + '\x02')
-
-        newText = ' '.join(newwords)
-        return newText
-
-    def setCommonAndWhitelistChatFlags(self, commonChatFlags, whitelistChatFlags):
-        self.commonChatFlags = commonChatFlags
-        self.whitelistChatFlags = whitelistChatFlags
+        if settings['speedchatPlus']:
+            return 1
+        elif settings['trueFriends'] and base.localAvatar.isTrueFriends(self.doId):
+            return 1
+        return 0

@@ -3,18 +3,18 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
 import math
-from pandac.PandaModules import *
+from panda3d.core import *
 import random
 
 import Fanfare
-from otp.otpbase import OTPGlobals
-from toontown.coghq import CogDisguiseGlobals
-from toontown.quest import Quests
-from toontown.shtiker import DisguisePage
-from toontown.suit import SuitDNA
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.toonbase import ToontownGlobals
+from src.otp.otpbase import OTPGlobals
+from src.toontown.coghq import CogDisguiseGlobals
+from src.toontown.quest import Quests
+from src.toontown.shtiker import DisguisePage
+from src.toontown.suit import SuitDNA
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownBattleGlobals
+from src.toontown.toonbase import ToontownGlobals
 
 
 class RewardPanel(DirectFrame):
@@ -515,14 +515,8 @@ class RewardPanel(DirectFrame):
         name = SuitDNA.suitDepts[dept]
         self.promotionFrame['text'] = TTLocalizer.RewardPanelPromotion % SuitDNA.suitDeptFullnames[name]
         icons = loader.loadModel('phase_3/models/gui/cog_icons')
-        if dept == 0:
-            self.deptIcon = icons.find('**/CorpIcon').copyTo(self.promotionFrame)
-        elif dept == 1:
-            self.deptIcon = icons.find('**/LegalIcon').copyTo(self.promotionFrame)
-        elif dept == 2:
-            self.deptIcon = icons.find('**/MoneyIcon').copyTo(self.promotionFrame)
-        elif dept == 3:
-            self.deptIcon = icons.find('**/SalesIcon').copyTo(self.promotionFrame)
+        if dept in SuitDNA.suitDeptModelPaths:
+            self.deptIcon = icons.find(SuitDNA.suitDeptModelPaths[dept]).copyTo(self.promotionFrame)
         icons.removeNode()
         self.deptIcon.setPos(0, 0, -0.225)
         self.deptIcon.setScale(0.33)
@@ -550,10 +544,6 @@ class RewardPanel(DirectFrame):
         avId = toon.getDoId()
         tickDelay = 0.2
         intervalList = []
-        toonShortList = []
-        for t in toonList:
-            if t is not None:
-                toonShortList.append(t)
 
         cogList = []
         for i in xrange(0, len(deathList), 4):
@@ -569,12 +559,11 @@ class RewardPanel(DirectFrame):
 
             isSkelecog = flags & ToontownBattleGlobals.DLF_SKELECOG
             isForeman = flags & ToontownBattleGlobals.DLF_FOREMAN
-            isVP = flags & ToontownBattleGlobals.DLF_VP
-            isCFO = flags & ToontownBattleGlobals.DLF_CFO
+            isBoss = flags & ToontownBattleGlobals.DLF_BOSS
             isSupervisor = flags & ToontownBattleGlobals.DLF_SUPERVISOR
             isVirtual = flags & ToontownBattleGlobals.DLF_VIRTUAL
             hasRevives = flags & ToontownBattleGlobals.DLF_REVIVES
-            if isVP or isCFO:
+            if isBoss > 0:
                 cogType = None
                 cogTrack = SuitDNA.suitDepts[cogIndex]
             else:
@@ -585,8 +574,7 @@ class RewardPanel(DirectFrame):
              'track': cogTrack,
              'isSkelecog': isSkelecog,
              'isForeman': isForeman,
-             'isVP': isVP,
-             'isCFO': isCFO,
+             'isBoss': isBoss,
              'isSupervisor': isSupervisor,
              'isVirtual': isVirtual,
              'hasRevives': hasRevives,
@@ -618,12 +606,8 @@ class RewardPanel(DirectFrame):
                         earned = itemList.count(questItem)
                 else:
                     for cogDict in cogList:
-                        if cogDict['isVP']:
-                            num = quest.doesVPCount(avId, cogDict, zoneId, toonShortList)
-                        elif cogDict['isCFO']:
-                            num = quest.doesCFOCount(avId, cogDict, zoneId, toonShortList)
-                        else:
-                            num = quest.doesCogCount(avId, cogDict, zoneId, toonShortList)
+                        num = quest.doesCogCount(avId, cogDict, zoneId)
+
                         if num:
                             if base.config.GetBool('battle-passing-no-credit', True):
                                 if avId in helpfulToonsList:

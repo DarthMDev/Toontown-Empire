@@ -1,9 +1,9 @@
 import CatalogItem
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from otp.otpbase import OTPLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.otp.otpbase import OTPLocalizer
 from direct.interval.IntervalGlobal import *
-from toontown.estate import GardenGlobals
+from src.toontown.estate import GardenGlobals
 from direct.actor import Actor
 from pandac.PandaModules import NodePath
 
@@ -22,11 +22,6 @@ class CatalogGardenItem(CatalogItem.CatalogItem):
         else:
             return 100
 
-    def reachedPurchaseLimit(self, avatar):
-        if self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder or self in avatar.awardMailboxContents or self in avatar.onAwardOrder:
-            return 1
-        return 0
-
     def getAcceptItemErrorText(self, retcode):
         if retcode == ToontownGlobals.P_ItemAvailable:
             return TTLocalizer.CatalogAcceptGarden
@@ -39,18 +34,17 @@ class CatalogGardenItem(CatalogItem.CatalogItem):
         return TTLocalizer.GardenTypeName
 
     def getName(self):
-        name = GardenGlobals.Specials[self.gardenIndex]['photoName']
-        return name
+        return GardenGlobals.Specials[self.gardenIndex]['photoName']
 
     def recordPurchase(self, avatar, optional):
         if avatar:
             avatar.addGardenItem(self.gardenIndex, self.numItems)
-        if 1:
-            return ToontownGlobals.P_ItemAvailable
+        return ToontownGlobals.P_ItemAvailable
 
     def getPicture(self, avatar):
         photoModel = GardenGlobals.Specials[self.gardenIndex]['photoModel']
-        if GardenGlobals.Specials[self.gardenIndex].has_key('photoAnimation'):
+
+        if 'photoAnimation' in GardenGlobals.Specials[self.gardenIndex]:
             modelPath = photoModel + GardenGlobals.Specials[self.gardenIndex]['photoAnimation'][0]
             animationName = GardenGlobals.Specials[self.gardenIndex]['photoAnimation'][1]
             animationPath = photoModel + animationName
@@ -75,7 +69,6 @@ class CatalogGardenItem(CatalogItem.CatalogItem):
             self.model.setScale(photoScale)
             self.hasPicture = True
             return (frame, None)
-        return None
 
     def cleanupPicture(self):
         CatalogItem.CatalogItem.cleanupPicture(self)
@@ -126,7 +119,7 @@ class CatalogGardenItem(CatalogItem.CatalogItem):
 
     def getDeliveryTime(self):
         if self.gardenIndex == GardenGlobals.GardenAcceleratorSpecial:
-            return 1
+            return 24 * 60
         else:
             return 0
 
@@ -161,7 +154,7 @@ class CatalogGardenItem(CatalogItem.CatalogItem):
         result = False
         if canPlant < numBeansRequired:
             result = True
-        if not result and GardenGlobals.Specials.has_key(self.gardenIndex) and GardenGlobals.Specials[self.gardenIndex].has_key('minSkill'):
+        if not result and self.gardenIndex in GardenGlobals.Specials and 'minSkill' in GardenGlobals.Specials[self.gardenIndex]:
             minSkill = GardenGlobals.Specials[self.gardenIndex]['minSkill']
             if avatar.shovelSkill < minSkill:
                 result = True

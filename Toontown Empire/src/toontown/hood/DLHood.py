@@ -1,8 +1,7 @@
-from toontown.safezone.DLSafeZoneLoader import DLSafeZoneLoader
-from toontown.town.DLTownLoader import DLTownLoader
-from toontown.toonbase import ToontownGlobals
-from toontown.hood.ToonHood import ToonHood
-
+from src.toontown.safezone.DLSafeZoneLoader import DLSafeZoneLoader
+from src.toontown.town.DLTownLoader import DLTownLoader
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.hood.ToonHood import ToonHood
 
 class DLHood(ToonHood):
     notify = directNotify.newCategory('DLHood')
@@ -12,10 +11,8 @@ class DLHood(ToonHood):
     SAFEZONELOADER_CLASS = DLSafeZoneLoader
     STORAGE_DNA = 'phase_8/dna/storage_DL.pdna'
     SKY_FILE = 'phase_8/models/props/DL_sky'
-    TITLE_COLOR = (1.0, 0.9, 0.5, 1.0)
+    TITLE_COLOR = (0.6, 0.9090909090909091, 0.8, 1.0)
 
     HOLIDAY_DNA = {
-      ToontownGlobals.WINTER_DECORATIONS: ['phase_8/dna/winter_storage_DL.pdna'],
-      ToontownGlobals.WACKY_WINTER_DECORATIONS: ['phase_8/dna/winter_storage_DL.pdna'],
-      ToontownGlobals.HALLOWEEN_PROPS: ['phase_8/dna/halloween_props_storage_DL.pdna'],
-      ToontownGlobals.SPOOKY_PROPS: ['phase_8/dna/halloween_props_storage_DL.pdna']}
+      ToontownGlobals.CHRISTMAS: ['phase_8/dna/winter_storage_DL.pdna'],
+      ToontownGlobals.HALLOWEEN: ['phase_8/dna/halloween_props_storage_DL.pdna']}

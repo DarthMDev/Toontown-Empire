@@ -1,6 +1,6 @@
-from toontown.building import DistributedDoorAI
-from toontown.building import DoorTypes
-from toontown.building.DistributedTutorialInteriorAI import DistributedTutorialInteriorAI
+from src.toontown.building import DistributedDoorAI
+from src.toontown.building import DoorTypes
+from src.toontown.building.DistributedTutorialInteriorAI import DistributedTutorialInteriorAI
 
 
 class TutorialBuildingAI:

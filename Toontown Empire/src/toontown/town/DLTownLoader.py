@@ -1,6 +1,6 @@
-from toontown.suit import Suit
-from toontown.town import DLStreet
-from toontown.town import TownLoader
+from src.toontown.suit import Suit
+from src.toontown.town import DLStreet
+from src.toontown.town import TownLoader
 
 
 class DLTownLoader(TownLoader.TownLoader):
@@ -20,4 +20,3 @@ class DLTownLoader(TownLoader.TownLoader):
     def unload(self):
         TownLoader.TownLoader.unload(self)
         Suit.unloadSuits(3)
-

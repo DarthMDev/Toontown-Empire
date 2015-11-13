@@ -1,13 +1,13 @@
-from otp.ai.AIBaseGlobal import *
+from src.otp.ai.AIBaseGlobal import *
 from direct.distributed.ClockDelta import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM
 import DistributedCogHQDoorAI
 from direct.fsm import State
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 import CogDisguiseGlobals
-from toontown.building import FADoorCodes
-from toontown.building import DoorTypes
+from src.toontown.building import FADoorCodes
+from src.toontown.building import DoorTypes
 
 class DistributedCogHQExteriorDoorAI(DistributedCogHQDoorAI.DistributedCogHQDoorAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCogHQExteriorDoorAI')

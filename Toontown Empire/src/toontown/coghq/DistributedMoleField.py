@@ -1,18 +1,18 @@
-from pandac.PandaModules import *
-from otp.level.BasicEntities import DistributedNodePathEntity
+from panda3d.core import *
+from src.otp.level.BasicEntities import DistributedNodePathEntity
 from direct.directnotify import DirectNotifyGlobal
-from toontown.coghq import MoleHill
-from toontown.coghq import MoleFieldBase
+from src.toontown.coghq import MoleHill
+from src.toontown.coghq import MoleFieldBase
 from direct.distributed.ClockDelta import globalClockDelta
-from toontown.toonbase import ToontownTimer
+from src.toontown.toonbase import ToontownTimer
 from direct.gui.DirectGui import DGG, DirectFrame, DirectLabel
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
 from direct.task import Task
 import random
-from toontown.minigame import Trajectory
+from src.toontown.minigame import Trajectory
 from direct.interval.IntervalGlobal import *
-from toontown.battle import MovieUtil
+from src.toontown.battle import MovieUtil
 
 class DistributedMoleField(DistributedNodePathEntity, MoleFieldBase.MoleFieldBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedMoleField')

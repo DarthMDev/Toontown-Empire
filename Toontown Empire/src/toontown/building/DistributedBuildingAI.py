@@ -15,14 +15,14 @@ from direct.distributed import DistributedObjectAI
 from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
 from direct.task.Task import Task
-from otp.ai.AIBaseGlobal import *
-from toontown.cogdominium.CogdoLayout import CogdoLayout
-from toontown.cogdominium.DistributedCogdoElevatorExtAI import DistributedCogdoElevatorExtAI
-from toontown.cogdominium.DistributedCogdoInteriorAI import DistributedCogdoInteriorAI
-from toontown.cogdominium.CogdoLayout import CogdoLayout
-from toontown.cogdominium.SuitPlannerCogdoInteriorAI import SuitPlannerCogdoInteriorAI
-from toontown.hood import ZoneUtil
-from toontown.toonbase.ToontownGlobals import ToonHall
+from src.otp.ai.AIBaseGlobal import *
+from src.toontown.cogdominium.CogdoLayout import CogdoLayout
+from src.toontown.cogdominium.DistributedCogdoElevatorExtAI import DistributedCogdoElevatorExtAI
+from src.toontown.cogdominium.DistributedCogdoInteriorAI import DistributedCogdoInteriorAI
+from src.toontown.cogdominium.CogdoLayout import CogdoLayout
+from src.toontown.cogdominium.SuitPlannerCogdoInteriorAI import SuitPlannerCogdoInteriorAI
+from src.toontown.hood import ZoneUtil
+from src.toontown.toonbase.ToontownGlobals import ToonHall
 
 
 class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
@@ -141,12 +141,10 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
         self.fsm.request('clearOutToonInterior')
 
     def cogdoTakeOver(self, difficulty, buildingHeight, track = 's'):
-        print 'Building %s (%s): cogdoTakeOver' % (self.doId, self.zoneId)
         if not self.isToonBlock():
             return None
-        
+
         self.updateSavedBy(None)
-        
         self.track = track
         self.realTrack = track
         self.difficulty = difficulty
@@ -207,7 +205,6 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
         blockNumber = self.block
         dnaStore = self.air.dnaStoreMap[self.canonicalZoneId]
         zoneId = dnaStore.getZoneFromBlockNumber(blockNumber)
-        zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
         interiorZoneId = (zoneId - (zoneId%100)) + 500 + blockNumber
         return (zoneId, interiorZoneId)
 
@@ -274,13 +271,11 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
     def updateSavedBy(self, savedBy):
         if self.savedBy:
             for (avId, name, dna) in self.savedBy:
-                if not ZoneUtil.isWelcomeValley(self.zoneId):
-                    self.trophyMgr.removeTrophy(avId, self.numFloors)
+                self.trophyMgr.removeTrophy(avId, self.numFloors)
         self.savedBy = savedBy
         if self.savedBy:
             for (avId, name, dna) in self.savedBy:
-                if not ZoneUtil.isWelcomeValley(self.zoneId):
-                    self.trophyMgr.addTrophy(avId, name, self.numFloors)
+                self.trophyMgr.addTrophy(avId, name, self.numFloors)
 
     def enterWaitForVictors(self, victorList, savedBy):
         activeToons = []
@@ -296,7 +291,7 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
                 toon = self.getToon(t)
                 self.air.writeServerEvent('buildingDefeated', t, '%s|%s|%s|%s' % (self.track, self.numFloors, self.zoneId, victorList))
             if toon is not None:
-                self.air.questManager.toonKilledBuilding(toon, self.track, self.difficulty, self.numFloors, self.zoneId, activeToons, 0)
+                self.air.questManager.toonKilledBuilding(toon, self.track, self.difficulty, self.numFloors, self.zoneId, 0)
         for i in xrange(0, 4):
             victor = victorList[i]
             if (victor is None) or (victor not in self.air.doId2do):
@@ -321,31 +316,31 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
             toon = None
             if t:
                 toon = self.getToon(t)
-            
+
             if toon != None:
                 activeToons.append(toon)
                 continue
-        
+
         for t in victorList:
             toon = None
             if t:
                 toon = self.getToon(t)
                 self.air.writeServerEvent('buildingDefeated', t, '%s|%s|%s|%s' % (self.track, self.numFloors, self.zoneId, victorList))
-            
+
             if toon != None:
-                self.air.questManager.toonKilledBuilding(toon, self.track, self.difficulty, self.numFloors, self.zoneId, activeToons, 1)
+                self.air.questManager.toonKilledBuilding(toon, self.track, self.difficulty, 5, self.zoneId, 1)
                 continue
-        
+
         victorList.extend([None, None, None, None])
-        for i in range(0, 4):
+        for i in xrange(0, 4):
             victor = victorList[i]
-            if victor == None or not self.air.doId2do.has_key(victor):
+            if victor == None or not victor in self.air.doId2do:
                 victorList[i] = 0
                 continue
             event = self.air.getAvatarExitEvent(victor)
             self.accept(event, self.setVictorExited, extraArgs = [
                 victor])
-        
+
         self.b_setVictorList(victorList[:4])
         self.updateSavedBy(savedBy)
         self.victorResponses = [

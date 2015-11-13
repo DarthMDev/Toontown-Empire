@@ -3,10 +3,10 @@ from toontown.suit.SuitLegList import *
 import SuitTimings
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from pandac.PandaModules import Point3
-from toontown.battle import SuitBattleGlobals
-from toontown.toonbase import TTLocalizer
+from src.toontown.battle import SuitBattleGlobals
+from src.toontown.toonbase import TTLocalizer
 
 
 TIME_BUFFER_PER_WPT = 0.25
@@ -41,7 +41,7 @@ class SuitBase:
             return self.maxHP
         else:
             self.notify.error('maxHP is None')
-            return 'unknown'      
+            return 'unknown'
 
     def getStyleName(self):
         if hasattr(self, 'dna') and self.dna:

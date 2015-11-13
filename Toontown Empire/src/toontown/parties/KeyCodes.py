@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.showbase.DirectObject import DirectObject
 ARROW_KEYCODE_MAP = {base.Move_Up: 'u',
  base.Move_Down: 'd',

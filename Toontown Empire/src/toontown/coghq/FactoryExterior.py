@@ -1,14 +1,14 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
-from toontown.nametag import NametagGlobals
-from pandac.PandaModules import *
-from toontown.battle import BattlePlace
-from toontown.building import Elevator
-from toontown.dna.DNAParser import loadDNAFileAI, DNAStorage
-from toontown.hood import ZoneUtil
-from toontown.toonbase import ToontownGlobals
+from src.otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
+from src.otp.nametag import NametagGlobals
+from panda3d.core import *
+from src.toontown.battle import BattlePlace
+from src.toontown.building import Elevator
+from src.toontown.dna.DNAParser import loadDNAFileAI, DNAStorage
+from src.toontown.hood import ZoneUtil
+from src.toontown.toonbase import ToontownGlobals
 
 
 class FactoryExterior(BattlePlace.BattlePlace):
@@ -75,7 +75,6 @@ class FactoryExterior(BattlePlace.BattlePlace):
                 groupFullName = dnaStore.getDNAVisGroupName(i)
                 visGroup = dnaStore.getDNAVisGroupAI(i)
                 visZoneId = int(base.cr.hoodMgr.extractGroupName(groupFullName))
-                visZoneId = ZoneUtil.getTrueZoneId(visZoneId, self.zoneId)
                 visibles = []
                 for i in xrange(visGroup.getNumVisibles()):
                     visibles.append(int(visGroup.getVisible(i)))
@@ -94,8 +93,8 @@ class FactoryExterior(BattlePlace.BattlePlace):
         self._telemLimiter = TLGatherAllAvs('FactoryExterior', RotationLimitToH)
         self.accept('doorDoneEvent', self.handleDoorDoneEvent)
         self.accept('DistributedDoor_doorTrigger', self.handleDoorTrigger)
-        NametagGlobals.setWant2dNametags(True)
-        self.tunnelOriginList = base.cr.hoodMgr.addLinkTunnelHooks(self, self.nodeList, self.zoneId)
+        NametagGlobals.setMasterArrowsOn(1)
+        self.tunnelOriginList = base.cr.hoodMgr.addLinkTunnelHooks(self, self.nodeList)
         how = requestStatus['how']
         self.fsm.request(how, [requestStatus])
 

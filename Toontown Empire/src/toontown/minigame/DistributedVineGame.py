@@ -3,19 +3,19 @@ from direct.interval.IntervalGlobal import Sequence, Parallel, Func, Wait, LerpP
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectFrame import DirectFrame
 from direct.gui.DirectGui import DGG
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 from direct.task.Task import Task
 from direct.fsm import ClassicFSM, State
-from toontown.toonbase import TTLocalizer
-from toontown.minigame.DistributedMinigame import DistributedMinigame
-from toontown.minigame import SwingVine
-from toontown.minigame import ArrowKeys
-from toontown.minigame import VineGameGlobals
-from toontown.minigame import VineTreasure
-from toontown.minigame import MinigameAvatarScorePanel
-from toontown.toonbase import ToontownTimer
-from toontown.minigame import VineHeadFrame
-from toontown.minigame import VineBat
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.minigame.DistributedMinigame import DistributedMinigame
+from src.toontown.minigame import SwingVine
+from src.toontown.minigame import ArrowKeys
+from src.toontown.minigame import VineGameGlobals
+from src.toontown.minigame import VineTreasure
+from src.toontown.minigame import MinigameAvatarScorePanel
+from src.toontown.toonbase import ToontownTimer
+from src.toontown.minigame import VineHeadFrame
+from src.toontown.minigame import VineBat
 
 class DistributedVineGame(DistributedMinigame):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedVineGame')
@@ -1386,7 +1386,7 @@ class DistributedVineGame(DistributedMinigame):
             xPos = VineGameGlobals.VineXIncrement * VineGameGlobals.NumVines + 100
             newBat.setX(xPos)
             self.bats.append(newBat)
-            batIndex += 1
+            batIndex += 2
 
     def createBatIvals(self):
         self.batIvals = []

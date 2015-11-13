@@ -1,11 +1,12 @@
 from direct.distributed import DistributedObjectAI
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from toontown.golf import DistributedGolfHoleAI
-from pandac.PandaModules import *
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.golf import DistributedGolfHoleAI
+from panda3d.core import *
 from direct.fsm.FSM import FSM
-from toontown.ai.ToonBarrier import *
-from toontown.golf import GolfGlobals
+from src.toontown.ai.ToonBarrier import *
+from src.toontown.golf import GolfGlobals
+
 INITIAL = 0
 EXITED = 1
 EXPECTED = 2
@@ -108,7 +109,7 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
             self.currentHole.requestDelete()
             self.currentHole = None
         self.ignoreAll()
-        from toontown.golf import GolfManagerAI
+        from src.toontown.golf import GolfManagerAI
         GolfManagerAI.GolfManagerAI().removeCourse(self)
         if self.__barrier:
             self.__barrier.cleanup()
@@ -970,12 +971,14 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
         stillPlaying = self.getStillPlayingAvIds()
         for avId in stillPlaying:
             scoreList = self.scores[avId]
+            ns = 0
             for holeIndex in xrange(len(scoreList)):
                 strokes = scoreList[holeIndex]
                 if strokes == 1:
+                    ns +=1
                     holeId = self.holeIds[holeIndex]
                     self.air.writeServerEvent('golf_ace', avId, '%d|%d|%s' % (self.courseId, holeId, stillPlaying))
-
+            
     def recordCourseUnderPar(self):
         coursePar = self.calcCoursePar()
         stillPlaying = self.getStillPlayingAvIds()
@@ -984,7 +987,7 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
             netScore = totalScore - coursePar
             if netScore < 0:
                 self.air.writeServerEvent('golf_underPar', avId, '%d|%d|%s' % (self.courseId, netScore, stillPlaying))
-
+            
     def addAimTime(self, avId, aimTime):
         if avId in self.aimTimes:
             self.aimTimes[avId] += aimTime

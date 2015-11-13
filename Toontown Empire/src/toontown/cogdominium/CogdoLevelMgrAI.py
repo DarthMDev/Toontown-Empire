@@ -1,4 +1,4 @@
-from otp.level import LevelMgrAI
+from src.otp.level import LevelMgrAI
 
 class CogdoLevelMgrAI(LevelMgrAI.LevelMgrAI):
     pass

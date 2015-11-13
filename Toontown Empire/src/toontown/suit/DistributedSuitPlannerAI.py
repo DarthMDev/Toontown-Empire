@@ -2,25 +2,23 @@ from direct.directnotify.DirectNotifyGlobal import *
 from direct.distributed import DistributedObjectAI
 from direct.task import Task
 import random
-from otp.ai.MagicWordGlobal import *
-
 
 import DistributedSuitAI
 import SuitDNA
 import SuitPlannerBase
 import SuitTimings
-from otp.ai.AIBaseGlobal import *
-from toontown.battle import BattleManagerAI
-from toontown.battle import SuitBattleGlobals
-from toontown.building import HQBuildingAI
-from toontown.building import SuitBuildingGlobals
-from toontown.dna.DNAParser import DNASuitPoint
-from toontown.hood import ZoneUtil
-from toontown.suit.SuitInvasionGlobals import IFSkelecog, IFWaiter, IFV2
-from toontown.suit.SuitLegList import *
-from toontown.toon import NPCToons
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.toonbase import ToontownGlobals
+from src.otp.ai.AIBaseGlobal import *
+from src.toontown.battle import BattleManagerAI
+from src.toontown.battle import SuitBattleGlobals
+from src.toontown.building import HQBuildingAI
+from src.toontown.building import SuitBuildingGlobals
+from src.toontown.dna.DNAParser import DNASuitPoint
+from src.toontown.hood import ZoneUtil
+from src.toontown.suit.SuitInvasionGlobals import IFSkelecog, IFWaiter, IFV2
+from src.toontown.suit.SuitLegList import *
+from src.toontown.toon import NPCToons
+from src.toontown.toonbase import ToontownBattleGlobals
+from src.toontown.toonbase import ToontownGlobals
 
 
 ALLOWED_FO_TRACKS = 's'
@@ -32,7 +30,7 @@ if config.GetBool('want-bossbot-cogdo', False):
     ALLOWED_FO_TRACKS += 'b'
 if config.GetBool('want-omni-cogdo', False):
     ALLOWED_FO_TRACKS += 'slcb'
-    
+
 DEFAULT_COGDO_RATIO = .5
 
 class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlannerBase.SuitPlannerBase):
@@ -81,8 +79,6 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
             self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_MIN] +
             self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_MAX]) / 2
         self.targetNumSuitBuildings = SuitBuildingGlobals.buildingMinMax[self.zoneId][0]
-        if ZoneUtil.isWelcomeValley(self.zoneId):
-            self.targetNumSuitBuildings = 0
         self.pendingBuildingTracks = []
         self.pendingBuildingHeights = []
         self.suitList = []
@@ -261,6 +257,8 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
         blockNumber = None
         if self.notify.getDebug():
             self.notify.debug('Choosing origin from %d+%d possibles.' % (len(streetPoints), len(blockNumbers)))
+        if cogdoTakeover is None:
+            cogdoTakeover = random.random() < self.CogdoRatio
         while startPoint == None and len(blockNumbers) > 0:
             bn = random.choice(blockNumbers)
             blockNumbers.remove(bn)
@@ -359,13 +357,9 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
             return False
         numSuitBuildings = len(self.buildingMgr.getSuitBlocks())
         if (random.random() * 100) < SuitBuildingGlobals.buildingChance[self.zoneId]:
-            bmax = SuitBuildingGlobals.buildingMinMax[self.zoneId][1]
-            if ZoneUtil.isWelcomeValley(self.zoneId):
-                bmax = 0
-            numNeeded = bmax - numSuitBuildings
+            return SuitBuildingGlobals.buildingMinMax[self.zoneId][1] - numSuitBuildings
         else:
-            numNeeded = self.targetNumSuitBuildings - numSuitBuildings
-        return numNeeded
+            return self.targetNumSuitBuildings - numSuitBuildings
 
     def newSuitShouldAttemptTakeover(self):
         if not self.SUITS_ENTER_BUILDINGS:
@@ -583,9 +577,10 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
 
     def cogdoTakeOver(self, blockNumber, difficulty, buildingHeight, dept):
         if self.pendingBuildingHeights.count(buildingHeight) > 0:
-            self.pendingBuildingHeights.remove(buildingHeight)        
+            self.pendingBuildingHeights.remove(buildingHeight)
         building = self.buildingMgr.getBuilding(blockNumber)
-        building.cogdoTakeOver(difficulty, buildingHeight, dept)
+        if building:
+			building.cogdoTakeOver(difficulty, buildingHeight, dept)
 
     def recycleBuilding(self):
         bmin = SuitBuildingGlobals.buildingMinMax[self.zoneId][0]
@@ -617,7 +612,11 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
                     suitType = SuitDNA.getSuitType(suitName)
                     suitTrack = SuitDNA.getSuitDept(suitName)
                 (suitLevel, suitType, suitTrack) = self.pickLevelTypeAndTrack(None, suitType, suitTrack)
-                building.suitTakeOver(suitTrack, suitLevel, None)
+                isCogdo = random.random() < self.CogdoRatio
+                if isCogdo:
+                    building.cogdoTakeOver(suitLevel, None)
+                else:
+                    building.suitTakeOver(suitTrack, suitLevel, None)
 
         # Save the building manager's state:
         self.buildingMgr.save()
@@ -857,8 +856,7 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
         pos = self.battlePosDict[canonicalZoneId]
 
         interactivePropTrackBonus = -1
-
-        if simbase.config.GetBool('props-buff-battles', True) and canonicalZoneId in self.cellToGagBonusDict:
+        if config.GetBool('props-buff-battles', True) and canonicalZoneId in self.cellToGagBonusDict:
             interactivePropTrackBonus = self.cellToGagBonusDict[canonicalZoneId]
 
         self.battleMgr.newBattle(
@@ -977,13 +975,3 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
             track = SuitDNA.suitDepts[SuitBattleGlobals.pickFromFreqList(self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_TRACK])]
         self.notify.debug('pickLevelTypeAndTrack: %s %s %s' % (level, type, track))
         return (level, type, track)
-
-
-@magicWord(types=[str, int, int], category=CATEGORY_PROGRAMMER)
-def spawnCog(name, level, specialSuit = 0):
-    av = spellbook.getInvoker()
-    zoneId = av.getLocation()[1]
-    sp = simbase.air.suitPlanners.get(zoneId - (zoneId % 100))
-    pointmap = sp.streetPointList
-    sp.createNewSuit([], pointmap, suitName=name, suitLevel=level, specialSuit=specialSuit)
-    return "Spawned %s in current zone." % name

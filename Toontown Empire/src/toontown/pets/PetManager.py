@@ -1,5 +1,5 @@
-from pandac.PandaModules import *
-from toontown.toonbase import ToontownGlobals
+from panda3d.core import *
+from src.toontown.toonbase import ToontownGlobals
 from direct.task import Task
 
 def acquirePetManager():

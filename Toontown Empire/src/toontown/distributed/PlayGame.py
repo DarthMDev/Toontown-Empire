@@ -1,31 +1,31 @@
-from pandac.PandaModules import *
-from toontown.toonbase.ToonBaseGlobal import *
+from panda3d.core import *
+from src.toontown.toonbase.ToonBaseGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.task.Task import Task
 from ToontownMsgTypes import *
-from toontown.toonbase import ToontownGlobals
-from toontown.hood import TTHood
-from toontown.hood import DDHood
-from toontown.hood import MMHood
-from toontown.hood import BRHood
-from toontown.hood import DGHood
-from toontown.hood import DLHood
-from toontown.hood import GSHood
-from toontown.hood import OZHood
-from toontown.hood import GZHood
-from toontown.hood import SellbotHQ, CashbotHQ, LawbotHQ, BossbotHQ
-from toontown.hood import TutorialHood
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.hood import TTHood
+from src.toontown.hood import DDHood
+from src.toontown.hood import MMHood
+from src.toontown.hood import BRHood
+from src.toontown.hood import DGHood
+from src.toontown.hood import DLHood
+from src.toontown.hood import GSHood
+from src.toontown.hood import OZHood
+from src.toontown.hood import GZHood
+from src.toontown.hood import SellbotHQ, CashbotHQ, LawbotHQ, BossbotHQ
+from src.toontown.hood import TutorialHood
 from direct.task import TaskManagerGlobal
-from toontown.hood import QuietZoneState
-from toontown.hood import ZoneUtil
-from toontown.hood import EstateHood
-from toontown.hood import PartyHood
-from toontown.toonbase import TTLocalizer
-from toontown.parties.PartyGlobals import GoToPartyStatus
-from toontown.dna.DNAParser import *
+from src.toontown.hood import QuietZoneState
+from src.toontown.hood import ZoneUtil
+from src.toontown.hood import EstateHood
+from src.toontown.hood import PartyHood
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.parties.PartyGlobals import GoToPartyStatus
+from src.toontown.dna.DNAParser import *
 
 class PlayGame(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('PlayGame')
@@ -192,7 +192,8 @@ class PlayGame(StateData.StateData):
         if how in ['tunnelIn',
          'teleportIn',
          'doorIn',
-         'elevatorIn']:
+         'elevatorIn',
+         'walk']:
             self.fsm.request('quietZone', [doneStatus])
         else:
             self.notify.error('Exited hood with unexpected mode %s' % how)
@@ -228,6 +229,7 @@ class PlayGame(StateData.StateData):
         toHoodPhrase = ToontownGlobals.hoodNameMap[canonicalHoodId][0]
         hoodName = ToontownGlobals.hoodNameMap[canonicalHoodId][-1]
         zoneId = requestStatus['zoneId']
+        requestStatus['loader'] = 'cogHQLoader' if ZoneUtil.isCogHQZone(hoodId) else requestStatus['loader']
         loaderName = requestStatus['loader']
         avId = requestStatus.get('avId', -1)
         ownerId = requestStatus.get('ownerId', avId)
@@ -241,29 +243,29 @@ class PlayGame(StateData.StateData):
         if not loader.inBulkBlock:
             if hoodId == ToontownGlobals.MyEstate:
                 if avId == -1:
-                    loader.beginBulkLoad('hood', TTLocalizer.HeadingToYourEstate, count, 1, TTLocalizer.TIP_ESTATE)
+                    loader.beginBulkLoad('hood', TTLocalizer.HeadingToYourEstate, count, 1, TTLocalizer.TIP_ESTATE, zoneId)
                 else:
                     owner = base.cr.identifyAvatar(ownerId)
                     if owner == None:
                         friend = base.cr.identifyAvatar(avId)
                         if friend != None:
                             avName = friend.getName()
-                            loader.beginBulkLoad('hood', TTLocalizer.HeadingToFriend % avName, count, 1, TTLocalizer.TIP_ESTATE)
+                            loader.beginBulkLoad('hood', TTLocalizer.HeadingToFriend % avName, count, 1, TTLocalizer.TIP_ESTATE, zoneId)
                         else:
                             self.notify.warning("we can't perform this teleport")
                             return
                     else:
                         avName = owner.getName()
-                        loader.beginBulkLoad('hood', TTLocalizer.HeadingToEstate % avName, count, 1, TTLocalizer.TIP_ESTATE)
+                        loader.beginBulkLoad('hood', TTLocalizer.HeadingToEstate % avName, count, 1, TTLocalizer.TIP_ESTATE, zoneId)
             elif ZoneUtil.isCogHQZone(zoneId):
                 loader.beginBulkLoad('hood', TTLocalizer.HeadingToHood % {'to': toHoodPhrase,
-                 'hood': hoodName}, count, 1, TTLocalizer.TIP_COGHQ)
+                 'hood': hoodName}, count, 1, TTLocalizer.TIP_COGHQ, zoneId)
             elif ZoneUtil.isGoofySpeedwayZone(zoneId):
                 loader.beginBulkLoad('hood', TTLocalizer.HeadingToHood % {'to': toHoodPhrase,
-                 'hood': hoodName}, count, 1, TTLocalizer.TIP_KARTING)
+                 'hood': hoodName}, count, 1, TTLocalizer.TIP_KARTING, zoneId)
             else:
                 loader.beginBulkLoad('hood', TTLocalizer.HeadingToHood % {'to': toHoodPhrase,
-                 'hood': hoodName}, count, 1, TTLocalizer.TIP_GENERAL)
+                 'hood': hoodName}, count, 1, TTLocalizer.TIP_GENERAL, zoneId)
         if hoodId == ToontownGlobals.Tutorial:
             self.loadDnaStoreTutorial()
         else:
@@ -393,9 +395,6 @@ class PlayGame(StateData.StateData):
         base.localAvatar.chatMgr.obscure(1, 1)
         base.localAvatar.obscureFriendsListButton(1)
         requestStatus['how'] = 'tutorial'
-        if base.config.GetString('language', 'english') == 'japanese':
-            musicVolume = base.config.GetFloat('tutorial-music-volume', 0.5)
-            requestStatus['musicVolume'] = musicVolume
         self.hood.enter(requestStatus)
 
     def exitTutorialHood(self):
@@ -557,8 +556,4 @@ class PlayGame(StateData.StateData):
         return self.place
 
     def getPlaceId(self):
-        if self.hood:
-            return self.hood.hoodId
-        else:
-            return None
-        return None
+        return self.hood.hoodId if self.hood else None

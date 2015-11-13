@@ -4,20 +4,20 @@ from direct.gui import DirectGuiGlobals
 from direct.showbase import DirectObject
 from direct.showbase import PythonUtil
 from direct.task.Task import Task
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.parties import PartyGlobals
-from toontown.parties.PartyInfo import PartyInfo
-from toontown.parties import PartyUtils
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.parties import PartyGlobals
+from src.toontown.parties.PartyInfo import PartyInfo
+from src.toontown.parties import PartyUtils
 
 class PartyEditorGridElement(DirectButton):
     notify = directNotify.newCategory('PartyEditorGridElement')
 
-    def __init__(self, partyEditor, id, isDecoration, checkSoldOutAndAffordability, **kw):
+    def __init__(self, partyEditor, id, isDecoration, checkSoldOutAndPaidStatusAndAffordability, **kw):
         self.partyEditor = partyEditor
         self.id = id
         self.isDecoration = isDecoration
-        self.checkSoldOutAndAffordability = checkSoldOutAndAffordability
+        self.checkSoldOutAndPaidStatusAndAffordability = checkSoldOutAndPaidStatusAndAffordability
         if self.isDecoration:
             self.name = TTLocalizer.PartyDecorationNameDict[self.id]['editor']
             colorList = ((1.0, 1.0, 1.0, 1.0),
@@ -218,7 +218,7 @@ class PartyEditorGridElement(DirectButton):
                 self.partyEditor.handleMutuallyExclusiveActivities()
         else:
             self.stash()
-        self.checkSoldOutAndAffordability()
+        self.checkSoldOutAndPaidStatusAndAffordability()
         return
 
     def placeInPartyGrounds(self, desiredXY = None):
@@ -230,7 +230,7 @@ class PartyEditorGridElement(DirectButton):
             self.partyEditor.partyEditorGrid.registerNewElement(self, self.centerGridSquare, self.getGridSize())
             self.partyEditor.updateCostsAndBank()
             self.partyEditor.partyPlanner.instructionLabel['text'] = TTLocalizer.PartyPlannerEditorInstructionsPartyGrounds
-            self.checkSoldOutAndAffordability()
+            self.checkSoldOutAndPaidStatusAndAffordability()
             return True
         else:
             return False

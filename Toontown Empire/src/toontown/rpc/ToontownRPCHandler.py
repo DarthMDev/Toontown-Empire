@@ -4,13 +4,13 @@ from direct.distributed.PyDatagram import PyDatagram
 from direct.stdpy import threading2
 import re
 
-from otp.distributed import OtpDoGlobals
-from toontown.distributed.ShardStatusReceiver import ShardStatusReceiver
-from toontown.rpc.ToontownRPCHandlerBase import *
-from toontown.suit.SuitInvasionGlobals import INVASION_TYPE_NORMAL
-from toontown.toon import ToonDNA
-from toontown.toonbase import TTLocalizer
-from toontown.uberdog.ClientServicesManagerUD import executeHttpRequest
+from src.otp.distributed import OtpDoGlobals
+from src.toontown.distributed.ShardStatusReceiver import ShardStatusReceiver
+from src.toontown.rpc.ToontownRPCHandlerBase import *
+from src.toontown.suit.SuitInvasionGlobals import INVASION_TYPE_NORMAL
+from src.toontown.toon import ToonDNA
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.uberdog.ClientServicesManagerUD import executeHttpRequest
 
 
 class ToontownRPCHandler(ToontownRPCHandlerBase):
@@ -645,6 +645,7 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
             result['head-color'] = TTLocalizer.NumToColor[dna.headColor]
             result['max-hp'] = fields['setMaxHp'][0]
             result['online'] = (avId in self.air.friendsManager.onlineToons)
+		    result['lastSeen'] = fields['setLastSeen'][0]
 
             return result
 
@@ -716,7 +717,7 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
             <int flags> = Extra invasion flags.
             <int type> = The invasion type.
         """
-        self.air.netMessenger.send(
+        self.air.sendNetEvent(
             'startInvasion',
             [shardId, suitDeptIndex, suitTypeIndex, flags, type])
 
@@ -730,7 +731,7 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
             [int shardId] = The ID of the shard that is running the invasion to
                 be terminated.
         """
-        self.air.netMessenger.send('stopInvasion', [shardId])
+        self.air.sendNetEvent('stopInvasion', [shardId])
 
     # --- NAME APPROVAL ---
 
@@ -749,8 +750,8 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
             On success: True
             On failure: False
         """
-        newFields = {'WishNameState': 'APPROVED'}
-        oldFields = {'WishNameState': 'PENDING'}
+        newFields = {'setWishNameState': 'APPROVED'}
+        oldFields = {'setWishNameState': 'PENDING'}
         return self.rpc_updateObject(
             avId, 'DistributedToonUD', newFields, oldFields=oldFields)
 
@@ -769,7 +770,7 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
             On success: True
             On failure: False
         """
-        newFields = {'WishNameState': 'REJECTED'}
-        oldFields = {'WishNameState': 'PENDING'}
+        newFields = {'setWishNameState': 'REJECTED'}
+        oldFields = {'setWishNameState': 'PENDING'}
         return self.rpc_updateObject(
             avId, 'DistributedToonUD', newFields, oldFields=oldFields)

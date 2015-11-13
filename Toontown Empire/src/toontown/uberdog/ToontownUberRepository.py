@@ -1,37 +1,23 @@
 from direct.distributed.PyDatagram import *
 import urlparse
-
-from otp.distributed.DistributedDirectoryAI import DistributedDirectoryAI
-from otp.distributed.OtpDoGlobals import *
-from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
-import toontown.minigame.MinigameCreatorAI
-
+from src.otp.distributed.OtpDoGlobals import *
+from src.otp.distributed.DistributedDirectoryAI import DistributedDirectoryAI
+from src.toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
+import src.toontown.minigame.MinigameCreatorAI
+from src.otp.otpbase import BackupManager
 
 if config.GetBool('want-rpc-server', False):
-    from toontown.rpc.ToontownRPCServer import ToontownRPCServer
-    from toontown.rpc.ToontownRPCHandler import ToontownRPCHandler
-
-if config.GetBool('want-mongo-client', False):
-    import pymongo
-
+    from src.toontown.rpc.ToontownRPCServer import ToontownRPCServer
+    from src.toontown.rpc.ToontownRPCHandler import ToontownRPCHandler
 
 class ToontownUberRepository(ToontownInternalRepository):
     def __init__(self, baseChannel, serverId):
         ToontownInternalRepository.__init__(self, baseChannel, serverId, dcSuffix='UD')
 
-        if config.GetBool('want-mongo-client', False):
-            url = config.GetString('mongodb-url', 'mongodb://localhost')
-            replicaset = config.GetString('mongodb-replicaset', '')
-            if replicaset:
-                self.mongo = pymongo.MongoClient(url, replicaset=replicaset)
-            else:
-                self.mongo = pymongo.MongoClient(url)
-            db = (urlparse.urlparse(url).path or '/test')[1:]
-            self.mongodb = self.mongo[db]
-
         self.notify.setInfo(True)
 
     def handleConnected(self):
+        ToontownInternalRepository.handleConnected(self)
         rootObj = DistributedDirectoryAI(self)
         rootObj.generateWithRequiredAndId(self.getGameDoId(), 0, 0)
 
@@ -39,6 +25,10 @@ class ToontownUberRepository(ToontownInternalRepository):
             endpoint = config.GetString('rpc-server-endpoint', 'http://localhost:8080/')
             self.rpcServer = ToontownRPCServer(endpoint, ToontownRPCHandler(self))
             self.rpcServer.start(useTaskChain=True)
+
+        self.backups = BackupManager.BackupManager(
+            filepath=self.config.GetString('backups-filepath', 'backups/'),
+            extension=self.config.GetString('backups-extension', '.json'))
 
         self.createGlobals()
         self.notify.info('Done.')
@@ -50,6 +40,8 @@ class ToontownUberRepository(ToontownInternalRepository):
 
         self.csm = simbase.air.generateGlobalObject(OTP_DO_ID_CLIENT_SERVICES_MANAGER, 'ClientServicesManager')
         self.chatAgent = simbase.air.generateGlobalObject(OTP_DO_ID_CHAT_MANAGER, 'ChatAgent')
-        self.friendsManager = simbase.air.generateGlobalObject(OTP_DO_ID_TTE_FRIENDS_MANAGER, 'TTEFriendsManager')
+        self.friendsManager = simbase.air.generateGlobalObject(OTP_DO_ID_tte_FRIENDS_MANAGER, 'tteFriendsManager')
         self.globalPartyMgr = simbase.air.generateGlobalObject(OTP_DO_ID_GLOBAL_PARTY_MANAGER, 'GlobalPartyManager')
         self.groupManager = simbase.air.generateGlobalObject(OPT_DO_ID_GROUP_MANAGER, 'GroupManager')
+        self.megaInvasionManager = simbase.air.generateGlobalObject(
+            OTP_DO_ID_MEGA_INVASION_MANAGER, 'MegaInvasionManager')

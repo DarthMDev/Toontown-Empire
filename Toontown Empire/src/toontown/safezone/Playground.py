@@ -1,26 +1,26 @@
 from direct.interval.IntervalGlobal import *
-from pandac.PandaModules import *
-from toontown.toonbase.ToonBaseGlobal import *
+from panda3d.core import *
+from src.toontown.toonbase.ToonBaseGlobal import *
 from direct.directnotify import DirectNotifyGlobal
-from toontown.hood import Place
+from src.toontown.hood import Place
 from direct.showbase import DirectObject
 from direct.fsm import StateData
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.task import Task
-from toontown.toon import DeathForceAcknowledge
-from toontown.toon import HealthForceAcknowledge
-from toontown.toon import NPCForceAcknowledge
-from toontown.trolley import Trolley
-from toontown.toontowngui import TTDialog
-from toontown.toonbase import ToontownGlobals
-from toontown.toon.Toon import teleportDebug
-from toontown.toonbase import TTLocalizer
+from src.toontown.toon import DeathForceAcknowledge
+from src.toontown.toon import HealthForceAcknowledge
+from src.toontown.toon import NPCForceAcknowledge
+from src.toontown.trolley import Trolley
+from src.toontown.toontowngui import TTDialog
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toon.Toon import teleportDebug
+from src.toontown.toonbase import TTLocalizer
 from direct.gui import DirectLabel
-from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
-from toontown.quest import Quests
-from toontown.battle import BattleParticles
-from toontown.dna.DNAParser import DNABulkLoader
+from src.otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
+from src.toontown.quest import Quests
+from src.toontown.battle import BattleParticles
+from src.toontown.dna.DNAParser import DNABulkLoader
 
 class Playground(Place.Place):
     notify = DirectNotifyGlobal.directNotify.newCategory('Playground')
@@ -166,6 +166,7 @@ class Playground(Place.Place):
         self.accept('DistributedDoor_doorTrigger', self.handleDoorTrigger)
         base.playMusic(self.loader.music, looping=1, volume=0.8)
         self.loader.geom.reparentTo(render)
+
         for i in self.loader.nodeList:
             self.loader.enterAnimatedProps(i)
 
@@ -178,50 +179,31 @@ class Playground(Place.Place):
             self.loader.hood.eventLights += geom.findAllMatches('**/prop_snow_tree*')
             self.loader.hood.eventLights += geom.findAllMatches('**/prop_tree*')
             self.loader.hood.eventLights += geom.findAllMatches('**/*christmas*')
+
             for light in self.loader.hood.eventLights:
                 light.setColorScaleOff(0)
 
-        newsManager = base.cr.newsManager
-        if newsManager:
-            holidayIds = base.cr.newsManager.getDecorationHolidayId()
-            #Halloween Event
-            if (ToontownGlobals.HALLOWEEN_COSTUMES in holidayIds or ToontownGlobals.SPOOKY_COSTUMES in holidayIds) and self.loader.hood.spookySkyFile:
-                lightsOff = Sequence(LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, 0.1, Vec4(0.55, 0.55, 0.65, 1)), Func(self.loader.hood.startSpookySky), Func(__lightDecorationOn__))
-                lightsOff.start()
-            else:
-                self.loader.hood.startSky()
-                lightsOn = LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, 0.1, Vec4(1, 1, 1, 1))
-                lightsOn.start()
-            #Christmas Event
-            if (ToontownGlobals.WINTER_DECORATIONS in holidayIds or ToontownGlobals.WACKY_WINTER_DECORATIONS in holidayIds) and self.loader.hood.snowySkyFile:
-                lightsOff = Sequence(LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, 0.1, Vec4(0.7, 0.7, 0.8, 1)), Func(self.loader.hood.startSnowySky), Func(__lightDecorationOn__))
-                lightsOff.start()
-                self.snowEvent = BattleParticles.loadParticleFile('snowdisk.ptf')
-                self.snowEvent.setPos(0, 30, 10)
-                #2 and 3 are only for the blizzard event and should be removed
-                self.snowEvent2 = BattleParticles.loadParticleFile('snowdisk.ptf')
-                self.snowEvent2.setPos(0, 10, 10)
-                self.snowEvent3 = BattleParticles.loadParticleFile('snowdisk.ptf')
-                self.snowEvent3.setPos(0, 20, 5)
-                self.snowEventRender = base.cr.playGame.hood.loader.geom.attachNewNode('snowRender')
-                self.snowEventRender.setDepthWrite(2)
-                self.snowEventRender.setBin('fixed', 1)
-                self.snowEventFade = None
-                self.snowEvent.start(camera, self.snowEventRender)
-                #2 and 3 are only for the blizzard event and should be removed
-                self.snowEvent2.start(camera, self.snowEventRender)
-                self.snowEvent3.start(camera, self.snowEventRender)
-            else:
-                self.loader.hood.startSky()
-                lightsOn = LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, 0.1, Vec4(1, 1, 1, 1))
-                lightsOn.start()
+        if base.cr.newsManager.isHolidayRunning(ToontownGlobals.HALLOWEEN) and self.loader.hood.spookySkyFile:
+            lightsOff = Sequence(LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, 0.1, Vec4(0.55, 0.55, 0.65, 1)), Func(self.loader.hood.startSpookySky), Func(__lightDecorationOn__))
+            lightsOff.start()
+        elif base.cr.newsManager.isHolidayRunning(ToontownGlobals.CHRISTMAS) and self.loader.hood.snowySkyFile:
+            lightsOff = Sequence(LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, 0.1, Vec4(0.7, 0.7, 0.8, 1)), Func(self.loader.hood.startSnowySky), Func(__lightDecorationOn__))
+            lightsOff.start()
+            self.snowEvent = BattleParticles.loadParticleFile('snowdisk.ptf')
+            self.snowEvent.setPos(0, 30, 10)
+            self.snowEventRender = base.cr.playGame.hood.loader.geom.attachNewNode('snowRender')
+            self.snowEventRender.setDepthWrite(2)
+            self.snowEventRender.setBin('fixed', 1)
+            self.snowEventFade = None
+            self.snowEvent.start(camera, self.snowEventRender)
         else:
             self.loader.hood.startSky()
             lightsOn = LerpColorScaleInterval(base.cr.playGame.hood.loader.geom, 0.1, Vec4(1, 1, 1, 1))
             lightsOn.start()
-        NametagGlobals.setWant2dNametags(True)
+
+        NametagGlobals.setMasterArrowsOn(1)
         self.zoneId = requestStatus['zoneId']
-        self.tunnelOriginList = base.cr.hoodMgr.addLinkTunnelHooks(self, self.loader.nodeList, self.zoneId)
+        self.tunnelOriginList = base.cr.hoodMgr.addLinkTunnelHooks(self, self.loader.nodeList)
         how = requestStatus['how']
         if how == 'teleportIn':
             how = 'deathAck'
@@ -242,8 +224,7 @@ class Playground(Place.Place):
             for light in self.loader.hood.eventLights:
                 light.reparentTo(hidden)
 
-        newsManager = base.cr.newsManager
-        NametagGlobals.setWant2dNametags(False)
+        NametagGlobals.setMasterArrowsOn(0)
         for i in self.loader.nodeList:
             self.loader.exitAnimatedProps(i)
 
@@ -387,7 +368,7 @@ class Playground(Place.Place):
 
     def exitHFAReject(self):
         pass
-    
+
     def enterNPCFA(self, requestStatus):
         self.acceptOnce(self.npcfaDoneEvent, self.enterNPCFACallback, [requestStatus])
         self.npcfa = NPCForceAcknowledge.NPCForceAcknowledge(self.npcfaDoneEvent)
@@ -575,7 +556,7 @@ class Playground(Place.Place):
         else:
             self.geom = hidden.attachNewNode(node)
         self.makeDictionaries(self.loader.dnaStore)
-        self.tunnelOriginList = base.cr.hoodMgr.addLinkTunnelHooks(self, self.nodeList, self.zoneId)
+        self.tunnelOriginList = base.cr.hoodMgr.addLinkTunnelHooks(self, self.nodeList)
         self.geom.flattenMedium()
         gsg = base.win.getGsg()
         if gsg:

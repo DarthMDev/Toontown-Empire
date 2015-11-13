@@ -1,6 +1,6 @@
-from otp.ai.AIBase import *
+from src.otp.ai.AIBase import *
 from direct.directnotify import DirectNotifyGlobal
-from otp.level import DistributedEntityAI
+from src.otp.level import DistributedEntityAI
 import SinkingPlatformGlobals
 
 class DistributedSinkingPlatformAI(DistributedEntityAI.DistributedEntityAI):

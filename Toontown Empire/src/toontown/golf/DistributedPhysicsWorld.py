@@ -1,18 +1,18 @@
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from pandac.PandaModules import *
+from src.toontown.toonbase import ToontownGlobals
+from panda3d.core import *
 from math import *
 import math
 from direct.fsm.FSM import FSM
-from toontown.minigame import ArrowKeys
+from src.toontown.minigame import ArrowKeys
 from direct.showbase import PythonUtil
 from direct.showutil import Rope
 from direct.task import Task
 from direct.distributed.ClockDelta import *
 import BuildGeometry
-from toontown.golf import GolfGlobals
-from toontown.golf import PhysicsWorldBase
+from src.toontown.golf import GolfGlobals
+from src.toontown.golf import PhysicsWorldBase
 import random, time
 from direct.interval.SoundInterval import SoundInterval
 

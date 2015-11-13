@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from ElevatorConstants import *
@@ -8,11 +8,11 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.distributed import DistributedObject
 from direct.fsm import State
-from toontown.toonbase import TTLocalizer, ToontownGlobals
+from src.toontown.toonbase import TTLocalizer, ToontownGlobals
 from direct.task.Task import Task
-from toontown.distributed import DelayDelete
-from toontown.hood import ZoneUtil
-from toontown.building import BoardingGroupShow
+from src.toontown.distributed import DelayDelete
+from src.toontown.hood import ZoneUtil
+from src.toontown.building import BoardingGroupShow
 
 class DistributedElevator(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedElevator')
@@ -348,8 +348,6 @@ class DistributedElevator(DistributedObject.DistributedObject):
                 base.localAvatar.elevatorNotifier.showMe(TTLocalizer.ElevatorMinLaff % self.minLaff)
             elif reason == REJECT_PROMOTION:
                 base.localAvatar.elevatorNotifier.showMe(TTLocalizer.BossElevatorRejectMessage)
-            elif reason == REJECT_NOT_YET_AVAILABLE:
-                base.localAvatar.elevatorNotifier.showMe(TTLocalizer.NotYetAvailable)
         doneStatus = {'where': 'reject'}
         elevator = self.getPlaceElevator()
         if elevator:

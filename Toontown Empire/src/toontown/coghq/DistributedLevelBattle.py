@@ -2,19 +2,18 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.interval.IntervalGlobal import *
-from pandac.PandaModules import *
+from panda3d.core import *
 import random
 
-from otp.avatar import Emote
-from toontown.battle import DistributedBattle
-from toontown.battle import SuitBattleGlobals
-from toontown.battle.BattleBase import *
-from toontown.chat.ChatGlobals import *
-from toontown.nametag import NametagGlobals
-from toontown.nametag.NametagGlobals import *
-from toontown.suit import SuitDNA
-from toontown.toon import TTEmote
-from toontown.toonbase import ToontownGlobals
+from src.otp.avatar import Emote
+from src.toontown.battle import DistributedBattle
+from src.toontown.battle import SuitBattleGlobals
+from src.toontown.battle.BattleBase import *
+from src.otp.nametag.NametagConstants import *
+from src.otp.nametag import NametagGlobals
+from src.toontown.suit import SuitDNA
+from src.toontown.toon import TTEmote
+from src.toontown.toonbase import ToontownGlobals
 
 
 class DistributedLevelBattle(DistributedBattle.DistributedBattle):
@@ -179,7 +178,7 @@ class DistributedLevelBattle(DistributedBattle.DistributedBattle):
             camTrack.append(Func(camera.lookAt, suit))
         mtrack = Parallel(suitTrack, toonTrack)
         if self.hasLocalToon():
-            NametagGlobals.setWant2dNametags(False)
+            NametagGlobals.setMasterArrowsOn(0)
             mtrack = Parallel(mtrack, camTrack)
         done = Func(callback)
         track = Sequence(mtrack, done, name=name)
@@ -229,6 +228,6 @@ class DistributedLevelBattle(DistributedBattle.DistributedBattle):
         self.notify.info('exitReward()')
         self.clearInterval(self.uniqueName('floorReward'))
         self._removeMembersKeep()
-        NametagGlobals.setWant2dNametags(True)
+        NametagGlobals.setMasterArrowsOn(1)
         for toon in self.toons:
             toon.startSmooth()

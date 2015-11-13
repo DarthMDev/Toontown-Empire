@@ -1,11 +1,11 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObject import DistributedObject
-from pandac.PandaModules import *
-from toontown.building import ToonInteriorColors
-from toontown.hood import ZoneUtil
-from toontown.toonbase.ToonBaseGlobal import *
-from toontown.toonbase.ToontownGlobals import *
-from toontown.toon.DistributedNPCToonBase import DistributedNPCToonBase
+from panda3d.core import *
+from src.toontown.building import ToonInteriorColors
+from src.toontown.hood import ZoneUtil
+from src.toontown.toonbase.ToonBaseGlobal import *
+from src.toontown.toonbase.ToontownGlobals import *
+from src.toontown.toon.DistributedNPCToonBase import DistributedNPCToonBase
 
 class DistributedKartShopInterior(DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedKartShopInterior')

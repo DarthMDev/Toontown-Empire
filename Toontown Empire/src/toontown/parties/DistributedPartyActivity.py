@@ -6,14 +6,14 @@ from direct.showbase import RandomNumGen
 from direct.showbase import PythonUtil
 from direct.interval.IntervalGlobal import Sequence, Parallel, ActorInterval
 from direct.interval.FunctionInterval import Wait
-from otp.avatar import Emote
-from otp.otpbase import OTPGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.parties import PartyGlobals
-from toontown.minigame.MinigameRulesPanel import MinigameRulesPanel
-from toontown.toontowngui import TTDialog
-from toontown.parties.JellybeanRewardGui import JellybeanRewardGui
-from toontown.parties.PartyUtils import getPartyActivityIcon, getCenterPosFromGridSize
+from src.otp.avatar import Emote
+from src.otp.otpbase import OTPGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.parties import PartyGlobals
+from src.toontown.minigame.MinigameRulesPanel import MinigameRulesPanel
+from src.toontown.toontowngui import TTDialog
+from src.toontown.parties.JellybeanRewardGui import JellybeanRewardGui
+from src.toontown.parties.PartyUtils import getPartyActivityIcon, getCenterPosFromGridSize
 
 class DistributedPartyActivity(DistributedObject.DistributedObject):
     def __init__(self, cr, activityId, activityType, wantLever = False, wantRewardGui = False):
@@ -413,6 +413,8 @@ class DistributedPartyActivity(DistributedObject.DistributedObject):
         self._disableCollisions()
         self.signModel.removeNode()
         del self.signModel
+
+
         if hasattr(self, 'sign'):
             self.sign.removeNode()
             del self.sign
@@ -496,7 +498,7 @@ class DistributedPartyActivity(DistributedObject.DistributedObject):
         self.notify.debug('BASE: startRules')
         self.accept(self.rulesDoneEvent, self.handleRulesDone)
         self.rulesPanel = MinigameRulesPanel('PartyRulesPanel', self.getTitle(), self.getInstructions(), self.rulesDoneEvent, timeout)
-        base.setCellsActive(base.bottomCells + [base.leftCells[0], base.rightCells[1]], False)
+        base.setCellsAvailable(base.bottomCells + [base.leftCells[0], base.rightCells[1]], False)
         self.rulesPanel.load()
         self.rulesPanel.enter()
 
@@ -507,7 +509,7 @@ class DistributedPartyActivity(DistributedObject.DistributedObject):
             self.rulesPanel.exit()
             self.rulesPanel.unload()
             del self.rulesPanel
-            base.setCellsActive(base.bottomCells + [base.leftCells[0], base.rightCells[1]], True)
+            base.setCellsAvailable(base.bottomCells + [base.leftCells[0], base.rightCells[1]], True)
 
     def handleRulesDone(self):
         self.notify.error('BASE: handleRulesDone should be overridden')

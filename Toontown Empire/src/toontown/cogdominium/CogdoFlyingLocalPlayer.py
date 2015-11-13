@@ -9,11 +9,10 @@ from direct.interval.IntervalGlobal import Func, LerpFunc, LerpPosInterval, Lerp
 from direct.interval.MetaInterval import Sequence, Parallel
 from direct.showbase.PythonUtil import bound as clamp
 from direct.distributed.ClockDelta import globalClockDelta
-from otp.otpbase import OTPGlobals
-from toontown.minigame.OrthoDrive import OrthoDrive
-from toontown.minigame.OrthoWalk import OrthoWalk
-from toontown.toonbase import TTLocalizer
-from otp.avatar import ToontownControlManager
+from src.otp.otpbase import OTPGlobals
+from src.toontown.minigame.OrthoDrive import OrthoDrive
+from src.toontown.minigame.OrthoWalk import OrthoWalk
+from src.toontown.toonbase import TTLocalizer
 from CogdoFlyingCollisions import CogdoFlyingCollisions
 from CogdoFlyingPlayer import CogdoFlyingPlayer
 from CogdoFlyingGuiManager import CogdoFlyingGuiManager
@@ -46,7 +45,8 @@ class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
                       'FreeFly',
                       'Running',
                       'HitWhileFlying',
-                      'InWhirlwind'],
+                      'InWhirlwind',
+                      'WaitingForWin'],
          'InWhirlwind': ['Inactive',
                          'OutOfTime',
                          'Death',
@@ -706,24 +706,14 @@ class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
             return False
 
     def pressedControlWhileRunning(self):
-        if base.wantWASD == True:
-          if self.isFuelLeft() and self.state == 'Running':
-           self.notify.debug('Pressed Control and have fuel')
-           self.request('FlyingUp')
-          else:
-            self.ignore(base.JUMP)
-            self.acceptOnce(base.JUMP, self.pressedControlWhileRunning)
-        else:
-         if base.wantWASD == False:
-          if self.isFuelLeft() and self.state == 'Running':
+        if self.isFuelLeft() and self.state == 'Running':
             self.notify.debug('Pressed Control and have fuel')
             self.request('FlyingUp')
-          else:
+        else:
             self.ignore(base.JUMP)
             self.ignore('lcontrol')
             self.acceptOnce(base.JUMP, self.pressedControlWhileRunning)
             self.acceptOnce('lcontrol', self.pressedControlWhileRunning)
-            
 
     def setPropellerState(self, propState):
         if not self.hasPickedUpFirstPropeller:
@@ -874,28 +864,17 @@ class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
         self.coolDownAfterHitInterval.start()
 
     def enterRunning(self):
-        if base.wantWASD == True:
-         CogdoFlyingLocalPlayer.notify.info("enter%s: '%s' -> '%s'" % (self.newState, self.oldState, self.newState))
-         self.toon.b_setAnimState('Happy', 1.0)
+        CogdoFlyingLocalPlayer.notify.info("enter%s: '%s' -> '%s'" % (self.newState, self.oldState, self.newState))
+        self.toon.b_setAnimState('Happy', 1.0)
         if self.oldState not in ['Spawn', 'HitWhileRunning', 'Inactive']:
             self.toon.jumpHardLand()
             self._collideSfx.play()
         self.orthoWalk.start()
         self.setPropellerState(CogdoFlyingLocalPlayer.PropStates.Normal)
-        self.ignore(base.JUMP)
-        self.acceptOnce(base.JUMP, self.pressedControlWhileRunning)
-        if base.wantWASD == False:
-         CogdoFlyingLocalPlayer.notify.info("enter%s: '%s' -> '%s'" % (self.newState, self.oldState, self.newState))
-         self.toon.b_setAnimState('Happy', 1.0)
-        if self.oldState not in ['Spawn', 'HitWhileRunning', 'Inactive']:
-            self.toon.jumpHardLand()
-            self._collideSfx.play()
-        self.orthoWalk.start()
-        self.setPropellerState(CogdoFlyingLocalPlayer.PropStates.Normal)
-        self.ignore(base.JUMP)
+        self.ignore('control')
         self.ignore('lcontrol')
-        self.acceptOnce(base.JUMP, self.pressedControlWhileRunning)
-        self.acceptOnce('lcontrol', self.pressedControlWhileRunning)  
+        self.acceptOnce('control', self.pressedControlWhileRunning)
+        self.acceptOnce('lcontrol', self.pressedControlWhileRunning)
 
     def filterRunning(self, request, args):
         if request == self.state:
@@ -905,15 +884,10 @@ class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
         return None
 
     def exitRunning(self):
-     if base.wantWASD == True:
         CogdoFlyingLocalPlayer.notify.debug("exit%s: '%s' -> '%s'" % (self.oldState, self.oldState, self.newState))
         self.orthoWalk.stop()
         self.ignore(base.JUMP)
-     if base.wantWASD == False:
-         CogdoFlyingLocalPlayer.notify.debug("exit%s: '%s' -> '%s'" % (self.oldState, self.oldState, self.newState))
-         self.orthoWalk.stop()
-         self.ignore(base.JUMP)
-         self.ignore('lcontrol')
+        self.ignore('lcontrol')
 
     def enterOutOfTime(self):
         CogdoFlyingLocalPlayer.notify.info("enter%s: '%s' -> '%s'" % (self.newState, self.oldState, self.newState))

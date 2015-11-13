@@ -1,11 +1,10 @@
-from pandac.PandaModules import *
-from toontown.toonbase import ToontownGlobals
+from panda3d.core import *
+from src.toontown.toonbase import ToontownGlobals
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 import random
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
 import HouseGlobals
 import Estate
 
@@ -69,11 +68,3 @@ class EstateManager(DistributedObject.DistributedObject):
     def removeFriend(self, ownerId, avId):
         self.notify.debug('removeFriend ownerId = %s, avId = %s' % (ownerId, avId))
         self.sendUpdate('removeFriend', [ownerId, avId])
-
-    def startAprilFools(self):
-        if isinstance(base.cr.playGame.getPlace(), Estate.Estate):
-            base.cr.playGame.getPlace().startAprilFoolsControls()
-
-    def stopAprilFools(self):
-        if isinstance(base.cr.playGame.getPlace(), Estate.Estate):
-            base.cr.playGame.getPlace().stopAprilFoolsControls()

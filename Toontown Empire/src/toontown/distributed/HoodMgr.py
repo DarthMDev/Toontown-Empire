@@ -1,10 +1,10 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase import DirectObject
-from pandac.PandaModules import *
+from panda3d.core import *
 import random
 
-from toontown.hood import ZoneUtil
-from toontown.toonbase import ToontownGlobals
+from src.toontown.hood import ZoneUtil
+from src.toontown.toonbase import ToontownGlobals
 
 
 class HoodMgr(DirectObject.DirectObject):
@@ -179,7 +179,7 @@ class HoodMgr(DirectObject.DirectObject):
         'mm': ToontownGlobals.MinniesMelodyland,
         'dg': ToontownGlobals.DaisyGardens,
         'oz': ToontownGlobals.OutdoorZone,
-        'ff': ToontownGlobals.FunnyFarm,
+        'ff': ToontownGlobals.ForestGrove,
         'gs': ToontownGlobals.GoofySpeedway,
         'dl': ToontownGlobals.DonaldsDreamland,
         'bosshq': ToontownGlobals.BossbotHQ,
@@ -196,7 +196,7 @@ class HoodMgr(DirectObject.DirectObject):
         ToontownGlobals.MinniesMelodyland: 'mm',
         ToontownGlobals.DaisyGardens: 'dg',
         ToontownGlobals.OutdoorZone: 'oz',
-        ToontownGlobals.FunnyFarm: 'ff',
+        ToontownGlobals.ForestGrove: 'ff',
         ToontownGlobals.GoofySpeedway: 'gs',
         ToontownGlobals.DonaldsDreamland: 'dl',
         ToontownGlobals.BossbotHQ: 'bosshq',
@@ -218,10 +218,6 @@ class HoodMgr(DirectObject.DirectObject):
             droppnt = self.currentDropPoint % len(dropPointList)
             self.currentDropPoint = (self.currentDropPoint + 1) % len(dropPointList)
             return dropPointList[droppnt]
-
-    def getPhaseFromHood(self, hoodId):
-        hoodId = ZoneUtil.getCanonicalHoodId(hoodId)
-        return ToontownGlobals.phaseMap[hoodId]
 
     def getPlaygroundCenterFromId(self, hoodId):
         dropPointList = self.dropPoints.get(hoodId, None)
@@ -249,7 +245,7 @@ class HoodMgr(DirectObject.DirectObject):
         hoodId = ZoneUtil.getCanonicalZoneId(hoodId)
         return ToontownGlobals.hoodNameMap[hoodId][-1]
 
-    def addLinkTunnelHooks(self, hoodPart, nodeList, currentZoneId):
+    def addLinkTunnelHooks(self, hoodPart, nodeList):
         tunnelOriginList = []
         for i in nodeList:
             linkTunnelNPC = i.findAllMatches('**/linktunnel*')
@@ -261,8 +257,6 @@ class HoodMgr(DirectObject.DirectObject):
                 zoneStr = nameParts[2]
                 hoodId = self.getIdFromName(hoodStr)
                 zoneId = int(zoneStr)
-                hoodId = ZoneUtil.getTrueZoneId(hoodId, currentZoneId)
-                zoneId = ZoneUtil.getTrueZoneId(zoneId, currentZoneId)
                 linkSphere = linkTunnel.find('**/tunnel_trigger')
                 if linkSphere.isEmpty():
                     linkSphere = linkTunnel.find('**/tunnel_sphere')

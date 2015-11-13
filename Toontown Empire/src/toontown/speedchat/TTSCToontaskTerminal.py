@@ -1,6 +1,6 @@
-from otp.speedchat.SCTerminal import *
-from toontown.quest import Quests
-from toontown.toon import NPCToons
+from src.otp.speedchat.SCTerminal import *
+from src.toontown.quest import Quests
+from src.toontown.toon import NPCToons
 TTSCToontaskMsgEvent = 'SCToontaskMsg'
 
 def decodeTTSCToontaskMsg(taskId, toNpcId, toonProgress, msgIndex):

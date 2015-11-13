@@ -2,14 +2,14 @@ from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
 from ElevatorConstants import *
 import ElevatorUtils
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownBattleGlobals
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownBattleGlobals
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.distributed import DistributedObject
 from direct.fsm import State
-from toontown.battle import BattleBase
-from toontown.hood import ZoneUtil
+from src.toontown.battle import BattleBase
+from src.toontown.hood import ZoneUtil
 
 class DistributedSuitInterior(DistributedObject.DistributedObject):
     id = 0

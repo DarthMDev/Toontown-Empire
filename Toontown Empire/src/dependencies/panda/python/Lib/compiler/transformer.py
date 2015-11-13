@@ -1344,12 +1344,12 @@ class Transformer:
     def com_sliceobj(self, node):
         # proper_slice: short_slice | long_slice
         # short_slice:  [lower_bound] ":" [upper_bound]
-        # long_slice:   short_slice ":" [empire]
+        # long_slice:   short_slice ":" [stride]
         # lower_bound:  expression
         # upper_bound:  expression
-        # empire:       expression
+        # stride:       expression
         #
-        # Note: a empire may be further slicing...
+        # Note: a stride may be further slicing...
 
         items = []
 
@@ -1368,7 +1368,7 @@ class Transformer:
             items.append(Const(None))
 
         # a short_slice has been built. look for long_slice now by looking
-        # for empires...
+        # for strides...
         for j in range(i, len(node)):
             ch = node[j]
             if len(ch) == 2:

@@ -1,4 +1,4 @@
-from toontown.parties.DistributedPartyCogActivity import DistributedPartyCogActivity
+from src.toontown.parties.DistributedPartyCogActivity import DistributedPartyCogActivity
 
 class DistributedPartyWinterCogActivity(DistributedPartyCogActivity):
 

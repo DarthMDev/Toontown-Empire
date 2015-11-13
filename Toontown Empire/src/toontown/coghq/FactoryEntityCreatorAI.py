@@ -1,4 +1,4 @@
-from otp.level import EntityCreatorAI
+from src.otp.level import EntityCreatorAI
 from direct.showbase.PythonUtil import Functor
 import DistributedBeanBarrelAI
 import DistributedButtonAI
@@ -7,8 +7,8 @@ import DistributedLiftAI
 import DistributedDoorEntityAI
 import DistributedGagBarrelAI
 import DistributedGridAI
-from toontown.suit import DistributedGridGoonAI
-from toontown.suit import DistributedGoonAI
+from src.toontown.suit import DistributedGridGoonAI
+from src.toontown.suit import DistributedGoonAI
 import DistributedHealBarrelAI
 import DistributedStomperPairAI
 import DistributedTriggerAI
@@ -24,8 +24,8 @@ import DirectionalCellAI
 import FactoryLevelMgrAI
 import BattleBlockerAI
 import DistributedGolfGreenGameAI
-from toontown.coghq import DistributedMoleFieldAI
-from toontown.coghq import DistributedMazeAI
+from src.toontown.coghq import DistributedMoleFieldAI
+from src.toontown.coghq import DistributedMazeAI
 
 class FactoryEntityCreatorAI(EntityCreatorAI.EntityCreatorAI):
 

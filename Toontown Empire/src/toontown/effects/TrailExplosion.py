@@ -1,8 +1,8 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from EffectController import EffectController
 from PooledEffect import PooledEffect
-from toontown.effects.SparksTrailLong import SparksTrailLong
+from src.toontown.effects.SparksTrailLong import SparksTrailLong
 import random
 
 class TrailExplosion(PooledEffect, EffectController):

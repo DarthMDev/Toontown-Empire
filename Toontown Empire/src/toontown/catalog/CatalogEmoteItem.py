@@ -1,7 +1,7 @@
 import CatalogItem
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from otp.otpbase import OTPLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.otp.otpbase import OTPLocalizer
 from direct.interval.IntervalGlobal import *
 
 class CatalogEmoteItem(CatalogItem.CatalogItem):
@@ -17,7 +17,7 @@ class CatalogEmoteItem(CatalogItem.CatalogItem):
         return 1
 
     def reachedPurchaseLimit(self, avatar):
-        if self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder or self in avatar.awardMailboxContents or self in avatar.onAwardOrder:
+        if self in avatar.onOrder or self in avatar.mailboxContents or self in avatar.onGiftOrder:
             return 1
         if self.emoteIndex >= len(avatar.emoteAccess):
             return 0
@@ -46,10 +46,10 @@ class CatalogEmoteItem(CatalogItem.CatalogItem):
         return ToontownGlobals.P_ItemAvailable
 
     def getPicture(self, avatar):
-        from toontown.toon import Toon
-        from toontown.toon import ToonHead
-        from toontown.toon import TTEmote
-        from otp.avatar import Emote
+        from src.toontown.toon import Toon
+        from src.toontown.toon import ToonHead
+        from src.toontown.toon import TTEmote
+        from src.otp.avatar import Emote
         self.hasPicture = True
         if self.emoteIndex in Emote.globalEmote.getHeadEmotes():
             toon = ToonHead.ToonHead()
@@ -73,10 +73,10 @@ class CatalogEmoteItem(CatalogItem.CatalogItem):
         return (model, track)
 
     def changeIval(self, volume):
-        from toontown.toon import Toon
-        from toontown.toon import ToonHead
-        from toontown.toon import TTEmote
-        from otp.avatar import Emote
+        from src.toontown.toon import Toon
+        from src.toontown.toon import ToonHead
+        from src.toontown.toon import TTEmote
+        from src.otp.avatar import Emote
         self.volume = volume
         if not hasattr(self, 'pictureToon'):
             return Sequence()

@@ -1,9 +1,9 @@
 from direct.directnotify.DirectNotifyGlobal import *
-from pandac.PandaModules import *
-from toontown.building import DoorTypes
-from toontown.building.DistributedDoorAI import DistributedDoorAI
-from toontown.building.DistributedKartShopInteriorAI import DistributedKartShopInteriorAI
-from toontown.toon import NPCToons
+from panda3d.core import *
+from src.toontown.building import DoorTypes
+from src.toontown.building.DistributedDoorAI import DistributedDoorAI
+from src.toontown.building.DistributedKartShopInteriorAI import DistributedKartShopInteriorAI
+from src.toontown.toon import NPCToons
 
 class KartShopBuildingAI:
     notify = directNotify.newCategory('KartShopBuildingAI')

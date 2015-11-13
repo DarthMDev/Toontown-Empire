@@ -1,16 +1,16 @@
-from pandac.PandaModules import *
-from toontown.toonbase.ToonBaseGlobal import *
-from toontown.toonbase.ToontownGlobals import *
-from toontown.distributed.ToontownMsgTypes import *
+from panda3d.core import *
+from src.toontown.toonbase.ToonBaseGlobal import *
+from src.toontown.toonbase.ToontownGlobals import *
+from src.toontown.distributed.ToontownMsgTypes import *
 from direct.fsm import ClassicFSM, State
-from toontown.minigame import Purchase
-from otp.avatar import DistributedAvatar
-from toontown.hood import SkyUtil
+from src.toontown.minigame import Purchase
+from src.otp.avatar import DistributedAvatar
+from src.toontown.hood import SkyUtil
 from direct.task.Task import Task
-from toontown.hood.Hood import Hood
-from toontown.estate.EstateLoader import EstateLoader
-from toontown.estate import HouseGlobals
-from toontown.hood import ZoneUtil
+from src.toontown.hood.Hood import Hood
+from src.toontown.estate.EstateLoader import EstateLoader
+from src.toontown.estate import HouseGlobals
+from src.toontown.hood import ZoneUtil
 
 
 class EstateHood(Hood):
@@ -30,10 +30,8 @@ class EstateHood(Hood):
         self.storageDNAFile = 'phase_5.5/dna/storage_estate.pdna'
 
         self.holidayStorageDNADict = {
-          WINTER_DECORATIONS: ['phase_5.5/dna/winter_storage_estate.pdna'],
-          WACKY_WINTER_DECORATIONS: ['phase_5.5/dna/winter_storage_estate.pdna'],
-          HALLOWEEN_PROPS: ['phase_5.5/dna/halloween_props_storage_estate.pdna'],
-          SPOOKY_PROPS: ['phase_5.5/dna/halloween_props_storage_estate.pdna']}
+          CHRISTMAS: ['phase_5.5/dna/winter_storage_estate.pdna'],
+          HALLOWEEN: ['phase_5.5/dna/halloween_props_storage_estate.pdna']}
 
         self.skyFile = 'phase_3.5/models/props/TT_sky'
         self.spookySkyFile = 'phase_3.5/models/props/BR_sky'

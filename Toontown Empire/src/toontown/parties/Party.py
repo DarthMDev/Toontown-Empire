@@ -1,20 +1,21 @@
-from pandac.PandaModules import *
-from toontown.toonbase.ToonBaseGlobal import *
-from toontown.toonbase.ToontownGlobals import *
+
+from panda3d.core import *
+from src.toontown.toonbase.ToonBaseGlobal import *
+from src.toontown.toonbase.ToontownGlobals import *
 from direct.gui.DirectGui import *
 from direct.distributed.ClockDelta import *
-from toontown.hood import Place
+from src.toontown.hood import Place
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.task.Task import Task
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
 import random
 from direct.showbase import PythonUtil
-from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs, TLNull
-from toontown.hood import Place
-from toontown.hood import SkyUtil
-from toontown.parties import PartyPlanner
-from toontown.parties.DistributedParty import DistributedParty
+from src.otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs, TLNull
+from src.toontown.hood import Place
+from src.toontown.hood import SkyUtil
+from src.toontown.parties import PartyPlanner
+from src.toontown.parties.DistributedParty import DistributedParty
 
 class Party(Place.Place):
     notify = DirectNotifyGlobal.directNotify.newCategory('Party')
@@ -64,6 +65,7 @@ class Party(Place.Place):
         self.isPartyEnding = False
         self.accept('partyStateChanged', self.setPartyState)
         return
+
 
     def delete(self):
         self.unload()
@@ -129,6 +131,9 @@ class Party(Place.Place):
 
     def __setZoneId(self, zoneId):
         self.zoneId = zoneId
+
+
+
 
     def enterInit(self):
         pass
@@ -196,7 +201,6 @@ class Party(Place.Place):
     def __setPartyHat(self, doId = None):
         if hasattr(base, 'distributedParty'):
             if base.distributedParty.partyInfo.hostId in base.cr.doId2do:
-                host = base.cr.doId2do[base.distributedParty.partyInfo.hostId]
                 if hasattr(host, 'gmIcon') and host.gmIcon:
                     host.removeGMIcon()
                     host.setGMPartyIcon()

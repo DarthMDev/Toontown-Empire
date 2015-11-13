@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.ShowBase import *
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
 import string
 from direct.fsm import StateData
 

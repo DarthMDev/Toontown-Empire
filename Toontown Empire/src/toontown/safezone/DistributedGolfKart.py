@@ -1,19 +1,19 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.distributed.ClockDelta import *
 from direct.task.Task import Task
 from direct.interval.IntervalGlobal import *
 from TrolleyConstants import *
-from toontown.golf import GolfGlobals
-from toontown.toonbase import ToontownGlobals
+from src.toontown.golf import GolfGlobals
+from src.toontown.toonbase import ToontownGlobals
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from toontown.distributed import DelayDelete
+from src.toontown.distributed import DelayDelete
 from direct.task.Task import Task
 from direct.showbase import PythonUtil
-from toontown.toon import ToonDNA
-from toontown.hood import ZoneUtil
+from src.toontown.toon import ToonDNA
+from src.toontown.hood import ZoneUtil
 
 class DistributedGolfKart(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedGolfKart')

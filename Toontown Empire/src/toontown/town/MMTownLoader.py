@@ -1,6 +1,6 @@
-from toontown.suit import Suit
-from toontown.town import MMStreet
-from toontown.town import TownLoader
+from src.toontown.suit import Suit
+from src.toontown.town import MMStreet
+from src.toontown.town import TownLoader
 
 
 class MMTownLoader(TownLoader.TownLoader):
@@ -20,4 +20,3 @@ class MMTownLoader(TownLoader.TownLoader):
     def unload(self):
         TownLoader.TownLoader.unload(self)
         Suit.unloadSuits(2)
-

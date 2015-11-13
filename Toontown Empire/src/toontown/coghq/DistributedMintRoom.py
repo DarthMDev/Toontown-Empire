@@ -1,17 +1,17 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
-from pandac.PandaModules import *
+from panda3d.core import *
 import random
 
 import FactoryEntityCreator
 import MintRoomBase, MintRoom
 import MintRoomSpecs
-from otp.level import DistributedLevel
-from otp.level import LevelSpec, LevelConstants
-from toontown.nametag.NametagGlobals import *
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase.ToontownGlobals import *
+from src.otp.level import DistributedLevel
+from src.otp.level import LevelSpec, LevelConstants
+from src.otp.nametag.NametagConstants import *
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase.ToontownGlobals import *
 
 def getMintRoomReadyPostName(doId):
     return 'mintRoomReady-%s' % doId
@@ -87,7 +87,7 @@ class DistributedMintRoom(DistributedLevel.DistributedLevel, MintRoomBase.MintRo
 
     def setDefeated(self):
         self.notify.info('setDefeated')
-        from toontown.coghq import DistributedMint
+        from src.toontown.coghq import DistributedMint
         messenger.send(DistributedMint.DistributedMint.WinEvent)
 
     def initVisibility(self, *args, **kw):

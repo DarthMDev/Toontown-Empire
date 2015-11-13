@@ -1,7 +1,7 @@
-from toontown.battle import BattleParticles
-from toontown.suit import Suit
-from toontown.town import BRStreet
-from toontown.town import TownLoader
+from src.toontown.battle import BattleParticles
+from src.toontown.suit import Suit
+from src.toontown.town import BRStreet
+from src.toontown.town import TownLoader
 
 
 class BRTownLoader(TownLoader.TownLoader):

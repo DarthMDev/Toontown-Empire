@@ -1,9 +1,9 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
 from direct.interval.IntervalGlobal import *
-from otp.speedchat import SpeedChatGlobals
-from otp.otpbase.OTPLocalizerEnglish import EmoteFuncDict
-from toontown.toonbase import TTLocalizer
+from src.otp.speedchat import SpeedChatGlobals
+from src.otp.otpbase.OTPLocalizerEnglish import EmoteFuncDict
+from src.toontown.toonbase import TTLocalizer
 RESIST_INDEX = EmoteFuncDict['Resistance Salute']
 
 class DistributedResistanceEmoteMgr(DistributedObject.DistributedObject):

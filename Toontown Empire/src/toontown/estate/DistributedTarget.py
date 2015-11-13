@@ -1,12 +1,11 @@
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-from toontown.toonbase.ToontownGlobals import *
-from toontown.toonbase import ToontownTimer
+from src.toontown.toonbase.ToontownGlobals import *
+from src.toontown.toonbase import ToontownTimer
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
 
 class DistributedTarget(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedTarget')
@@ -156,12 +155,12 @@ class DistributedTarget(DistributedObject.DistributedObject):
 
     def showTimer(self):
         if base.localAvatar.animFSM.getCurrentState().getName() != 'ReadBook':
-            base.setCellsActive([base.rightCells[0]], 0)
+            base.setCellsAvailable([base.rightCells[0]], 0)
             self.timer.show()
 
     def hideTimer(self):
         self.timer.hide()
-        base.setCellsActive([base.rightCells[0]], 1)
+        base.setCellsAvailable([base.rightCells[0]], 1)
 
     def setPosition(self, x, y, z):
         self.geom.setPos(x, y, z)

@@ -23,14 +23,14 @@ from pandac.PandaModules import CollisionSphere
 from pandac.PandaModules import CollisionTube
 from pandac.PandaModules import CollisionNode
 from pandac.PandaModules import BitMask32
-from otp.otpbase import OTPGlobals
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.toontowngui import TTDialog
-from toontown.parties import PartyGlobals
-from toontown.parties.DistributedPartyActivity import DistributedPartyActivity
-from toontown.parties.activityFSMs import TrampolineActivityFSM
-from toontown.parties import PartyUtils
+from src.otp.otpbase import OTPGlobals
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toontowngui import TTDialog
+from src.toontown.parties import PartyGlobals
+from src.toontown.parties.DistributedPartyActivity import DistributedPartyActivity
+from src.toontown.parties.activityFSMs import TrampolineActivityFSM
+from src.toontown.parties import PartyUtils
 
 class DistributedPartyTrampolineActivity(DistributedPartyActivity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPartyTrampolineActivity')
@@ -299,7 +299,7 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
     def startActive(self):
         DistributedPartyTrampolineActivity.notify.debug('startActive')
         if self.toon != None and self.toon.doId == base.localAvatar.doId:
-            base.setCellsActive(base.bottomCells, True)
+            base.setCellsAvailable(base.bottomCells, True)
             self.accept(base.Move_Left, self.onLeft)
             self.accept('arrow_left-up', self.onLeftUp)
             self.accept(base.Move_Right, self.onRight)
@@ -390,8 +390,8 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
         self.timeLeftToSimulate = 0.0
         self.doSimulateStep = False
         taskMgr.add(self.updateTask, self.uniqueName('TrampolineActivity.updateTask'))
-        base.setCellsActive(base.leftCells, False)
-        base.setCellsActive(base.bottomCells, False)
+        base.setCellsAvailable(base.leftCells, False)
+        base.setCellsAvailable(base.bottomCells, False)
         DistributedPartyActivity.startRules(self)
 
     def releaseToon(self):
@@ -405,7 +405,7 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
         self.hopOffAnim.start()
 
     def postHopOff(self):
-        base.setCellsActive(base.leftCells, True)
+        base.setCellsAvailable(base.leftCells, True)
         self.timer.stop()
         self.timer.hide()
         self.toon.dropShadow.reparentTo(self.toon.getShadowJoint())

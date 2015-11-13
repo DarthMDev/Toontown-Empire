@@ -1,6 +1,6 @@
 @echo off
 
-title Toontown Empire Launcher
+title TTE Alpha Lancher
 
 echo Choose your connection method!
 echo.
@@ -44,7 +44,7 @@ echo.
 
 echo ===============================
 echo Starting Toontown Empire...
-echo ppython: "dependencies/panda/python/ppython.exe"
+echo ppython: "src/dependencies/panda/python/ppython.exe"
 
 if %INPUT%==2 (
     echo Username: %tteUsername%
@@ -58,13 +58,14 @@ echo Gameserver: %TTE_GAMESERVER%
 echo ===============================
 
 cd ../../
+cd ..
 
 if %INPUT%==2 (
-    "dependencies/panda/python/ppython.exe" -m toontown.toonbase.ClientStartRemoteDB
+    "src/dependencies/panda/python/ppython.exe" -m src.toontown.toonbase.ToontownStartRemoteDB
 ) else if %INPUT%==4 (
-    "dependencies/panda/python/ppython.exe" -m toontown.toonbase.ClientStartRemoteDB
+    "src/dependencies/panda/python/ppython.exe" -m src.toontown.toonbase.ToontownStartRemoteDB
 ) else (
-    "dependencies/panda/python/ppython.exe" -m toontown.toonbase.ClientStart
+    "src/dependencies/panda/python/ppython.exe" -m src.toontown.toonbase.ToontownStart
 )
 
 pause

@@ -1,5 +1,5 @@
 import string
-from otp.otpbase import OTPLocalizer
+from src.otp.otpbase import OTPLocalizer
 from direct.directnotify import DirectNotifyGlobal
 from pandac.PandaModules import NSError
 from pandac.PandaModules import TextEncoder, TextNode
@@ -76,8 +76,7 @@ def checkName(name, otherCheckFuncs = [], font = None):
         for char in name:
             if not _validCharacter(char):
                 if char in string.digits:
-                    notify.info('name contains digits')
-                    return OTPLocalizer.NCNoDigits
+                    return
                 else:
                     notify.info('name contains bad char: %s' % TextEncoder().encodeWtext(char))
                     return OTPLocalizer.NCBadCharacter % TextEncoder().encodeWtext(char)
@@ -87,7 +86,7 @@ def checkName(name, otherCheckFuncs = [], font = None):
             tn = TextNode('NameCheck')
             tn.setFont(font)
             for c in name:
-                if not tn.hasCharacter(ord(c)):
+                if not tn.hasCharacter(c.decode('utf-8')):
                     notify.info('name contains bad char: %s' % TextEncoder().encodeWtext(c))
                     return OTPLocalizer.NCBadCharacter % TextEncoder().encodeWtext(c)
 

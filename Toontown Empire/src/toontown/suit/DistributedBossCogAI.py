@@ -1,14 +1,14 @@
 import random
 from direct.directnotify import DirectNotifyGlobal
-from otp.avatar import DistributedAvatarAI
-from toontown.battle import BattleExperienceAI
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.toon import InventoryBase
-from toontown.battle import DistributedBattleFinalAI
-from toontown.building import SuitPlannerInteriorAI
-from toontown.battle import BattleBase
-from pandac.PandaModules import *
+from src.otp.avatar import DistributedAvatarAI
+from src.toontown.battle import BattleExperienceAI
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownBattleGlobals
+from src.toontown.toon import InventoryBase
+from src.toontown.battle import DistributedBattleFinalAI
+from src.toontown.building import SuitPlannerInteriorAI
+from src.toontown.battle import BattleBase
+from panda3d.core import *
 import SuitDNA
 import random
 AllBossCogs = []
@@ -44,6 +44,7 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
         self.attackCode = None
         self.attackAvId = 0
         self.hitCount = 0
+        self.attackSpeed = 1
         AllBossCogs.append(self)
         return
 
@@ -145,6 +146,8 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
 
     def d_setBattleExperience(self):
         self.sendUpdate('setBattleExperience', self.getBattleExperience())
+        for toonId in self.involvedToons:
+            toon = simbase.air.doId2do.get(toonId)
 
     def getBattleExperience(self):
         result = BattleExperienceAI.getBattleExperience(8, self.involvedToons, self.toonExp, self.toonSkillPtsGained, self.toonOrigQuests, self.toonItems, self.toonOrigMerits, self.toonMerits, self.toonParts, self.suitsKilled, self.helpfulToons)
@@ -223,8 +226,7 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
         self.resetBattles()
         self.arenaSide = None
         self.makeBattleOneBattles()
-        self.barrier = self.beginBarrier('Introduction', self.involvedToons, 45, self.doneIntroduction)
-        return
+        self.barrier = self.beginBarrier('Introduction', self.involvedToons, 50, self.doneIntroduction)
 
     def doneIntroduction(self, avIds):
         self.b_setState('BattleOne')
@@ -576,7 +578,7 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
         self.attackCode = attackCode
         self.attackAvId = avId
         if attackCode == ToontownGlobals.BossCogDizzy or attackCode == ToontownGlobals.BossCogDizzyNow:
-            delayTime = self.progressValue(20, 5)
+            delayTime = self.progressValue(10, 5)
             self.hitCount = 0
         elif attackCode == ToontownGlobals.BossCogSlowDirectedAttack:
             delayTime = ToontownGlobals.BossCogAttackTimes.get(attackCode)
@@ -604,3 +606,17 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
 
     def doNextAttack(self, task):
         self.b_setAttackCode(ToontownGlobals.BossCogNoAttack)
+
+    def b_setAttackSpeed(self, speed):
+        self.setAttackSpeed(speed)
+        self.d_setAttackSpeed(speed)
+
+    def setAttackSpeed(self, speed):
+        self.attackSpeed = speed
+        self.notify.info('Attack speed= %s' % self.attackSpeed)
+
+    def getAttackSpeed():
+        return self.attackSpeed
+
+    def d_setAttackSpeed(self, speed):
+        self.sendUpdate('setAttackSpeed', [speed])

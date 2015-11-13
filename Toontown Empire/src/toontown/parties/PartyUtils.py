@@ -4,9 +4,9 @@ import datetime
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.LerpInterval import LerpFunc
 from pandac.PandaModules import Vec3
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase.ToontownTimer import ToontownTimer
-from toontown.parties import PartyGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase.ToontownTimer import ToontownTimer
+from src.toontown.parties import PartyGlobals
 notify = DirectNotifyGlobal.directNotify.newCategory('PartyUtils')
 
 def getNewToontownTimer():

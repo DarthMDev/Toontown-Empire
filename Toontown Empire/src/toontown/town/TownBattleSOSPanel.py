@@ -1,16 +1,15 @@
-from pandac.PandaModules import *
-from toontown.toonbase.ToontownGlobals import *
+from panda3d.core import *
+from src.toontown.toonbase.ToontownGlobals import *
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
 from direct.showbase import DirectObject
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
 import types
-from toontown.toon import NPCToons
-from toontown.toon import NPCFriendPanel
-from toontown.toonbase import ToontownBattleGlobals
+from src.toontown.toon import NPCToons
+from src.toontown.toon import NPCFriendPanel
+from src.toontown.toonbase import ToontownBattleGlobals
 
 class TownBattleSOSPanel(DirectFrame, StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('TownBattleSOSPanel')
@@ -40,7 +39,7 @@ class TownBattleSOSPanel(DirectFrame, StateData.StateData):
         self['image_pos'] = (0.0, 0.1, -0.08)
         self.setScale(0.3)
         self.title = DirectLabel(parent=self, relief=None, text=TTLocalizer.TownBattleSOSNoFriends, text_scale=0.4, text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), pos=(0.0, 0.0, 1.5))
-        self.NPCFriendPanel = NPCFriendPanel.NPCFriendPanel(parent=self, doneEvent=self.doneEvent)
+        self.NPCFriendPanel = NPCFriendPanel.NPCFriendPanel(parent=self, callable=True, doneEvent=self.doneEvent)
         self.NPCFriendPanel.setPos(-0.75, 0, -0.15)
         self.NPCFriendPanel.setScale(0.325)
         self.NPCFriendsLabel = DirectLabel(parent=self, relief=None, text=TTLocalizer.TownBattleSOSNPCFriends, text_scale=0.3, text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), pos=(-0.75, 0.0, -2.0))
@@ -76,19 +75,21 @@ class TownBattleSOSPanel(DirectFrame, StateData.StateData):
         DirectFrame.destroy(self)
         return None
 
-    def makeFriendButton(self, friendPair):
-        friendId, flags = friendPair
+    def makeFriendButton(self, friendId):
         handle = base.cr.identifyFriend(friendId)
-        if handle == None:
+
+        if not handle:
             base.cr.fillUpFriendsMap()
             return
+
         friendName = handle.getName()
-        fg = Vec4(0.0, 0.0, 0.0, 1.0)
+
         if handle.isPet():
             com = self.__chosePet
         else:
             com = self.__choseFriend
-        return DirectButton(relief=None, text=friendName, text_scale=0.04, text_align=TextNode.ALeft, text_fg=fg, text1_bg=self.textDownColor, text2_bg=self.textRolloverColor, text3_fg=self.textDisabledColor, command=com, extraArgs=[friendId, friendName])
+
+        return DirectButton(relief=None, text=friendName, text_scale=0.04, text_align=TextNode.ALeft, text_fg=(0.0, 0.0, 0.0, 1.0), text1_bg=self.textDownColor, text2_bg=self.textRolloverColor, text3_fg=self.textDisabledColor, command=com, extraArgs=[friendId, friendName])
 
     def makeNPCFriendButton(self, NPCFriendId, numCalls):
         if NPCFriendId not in TTLocalizer.NPCToonNames:
@@ -159,32 +160,30 @@ class TownBattleSOSPanel(DirectFrame, StateData.StateData):
         self.factoryToonIdList = toonIdList[:]
 
     def __updateScrollList(self):
-        newFriends = []
-        battlePets = base.config.GetBool('want-pets-in-battle', 1)
-        if base.wantPets and battlePets == 1 and base.localAvatar.hasPet():
-            newFriends.append((base.localAvatar.getPetId(), 0))
-        if not self.bldg or self.factoryToonIdList is not None:
-            for friendPair in base.localAvatar.friendsList:
-                if base.cr.isFriendOnline(friendPair[0]):
-                    if self.factoryToonIdList is None or friendPair[0] in self.factoryToonIdList:
-                        newFriends.append(friendPair)
+        friends = []
 
-        for friendPair in self.friends.keys():
-            if friendPair not in newFriends:
-                friendButton = self.friends[friendPair]
+        if base.wantPets and config.GetBool('want-pets-in-battle', 1) and base.localAvatar.hasPet():
+            friends.append(base.localAvatar.getPetId())
+        if not self.bldg or self.factoryToonIdList is not None:
+            for friendId in base.localAvatar.friendsList:
+                if base.cr.isFriendOnline(friendId):
+                    if self.factoryToonIdList is None or friendId in self.factoryToonIdList:
+                        friends.append(friendId)
+
+        for friendId in self.friends.keys():
+            if friendId not in friends:
+                friendButton = self.friends[friendId]
                 self.scrollList.removeItem(friendButton)
                 if not friendButton.isEmpty():
                     friendButton.destroy()
-                del self.friends[friendPair]
+                del self.friends[friendId]
 
-        for friendPair in newFriends:
-            if friendPair not in self.friends:
-                friendButton = self.makeFriendButton(friendPair)
+        for friendId in friends:
+            if friendId not in self.friends:
+                friendButton = self.makeFriendButton(friendId)
                 if friendButton:
                     self.scrollList.addItem(friendButton)
-                    self.friends[friendPair] = friendButton
-
-        return
+                    self.friends[friendId] = friendButton
 
     def __updateNPCFriendsPanel(self):
         self.NPCFriends = {}
@@ -195,7 +194,8 @@ class TownBattleSOSPanel(DirectFrame, StateData.StateData):
             else:
                 self.NPCFriends[friend] = count
 
-        self.NPCFriendPanel.update(self.NPCFriends, fCallable=1)
+        self.NPCFriendPanel.setFriends(self.NPCFriends)
+        self.NPCFriendPanel.update()
 
     def __updateTitleText(self):
         isEmpty = (len(self.friends) == 0 and len(self.NPCFriends) == 0)
@@ -204,7 +204,7 @@ class TownBattleSOSPanel(DirectFrame, StateData.StateData):
         else:
             self.title['text'] = TTLocalizer.TownBattleSOSWhichFriend
 
-    def __friendOnline(self, doId, commonChatFlags, whitelistChatFlags):
+    def __friendOnline(self, doId):
         self.__updateScrollList()
         self.__updateTitleText()
 

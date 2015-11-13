@@ -1,10 +1,10 @@
 import ShtikerPage
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 from direct.showbase import PythonUtil
-from toontown.hood import ZoneUtil
+from src.toontown.hood import ZoneUtil
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
-from toontown.toonbase import TTLocalizer
+from panda3d.core import *
+from src.toontown.toonbase import TTLocalizer
 
 class MapPage(ShtikerPage.ShtikerPage):
 
@@ -18,7 +18,7 @@ class MapPage(ShtikerPage.ShtikerPage):
         mapModel.removeNode()
         self.allZones = []
         for hood in ToontownGlobals.Hoods:
-            if hood not in [ToontownGlobals.GolfZone, ToontownGlobals.FunnyFarm]:
+            if hood not in [ToontownGlobals.GolfZone, ToontownGlobals.ForestGrove]:
                 self.allZones.append(hood)
 
         self.cloudScaleList = (((0.55, 0, 0.4), (0.35, 0, 0.25)),
@@ -189,12 +189,12 @@ class MapPage(ShtikerPage.ShtikerPage):
                 self.hoodLabel.hide()
         else:
             self.hoodLabel.hide()
-        safeZonesVisited = base.localAvatar.hoodsVisited
+        hoodsVisited = base.localAvatar.hoodsVisited
         hoodTeleportList = base.localAvatar.getTeleportAccess()
         for hood in self.allZones:
             label = self.labels[self.allZones.index(hood)]
             clouds = self.clouds[self.allZones.index(hood)]
-            if not self.book.safeMode and hood in safeZonesVisited:
+            if not self.book.safeMode and hood in hoodsVisited:
                 label['text_fg'] = (0, 0, 0, 1)
                 label.show()
                 for cloud in clouds:

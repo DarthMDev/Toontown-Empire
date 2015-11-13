@@ -1,14 +1,6 @@
 import atexit
-from direct.directnotify import DirectNotifyGlobal
-from direct.filter.CommonFilters import CommonFilters
-from direct.gui import DirectGuiGlobals
-from direct.gui.DirectGui import *
-from direct.showbase.PythonUtil import *
-from direct.showbase.Transitions import Transitions
-from direct.task import *
-import math
 import os
-from pandac.PandaModules import *
+from panda3d.core import *
 import random
 import shutil
 from sys import platform
@@ -18,15 +10,20 @@ import time
 
 import ToontownGlobals
 import ToontownLoader
-from otp.otpbase import OTPBase
-from otp.otpbase import OTPGlobals
-from toontown.margins import MarginGlobals
-from toontown.margins.MarginManager import MarginManager
-from toontown.nametag import NametagGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.toontowngui import TTDialog
+from src.otp.otpbase import OTPBase
+from src.otp.otpbase import OTPGlobals
+from src.otp.nametag.ChatBalloon import ChatBalloon
+from src.otp.nametag import NametagGlobals
+from src.otp.margins.MarginManager import MarginManager
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownBattleGlobals
+from src.toontown.toontowngui import TTDialog
+import fractions
 
+from direct.directnotify import DirectNotifyGlobal
+from direct.filter.CommonFilters import CommonFilters
+from direct.gui import DirectGuiGlobals
+from direct.gui.DirectGui import *
 
 class ToonBase(OTPBase.OTPBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonBase')
@@ -34,57 +31,50 @@ class ToonBase(OTPBase.OTPBase):
     def __init__(self):
         OTPBase.OTPBase.__init__(self)
 
-        # First, build a list of all possible resolutions:
-        self.resList = []
-        displayInfo = self.pipe.getDisplayInformation()
-        for i in xrange(displayInfo.getTotalDisplayModes()):
-            width = displayInfo.getDisplayModeWidth(i)
-            height = displayInfo.getDisplayModeHeight(i)
-            if (width, height) not in self.resList:
-                self.resList.append((width, height))
+        # Get the native display info:
+        self.nativeWidth = self.pipe.getDisplayWidth()
+        self.nativeHeight = self.pipe.getDisplayHeight()
+        ratio = float(self.nativeWidth) / float(self.nativeHeight)
+        fraction = fractions.Fraction(ratio).limit_denominator()
+        self.nativeRatio = (int(fraction.numerator), int(fraction.denominator))
 
-        # Next, separate the resolutions by their ratio:
-        self.resDict = {}
-        for res in self.resList:
-            width = float(res[0])
-            height = float(res[1])
-            ratio = round(width / height, 2)
-            self.resDict.setdefault(ratio, []).append(res)
-
-        # Get the native width, height and ratio:
-        if sys.platform == 'win32':  # Use displayInfo.
-            self.nativeWidth = displayInfo.getMaximumWindowWidth()
-            self.nativeHeight = displayInfo.getMaximumWindowHeight()
-        else:  # Use PyGTK.
-            import gtk
-            self.nativeWidth = gtk.gdk.screen_width()
-            self.nativeHeight = gtk.gdk.screen_height()
-        self.nativeRatio = round(
-            float(self.nativeWidth) / float(self.nativeHeight), 2)
-
-        # Finally, choose the best resolution if we're either fullscreen, or
-        # don't have one defined in our preferences:
+        # Choose the best resolution if we're either fullscreen, or we don't
+        # have a resolution defined in our settings:
         fullscreen = settings.get('fullscreen', False)
-        if ('res' not in settings) or fullscreen:
+        if fullscreen or ('res' not in settings):
             if fullscreen:
-                # If we're fullscreen, we want to fit the entire screen:
+                # Fit the entire display:
                 res = (self.nativeWidth, self.nativeHeight)
-            elif len(self.resDict[self.nativeRatio]) > 1:
-                # We have resolutions that match our native ratio and fit it!
-                # Let's use one:
-                res = sorted(self.resDict[self.nativeRatio])[0]
             else:
-                # Okay, we don't have any resolutions that match our native
-                # ratio and fit it (besides the native resolution itself, of
-                # course). Let's just use one of the second largest ratio's
-                # resolutions:
-                ratios = sorted(self.resDict.keys(), reverse=False)
-                nativeIndex = ratios.index(self.nativeRatio)
-                res = sorted(self.resDict[ratios[nativeIndex - 1]])[0]
+                # Choose the smallest resolution that matches that largest
+                # ratio that contains resolutions that will fit our display in
+                # windowed mode:
+                resolutions = ToontownGlobals.CommonDisplayResolutions.get(self.nativeRatio, ())
 
-            # Store our result:
+
+                if len(resolutions) < 2:
+                    ratios = ToontownGlobals.CommonDisplayResolutions.keys()
+                    ratios.sort(key=lambda value: float(value[0]) / float(value[1]))
+
+                    while ratios:
+                        ratio = ratios.pop()
+                        if (float(ratio[0])/float(ratio[1])) < (float(self.nativeRatio[0])/float(self.nativeRatio[1])):
+                            resolutions = ToontownGlobals.CommonDisplayResolutions[ratio]
+
+                            if resolutions[0][0] >= (self.nativeWidth - 125):
+                                continue
+                            if resolutions[0][1] >= (self.nativeHeight - 125):
+                                continue
+                            break
+                    else:
+                        resolutions = ToontownGlobals.CommonDisplayResolutions[(4, 3)]
+
+                res = resolutions[0]
+
+            # Store our result
             settings['res'] = res
 
+            
             # Reload the graphics pipe:
             properties = WindowProperties()
 
@@ -103,7 +93,9 @@ class ToonBase(OTPBase.OTPBase):
                 gsg = None
             newProperties = WindowProperties(currentProperties)
             newProperties.addProperties(properties)
-            if (gsg is None) or (currentProperties.getFullscreen() != newProperties.getFullscreen()) or (currentProperties.getParentWindow() != newProperties.getParentWindow()):
+            if (gsg is None) or (
+                currentProperties.getFullscreen() != newProperties.getFullscreen()) or (
+                currentProperties.getParentWindow() != newProperties.getParentWindow()):
                 self.openMainWindow(props=properties, gsg=gsg, keepCamera=True)
                 self.graphicsEngine.openWindows()
                 self.disableShowbaseMouse()
@@ -123,9 +115,10 @@ class ToonBase(OTPBase.OTPBase):
         self.endlessQuietZone = False
         self.wantDynamicShadows = 0
         self.exitErrorCode = 0
-        camera.setPosHpr(0, 0, 0, 0, 0, 0)
-        self.camLens.setMinFov(ToontownGlobals.DefaultCameraFov/(4./3.))
-        self.camLens.setNearFar(ToontownGlobals.DefaultCameraNear, ToontownGlobals.DefaultCameraFar)
+        base.camera.setPosHpr(0, 0, 0, 0, 0, 0)
+        self.camLens.setMinFov(ToontownGlobals.DefaultCameraFov / (4. / 3.))
+        self.camLens.setNearFar(ToontownGlobals.DefaultCameraNear,
+                                ToontownGlobals.DefaultCameraFar)
         self.musicManager.setVolume(0.65)
         self.setBackgroundColor(ToontownGlobals.DefaultBackgroundColor)
         tpm = TextPropertiesManager.getGlobalPtr()
@@ -151,10 +144,13 @@ class ToonBase(OTPBase.OTPBase):
             self.accept(ToontownGlobals.QuitGameHotKeyRepeatOSX, self.exitOSX)
             self.acceptOnce(ToontownGlobals.HideGameHotKeyOSX, self.hideGame)
             self.accept(ToontownGlobals.HideGameHotKeyRepeatOSX, self.hideGame)
-            self.acceptOnce(ToontownGlobals.MinimizeGameHotKeyOSX, self.minimizeGame)
-            self.accept(ToontownGlobals.MinimizeGameHotKeyRepeatOSX, self.minimizeGame)
+            self.acceptOnce(ToontownGlobals.MinimizeGameHotKeyOSX,
+                            self.minimizeGame)
+            self.accept(ToontownGlobals.MinimizeGameHotKeyRepeatOSX,
+                        self.minimizeGame)
 
         self.accept('f3', self.toggleGui)
+        self.accept('f4', self.oobe)
         self.accept('panda3d-render-error', self.panda3dRenderError)
         oldLoader = self.loader
         self.loader = ToontownLoader.ToontownLoader(self)
@@ -165,22 +161,28 @@ class ToonBase(OTPBase.OTPBase):
         self.wantPets = self.config.GetBool('want-pets', 1)
         self.wantBingo = self.config.GetBool('want-fish-bingo', 1)
         self.wantKarts = self.config.GetBool('want-karts', 1)
-        self.wantNewSpecies = self.config.GetBool('want-new-species', 0)
-        self.inactivityTimeout = self.config.GetFloat('inactivity-timeout', ToontownGlobals.KeyboardTimeout)
+        self.inactivityTimeout = self.config.GetFloat('inactivity-timeout',
+                                                      ToontownGlobals.KeyboardTimeout)
         if self.inactivityTimeout:
-            self.notify.debug('Enabling Panda timeout: %s' % self.inactivityTimeout)
+            self.notify.debug(
+                'Enabling Panda timeout: %s' % self.inactivityTimeout)
             self.mouseWatcherNode.setInactivityTimeout(self.inactivityTimeout)
         self.mouseWatcherNode.setEnterPattern('mouse-enter-%r')
         self.mouseWatcherNode.setLeavePattern('mouse-leave-%r')
         self.mouseWatcherNode.setButtonDownPattern('button-down-%r')
         self.mouseWatcherNode.setButtonUpPattern('button-up-%r')
-        self.randomMinigameAbort = self.config.GetBool('random-minigame-abort', 0)
-        self.randomMinigameDisconnect = self.config.GetBool('random-minigame-disconnect', 0)
-        self.randomMinigameNetworkPlugPull = self.config.GetBool('random-minigame-netplugpull', 0)
+        self.randomMinigameAbort = self.config.GetBool('random-minigame-abort',
+                                                       0)
+        self.randomMinigameDisconnect = self.config.GetBool(
+            'random-minigame-disconnect', 0)
+        self.randomMinigameNetworkPlugPull = self.config.GetBool(
+            'random-minigame-netplugpull', 0)
         self.autoPlayAgain = self.config.GetBool('auto-play-again', 0)
         self.skipMinigameReward = self.config.GetBool('skip-minigame-reward', 0)
-        self.wantMinigameDifficulty = self.config.GetBool('want-minigame-difficulty', 0)
-        self.minigameDifficulty = self.config.GetFloat('minigame-difficulty', -1.0)
+        self.wantMinigameDifficulty = self.config.GetBool(
+            'want-minigame-difficulty', 0)
+        self.minigameDifficulty = self.config.GetFloat('minigame-difficulty',
+                                                       -1.0)
         if self.minigameDifficulty == -1.0:
             del self.minigameDifficulty
         self.minigameSafezoneId = self.config.GetInt('minigame-safezone-id', -1)
@@ -192,12 +194,8 @@ class ToonBase(OTPBase.OTPBase):
             self.cogdoGameDifficulty = cogdoGameDifficulty
         if cogdoGameSafezoneId != -1:
             self.cogdoGameSafezoneId = cogdoGameSafezoneId
-        ToontownBattleGlobals.SkipMovie = self.config.GetBool('skip-battle-movies', 0)
-        self.creditCardUpFront = self.config.GetInt('credit-card-up-front', -1)
-        if self.creditCardUpFront == -1:
-            del self.creditCardUpFront
-        else:
-            self.creditCardUpFront = self.creditCardUpFront != 0
+        ToontownBattleGlobals.SkipMovie = self.config.GetBool(
+            'skip-battle-movies', 0)
         self.housingEnabled = self.config.GetBool('want-housing', 1)
         self.cannonsEnabled = self.config.GetBool('estate-cannons', 0)
         self.fireworksEnabled = self.config.GetBool('estate-fireworks', 0)
@@ -205,15 +203,17 @@ class ToonBase(OTPBase.OTPBase):
         self.cloudPlatformsEnabled = self.config.GetBool('estate-clouds', 0)
         self.greySpacing = self.config.GetBool('allow-greyspacing', 0)
         self.slowQuietZone = self.config.GetBool('slow-quiet-zone', 0)
-        self.slowQuietZoneDelay = self.config.GetFloat('slow-quiet-zone-delay', 5)
-        self.killInterestResponse = self.config.GetBool('kill-interest-response', 0)
+        self.slowQuietZoneDelay = self.config.GetFloat('slow-quiet-zone-delay',
+                                                       5)
+        self.killInterestResponse = self.config.GetBool(
+            'kill-interest-response', 0)
         tpMgr = TextPropertiesManager.getGlobalPtr()
         WLDisplay = TextProperties()
         WLDisplay.setSlant(0.3)
-        WLEnter = TextProperties()
-        WLEnter.setTextColor(1.0, 0.0, 0.0, 1)
         tpMgr.setProperties('WLDisplay', WLDisplay)
-        tpMgr.setProperties('WLEnter', WLEnter)
+        WLRed = tpMgr.getProperties('red')
+        WLRed.setTextColor(1.0, 0.0, 0.0, 1)
+        tpMgr.setProperties('WLRed', WLRed)
         del tpMgr
         self.lastScreenShotTime = globalClock.getRealTime()
         self.accept('InputState-forward', self.__walking)
@@ -226,7 +226,8 @@ class ToonBase(OTPBase.OTPBase):
         self.localAvatarStyle = None
 
         self.filters = CommonFilters(self.win, self.cam)
-		
+        self.wantCogInterface = settings.get('cogInterface', True)
+
 	self.wantWASD = settings.get('want-WASD', False)
         
         self.Move_Up = 'arrow_up'
@@ -241,16 +242,11 @@ class ToonBase(OTPBase.OTPBase):
             self.Move_Down = 's'
             self.Move_Right = 'd'
             self.JUMP = 'shift'
-
-    def openMainWindow(self, *args, **kw):
-        result = OTPBase.OTPBase.openMainWindow(self, *args, **kw)
+			
+	def openMainWindow(self, *args, **kw):
+	   result = OTPBase.OTPBase.openMainWindow(self, *args, **kw)
         self.setCursorAndIcon()
-        return result
-
-    def windowEvent(self, win):
-        OTPBase.OTPBase.windowEvent(self, win)
-
-        MarginGlobals.updateMarginVisibles()
+        return 
 
     def setCursorAndIcon(self):
         tempdir = tempfile.mkdtemp()
@@ -266,14 +262,16 @@ class ToonBase(OTPBase.OTPBase):
             p3filename = Filename(filename)
             found = vfs.resolveFilename(p3filename, searchPath)
             if not found:
-                return # Can't do anything past this point.
+                return  # Can't do anything past this point.
 
             with open(os.path.join(tempdir, filename), 'wb') as f:
                 f.write(vfs.readFile(p3filename, False))
 
         wp = WindowProperties()
-        wp.setCursorFilename(Filename.fromOsSpecific(os.path.join(tempdir, 'toonmono.cur')))
-        wp.setIconFilename(Filename.fromOsSpecific(os.path.join(tempdir, 'icon.ico')))
+        wp.setCursorFilename(
+            Filename.fromOsSpecific(os.path.join(tempdir, 'toonmono.cur')))
+        wp.setIconFilename(
+            Filename.fromOsSpecific(os.path.join(tempdir, 'icon.ico')))
         self.win.requestProperties(wp)
 
     def addCullBins(self):
@@ -293,9 +291,11 @@ class ToonBase(OTPBase.OTPBase):
 
     def toggleGui(self):
         if aspect2d.isHidden():
+            base.transitions.noFade()
             aspect2d.show()
         else:
             aspect2d.hide()
+            base.transitions.fadeScreen(alpha=0.01)
 
     def takeScreenShot(self):
         if not os.path.exists(TTLocalizer.ScreenshotPath):
@@ -319,14 +319,29 @@ class ToonBase(OTPBase.OTPBase):
         self.screenshotStr = ''
         messenger.send('takingScreenshot')
         if coordOnScreen:
-            coordTextLabel = DirectLabel(pos=(-0.81, 0.001, -0.87), text=ctext, text_scale=0.05, text_fg=VBase4(1.0, 1.0, 1.0, 1.0), text_bg=(0, 0, 0, 0), text_shadow=(0, 0, 0, 1), relief=None)
+            coordTextLabel = DirectLabel(pos=(-0.81, 0.001, -0.87), text=ctext,
+                                         text_scale=0.05,
+                                         text_fg=VBase4(1.0, 1.0, 1.0, 1.0),
+                                         text_bg=(0, 0, 0, 0),
+                                         text_shadow=(0, 0, 0, 1), relief=None)
             coordTextLabel.setBin('gui-popup', 0)
             strTextLabel = None
             if len(self.screenshotStr):
-                strTextLabel = DirectLabel(pos=(0.0, 0.001, 0.9), text=self.screenshotStr, text_scale=0.05, text_fg=VBase4(1.0, 1.0, 1.0, 1.0), text_bg=(0, 0, 0, 0), text_shadow=(0, 0, 0, 1), relief=None)
+                strTextLabel = DirectLabel(pos=(0.0, 0.001, 0.9),
+                                           text=self.screenshotStr,
+                                           text_scale=0.05,
+                                           text_fg=VBase4(1.0, 1.0, 1.0, 1.0),
+                                           text_bg=(0, 0, 0, 0),
+                                           text_shadow=(0, 0, 0, 1),
+                                           relief=None)
+
+
+
+
                 strTextLabel.setBin('gui-popup', 0)
         self.graphicsEngine.renderFrame()
-        self.screenshot(namePrefix=namePrefix, imageComment=ctext + ' ' + self.screenshotStr)
+        self.screenshot(namePrefix=namePrefix,
+                        imageComment=ctext + ' ' + self.screenshotStr)
         self.lastScreenShotTime = globalClock.getRealTime()
         self.snapshotSfx = base.loadSfx('phase_4/audio/sfx/Photo_shutter.ogg')
         base.playSfx(self.snapshotSfx)
@@ -342,54 +357,80 @@ class ToonBase(OTPBase.OTPBase):
         self.screenshotStr += str
 
     def initNametagGlobals(self):
-        NametagGlobals.setMe(base.cam)
-
-        NametagGlobals.setCardModel('phase_3/models/props/panel.bam')
-        NametagGlobals.setArrowModel('phase_3/models/props/arrow.bam')
-        NametagGlobals.setChatBalloon3dModel('phase_3/models/props/chatbox.bam')
-        NametagGlobals.setChatBalloon2dModel('phase_3/models/props/chatbox_noarrow.bam')
-        NametagGlobals.setThoughtBalloonModel('phase_3/models/props/chatbox_thought_cutout.bam')
-
-        chatButtonGui = loader.loadModel('phase_3/models/gui/chat_button_gui.bam')
-        NametagGlobals.setPageButton(
-            chatButtonGui.find('**/Horiz_Arrow_UP'), chatButtonGui.find('**/Horiz_Arrow_DN'),
-            chatButtonGui.find('**/Horiz_Arrow_Rllvr'), chatButtonGui.find('**/Horiz_Arrow_UP'))
-        NametagGlobals.setQuitButton(
-            chatButtonGui.find('**/CloseBtn_UP'), chatButtonGui.find('**/CloseBtn_DN'),
-            chatButtonGui.find('**/CloseBtn_Rllvr'), chatButtonGui.find('**/CloseBtn_UP'))
-        chatButtonGui.removeNode()
-
+        arrow = loader.loadModel('phase_3/models/props/arrow')
+        card = loader.loadModel('phase_3/models/props/panel')
+        speech3d = ChatBalloon(loader.loadModel('phase_3/models/props/chatbox'))
+        thought3d = ChatBalloon(loader.loadModel('phase_3/models/props/chatbox_thought_cutout'))
+        speech2d = ChatBalloon(loader.loadModel('phase_3/models/props/chatbox_noarrow'))
+        chatButtonGui = loader.loadModel('phase_3/models/gui/chat_button_gui')
+        NametagGlobals.setCamera(self.cam)
+        NametagGlobals.setArrowModel(arrow)
+        NametagGlobals.setNametagCard(card, VBase4(-0.5, 0.5, -0.5, 0.5))
+        if self.mouseWatcherNode:
+            NametagGlobals.setMouseWatcher(self.mouseWatcherNode)
+        NametagGlobals.setSpeechBalloon3d(speech3d)
+        NametagGlobals.setThoughtBalloon3d(thought3d)
+        NametagGlobals.setSpeechBalloon2d(speech2d)
+        NametagGlobals.setThoughtBalloon2d(thought3d)
+        NametagGlobals.setPageButton(PGButton.SReady, chatButtonGui.find('**/Horiz_Arrow_UP'))
+        NametagGlobals.setPageButton(PGButton.SDepressed, chatButtonGui.find('**/Horiz_Arrow_DN'))
+        NametagGlobals.setPageButton(PGButton.SRollover, chatButtonGui.find('**/Horiz_Arrow_Rllvr'))
+        NametagGlobals.setQuitButton(PGButton.SReady, chatButtonGui.find('**/CloseBtn_UP'))
+        NametagGlobals.setQuitButton(PGButton.SDepressed, chatButtonGui.find('**/CloseBtn_DN'))
+        NametagGlobals.setQuitButton(PGButton.SRollover, chatButtonGui.find('**/CloseBtn_Rllvr'))
         rolloverSound = DirectGuiGlobals.getDefaultRolloverSound()
-        if rolloverSound is not None:
+        if rolloverSound:
             NametagGlobals.setRolloverSound(rolloverSound)
         clickSound = DirectGuiGlobals.getDefaultClickSound()
-        if clickSound is not None:
+        if clickSound:
             NametagGlobals.setClickSound(clickSound)
+        NametagGlobals.setToon(self.cam)
 
         self.marginManager = MarginManager()
-        self.margins = self.aspect2d.attachNewNode(
-            self.marginManager, DirectGuiGlobals.MIDGROUND_SORT_INDEX + 1)
+        self.margins = self.aspect2d.attachNewNode(self.marginManager, DirectGuiGlobals.MIDGROUND_SORT_INDEX + 1)
+        mm = self.marginManager
+
+        # TODO: Dynamicaly add more and reposition cells
+        padding = 0.0225
+
+        # Order: Top to bottom
         self.leftCells = [
-            self.marginManager.addCell(0.1, -0.6, self.a2dTopLeft),
-            self.marginManager.addCell(0.1, -1.0, self.a2dTopLeft),
-            self.marginManager.addCell(0.1, -1.4, self.a2dTopLeft)
-        ]
-        self.bottomCells = [
-            self.marginManager.addCell(0.4, 0.1, self.a2dBottomCenter),
-            self.marginManager.addCell(-0.4, 0.1, self.a2dBottomCenter),
-            self.marginManager.addCell(-1.0, 0.1, self.a2dBottomCenter),
-            self.marginManager.addCell(1.0, 0.1, self.a2dBottomCenter)
-        ]
-        self.rightCells = [
-            self.marginManager.addCell(-0.1, -0.6, self.a2dTopRight),
-            self.marginManager.addCell(-0.1, -1.0, self.a2dTopRight),
-            self.marginManager.addCell(-0.1, -1.4, self.a2dTopRight)
+            mm.addGridCell(0.2 + padding, -0.45, base.a2dTopLeft), # Above boarding groups
+            mm.addGridCell(0.2 + padding, -0.9, base.a2dTopLeft),  # 1
+            mm.addGridCell(0.2 + padding, -1.35, base.a2dTopLeft)  # Below Boarding Groups
         ]
 
-    def setCellsActive(self, cells, active):
-        for cell in cells:
-            cell.setActive(active)
-        self.marginManager.reorganize()
+        # Order: Left to right
+        self.bottomCells = [
+            mm.addGridCell(-0.87, 0.2 + padding, base.a2dBottomCenter), # To the right of the laff meter
+            mm.addGridCell(-0.43, 0.2 + padding, base.a2dBottomCenter), # 1
+            mm.addGridCell(0.01, 0.2 + padding, base.a2dBottomCenter),  # 2
+            mm.addGridCell(0.45, 0.2 + padding, base.a2dBottomCenter),  # 3
+            mm.addGridCell(0.89, 0.2 + padding, base.a2dBottomCenter)   # To the left of the shtiker book
+        ]
+
+        # Order: Bottom to top
+        self.rightCells = [
+            mm.addGridCell(-0.2 - padding, -1.35, base.a2dTopRight), # Above the street map
+            mm.addGridCell(-0.2 - padding, -0.9, base.a2dTopRight),  # Below the friends list
+            mm.addGridCell(-0.2 - padding, -0.45, base.a2dTopRight)  # Behind the friends list
+        ]
+
+    def hideFriendMargins(self):
+        middleCell = self.rightCells[1]
+        topCell = self.rightCells[2]
+
+        self.setCellsAvailable([middleCell, topCell], False)
+
+    def showFriendMargins(self):
+        middleCell = self.rightCells[1]
+        topCell = self.rightCells[2]
+
+        self.setCellsAvailable([middleCell, topCell], True)
+
+    def setCellsAvailable(self, cell_list, available):
+        for cell in cell_list:
+            self.marginManager.setCellAvailable(cell, available)
 
     def startShow(self, cr):
         self.cr = cr
@@ -494,13 +535,6 @@ class ToonBase(OTPBase.OTPBase):
             self.cr.timeManager.setDisconnectReason(ToontownGlobals.DisconnectGraphicsError)
         self.cr.sendDisconnect()
         sys.exit()
-
-    def getShardPopLimits(self):
-        return (
-            config.GetInt('shard-low-pop', ToontownGlobals.LOW_POP),
-            config.GetInt('shard-mid-pop', ToontownGlobals.MID_POP),
-            config.GetInt('shard-high-pop', ToontownGlobals.HIGH_POP)
-        )
 
     def playMusic(self, music, looping = 0, interrupt = 1, volume = None, time = 0.0):
         OTPBase.OTPBase.playMusic(self, music, looping, interrupt, volume, time)

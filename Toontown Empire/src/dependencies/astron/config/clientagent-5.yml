@@ -4,8 +4,7 @@ daemon:
 general:
     eventlogger: 127.0.0.1:7198
     dc_files:
-        - ../dclass/otp.dc
-        - ../dclass/toon.dc
+        - ../dclass/empire.dc
 
 uberdogs:
     - class: ClientServicesManager
@@ -20,7 +19,7 @@ uberdogs:
       id: 4501
       anonymous: false
 
-    - class: TTEFriendsManager
+    - class: tteFriendsManager
       id: 4666
       anonymous: false
 
@@ -34,7 +33,7 @@ messagedirector:
 roles:
     - type: clientagent
       bind: 0.0.0.0:7699
-      version: "TT Empire 1.0 Beta"
+      version: "empire-dev"
       client:
         relocate: true
         add_interest: enabled

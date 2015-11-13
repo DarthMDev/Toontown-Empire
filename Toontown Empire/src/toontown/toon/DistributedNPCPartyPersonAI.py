@@ -1,10 +1,10 @@
 from DistributedNPCToonBaseAI import DistributedNPCToonBaseAI
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
 from direct.task import Task
-from toontown.toonbase import ToontownGlobals
-from toontown.toon import NPCToons
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toon import NPCToons
 from direct.distributed import ClockDelta
-from toontown.parties import PartyGlobals
+from src.toontown.parties import PartyGlobals
 
 class DistributedNPCPartyPersonAI(DistributedNPCToonBaseAI):
 

@@ -8,9 +8,9 @@ from direct.gui.DirectGui import DirectFrame, DGG
 from direct.directnotify import DirectNotifyGlobal
 from direct.task.Task import Task
 from direct.showbase import AppRunnerGlobal
-from toontown.shtiker import IssueFrame
-from toontown.shtiker import IssueFrameV2
-from toontown.toonbase import TTLocalizer
+from src.toontown.shtiker import IssueFrame
+from src.toontown.shtiker import IssueFrameV2
+from src.toontown.toonbase import TTLocalizer
 
 class DirectNewsFrame(DirectObject.DirectObject):
     TaskName = 'HtmlViewUpdateTask'
@@ -169,8 +169,8 @@ class DirectNewsFrame(DirectObject.DirectObject):
         self.mainFrame = DirectFrame(parent=self.backFrame, frameSize=self.FrameDimensions, frameColor=(1, 0, 0, 1))
 
     def activate(self):
-        if hasattr(self, 'createdTime') and self.createdTime and self.NewsOverHttp and not self.redownloadingNews:
-            self.active = False
+        if hasattr(self, 'createdTime') and self.createdTime < base.cr.inGameNewsMgr.getLatestIssue() and self.NewsOverHttp and not self.redownloadingNews:
+            self.redownloadNews()
         else:
             self.addDownloadingTextTask()
         if self.needsParseNews and not self.redownloadingNews:
@@ -369,7 +369,7 @@ class DirectNewsFrame(DirectObject.DirectObject):
                 self.redownloadNews()
 
     def getInGameNewsUrl(self):
-        result = base.config.GetString('fallback-news-url', 'http://cdn.toontown.disney.go.com/toontown/en/gamenews/') # TODO: Place our news URL here.
+        result = base.config.GetString('fallback-news-url', 'http://cdn.toontown.disney.go.com/toontown/en/gamenews/')
         override = base.config.GetString('in-game-news-url', '')
         if override:
             self.notify.info('got an override url,  using %s for in game news' % override)

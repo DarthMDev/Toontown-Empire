@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
 
-from otp.ai.MagicWordGlobal import *
+from src.otp.ai.MagicWordGlobal import *
 
 
 lastClickedNametag = None
@@ -20,9 +20,6 @@ class MagicWordManager(DistributedObject.DistributedObject):
         DistributedObject.DistributedObject.disable(self)
 
     def handleMagicWord(self, magicWord):
-        if not self.cr.wantMagicWords:
-            return
-
         if magicWord.startswith('~~'):
             if lastClickedNametag == None:
                 target = base.localAvatar

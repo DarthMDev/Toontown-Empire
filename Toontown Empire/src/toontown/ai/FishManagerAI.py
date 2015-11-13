@@ -1,9 +1,10 @@
 import random
 
-from otp.ai.MagicWordGlobal import *
-from toontown.fishing import FishGlobals
-from toontown.fishing.FishBase import FishBase
-from toontown.toonbase import TTLocalizer
+from src.otp.ai.MagicWordGlobal import *
+from src.toontown.fishing import FishGlobals
+from src.toontown.fishing.FishBase import FishBase
+from src.toontown.toonbase import TTLocalizer
+
 
 
 class FishManagerAI:
@@ -103,9 +104,9 @@ def fish(fishName):
     """
     invoker = spellbook.getInvoker()
     if fishName.lower() == 'remove':
-        if invoker.doId not in simbase.air.fishManager.fishRequests:
+        if invoker.doId not in simbase.air.fishManager.requestedFish:
             return 'You have not requested a fish.'
-        del simbase.air.fishManager.fishRequests[invoker.doId]
+        del simbase.air.fishManager.requestedFish[invoker.doId]
         return 'Removed your fish request.'
 
     for genus, species in TTLocalizer.FishSpeciesNames:
@@ -113,7 +114,7 @@ def fish(fishName):
             if fishName.lower() != name.lower():
                 continue
             fishRequest = (genus, species.index(name))
-            simbase.air.fishManager.fishRequests[invoker.doId] = fishRequest
+            simbase.air.fishManager.requestedFish[invoker.doId] = fishRequest
             return 'A request for the fish %s was saved.' % name
 
     return "Couldn't find a fish with the name %s!" % fishName

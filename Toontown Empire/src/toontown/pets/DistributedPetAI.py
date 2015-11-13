@@ -1,21 +1,21 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.showbase.PythonUtil import weightedChoice, randFloat, lerp
-from direct.showbase.PythonUtil import contains, list2dict, clampScalar
+from direct.showbase.PythonUtil import contains, list2dict
+from src.toontown.toonbase.PythonUtil import clampScalar
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedSmoothNodeAI
 from direct.distributed import DistributedSmoothNodeBase
 from direct.distributed import ClockDelta
 from direct.fsm import ClassicFSM, State
 from direct.interval.IntervalGlobal import *
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 from direct.task import Task
-from toontown.pets import PetLookerAI
-from toontown.pets import PetConstants, PetDNA, PetTraits
-from toontown.pets import PetObserve, PetBrain, PetMood
-from toontown.pets import PetActionFSM, PetBase, PetGoal, PetTricks
+from src.toontown.pets import PetLookerAI
+from src.toontown.pets import PetConstants, PetDNA, PetTraits
+from src.toontown.pets import PetObserve, PetBrain, PetMood
+from src.toontown.pets import PetActionFSM, PetBase, PetGoal, PetTricks
 from direct.fsm import FSM
-from toontown.toon import DistributedToonAI
-from toontown.ai import ServerEventBuffer
+from src.toontown.toon import DistributedToonAI
 import random
 import time
 import string
@@ -474,10 +474,6 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         self.leashMode = 0
         self.leashAvId = None
         self.leashGoal = None
-        self.trickLogger = ServerEventBuffer.ServerEventMultiAccumulator(self.air, 'petTricksPerformed', self.doId)
-        self.trickFailLogger = ServerEventBuffer.ServerEventMultiAccumulator(self.air, 'petTricksFailed', self.doId)
-        self.feedLogger = ServerEventBuffer.ServerEventAccumulator(self.air, 'petFeedings', self.doId)
-        self.scratchLogger = ServerEventBuffer.ServerEventAccumulator(self.air, 'petScratchings', self.doId)
         self.traits = PetTraits.PetTraits(self.traitSeed, self.safeZone)
         if not hasattr(self, '_beingCreatedInDB'):
             for i in xrange(len(self.traitList)):
@@ -539,14 +535,6 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         DistributedSmoothNodeAI.DistributedSmoothNodeAI.requestDelete(self)
 
     def _doDeleteCleanup(self):
-        self.trickLogger.destroy()
-        self.trickFailLogger.destroy()
-        self.feedLogger.destroy()
-        self.scratchLogger.destroy()
-        del self.trickLogger
-        del self.trickFailLogger
-        del self.feedLogger
-        del self.scratchLogger
         taskMgr.remove(self.uniqueName('clearMovie'))
         taskMgr.remove(self.uniqueName('PetMovieWait'))
         taskMgr.remove(self.uniqueName('PetMovieClear'))
@@ -637,7 +625,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
             self.air.writeServerEvent('Late Pet Move Call', self.doId, ' ')
             taskMgr.remove(task.name)
             return Task.done
-            
+
         numNearby = len(self.brain.nearbyAvs) - 1
         minNearby = 5
         if numNearby > minNearby:
@@ -715,12 +703,10 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         if avatar.takeMoney(PetConstants.FEED_AMOUNT):
             self.startLockPetMove(avatar.doId)
             self.brain.observe(PetObserve.PetActionObserve(PetObserve.Actions.FEED, avatar.doId))
-            self.feedLogger.addEvent()
 
     def scratch(self, avatar):
         self.startLockPetMove(avatar.doId)
         self.brain.observe(PetObserve.PetActionObserve(PetObserve.Actions.SCRATCH, avatar.doId))
-        self.scratchLogger.addEvent()
 
     def lockPet(self):
         DistributedPetAI.notify.debug('%s: lockPet' % self.doId)
@@ -942,7 +928,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
     def enableLockMover(self):
         if not hasattr(self, 'brain'):
             return
-            
+
         if self.lockMoverEnabled == 0:
             self.brain._startMovie()
         self.lockMoverEnabled += 1
@@ -953,7 +939,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
     def disableLockMover(self):
         if not hasattr(self, 'brain'):
             return
-            
+
         if self.lockMoverEnabled > 0:
             self.lockMoverEnabled -= 1
             if self.lockMoverEnabled == 0:
@@ -981,7 +967,6 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         aptitude = self.getTrickAptitude(trickId)
         self.setTrickAptitude(trickId, aptitude + PetTricks.AptitudeIncrementDidTrick)
         self.addToMood('fatigue', lerp(PetTricks.MaxTrickFatigue, PetTricks.MinTrickFatigue, aptitude))
-        self.trickLogger.addEvent(trickId)
 
     def _handleGotPositiveTrickFeedback(self, trickId, magnitude):
         if trickId == PetTricks.Tricks.BALK:

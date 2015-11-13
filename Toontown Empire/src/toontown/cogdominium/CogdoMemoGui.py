@@ -1,8 +1,8 @@
 from direct.gui.DirectGui import DGG, DirectFrame, DirectLabel
 from pandac.PandaModules import TextNode
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownIntervals
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownIntervals
+from src.toontown.toonbase import TTLocalizer
 import CogdoUtil
 import CogdoGameConsts
 MEMOICON_SCALE = 0.2

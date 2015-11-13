@@ -1,0 +1,93 @@
+# Blender MTL File: 'beach.blend'
+# Material Count: 9
+
+newmtl 08_-_Default
+Ns 19.607843
+Ka 0.000000 0.000000 0.000000
+Kd 0.470588 0.470588 0.470588
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd Misc. Files\\ttoff-preview\\resources\\phase_6\\maps\\ww_pond.jpg
+
+newmtl Material
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+
+newmtl cliff
+Ns 19.607843
+Ka 0.000000 0.000000 0.000000
+Kd 0.470588 0.470588 0.470588
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd Misc. Files\\ttoff-preview\\resources\\phase_9\\maps\\Roof.jpg
+
+newmtl grass
+Ns 19.607843
+Ka 0.000000 0.000000 0.000000
+Kd 0.470588 0.470588 0.470588
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd Misc. Files\\ttoff-preview\\resources\\phase_3.5\\maps\\grassDG.jpg
+
+newmtl path
+Ns 19.607843
+Ka 0.000000 0.000000 0.000000
+Kd 0.470588 0.470588 0.470588
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd Misc. Files\\ttoff-preview\\resources\\phase_3.5\\maps\\floor_wood.jpg
+
+newmtl red
+Ns 19.607843
+Ka 0.000000 0.000000 0.000000
+Kd 0.624314 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd Fanatasia\\Red.png
+
+newmtl rope
+Ns 19.607843
+Ka 0.000000 0.000000 0.000000
+Kd 0.470588 0.470588 0.470588
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 0.000000
+illum 1
+map_Kd Misc. Files\\ttoff-preview\\resources\\phase_6\\maps\\ropes.jpg
+map_d Misc. Files\\ttoff-preview\\resources\\phase_6\\maps\\ropes_a.rgb
+
+newmtl sand
+Ns 19.607843
+Ka 0.000000 0.000000 0.000000
+Kd 0.470588 0.470588 0.470588
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+map_Kd Misc. Files\\ttoff-preview\\resources\\phase_6\\maps\\concrete_golf.jpg
+
+newmtl white
+Ns 19.607843
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 0.000000
+illum 1
+map_Kd C:\\Users\\Jackson\\Documents\\3dsMax\\sceneassets\\images\\ToonAsphaltWhite.PNG
+map_d C:\\Users\\Jackson\\Documents\\3dsMax\\sceneassets\\images\\ToonAsphaltWhite.PNG

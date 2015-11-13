@@ -1,10 +1,10 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.gui.DirectGui import *
 from direct.showbase import DirectObject
-from otp.avatar import AvatarPanel
-from toontown.toonbase import TTLocalizer
-from toontown.toontowngui import TTDialog
-from toontown.ai import ReportGlobals
+from src.otp.avatar import AvatarPanel
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toontowngui import TTDialog
+from src.toontown.ai import ReportGlobals
 IGNORE_SCALE = 0.06
 STOP_IGNORE_SCALE = 0.04
 
@@ -23,8 +23,7 @@ class AvatarPanelBase(AvatarPanel.AvatarPanel):
             return (TTLocalizer.AvatarPanelIgnore, self.handleIgnore, IGNORE_SCALE)
 
     def handleIgnore(self):
-        isAvatarFriend = base.cr.isFriend(self.avatar.doId)
-        if isAvatarFriend:
+        if base.cr.isFriend(self.avatar.doId):
             self.dialog = TTDialog.TTGlobalDialog(
                 style=TTDialog.CancelOnly,
                 text=TTLocalizer.IgnorePanelAddFriendAvatar % self.avName,
@@ -163,12 +162,12 @@ class AvatarPanelBase(AvatarPanel.AvatarPanel):
     def handleReportCategoryConfirm(self, value):
         self.cleanupDialog()
         removed = 0
-        
+
         if value > 0:
             if base.cr.isFriend(self.avId):
                 base.cr.removeFriend(self.avId)
                 removed = 1
-            
+
             base.cr.reportMgr.sendReport(self.avId, self.category)
             self.reportComplete(removed)
         else:
@@ -193,13 +192,12 @@ class AvatarPanelBase(AvatarPanel.AvatarPanel):
         self.cleanupDialog()
         self.requestWalk()
 
-    def cleanupDialog(self):
+    def cleanupDialog(self, state=None):
         if self.dialog:
             base.cr.openAvatarPanels.discard(self)
             self.dialog.ignore('exitingStoppedState')
             self.dialog.cleanup()
             self.dialog = None
-        return
 
     def requestStopped(self):
         base.cr.openAvatarPanels.add(self)

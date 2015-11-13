@@ -1,4 +1,4 @@
-from toontown.town import Street
+from src.toontown.town import Street
 
 
 class DDStreet(Street.Street):
@@ -9,4 +9,3 @@ class DDStreet(Street.Street):
     def exit(self):
         Street.Street.exit(self)
         self.loader.hood.setNoFog()
-

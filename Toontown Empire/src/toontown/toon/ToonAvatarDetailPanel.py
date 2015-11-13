@@ -1,17 +1,17 @@
-from pandac.PandaModules import *
-from toontown.toonbase.ToontownGlobals import *
+from panda3d.core import *
+from src.toontown.toonbase.ToontownGlobals import *
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
 from direct.showbase import DirectObject
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.directnotify import DirectNotifyGlobal
 import DistributedToon
-from toontown.friends import FriendInviter
+from src.toontown.friends import FriendInviter
 import ToonTeleportPanel
-from toontown.toonbase import TTLocalizer
-from toontown.hood import ZoneUtil
-from toontown.toonbase.ToontownBattleGlobals import Tracks, Levels
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.hood import ZoneUtil
+from src.toontown.toonbase.ToontownBattleGlobals import Tracks, Levels
+from src.toontown.toon import Toon
 globalAvatarDetail = None
 
 def showAvatarDetail(avId, avName):
@@ -77,7 +77,6 @@ class ToonAvatarDetailPanel(DirectFrame):
         self.fsm.request('begin')
         buttons.removeNode()
         gui.removeNode()
-        return
 
     def cleanup(self):
         if self.fsm:
@@ -157,17 +156,31 @@ class ToonAvatarDetailPanel(DirectFrame):
         online = 1
         if base.cr.isFriend(self.avId):
             online = base.cr.isFriendOnline(self.avId)
+        identifier = int(str(self.avId)[1:])
+
         if online:
             shardName = base.cr.getShardName(av.defaultShard)
             hoodName = base.cr.hoodMgr.getFullnameFromId(av.lastHood)
-            text = TTLocalizer.AvatarDetailPanelOnline % {'district': shardName, 'location': hoodName}
+            text = TTLocalizer.AvatarDetailPanelOnline % {'district': shardName, 'location': hoodName, 'identifier': identifier}
         else:
-            text = TTLocalizer.AvatarDetailPanelOffline
+            text = TTLocalizer.AvatarDetailPanelOffline % {'identifier': identifier}
         self.dataText['text'] = text
+        self.__addToonModel()
         self.__updateTrackInfo()
         self.__updateTrophyInfo()
         self.__updateLaffInfo()
 
+    def __addToonModel(self):
+        toon = Toon.Toon()
+        toon.setDNA(self.avatar.style)
+        toon.reparentTo(self)
+        toon.setPos(0.45, 0, 0.3)
+        toon.setH(180)
+        toon.setScale(0.11)
+        toon.loop('neutral')
+        toon.setDepthWrite(True)
+        toon.setDepthTest(True)
+    
     def __updateLaffInfo(self):
         avatar = self.avatar
         messenger.send('updateLaffMeter', [avatar, avatar.hp, avatar.maxHp])
@@ -191,6 +204,9 @@ class ToonAvatarDetailPanel(DirectFrame):
                         if numItems == 0:
                             image_color = Vec4(0.5, 0.5, 0.5, 1)
                             geom_color = Vec4(0.2, 0.2, 0.2, 0.5)
+                        elif self.avatar.getTrackBonusLevel(track) >= item:
+                            image_color = Vec4(0, 0.8, 0.4, 1)
+                            geom_color = None
                         else:
                             image_color = Vec4(0, 0.6, 1, 1)
                             geom_color = None

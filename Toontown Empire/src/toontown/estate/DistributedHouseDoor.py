@@ -1,18 +1,18 @@
-from toontown.toonbase.ToonBaseGlobal import *
-from pandac.PandaModules import *
+from src.toontown.toonbase.ToonBaseGlobal import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
 from direct.distributed import DistributedObject
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.MessengerGlobal import messenger
 from direct.fsm import ClassicFSM
-from toontown.building import DistributedDoor
-from toontown.hood import ZoneUtil
-from toontown.suit import Suit
-from toontown.building import FADoorCodes
-from toontown.building import DoorTypes
-from toontown.estate.DistributedHouse import DistributedHouse
+from src.toontown.building import DistributedDoor
+from src.toontown.hood import ZoneUtil
+from src.toontown.suit import Suit
+from src.toontown.building import FADoorCodes
+from src.toontown.building import DoorTypes
+from src.toontown.estate.DistributedHouse import DistributedHouse
 
 class DistributedHouseDoor(DistributedDoor.DistributedDoor):
 
@@ -31,7 +31,11 @@ class DistributedHouseDoor(DistributedDoor.DistributedDoor):
         return 'door_trigger_' + str(self.houseId)
 
     def hideDoorParts(self):
-        pass
+        try:
+            self.findDoorNode('doorFrameHoleRight').hide()
+            self.findDoorNode('doorFrameHoleLeft').hide()
+        except:
+            pass
 
     def announceGenerate(self):
         DistributedObject.DistributedObject.announceGenerate(self)
@@ -54,11 +58,11 @@ class DistributedHouseDoor(DistributedDoor.DistributedDoor):
         self.doPostAnnounceGenerate()
         self.bHasFlat = not self.findDoorNode('door*flat', True).isEmpty()
         self.hideDoorParts()
-        
+
         building = self.getBuilding()
         doorTrigger = building.find('**/door_trigger*')
         doorTrigger.setName(self.getTriggerName())
-                
+
         self.accept(self.getEnterTriggerEvent(), self.doorTrigger)
         self.acceptOnce('clearOutToonInterior', self.doorTrigger)
         self.zoneDoneLoading = 0

@@ -4,7 +4,7 @@ from direct.showbase.DirectObject import DirectObject
 from direct.interval.MetaInterval import Sequence
 from direct.interval.FunctionInterval import Func, Wait
 from direct.interval.IntervalGlobal import LerpFunc
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 import CogdoUtil
 
 class CogdoGameGatherable(NodePath, DirectObject):

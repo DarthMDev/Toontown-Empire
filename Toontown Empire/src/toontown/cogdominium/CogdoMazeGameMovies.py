@@ -3,9 +3,9 @@ from direct.showbase.ShowBase import Plane
 from direct.showbase.RandomNumGen import RandomNumGen
 from direct.interval.MetaInterval import Sequence, Parallel
 from direct.interval.FunctionInterval import Func, Wait
-from toontown.toonbase import TTLocalizer
-from toontown.suit import Suit, SuitDNA
-from toontown.toon import Toon, ToonHead, ToonDNA
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.suit import Suit, SuitDNA
+from src.toontown.toon import Toon, ToonHead, ToonDNA
 from CogdoUtil import CogdoGameMovie
 import CogdoMazeGameGlobals as Globals
 import CogdoUtil
@@ -87,8 +87,8 @@ class CogdoMazeGameIntro(CogdoGameMovie):
         d = SuitDNA.SuitDNA()
         d.newSuit(suitData['dnaName'])
         bossSuit.setDNA(d)
-        bossSuit.nametag.setNametag2d(None)
-        bossSuit.nametag.setNametag3d(None)
+        bossSuit.nametag3d.stash()
+        bossSuit.nametag.destroy()
         bossSuit.setScale(suitData['scale'])
         bossSuit.loop('neutral')
         bossSuit.reparentTo(render)

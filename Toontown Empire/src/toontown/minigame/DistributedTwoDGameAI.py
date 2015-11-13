@@ -1,8 +1,8 @@
 from DistributedMinigameAI import *
-from toontown.ai.ToonBarrier import *
+from src.toontown.ai.ToonBarrier import *
 from direct.fsm import ClassicFSM, State
 from direct.directnotify import DirectNotifyGlobal
-from toontown.minigame import ToonBlitzGlobals
+from src.toontown.minigame import ToonBlitzGlobals
 from math import sqrt
 
 class DistributedTwoDGameAI(DistributedMinigameAI):

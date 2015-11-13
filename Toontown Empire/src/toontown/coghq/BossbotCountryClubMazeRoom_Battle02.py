@@ -1,4 +1,4 @@
-from toontown.coghq.SpecImports import *
+from src.toontown.coghq.SpecImports import *
 GlobalEntities = {1000: {'type': 'levelMgr',
         'name': 'LevelMgr',
         'comment': '',
@@ -6,6 +6,7 @@ GlobalEntities = {1000: {'type': 'levelMgr',
         'cogLevel': 0,
         'farPlaneDistance': 1500,
         'modelFilename': 'phase_12/models/bossbotHQ/BossbotMazex4_C',
+        'removeNodes': ['**/clubHouse'],
         'wantDoors': 1},
  0: {'type': 'zone',
      'name': 'UberZone',

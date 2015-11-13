@@ -1,11 +1,11 @@
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
 from direct.distributed import DistributedObject
 from direct.showutil import Rope
 import math
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 import VineGameGlobals
 import VineSpider
 

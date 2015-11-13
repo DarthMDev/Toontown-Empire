@@ -1,17 +1,18 @@
 from direct.directnotify import DirectNotifyGlobal
-from toontown.battle import BattlePlace
+from src.toontown.battle import BattlePlace
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from pandac.PandaModules import *
-from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
-from toontown.toon import Toon
-from toontown.toonbase import ToontownGlobals
-from toontown.hood import ZoneUtil
-from toontown.toonbase import TTLocalizer
-from toontown.toontowngui import TTDialog
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.building import Elevator
-from toontown.nametag import NametagGlobals
+from panda3d.core import *
+from src.otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
+from src.toontown.toon import Toon
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.hood import ZoneUtil
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toontowngui import TTDialog
+from src.toontown.toonbase import ToontownBattleGlobals
+from src.toontown.building import Elevator
+from src.otp.nametag.NametagConstants import *
+from src.otp.nametag import NametagGlobals
 
 class FactoryInterior(BattlePlace.BattlePlace):
     notify = DirectNotifyGlobal.directNotify.newCategory('FactoryInterior')
@@ -79,7 +80,7 @@ class FactoryInterior(BattlePlace.BattlePlace):
         self._telemLimiter = TLGatherAllAvs('FactoryInterior', RotationLimitToH)
 
         def commence(self = self):
-            NametagGlobals.setWant2dNametags(True)
+            NametagGlobals.setMasterArrowsOn(1)
             self.fsm.request(requestStatus['how'], [requestStatus])
             base.playMusic(self.music, looping=1, volume=0.8)
             base.transitions.irisIn()
@@ -100,7 +101,7 @@ class FactoryInterior(BattlePlace.BattlePlace):
         self.acceptOnce('localToonConfrontedForeman', handleConfrontedForeman)
 
     def exit(self):
-        NametagGlobals.setWant2dNametags(False)
+        NametagGlobals.setMasterArrowsOn(0)
         self._telemLimiter.destroy()
         del self._telemLimiter
         if hasattr(base, 'factoryReady'):

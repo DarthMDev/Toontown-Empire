@@ -1,11 +1,11 @@
-from toontown.toonbase import ToontownGlobals
-from toontown.coghq import DistributedLevelBattleAI
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.coghq import DistributedLevelBattleAI
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import State
 from direct.fsm import ClassicFSM, State
-from toontown.battle.BattleBase import *
+from src.toontown.battle.BattleBase import *
 import CogDisguiseGlobals
-from toontown.toonbase.ToontownBattleGlobals import getMintCreditMultiplier
+from src.toontown.toonbase.ToontownBattleGlobals import getMintCreditMultiplier
 from direct.showbase.PythonUtil import addListsByValue
 
 class DistributedMintBattleAI(DistributedLevelBattleAI.DistributedLevelBattleAI):

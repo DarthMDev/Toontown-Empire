@@ -1,9 +1,9 @@
 from direct.directnotify import DirectNotifyGlobal
-from otp.speedchat.SCMenu import SCMenu
-from otp.speedchat import SCMenuHolder
-from otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
-from otp.otpbase import OTPLocalizer
-from toontown.pets import PetTricks
+from src.otp.speedchat.SCMenu import SCMenu
+from src.otp.speedchat import SCMenuHolder
+from src.otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
+from src.otp.otpbase import OTPLocalizer
+from src.toontown.pets import PetTricks
 
 class TTSCPetTrickMenu(SCMenu):
     notify = DirectNotifyGlobal.directNotify.newCategory('TTSCPetTrickMenu')

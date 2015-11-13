@@ -1,6 +1,6 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import TTLocalizer, ToontownGlobals
+from src.toontown.toonbase import TTLocalizer, ToontownGlobals
 import random
 
 class NameGenerator:
@@ -34,7 +34,7 @@ class NameGenerator:
         self.nameDictionary = {}
         searchPath = DSearchPath()
         if __debug__:
-            searchPath.appendDirectory(Filename('../resources/phase_3/etc'))
+            searchPath.appendDirectory(Filename('resources/phase_3/etc'))
         searchPath.appendDirectory(Filename('resources/phase_3/etc'))
         searchPath.appendDirectory(Filename('/phase_3/etc'))
         filename = Filename(TTLocalizer.NameShopNameMaster)

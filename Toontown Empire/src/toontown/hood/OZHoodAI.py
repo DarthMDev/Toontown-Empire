@@ -1,14 +1,14 @@
-from toontown.hood import HoodAI
-from pandac.PandaModules import *
-from toontown.toonbase import ToontownGlobals
-from toontown.distributed.DistributedTimerAI import DistributedTimerAI
+from src.toontown.hood import HoodAI
+from panda3d.core import *
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.distributed.DistributedTimerAI import DistributedTimerAI
 import string
-from toontown.dna.DNAParser import DNAGroup, DNAVisGroup
-from toontown.safezone.DistributedPicnicBasketAI import DistributedPicnicBasketAI
-from toontown.safezone import DistributedPicnicTableAI
-from toontown.safezone import DistributedChineseCheckersAI
-from toontown.safezone import DistributedCheckersAI
-from toontown.hood import ZoneUtil
+from src.toontown.dna.DNAParser import DNAGroup, DNAVisGroup
+from src.toontown.safezone.DistributedPicnicBasketAI import DistributedPicnicBasketAI
+from src.toontown.safezone import DistributedPicnicTableAI
+from src.toontown.safezone import DistributedChineseCheckersAI
+from src.toontown.safezone import DistributedCheckersAI
+from src.toontown.hood import ZoneUtil
 import random
 
 
@@ -36,7 +36,6 @@ class OZHoodAI(HoodAI.HoodAI):
         self.timer = DistributedTimerAI(self.air)
         self.timer.generateWithRequired(self.zoneId)
 
-
     def findPicnicTables(self, dnaGroup, zoneId, area, overrideDNAZone=False):
         picnicTables = []
         if isinstance(dnaGroup, DNAGroup) and ('picnic_table' in dnaGroup.getName()):
@@ -52,7 +51,7 @@ class OZHoodAI(HoodAI.HoodAI):
                     picnicTable.generateWithRequired(zoneId)
                     picnicTables.append(picnicTable)
         elif isinstance(dnaGroup, DNAVisGroup) and (not overrideDNAZone):
-            zoneId = ZoneUtil.getTrueZoneId(int(dnaGroup.getName().split(':')[0]), zoneId)
+            zoneId = int(dnaGroup.getName().split(':')[0])
         for i in xrange(dnaGroup.getNumChildren()):
             foundPicnicTables = self.findPicnicTables(
                 dnaGroup.at(i), zoneId, area, overrideDNAZone=overrideDNAZone)
@@ -63,7 +62,6 @@ class OZHoodAI(HoodAI.HoodAI):
         self.picnicTables = []
         for zoneId in self.getZoneTable():
             dnaData = self.air.dnaDataMap.get(zoneId, None)
-            zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
             if dnaData.getName() == 'root':
                 area = ZoneUtil.getCanonicalZoneId(zoneId)
                 foundPicnicTables = self.findPicnicTables(
@@ -86,7 +84,7 @@ class OZHoodAI(HoodAI.HoodAI):
                     gameTable.setTableIndex(tableIndex)
                     gameTable.generateOtpObject(simbase.air.districtId, zoneId, ['setX', 'setY', 'setZ', 'setH', 'setP', 'setR'])
         elif isinstance(dnaGroup, DNAVisGroup) and (not overrideDNAZone):
-            zoneId = ZoneUtil.getTrueZoneId(int(dnaGroup.getName().split(':')[0]), zoneId)
+            zoneId = int(dnaGroup.getName().split(':')[0])
         for i in xrange(dnaGroup.getNumChildren()):
             foundGameTables = self.findGameTables(
                 dnaGroup.at(i), zoneId, area, overrideDNAZone=overrideDNAZone)
@@ -97,7 +95,6 @@ class OZHoodAI(HoodAI.HoodAI):
         self.gameTables = []
         for zoneId in self.getZoneTable():
             dnaData = self.air.dnaDataMap.get(zoneId, None)
-            zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
             if dnaData.getName() == 'root':
                 area = ZoneUtil.getCanonicalZoneId(zoneId)
                 foundGameTables = self.findGameTables(

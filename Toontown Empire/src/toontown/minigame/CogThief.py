@@ -3,12 +3,12 @@ from pandac.PandaModules import CollisionSphere, CollisionNode, Point3, Collisio
 from direct.showbase.DirectObject import DirectObject
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.interval.IntervalGlobal import Parallel, SoundInterval, Sequence, Func, LerpScaleInterval
-from toontown.suit import Suit
-from toontown.suit import SuitDNA
-from toontown.toonbase import ToontownGlobals
-from toontown.minigame import CogThiefGameGlobals
-from toontown.battle.BattleProps import globalPropPool
-from toontown.battle.BattleSounds import globalBattleSoundCache
+from src.toontown.suit import Suit
+from src.toontown.suit import SuitDNA
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.minigame import CogThiefGameGlobals
+from src.toontown.battle.BattleProps import globalPropPool
+from src.toontown.battle.BattleSounds import globalBattleSoundCache
 CTGG = CogThiefGameGlobals
 
 class CogThief(DirectObject):

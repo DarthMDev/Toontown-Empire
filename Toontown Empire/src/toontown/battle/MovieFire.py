@@ -1,11 +1,11 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from BattleBase import *
 from BattleProps import *
 from BattleSounds import *
-from toontown.toon.ToonDNA import *
-from toontown.toonbase import TTLocalizer
-from toontown.suit.SuitDNA import *
+from src.toontown.toon.ToonDNA import *
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.suit.SuitDNA import *
 from direct.directnotify import DirectNotifyGlobal
 import random
 import MovieCamera
@@ -253,8 +253,8 @@ def __throwPie(throw, delay, hitCount, showCannon = 1):
     toonTrack.append(Wait(delay))
     toonTrack.append(toonFace)
     toonTrack.append(ActorInterval(toon, 'pushbutton'))
-  #  if toon == base.localAvatar:
-    #    toonTrack.append(Func(base.talkAssistant.sendOpenTalk, TTLocalizer.FireTalkMessage))
+    if toon == base.localAvatar:
+        toonTrack.append(Func(base.talkAssistant.sendOpenTalk, TTLocalizer.FireTalkMessage))
     toonTrack.append(ActorInterval(toon, 'wave', duration=2.0))
     toonTrack.append(ActorInterval(toon, 'duck'))
     toonTrack.append(Func(toon.loop, 'neutral'))

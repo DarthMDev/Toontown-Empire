@@ -12,15 +12,15 @@ from direct.showbase.InputStateGlobal import inputState
 from direct.showbase.PythonUtil import *
 from direct.task import Task
 import math
-from pandac.PandaModules import *
+from panda3d.core import *
 import random
 
 import DistributedAvatar
-from otp.ai.MagicWordGlobal import *
-from otp.otpbase import OTPGlobals
-from otp.otpbase import OTPLocalizer
-from toontown.chat.ChatGlobals import *
-from toontown.toonbase import ToontownGlobals
+from src.otp.ai.MagicWordGlobal import *
+from src.otp.otpbase import OTPGlobals
+from src.otp.otpbase import OTPLocalizer
+from src.otp.nametag.NametagConstants import *
+from src.toontown.toonbase import ToontownGlobals
 
 
 class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.DistributedSmoothNode):
@@ -28,7 +28,6 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
     wantDevCameraPositions = base.config.GetBool('want-dev-camera-positions', 0)
     wantMouse = base.config.GetBool('want-mouse', 0)
     sleepTimeout = base.config.GetInt('sleep-timeout', 120)
-    swimTimeout = base.config.GetInt('afk-timeout', 600)
     __enableMarkerPlacement = base.config.GetBool('place-markers', 0)
 
     def __init__(self, cr, chatMgr, talkAssistant = None, passMessagesThrough = False):
@@ -54,8 +53,6 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.customMessages = []
         self.chatMgr = chatMgr
         base.talkAssistant = talkAssistant
-        self.commonChatFlags = 0
-        self.garbleChat = 1
         self.teleportAllowed = 1
         self.lockedDown = 0
         self.isPageUp = 0
@@ -65,7 +62,6 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.sleepFlag = 0
         self.isDisguised = 0
         self.movingFlag = 0
-        self.swimmingFlag = 0
         self.lastNeedH = None
         self.accept('friendOnline', self.__friendOnline)
         self.accept('friendOffline', self.__friendOffline)
@@ -73,7 +69,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.sleepCallback = None
         self.accept('wakeup', self.wakeUp)
         self.jumpLandAnimFixTask = None
-        self.fov = OTPGlobals.DefaultCameraFov
+        self.fov = settings['fov']
         self.accept('avatarMoving', self.clearPageUpDown)
         self.showNametag2d()
         self.setPickable(0)
@@ -890,7 +886,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
     def displayWhisper(self, fromId, chatString, whisperType):
         sender = None
         sfx = self.soundWhisper
-        if whisperType == WTNormal or whisperType == WTQuickTalker:
+        if whisperType == WTNormal:
             if sender == None:
                 return
             chatString = sender.getName() + ': ' + chatString
@@ -978,42 +974,6 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         taskMgr.remove(self.uniqueName('sleepwatch'))
         self.sleepCallback = None
         return
-
-    def startSleepSwimTest(self):
-        taskName = self.taskName('sleepSwimTest')
-        taskMgr.remove(taskName)
-        task = Task.Task(self.sleepSwimTest)
-        self.lastMoved = globalClock.getFrameTime()
-        self.lastState = None
-        self.lastAction = None
-        self.sleepSwimTest(task)
-        taskMgr.add(self.sleepSwimTest, taskName, 35)
-        return
-
-    def stopSleepSwimTest(self):
-        taskName = self.taskName('sleepSwimTest')
-        taskMgr.remove(taskName)
-        self.stopSound()
-
-    def sleepSwimTest(self, task):
-        now = globalClock.getFrameTime()
-        speed, rotSpeed, slideSpeed = self.controlManager.getSpeeds()
-        if speed != 0.0 or rotSpeed != 0.0 or inputState.isSet('jump'):
-            if not self.swimmingFlag:
-                self.swimmingFlag = 1
-        elif self.swimmingFlag:
-            self.swimmingFlag = 0
-        if self.swimmingFlag or self.hp <= 0:
-            self.wakeUp()
-        elif not self.sleepFlag:
-            now = globalClock.getFrameTime()
-            if now - self.lastMoved > self.swimTimeout:
-                self.swimTimeoutAction()
-                return Task.done
-        return Task.cont
-
-    def swimTimeoutAction(self):
-        pass
 
     def trackAnimToSpeed(self, task):
         speed, rotSpeed, slideSpeed = self.controlManager.getSpeeds()
@@ -1128,29 +1088,19 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.ccPusherTrav.traverse(n)
         return
 
-    def __friendOnline(self, doId, commonChatFlags = 0, whitelistChatFlags = 0):
+    def __friendOnline(self, doId):
         friend = base.cr.identifyFriend(doId)
-        if friend != None and hasattr(friend, 'setCommonAndWhitelistChatFlags'):
-            friend.setCommonAndWhitelistChatFlags(commonChatFlags, whitelistChatFlags)
-        if self.oldFriendsList != None:
-            now = globalClock.getFrameTime()
-            elapsed = now - self.timeFriendsListChanged
-            if elapsed < 10.0 and self.oldFriendsList.count(doId) == 0:
-                self.oldFriendsList.append(doId)
-                return
         if friend != None:
             self.setSystemMessage(doId, OTPLocalizer.WhisperFriendComingOnline % friend.getName())
-        return
 
     def __friendOffline(self, doId):
         friend = base.cr.identifyFriend(doId)
         if friend != None:
             self.setSystemMessage(0, OTPLocalizer.WhisperFriendLoggedOut % friend.getName())
-        return
 
     def clickedWhisper(self, doId):
         friend = base.cr.identifyFriend(doId)
-        
+
         if friend != None:
             messenger.send('clickedNametag', [friend])
             self.chatMgr.whisperTo(friend.getName(), doId)
@@ -1211,3 +1161,19 @@ def hpr(h, p, r):
     Modifies the rotation of the invoker.
     """
     base.localAvatar.setHpr(h, p, r)
+
+@magicWord(category=CATEGORY_COMMUNITY_MANAGER)
+def cOff():
+    """
+    Turns collisions off.
+    """
+    base.localAvatar.collisionsOff()
+    return 'Collisions are disabled.'
+
+@magicWord(category=CATEGORY_COMMUNITY_MANAGER)
+def cOn():
+    """
+    Turns collisions on.
+    """
+    base.localAvatar.collisionsOn()
+    return 'Collisions are enabled.'

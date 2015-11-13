@@ -1,10 +1,10 @@
 from direct.distributed.ClockDelta import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.showbase.PythonUtil import Functor, sameElements, list2dict, uniqueElements
 from direct.interval.IntervalGlobal import *
-from toontown.distributed.ToontownMsgTypes import *
-from toontown.toonbase import ToontownGlobals
-from otp.otpbase import OTPGlobals
+from src.toontown.distributed.ToontownMsgTypes import *
+from src.toontown.toonbase import ToontownGlobals
+from src.otp.otpbase import OTPGlobals
 from direct.distributed import DistributedObject
 import Level
 import LevelConstants
@@ -95,7 +95,11 @@ class DistributedLevel(DistributedObject.DistributedObject, Level.Level):
         if self.entranceId in self.entranceId2entity:
             epEnt = self.entranceId2entity[self.entranceId]
             if moveLocalAvatar:
-                epEnt.placeToon(base.localAvatar, self.avIdList.index(base.localAvatar.doId), len(self.avIdList))
+                if base.localAvatar.getAdminAccess() >= 300 and base.localAvatar.doId not in self.avIdList:
+                    # This is a moderator teleporting in to the level.
+                    epEnt.placeToon(base.localAvatar, 0, len(self.avIdList))
+                else:
+                    epEnt.placeToon(base.localAvatar, self.avIdList.index(base.localAvatar.doId), len(self.avIdList))
             initialZoneEnt = self.getEntity(epEnt.getZoneEntId())
         elif self.EmulateEntrancePoint:
             self.notify.debug('unknown entranceId %s' % self.entranceId)

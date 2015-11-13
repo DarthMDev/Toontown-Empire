@@ -1,10 +1,10 @@
-from pandac.PandaModules import NodePath, Point3, CollisionSphere, CollisionNode, Vec4
+from pandac.PandaModules import NodePath, Point3, CollisionTube, CollisionNode, Vec4
 from direct.interval.IntervalGlobal import Sequence, LerpPosInterval, Parallel, LerpScaleInterval, Track, ParticleInterval, Wait, Func
-from toontown.toonbase import ToontownGlobals
-from toontown.coghq import MoleFieldBase
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.coghq import MoleFieldBase
 from direct.particles import ParticleEffect
-from toontown.battle import BattleParticles
-from toontown.battle import BattleProps
+from src.toontown.battle import BattleParticles
+from src.toontown.battle import BattleProps
 
 class MoleHill(NodePath):
 
@@ -35,7 +35,7 @@ class MoleHill(NodePath):
         self.moleHead = loader.loadModel('phase_12/models/bossbotHQ/mole_norm')
         self.moleHead.reparentTo(self.mole)
         moleColName = 'moleCol-%d-%s' % (self.moleField.doId, self.index)
-        moleSphere = CollisionSphere(0, 0, 0, 1.0)
+        moleSphere = CollisionTube(0, 0, 0, 0, 0, 1, 1)
         collNode = CollisionNode(moleColName)
         collNode.setIntoCollideMask(ToontownGlobals.WallBitmask)
         collNode.addSolid(moleSphere)

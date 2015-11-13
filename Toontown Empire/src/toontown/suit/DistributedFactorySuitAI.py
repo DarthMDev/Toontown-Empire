@@ -1,6 +1,6 @@
-from otp.ai.AIBaseGlobal import *
+from src.otp.ai.AIBaseGlobal import *
 from direct.directnotify import DirectNotifyGlobal
-from toontown.battle import SuitBattleGlobals
+from src.toontown.battle import SuitBattleGlobals
 import DistributedSuitBaseAI
 import SuitDialog
 

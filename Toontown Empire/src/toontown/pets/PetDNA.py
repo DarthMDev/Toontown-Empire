@@ -1,6 +1,6 @@
-from toontown.toon import ToonDNA
+from src.toontown.toon import ToonDNA
 from pandac.PandaModules import VBase4
-from toontown.toonbase import TTLocalizer, ToontownGlobals
+from src.toontown.toonbase import TTLocalizer, ToontownGlobals
 from direct.showbase import PythonUtil
 NumFields = 9
 Fields = {'head': 0,
@@ -241,7 +241,7 @@ def getBodyRarity(bodyIndex):
     for zoneId in PetRarities['body']:
         for body in PetRarities['body'][zoneId]:
             totalWeight += PetRarities['body'][zoneId][body]
-            if weight.has_key(body):
+            if body in weight:
                 weight[body] += PetRarities['body'][zoneId][body]
             else:
                 weight[body] = PetRarities['body'][zoneId][body]

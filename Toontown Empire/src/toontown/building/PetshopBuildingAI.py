@@ -1,13 +1,13 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 import DistributedDoorAI
 import DistributedPetshopInteriorAI
 import FADoorCodes
 import DoorTypes
-from toontown.toon import NPCToons
-from toontown.toonbase import ToontownGlobals
-from toontown.quest import Quests
-from toontown.hood import ZoneUtil
+from src.toontown.toon import NPCToons
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.quest import Quests
+from src.toontown.hood import ZoneUtil
 
 class PetshopBuildingAI:
     notify = DirectNotifyGlobal.directNotify.newCategory('PetshopBuildingAI')
@@ -35,7 +35,7 @@ class PetshopBuildingAI:
         self.interior.generateWithRequired(self.interiorZone)
 
         self.npcs = NPCToons.createNpcsInZone(self.air, self.interiorZone)
-        
+
         door = DistributedDoorAI.DistributedDoorAI(
             self.air, blockNumber, DoorTypes.EXT_STANDARD)
         insideDoor = DistributedDoorAI.DistributedDoorAI(

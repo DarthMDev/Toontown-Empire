@@ -1,5 +1,3 @@
-
-
 class PlayerBase:
 
     def __init__(self):
@@ -16,3 +14,4 @@ class PlayerBase:
 
     def isGM(self):
         return self.gmState
+        return []

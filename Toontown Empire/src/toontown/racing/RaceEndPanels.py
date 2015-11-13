@@ -1,12 +1,12 @@
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.racing import RaceGlobals
-from toontown.shtiker.KartPage import RacingTrophy
-from toontown.racing import RaceGlobals
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.racing import RaceGlobals
+from src.toontown.shtiker.KartPage import RacingTrophy
+from src.toontown.racing import RaceGlobals
 
 class RaceResultsPanel(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('RaceEndPanels')
@@ -293,7 +293,7 @@ class RaceWinningsPanel(DirectFrame):
         else:
             self.circuitTotalLabel.stash()
             self.raceTotalLabel.unstash()
-        if ToontownGlobals.KARTING_TICKETS_HOLIDAY not in base.cr.newsManager.getHolidayIdList() or self.race.raceType != RaceGlobals.Practice:
+        if (not base.cr.newsManager.isHolidayRunning(ToontownGlobals.KARTING_TICKETS_HOLIDAY)) or self.race.raceType != RaceGlobals.Practice:
             self.doubleTicketsLabel.stash()
         if ticBonus:
             ticketSeq.append(Sequence(Func(self.ticketFrame.hide), Func(self.bonusFrame.show), Func(self.trophyFrame.hide), Func(self.bonusComponents[0].configure, text=wrapStr(TTLocalizer.KartRace_RecordString % (TTLocalizer.KartRecordStrings[bonusType], TTLocalizer.KartRace_TrackNames[track], str(ticBonus)))), Wait(3)))

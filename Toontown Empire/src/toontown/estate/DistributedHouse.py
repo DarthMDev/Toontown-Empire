@@ -1,27 +1,26 @@
-from pandac.PandaModules import *
-from toontown.toonbase.ToonBaseGlobal import *
+from panda3d.core import *
+from src.toontown.toonbase.ToonBaseGlobal import *
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
 from direct.distributed.ClockDelta import *
-from toontown.minigame.OrthoWalk import *
+from src.toontown.minigame.OrthoWalk import *
 from string import *
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM
 from direct.fsm import State
-from toontown.toon import Toon
+from src.toontown.toon import Toon
 from direct.showbase import RandomNumGen
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
 import random
 from direct.showbase import PythonUtil
-from toontown.hood import Place
+from src.toontown.hood import Place
 import HouseGlobals
-from toontown.building import ToonInteriorColors
+from src.toontown.building import ToonInteriorColors
 from direct.showbase.MessengerGlobal import messenger
-from toontown.dna.DNAParser import *
-from toontown.nametag.NametagGroup import NametagGroup
-from toontown.nametag.Nametag import Nametag
+from src.toontown.dna.DNAParser import *
+from src.otp.nametag.NametagGroup import NametagGroup
+from src.otp.nametag.Nametag import Nametag
 
 class DistributedHouse(DistributedObject.DistributedObject):
     notify = directNotify.newCategory('DistributedHouse')
@@ -115,7 +114,7 @@ class DistributedHouse(DistributedObject.DistributedObject):
         self.randomGenerator.seed(self.doId)
         houseColor = HouseGlobals.stairWood
         color = Vec4(houseColor[0], houseColor[1], houseColor[2], 1)
-        setupDoor(doorNP, door_origin, door_origin, self.dnaStore, str(self.doId), color)
+        setupDoor(doorNP, door_origin, door_origin, self.dnaStore, str(self.colorIndex), color)
         self.__setupNamePlate()
         self.__setupFloorMat()
         self.__setupNametag()
@@ -232,19 +231,16 @@ class DistributedHouse(DistributedObject.DistributedObject):
         else:
             houseName = TTLocalizer.AvatarsHouse % TTLocalizer.GetPossesive(self.name)
         self.nametag = NametagGroup()
-        self.nametag.setNametag3d(None)
         self.nametag.setFont(ToontownGlobals.getBuildingNametagFont())
         if TTLocalizer.BuildingNametagShadow:
             self.nametag.setShadow(*TTLocalizer.BuildingNametagShadow)
-        self.nametag.hideChat()
-        self.nametag.hideThought()
-        nametagColor = NametagGlobals.NametagColors[NametagGlobals.CCToonBuilding]
-        self.nametag.setNametagColor(nametagColor)
-        self.nametag.setActive(False)
+        self.nametag.setContents(Nametag.CName)
+        self.nametag.setColorCode(NametagGroup.CCHouseBuilding)
+        self.nametag.setActive(0)
         self.nametag.setAvatar(self.house)
-        self.nametag.setText(houseName)
+        self.nametag.setObjectCode(self.doId)
+        self.nametag.setName(houseName)
         self.nametag.manage(base.marginManager)
-        self.nametag.updateAll()
 
     def unload(self):
         self.notify.debug('unload')

@@ -1,10 +1,10 @@
 import random
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals, ToontownTimer
-from toontown.cogdominium import CogdoBarrelRoomConsts, CogdoBarrelRoomRewardPanel
-from toontown.distributed import DelayDelete
+from src.toontown.toonbase import ToontownGlobals, ToontownTimer
+from src.toontown.cogdominium import CogdoBarrelRoomConsts, CogdoBarrelRoomRewardPanel
+from src.toontown.distributed import DelayDelete
 
 class CogdoBarrelRoom:
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCogdoBarrelRoom')
@@ -48,7 +48,7 @@ class CogdoBarrelRoom:
         self.fog.setColor(CogdoBarrelRoomConsts.BarrelRoomFogColor)
         self.fog.setLinearRange(*CogdoBarrelRoomConsts.BarrelRoomFogLinearRange)
         self.brBarrel = render.attachNewNode('@@CogdoBarrels')
-        for i in range(len(CogdoBarrelRoomConsts.BarrelProps)):
+        for i in xrange(len(CogdoBarrelRoomConsts.BarrelProps)):
             self.bPath = self.brBarrel.attachNewNode('%s%s'% (CogdoBarrelRoomConsts.BarrelPathName, i))
             self.bPath.setPos(CogdoBarrelRoomConsts.BarrelProps[i]['pos'])
             self.bPath.setH(CogdoBarrelRoomConsts.BarrelProps[i]['heading'])
@@ -85,7 +85,7 @@ class CogdoBarrelRoom:
         base.localAvatar.b_setAnimState('neutral')
         self.defaultFar = base.camLens.getFar()
         base.camLens.setFar(CogdoBarrelRoomConsts.BarrelRoomCameraFar)
-        base.camLens.setMinFov(ToontownGlobals.DefaultCameraFov/(4./3.))
+        base.camLens.setMinFov(settings['fov']/(4./3.))
         self.showBattleAreaLight(True)
         render.setFog(self.fog)
         self.model.unstash()
@@ -109,11 +109,11 @@ class CogdoBarrelRoom:
         self.timer.stash()
 
     def placeToonsAtEntrance(self, toons):
-        for i in range(len(toons)):
+        for i in xrange(len(toons)):
             toons[i].setPosHpr(self.entranceNode, *CogdoBarrelRoomConsts.BarrelRoomPlayerSpawnPoints[i])
 
     def placeToonsNearBattle(self, toons):
-        for i in range(len(toons)):
+        for i in xrange(len(toons)):
             toons[i].setPosHpr(self.nearBattleNode, *CogdoBarrelRoomConsts.BarrelRoomPlayerSpawnPoints[i])
 
     def showBattleAreaLight(self, visible = True):

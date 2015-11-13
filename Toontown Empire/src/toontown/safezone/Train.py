@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.showbase.DirectObject import DirectObject
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import globalClockDelta
@@ -9,7 +9,7 @@ from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.directutil import Mopath
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 from direct.actor import Actor
 
 class Train(DirectObject):

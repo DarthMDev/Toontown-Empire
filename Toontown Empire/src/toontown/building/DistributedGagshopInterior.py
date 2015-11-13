@@ -1,13 +1,13 @@
-from toontown.toonbase.ToonBaseGlobal import *
-from pandac.PandaModules import *
-from toontown.toonbase.ToontownGlobals import *
+from src.toontown.toonbase.ToonBaseGlobal import *
+from panda3d.core import *
+from src.toontown.toonbase.ToontownGlobals import *
 import random
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 import ToonInteriorColors
-from toontown.dna.DNAParser import *
-from toontown.hood import ZoneUtil
-from toontown.toon.DistributedNPCToonBase import DistributedNPCToonBase
+from src.toontown.dna.DNAParser import *
+from src.toontown.hood import ZoneUtil
+from src.toontown.toon.DistributedNPCToonBase import DistributedNPCToonBase
 
 class DistributedGagshopInterior(DistributedObject.DistributedObject):
 

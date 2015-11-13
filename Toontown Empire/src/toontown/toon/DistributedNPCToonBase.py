@@ -4,16 +4,16 @@ from direct.distributed import DistributedObject
 from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.interval.IntervalGlobal import *
-from pandac.PandaModules import *
+from panda3d.core import *
 import random
 
 import DistributedToon
 import NPCToons
-from toontown.nametag import NametagGlobals
-from toontown.quest import QuestChoiceGui
-from toontown.quest import QuestParser
-from toontown.quest import Quests
-from toontown.toonbase import ToontownGlobals
+from src.otp.nametag.NametagGroup import NametagGroup
+from src.toontown.quest import QuestChoiceGui
+from src.toontown.quest import QuestParser
+from src.toontown.quest import Quests
+from src.toontown.toonbase import ToontownGlobals
 
 
 class DistributedNPCToonBase(DistributedToon.DistributedToon):
@@ -26,7 +26,7 @@ class DistributedNPCToonBase(DistributedToon.DistributedToon):
             DistributedToon.DistributedToon.__init__(self, cr)
             self.__initCollisions()
             self.setPickable(0)
-            self.setPlayerType(NametagGlobals.CCNonPlayer)
+            self.setPlayerType(NametagGroup.CCNonPlayer)
 
     def disable(self):
         self.ignore('enter' + self.cSphereNode.getName())
@@ -112,6 +112,9 @@ class DistributedNPCToonBase(DistributedToon.DistributedToon):
 
     def setupAvatars(self, av):
         self.ignoreAvatars()
+        self.lookAtAvatar(av)
+    
+    def lookAtAvatar(self, av):
         av.headsUp(self, 0, 0, 0)
         self.headsUp(av, 0, 0, 0)
         av.stopLookAround()

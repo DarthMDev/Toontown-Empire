@@ -3,7 +3,7 @@ from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.distributed import DistributedObject
 import time
 
-from toontown.parties.ToontownTimeZone import ToontownTimeZone, UTC
+from src.toontown.parties.ToontownTimeZone import ToontownTimeZone, UTC
 
 
 class ToontownTimeManager(DistributedObject.DistributedObject):
@@ -11,8 +11,8 @@ class ToontownTimeManager(DistributedObject.DistributedObject):
     ClockFormat = '%I:%M:%S %p'
     formatStr = '%Y-%m-%d %H:%M:%S'
 
-    def __init__(self, serverTimeAtLogin=0, clientTimeAtLogin=0,
-                 realTimeAtLogin=0):
+    def __init__(self, serverTimeAtLogin=0.0, clientTimeAtLogin=0.0,
+                 realTimeAtLogin=0.0):
         self.serverTimeZone = ToontownTimeZone()
         self.updateLoginTimes(serverTimeAtLogin, clientTimeAtLogin,
                               realTimeAtLogin)

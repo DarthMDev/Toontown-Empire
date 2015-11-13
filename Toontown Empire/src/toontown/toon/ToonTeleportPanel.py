@@ -1,15 +1,14 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 from direct.showbase import DirectObject
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.directnotify import DirectNotifyGlobal
-from otp.avatar.Avatar import teleportNotify
+from src.otp.avatar.Avatar import teleportNotify
 import ToonAvatarDetailPanel
-from toontown.toonbase import TTLocalizer
-from toontown.hood import ZoneUtil
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.hood import ZoneUtil
 globalTeleport = None
 
 def showTeleportPanel(avId, avName, avDisableName):
@@ -82,7 +81,7 @@ class ToonTeleportPanel(DirectFrame):
                 self.enterTeleport,
                 self.exitTeleport)],
             'off', 'off')
-        from toontown.friends import FriendInviter
+        from src.toontown.friends import FriendInviter
         FriendInviter.hideFriendInviter()
         ToonAvatarDetailPanel.hideAvatarDetail()
         buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
@@ -132,7 +131,7 @@ class ToonTeleportPanel(DirectFrame):
 
     def enterCheckAvailability(self):
         myId = base.localAvatar.getDoId()
-        base.cr.ttsFriendsManager.d_teleportQuery(self.avId)
+        base.cr.tteFriendsManager.d_teleportQuery(self.avId)
         self['text'] = TTLocalizer.TeleportPanelCheckAvailability % self.avName
         self.accept('teleportResponse', self.__teleportResponse)
         self.bCancel.show()
@@ -212,7 +211,6 @@ class ToonTeleportPanel(DirectFrame):
         self.shardId = shardId
         self.hoodId = hoodId
         self.zoneId = zoneId
-        return
 
     def exitOtherShard(self):
         self.bYes.hide()

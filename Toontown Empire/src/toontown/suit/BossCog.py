@@ -5,18 +5,18 @@ from direct.fsm import State
 from direct.interval.IntervalGlobal import *
 from direct.showbase.PythonUtil import Functor
 from direct.task.Task import Task
-from pandac.PandaModules import *
-import string
+from panda3d.core import *
 import types
-
+import random
 import Suit
 import SuitDNA
-from otp.avatar import Avatar
-from toontown.battle import BattleParticles
-from toontown.battle import BattleProps
-from toontown.nametag import NametagGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from src.otp.avatar import Avatar
+from src.toontown.battle import BattleParticles
+from src.toontown.battle import BattleProps
+from src.otp.nametag.NametagGroup import NametagGroup
+from src.otp.nametag.NametagConstants import *
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
 
 
 GenericModel = 'phase_9/models/char/bossCog'
@@ -34,7 +34,8 @@ class BossCog(Avatar.Avatar):
     def __init__(self):
         Avatar.Avatar.__init__(self)
         self.setFont(ToontownGlobals.getSuitFont())
-        self.setPlayerType(NametagGlobals.CCSuit)
+        self.nametag.setSpeechFont(ToontownGlobals.getSuitFont())
+        self.setPlayerType(NametagGroup.CCSuit)
         self.setPickable(0)
         self.doorA = None
         self.doorB = None
@@ -55,6 +56,7 @@ class BossCog(Avatar.Avatar):
         self.healthCondition = 0
         self.animDoneEvent = 'BossCogAnimDone'
         self.animIvalName = 'BossCogAnimIval'
+        self.attackSpeed = 1
         return
 
     def delete(self):
@@ -89,8 +91,9 @@ class BossCog(Avatar.Avatar):
         self.swingSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_swipe.ogg')
         self.spinSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_spin.ogg')
         self.rainGearsSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_raining_gears.ogg')
-        self.swishSfx = loader.loadSfx('phase_5/audio/sfx/General_throw_miss.ogg')
-        self.boomSfx = loader.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart.ogg')
+        self.swishSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_swish.ogg')
+        self.treadsSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_tractor_treads.ogg')
+        self.boomSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_boom.ogg')
         self.deathSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_big_death.ogg')
         self.upSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_raise_up.ogg')
         self.downSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_collapse.ogg')
@@ -109,12 +112,25 @@ class BossCog(Avatar.Avatar):
          self.statement]
         dna = self.style
         filePrefix = ModelDict[dna.dept]
-        self.loadModel(GenericModel + '-legs-zero', 'legs')
+        if filePrefix == 'phase_12/models/char/bossbotBoss':
+            self.loadModel(filePrefix + '-legs-zero', 'legs')
+            self.loadModel(GenericModel + '-legs-zero', 'legs')
+            self.doorA = self.__setupDoor('**/joint_doorFront', 'doorA', self.doorACallback, VBase3(0, 0, 0), VBase3(0, 0, -80), CollisionPolygon(Point3(5, -4, 0.32), Point3(0, -4, 0), Point3(0, 4, 0), Point3(5, 4, 0.32)))
+            self.doorB = self.__setupDoor('**/joint_doorRear', 'doorB', self.doorBCallback, VBase3(0, 0, 0), VBase3(0, 0, 80), CollisionPolygon(Point3(-5, 4, 0.84), Point3(0, 4, 0), Point3(0, -4, 0), Point3(-5, -4, 0.84)))
+            self.doorA.request('Closed')
+            self.doorB.request('Closed')
+        else:
+            self.loadModel(GenericModel + '-legs-zero', 'legs')
         self.loadModel(filePrefix + '-torso-zero', 'torso')
         self.loadModel(filePrefix + '-head-zero', 'head')
         self.twoFaced = dna.dept == 's'
         self.attach('head', 'torso', 'joint34')
-        self.attach('torso', 'legs', 'joint_pelvis')
+        if filePrefix == 'phase_12/models/char/bossbotBoss':
+            self.attach('torso', 'legs', 'joint_legs')
+            pelvis = self.getPart('torso')
+            #pelvis.setZ(9.75)
+        else:
+            self.attach('torso', 'legs', 'joint_pelvis')
         self.rotateNode = self.attachNewNode('rotate')
         geomNode = self.getGeomNode()
         geomNode.reparentTo(self.rotateNode)
@@ -140,14 +156,17 @@ class BossCog(Avatar.Avatar):
         self.neckForwardHpr = VBase3(0, 0, 0)
         self.neckReversedHpr = VBase3(0, -540, 0)
         self.axle = self.find('**/joint_axle')
-        self.doorA = self.__setupDoor('**/joint_doorFront', 'doorA', self.doorACallback, VBase3(0, 0, 0), VBase3(0, 0, -80), CollisionPolygon(Point3(5, -4, 0.32), Point3(0, -4, 0), Point3(0, 4, 0), Point3(5, 4, 0.32)))
-        self.doorB = self.__setupDoor('**/joint_doorRear', 'doorB', self.doorBCallback, VBase3(0, 0, 0), VBase3(0, 0, 80), CollisionPolygon(Point3(-5, 4, 0.84), Point3(0, 4, 0), Point3(0, -4, 0), Point3(-5, -4, 0.84)))
-        treadsModel = loader.loadModel('%s-treads' % GenericModel)
-        treadsModel.reparentTo(self.axle)
-        self.treadsLeft = treadsModel.find('**/right_tread')
-        self.treadsRight = treadsModel.find('**/left_tread')
-        self.doorA.request('Closed')
-        self.doorB.request('Closed')
+        if filePrefix == 'phase_12/models/char/bossbotBoss':
+            pass
+        else:
+            self.doorA = self.__setupDoor('**/joint_doorFront', 'doorA', self.doorACallback, VBase3(0, 0, 0), VBase3(0, 0, -80), CollisionPolygon(Point3(5, -4, 0.32), Point3(0, -4, 0), Point3(0, 4, 0), Point3(5, 4, 0.32)))
+            self.doorB = self.__setupDoor('**/joint_doorRear', 'doorB', self.doorBCallback, VBase3(0, 0, 0), VBase3(0, 0, 80), CollisionPolygon(Point3(-5, 4, 0.84), Point3(0, 4, 0), Point3(0, -4, 0), Point3(-5, -4, 0.84)))
+            treadsModel = loader.loadModel('%s-treads' % GenericModel)
+            treadsModel.reparentTo(self.axle)
+            self.treadsLeft = treadsModel.find('**/right_tread')
+            self.treadsRight = treadsModel.find('**/left_tread')
+            self.doorA.request('Closed')
+            self.doorB.request('Closed')
 
     def initializeBodyCollisions(self, collIdStr):
         Avatar.Avatar.initializeBodyCollisions(self, collIdStr)
@@ -188,15 +207,15 @@ class BossCog(Avatar.Avatar):
         elif health > 0.7:
             condition = 3#Yellow
         elif health > 0.6:
-            condition = 4            
+            condition = 4
         elif health > 0.5:
-            condition = 5           
+            condition = 5
         elif health > 0.3:
             condition = 6#Orange
         elif health > 0.15:
             condition = 7
         elif health > 0.05:
-            condition = 8#Red           
+            condition = 8#Red
         elif health > 0.0:
             condition = 9#Blinking Red
         else:
@@ -214,10 +233,10 @@ class BossCog(Avatar.Avatar):
                 self.healthBar.setColor(self.healthColors[condition], 1)
                 self.healthBarGlow.setColor(self.healthGlowColors[condition], 1)
             self.healthCondition = condition
-            
+
     def __blinkRed(self, task):
         if not self.healthBar:
-            return    
+            return
         self.healthBar.setColor(self.healthColors[8], 1)
         self.healthBarGlow.setColor(self.healthGlowColors[8], 1)
         if self.healthCondition == 10:
@@ -418,7 +437,7 @@ class BossCog(Avatar.Avatar):
             self.currentAnimIval.setDoneEvent('')
             self.currentAnimIval.finish()
         self.currentAnimIval = ival
-        self.currentAnimIval.start()
+        self.currentAnimIval.start(playRate=self.attackSpeed)
         self.nowRaised = raised
         self.nowForward = forward
         self.nowHappy = happy
@@ -535,7 +554,7 @@ class BossCog(Avatar.Avatar):
             ival = Sequence(Func(self.reverseHead), ActorInterval(self, 'Bb2Ff_spin'), Func(self.forwardHead))
             if self.forward:
                 ival = Sequence(Func(self.reverseBody), ParallelEndTogether(ival, self.pelvis.hprInterval(0.5, self.pelvisForwardHpr, blendType='easeInOut')))
-            ival = Sequence(Track((0, ival), (0, SoundInterval(self.spinSfx, node=self)), (0.9, Parallel(SoundInterval(self.rainGearsSfx, node=self), ParticleInterval(pe, self.frontAttack, worldRelative=0, duration=1.5, cleanup=True), duration=0)), (1.9, Func(self.bubbleF.unstash))), Func(self.bubbleF.stash))
+            ival = Sequence(Track((0, ival), (0, Sequence(Func(self.setChatAbsolute, random.choice(TTLocalizer.VPSpinMessages), CFSpeech | CFTimeout), SoundInterval(self.spinSfx, node=self))), (0.9, Parallel(SoundInterval(self.rainGearsSfx, node=self), ParticleInterval(pe, self.frontAttack, worldRelative=0, duration=1.5, cleanup=True), duration=0)), (1.9, Func(self.bubbleF.unstash))), Func(self.bubbleF.stash))
             self.forward = 1
             self.happy = 0
             self.raised = 1
@@ -544,7 +563,7 @@ class BossCog(Avatar.Avatar):
                 self.doAnimate(None, raised=1, happy=0, queueNeutral=0)
             else:
                 self.doAnimate(None, raised=1, happy=1, queueNeutral=1)
-            ival = Parallel(ActorInterval(self, 'Fb_jump'), Sequence(SoundInterval(self.swishSfx, duration=1.1, node=self), SoundInterval(self.boomSfx, duration=1.9)), Sequence(Wait(1.21), Func(self.announceAreaAttack)))
+            ival = Parallel(ActorInterval(self, 'Fb_jump'), Sequence(Func(self.setChatAbsolute, random.choice(TTLocalizer.JumpBossTaunts[self.dna.dept]), CFSpeech | CFTimeout), SoundInterval(self.swishSfx, duration=1.1, node=self), SoundInterval(self.boomSfx, duration=1.9)), Sequence(Wait(1.21), Func(self.announceAreaAttack)))
             if self.twoFaced:
                 self.happy = 0
             else:

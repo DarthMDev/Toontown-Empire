@@ -6,15 +6,15 @@ from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
 from direct.interval.IntervalGlobal import *
 from direct.task.Task import Task
-from pandac.PandaModules import *
-from toontown.distributed import DelayDelete
-from toontown.distributed.DelayDeletable import DelayDeletable
-from toontown.hood import ZoneUtil
-from toontown.suit import Suit
-from toontown.toonbase.ToonBaseGlobal import *
-from toontown.toontowngui import TTDialog
-from toontown.nametag.NametagGroup import NametagGroup
-from toontown.nametag.Nametag import Nametag
+from panda3d.core import *
+from src.toontown.distributed import DelayDelete
+from src.toontown.distributed.DelayDeletable import DelayDeletable
+from src.toontown.hood import ZoneUtil
+from src.toontown.suit import Suit
+from src.toontown.toonbase.ToonBaseGlobal import *
+from src.toontown.toontowngui import TTDialog
+from src.otp.nametag.NametagGroup import NametagGroup
+from src.otp.nametag.Nametag import Nametag
 
 
 class DistributedDoor(DistributedObject.DistributedObject, DelayDeletable):
@@ -105,25 +105,23 @@ class DistributedDoor(DistributedObject.DistributedObject, DelayDeletable):
             return
         if self.nametag == None:
             self.nametag = NametagGroup()
-            self.nametag.setNametag3d(None)
             self.nametag.setFont(ToontownGlobals.getBuildingNametagFont())
             if TTLocalizer.BuildingNametagShadow:
                 self.nametag.setShadow(*TTLocalizer.BuildingNametagShadow)
-            self.nametag.hideChat()
-            self.nametag.hideThought()
-            nametagColor = NametagGlobals.NametagColors[NametagGlobals.CCToonBuilding]
-            self.nametag.setNametagColor(nametagColor)
-            self.nametag.setActive(False)
+            self.nametag.setContents(Nametag.CName)
+            self.nametag.setColorCode(NametagGroup.CCToonBuilding)
+            self.nametag.setActive(0)
             self.nametag.setAvatar(self.getDoorNodePath())
+            self.nametag.setObjectCode(self.block)
             name = self.cr.playGame.dnaStore.getTitleFromBlockNumber(self.block)
-            self.nametag.setText(name)
+            self.nametag.setName(name)
             self.nametag.manage(base.marginManager)
-            self.nametag.updateAll()
 
     def clearNametag(self):
         if self.nametag is not None:
             self.nametag.unmanage(base.marginManager)
             self.nametag.setAvatar(NodePath())
+            self.nametag.destroy()
             self.nametag = None
 
     def getTriggerName(self):
@@ -143,14 +141,14 @@ class DistributedDoor(DistributedObject.DistributedObject, DelayDeletable):
         return 'exit' + self.getTriggerName()
 
     def hideDoorParts(self):
+        try:
+            self.findDoorNode('doorFrameHoleRight').hide()
+            self.findDoorNode('doorFrameHoleLeft').hide()
+        except:
+            pass
         if self.doorType in self.specialDoorTypes:
             self.hideIfHasFlat(self.findDoorNode('rightDoor'))
             self.hideIfHasFlat(self.findDoorNode('leftDoor'))
-            try:
-                self.findDoorNode('doorFrameHoleRight').hide()
-                self.findDoorNode('doorFrameHoleLeft').hide()
-            except:
-                pass
 
     def setTriggerName(self):
         if self.doorType in self.specialDoorTypes or self.doorType == DoorTypes.INT_HQ:
@@ -308,7 +306,8 @@ class DistributedDoor(DistributedObject.DistributedObject, DelayDeletable):
         vec = base.localAvatar.getRelativeVector(self.currentDoorNp, self.currentDoorVec)
         netScale = self.currentDoorNp.getNetTransform().getScale()
         yToTest = vec.getY() / netScale[1]
-        return yToTest
+        isFacingForward = -132.0 < base.localAvatar.getH(self.getDoorNodePath()) < 132.0
+        return yToTest and isFacingForward
 
     def enterDoor(self):
         messenger.send('DistributedDoor_doorTrigger')

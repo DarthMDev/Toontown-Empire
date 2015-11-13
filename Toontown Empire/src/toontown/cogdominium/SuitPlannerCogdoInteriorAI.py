@@ -1,9 +1,9 @@
-from otp.ai.AIBaseGlobal import *
-from toontown.suit import SuitDNA
+from src.otp.ai.AIBaseGlobal import *
+from src.toontown.suit import SuitDNA
 from direct.directnotify import DirectNotifyGlobal
-from toontown.suit import DistributedSuitAI
-from toontown.building import SuitBuildingGlobals
-from toontown.suit.SuitInvasionGlobals import IFSkelecog, IFWaiter, IFV2
+from src.toontown.suit import DistributedSuitAI
+from src.toontown.building import SuitBuildingGlobals
+from src.toontown.suit.SuitInvasionGlobals import IFSkelecog, IFWaiter, IFV2
 import types, math, random
 
 BASE_RESERVE = 10
@@ -42,7 +42,7 @@ class SuitPlannerCogdoInteriorAI:
 
     def __genJoinChances(self, num):
         joinChances = []
-        for currChance in range(num):
+        for currChance in xrange(num):
             joinChances.append(random.randint(1, 100))
 
         joinChances.sort(cmp)
@@ -51,7 +51,7 @@ class SuitPlannerCogdoInteriorAI:
     def _genSuitInfos(self, numFloors, difficulty, bldgTrack):
         self.suitInfos = []
         self.notify.debug('\n\ngenerating suitsInfos with numFloors (' + str(numFloors) + ') difficulty (' + str(difficulty) + '+1) and bldgTrack (' + str(bldgTrack) + ')')
-        for currFloor in range(numFloors):
+        for currFloor in xrange(numFloors):
             infoDict = {}
             lvls = self.__genLevelList(difficulty, currFloor, numFloors)
             activeDicts = []
@@ -76,7 +76,7 @@ class SuitPlannerCogdoInteriorAI:
             else:
                 revives = 0
 
-            for currActive in range(numActive - 1, -1, -1):
+            for currActive in xrange(numActive - 1, -1, -1):
                 level = lvls[currActive]
                 type = self.__genNormalSuitType(level)
                 activeDict = {}
@@ -90,7 +90,7 @@ class SuitPlannerCogdoInteriorAI:
             reserveDicts = []
             numReserve = min(len(lvls) - numActive, getMaxReserves(bldgTrack))
             joinChances = self.__genJoinChances(numReserve)
-            for currReserve in range(numReserve):
+            for currReserve in xrange(numReserve):
                 level = lvls[currReserve + numActive]
                 type = self.__genNormalSuitType(level)
                 reserveDict = {}
@@ -204,7 +204,7 @@ class SuitPlannerCogdoInteriorAI:
 
     def genSuits(self):
         suitHandles = []
-        for floor in range(len(self.suitInfos)):
+        for floor in xrange(len(self.suitInfos)):
             floorSuitHandles = self.genFloorSuits(floor)
             suitHandles.append(floorSuitHandles)
 

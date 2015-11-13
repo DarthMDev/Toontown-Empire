@@ -25,7 +25,7 @@ echo "==============================="
 
 while [ true ]
 do
-ppython -m toontown.uberdog.ServiceStart --base-channel $BASE_CHANNEL \
+ppython -m src.toontown.uberdog.ServiceStart --base-channel $BASE_CHANNEL \
                  --max-channels $MAX_CHANNELS --stateserver $STATESERVER \
                  --astron-ip $ASTRON_IP --eventlogger-ip $EVENTLOGGER_IP
 done

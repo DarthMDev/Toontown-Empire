@@ -3,16 +3,16 @@ from direct.gui.DirectGui import DirectFrame
 from direct.gui.DirectGui import DGG
 from direct.gui.DirectGui import DirectLabel
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from toontown.shtiker import ShtikerPage
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.shtiker import ShtikerPage
+from src.toontown.toonbase import TTLocalizer
 UseDirectNewsFrame = config.GetBool('use-direct-news-frame', True)
 HaveNewsFrame = True
 if UseDirectNewsFrame:
-    from toontown.shtiker import DirectNewsFrame
+    from src.toontown.shtiker import DirectNewsFrame
 else:
     try:
-        from toontown.shtiker import InGameNewsFrame
+        from src.toontown.shtiker import InGameNewsFrame
     except:
         HaveNewsFrame = False
 
@@ -23,6 +23,7 @@ class NewsPage(ShtikerPage.ShtikerPage):
         ShtikerPage.ShtikerPage.__init__(self)
 
     def load(self):
+        self.noNewsLabel = DirectLabel(parent=self, relief=None, text=TTLocalizer.NewsPageImportError, text_scale=0.12)
         if HaveNewsFrame:
             if UseDirectNewsFrame:
                 import datetime
@@ -54,10 +55,9 @@ class NewsPage(ShtikerPage.ShtikerPage):
                 self.book.prevArrow.hide()
                 self.book.disableAllPageTabs()
             self.newsFrame.activate()
-            base.setCellsAvailable(base.leftCells, 0)
-            base.setCellsAvailable([base.rightCells[1]], 0)
+            base.setCellsActive(base.leftCells, 0)
+            base.setCellsActive([base.rightCells[1]], 0)
             localAvatar.book.bookCloseButton.hide()
-            localAvatar.setLastTimeReadNews(base.cr.toontownTimeManager.getCurServerDateTime())
 
     def exit(self):
         self.clearPage()
@@ -67,8 +67,8 @@ class NewsPage(ShtikerPage.ShtikerPage):
         ShtikerPage.ShtikerPage.exit(self)
         if HaveNewsFrame:
             self.newsFrame.deactivate()
-            base.setCellsAvailable(base.leftCells, 1)
-            base.setCellsAvailable([base.rightCells[1]], 1)
+            base.setCellsActive(base.leftCells, 1)
+            base.setCellsActive([base.rightCells[1]], 1)
             if localAvatar.book.shouldBookButtonBeHidden():
                 localAvatar.book.bookCloseButton.hide()
             else:

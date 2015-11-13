@@ -1,20 +1,22 @@
 import CatalogItem
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import TTLocalizer
 from direct.showbase import PythonUtil
 from direct.gui.DirectGui import *
-from toontown.toonbase import ToontownGlobals
-from toontown.estate import HouseGlobals
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.estate import HouseGlobals
+
 
 class CatalogHouseItem(CatalogItem.CatalogItem):
     def makeNewItem(self, houseId):
         self.houseId = houseId
+
         CatalogItem.CatalogItem.makeNewItem(self)
-        
+
     def notOfferedTo(self, avatar):
         return 1
         
     def requestPurchase(self, phone, callback):
-        from toontown.toontowngui import TTDialog
+        from src.toontown.toontowngui import TTDialog
         avatar = base.localAvatar
 
         self.requestPurchaseCleanup()
@@ -28,7 +30,7 @@ class CatalogHouseItem(CatalogItem.CatalogItem):
             del self.dialog
 
     def __handleFullPurchaseDialog(self, phone, callback, buttonValue):
-        from toontown.toontowngui import TTDialog
+        from src.toontown.toontowngui import TTDialog
         self.requestPurchaseCleanup()
         if buttonValue == DGG.DIALOG_OK:
             CatalogItem.CatalogItem.requestPurchase(self, phone, callback)
@@ -46,7 +48,7 @@ class CatalogHouseItem(CatalogItem.CatalogItem):
         
     def getEmblemPrices(self):
         return HouseGlobals.HouseEmblemPrices[self.houseId]
-        
+
     def getPicture(self, avatar):
         model = loader.loadModel(HouseGlobals.houseModels[self.houseId])
         model.setBin('unsorted', 0, 1)
@@ -69,4 +71,3 @@ class CatalogHouseItem(CatalogItem.CatalogItem):
         
 def getAllHouses():
     return [CatalogHouseItem(i) for i in xrange(6)]
-    

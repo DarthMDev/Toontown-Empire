@@ -6,13 +6,13 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.showbase import RandomNumGen
 from direct.task import Task
-from otp.ai.AIBase import *
-from toontown.golf import GolfGlobals
-from toontown.golf import GolfManagerAI
-from toontown.minigame import MinigameCreatorAI
-from toontown.quest import Quests
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase.ToontownGlobals import *
+from src.otp.ai.AIBase import *
+from src.toontown.golf import GolfGlobals
+from src.toontown.golf import GolfManagerAI
+from src.toontown.minigame import MinigameCreatorAI
+from src.toontown.quest import Quests
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase.ToontownGlobals import *
 
 
 class DistributedPicnicBasketAI(DistributedObjectAI.DistributedObjectAI):

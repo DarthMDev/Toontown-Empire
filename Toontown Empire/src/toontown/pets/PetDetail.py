@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
-from otp.avatar import AvatarDetail
-from toontown.pets import DistributedPet
+from src.otp.avatar import AvatarDetail
+from src.toontown.pets import DistributedPet
 
 class PetDetail(AvatarDetail.AvatarDetail):
     notify = DirectNotifyGlobal.directNotify.newCategory('PetDetail')

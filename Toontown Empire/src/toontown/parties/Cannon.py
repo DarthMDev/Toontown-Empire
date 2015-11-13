@@ -1,16 +1,16 @@
 import math
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.MetaInterval import Sequence, Parallel
 from direct.interval.FunctionInterval import Func
 from direct.interval.LerpInterval import LerpScaleInterval, LerpColorScaleInterval
 from direct.showbase.PythonUtil import bound
-from toontown.toon import ToonHead
-from toontown.minigame.CannonGameGlobals import *
-from toontown.toonbase import ToontownGlobals
-from toontown.parties.PartyUtils import toRadians, calcVelocity
+from src.toontown.toon import ToonHead
+from src.toontown.minigame.CannonGameGlobals import *
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.parties.PartyUtils import toRadians, calcVelocity
 from direct.showbase.PythonUtil import StackTrace
-from toontown.nametag.NametagFloat3d import NametagFloat3d
-from toontown.nametag.Nametag import Nametag
+from src.otp.nametag.NametagFloat3d import NametagFloat3d
+from src.otp.nametag.Nametag import Nametag
 CANNON_ROTATION_MIN = -70
 CANNON_ROTATION_MAX = 70
 INITIAL_VELOCITY = 80.0
@@ -134,11 +134,10 @@ class Cannon:
         self.toonHead.setupHead(toon.style)
         self.toonHead.reparentTo(hidden)
         tag = NametagFloat3d()
-        tag.hideNametag()
-        tag.update()
+        tag.setContents(Nametag.CSpeech | Nametag.CThought)
         tag.setBillboardOffset(0)
         tag.setAvatar(self.toonHead)
-        toon.nametag.add(tag)
+        toon.nametag.addNametag(tag)
         tagPath = self.toonHead.attachNewNode(tag)
         tagPath.setPos(0, 0, 1)
         self.toonHead.tag = tag
@@ -192,7 +191,7 @@ class Cannon:
         if self.toonHead != None:
             self.hideToonHead()
             if hasattr(self.toonInside, 'nametag'):
-                self.toonInside.nametag.remove(self.toonHead.tag)
+                self.toonInside.nametag.removeNametag(self.toonHead.tag)
             self.toonHead.delete()
             self.toonHead = None
         self.toonInside = None
