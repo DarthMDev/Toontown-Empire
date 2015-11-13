@@ -94,10 +94,10 @@ regMaxSkill = 10000
 UberSkill = 250
 MaxSkill = UberSkill + regMaxSkill
 
-ExperienceCap = 1000
+ExperienceCap = 1000 ** 10
 
 
-MaxToonAcc = 95
+MaxToonAcc = 100
 StartingLevel = 0
 CarryLimits = (((10,
    0,
@@ -188,7 +188,7 @@ CarryLimits = (((10,
    15,
    10,
    5,
-   2,
+   3,
    0),
   (20,
    15,

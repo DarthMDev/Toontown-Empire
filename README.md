@@ -1,6 +1,6 @@
 # Toontown Empire
-
-Official Repo for Toontown Empire, a new Toontown game based on Disney's Toontown Online. Thanks to Disney, Toontown Rewritten, Toontown Infinite, and all other Toontown games for making this game possible. :)
+[![Codacy Badge](https://api.codacy.com/project/badge/grade/a71bcbed1f8c4cd59d7f1fa131c7114d)](https://www.codacy.com)
+Official Repo for Toontown Empire, a new Toontown game based on Disney's Toontown Online.
 
 # Staff Positions:
 
@@ -14,5 +14,6 @@ Official Repo for Toontown Empire, a new Toontown game based on Disney's Toontow
 8. Tanner- 3D Modeler
 9. Jacob- 3D Modeler
 10. Trevor- Composor 
+11. King Ned- Server Security
 
 # Do not push broken code to the master branch, because it messes up the game and makes it harder for the developers to add features, and fix bugs in the game!

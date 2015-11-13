@@ -6,6 +6,13 @@ import LaffRestockGlobals, LaffShopGui, time
 
 class DistributedNPCLaffRestock(DistributedNPCToonBase):
 
+    #zone2id = {
+        #10000: 0,
+        #13000: 1,
+        #12000: 2,
+        #11000: 3,
+    #} - Storm Sellbot
+
     def __init__(self, cr):
         DistributedNPCToonBase.__init__(self, cr)
         self.lastCollision = 0
@@ -16,21 +23,13 @@ class DistributedNPCLaffRestock(DistributedNPCToonBase):
         self.destroyDialog()
         DistributedNPCToonBase.disable(self)
 
-    def destroyDialog(self):
-        self.clearChat()
-
-        if self.laffDialog:
-            self.laffDialog.destroy()
-            self.laffDialog = None
-    
-    def initToonState(self):
-        self.setAnimState('neutral', 0.9, None, None)
-        self.putOnSuit(ToontownGlobals.cogHQZoneId2deptIndex(self.zoneId), rental=True)
-
-        if self.name in NPCToons.LaffRestockPositions:
-            pos = NPCToons.LaffRestockPositions[self.name]
-            self.setPos(*pos[0])
-            self.setH(pos[1])
+    #def initToonState(self): - Storm Sellbot
+        #self.setAnimState('neutral', 0.9, None, None)
+        #if self.name in NPCToons.LaffRestockPositions:
+            #pos = NPCToons.LaffRestockPositions[self.name]
+            #self.setPos(*pos[0])
+            #self.setH(pos[1])
+        #self.putOnSuit(self.zone2id.get(self.zoneId, -1), rental=True)
 
     def getCollSphereRadius(self):
         return 1.25
