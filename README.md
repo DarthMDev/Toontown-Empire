@@ -17,3 +17,4 @@ Official Repo for Toontown Empire, a new Toontown game based on Disney's Toontow
 11. King Ned- Server Security
 
 # Do not push broken code to the master branch, because it messes up the game and makes it harder for the developers to add features, and fix bugs in the game!
+Also when you revert something broken please post the crash to make coders' life easier
