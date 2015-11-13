@@ -126,7 +126,7 @@ class NewsPageButtonManager(FSM.FSM):
         if not self.buttonsLoaded:
             return
         if localAvatar.getLastTimeReadNews():
-            self.__showNewIssueButton()
+            self.__showNewIssueButton() #this is unreachable for some reason, uh oh , fyi got this from codacy
             self.__blinkIval.resume()
         else:
             self.hideNewIssueButton()
