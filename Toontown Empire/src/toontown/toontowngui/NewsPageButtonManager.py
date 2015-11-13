@@ -164,7 +164,7 @@ class NewsPageButtonManager(FSM.FSM):
 
     def showAppropriateButton(self):
         self.notify.debugStateCall(self)
-        from toontown.toon import LocalToon
+        from src.toontown.toon import LocalToon
         if not LocalToon.WantNewsPage:
             return
         if not self.buttonsLoaded:
