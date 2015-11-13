@@ -163,6 +163,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.accept(self.systemMsgAckGuiDoneEvent, self.hideSystemMsgAckGui)
             self.systemMsgAckGui = None
             self.createSystemMsgAckGui()
+            self.setLastTimeReadNews(base.cr.lastLoggedIn)
             self.acceptingNewFriends = True
             self.acceptingNonFriendWhispers = True
             self.physControls.event.addAgainPattern('again%in')
@@ -1761,7 +1762,11 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         elif av:
             self.notify.warning('setSleepAutoReply from non-toon %s' % fromId)
 
+    def setLastTimeReadNews(self, newTime):
+        self.lastTimeReadNews = newTime
 
+    def getLastTimeReadNews(self):
+        return self.lastTimeReadNews
 
     def cheatCogdoMazeGame(self, kindOfCheat = 0):
         if base.config.GetBool('allow-cogdo-maze-suit-hit-cheat'):

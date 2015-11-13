@@ -22,11 +22,11 @@ EventsPage_News = 3
 
 class EventsPage(ShtikerPage.ShtikerPage):
     notify = DirectNotifyGlobal.directNotify.newCategory('EventsPage')
-    UseNewsTab = base.config.GetBool('want-news-tab', 0)
+    UseNewsTab = config.GetBool('want-news-tab', 0)
     DefaultNewsUrl = '/news/news_urls.txt'
-    NewsUrl = base.config.GetString('news-url', DefaultNewsUrl)
+    NewsUrl = config.GetString('news-url', DefaultNewsUrl)
     DownloadArticlesTaskName = 'downloadArticlesTask'
-    NonblockingDownload = base.config.GetBool('news-nonblocking', 1)
+    NonblockingDownload = config.GetBool('news-nonblocking', 1)
 
     def __init__(self):
         ShtikerPage.ShtikerPage.__init__(self)
@@ -155,7 +155,7 @@ class EventsPage(ShtikerPage.ShtikerPage):
 
     def loadNewsTab(self):
         self.newsDisplay = self.attachNewNode('news')
-        newspaper = loader.loadModel('phase_4/models/parties/tt_m_gui_sbk_newspaper.bam')
+        newspaper = loader.loadModel('phase_4/models/parties/tt_m_gui_sbk_newspaper')
         self.newsFrame = DirectLabel(relief=None, parent=self.newsDisplay, pos=(0, 0, -0.1))
         newspaper.reparentTo(self.newsFrame)
         self.createArticleTextList()
@@ -201,6 +201,8 @@ class EventsPage(ShtikerPage.ShtikerPage):
         else:
             textForDecoration = decorationName + ' x ' + str(count)
         assetName = PartyGlobals.DecorationIds.getString(decorBase.decorId)
+        if assetName == 'Hydra':
+            assetName = 'StageSummer'
         label = DirectLabel(relief=None, geom=self.decorationModels.find('**/partyDecoration_%s' % assetName), text=textForDecoration, text_scale=TTLocalizer.EPdecorationItemLabel, text_align=TextNode.ACenter, text_pos=(-0.01, -0.43), text_wordwrap=7.0)
         label['geom_scale'] = (2.6, 0.01, 0.05)
         label['geom_pos'] = (0.0, 0.0, -0.33)
@@ -563,7 +565,6 @@ class EventsPage(ShtikerPage.ShtikerPage):
             self.hostTab['state'] = DirectGuiGlobals.NORMAL
             self.invitedTab['state'] = DirectGuiGlobals.NORMAL
             self.calendarTab['state'] = DirectGuiGlobals.DISABLED
-            self.newsTab['state'] = DirectGuiGlobals.NORMAL
             self.newsTab['state'] = DirectGuiGlobals.NORMAL
             self.hostedPartyDisplay.hide()
             self.invitationDisplay.hide()
@@ -1062,4 +1063,3 @@ class EventsPage(ShtikerPage.ShtikerPage):
         else:
             result = self.NewsUrl
         return result
-        self.toontownTimeGui.updateTime()
