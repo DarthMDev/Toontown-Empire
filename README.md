@@ -1,8 +1,8 @@
 # Toontown Empire 
 
-https://magnum.travis-ci.com/mgracer48/toontown-empire.svg?token=nwGfbyDzkuRBAHQGp16L&branch=master
+[![Build Status](https://magnum.travis-ci.com/mgracer48/toontown-empire.svg?token=nwGfbyDzkuRBAHQGp16L&branch=master)](https://magnum.travis-ci.com/mgracer48/toontown-empire)
 
-[![Codacy Badge](https://api.codacy.com/project/badge/grade/a71bcbed1f8c4cd59d7f1fa131c7114d)](https
+[![Codacy Badge](https://api.codacy.com/project/badge/grade/a71bcbed1f8c4cd59d7f1fa131c7114d)]
 Official Repo for Toontown Empire, a new Toontown game based on Disney's Toontown Online.
 
 # Staff Positions:
