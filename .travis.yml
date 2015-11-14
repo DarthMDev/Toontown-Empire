@@ -9,7 +9,8 @@ python:
 before_script:
   - git clone https://github.com/Astron/panda3d
   - sudo apt-get install python-dev libpng-dev zlib1g-dev libssl-dev libx11-dev libgl1-mesa-dev libxrandr-dev libxxf86dga-dev libxcursor-dev bison flex libfreetype6-dev libvorbis-dev libjpeg-dev libopenal-dev libode-dev nvidia-cg-toolkit git 
-  - python panda3d/makepanda/makepanda.py --everything --verbose  --installer --threads 6
+  - cd panda3d
+  - python makepanda/makepanda.py --everything --verbose  --installer --threads 6
 notifications:
   irc:
     channels:
