@@ -10,7 +10,7 @@ before_script:
   - git clone https://github.com/Astron/panda3d
   - cd panda3d
   - sudo apt-get install python-dev libpng-dev zlib1g-dev libssl-dev libx11-dev libgl1-mesa-dev libxrandr-dev libxxf86dga-dev libxcursor-dev bison flex libfreetype6-dev libvorbis-dev libjpeg-dev libopenal-dev libode-dev nvidia-cg-toolkit git 
-  - python makepanda/makepanda.py --everything --verbose  --installer --threads 4
+  - python makepanda/makepanda.py --everything --verbose  --installer --threads 6
 notifications:
   irc:
     channels:
@@ -22,6 +22,6 @@ notifications:
 
 
 # command to run tests
-script: cd ../toontown-empire
+script: cd ..
 script: cd "Toontown Empire/src/build"
 script: python2.7 -m make
