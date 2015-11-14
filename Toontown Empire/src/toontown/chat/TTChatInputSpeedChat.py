@@ -1,5 +1,5 @@
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from src.otp.speedchat.SpeedChatTypes import *
 from src.toontown.speedchat.TTSpeedChatTypes import *
 from src.otp.speedchat.SpeedChat import SpeedChat
