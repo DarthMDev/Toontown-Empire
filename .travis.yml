@@ -5,8 +5,6 @@ python:
   # maintainers to fix their pypy-dev package.
  # - "pypy"
 # command to install dependencies
-git clone https://github.com/Astron/panda3d
-cd panda3d 
 before_script:
   - git clone https://github.com/Astron/panda3d
   - cd panda3d
