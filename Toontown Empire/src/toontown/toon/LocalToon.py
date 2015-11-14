@@ -1018,8 +1018,8 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         else:
             zoneId = '?'
         strPosCoordText = 'X: %.3f' % pos[0] + ', Y: %.3f' % pos[1] + '\nZ: %.3f' % pos[2] + ', H: %.3f' % hpr[0] + '\nZone: %s' % str(zoneId) + ', Ver: %s, ' % serverVersion + 'District: %s' % districtName
-        return strPosCoordText
         self.refreshOnscreenButtons()
+        return strPosCoordText
         return
 
     def thinkPos(self):
@@ -1870,5 +1870,4 @@ def animation(anim):
     invoker.enterCatching()
   else: 
     return 'Animation is Invalid.'
-
 
