@@ -1,0 +1,12 @@
+general:
+  build_dir: build
+
+dependencies:
+  post:
+    - git clone https://github.com/Astron/panda3d
+    - cd panda3d
+    - python  makepanda/makepanda.py --everything --verbose  --installer --threads 2
+
+test:
+  override:
+    - python "./Toontown Empire/src/build/make.py"
