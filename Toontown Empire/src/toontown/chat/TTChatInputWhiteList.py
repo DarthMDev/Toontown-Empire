@@ -1,13 +1,13 @@
 from src.otp.chat.ChatInputWhiteListFrame import ChatInputWhiteListFrame
+from src.toontown.chat.TTWhiteList import TTWhiteList
 from direct.showbase import DirectObject
-from src.otp.otpbase import OTPGlobals
+from otp.otpbase import OTPGlobals
 import sys
 from direct.gui.DirectGui import *
-from panda3d.core import *
-from src.otp.chat import ChatUtil
+from pandac.PandaModules import *
 from src.otp.otpbase import OTPLocalizer
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import ToontownGlobals
+from rc.toontown.toonbase import ToontownGlobals
 
 class TTChatInputWhiteList(ChatInputWhiteListFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('TTChatInputWhiteList')
@@ -28,10 +28,13 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
          'suppressKeys': 0,
          'suppressMouse': 1,
          'command': self.sendChat,
+         'failedCommand': self.sendFailed,
          'focus': 0,
          'text': '',
          'sortOrder': DGG.FOREGROUND_SORT_INDEX}
         ChatInputWhiteListFrame.__init__(self, entryOptions, parent, **kw)
+        self.whiteList = TTWhiteList()
+        base.whiteList = self.whiteList
         base.ttwl = self
         self.autoOff = 1
         self.sendBy = 'Data'
@@ -75,13 +78,17 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
         self.typeGrabbed = 0
 
     def typeCallback(self, extraArgs):
-        if self.typeGrabbed:
+        try:
+            if self.typeGrabbed:
+                return
+            self.applyFilter(extraArgs)
+            if localAvatar.chatMgr.chatInputWhiteList.isActive():
+                return
+            else:
+                messenger.send('wakeup')
+                messenger.send('enterNormalChat')
+        except UnicodeDecodeError:
             return
-        self.applyFilter(extraArgs)
-        if localAvatar.chatMgr.chatInputWhiteList.isActive():
-            return
-        messenger.send('wakeup')
-        messenger.send('enterNormalChat')
 
     def destroy(self):
         self.chatEntry.destroy()
@@ -90,6 +97,7 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
         ChatInputWhiteListFrame.destroy(self)
 
     def delete(self):
+        base.whiteList = None
         ChatInputWhiteListFrame.delete(self)
         return
 
@@ -101,8 +109,8 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
 
     def sendChatByData(self, text):
         if self.trueFriendChat:
-            for friendId in base.localAvatar.friendsList:
-                if base.localAvatar.isTrueFriends(friendId):
+            for friendId, flags in base.localAvatar.friendsList:
+                if flags & ToontownGlobals.FriendChat:
                     self.sendWhisperByFriend(friendId, text)
         elif self.receiverId:
             base.talkAssistant.sendWhisperTalk(text, self.receiverId)
@@ -124,7 +132,10 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
         return
 
     def chatButtonPressed(self):
-        self.sendChat(self.chatEntry.get())
+        if self.okayToSubmit:
+            self.sendChat(self.chatEntry.get())
+        else:
+            self.sendFailed(self.chatEntry.get())
 
     def cancelButtonPressed(self):
         self.requestMode('Off')
@@ -147,8 +158,49 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
 
     def labelWhisper(self):
         if self.receiverId:
-            self.whisperName = ChatUtil.findAvatarName(self.receiverId)
+            self.whisperName = base.talkAssistant.findAvatarName(self.receiverId)
             self.whisperLabel['text'] = OTPLocalizer.ChatInputWhisperLabel % self.whisperName
             self.whisperLabel.show()
         else:
             self.whisperLabel.hide()
+
+    def applyFilter(self, keyArgs, strict = False):
+        text = self.chatEntry.get(plain=True)
+        if text.startswith('~'):
+            self.okayToSubmit = True
+        else:
+            words = text.split(' ')
+            newwords = []
+            self.okayToSubmit = True
+            flag = 0
+            for friendId, flags in base.localAvatar.friendsList:
+                if flags & ToontownGlobals.FriendChat:
+                    flag = 1
+
+            for word in words:
+                if word == '' or self.whiteList.isWord(word) or not settings['speedchatPlus']:
+                    newwords.append(word)
+                else:
+                    if self.checkBeforeSend:
+                        self.okayToSubmit = False
+                    else:
+                        self.okayToSubmit = True
+                    if flag:
+                        newwords.append('\x01WLDisplay\x01' + word + '\x02')
+                    else:
+                        newwords.append('\x01WLEnter\x01' + word + '\x02')
+
+            if not strict:
+                lastword = words[-1]
+                try:
+                    if lastword == '' or self.whiteList.isPrefix(lastword) or not settings['speedchatPlus']:
+                        newwords[-1] = lastword
+                    elif flag:
+                        newwords[-1] = '\x01WLDisplay\x01' + lastword + '\x02'
+                    else:
+                        newwords[-1] = '\x01WLEnter\x01' + lastword + '\x02'
+                except UnicodeDecodeError:
+                    self.okayToSubmit = False
+            newtext = ' '.join(newwords)
+            self.chatEntry.set(newtext)
+        self.chatEntry.guiItem.setAcceptEnabled(self.okayToSubmit)

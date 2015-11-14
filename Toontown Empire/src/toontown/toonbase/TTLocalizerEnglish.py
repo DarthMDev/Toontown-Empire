@@ -6224,12 +6224,12 @@ NPCToonNames = {20000: 'Tutorial Tom',
  7007: 'Dewin Tymme',
  7008: 'Ima Cagedtoon',
  7009: 'Jimmy Thelock',
- 7010: 'Little Blinky',
- 7011: 'Donald',
- 10001: 'Healer Manny',
- 11001: 'Healer Marlson',
- 12001: 'Healer Manson',
- 13001: 'Healer Mary'}
+ 7010: 'Ziggy',
+ 7011: 'Donald'}
+ # 10001: 'Medic Manny',
+ # 11001: 'Medic Marlson',
+ # 12001: 'Medic Manson',
+ # 13001: 'Medic Mary'}
 zone2TitleDict = {2513: ('Toon Hall', ''),
  2514: ('Toontown Bank', ''),
  2516: ('Toontown School House', ''),
