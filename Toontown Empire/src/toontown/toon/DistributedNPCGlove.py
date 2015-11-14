@@ -5,11 +5,11 @@ from pandac.PandaModules import *
 import time
 
 from DistributedNPCToonBase import *
-from src.toontown.effects import DustCloud
-from src.toontown.toonbase import TTLocalizer, ToontownGlobals
-from src.toontown.toon.ToonDNA import allColorsList
-from src.otp.nametag.NametagConstants import CFSpeech, CFTimeout
-from src.toontown.toon import NPCToons
+from toontown.chat.ChatGlobals import *
+from toontown.effects import DustCloud
+from toontown.nametag.NametagGlobals import *
+from toontown.toonbase import TTLocalizer, ToontownGlobals
+from toontown.toon.ToonDNA import allColorsList
 
 def getDustCloud(toon):
     dustCloud = DustCloud.DustCloud(fBillboard=0)
@@ -71,10 +71,6 @@ class DistributedNPCGlove(DistributedNPCToonBase):
                       text_fg=(1, 0, 0, 1), text_scale=0.11, text_font=ToontownGlobals.getSignFont(),
                       pos=(0, 0, -0.45), text_shadow=(1, 1, 1, 1))
 
-        self.notice2 = DirectLabel(aspect2d, relief=None, text=TTLocalizer.GloveGuiNotice % ToontownGlobals.ColorCost,
-                      text_fg=(1, 0, 0, 1), text_scale=0.11, text_font=ToontownGlobals.getSignFont(),
-                      pos=(0, 0, -0.70), text_shadow=(1, 1, 1, 1))
-                      
         self.color = DirectLabel(aspect2d, relief=None, text='',
                      text_scale=0.11, text_font=ToontownGlobals.getSignFont(),
                      pos=(0, 0, -0.70), text_shadow=(1, 1, 1, 1))
@@ -137,7 +133,7 @@ class DistributedNPCGlove(DistributedNPCToonBase):
         taskMgr.doMethodLater(45, self.leave, 'npcSleepTask-%s' % self.doId)
         self.setChatAbsolute('', CFSpeech)
 
-        if base.localAvatar.getTotalMoney() < ToontownGlobals.GloveCost or  base.localAvatar.getTotalMoney() < ToontownGlobals.ColorCost:
+        if base.localAvatar.getTotalMoney() < ToontownGlobals.GloveCost:
             self.setChatAbsolute(self.getMessageById(2), CFSpeech|CFTimeout)
             self.reset()
         else:
