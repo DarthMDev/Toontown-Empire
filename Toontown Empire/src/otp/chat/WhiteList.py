@@ -77,7 +77,7 @@ class WhiteList:
         return ' '.join(words)
 
     def processThroughAll(self, text, av=None, garbler=None):
-        if (text.startswith('~') and not garbler):
+        if text.startswith('~') and not garbler:
             return text
 
         return self.processSequences(self.processText(re.sub(' +', ' ', text), av, garbler), av, garbler)
