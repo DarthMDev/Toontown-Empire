@@ -5,6 +5,20 @@ python:
   # maintainers to fix their pypy-dev package.
  # - "pypy"
 # command to install dependencies
+git clone https://github.com/Astron/panda3d
+cd panda3d 
+before_script:
+  - sudo apt-get install python-dev libpng-dev zlib1g-dev libssl-dev libx11-dev libgl1-mesa-dev libxrandr-dev libxxf86dga-dev libxcursor-dev bison flex libfreetype6-dev libvorbis-dev libjpeg-dev libopenal-dev libode-dev nvidia-cg-toolkit git 
+  - python makepanda/makepanda.py --everything --verbose  --installer --threads 2
+notifications:
+  irc:
+    channels:
+      - "chat.freenode.net#toontownempire"
+    on_success: change
+    on_failure: always
+    use_notice: true
+    skip_join: true
+
 
 # command to run tests
 script: #todo add build game command here
