@@ -2,7 +2,9 @@
 
 __all__ = ['OnScreenDebug']
 
-from panda3d.core import *
+
+
+from pandac.PandaModules import *
 
 import types
 from direct.gui import OnscreenText

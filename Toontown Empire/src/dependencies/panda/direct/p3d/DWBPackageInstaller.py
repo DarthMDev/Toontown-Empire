@@ -1,5 +1,3 @@
-__all__ = ["DWBPackageInstaller"]
-
 from direct.p3d.PackageInstaller import PackageInstaller
 from direct.gui.DirectWaitBar import DirectWaitBar
 from direct.gui import DirectGuiGlobals as DGG

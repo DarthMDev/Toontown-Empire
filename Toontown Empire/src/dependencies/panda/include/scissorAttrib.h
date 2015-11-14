@@ -48,8 +48,6 @@ PUBLISHED:
   static CPT(RenderAttrib) make(const LVecBase4 &frame);
   static CPT(RenderAttrib) make_default();
 
-  INLINE bool is_off() const;
-
   INLINE const LVecBase4 &get_frame() const;
 
 public:
@@ -62,8 +60,7 @@ protected:
 
 private:
   LVecBase4 _frame;
-  bool _off;
-  static CPT(RenderAttrib) _off_attrib;
+  static CPT(RenderAttrib) _off;
 
 PUBLISHED:
   static int get_class_slot() {
@@ -80,7 +77,7 @@ public:
 protected:
   static TypedWritable *make_from_bam(const FactoryParams &params);
   void fillin(DatagramIterator &scan, BamReader *manager);
-
+  
 public:
   static TypeHandle get_class_type() {
     return _type_handle;

@@ -12,7 +12,6 @@
 //
 ////////////////////////////////////////////////////////////////////
 
-
 ////////////////////////////////////////////////////////////////////
 //     Function: CullableObject::Constructor
 //       Access: Public
@@ -20,7 +19,9 @@
 //               filled in later.
 ////////////////////////////////////////////////////////////////////
 INLINE CullableObject::
-CullableObject() {
+CullableObject() :
+  _fancy(false)
+{
 #ifdef DO_MEMORY_USAGE
   MemoryUsage::update_type(this, get_class_type());
 #endif
@@ -34,10 +35,15 @@ CullableObject() {
 ////////////////////////////////////////////////////////////////////
 INLINE CullableObject::
 CullableObject(const Geom *geom, const RenderState *state,
-               const TransformState *internal_transform) :
+               const TransformState *net_transform,
+               const TransformState *modelview_transform,
+               SceneSetup *scene_setup) :
   _geom(geom),
   _state(state),
-  _internal_transform(internal_transform)
+  _net_transform(net_transform),
+  _modelview_transform(modelview_transform),
+  _internal_transform(scene_setup->get_cs_transform()->compose(modelview_transform)),
+  _fancy(false)
 {
 #ifdef DO_MEMORY_USAGE
   MemoryUsage::update_type(this, get_class_type());
@@ -45,9 +51,34 @@ CullableObject(const Geom *geom, const RenderState *state,
 }
 
 ////////////////////////////////////////////////////////////////////
+//     Function: CullableObject::Constructor
+//       Access: Public
+//  Description: Creates a CullableObject based the indicated geom,
+//               with the indicated render state and transform.
+////////////////////////////////////////////////////////////////////
+INLINE CullableObject::
+CullableObject(const Geom *geom, const RenderState *state,
+               const TransformState *net_transform,
+               const TransformState *modelview_transform,
+               const TransformState *internal_transform) :
+  _geom(geom),
+  _state(state),
+  _net_transform(net_transform),
+  _modelview_transform(modelview_transform),
+  _internal_transform(internal_transform),
+  _fancy(false)
+{
+#ifdef DO_MEMORY_USAGE
+  MemoryUsage::update_type(this, get_class_type());
+#endif
+}
+  
+
+////////////////////////////////////////////////////////////////////
 //     Function: CullableObject::Copy Constructor
 //       Access: Public
-//  Description: Copies the CullableObject.
+//  Description: Copies the CullableObject, but does not copy its
+//               children (decals).
 ////////////////////////////////////////////////////////////////////
 INLINE CullableObject::
 CullableObject(const CullableObject &copy) :
@@ -55,7 +86,10 @@ CullableObject(const CullableObject &copy) :
   _munger(copy._munger),
   _munged_data(copy._munged_data),
   _state(copy._state),
-  _internal_transform(copy._internal_transform)
+  _net_transform(copy._net_transform),
+  _modelview_transform(copy._modelview_transform),
+  _internal_transform(copy._internal_transform),
+  _fancy(false)
 {
 #ifdef DO_MEMORY_USAGE
   MemoryUsage::update_type(this, get_class_type());
@@ -65,16 +99,42 @@ CullableObject(const CullableObject &copy) :
 ////////////////////////////////////////////////////////////////////
 //     Function: CullableObject::Copy Assignment Operator
 //       Access: Public
-//  Description: Copies the CullableObject.
+//  Description: Copies the CullableObject, but does not copy its
+//               children (decals).
 ////////////////////////////////////////////////////////////////////
 INLINE void CullableObject::
 operator = (const CullableObject &copy) {
+  nassertv(!_fancy);
   _geom = copy._geom;
   _munger = copy._munger;
   _munged_data = copy._munged_data;
   _state = copy._state;
+  _net_transform = copy._net_transform;
+  _modelview_transform = copy._modelview_transform;
   _internal_transform = copy._internal_transform;
-  _draw_callback = copy._draw_callback;
+}
+
+////////////////////////////////////////////////////////////////////
+//     Function: CullableObject::is_fancy
+//       Access: Public
+//  Description: Returns true if the object has something fancy to it:
+//               decals, maybe, or a draw_callback, that prevents it
+//               from being rendered inline.
+////////////////////////////////////////////////////////////////////
+INLINE bool CullableObject::
+is_fancy() const {
+  return _fancy;
+}
+
+////////////////////////////////////////////////////////////////////
+//     Function: CullableObject::has_decals
+//       Access: Public
+//  Description: Returns true if the object has decals associated with
+//               it.
+////////////////////////////////////////////////////////////////////
+INLINE bool CullableObject::
+has_decals() const {
+  return _fancy && (_next != (CullableObject *)NULL);
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -86,17 +146,8 @@ operator = (const CullableObject &copy) {
 ////////////////////////////////////////////////////////////////////
 INLINE void CullableObject::
 draw(GraphicsStateGuardianBase *gsg, bool force, Thread *current_thread) {
-  if (_draw_callback != (CallbackObject *)NULL) {
-    // It has a callback associated.
-    gsg->clear_before_callback();
-    gsg->set_state_and_transform(_state, _internal_transform);
-    GeomDrawCallbackData cbdata(this, gsg, force);
-    _draw_callback->do_callback(&cbdata);
-    if (cbdata.get_lost_state()) {
-      // Tell the GSG to forget its state.
-      gsg->clear_state_and_transform();
-    }
-    // Now the callback has taken care of drawing.
+  if (_fancy) {
+    draw_fancy(gsg, force, current_thread);
   } else {
     nassertv(_geom != (Geom *)NULL);
     gsg->set_state_and_transform(_state, _internal_transform);
@@ -133,7 +184,43 @@ request_resident() const {
 ////////////////////////////////////////////////////////////////////
 INLINE void CullableObject::
 set_draw_callback(CallbackObject *draw_callback) {
-  _draw_callback = draw_callback;
+  make_fancy();
+  if (draw_callback != _draw_callback) {
+    if (_draw_callback != (CallbackObject *)NULL) {
+      unref_delete(_draw_callback);
+    }
+    _draw_callback = draw_callback;
+    if (_draw_callback != (CallbackObject *)NULL) {
+      _draw_callback->ref();
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////
+//     Function: CullableObject::set_next
+//       Access: Public
+//  Description: Sets the next object in the decal chain.  This next
+//               object will be destructed when this object destructs.
+////////////////////////////////////////////////////////////////////
+INLINE void CullableObject::
+set_next(CullableObject *next) {
+  make_fancy();
+  nassertv(_next == (CullableObject *)NULL);
+  _next = next;
+}
+
+////////////////////////////////////////////////////////////////////
+//     Function: CullableObject::get_next
+//       Access: Public
+//  Description: Returns the next object in the decal chain, or NULL
+//               for the end of the chain.
+////////////////////////////////////////////////////////////////////
+INLINE CullableObject *CullableObject::
+get_next() const {
+  if (_fancy) {
+    return _next;
+  }
+  return NULL;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -144,6 +231,23 @@ set_draw_callback(CallbackObject *draw_callback) {
 INLINE void CullableObject::
 flush_level() {
   _sw_sprites_pcollector.flush_level();
+}
+
+////////////////////////////////////////////////////////////////////
+//     Function: CullableObject::make_fancy
+//       Access: Private
+//  Description: Elevates this object to "fancy" status.  This means
+//               that the additional pointers, like _next and
+//               _draw_callback, have meaningful values and should be
+//               examined.
+////////////////////////////////////////////////////////////////////
+INLINE void CullableObject::
+make_fancy() {
+  if (!_fancy) {
+    _fancy = true;
+    _draw_callback = NULL;
+    _next = NULL;
+  }
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -162,7 +266,7 @@ draw_inline(GraphicsStateGuardianBase *gsg, bool force, Thread *current_thread) 
 ////////////////////////////////////////////////////////////////////
 //     Function: CullableObject::SortPoints::Constructor
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE CullableObject::SortPoints::
 SortPoints(const CullableObject::PointData *array) :
@@ -184,7 +288,7 @@ operator () (unsigned short a, unsigned short b) const {
 ////////////////////////////////////////////////////////////////////
 //     Function: CullableObject::SourceFormat::operator <
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE bool CullableObject::SourceFormat::
 operator < (const CullableObject::SourceFormat &other) const {

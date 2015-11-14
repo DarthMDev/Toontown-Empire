@@ -30,7 +30,7 @@ class IndexRemapper;
 //               interrogate database.  This includes types,
 //               functions, and function wrappers.
 ////////////////////////////////////////////////////////////////////
-class EXPCL_INTERROGATEDB InterrogateComponent {
+class EXPCL_DTOOLCONFIG InterrogateComponent {
 public:
   INLINE InterrogateComponent(InterrogateModuleDef *def = NULL);
   INLINE InterrogateComponent(const InterrogateComponent &copy);

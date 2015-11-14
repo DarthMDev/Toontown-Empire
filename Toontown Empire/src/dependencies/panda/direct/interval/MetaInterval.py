@@ -2,15 +2,14 @@
 
 __all__ = ['MetaInterval', 'Sequence', 'Parallel', 'ParallelEndTogether', 'Track']
 
-from panda3d.core import *
-from panda3d.direct import *
+from pandac.PandaModules import *
 from direct.directnotify.DirectNotifyGlobal import *
 from IntervalManager import ivalMgr
 import Interval
-from direct.task.Task import TaskManager
+from direct.task.Task import Task, TaskManager
 import types
-#if __debug__:
-#    import direct.showbase.PythonUtil as PythonUtil
+if __debug__:
+    import direct.showbase.PythonUtil as PythonUtil
 
 PREVIOUS_END = CMetaInterval.RSPreviousEnd
 PREVIOUS_START = CMetaInterval.RSPreviousBegin

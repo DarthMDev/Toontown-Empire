@@ -79,17 +79,17 @@ LColor_to_D3DCOLOR(const LColor &cLColor) {
 //               GL's.
 ////////////////////////////////////////////////////////////////////
 INLINE D3DTEXTUREADDRESS DXGraphicsStateGuardian9::
-get_texture_wrap_mode(SamplerState::WrapMode wm) {
+get_texture_wrap_mode(Texture::WrapMode wm) {
   switch (wm) {
-  case SamplerState::WM_clamp:
+  case Texture::WM_clamp:
     return D3DTADDRESS_CLAMP;
-  case SamplerState::WM_repeat:
+  case Texture::WM_repeat:
     return D3DTADDRESS_WRAP;
-  case SamplerState::WM_mirror:
+  case Texture::WM_mirror:
     return D3DTADDRESS_MIRROR;
-  case SamplerState::WM_mirror_once:
+  case Texture::WM_mirror_once:
     return D3DTADDRESS_MIRRORONCE;
-  case SamplerState::WM_border_color:
+  case Texture::WM_border_color:
     return D3DTADDRESS_BORDER;
   }
   dxgsg9_cat.error() << "Invalid Texture::Mode value" << endl;

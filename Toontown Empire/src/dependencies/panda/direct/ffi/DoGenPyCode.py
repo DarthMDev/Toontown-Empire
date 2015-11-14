@@ -5,6 +5,8 @@ the user to specify alternate parameters on the command line. """
 import getopt
 import sys
 import os
+import glob
+import types
 import time
 from direct.ffi import FFIConstants
 
@@ -141,7 +143,7 @@ def doGetopts():
             doSqueeze = False
         elif (flag == '-s'):
             deleteSourceAfterSqueeze = False
-
+            
         else:
             FFIConstants.notify.error('illegal option: ' + flag)
 
@@ -166,7 +168,7 @@ def doGetopts():
         if codeLib not in newLibs:
             newLibs.append(codeLib)
     codeLibs = newLibs
-
+        
 
 def doErrorCheck():
     global outputCodeDir
@@ -222,7 +224,7 @@ def doErrorCheck():
         FFIConstants.CodeModuleNameList = codeLibs
 
 def generateNativeWrappers():
-    from direct.extensions_native.extension_native_helpers import Dtool_PreloadDLL
+    from direct.extensions_native.extension_native_helpers import Dtool_FindModule, Dtool_PreloadDLL
 
     # Empty out the output directories of unnecessary crud from
     # previous runs before we begin.
@@ -276,9 +278,9 @@ def generateNativeWrappers():
         # in the runtime (plugin) environment, where all libraries are
         # not necessarily downloaded.
         if sys.version_info >= (3, 0):
-            pandaModules.write('try:\n    from .%s import *\nexcept ImportError as err:\n    if "DLL loader cannot find" not in str(err):\n        raise\n' % (metaModuleName))
+            pandaModules.write('try:\n  from .%s import *\nexcept ImportError as err:\n  if "DLL loader cannot find" not in str(err):\n    raise\n' % (metaModuleName))
         else:
-            pandaModules.write('try:\n    from %s import *\nexcept ImportError, err:\n    if "DLL loader cannot find" not in str(err):\n        raise\n' % (metaModuleName))
+            pandaModules.write('try:\n  from %s import *\nexcept ImportError, err:\n  if "DLL loader cannot find" not in str(err):\n    raise\n' % (metaModuleName))
 
         # Not sure if this message is helpful or annoying.
         #pandaModules.write('  print("Failed to import %s")\n' % (moduleName))
@@ -304,7 +306,7 @@ def generateNativeWrappers():
                     extension = open(extensionFilename, 'r')
                     moduleModules.write(extension.read())
                     moduleModules.write('\n')
-
+        
 
 def run():
     global outputCodeDir
@@ -335,7 +337,7 @@ def run():
 
     if doHTML:
         from direct.directscripts import gendocs
-        from panda3d.core import PandaSystem
+        from pandac.PandaModules import PandaSystem
         versionString = '%s %s' % (
             PandaSystem.getDistributor(), PandaSystem.getVersionString())
 

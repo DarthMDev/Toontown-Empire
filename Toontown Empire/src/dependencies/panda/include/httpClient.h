@@ -77,6 +77,7 @@ PUBLISHED:
   void clear_direct_host();
   void add_direct_host(const string &hostname);
 
+  void get_proxies_for_url(const URLSpec &url, pvector<URLSpec> &proxies) const;
   string get_proxies_for_url(const URLSpec &url) const;
 
   void set_username(const string &server, const string &realm, const string &username);
@@ -133,8 +134,6 @@ PUBLISHED:
   static HTTPClient *get_global_ptr();
 
 public:
-  void get_proxies_for_url(const URLSpec &url, pvector<URLSpec> &proxies) const;
-
   SSL_CTX *get_ssl_ctx();
 
 private:

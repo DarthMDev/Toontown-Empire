@@ -59,7 +59,6 @@ public:
   Filename _filename;
   Filename _filename_as_referenced;
   Source _source;
-  mutable bool _pragma_once;
 };
 
 inline ostream &operator << (ostream &out, const CPPFile &file) {

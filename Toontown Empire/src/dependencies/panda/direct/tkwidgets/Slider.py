@@ -8,8 +8,10 @@ __all__ = ['Slider', 'SliderWidget', 'rgbPanel']
 from direct.showbase.TkGlobal import *
 from Tkinter import *
 from Valuator import Valuator, rgbPanel, VALUATOR_MINI, VALUATOR_FULL
-import string
-import Pmw
+from direct.task import Task
+import math, sys, string
+import operator, Pmw
+from pandac.PandaModules import ClockObject
 
 class Slider(Valuator):
     """

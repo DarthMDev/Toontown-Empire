@@ -60,7 +60,7 @@ protected:
   virtual PT(CopyOnWriteObject) make_cow_copy();
 
 PUBLISHED:
-  explicit Geom(const GeomVertexData *data);
+  Geom(const GeomVertexData *data);
 
 protected:
   Geom(const Geom &copy);
@@ -102,7 +102,6 @@ PUBLISHED:
   INLINE PT(Geom) rotate() const;
   INLINE PT(Geom) unify(int max_indices, bool preserve_order) const;
   INLINE PT(Geom) make_points() const;
-  INLINE PT(Geom) make_lines() const;
   INLINE PT(Geom) make_patches() const;
 
   void decompose_in_place();
@@ -111,7 +110,6 @@ PUBLISHED:
   void rotate_in_place();
   void unify_in_place(int max_indices, bool preserve_order);
   void make_points_in_place();
-  void make_lines_in_place();
   void make_patches_in_place();
 
   virtual bool copy_primitives_from(const Geom *other);
@@ -144,24 +142,24 @@ PUBLISHED:
   bool release(PreparedGraphicsObjects *prepared_objects);
   int release_all();
 
-  GeomContext *prepare_now(PreparedGraphicsObjects *prepared_objects,
+  GeomContext *prepare_now(PreparedGraphicsObjects *prepared_objects, 
                            GraphicsStateGuardianBase *gsg);
 
 public:
-  bool draw(GraphicsStateGuardianBase *gsg,
+  bool draw(GraphicsStateGuardianBase *gsg, 
             const GeomMunger *munger,
             const GeomVertexData *vertex_data,
             bool force, Thread *current_thread) const;
-
+  
   INLINE void calc_tight_bounds(LPoint3 &min_point, LPoint3 &max_point,
-                                bool &found_any,
+                                bool &found_any, 
                                 const GeomVertexData *vertex_data,
                                 bool got_mat, const LMatrix4 &mat,
                                 Thread *current_thread) const;
   INLINE void calc_tight_bounds(LPoint3 &min_point, LPoint3 &max_point,
                                 bool &found_any, Thread *current_thread) const;
   INLINE void calc_tight_bounds(LPoint3 &min_point, LPoint3 &max_point,
-                                bool &found_any,
+                                bool &found_any, 
                                 const GeomVertexData *vertex_data,
                                 bool got_mat, const LMatrix4 &mat,
                                 const InternalName *column_name,
@@ -176,16 +174,11 @@ private:
   void compute_internal_bounds(CData *cdata, Thread *current_thread) const;
 
   void do_calc_tight_bounds(LPoint3 &min_point, LPoint3 &max_point,
-                            PN_stdfloat &sq_center_dist, bool &found_any,
+                            bool &found_any, 
                             const GeomVertexData *vertex_data,
                             bool got_mat, const LMatrix4 &mat,
                             const InternalName *column_name,
                             const CData *cdata, Thread *current_thread) const;
-
-  void do_calc_sphere_radius(const LPoint3 &center,
-                             PN_stdfloat &sq_radius, bool &found_any,
-                             const GeomVertexData *vertex_data,
-                             const CData *cdata, Thread *current_thread) const;
 
   void clear_prepared(PreparedGraphicsObjects *prepared_objects);
   bool check_will_be_valid(const GeomVertexData *vertex_data) const;
@@ -227,7 +220,7 @@ private:
     Geom *_source;  // A back pointer to the containing Geom
     const Geom *_geom_result;  // ref-counted if not NULL and not same as _source
     CPT(GeomVertexData) _data_result;
-
+    
   public:
     static TypeHandle get_class_type() {
       return _type_handle;
@@ -235,7 +228,7 @@ private:
     static void init_type() {
       register_type(_type_handle, "Geom::CDataCache");
     }
-
+    
   private:
     static TypeHandle _type_handle;
   };
@@ -252,10 +245,6 @@ public:
   public:
     INLINE CacheKey(const GeomVertexData *source_data,
                     const GeomMunger *modifier);
-    INLINE CacheKey(const CacheKey &copy);
-#ifdef USE_MOVE_SEMANTICS
-    INLINE CacheKey(CacheKey &&from) NOEXCEPT;
-#endif
     INLINE bool operator < (const CacheKey &other) const;
 
     CPT(GeomVertexData) _source_data;
@@ -264,13 +253,9 @@ public:
   // It is not clear why MSVC7 needs this class to be public.
   class CacheEntry : public GeomCacheEntry {
   public:
-    INLINE CacheEntry(Geom *source,
+    INLINE CacheEntry(Geom *source, 
                       const GeomVertexData *source_data,
                       const GeomMunger *modifier);
-    INLINE CacheEntry(Geom *source, const CacheKey &key);
-#ifdef USE_MOVE_SEMANTICS
-    INLINE CacheEntry(Geom *source, CacheKey &&key) NOEXCEPT;
-#endif
     ALLOC_DELETED_CHAIN(CacheEntry);
 
     virtual void evict_callback();
@@ -280,7 +265,7 @@ public:
     CacheKey _key;
 
     PipelineCycler<CDataCache> _cycler;
-
+    
   public:
     static TypeHandle get_class_type() {
       return _type_handle;
@@ -290,7 +275,7 @@ public:
       register_type(_type_handle, "Geom::CacheEntry",
                     GeomCacheEntry::get_class_type());
     }
-
+    
   private:
     static TypeHandle _type_handle;
   };
@@ -319,13 +304,13 @@ private:
     UsageHint _usage_hint;
     bool _got_usage_hint;
     UpdateSeq _modified;
-
+  
     CPT(BoundingVolume) _internal_bounds;
     int _nested_vertices;
     bool _internal_bounds_stale;
     BoundingVolume::BoundsType _bounds_type;
     CPT(BoundingVolume) _user_bounds;
-
+    
   public:
     static TypeHandle get_class_type() {
       return _type_handle;
@@ -333,11 +318,11 @@ private:
     static void init_type() {
       register_type(_type_handle, "Geom::CData");
     }
-
+    
   private:
     static TypeHandle _type_handle;
   };
-
+ 
   PipelineCycler<CData> _cycler;
   typedef CycleDataLockedReader<CData> CDLockedReader;
   typedef CycleDataReader<CData> CDReader;
@@ -425,9 +410,6 @@ public:
   INLINE UpdateSeq get_modified() const;
 
   bool check_valid(const GeomVertexDataPipelineReader *data_reader) const;
-
-  INLINE GeomContext *prepare_now(PreparedGraphicsObjects *prepared_objects,
-                                  GraphicsStateGuardianBase *gsg) const;
 
   bool draw(GraphicsStateGuardianBase *gsg, const GeomMunger *munger,
             const GeomVertexDataPipelineReader *data_reader,

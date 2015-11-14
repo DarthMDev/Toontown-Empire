@@ -96,7 +96,6 @@ public:
     return (void *)StaticDeletedChain< Type >::allocate(size, get_type_handle(Type)); \
   }                                                          \
   inline void *operator new(size_t size, void *ptr) {        \
-    (void) size;                                             \
     return ptr;                                              \
   }                                                          \
   inline void operator delete(void *ptr) {                   \
@@ -116,7 +115,6 @@ public:
     return (void *)_deleted_chain.allocate(size, get_type_handle(Type)); \
   }                                                          \
   inline void *operator new(size_t size, void *ptr) {        \
-    (void) size;                                             \
     return ptr;                                              \
   }                                                          \
   inline void operator delete(void *ptr) {                   \

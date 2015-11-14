@@ -12,23 +12,20 @@
 //
 ////////////////////////////////////////////////////////////////////
 
-#ifndef DAECHARACTER_H
-#define DAECHARACTER_H
-
 #include "pandatoolbase.h"
 #include "typedReferenceCount.h"
 #include "typeHandle.h"
 #include "eggTable.h"
-#include "epvector.h"
+#include "daeToEggConverter.h"
 
 #include "pre_fcollada_include.h"
 #include "FCollada.h"
 #include "FCDocument/FCDSceneNode.h"
 #include "FCDocument/FCDControllerInstance.h"
 #include "FCDocument/FCDSkinController.h"
-#include "FCDocument/FCDGeometryMesh.h"
 
-class DAEToEggConverter;
+#ifndef DAECHARACTER_H
+#define DAECHARACTER_H
 
 ////////////////////////////////////////////////////////////////////
 //       Class : DaeCharacter
@@ -36,46 +33,17 @@ class DAEToEggConverter;
 ////////////////////////////////////////////////////////////////////
 class DaeCharacter : public TypedReferenceCount {
 public:
-  DaeCharacter(EggGroup *node_group, const FCDControllerInstance* controller_instance);
-
-  struct Joint {
-    INLINE Joint(EggGroup *group, const FCDSceneNode *scene_node) :
-      _group(group),
-      _scene_node(scene_node),
-      _character(NULL),
-      _bind_pose(LMatrix4d::ident_mat()) {}
-
-    LMatrix4d _bind_pose;
-    PT(EggGroup) _group;
-    const FCDSceneNode *_scene_node;
-    DaeCharacter *_character;
-  };
-  typedef epvector<Joint> Joints;
-  typedef pmap<string, Joint> JointMap;
-
-  void bind_joints(JointMap &joint_map);
-  void adjust_joints(FCDSceneNode *node, const JointMap &joint_map,
-                     const LMatrix4d &transform = LMatrix4d::ident_mat());
-
-  void influence_vertex(int index, EggVertex *vertex);
-
-  void collect_keys(pset<float> &keys);
-  void r_collect_keys(FCDSceneNode *node, pset<float> &keys);
-
-  void build_table(EggTable *parent, FCDSceneNode* node, const pset<float> &keys);
-
-public:
-  PT(EggGroup) _node_group;
-  const FCDGeometryMesh *_skin_mesh;
-  const FCDControllerInstance *_instance;
-  LMatrix4d _bind_shape_mat;
-
+  DaeCharacter(const string name, const FCDControllerInstance* controller_instance);
+  PT(EggTable) as_egg_bundle();
+  void process_joint(PT(EggTable) parent, FCDSceneNode* node);
+  
 private:
+  int _frame_rate;
   string _name;
-  const FCDSkinController *_skin_controller;
-  Joints _joints;
-  JointMap _bound_joints;
-
+  FCDControllerInstance* _controller_instance;
+  FCDSkinController* _skin_controller;
+  pmap<string, FCDSkinControllerJoint*> _controller_joints;
+  
 public:
   virtual TypeHandle get_type() const {
     return get_class_type();

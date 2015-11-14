@@ -1,8 +1,21 @@
-1436948421
-2 3
+1412104444
+2 2
 9 libp3skel 4 5lWe 12 panda3d.skel 
 12
-12 9 BasicSkel 0 4 24 20 BasicSkel::BasicSkel 0 1 1 218
+12 9 BasicSkel 0 4 24 20 BasicSkel::BasicSkel 0 1 1 703
+// Filename: basicSkel.I
+// Created by: jyelon (31Jan07)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
 //     Function: BasicSkel::Constructor
 //       Access: Public
@@ -31,7 +44,9 @@ inline BasicSkel::~BasicSkel(void);
 40
 inline void BasicSkel::set_value(int n);
 
-15 9 get_value 0 4 24 20 BasicSkel::get_value 0 1 3 262
+15 9 get_value 0 4 24 20 BasicSkel::get_value 0 1 3 322
+// These inline functions allow you to get and set _value.
+
 ////////////////////////////////////////////////////////////////////
 //     Function: BasicSkel::get_value
 //       Access: Public
@@ -53,7 +68,9 @@ inline int BasicSkel::get_value(void);
 37
 void BasicSkel::set_value_alt(int n);
 
-17 13 get_value_alt 0 4 24 24 BasicSkel::get_value_alt 0 1 5 378
+17 13 get_value_alt 0 4 24 24 BasicSkel::get_value_alt 0 1 5 430
+// These do the same thing as the functions above.
+
 ////////////////////////////////////////////////////////////////////
 //     Function: BasicSkel::get_value
 //       Access: Public
@@ -64,7 +81,20 @@ void BasicSkel::set_value_alt(int n);
 35
 int BasicSkel::get_value_alt(void);
 
-18 9 TypedSkel 0 4 25 20 TypedSkel::TypedSkel 0 1 6 218
+18 9 TypedSkel 0 4 25 20 TypedSkel::TypedSkel 0 1 6 703
+// Filename: typedSkel.I
+// Created by: jyelon (31Jan07)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
 //     Function: TypedSkel::Constructor
 //       Access: Public
@@ -84,7 +114,9 @@ inline TypedSkel::TypedSkel(void);
 40
 inline void TypedSkel::set_value(int n);
 
-20 9 get_value 0 4 25 20 TypedSkel::get_value 0 1 8 262
+20 9 get_value 0 4 25 20 TypedSkel::get_value 0 1 8 322
+// These inline functions allow you to get and set _value.
+
 ////////////////////////////////////////////////////////////////////
 //     Function: TypedSkel::get_value
 //       Access: Public
@@ -106,7 +138,9 @@ inline int TypedSkel::get_value(void);
 37
 void TypedSkel::set_value_alt(int n);
 
-22 13 get_value_alt 0 4 25 24 TypedSkel::get_value_alt 0 1 10 378
+22 13 get_value_alt 0 4 25 24 TypedSkel::get_value_alt 0 1 10 430
+// These do the same thing as the functions above.
+
 ////////////////////////////////////////////////////////////////////
 //     Function: TypedSkel::get_value
 //       Access: Public
@@ -122,65 +156,91 @@ int TypedSkel::get_value_alt(void);
 static TypeHandle TypedSkel::get_class_type(void);
 
 11
-1 0 0 7 2 27 13 0 218 ////////////////////////////////////////////////////////////////////
+1 14 Dtool_5lWerD4O 0 7 2 27 13 14 Dtool_5lWerD4O 703 // Filename: basicSkel.I
+// Created by: jyelon (31Jan07)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 //     Function: BasicSkel::Constructor
 //       Access: Public
 //  Description:
 //////////////////////////////////////////////////////////////////// 0 
-2 0 0 4 4 29 0 0 241 ////////////////////////////////////////////////////////////////////
+2 14 Dtool_5lWexjnf 0 4 4 29 0 14 Dtool_5lWexjnf 241 ////////////////////////////////////////////////////////////////////
 //     Function: BasicSkel::set_value
 //       Access: Public
 //  Description: Stores an integer value.
 //////////////////////////////////////////////////////////////////// 2 4 this 3 27  1 n 1 28  
-3 0 0 6 5 28 0 0 262 ////////////////////////////////////////////////////////////////////
+3 14 Dtool_5lWetZe4 0 6 5 28 0 14 Dtool_5lWetZe4 262 ////////////////////////////////////////////////////////////////////
 //     Function: BasicSkel::get_value
 //       Access: Public
 //  Description: Retreives a value that was previously stored.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 27  
-4 0 0 4 6 29 0 0 362 ////////////////////////////////////////////////////////////////////
+4 14 Dtool_5lWeRwA3 0 4 6 29 0 14 Dtool_5lWeRwA3 362 ////////////////////////////////////////////////////////////////////
 //     Function: BasicSkel::set_value_alt
 //       Access: Public
 //  Description: Stores an integer value.  Exact same functionality
 //               as set_value, except that this isn't an inline
 //               function.
 //////////////////////////////////////////////////////////////////// 2 4 this 3 27  1 n 1 28  
-5 0 0 6 7 28 0 0 378 ////////////////////////////////////////////////////////////////////
+5 14 Dtool_5lWenEGt 0 6 7 28 0 14 Dtool_5lWenEGt 378 ////////////////////////////////////////////////////////////////////
 //     Function: BasicSkel::get_value
 //       Access: Public
 //  Description: Retreives a value that was previously stored.
 //               Exact same functionality as get_value, except
 //               that this isn't an inline function.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 27  
-6 0 0 7 10 30 0 0 218 ////////////////////////////////////////////////////////////////////
+6 14 Dtool_5lWeju_v 0 7 10 30 0 14 Dtool_5lWeju_v 703 // Filename: typedSkel.I
+// Created by: jyelon (31Jan07)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 //     Function: TypedSkel::Constructor
 //       Access: Public
 //  Description:
 //////////////////////////////////////////////////////////////////// 0 
-7 0 0 4 11 29 0 0 241 ////////////////////////////////////////////////////////////////////
+7 14 Dtool_5lWemhhM 0 4 11 29 0 14 Dtool_5lWemhhM 241 ////////////////////////////////////////////////////////////////////
 //     Function: TypedSkel::set_value
 //       Access: Public
 //  Description: Stores an integer value.
 //////////////////////////////////////////////////////////////////// 2 4 this 3 30  1 n 1 28  
-8 0 0 6 12 28 0 0 262 ////////////////////////////////////////////////////////////////////
+8 14 Dtool_5lWeCcYl 0 6 12 28 0 14 Dtool_5lWeCcYl 262 ////////////////////////////////////////////////////////////////////
 //     Function: TypedSkel::get_value
 //       Access: Public
 //  Description: Retreives a value that was previously stored.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 30  
-9 0 0 4 13 29 0 0 362 ////////////////////////////////////////////////////////////////////
+9 14 Dtool_5lWek_6j 0 4 13 29 0 14 Dtool_5lWek_6j 362 ////////////////////////////////////////////////////////////////////
 //     Function: TypedSkel::set_value_alt
 //       Access: Public
 //  Description: Stores an integer value.  Exact same functionality
 //               as set_value, except that this isn't an inline
 //               function.
 //////////////////////////////////////////////////////////////////// 2 4 this 3 30  1 n 1 28  
-10 0 0 6 14 28 0 0 378 ////////////////////////////////////////////////////////////////////
+10 14 Dtool_5lWeWLAa 0 6 14 28 0 14 Dtool_5lWeWLAa 378 ////////////////////////////////////////////////////////////////////
 //     Function: TypedSkel::get_value
 //       Access: Public
 //  Description: Retreives a value that was previously stored.
 //               Exact same functionality as get_value, except
 //               that this isn't an inline function.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 30  
-11 0 0 7 15 32 0 0 0 0 
+11 14 Dtool_5lWeCU6I 0 7 15 32 0 14 Dtool_5lWeCU6I 0 0 
 9
 24 9 BasicSkel 0 26625 9 BasicSkel 9 BasicSkel 0 0 0 1 12 13 0 4 14 15 16 17 0 0 0 0 0 491
 ////////////////////////////////////////////////////////////////////
@@ -204,7 +264,7 @@ static TypeHandle TypedSkel::get_class_type(void);
 //               "Adding C++ Classes to Panda."
 ////////////////////////////////////////////////////////////////////
 
-26 11 TypedObject 0 2049 11 TypedObject 11 TypedObject 0 0 0 0 0 0 0 0 0 0 0 0 3561
+26 11 TypedObject 0 2049 11 TypedObject 11 TypedObject 0 0 0 0 0 0 0 0 0 0 0 0 3666
 ////////////////////////////////////////////////////////////////////
 //       Class : TypedObject
 // Description : This is an abstract class that all classes which
@@ -214,7 +274,7 @@ static TypeHandle TypedSkel::get_class_type(void);
 //               return the specific type of the derived class.
 //               Inheriting from this automatically provides support
 //               for is_of_type() and is_exact_type().
-//
+//               
 //               All classes that inherit directly or indirectly from
 //               TypedObject should redefine get_type() and
 //               force_init_type(), as shown below.  Some classes that
@@ -226,7 +286,7 @@ static TypeHandle TypedSkel::get_class_type(void);
 //               do not inherit from TypedObject need not define the
 //               virtual functions get_type() and force_init_type()
 //               (or any other virtual functions).
-//
+//               
 //               There is a specific layout for defining the
 //               overrides from this class.  Keeping the definitions
 //               formatted just like these examples will allow
@@ -235,10 +295,10 @@ static TypeHandle TypedSkel::get_class_type(void);
 //               rearranging the braces or the order of the functions
 //               unless you're ready to change them in every file all
 //               at once.
-//
+//               
 //               What follows are some examples that can be used in
 //               new classes that you create.
-//
+//               
 //               @par In the class definition (.h file):
 //               @code
 //               public:
@@ -258,16 +318,16 @@ static TypeHandle TypedSkel::get_class_type(void);
 //                   return get_class_type();
 //                 }
 //                 virtual TypeHandle force_init_type() {init_type(); return get_class_type();}
-//
+//               
 //               private:
 //                 static TypeHandle _type_handle;
 //               @endcode
-//
+//               
 //               @par In the class .cxx file:
 //               @code
 //               TypeHandle <<<ThisClassStringName>>>::_type_handle;
 //               @endcode
-//
+//               
 //               @par In the class config_<<<PackageName>>>.cxx file:
 //               @code
 //               ConfigureFn(config_<<<PackageName>>>) {

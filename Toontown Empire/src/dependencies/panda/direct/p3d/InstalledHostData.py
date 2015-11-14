@@ -1,13 +1,11 @@
-__all__ = ["InstalledHostData"]
-
-from panda3d.core import URLSpec
+from pandac.PandaModules import URLSpec
 
 class InstalledHostData:
     """ A list of instances of this class is returned by
     AppRunner.scanInstalledPackages().  Each of these corresponds to a
     particular host that has provided packages that have been
     installed on the local client. """
-
+    
     def __init__(self, host, dirnode):
         self.host = host
         self.pathname = dirnode.pathname

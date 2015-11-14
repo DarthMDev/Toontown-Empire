@@ -19,7 +19,7 @@
 #include "notifyCategoryProxy.h"
 #include "configVariableSearchPath.h"
 
-NotifyCategoryDecl(interrogatedb, EXPCL_INTERROGATEDB, EXPTP_INTERROGATEDB);
+NotifyCategoryDecl(interrogatedb, EXPCL_DTOOLCONFIG, EXPTP_DTOOLCONFIG);
 
 extern ConfigVariableSearchPath interrogatedb_path;
 

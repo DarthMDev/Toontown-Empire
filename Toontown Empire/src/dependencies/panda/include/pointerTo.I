@@ -35,32 +35,6 @@ PointerTo(const PointerTo<T> &copy) :
 {
 }
 
-#ifdef USE_MOVE_SEMANTICS
-////////////////////////////////////////////////////////////////////
-//     Function: PointerTo::Move Constructor
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-template<class T>
-INLINE PointerTo<T>::
-PointerTo(PointerTo<T> &&from) NOEXCEPT :
-  PointerToBase<T>(move(from))
-{
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: PointerTo::Move Assignment Operator
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-template<class T>
-INLINE PointerTo<T> &PointerTo<T>::
-operator = (PointerTo<T> &&from) NOEXCEPT {
-  this->reassign(move(from));
-  return *this;
-}
-#endif  // USE_MOVE_SEMANTICS
-
 ////////////////////////////////////////////////////////////////////
 //     Function: PointerTo::Destructor
 //       Access: Public
@@ -107,22 +81,6 @@ template<class T>
 INLINE PointerTo<T>::
 operator T * () const {
   return (To *)(this->_void_ptr);
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: PointerTo::cheat
-//       Access: Public
-//  Description: Returns a reference to the underlying pointer.  This
-//               is a very unsafe method.  It's only used by some
-//               interrogate code.  If you think this method might be
-//               useful to you, you're probably wrong.
-//
-//               Promise me you won't use this, okay?
-////////////////////////////////////////////////////////////////////
-template<class T>
-INLINE T *&PointerTo<T>::
-cheat() {
-  return (To *&)(this->_void_ptr);
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -208,56 +166,6 @@ ConstPointerTo(const ConstPointerTo<T> &copy) :
 {
 }
 
-#ifdef USE_MOVE_SEMANTICS
-////////////////////////////////////////////////////////////////////
-//     Function: ConstPointerTo::Move Constructor
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-template<class T>
-INLINE ConstPointerTo<T>::
-ConstPointerTo(PointerTo<T> &&from) NOEXCEPT :
-  PointerToBase<T>(move(from))
-{
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: ConstPointerTo::Move Constructor
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-template<class T>
-INLINE ConstPointerTo<T>::
-ConstPointerTo(ConstPointerTo<T> &&from) NOEXCEPT :
-  PointerToBase<T>(move(from))
-{
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: ConstPointerTo::Move Assignment Operator
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-template<class T>
-INLINE ConstPointerTo<T> &ConstPointerTo<T>::
-operator = (PointerTo<T> &&from) NOEXCEPT {
-  this->reassign(move(from));
-  return *this;
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: ConstPointerTo::Move Assignment Operator
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-template<class T>
-INLINE ConstPointerTo<T> &ConstPointerTo<T>::
-operator = (ConstPointerTo<T> &&from) NOEXCEPT {
-  this->reassign(move(from));
-  return *this;
-}
-#endif  // USE_MOVE_SEMANTICS
-
 ////////////////////////////////////////////////////////////////////
 //     Function: ConstPointerTo::Dereference operator
 //       Access: Public
@@ -290,26 +198,11 @@ operator -> () const {
 //               don't care which way it goes because either will be
 //               correct.
 ////////////////////////////////////////////////////////////////////
+
 template<class T>
 INLINE ConstPointerTo<T>::
 operator const T * () const {
 return (To *)(this->_void_ptr);
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: ConstPointerTo::cheat
-//       Access: Public
-//  Description: Returns a reference to the underlying pointer.  This
-//               is a very unsafe method.  It's only used by some
-//               interrogate code.  If you think this method might be
-//               useful to you, you're probably wrong.
-//
-//               Promise me you won't use this, okay?
-////////////////////////////////////////////////////////////////////
-template<class T>
-INLINE const T *&ConstPointerTo<T>::
-cheat() {
-  return (const To *&)(this->_void_ptr);
 }
 
 ////////////////////////////////////////////////////////////////////

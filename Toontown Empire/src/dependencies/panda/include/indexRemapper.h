@@ -30,7 +30,7 @@
 //               only reason it exists is because Microsoft can't
 //               export STL map outside of the DLL.
 ////////////////////////////////////////////////////////////////////
-class EXPCL_INTERROGATEDB IndexRemapper {
+class EXPCL_DTOOLCONFIG IndexRemapper {
 public:
   IndexRemapper();
   ~IndexRemapper();

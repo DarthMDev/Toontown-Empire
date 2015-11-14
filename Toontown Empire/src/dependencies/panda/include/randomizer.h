@@ -19,7 +19,6 @@
 #include "mersenne.h"
 
 #include <time.h>
-#include <math.h>
 
 ////////////////////////////////////////////////////////////////////
 //       Class : Randomizer

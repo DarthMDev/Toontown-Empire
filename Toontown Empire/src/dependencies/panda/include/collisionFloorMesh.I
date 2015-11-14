@@ -56,23 +56,24 @@ add_vertex(const LPoint3 &vert) {
   _vertices.push_back(vert);
 }
 
-INLINE unsigned int  CollisionFloorMesh::
+INLINE const unsigned int  CollisionFloorMesh::
 get_num_vertices() const {
   return _vertices.size();
 }
 
-INLINE const LPoint3 &CollisionFloorMesh::
+INLINE const LPoint3 CollisionFloorMesh::
 get_vertex(unsigned int index) const {
   return _vertices[index];
 }
 
-INLINE unsigned int CollisionFloorMesh::
+INLINE const unsigned int  CollisionFloorMesh::
 get_num_triangles() const {
   return _triangles.size();
 }
 
-INLINE LPoint3i CollisionFloorMesh::
+INLINE const LPoint3d CollisionFloorMesh::
 get_triangle(unsigned int index) const {
   CollisionFloorMesh::TriangleIndices tri = _triangles[index];
-  return LPoint3i(tri.p1, tri.p2, tri.p3);
+  return LPoint3d(tri.p1, tri.p2, tri.p3);
 }
+

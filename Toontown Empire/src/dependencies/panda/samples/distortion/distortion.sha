@@ -42,12 +42,14 @@ void fshader(float4 l_texcoord0 : TEXCOORD0,
        	     uniform sampler2D k_screen : TEXUNIT1,
              uniform sampler2D k_waves : TEXUNIT0,
              uniform float4 texpad_screen,
-             in uniform float sys_time,
+             in uniform float4 k_time,
              out float4 o_color : COLOR)
 {
+
     float3 screen = l_texcoord0.xyz / l_texcoord0.w;
     float2 texcoords = float2(screen.xy) * texpad_screen.xy + texpad_screen.xy;
     float4 disturbance = tex2D(k_waves, texcoords);
-    //o_color = tex2D(k_screen, texcoords + disturbance.xy * 0.05 * disturbance.z * sys_time.x * 1);
-    o_color = tex2D(k_screen, texcoords + disturbance.xy * 0.05 * disturbance.z * sin(sys_time.x) * 1);
+    //o_color = tex2D(k_screen, texcoords + disturbance.xy * 0.05 * disturbance.z * k_time.x * 1);
+    o_color = tex2D(k_screen, texcoords + disturbance.xy * 0.05 * disturbance.z * sin(k_time.x) * 1);
 }
+

@@ -2,17 +2,17 @@
 
 __all__ = ['Actor']
 
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.showbase.DirectObject import DirectObject
-from direct.directnotify import DirectNotifyGlobal
-import types
+from pandac.PandaModules import LODNode
+import types, copy
 
 class Actor(DirectObject, NodePath):
     """
     Actor class: Contains methods for creating, manipulating
     and playing animations on characters
     """
-    notify = DirectNotifyGlobal.directNotify.newCategory("Actor")
+    notify = directNotify.newCategory("Actor")
     partPrefix = "__Actor_"
 
     modelLoaderOptions = LoaderOptions(LoaderOptions.LFSearch |
@@ -1018,6 +1018,11 @@ class Actor(DirectObject, NodePath):
         # remove the animations
         if (partName in partDict):
             del(partDict[partName])
+
+        # remove the bundle handle, in case this part is ever
+        # loaded again in the future
+        if partName in self.__commonBundleHandles:
+            del self.__commonBundleHandles[partName]
 
     def hidePart(self, partName, lodName="lodRoot"):
         """

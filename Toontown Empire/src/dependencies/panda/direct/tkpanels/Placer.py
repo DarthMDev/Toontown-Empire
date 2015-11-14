@@ -3,7 +3,7 @@
 __all__ = ['Placer', 'place']
 
 # Import Tkinter, Pmw, and the dial code from this directory tree.
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.showbase.TkGlobal import *
 from direct.tkwidgets.AppShell import *
 from direct.tkwidgets import Dial
@@ -429,7 +429,7 @@ class Placer(AppShell):
                 background = self.nodePathMenuBG)
             # Check to see if node path and ref node path are the same
             if ((self.refCS != None) and
-                (self.refCS == self['nodePath'])):
+                (self.refCS.id() == self['nodePath'].id())):
                 # Yes they are, use temp CS as ref
                 # This calls updatePlacer
                 self.setReferenceNodePath(self.tempCS)
@@ -474,7 +474,7 @@ class Placer(AppShell):
                     listbox = self.refNodePathMenu.component('scrolledlist')
                     listbox.setlist(self.refNodePathNames)
         # Check to see if node path and ref node path are the same
-        if (nodePath != None) and (nodePath == self['nodePath']):
+        if (nodePath != None) and (nodePath.id() == self['nodePath'].id()):
             # Yes they are, use temp CS and update listbox accordingly
             nodePath = self.tempCS
             self.refNodePathMenu.selectitem('parent')
@@ -509,7 +509,7 @@ class Placer(AppShell):
             dictName = name
         else:
             # Generate a unique name for the dict
-            dictName = name + '-' + repr(hash(nodePath))
+            dictName = name + '-' + repr(nodePath.id())
         if dictName not in dict:
             # Update combo box to include new item
             names.append(dictName)

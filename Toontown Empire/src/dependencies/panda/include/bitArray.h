@@ -43,10 +43,9 @@ class EXPCL_PANDA_PUTIL BitArray {
 public:
   typedef BitMaskNative MaskType;
   typedef MaskType::WordType WordType;
-
-PUBLISHED:
   enum { num_bits_per_word = MaskType::num_bits };
 
+PUBLISHED:
   INLINE BitArray();
   INLINE BitArray(WordType init_value);
   INLINE BitArray(const BitArray &copy);
@@ -61,10 +60,10 @@ PUBLISHED:
 
   INLINE ~BitArray();
 
-  CONSTEXPR static bool has_max_num_bits();
-  CONSTEXPR static int get_max_num_bits();
+  INLINE static bool has_max_num_bits();
+  INLINE static int get_max_num_bits();
 
-  CONSTEXPR static int get_num_bits_per_word();
+  INLINE static int get_num_bits_per_word();
   INLINE int get_num_bits() const;
   INLINE bool get_bit(int index) const;
   INLINE void set_bit(int index);
@@ -92,7 +91,7 @@ PUBLISHED:
 
   INLINE int get_num_words() const;
   INLINE MaskType get_word(int n) const;
-  INLINE void set_word(int n, WordType value);
+  INLINE void set_word(int n, MaskType value);
 
   void invert_in_place();
   bool has_bits_in_common(const BitArray &other) const;

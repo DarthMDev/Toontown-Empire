@@ -163,7 +163,7 @@ PUBLISHED:
 public:
   // Functions to support classes that read themselves from the Bam.
 
-  bool read_pointer(DatagramIterator &scan);
+  void read_pointer(DatagramIterator &scan);
   void read_pointers(DatagramIterator &scan, int count);
   void skip_pointer(DatagramIterator &scan);
 

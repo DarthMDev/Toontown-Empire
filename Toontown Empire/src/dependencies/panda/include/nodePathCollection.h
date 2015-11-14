@@ -34,7 +34,7 @@ PUBLISHED:
   INLINE ~NodePathCollection();
 
 #ifdef HAVE_PYTHON
-  EXTENSION(NodePathCollection(PyObject *self, PyObject *sequence));
+  NodePathCollection(PyObject *self, PyObject *sequence);
   EXTENSION(PyObject *__reduce__(PyObject *self) const);
 #endif
 
@@ -45,7 +45,6 @@ PUBLISHED:
   void remove_duplicate_paths();
   bool has_path(const NodePath &path) const;
   void clear();
-  void reserve(size_t num);
 
   bool is_empty() const;
   int get_num_paths() const;

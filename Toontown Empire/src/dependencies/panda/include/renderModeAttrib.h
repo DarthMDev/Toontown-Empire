@@ -44,27 +44,20 @@ PUBLISHED:
     // Filled polygons, without any particular emphasis on perspective
     // correctness (a particularly useful designation for software
     // rendering sprites).
-    M_filled_flat,
-
-    // Filled polygons with wireframe rendered in front.
-    // The wireframe is given a solid color.
-    M_filled_wireframe
+    M_filled_flat
   };
 
 private:
-  INLINE RenderModeAttrib(Mode mode, PN_stdfloat thickness, bool perspective,
-                          const LColor &wireframe_color = LColor::zero());
+  INLINE RenderModeAttrib(Mode mode, PN_stdfloat thickness, bool perspective);
 
 PUBLISHED:
   static CPT(RenderAttrib) make(Mode mode, PN_stdfloat thickness = 1.0f,
-                                bool perspective = false,
-                                const LColor &wireframe_color = LColor::zero());
+                                bool perspective = false);
   static CPT(RenderAttrib) make_default();
 
   INLINE Mode get_mode() const;
   INLINE PN_stdfloat get_thickness() const;
   INLINE bool get_perspective() const;
-  INLINE const LColor &get_wireframe_color() const;
 
   INLINE int get_geom_rendering(int geom_rendering) const;
 
@@ -80,7 +73,6 @@ private:
   Mode _mode;
   PN_stdfloat _thickness;
   bool _perspective;
-  LColor _wireframe_color;
 
 PUBLISHED:
   static int get_class_slot() {
@@ -97,7 +89,7 @@ public:
 protected:
   static TypedWritable *make_from_bam(const FactoryParams &params);
   void fillin(DatagramIterator &scan, BamReader *manager);
-
+  
 public:
   static TypeHandle get_class_type() {
     return _type_handle;

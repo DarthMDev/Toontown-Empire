@@ -98,10 +98,12 @@ get_num_rows() const {
 //               was changed, false if the object already contained n
 //               rows (or if there was some error).
 //
-//               This can be used when you know exactly how many
-//               rows you will be needing.  It is faster than
-//               reserve_num_rows().  Also see unclean_set_num_rows()
-//               if you are planning to fill in all the data yourself.
+//               Although this method is Published, application code
+//               only very rarely has any need to call it.  Instead,
+//               you should use the GeomVertexWriter to build up the
+//               rows in a GeomVertexData object automatically,
+//               without need to explicitly set the number of
+//               rows.
 //
 //               Don't call this in a downstream thread unless you
 //               don't mind it blowing away other changes you might
@@ -127,9 +129,12 @@ set_num_rows(int n) {
 //               anyway; it provides a tiny performance boost over
 //               set_num_rows().
 //
-//               This can be used when you know exactly how many
-//               rows you will be needing.  It is faster than
-//               reserve_num_rows().
+//               Although this method is Published, application code
+//               only very rarely has any need to call it.  Instead,
+//               you should use the GeomVertexWriter to build up the
+//               rows in a GeomVertexData object automatically,
+//               without need to explicitly set the number of
+//               rows.
 ////////////////////////////////////////////////////////////////////
 INLINE bool GeomVertexData::
 unclean_set_num_rows(int n) {
@@ -147,10 +152,6 @@ unclean_set_num_rows(int n) {
 //               This is a performance optimization only; it is
 //               especially useful when you know ahead of time that
 //               you will be adding n rows to the data.
-//
-//               If you know exactly how many rows you will be
-//               needing, it is significantly faster to use
-//               set_num_rows() or unclean_set_num_rows() instead.
 ////////////////////////////////////////////////////////////////////
 INLINE bool GeomVertexData::
 reserve_num_rows(int n) {
@@ -404,150 +405,6 @@ unpack_abcd_d(PN_uint32 data) {
 }
 
 ////////////////////////////////////////////////////////////////////
-//     Function: GeomVertexData::pack_ufloat
-//       Access: Public, Static
-//  Description: Packs three float values in an unsigned 32-bit int.
-////////////////////////////////////////////////////////////////////
-INLINE PN_uint32 GeomVertexData::
-pack_ufloat(float a, float b, float c) {
-  // Since we have to clamp both low exponents and negative numbers to 0,
-  // it's easier to see a float as having a 9-bit signed exponent.
-  union {
-    PN_int32 _packed;
-    float _float;
-  } f0, f1, f2;
-
-  f0._float = a;
-  f1._float = b;
-  f2._float = c;
-
-  // There are several cases here:
-  // 1. exponent 0xff: NaN or infinity (negative infinity excluded)
-  // 2. exponent too large: clamped to maximum value
-  // 3. normalized float
-  // 4. exponent 0: denormal float
-  // 5. zero or anything negative, clamped to 0
-
-  PN_uint32 packed = 0;
-
-  if ((f0._packed & 0x7f800000) == 0x7f800000 && (unsigned)f0._packed != 0xff800000u) {
-    packed |= (f0._packed >> 17) & 0x7ffu;
-  } else if (f0._packed >= 0x47800000) {
-    packed |= 0x7bf;
-  } else if (f0._packed >= 0x38800000) {
-    packed |= (f0._packed >> 17) - 0x1c00;
-  } else if (f0._packed >= 0x35000000) {
-    packed |= ((f0._packed & 0x7c0000u) | 0x800000u) >> (130 - (f0._packed >> 23));
-  }
-
-  if ((f1._packed & 0x7f800000) == 0x7f800000 && (unsigned)f1._packed != 0xff800000u) {
-    packed |= (f1._packed >> 6) & 0x3ff800u;
-  } else if (f1._packed >= 0x47800000) {
-    packed |= 0x3df800;
-  } else if (f1._packed >= 0x38800000) {
-    packed |= ((f1._packed >> 6) - 0xe00000) & 0x3ff800;
-  } else if (f1._packed >= 0x35000000) {
-    packed |= (((f1._packed & 0x7c0000u) | 0x800000u) >> (119 - (f1._packed >> 23))) & 0x1f800u;
-  }
-
-  if ((f2._packed & 0x7f800000) == 0x7f800000 && (unsigned)f2._packed != 0xff800000u) {
-    packed |= (f2._packed & 0x0ffe0000u) << 4;
-  } else if (f2._packed >= 0x47800000) {
-    packed |= 0xf7c00000;
-  } else if (f2._packed >= 0x38800000) {
-    packed |= ((f2._packed - 0x38000000) << 4) & 0xffc00000;
-  } else if (f2._packed >= 0x35000000) {
-    packed |= ((((f2._packed << 3) & 0x03c00000u) | 0x04000000u) >> (112 - (f2._packed >> 23))) & 0x07c00000u;
-  }
-
-  return packed;
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: GeomVertexData::unpack_ufloat_a
-//       Access: Public, Static
-//  Description: Unpacks an unsigned float11 value from an uint32.
-////////////////////////////////////////////////////////////////////
-INLINE float GeomVertexData::
-unpack_ufloat_a(PN_uint32 data) {
-  if ((data & 0x7c0) == 0) {
-    // Denormal float (includes zero).
-    return ldexpf((data & 63) / 64.0f, -14);
-  }
-
-  union {
-    PN_uint32 _packed;
-    float _float;
-  } value;
-  value._packed = ((data & 0x7ff) << 17);
-
-  if ((data & 0x7c0) == 0x7c0) {
-    // Infinity / NaN
-    value._packed |= 0x7f800000;
-  } else {
-    value._packed += 0x38000000;
-  }
-
-  return value._float;
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: GeomVertexData::unpack_ufloat_b
-//       Access: Public, Static
-//  Description: Unpacks an unsigned float11 value from an uint32.
-////////////////////////////////////////////////////////////////////
-INLINE float GeomVertexData::
-unpack_ufloat_b(PN_uint32 data) {
-  if ((data & 0x3e0000) == 0) {
-    // Denormal float (includes zero).
-    return ldexpf(((data >> 11) & 63) / 64.0f, -14);
-  }
-
-  union {
-    PN_uint32 _packed;
-    float _float;
-  } value;
-  value._packed = ((data & 0x3ff800) << 6);
-
-  if ((data & 0x3e0000) == 0x3e0000) {
-    // Infinity / NaN
-    value._packed |= 0x7f800000;
-  } else {
-    value._packed += 0x38000000;
-  }
-
-  return value._float;
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: GeomVertexData::unpack_ufloat_c
-//       Access: Public, Static
-//  Description: Unpacks an unsigned float10 value from an uint32.
-////////////////////////////////////////////////////////////////////
-INLINE float GeomVertexData::
-unpack_ufloat_c(PN_uint32 data) {
-  if ((data & 0xf8000000u) == 0) {
-    // Denormal float (includes zero).
-    return ldexpf(((data >> 22) & 31) / 32.0f, -14);
-  }
-
-  union {
-    PN_uint32 _packed;
-    float _float;
-  } value;
-  value._packed = ((data & 0xffc00000u) >> 4);
-
-  if ((data & 0xf8000000u) == 0xf8000000u) {
-    // Infinity / NaN
-    value._packed |= 0x7f800000;
-  } else {
-    value._packed += 0x38000000;
-  }
-
-  return value._float;
-}
-
-////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexData::add_transform
 //       Access: Private, Static
 //  Description: Adds the indicated transform to the table, if it is
@@ -557,7 +414,7 @@ INLINE int GeomVertexData::
 add_transform(TransformTable *table, const VertexTransform *transform,
               TransformMap &already_added) {
   pair<TransformMap::iterator, bool> result = already_added.insert(TransformMap::value_type(transform, table->get_num_transforms()));
-
+  
   if (result.second) {
     table->add_transform(transform);
   }
@@ -568,7 +425,7 @@ add_transform(TransformTable *table, const VertexTransform *transform,
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexData::CDataCache::Constructor
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE GeomVertexData::CDataCache::
 CDataCache() {
@@ -577,7 +434,7 @@ CDataCache() {
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexData::CDataCache::Copy Constructor
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE GeomVertexData::CDataCache::
 CDataCache(const GeomVertexData::CDataCache &copy) :
@@ -588,37 +445,13 @@ CDataCache(const GeomVertexData::CDataCache &copy) :
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexData::CacheKey::Constructor
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE GeomVertexData::CacheKey::
 CacheKey(const GeomVertexFormat *modifier) :
   _modifier(modifier)
 {
 }
-
-////////////////////////////////////////////////////////////////////
-//     Function: GeomVertexData::CacheKey::Copy Constructor
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-INLINE GeomVertexData::CacheKey::
-CacheKey(const CacheKey &copy) :
-  _modifier(copy._modifier)
-{
-}
-
-#ifdef USE_MOVE_SEMANTICS
-////////////////////////////////////////////////////////////////////
-//     Function: GeomVertexData::CacheKey::Move Constructor
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-INLINE GeomVertexData::CacheKey::
-CacheKey(CacheKey &&from) NOEXCEPT :
-  _modifier(move(from._modifier))
-{
-}
-#endif  // USE_MOVE_SEMANTICS
 
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexData::CacheKey::operator <
@@ -633,7 +466,7 @@ operator < (const CacheKey &other) const {
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexData::CacheEntry::Constructor
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE GeomVertexData::CacheEntry::
 CacheEntry(GeomVertexData *source, const GeomVertexFormat *modifier) :
@@ -641,32 +474,6 @@ CacheEntry(GeomVertexData *source, const GeomVertexFormat *modifier) :
   _key(modifier)
 {
 }
-
-////////////////////////////////////////////////////////////////////
-//     Function: GeomVertexData::CacheEntry::Copy Constructor
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-INLINE GeomVertexData::CacheEntry::
-CacheEntry(GeomVertexData *source, const CacheKey &key) :
-  _source(source),
-  _key(key)
-{
-}
-
-#ifdef USE_MOVE_SEMANTICS
-////////////////////////////////////////////////////////////////////
-//     Function: GeomVertexData::CacheEntry::Move Constructor
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-INLINE GeomVertexData::CacheEntry::
-CacheEntry(GeomVertexData *source, CacheKey &&key) NOEXCEPT :
-  _source(source),
-  _key(move(key))
-{
-}
-#endif  // USE_MOVE_SEMANTICS
 
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexData::CData::Constructor
@@ -704,7 +511,7 @@ CData(const GeomVertexData::CData &copy) :
 //  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE GeomVertexDataPipelineBase::
-GeomVertexDataPipelineBase(GeomVertexData *object,
+GeomVertexDataPipelineBase(GeomVertexData *object, 
                            Thread *current_thread,
                            GeomVertexData::CData *cdata) :
   _object(object),
@@ -753,7 +560,7 @@ get_current_thread() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexDataPipelineBase::get_usage_hint
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE GeomVertexDataPipelineBase::UsageHint GeomVertexDataPipelineBase::
 get_usage_hint() const {
@@ -763,7 +570,7 @@ get_usage_hint() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexDataPipelineBase::get_format
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE const GeomVertexFormat *GeomVertexDataPipelineBase::
 get_format() const {
@@ -773,7 +580,7 @@ get_format() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexDataPipelineBase::has_column
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE bool GeomVertexDataPipelineBase::
 has_column(const InternalName *name) const {
@@ -783,7 +590,7 @@ has_column(const InternalName *name) const {
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexDataPipelineBase::get_num_arrays
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE int GeomVertexDataPipelineBase::
 get_num_arrays() const {
@@ -793,7 +600,7 @@ get_num_arrays() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexDataPipelineBase::get_array
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE CPT(GeomVertexArrayData) GeomVertexDataPipelineBase::
 get_array(int i) const {
@@ -804,7 +611,7 @@ get_array(int i) const {
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexDataPipelineBase::get_transform_table
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE const TransformTable *GeomVertexDataPipelineBase::
 get_transform_table() const {
@@ -814,7 +621,7 @@ get_transform_table() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexDataPipelineBase::get_transform_blend_table
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE CPT(TransformBlendTable) GeomVertexDataPipelineBase::
 get_transform_blend_table() const {
@@ -824,7 +631,7 @@ get_transform_blend_table() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexDataPipelineBase::get_slider_table
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE const SliderTable *GeomVertexDataPipelineBase::
 get_slider_table() const {
@@ -834,7 +641,7 @@ get_slider_table() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexDataPipelineBase::get_modified
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE UpdateSeq GeomVertexDataPipelineBase::
 get_modified() const {
@@ -847,7 +654,7 @@ get_modified() const {
 //  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE GeomVertexDataPipelineReader::
-GeomVertexDataPipelineReader(const GeomVertexData *object,
+GeomVertexDataPipelineReader(const GeomVertexData *object, 
                              Thread *current_thread) :
   GeomVertexDataPipelineBase((GeomVertexData *)object, current_thread,
                              (GeomVertexData::CData *)object->_cycler.read_unlocked(current_thread)),
@@ -861,7 +668,7 @@ GeomVertexDataPipelineReader(const GeomVertexData *object,
 //  Description: Don't attempt to copy these objects.
 ////////////////////////////////////////////////////////////////////
 INLINE GeomVertexDataPipelineReader::
-GeomVertexDataPipelineReader(const GeomVertexDataPipelineReader &copy) :
+GeomVertexDataPipelineReader(const GeomVertexDataPipelineReader &copy) : 
   GeomVertexDataPipelineBase(copy)
 {
   nassertv(false);
@@ -903,7 +710,7 @@ get_object() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexDataPipelineReader::check_array_readers
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE void GeomVertexDataPipelineReader::
 check_array_readers() const {
@@ -915,7 +722,7 @@ check_array_readers() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexDataPipelineReader::get_array_reader
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE const GeomVertexArrayDataHandle *GeomVertexDataPipelineReader::
 get_array_reader(int i) const {
@@ -927,7 +734,7 @@ get_array_reader(int i) const {
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexDataPipelineReader::has_vertex
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE bool GeomVertexDataPipelineReader::
 has_vertex() const {
@@ -937,7 +744,7 @@ has_vertex() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexDataPipelineReader::is_vertex_transformed
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE bool GeomVertexDataPipelineReader::
 is_vertex_transformed() const {
@@ -952,7 +759,7 @@ is_vertex_transformed() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexDataPipelineReader::has_normal
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE bool GeomVertexDataPipelineReader::
 has_normal() const {
@@ -962,7 +769,7 @@ has_normal() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexDataPipelineReader::has_color
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE bool GeomVertexDataPipelineReader::
 has_color() const {
@@ -975,7 +782,7 @@ has_color() const {
 //  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE GeomVertexDataPipelineWriter::
-GeomVertexDataPipelineWriter(GeomVertexData *object, bool force_to_0,
+GeomVertexDataPipelineWriter(GeomVertexData *object, bool force_to_0, 
                              Thread *current_thread) :
   GeomVertexDataPipelineBase(object, current_thread,
                              object->_cycler.write_upstream(force_to_0, current_thread)),
@@ -996,7 +803,7 @@ GeomVertexDataPipelineWriter(GeomVertexData *object, bool force_to_0,
 //  Description: Don't attempt to copy these objects.
 ////////////////////////////////////////////////////////////////////
 INLINE GeomVertexDataPipelineWriter::
-GeomVertexDataPipelineWriter(const GeomVertexDataPipelineWriter &copy) :
+GeomVertexDataPipelineWriter(const GeomVertexDataPipelineWriter &copy) : 
   GeomVertexDataPipelineBase(copy)
 {
   nassertv(false);
@@ -1038,7 +845,7 @@ get_object() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexDataPipelineWriter::check_array_writers
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE void GeomVertexDataPipelineWriter::
 check_array_writers() const {
@@ -1050,7 +857,7 @@ check_array_writers() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: GeomVertexDataPipelineWriter::get_array_writer
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE GeomVertexArrayDataHandle *GeomVertexDataPipelineWriter::
 get_array_writer(int i) const {

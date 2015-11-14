@@ -61,7 +61,9 @@ class DirectNotify:
         """
 
         # We use ConfigVariableString instead of base.config, in case
-        # we're running before ShowBase has finished initializing
+        # we're running before ShowBase has finished initializing; and
+        # we import it directly from libpandaexpress, in case we're
+        # running before libpanda.dll is available.
         from panda3d.core import ConfigVariableString
 
         dconfigParam = ("notify-level-" + categoryName)

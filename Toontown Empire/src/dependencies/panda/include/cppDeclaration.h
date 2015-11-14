@@ -30,7 +30,7 @@ using namespace std;
 
 class CPPInstance;
 class CPPTemplateParameterList;
-class CPPTypedefType;
+class CPPTypedef;
 class CPPTypeDeclaration;
 class CPPExpression;
 class CPPType;
@@ -47,7 +47,6 @@ class CPPExtensionType;
 class CPPStructType;
 class CPPEnumType;
 class CPPTypeProxy;
-class CPPMakeProperty;
 class CPPMakeSeq;
 class CPPClassTemplateParameter;
 class CPPTBDType;
@@ -64,12 +63,12 @@ public:
   enum SubType {
     // Subtypes of CPPDeclaration
     ST_instance,
+    ST_typedef,
     ST_type_declaration,
     ST_expression,
     ST_type,
     ST_namespace,
     ST_using,
-    ST_make_property,
     ST_make_seq,
 
     // Subtypes of CPPType
@@ -86,7 +85,6 @@ public:
     ST_class_template_parameter,
     ST_tbd,
     ST_type_proxy,
-    ST_typedef,
   };
 
   CPPDeclaration(const CPPFile &file);
@@ -120,7 +118,7 @@ public:
 
   virtual CPPInstance *as_instance();
   virtual CPPClassTemplateParameter *as_class_template_parameter();
-  virtual CPPTypedefType *as_typedef_type();
+  virtual CPPTypedef *as_typedef();
   virtual CPPTypeDeclaration *as_type_declaration();
   virtual CPPExpression *as_expression();
   virtual CPPType *as_type();
@@ -138,7 +136,6 @@ public:
   virtual CPPEnumType *as_enum_type();
   virtual CPPTBDType *as_tbd_type();
   virtual CPPTypeProxy *as_type_proxy();
-  virtual CPPMakeProperty *as_make_property();
   virtual CPPMakeSeq *as_make_seq();
 
   CPPVisibility _vis;
@@ -157,7 +154,8 @@ operator << (ostream &out, const CPPDeclaration &decl) {
   return out;
 }
 
-ostream &
-operator << (ostream &out, const CPPDeclaration::SubstDecl &decl);
 
 #endif
+
+
+

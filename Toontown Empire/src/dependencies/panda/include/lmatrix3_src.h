@@ -24,16 +24,10 @@ class FLOATNAME(LMatrix4);
 ////////////////////////////////////////////////////////////////////
 class EXPCL_PANDA_LINMATH FLOATNAME(LMatrix3) {
 public:
-  typedef FLOATTYPE numeric_type;
   typedef const FLOATTYPE *iterator;
   typedef const FLOATTYPE *const_iterator;
 
 PUBLISHED:
-  enum {
-    num_components = 9,
-    is_int = 0
-  };
-
   // These helper classes are used to support two-level operator [].
   class Row {
   private:
@@ -41,6 +35,7 @@ PUBLISHED:
   PUBLISHED:
     INLINE_LINMATH FLOATTYPE operator [](int i) const;
     INLINE_LINMATH FLOATTYPE &operator [](int i);
+    EXTENSION(INLINE_LINMATH void __setitem__(int i, FLOATTYPE v));
     INLINE_LINMATH static int size();
   public:
     FLOATTYPE *_row;
@@ -104,7 +99,6 @@ PUBLISHED:
   INLINE_LINMATH static int size();
 
   INLINE_LINMATH bool is_nan() const;
-  INLINE_LINMATH bool is_identity() const;
 
   INLINE_LINMATH FLOATTYPE get_cell(int row, int col) const;
   INLINE_LINMATH void set_cell(int row, int col, FLOATTYPE value);
@@ -181,8 +175,6 @@ PUBLISHED:
   INLINE_LINMATH FLOATNAME(LMatrix3) &operator *= (FLOATTYPE scalar);
   INLINE_LINMATH FLOATNAME(LMatrix3) &operator /= (FLOATTYPE scalar);
 
-  INLINE_LINMATH void componentwise_mult(const FLOATNAME(LMatrix3) &other);
-
   INLINE_LINMATH FLOATTYPE determinant() const;
 
   INLINE_LINMATH void transpose_from(const FLOATNAME(LMatrix3) &other);
@@ -253,28 +245,28 @@ PUBLISHED:
     scale_mat(FLOATTYPE sx, FLOATTYPE sy, FLOATTYPE sz);
 
   INLINE_LINMATH void
-    set_shear_mat(const FLOATNAME(LVecBase3) &shear,
+    set_shear_mat(const FLOATNAME(LVecBase3) &shear, 
                   CoordinateSystem cs = CS_default);
 
   static INLINE_LINMATH FLOATNAME(LMatrix3)
-    shear_mat(const FLOATNAME(LVecBase3) &shear,
+    shear_mat(const FLOATNAME(LVecBase3) &shear, 
               CoordinateSystem cs = CS_default);
   static INLINE_LINMATH FLOATNAME(LMatrix3)
-    shear_mat(FLOATTYPE shxy, FLOATTYPE shxz, FLOATTYPE shyz,
+    shear_mat(FLOATTYPE shxy, FLOATTYPE shxz, FLOATTYPE shyz, 
               CoordinateSystem cs = CS_default);
 
   void
     set_scale_shear_mat(const FLOATNAME(LVecBase3) &scale,
-                        const FLOATNAME(LVecBase3) &shear,
+                        const FLOATNAME(LVecBase3) &shear, 
                         CoordinateSystem cs = CS_default);
 
   static INLINE_LINMATH FLOATNAME(LMatrix3)
     scale_shear_mat(const FLOATNAME(LVecBase3) &scale,
-                    const FLOATNAME(LVecBase3) &shear,
+                    const FLOATNAME(LVecBase3) &shear, 
                     CoordinateSystem cs = CS_default);
   static INLINE_LINMATH FLOATNAME(LMatrix3)
     scale_shear_mat(FLOATTYPE sx, FLOATTYPE sy, FLOATTYPE sz,
-                    FLOATTYPE shxy, FLOATTYPE shxz, FLOATTYPE shyz,
+                    FLOATTYPE shxy, FLOATTYPE shxz, FLOATTYPE shyz, 
                     CoordinateSystem cs = CS_default);
 
   static const FLOATNAME(LMatrix3) &convert_mat(CoordinateSystem from,
@@ -291,7 +283,7 @@ PUBLISHED:
 
   void output(ostream &out) const;
   void write(ostream &out, int indent_level = 0) const;
-  EXTENSION(INLINE_LINMATH string __repr__() const);
+  EXTENSION(INLINE_LINMATH void python_repr(ostream &out, const string &class_name) const);
 
   INLINE_LINMATH void generate_hash(ChecksumHashGenerator &hashgen) const;
   void generate_hash(

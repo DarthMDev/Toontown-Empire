@@ -76,6 +76,8 @@
 #include "pandabase.h"
 #include "pset.h"
 
+#ifdef HAVE_FMODEX //[
+
 #include "audioManager.h"
 
 //The Includes needed for FMOD
@@ -232,5 +234,7 @@ private:
 
 EXPCL_FMOD_AUDIO AudioManager *Create_FmodAudioManager();
 
+
+#endif //]
 
 #endif /* __FMOD_AUDIO_MANAGER_H__ */

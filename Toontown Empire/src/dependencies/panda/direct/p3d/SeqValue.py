@@ -1,5 +1,3 @@
-__all__ = ["SeqValue"]
-
 import types
 
 class SeqValue:

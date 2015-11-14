@@ -16,7 +16,6 @@
 #define NATIVENUMERICDATA_H
 
 #include "dtoolbase.h"
-#include "numeric_types.h"
 
 #include <string.h>  // for memcpy()
 

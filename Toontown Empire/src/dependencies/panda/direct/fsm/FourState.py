@@ -8,6 +8,7 @@ from direct.directnotify import DirectNotifyGlobal
 #import DistributedObject
 import ClassicFSM
 import State
+from direct.task import Task
 
 
 class FourState:

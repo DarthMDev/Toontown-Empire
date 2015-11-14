@@ -26,7 +26,7 @@ typedef long DWORD;
 typedef long LONG;
 typedef long UINT;
 typedef unsigned long ULONG;
-typedef signed long long LONGLONG;
+typedef signed __int64 LONGLONG;
 typedef long HRESULT;
 typedef int CRITICAL_SECTION;
 typedef int HANDLE;
@@ -45,12 +45,12 @@ typedef struct _STICKYKEYS STICKYKEYS;
 typedef struct _TOGGLEKEYS TOGGLEKEYS;
 typedef struct _FILTERKEYS FILTERKEYS;
 
-#define CALLBACK
+#define CALLBACK 
 
 #define WINAPI
 
 union LARGE_INTEGER {
-  long long QuadPart;
+  __int64 QuadPart;
 };
 
 class IGraphBuilder;

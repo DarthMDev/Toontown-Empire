@@ -17,7 +17,7 @@
 
 #include "pandabase.h"
 #include "luse.h"
-#include "epvector.h"
+#include "pvector.h"
 #include "pmap.h"
 
 class NurbsVertex;

@@ -223,7 +223,7 @@ operator ++ () {
 #else
   _seq = new_seq;
 #endif  // HAVE_THREADS
-
+    
   return *this;
 }
 
@@ -284,15 +284,15 @@ INLINE void UpdateSeq::
 output(ostream &out) const {
   AtomicAdjust::Integer seq = AtomicAdjust::get(_seq);
   switch (seq) {
-  case (AtomicAdjust::Integer)SC_initial:
+  case SC_initial:
     out << "initial";
     break;
 
-  case (AtomicAdjust::Integer)SC_old:
+  case SC_old:
     out << "old";
     break;
 
-  case (AtomicAdjust::Integer)SC_fresh:
+  case SC_fresh:
     out << "fresh";
     break;
 

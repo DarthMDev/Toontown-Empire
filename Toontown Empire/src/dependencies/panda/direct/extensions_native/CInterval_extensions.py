@@ -1,8 +1,7 @@
-from .core import Dtool_funcToMethod
 from direct.directnotify.DirectNotifyGlobal import directNotify
-
-CInterval.DtoolClassDict["notify"] = directNotify.newCategory("Interval")
-
+notify = directNotify.newCategory("Interval")
+Dtool_ObjectToDict(CInterval,"notify", notify)
+del notify
 #####################################################################
 def setT(self, t):
     # Overridden from the C++ function to call privPostEvent
@@ -11,7 +10,7 @@ def setT(self, t):
     self.setT_Old(t)
     self.privPostEvent()
 
-CInterval.DtoolClassDict["setT_Old"] = CInterval.setT
+Dtool_ObjectToDict(CInterval, "setT_Old", CInterval.setT)
 Dtool_funcToMethod(setT, CInterval)
 del setT
 #####################################################################

@@ -24,8 +24,13 @@
 #include "dtoolbase.h"
 
 #include <cmath>
-#include <cfloat>
+
+// Windows defines isnan() in a different place and with a different
+// name than everyone else.  Sheesh.
+#ifdef _WIN32
+#include <float.h>
 #include <limits>
+#endif
 
 INLINE float csqrt(float v);
 INLINE float csin(float v);
@@ -61,21 +66,15 @@ INLINE int cpow(int x, int y);
 
 // Returns true if the number is NaN, false if it's a genuine number
 // or infinity.
-INLINE bool cnan(float v);
 INLINE bool cnan(double v);
 
-// Returns true if the number is infinity.
-INLINE bool cinf(float v);
-INLINE bool cinf(double v);
-
-// Return NaN and infinity, respectively.
+// Returns NaN.
 INLINE float make_nan(float);
 INLINE double make_nan(double);
-INLINE float make_inf(float);
-INLINE double make_inf(double);
 
 INLINE int cmod(int x, int y);
 
 #include "cmath.I"
 
 #endif
+

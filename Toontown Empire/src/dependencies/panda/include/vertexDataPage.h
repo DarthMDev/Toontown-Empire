@@ -114,7 +114,7 @@ private:
   typedef pdeque<VertexDataPage *> PendingPages;
 
   class PageThreadManager;
-  class EXPCL_PANDA_GOBJ PageThread : public Thread {
+  class PageThread : public Thread {
   public:
     PageThread(PageThreadManager *manager, const string &name);
 
@@ -132,7 +132,7 @@ private:
   };
   typedef pvector<PT(PageThread) > PageThreads;
 
-  class EXPCL_PANDA_GOBJ PageThreadManager : public ReferenceCount {
+  class PageThreadManager : public ReferenceCount {
   public:
     PageThreadManager(int num_threads);
     void add_page(VertexDataPage *page, RamClass ram_class);
@@ -176,7 +176,7 @@ private:
 
   // We build up a temporary linked list of these while deflating
   // (compressing) the vertex data in-memory.
-  class EXPCL_PANDA_GOBJ DeflatePage {
+  class DeflatePage {
   public:
     DeflatePage() {
       _used_size = 0;

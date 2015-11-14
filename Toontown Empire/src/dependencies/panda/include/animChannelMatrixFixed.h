@@ -20,6 +20,8 @@
 #include "animChannel.h"
 #include "luse.h"
 
+EXPORT_TEMPLATE_CLASS(EXPCL_PANDA_CHAN, EXPTP_PANDA_CHAN, AnimChannel<ACMatrixSwitchType>);
+
 ////////////////////////////////////////////////////////////////////
 //       Class : AnimChannelMatrixFixed
 // Description : A specialization on AnimChannel to add all the

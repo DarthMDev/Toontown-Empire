@@ -45,7 +45,6 @@ get_graphics_memory_limit() const {
 INLINE void PreparedGraphicsObjects::
 release_all() {
   release_all_textures();
-  release_all_samplers();
   release_all_geoms();
   release_all_shaders();
   release_all_vertex_buffers();
@@ -64,8 +63,7 @@ release_all() {
 ////////////////////////////////////////////////////////////////////
 INLINE int PreparedGraphicsObjects::
 get_num_queued() const {
-  return (get_num_queued_textures() +
-          get_num_queued_samplers() +
+  return (get_num_queued_textures() + 
           get_num_queued_geoms() +
           get_num_queued_shaders() +
           get_num_queued_vertex_buffers() +
@@ -80,8 +78,7 @@ get_num_queued() const {
 ////////////////////////////////////////////////////////////////////
 INLINE int PreparedGraphicsObjects::
 get_num_prepared() const {
-  return (get_num_prepared_textures() +
-          get_num_prepared_samplers() +
+  return (get_num_prepared_textures() + 
           get_num_prepared_geoms() +
           get_num_prepared_shaders() +
           get_num_prepared_vertex_buffers() +
@@ -91,7 +88,7 @@ get_num_prepared() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: PreparedGraphicsObjects::BufferCacheKey::operator <
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE bool PreparedGraphicsObjects::BufferCacheKey::
 operator < (const PreparedGraphicsObjects::BufferCacheKey &other) const {
@@ -104,7 +101,7 @@ operator < (const PreparedGraphicsObjects::BufferCacheKey &other) const {
 ////////////////////////////////////////////////////////////////////
 //     Function: PreparedGraphicsObjects::BufferCacheKey::operator ==
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE bool PreparedGraphicsObjects::BufferCacheKey::
 operator == (const PreparedGraphicsObjects::BufferCacheKey &other) const {
@@ -115,7 +112,7 @@ operator == (const PreparedGraphicsObjects::BufferCacheKey &other) const {
 ////////////////////////////////////////////////////////////////////
 //     Function: PreparedGraphicsObjects::BufferCacheKey::operator !=
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE bool PreparedGraphicsObjects::BufferCacheKey::
 operator != (const PreparedGraphicsObjects::BufferCacheKey &other) const {

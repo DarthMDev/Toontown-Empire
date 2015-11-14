@@ -41,10 +41,11 @@ PUBLISHED:
   INLINE GeomVertexRewriter(Thread *current_thread = Thread::get_current_thread());
   INLINE GeomVertexRewriter(GeomVertexData *vertex_data, Thread *current_thread = Thread::get_current_thread());
   INLINE GeomVertexRewriter(GeomVertexData *vertex_data,
-                            CPT_InternalName name,
-                            Thread *current_thread = Thread::get_current_thread());
+                            const string &name, Thread *current_thread = Thread::get_current_thread());
+  INLINE GeomVertexRewriter(GeomVertexData *vertex_data,
+                            const InternalName *name, Thread *current_thread = Thread::get_current_thread());
   INLINE GeomVertexRewriter(GeomVertexArrayData *array_data, Thread *current_thread = Thread::get_current_thread());
-  INLINE GeomVertexRewriter(GeomVertexArrayData *array_data,
+  INLINE GeomVertexRewriter(GeomVertexArrayData *array_data, 
                             int column, Thread *current_thread = Thread::get_current_thread());
   INLINE GeomVertexRewriter(const GeomVertexRewriter &copy);
   INLINE void operator = (const GeomVertexRewriter &copy);
@@ -57,7 +58,8 @@ PUBLISHED:
   INLINE Thread *get_current_thread() const;
 
   INLINE bool set_column(int column);
-  INLINE bool set_column(CPT_InternalName name);
+  INLINE bool set_column(const string &name);
+  INLINE bool set_column(const InternalName *name);
   INLINE bool set_column(int array, const GeomVertexColumn *column);
 
   INLINE void clear();

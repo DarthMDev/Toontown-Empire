@@ -208,16 +208,6 @@ is_const() const {
 }
 
 ////////////////////////////////////////////////////////////////////
-//     Function: InterrogateType::is_typedef
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-INLINE bool InterrogateType::
-is_typedef() const {
-  return (_flags & F_typedef) != 0;
-}
-
-////////////////////////////////////////////////////////////////////
 //     Function: InterrogateType::get_wrapped_type
 //       Access: Public
 //  Description:
@@ -225,26 +215,6 @@ is_typedef() const {
 INLINE TypeIndex InterrogateType::
 get_wrapped_type() const {
   return _wrapped_type;
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: InterrogateType::is_array
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-INLINE bool InterrogateType::
-is_array() const {
-  return (_flags & F_array) != 0;
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: InterrogateType::get_array_size
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-INLINE int InterrogateType::
-get_array_size() const {
-  return _array_size;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -289,19 +259,6 @@ INLINE const string &InterrogateType::
 get_enum_value_scoped_name(int n) const {
   if (n >= 0 && n < (int)_enum_values.size()) {
     return _enum_values[n]._scoped_name;
-  }
-  return _empty_string;
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: InterrogateType::get_enum_value_comment
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-INLINE const string &InterrogateType::
-get_enum_value_comment(int n) const {
-  if (n >= 0 && n < (int)_enum_values.size()) {
-    return _enum_values[n]._comment;
   }
   return _empty_string;
 }

@@ -85,9 +85,10 @@ disable(){
 //  Description: Set this light's position
 ////////////////////////////////////////////////////////////////////
 INLINE void PolylightNode::
-set_pos(const LPoint3 &position) {
+set_pos(const LVecBase3 &position){
   _position = position;
 }
+
 
 ////////////////////////////////////////////////////////////////////
 //     Function: PolylightNode::set_pos
@@ -106,7 +107,7 @@ set_pos(PN_stdfloat x, PN_stdfloat y, PN_stdfloat z){
 //       Access: Published
 //  Description: Returns position as a LPoint3
 ////////////////////////////////////////////////////////////////////
-INLINE LPoint3 PolylightNode::
+INLINE LVecBase3 PolylightNode::
 get_pos() const {
   return _position;
 }

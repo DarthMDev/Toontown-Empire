@@ -16,6 +16,7 @@
 #define TYPEHANDLE_H
 
 #include "dtoolbase.h"
+#include "typeRegistry.h"
 
 #include <set>
 
@@ -64,6 +65,10 @@
 
 class TypedObject;
 
+#ifdef HAVE_PYTHON
+#include "Python.h"
+#endif
+
 ////////////////////////////////////////////////////////////////////
 //       Class : TypeHandle
 // Description : TypeHandle is the identifier used to differentiate
@@ -94,12 +99,12 @@ PUBLISHED:
               // enum value.
   };
 
-  // The default constructor must do nothing, because we can't
-  // guarantee ordering of static initializers.  If the constructor
-  // tried to initialize its value, it  might happen after the value
-  // had already been set previously by another static initializer!
+  INLINE TypeHandle();
+  INLINE TypeHandle(const TypeHandle &copy);
 
-  EXTENSION(static TypeHandle make(PyTypeObject *classobj));
+#ifdef HAVE_PYTHON
+  static PyObject *make(PyObject *classobj);
+#endif  // HAVE_PYTHON
 
   INLINE bool operator == (const TypeHandle &other) const;
   INLINE bool operator != (const TypeHandle &other) const;
@@ -122,29 +127,28 @@ PUBLISHED:
 
   INLINE TypeHandle get_parent_towards(TypeHandle ancestor,
                                        TypedObject *object = (TypedObject *)NULL) const;
-
-  INLINE int get_best_parent_from_Set(const std::set< int > &legal_vals) const;
+  
+  INLINE  int get_best_parent_from_Set(const std::set< int > &legal_vals) const;
 
 #ifdef DO_MEMORY_USAGE
   int get_memory_usage(MemoryClass memory_class) const;
-  void inc_memory_usage(MemoryClass memory_class, size_t size);
-  void dec_memory_usage(MemoryClass memory_class, size_t size);
+  void inc_memory_usage(MemoryClass memory_class, int size);
+  void dec_memory_usage(MemoryClass memory_class, int size);
 #else
-  static CONSTEXPR int get_memory_usage(MemoryClass) { return 0; }
-  INLINE void inc_memory_usage(MemoryClass, size_t) { }
-  INLINE void dec_memory_usage(MemoryClass, size_t) { }
+  INLINE int get_memory_usage(MemoryClass) const { return 0; }
+  INLINE void inc_memory_usage(MemoryClass, int) { }
+  INLINE void dec_memory_usage(MemoryClass, int) { }
 #endif  // DO_MEMORY_USAGE
 
   INLINE int get_index() const;
   INLINE void output(ostream &out) const;
   INLINE static TypeHandle none();
-  INLINE operator bool () const;
 
 private:
   int _index;
   static TypeHandle _none;
 
-  friend class TypeRegistry;
+friend class TypeRegistry;
 };
 
 
@@ -166,3 +170,4 @@ EXPCL_DTOOL ostream &operator << (ostream &out, TypeHandle::MemoryClass mem_clas
 #include "typeHandle.I"
 
 #endif
+

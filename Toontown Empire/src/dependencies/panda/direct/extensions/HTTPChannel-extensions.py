@@ -14,7 +14,7 @@
         Returns the newly-spawned task.
         """
         if not name:
-            name = str(self.getUrl())
+            name = self.getUrl().cStr()
         from direct.task import Task
         task = Task.Task(self.doTask)
         task.callback = callback

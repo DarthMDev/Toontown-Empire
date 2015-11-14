@@ -12,6 +12,12 @@
 //
 ////////////////////////////////////////////////////////////////////
 
+#ifndef CPPPARSER
+IMPORT_THIS struct Dtool_PyTypedObject FLOATNAME(Dtool_LPoint2);
+IMPORT_THIS struct Dtool_PyTypedObject FLOATNAME(Dtool_LPoint3);
+IMPORT_THIS struct Dtool_PyTypedObject FLOATNAME(Dtool_LPoint4);
+#endif
+
 #ifdef FLOATTYPE_IS_INT
 #if PY_MAJOR_VERSION >= 3
 #define PY_FROM_FLOATTYPE PyLong_FromLong
@@ -23,19 +29,17 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////
-//     Function: LPoint4::__repr__
+//     Function: LPoint4::python_repr
 //       Access: Published
 //  Description:
 ////////////////////////////////////////////////////////////////////
-INLINE_LINMATH string Extension<FLOATNAME(LPoint4)>::
-__repr__() const {
-  ostringstream out;
-  out << "LPoint4" << FLOATTOKEN << "("
+INLINE_LINMATH void Extension<FLOATNAME(LPoint4)>::
+python_repr(ostream &out, const string &class_name) const {
+  out << class_name << "("
       << MAYBE_ZERO(_this->_v(0)) << ", "
       << MAYBE_ZERO(_this->_v(1)) << ", "
       << MAYBE_ZERO(_this->_v(2)) << ", "
       << MAYBE_ZERO(_this->_v(3)) << ")";
-  return out.str();
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -44,17 +48,11 @@ __repr__() const {
 //  Description: This is used to implement swizzle masks.
 ////////////////////////////////////////////////////////////////////
 INLINE_LINMATH PyObject *Extension<FLOATNAME(LPoint4)>::
-__getattr__(PyObject *self, const string &attr_name) const {
-#ifndef CPPPARSER
-  extern struct Dtool_PyTypedObject FLOATNAME(Dtool_LPoint2);
-  extern struct Dtool_PyTypedObject FLOATNAME(Dtool_LPoint3);
-  extern struct Dtool_PyTypedObject FLOATNAME(Dtool_LPoint4);
-#endif
-
+__getattr__(const string &attr_name) const {
   // Validate the attribute name.
   for (string::const_iterator it = attr_name.begin(); it < attr_name.end(); it++) {
     if (*it < 'w' || *it > 'z') {
-      return Dtool_Raise_AttributeError(self, attr_name.c_str());
+      return NULL;
     }
   }
 
@@ -89,7 +87,7 @@ __getattr__(PyObject *self, const string &attr_name) const {
     }
   }
 
-  return Dtool_Raise_AttributeError(self, attr_name.c_str());
+  return NULL;
 }
 
 ////////////////////////////////////////////////////////////////////

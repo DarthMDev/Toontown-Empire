@@ -1,28 +1,28 @@
-1436948113
-2 3
+1412101763
+2 2
 13 libp3pipeline 4 kd_i 12 panda3d.core 
 116
-113 29 upcast_to_TypedReferenceCount 0 12 229 44 AsyncTaskBase::upcast_to_TypedReferenceCount 0 1 2 48
+114 29 upcast_to_TypedReferenceCount 0 12 230 44 AsyncTaskBase::upcast_to_TypedReferenceCount 0 1 2 48
 upcast from AsyncTaskBase to TypedReferenceCount
 72
 TypedReferenceCount *AsyncTaskBase::upcast_to_TypedReferenceCount(void);
 
-114 25 downcast_to_AsyncTaskBase 0 12 230 46 TypedReferenceCount::downcast_to_AsyncTaskBase 0 1 3 50
+115 25 downcast_to_AsyncTaskBase 0 12 231 46 TypedReferenceCount::downcast_to_AsyncTaskBase 0 1 3 50
 downcast from TypedReferenceCount to AsyncTaskBase
 68
 AsyncTaskBase *TypedReferenceCount::downcast_to_AsyncTaskBase(void);
 
-115 17 upcast_to_Namable 0 12 229 32 AsyncTaskBase::upcast_to_Namable 0 1 4 36
+116 17 upcast_to_Namable 0 12 230 32 AsyncTaskBase::upcast_to_Namable 0 1 4 36
 upcast from AsyncTaskBase to Namable
 48
 Namable *AsyncTaskBase::upcast_to_Namable(void);
 
-116 25 downcast_to_AsyncTaskBase 0 12 231 34 Namable::downcast_to_AsyncTaskBase 0 1 5 38
+117 25 downcast_to_AsyncTaskBase 0 12 232 34 Namable::downcast_to_AsyncTaskBase 0 1 5 38
 downcast from Namable to AsyncTaskBase
 56
 AsyncTaskBase *Namable::downcast_to_AsyncTaskBase(void);
 
-117 14 ~AsyncTaskBase 0 6 229 29 AsyncTaskBase::~AsyncTaskBase 0 0 233
+118 14 ~AsyncTaskBase 0 6 230 29 AsyncTaskBase::~AsyncTaskBase 0 0 233
 ////////////////////////////////////////////////////////////////////
 //     Function: AsyncTaskBase::Destructor
 //       Access: Published, Virtual
@@ -31,31 +31,31 @@ AsyncTaskBase *Namable::downcast_to_AsyncTaskBase(void);
 44
 virtual AsyncTaskBase::~AsyncTaskBase(void);
 
-118 14 get_class_type 0 4 229 29 AsyncTaskBase::get_class_type 0 1 1 0
+119 14 get_class_type 0 4 230 29 AsyncTaskBase::get_class_type 0 1 1 0
 54
 static TypeHandle AsyncTaskBase::get_class_type(void);
 
-119 29 upcast_to_TypedReferenceCount 0 12 233 37 Thread::upcast_to_TypedReferenceCount 0 1 36 41
+120 29 upcast_to_TypedReferenceCount 0 12 234 37 Thread::upcast_to_TypedReferenceCount 0 1 36 41
 upcast from Thread to TypedReferenceCount
 65
 TypedReferenceCount *Thread::upcast_to_TypedReferenceCount(void);
 
-120 18 downcast_to_Thread 0 12 230 39 TypedReferenceCount::downcast_to_Thread 0 1 37 43
+121 18 downcast_to_Thread 0 12 231 39 TypedReferenceCount::downcast_to_Thread 0 1 37 43
 downcast from TypedReferenceCount to Thread
 54
 Thread *TypedReferenceCount::downcast_to_Thread(void);
 
-121 17 upcast_to_Namable 0 12 233 25 Thread::upcast_to_Namable 0 1 38 29
+122 17 upcast_to_Namable 0 12 234 25 Thread::upcast_to_Namable 0 1 38 29
 upcast from Thread to Namable
 41
 Namable *Thread::upcast_to_Namable(void);
 
-122 18 downcast_to_Thread 0 12 231 27 Namable::downcast_to_Thread 0 1 39 31
+123 18 downcast_to_Thread 0 12 232 27 Namable::downcast_to_Thread 0 1 39 31
 downcast from Namable to Thread
 42
 Thread *Namable::downcast_to_Thread(void);
 
-123 7 ~Thread 0 6 233 15 Thread::~Thread 0 0 226
+124 7 ~Thread 0 6 234 15 Thread::~Thread 0 0 226
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::Destructor
 //       Access: Published, Virtual
@@ -64,7 +64,7 @@ Thread *Namable::downcast_to_Thread(void);
 30
 virtual Thread::~Thread(void);
 
-124 11 bind_thread 0 4 233 19 Thread::bind_thread 0 1 6 1438
+125 11 bind_thread 0 4 234 19 Thread::bind_thread 0 1 6 1438
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::bind_thread
 //       Access: Published, Static
@@ -91,10 +91,10 @@ virtual Thread::~Thread(void);
 //               given the same name each time (in which case the same
 //               pointer will be returned each time).
 ////////////////////////////////////////////////////////////////////
-92
-static PointerTo< Thread > Thread::bind_thread(string const &name, string const &sync_name);
+120
+static PointerTo< Thread > Thread::bind_thread(basic_string< char > const &name, basic_string< char > const &sync_name);
 
-125 13 get_sync_name 0 4 233 21 Thread::get_sync_name 0 1 7 565
+126 13 get_sync_name 0 4 234 21 Thread::get_sync_name 0 1 7 565
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::get_sync_name
 //       Access: Published
@@ -105,10 +105,10 @@ static PointerTo< Thread > Thread::bind_thread(string const &name, string const 
 //               name can be ticked all at once via the thread_tick()
 //               call.
 ////////////////////////////////////////////////////////////////////
-55
-inline string const &Thread::get_sync_name(void) const;
+69
+inline basic_string< char > const &Thread::get_sync_name(void) const;
 
-126 16 get_pstats_index 0 4 233 24 Thread::get_pstats_index 0 1 8 476
+127 16 get_pstats_index 0 4 234 24 Thread::get_pstats_index 0 1 8 476
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::get_pstats_index
 //       Access: Published
@@ -120,7 +120,7 @@ inline string const &Thread::get_sync_name(void) const;
 48
 inline int Thread::get_pstats_index(void) const;
 
-127 13 get_unique_id 0 4 233 21 Thread::get_unique_id 0 1 9 402
+128 13 get_unique_id 0 4 234 21 Thread::get_unique_id 0 1 9 402
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::get_unique_id
 //       Access: Published
@@ -128,10 +128,10 @@ inline int Thread::get_pstats_index(void) const;
 //               this thread, across all processes on the machine,
 //               during at least the lifetime of this process.
 ////////////////////////////////////////////////////////////////////
-48
-inline string Thread::get_unique_id(void) const;
+62
+inline basic_string< char > Thread::get_unique_id(void) const;
 
-128 18 get_pipeline_stage 0 4 233 26 Thread::get_pipeline_stage 0 1 10 409
+129 18 get_pipeline_stage 0 4 234 26 Thread::get_pipeline_stage 0 1 10 409
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::get_pipeline_stage
 //       Access: Published
@@ -142,7 +142,7 @@ inline string Thread::get_unique_id(void) const;
 50
 inline int Thread::get_pipeline_stage(void) const;
 
-129 18 set_pipeline_stage 0 4 233 26 Thread::set_pipeline_stage 0 1 11 831
+130 18 set_pipeline_stage 0 4 234 26 Thread::set_pipeline_stage 0 1 11 831
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::set_pipeline_stage
 //       Access: Published
@@ -161,7 +161,7 @@ inline int Thread::get_pipeline_stage(void) const;
 52
 void Thread::set_pipeline_stage(int pipeline_stage);
 
-130 22 set_min_pipeline_stage 0 4 233 30 Thread::set_min_pipeline_stage 0 1 12 392
+131 22 set_min_pipeline_stage 0 4 234 30 Thread::set_min_pipeline_stage 0 1 12 392
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::set_min_pipeline_stage
 //       Access: Published
@@ -172,7 +172,7 @@ void Thread::set_pipeline_stage(int pipeline_stage);
 67
 inline void Thread::set_min_pipeline_stage(int min_pipeline_stage);
 
-131 15 get_main_thread 0 4 233 23 Thread::get_main_thread 0 1 13 345
+132 15 get_main_thread 0 4 234 23 Thread::get_main_thread 0 1 13 345
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::get_main_thread
 //       Access: Published, Static
@@ -182,7 +182,7 @@ inline void Thread::set_min_pipeline_stage(int min_pipeline_stage);
 52
 static inline Thread *Thread::get_main_thread(void);
 
-132 19 get_external_thread 0 4 233 27 Thread::get_external_thread 0 1 14 531
+133 19 get_external_thread 0 4 234 27 Thread::get_external_thread 0 1 14 531
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::get_external_thread
 //       Access: Published, Static
@@ -195,7 +195,7 @@ static inline Thread *Thread::get_main_thread(void);
 56
 static inline Thread *Thread::get_external_thread(void);
 
-133 18 get_current_thread 0 4 233 26 Thread::get_current_thread 0 1 15 738
+134 18 get_current_thread 0 4 234 26 Thread::get_current_thread 0 1 15 738
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::get_current_thread
 //       Access: Published, Static
@@ -212,7 +212,7 @@ static inline Thread *Thread::get_external_thread(void);
 55
 static inline Thread *Thread::get_current_thread(void);
 
-134 26 get_current_pipeline_stage 0 4 233 34 Thread::get_current_pipeline_stage 0 1 16 485
+135 26 get_current_pipeline_stage 0 4 234 34 Thread::get_current_pipeline_stage 0 1 16 485
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::get_current_pipeline_stage
 //       Access: Published, Static
@@ -224,7 +224,7 @@ static inline Thread *Thread::get_current_thread(void);
 59
 static inline int Thread::get_current_pipeline_stage(void);
 
-135 22 is_threading_supported 0 4 233 30 Thread::is_threading_supported 0 1 17 417
+136 22 is_threading_supported 0 4 234 30 Thread::is_threading_supported 0 1 17 417
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::is_threading_supported
 //       Access: Published, Static
@@ -235,7 +235,7 @@ static inline int Thread::get_current_pipeline_stage(void);
 56
 static inline bool Thread::is_threading_supported(void);
 
-136 15 is_true_threads 0 4 233 23 Thread::is_true_threads 0 1 18 461
+137 15 is_true_threads 0 4 234 23 Thread::is_true_threads 0 1 18 461
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::is_true_threads
 //       Access: Published, Static
@@ -247,7 +247,7 @@ static inline bool Thread::is_threading_supported(void);
 49
 static inline bool Thread::is_true_threads(void);
 
-137 17 is_simple_threads 0 4 233 25 Thread::is_simple_threads 0 1 19 722
+138 17 is_simple_threads 0 4 234 25 Thread::is_simple_threads 0 1 19 722
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::is_simple_threads
 //       Access: Published, Static
@@ -263,7 +263,7 @@ static inline bool Thread::is_true_threads(void);
 51
 static inline bool Thread::is_simple_threads(void);
 
-138 5 sleep 0 4 233 13 Thread::sleep 0 1 20 360
+139 5 sleep 0 4 234 13 Thread::sleep 0 1 20 360
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::sleep
 //       Access: Published, Static
@@ -274,7 +274,7 @@ static inline bool Thread::is_simple_threads(void);
 49
 static inline void Thread::sleep(double seconds);
 
-139 11 force_yield 0 4 233 19 Thread::force_yield 0 1 21 306
+140 11 force_yield 0 4 234 19 Thread::force_yield 0 1 21 306
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::field_yield
 //       Access: Published, Static
@@ -284,7 +284,7 @@ static inline void Thread::sleep(double seconds);
 45
 static inline void Thread::force_yield(void);
 
-140 14 consider_yield 0 4 233 22 Thread::consider_yield 0 1 22 520
+141 14 consider_yield 0 4 234 22 Thread::consider_yield 0 1 22 520
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::consider_yield
 //       Access: Published, Static
@@ -297,7 +297,7 @@ static inline void Thread::force_yield(void);
 48
 static inline void Thread::consider_yield(void);
 
-141 6 output 0 6 233 14 Thread::output 0 1 23 222
+142 6 output 0 6 234 14 Thread::output 0 1 23 222
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::output
 //       Access: Published, Virtual
@@ -306,7 +306,7 @@ static inline void Thread::consider_yield(void);
 48
 virtual void Thread::output(ostream &out) const;
 
-142 14 output_blocker 0 4 233 22 Thread::output_blocker 0 1 24 440
+143 14 output_blocker 0 4 234 22 Thread::output_blocker 0 1 24 440
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::output_blocker
 //       Access: Published
@@ -318,7 +318,7 @@ virtual void Thread::output(ostream &out) const;
 48
 void Thread::output_blocker(ostream &out) const;
 
-143 12 write_status 0 4 233 20 Thread::write_status 0 1 25 227
+144 12 write_status 0 4 234 20 Thread::write_status 0 1 25 227
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::write_status
 //       Access: Published, Static
@@ -327,7 +327,7 @@ void Thread::output_blocker(ostream &out) const;
 47
 static void Thread::write_status(ostream &out);
 
-144 10 is_started 0 4 233 18 Thread::is_started 0 1 26 338
+145 10 is_started 0 4 234 18 Thread::is_started 0 1 26 338
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::is_started
 //       Access: Published
@@ -337,7 +337,7 @@ static void Thread::write_status(ostream &out);
 43
 inline bool Thread::is_started(void) const;
 
-145 11 is_joinable 0 4 233 19 Thread::is_joinable 0 1 27 302
+146 11 is_joinable 0 4 234 19 Thread::is_joinable 0 1 27 302
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::is_joinable
 //       Access: Published
@@ -347,7 +347,7 @@ inline bool Thread::is_started(void) const;
 44
 inline bool Thread::is_joinable(void) const;
 
-146 5 start 0 4 233 13 Thread::start 0 1 28 1333
+147 5 start 0 4 234 13 Thread::start 0 1 28 1333
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::start
 //       Access: Public
@@ -378,7 +378,7 @@ inline bool Thread::is_joinable(void) const;
 59
 bool Thread::start(ThreadPriority priority, bool joinable);
 
-147 4 join 0 4 233 12 Thread::join 0 1 29 366
+148 4 join 0 4 234 12 Thread::join 0 1 29 366
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::join
 //       Access: Published
@@ -389,7 +389,7 @@ bool Thread::start(ThreadPriority priority, bool joinable);
 31
 inline void Thread::join(void);
 
-148 7 preempt 0 4 233 15 Thread::preempt 0 1 30 432
+149 7 preempt 0 4 234 15 Thread::preempt 0 1 30 432
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::preempt
 //       Access: Published
@@ -401,7 +401,7 @@ inline void Thread::join(void);
 34
 inline void Thread::preempt(void);
 
-149 15 set_python_data 0 4 233 23 Thread::set_python_data 0 1 31 543
+150 15 set_python_data 0 4 234 23 Thread::set_python_data 0 1 31 543
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::set_python_data
 //       Access: Published
@@ -414,7 +414,7 @@ inline void Thread::preempt(void);
 52
 void Thread::set_python_data(PyObject *python_data);
 
-150 15 get_python_data 0 4 233 23 Thread::get_python_data 0 1 32 302
+151 15 get_python_data 0 4 234 23 Thread::get_python_data 0 1 32 302
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::get_python_data
 //       Access: Published
@@ -424,7 +424,7 @@ void Thread::set_python_data(PyObject *python_data);
 46
 PyObject *Thread::get_python_data(void) const;
 
-151 16 get_current_task 0 4 233 24 Thread::get_current_task 0 1 33 402
+152 16 get_current_task 0 4 234 24 Thread::get_current_task 0 1 33 402
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::get_current_task
 //       Access: Published
@@ -435,7 +435,7 @@ PyObject *Thread::get_python_data(void) const;
 59
 inline AsyncTaskBase *Thread::get_current_task(void) const;
 
-152 16 prepare_for_exit 0 4 233 24 Thread::prepare_for_exit 0 1 34 387
+153 16 prepare_for_exit 0 4 234 24 Thread::prepare_for_exit 0 1 34 387
 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::prepare_for_exit
 //       Access: Published
@@ -446,11 +446,11 @@ inline AsyncTaskBase *Thread::get_current_task(void) const;
 50
 static inline void Thread::prepare_for_exit(void);
 
-153 14 get_class_type 0 4 233 22 Thread::get_class_type 0 1 35 0
+154 14 get_class_type 0 4 234 22 Thread::get_class_type 0 1 35 0
 47
 static TypeHandle Thread::get_class_type(void);
 
-154 7 acquire 0 4 234 20 MutexDirect::acquire 0 1 40 735
+155 7 acquire 0 4 235 20 MutexDirect::acquire 0 1 40 735
 ////////////////////////////////////////////////////////////////////
 //     Function: MutexDirect::acquire
 //       Access: Published
@@ -469,7 +469,7 @@ static TypeHandle Thread::get_class_type(void);
 45
 inline void MutexDirect::acquire(void) const;
 
-155 11 try_acquire 0 4 234 24 MutexDirect::try_acquire 0 1 41 369
+156 11 try_acquire 0 4 235 24 MutexDirect::try_acquire 0 1 41 369
 ////////////////////////////////////////////////////////////////////
 //     Function: MutexDirect::try_acquire
 //       Access: Published
@@ -480,7 +480,7 @@ inline void MutexDirect::acquire(void) const;
 49
 inline bool MutexDirect::try_acquire(void) const;
 
-156 7 release 0 4 234 20 MutexDirect::release 0 1 42 515
+157 7 release 0 4 235 20 MutexDirect::release 0 1 42 515
 ////////////////////////////////////////////////////////////////////
 //     Function: MutexDirect::release
 //       Access: Published
@@ -494,7 +494,7 @@ inline bool MutexDirect::try_acquire(void) const;
 45
 inline void MutexDirect::release(void) const;
 
-157 15 debug_is_locked 0 4 234 28 MutexDirect::debug_is_locked 0 1 43 572
+158 15 debug_is_locked 0 4 235 28 MutexDirect::debug_is_locked 0 1 43 572
 ////////////////////////////////////////////////////////////////////
 //     Function: MutexDirect::debug_is_locked
 //       Access: Published
@@ -508,17 +508,17 @@ inline void MutexDirect::release(void) const;
 53
 inline bool MutexDirect::debug_is_locked(void) const;
 
-158 8 set_name 0 4 234 21 MutexDirect::set_name 0 1 44 303
+159 8 set_name 0 4 235 21 MutexDirect::set_name 0 1 44 303
 ////////////////////////////////////////////////////////////////////
 //     Function: MutexDirect::set_name
 //       Access: Public
 //  Description: The mutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
 ////////////////////////////////////////////////////////////////////
-54
-inline void MutexDirect::set_name(string const &name);
+68
+inline void MutexDirect::set_name(basic_string< char > const &name);
 
-159 10 clear_name 0 4 234 23 MutexDirect::clear_name 0 1 45 305
+160 10 clear_name 0 4 235 23 MutexDirect::clear_name 0 1 45 305
 ////////////////////////////////////////////////////////////////////
 //     Function: MutexDirect::clear_name
 //       Access: Public
@@ -528,7 +528,7 @@ inline void MutexDirect::set_name(string const &name);
 42
 inline void MutexDirect::clear_name(void);
 
-160 8 has_name 0 4 234 21 MutexDirect::has_name 0 1 46 303
+161 8 has_name 0 4 235 21 MutexDirect::has_name 0 1 46 303
 ////////////////////////////////////////////////////////////////////
 //     Function: MutexDirect::has_name
 //       Access: Public
@@ -538,17 +538,17 @@ inline void MutexDirect::clear_name(void);
 46
 inline bool MutexDirect::has_name(void) const;
 
-161 8 get_name 0 4 234 21 MutexDirect::get_name 0 1 47 303
+162 8 get_name 0 4 235 21 MutexDirect::get_name 0 1 47 303
 ////////////////////////////////////////////////////////////////////
 //     Function: MutexDirect::get_name
 //       Access: Public
 //  Description: The mutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
 ////////////////////////////////////////////////////////////////////
-48
-inline string MutexDirect::get_name(void) const;
+62
+inline basic_string< char > MutexDirect::get_name(void) const;
 
-162 6 output 0 4 234 19 MutexDirect::output 0 1 48 311
+163 6 output 0 4 235 19 MutexDirect::output 0 1 48 311
 ////////////////////////////////////////////////////////////////////
 //     Function: MutexDirect::output
 //       Access: Public
@@ -558,7 +558,20 @@ inline string MutexDirect::get_name(void) const;
 45
 void MutexDirect::output(ostream &out) const;
 
-163 5 Mutex 0 4 235 12 Mutex::Mutex 0 2 49 50 906
+164 5 Mutex 0 4 236 12 Mutex::Mutex 0 2 49 50 1388
+// Filename: pmutex.I
+// Created by:  drose (08Aug02)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
 //     Function: Mutex::Constructor
 //       Access: Published
@@ -582,11 +595,11 @@ void MutexDirect::output(ostream &out) const;
 //       Access: Private
 //  Description: Do not attempt to copy mutexes.
 ////////////////////////////////////////////////////////////////////
-67
+81
 inline Mutex::Mutex(void);
-inline Mutex::Mutex(string const &name);
+inline Mutex::Mutex(basic_string< char > const &name);
 
-164 6 ~Mutex 0 4 235 13 Mutex::~Mutex 0 0 216
+165 6 ~Mutex 0 4 236 13 Mutex::~Mutex 0 0 216
 ////////////////////////////////////////////////////////////////////
 //     Function: Mutex::Destructor
 //       Access: Published
@@ -595,7 +608,7 @@ inline Mutex::Mutex(string const &name);
 27
 inline Mutex::~Mutex(void);
 
-165 19 ~ConditionVarDirect 0 4 236 39 ConditionVarDirect::~ConditionVarDirect 0 0 226
+166 19 ~ConditionVarDirect 0 4 237 39 ConditionVarDirect::~ConditionVarDirect 0 0 226
 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarDirect::Destructor
 //       Access: Public
@@ -604,7 +617,7 @@ inline Mutex::~Mutex(void);
 53
 inline ConditionVarDirect::~ConditionVarDirect(void);
 
-166 9 get_mutex 0 4 236 29 ConditionVarDirect::get_mutex 0 1 51 301
+167 9 get_mutex 0 4 237 29 ConditionVarDirect::get_mutex 0 1 51 301
 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarDirect::get_mutex
 //       Access: Public
@@ -614,7 +627,7 @@ inline ConditionVarDirect::~ConditionVarDirect(void);
 62
 inline MutexDirect &ConditionVarDirect::get_mutex(void) const;
 
-167 4 wait 0 4 236 24 ConditionVarDirect::wait 0 2 52 53 1945
+168 4 wait 0 4 237 24 ConditionVarDirect::wait 0 2 52 53 1945
 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarDirect::wait
 //       Access: Public
@@ -656,7 +669,7 @@ inline MutexDirect &ConditionVarDirect::get_mutex(void) const;
 inline void ConditionVarDirect::wait(void);
 inline void ConditionVarDirect::wait(double timeout);
 
-168 6 notify 0 4 236 26 ConditionVarDirect::notify 0 1 54 903
+169 6 notify 0 4 237 26 ConditionVarDirect::notify 0 1 54 903
 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarDirect::notify
 //       Access: Public
@@ -677,7 +690,7 @@ inline void ConditionVarDirect::wait(double timeout);
 45
 inline void ConditionVarDirect::notify(void);
 
-169 6 output 0 4 236 26 ConditionVarDirect::output 0 1 55 332
+170 6 output 0 4 237 26 ConditionVarDirect::output 0 1 55 332
 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarDirect::output
 //       Access: Public
@@ -687,7 +700,20 @@ inline void ConditionVarDirect::notify(void);
 52
 void ConditionVarDirect::output(ostream &out) const;
 
-170 12 ConditionVar 0 4 237 26 ConditionVar::ConditionVar 0 1 56 841
+171 12 ConditionVar 0 4 238 26 ConditionVar::ConditionVar 0 1 56 1329
+// Filename: conditionVar.I
+// Created by:  drose (09Aug02)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVar::Constructor
 //       Access: Published
@@ -707,7 +733,7 @@ void ConditionVarDirect::output(ostream &out) const;
 48
 inline ConditionVar::ConditionVar(Mutex &mutex);
 
-171 13 ~ConditionVar 0 4 237 27 ConditionVar::~ConditionVar 0 0 223
+172 13 ~ConditionVar 0 4 238 27 ConditionVar::~ConditionVar 0 0 223
 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVar::Destructor
 //       Access: Published
@@ -716,7 +742,7 @@ inline ConditionVar::ConditionVar(Mutex &mutex);
 41
 inline ConditionVar::~ConditionVar(void);
 
-172 9 get_mutex 0 4 237 23 ConditionVar::get_mutex 0 1 57 298
+173 9 get_mutex 0 4 238 23 ConditionVar::get_mutex 0 1 57 298
 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVar::get_mutex
 //       Access: Published
@@ -726,7 +752,7 @@ inline ConditionVar::~ConditionVar(void);
 50
 inline Mutex &ConditionVar::get_mutex(void) const;
 
-173 23 ~ConditionVarFullDirect 0 4 238 47 ConditionVarFullDirect::~ConditionVarFullDirect 0 0 230
+174 23 ~ConditionVarFullDirect 0 4 239 47 ConditionVarFullDirect::~ConditionVarFullDirect 0 0 230
 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarFullDirect::Destructor
 //       Access: Public
@@ -735,7 +761,7 @@ inline Mutex &ConditionVar::get_mutex(void) const;
 61
 inline ConditionVarFullDirect::~ConditionVarFullDirect(void);
 
-174 9 get_mutex 0 4 238 33 ConditionVarFullDirect::get_mutex 0 1 58 308
+175 9 get_mutex 0 4 239 33 ConditionVarFullDirect::get_mutex 0 1 58 308
 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarFullDirect::get_mutex
 //       Access: Published
@@ -745,7 +771,7 @@ inline ConditionVarFullDirect::~ConditionVarFullDirect(void);
 66
 inline MutexDirect &ConditionVarFullDirect::get_mutex(void) const;
 
-175 4 wait 0 4 238 28 ConditionVarFullDirect::wait 0 2 59 60 1960
+176 4 wait 0 4 239 28 ConditionVarFullDirect::wait 0 2 59 60 1960
 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarFullDirect::wait
 //       Access: Published
@@ -787,7 +813,7 @@ inline MutexDirect &ConditionVarFullDirect::get_mutex(void) const;
 inline void ConditionVarFullDirect::wait(void);
 inline void ConditionVarFullDirect::wait(double timeout);
 
-176 6 notify 0 4 238 30 ConditionVarFullDirect::notify 0 1 61 904
+177 6 notify 0 4 239 30 ConditionVarFullDirect::notify 0 1 61 904
 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarFullDirect::notify
 //       Access: Published
@@ -808,7 +834,7 @@ inline void ConditionVarFullDirect::wait(double timeout);
 49
 inline void ConditionVarFullDirect::notify(void);
 
-177 10 notify_all 0 4 238 34 ConditionVarFullDirect::notify_all 0 1 62 673
+178 10 notify_all 0 4 239 34 ConditionVarFullDirect::notify_all 0 1 62 673
 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarFullDirect::notify_all
 //       Access: Published
@@ -826,7 +852,7 @@ inline void ConditionVarFullDirect::notify(void);
 53
 inline void ConditionVarFullDirect::notify_all(void);
 
-178 6 output 0 4 238 30 ConditionVarFullDirect::output 0 1 63 344
+179 6 output 0 4 239 30 ConditionVarFullDirect::output 0 1 63 344
 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarFullDirect::output
 //       Access: Public
@@ -836,7 +862,20 @@ inline void ConditionVarFullDirect::notify_all(void);
 56
 void ConditionVarFullDirect::output(ostream &out) const;
 
-179 16 ConditionVarFull 0 4 239 34 ConditionVarFull::ConditionVarFull 0 1 64 849
+180 16 ConditionVarFull 0 4 240 34 ConditionVarFull::ConditionVarFull 0 1 64 1341
+// Filename: conditionVarFull.I
+// Created by:  drose (28Aug06)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarFull::Constructor
 //       Access: Published
@@ -856,7 +895,7 @@ void ConditionVarFullDirect::output(ostream &out) const;
 56
 inline ConditionVarFull::ConditionVarFull(Mutex &mutex);
 
-180 17 ~ConditionVarFull 0 4 239 35 ConditionVarFull::~ConditionVarFull 0 0 227
+181 17 ~ConditionVarFull 0 4 240 35 ConditionVarFull::~ConditionVarFull 0 0 227
 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarFull::Destructor
 //       Access: Published
@@ -865,7 +904,7 @@ inline ConditionVarFull::ConditionVarFull(Mutex &mutex);
 49
 inline ConditionVarFull::~ConditionVarFull(void);
 
-181 9 get_mutex 0 4 239 27 ConditionVarFull::get_mutex 0 1 65 302
+182 9 get_mutex 0 4 240 27 ConditionVarFull::get_mutex 0 1 65 302
 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarFull::get_mutex
 //       Access: Published
@@ -875,7 +914,7 @@ inline ConditionVarFull::~ConditionVarFull(void);
 54
 inline Mutex &ConditionVarFull::get_mutex(void) const;
 
-182 7 acquire 0 4 240 22 ReMutexDirect::acquire 0 2 66 67 1115
+183 7 acquire 0 4 241 22 ReMutexDirect::acquire 0 2 66 67 1115
 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutexDirect::acquire
 //       Access: Published
@@ -903,7 +942,7 @@ inline Mutex &ConditionVarFull::get_mutex(void) const;
 inline void ReMutexDirect::acquire(void) const;
 inline void ReMutexDirect::acquire(Thread *current_thread) const;
 
-183 11 try_acquire 0 4 240 26 ReMutexDirect::try_acquire 0 2 68 69 744
+184 11 try_acquire 0 4 241 26 ReMutexDirect::try_acquire 0 2 68 69 744
 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutexDirect::try_acquire
 //       Access: Published
@@ -923,7 +962,7 @@ inline void ReMutexDirect::acquire(Thread *current_thread) const;
 inline bool ReMutexDirect::try_acquire(void) const;
 inline bool ReMutexDirect::try_acquire(Thread *current_thread) const;
 
-184 12 elevate_lock 0 4 240 27 ReMutexDirect::elevate_lock 0 1 70 819
+185 12 elevate_lock 0 4 241 27 ReMutexDirect::elevate_lock 0 1 70 819
 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutexDirect::elevate_lock
 //       Access: Published
@@ -942,7 +981,7 @@ inline bool ReMutexDirect::try_acquire(Thread *current_thread) const;
 52
 inline void ReMutexDirect::elevate_lock(void) const;
 
-185 7 release 0 4 240 22 ReMutexDirect::release 0 1 71 523
+186 7 release 0 4 241 22 ReMutexDirect::release 0 1 71 523
 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutexDirect::release
 //       Access: Published
@@ -956,7 +995,7 @@ inline void ReMutexDirect::elevate_lock(void) const;
 47
 inline void ReMutexDirect::release(void) const;
 
-186 15 debug_is_locked 0 4 240 30 ReMutexDirect::debug_is_locked 0 1 72 578
+187 15 debug_is_locked 0 4 241 30 ReMutexDirect::debug_is_locked 0 1 72 578
 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutexDirect::debug_is_locked
 //       Access: Published
@@ -970,17 +1009,17 @@ inline void ReMutexDirect::release(void) const;
 55
 inline bool ReMutexDirect::debug_is_locked(void) const;
 
-187 8 set_name 0 4 240 23 ReMutexDirect::set_name 0 1 73 305
+188 8 set_name 0 4 241 23 ReMutexDirect::set_name 0 1 73 305
 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutexDirect::set_name
 //       Access: Public
 //  Description: The mutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
 ////////////////////////////////////////////////////////////////////
-56
-inline void ReMutexDirect::set_name(string const &name);
+70
+inline void ReMutexDirect::set_name(basic_string< char > const &name);
 
-188 10 clear_name 0 4 240 25 ReMutexDirect::clear_name 0 1 74 307
+189 10 clear_name 0 4 241 25 ReMutexDirect::clear_name 0 1 74 307
 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutexDirect::clear_name
 //       Access: Public
@@ -990,7 +1029,7 @@ inline void ReMutexDirect::set_name(string const &name);
 44
 inline void ReMutexDirect::clear_name(void);
 
-189 8 has_name 0 4 240 23 ReMutexDirect::has_name 0 1 75 305
+190 8 has_name 0 4 241 23 ReMutexDirect::has_name 0 1 75 305
 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutexDirect::has_name
 //       Access: Public
@@ -1000,17 +1039,17 @@ inline void ReMutexDirect::clear_name(void);
 48
 inline bool ReMutexDirect::has_name(void) const;
 
-190 8 get_name 0 4 240 23 ReMutexDirect::get_name 0 1 76 305
+191 8 get_name 0 4 241 23 ReMutexDirect::get_name 0 1 76 305
 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutexDirect::get_name
 //       Access: Public
 //  Description: The mutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
 ////////////////////////////////////////////////////////////////////
-50
-inline string ReMutexDirect::get_name(void) const;
+64
+inline basic_string< char > ReMutexDirect::get_name(void) const;
 
-191 6 output 0 4 240 21 ReMutexDirect::output 0 1 77 318
+192 6 output 0 4 241 21 ReMutexDirect::output 0 1 77 318
 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutexDirect::output
 //       Access: Published
@@ -1020,7 +1059,20 @@ inline string ReMutexDirect::get_name(void) const;
 47
 void ReMutexDirect::output(ostream &out) const;
 
-192 7 ReMutex 0 4 241 16 ReMutex::ReMutex 0 2 78 79 652
+193 7 ReMutex 0 4 242 16 ReMutex::ReMutex 0 2 78 79 1135
+// Filename: reMutex.I
+// Created by:  drose (15Jan06)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutex::Constructor
 //       Access: Public
@@ -1038,11 +1090,11 @@ void ReMutexDirect::output(ostream &out) const;
 //       Access: Public
 //  Description:
 ////////////////////////////////////////////////////////////////////
-75
+89
 inline ReMutex::ReMutex(void);
-inline ReMutex::ReMutex(string const &name);
+inline ReMutex::ReMutex(basic_string< char > const &name);
 
-193 8 ~ReMutex 0 4 241 17 ReMutex::~ReMutex 0 0 215
+194 8 ~ReMutex 0 4 242 17 ReMutex::~ReMutex 0 0 215
 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutex::Destructor
 //       Access: Public
@@ -1051,15 +1103,15 @@ inline ReMutex::ReMutex(string const &name);
 31
 inline ReMutex::~ReMutex(void);
 
-194 14 get_class_type 0 4 242 30 ExternalThread::get_class_type 0 1 80 0
+195 14 get_class_type 0 4 243 30 ExternalThread::get_class_type 0 1 80 0
 55
 static TypeHandle ExternalThread::get_class_type(void);
 
-195 15 ~ExternalThread 0 4 242 31 ExternalThread::~ExternalThread 0 0 0
+196 15 ~ExternalThread 0 4 243 31 ExternalThread::~ExternalThread 0 0 0
 38
 ExternalThread::~ExternalThread(void);
 
-196 7 acquire 0 4 243 25 LightMutexDirect::acquire 0 1 81 760
+197 7 acquire 0 4 244 25 LightMutexDirect::acquire 0 1 81 760
 ////////////////////////////////////////////////////////////////////
 //     Function: LightMutexDirect::acquire
 //       Access: Published
@@ -1078,7 +1130,7 @@ ExternalThread::~ExternalThread(void);
 50
 inline void LightMutexDirect::acquire(void) const;
 
-197 7 release 0 4 243 25 LightMutexDirect::release 0 1 82 535
+198 7 release 0 4 244 25 LightMutexDirect::release 0 1 82 535
 ////////////////////////////////////////////////////////////////////
 //     Function: LightMutexDirect::release
 //       Access: Published
@@ -1092,7 +1144,7 @@ inline void LightMutexDirect::acquire(void) const;
 50
 inline void LightMutexDirect::release(void) const;
 
-198 15 debug_is_locked 0 4 243 33 LightMutexDirect::debug_is_locked 0 1 83 587
+199 15 debug_is_locked 0 4 244 33 LightMutexDirect::debug_is_locked 0 1 83 587
 ////////////////////////////////////////////////////////////////////
 //     Function: LightMutexDirect::debug_is_locked
 //       Access: Published
@@ -1106,17 +1158,17 @@ inline void LightMutexDirect::release(void) const;
 58
 inline bool LightMutexDirect::debug_is_locked(void) const;
 
-199 8 set_name 0 4 243 26 LightMutexDirect::set_name 0 1 84 313
+200 8 set_name 0 4 244 26 LightMutexDirect::set_name 0 1 84 313
 ////////////////////////////////////////////////////////////////////
 //     Function: LightMutexDirect::set_name
 //       Access: Public
 //  Description: The lightMutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
 ////////////////////////////////////////////////////////////////////
-59
-inline void LightMutexDirect::set_name(string const &name);
+73
+inline void LightMutexDirect::set_name(basic_string< char > const &name);
 
-200 10 clear_name 0 4 243 28 LightMutexDirect::clear_name 0 1 85 315
+201 10 clear_name 0 4 244 28 LightMutexDirect::clear_name 0 1 85 315
 ////////////////////////////////////////////////////////////////////
 //     Function: LightMutexDirect::clear_name
 //       Access: Public
@@ -1126,7 +1178,7 @@ inline void LightMutexDirect::set_name(string const &name);
 47
 inline void LightMutexDirect::clear_name(void);
 
-201 8 has_name 0 4 243 26 LightMutexDirect::has_name 0 1 86 313
+202 8 has_name 0 4 244 26 LightMutexDirect::has_name 0 1 86 313
 ////////////////////////////////////////////////////////////////////
 //     Function: LightMutexDirect::has_name
 //       Access: Public
@@ -1136,17 +1188,17 @@ inline void LightMutexDirect::clear_name(void);
 51
 inline bool LightMutexDirect::has_name(void) const;
 
-202 8 get_name 0 4 243 26 LightMutexDirect::get_name 0 1 87 313
+203 8 get_name 0 4 244 26 LightMutexDirect::get_name 0 1 87 313
 ////////////////////////////////////////////////////////////////////
 //     Function: LightMutexDirect::get_name
 //       Access: Public
 //  Description: The lightMutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
 ////////////////////////////////////////////////////////////////////
-53
-inline string LightMutexDirect::get_name(void) const;
+67
+inline basic_string< char > LightMutexDirect::get_name(void) const;
 
-203 6 output 0 4 243 24 LightMutexDirect::output 0 1 88 326
+204 6 output 0 4 244 24 LightMutexDirect::output 0 1 88 326
 ////////////////////////////////////////////////////////////////////
 //     Function: LightMutexDirect::output
 //       Access: Public
@@ -1156,7 +1208,20 @@ inline string LightMutexDirect::get_name(void) const;
 50
 void LightMutexDirect::output(ostream &out) const;
 
-204 10 LightMutex 0 4 244 22 LightMutex::LightMutex 0 2 89 90 931
+205 10 LightMutex 0 4 245 22 LightMutex::LightMutex 0 2 89 90 1417
+// Filename: lightMutex.I
+// Created by:  drose (08Oct08)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
 //     Function: LightMutex::Constructor
 //       Access: Published
@@ -1180,11 +1245,11 @@ void LightMutexDirect::output(ostream &out) const;
 //       Access: Private
 //  Description: Do not attempt to copy lightMutexes.
 ////////////////////////////////////////////////////////////////////
-87
+101
 inline LightMutex::LightMutex(void);
-inline LightMutex::LightMutex(string const &name);
+inline LightMutex::LightMutex(basic_string< char > const &name);
 
-205 11 ~LightMutex 0 4 244 23 LightMutex::~LightMutex 0 0 221
+206 11 ~LightMutex 0 4 245 23 LightMutex::~LightMutex 0 0 221
 ////////////////////////////////////////////////////////////////////
 //     Function: LightMutex::Destructor
 //       Access: Published
@@ -1193,7 +1258,7 @@ inline LightMutex::LightMutex(string const &name);
 37
 inline LightMutex::~LightMutex(void);
 
-206 7 acquire 0 4 245 27 LightReMutexDirect::acquire 0 2 91 92 1145
+207 7 acquire 0 4 246 27 LightReMutexDirect::acquire 0 2 91 92 1145
 ////////////////////////////////////////////////////////////////////
 //     Function: LightReMutexDirect::acquire
 //       Access: Published
@@ -1221,7 +1286,7 @@ inline LightMutex::~LightMutex(void);
 inline void LightReMutexDirect::acquire(void) const;
 inline void LightReMutexDirect::acquire(Thread *current_thread) const;
 
-207 12 elevate_lock 0 4 245 32 LightReMutexDirect::elevate_lock 0 1 93 824
+208 12 elevate_lock 0 4 246 32 LightReMutexDirect::elevate_lock 0 1 93 824
 ////////////////////////////////////////////////////////////////////
 //     Function: LightReMutexDirect::elevate_lock
 //       Access: Published
@@ -1240,7 +1305,7 @@ inline void LightReMutexDirect::acquire(Thread *current_thread) const;
 57
 inline void LightReMutexDirect::elevate_lock(void) const;
 
-208 7 release 0 4 245 27 LightReMutexDirect::release 0 1 94 543
+209 7 release 0 4 246 27 LightReMutexDirect::release 0 1 94 543
 ////////////////////////////////////////////////////////////////////
 //     Function: LightReMutexDirect::release
 //       Access: Published
@@ -1254,7 +1319,7 @@ inline void LightReMutexDirect::elevate_lock(void) const;
 52
 inline void LightReMutexDirect::release(void) const;
 
-209 15 debug_is_locked 0 4 245 35 LightReMutexDirect::debug_is_locked 0 1 95 593
+210 15 debug_is_locked 0 4 246 35 LightReMutexDirect::debug_is_locked 0 1 95 593
 ////////////////////////////////////////////////////////////////////
 //     Function: LightReMutexDirect::debug_is_locked
 //       Access: Published
@@ -1268,17 +1333,17 @@ inline void LightReMutexDirect::release(void) const;
 60
 inline bool LightReMutexDirect::debug_is_locked(void) const;
 
-210 8 set_name 0 4 245 28 LightReMutexDirect::set_name 0 1 96 310
+211 8 set_name 0 4 246 28 LightReMutexDirect::set_name 0 1 96 310
 ////////////////////////////////////////////////////////////////////
 //     Function: LightReMutexDirect::set_name
 //       Access: Public
 //  Description: The mutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
 ////////////////////////////////////////////////////////////////////
-61
-inline void LightReMutexDirect::set_name(string const &name);
+75
+inline void LightReMutexDirect::set_name(basic_string< char > const &name);
 
-211 10 clear_name 0 4 245 30 LightReMutexDirect::clear_name 0 1 97 312
+212 10 clear_name 0 4 246 30 LightReMutexDirect::clear_name 0 1 97 312
 ////////////////////////////////////////////////////////////////////
 //     Function: LightReMutexDirect::clear_name
 //       Access: Public
@@ -1288,7 +1353,7 @@ inline void LightReMutexDirect::set_name(string const &name);
 49
 inline void LightReMutexDirect::clear_name(void);
 
-212 8 has_name 0 4 245 28 LightReMutexDirect::has_name 0 1 98 310
+213 8 has_name 0 4 246 28 LightReMutexDirect::has_name 0 1 98 310
 ////////////////////////////////////////////////////////////////////
 //     Function: LightReMutexDirect::has_name
 //       Access: Public
@@ -1298,17 +1363,17 @@ inline void LightReMutexDirect::clear_name(void);
 53
 inline bool LightReMutexDirect::has_name(void) const;
 
-213 8 get_name 0 4 245 28 LightReMutexDirect::get_name 0 1 99 310
+214 8 get_name 0 4 246 28 LightReMutexDirect::get_name 0 1 99 310
 ////////////////////////////////////////////////////////////////////
 //     Function: LightReMutexDirect::get_name
 //       Access: Public
 //  Description: The mutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
 ////////////////////////////////////////////////////////////////////
-55
-inline string LightReMutexDirect::get_name(void) const;
+69
+inline basic_string< char > LightReMutexDirect::get_name(void) const;
 
-214 6 output 0 4 245 26 LightReMutexDirect::output 0 1 100 328
+215 6 output 0 4 246 26 LightReMutexDirect::output 0 1 100 328
 ////////////////////////////////////////////////////////////////////
 //     Function: LightReMutexDirect::output
 //       Access: Published
@@ -1318,7 +1383,20 @@ inline string LightReMutexDirect::get_name(void) const;
 52
 void LightReMutexDirect::output(ostream &out) const;
 
-215 12 LightReMutex 0 4 246 26 LightReMutex::LightReMutex 0 2 101 102 667
+216 12 LightReMutex 0 4 247 26 LightReMutex::LightReMutex 0 2 101 102 1155
+// Filename: lightReMutex.I
+// Created by:  drose (08Oct08)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
 //     Function: LightReMutex::Constructor
 //       Access: Public
@@ -1336,11 +1414,11 @@ void LightReMutexDirect::output(ostream &out) const;
 //       Access: Public
 //  Description:
 ////////////////////////////////////////////////////////////////////
-95
+109
 inline LightReMutex::LightReMutex(void);
-inline LightReMutex::LightReMutex(string const &name);
+inline LightReMutex::LightReMutex(basic_string< char > const &name);
 
-216 13 ~LightReMutex 0 4 246 27 LightReMutex::~LightReMutex 0 0 220
+217 13 ~LightReMutex 0 4 247 27 LightReMutex::~LightReMutex 0 0 220
 ////////////////////////////////////////////////////////////////////
 //     Function: LightReMutex::Destructor
 //       Access: Public
@@ -1349,24 +1427,24 @@ inline LightReMutex::LightReMutex(string const &name);
 41
 inline LightReMutex::~LightReMutex(void);
 
-217 14 get_class_type 0 4 247 26 MainThread::get_class_type 0 1 103 0
+218 14 get_class_type 0 4 248 26 MainThread::get_class_type 0 1 103 0
 51
 static TypeHandle MainThread::get_class_type(void);
 
-218 11 ~MainThread 0 4 247 23 MainThread::~MainThread 0 0 0
+219 11 ~MainThread 0 4 248 23 MainThread::~MainThread 0 0 0
 30
 MainThread::~MainThread(void);
 
-219 12 PythonThread 0 4 248 26 PythonThread::PythonThread 0 1 104 224
+220 12 PythonThread 0 4 249 26 PythonThread::PythonThread 0 1 104 224
 ////////////////////////////////////////////////////////////////////
 //     Function: PythonThread::Constructor
 //       Access: Published
 //  Description:
 ////////////////////////////////////////////////////////////////////
-108
-PythonThread::PythonThread(PyObject *function, PyObject *args, string const &name, string const &sync_name);
+136
+PythonThread::PythonThread(PyObject *function, PyObject *args, basic_string< char > const &name, basic_string< char > const &sync_name);
 
-220 4 join 0 4 248 18 PythonThread::join 0 1 105 506
+221 4 join 0 4 249 18 PythonThread::join 0 1 105 506
 ////////////////////////////////////////////////////////////////////
 //     Function: PythonThread::join
 //       Access: Published
@@ -1380,11 +1458,24 @@ PythonThread::PythonThread(PyObject *function, PyObject *args, string const &nam
 35
 PyObject *PythonThread::join(void);
 
-221 14 get_class_type 0 4 248 28 PythonThread::get_class_type 0 1 106 0
+222 14 get_class_type 0 4 249 28 PythonThread::get_class_type 0 1 106 0
 53
 static TypeHandle PythonThread::get_class_type(void);
 
-222 9 Semaphore 0 4 249 20 Semaphore::Semaphore 0 1 107 483
+223 9 Semaphore 0 4 250 20 Semaphore::Semaphore 0 2 107 108 969
+// Filename: psemaphore.I
+// Created by:  drose (13Oct08)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
 //     Function: Semaphore::Constructor
 //       Access: Published
@@ -1396,10 +1487,10 @@ static TypeHandle PythonThread::get_class_type(void);
 //       Access: Private
 //  Description: Do not attempt to copy semaphores.
 ////////////////////////////////////////////////////////////////////
-51
-inline Semaphore::Semaphore(int initial_count = 1);
+53
+inline Semaphore::Semaphore(int initial_count = (1));
 
-223 10 ~Semaphore 0 4 249 21 Semaphore::~Semaphore 0 0 221
+224 10 ~Semaphore 0 4 250 21 Semaphore::~Semaphore 0 0 221
 ////////////////////////////////////////////////////////////////////
 //     Function: Semaphore::Destructor
 //       Access: Published
@@ -1408,7 +1499,7 @@ inline Semaphore::Semaphore(int initial_count = 1);
 35
 inline Semaphore::~Semaphore(void);
 
-224 7 acquire 0 4 249 18 Semaphore::acquire 0 1 108 372
+225 7 acquire 0 4 250 18 Semaphore::acquire 0 1 109 372
 ////////////////////////////////////////////////////////////////////
 //     Function: Semaphore::acquire
 //       Access: Published
@@ -1419,7 +1510,7 @@ inline Semaphore::~Semaphore(void);
 37
 inline void Semaphore::acquire(void);
 
-225 11 try_acquire 0 4 249 22 Semaphore::try_acquire 0 1 109 342
+226 11 try_acquire 0 4 250 22 Semaphore::try_acquire 0 1 110 342
 ////////////////////////////////////////////////////////////////////
 //     Function: Semaphore::try_acquire
 //       Access: Published
@@ -1429,7 +1520,7 @@ inline void Semaphore::acquire(void);
 41
 inline bool Semaphore::try_acquire(void);
 
-226 7 release 0 4 249 18 Semaphore::release 0 1 110 401
+227 7 release 0 4 250 18 Semaphore::release 0 1 111 401
 ////////////////////////////////////////////////////////////////////
 //     Function: Semaphore::release
 //       Access: Published
@@ -1441,7 +1532,7 @@ inline bool Semaphore::try_acquire(void);
 36
 inline int Semaphore::release(void);
 
-227 9 get_count 0 4 249 20 Semaphore::get_count 0 1 111 366
+228 9 get_count 0 4 250 20 Semaphore::get_count 0 1 112 366
 ////////////////////////////////////////////////////////////////////
 //     Function: Semaphore::get_count
 //       Access: Published
@@ -1452,7 +1543,7 @@ inline int Semaphore::release(void);
 44
 inline int Semaphore::get_count(void) const;
 
-228 6 output 0 4 249 17 Semaphore::output 0 1 112 217
+229 6 output 0 4 250 17 Semaphore::output 0 1 113 217
 ////////////////////////////////////////////////////////////////////
 //     Function: Semaphore::output
 //       Access: Published
@@ -1461,13 +1552,13 @@ inline int Semaphore::get_count(void) const;
 43
 void Semaphore::output(ostream &out) const;
 
-112
-1 0 0 7 9 251 0 0 0 0 
-2 0 0 7 3 253 0 0 0 1 4 this 3 252  
-3 0 0 7 4 252 117 0 0 1 4 this 3 253  
-4 0 0 6 6 254 0 0 0 1 4 this 3 252  
-5 0 0 7 7 252 117 0 0 1 4 this 3 254  
-6 0 0 7 17 256 123 0 1438 ////////////////////////////////////////////////////////////////////
+113
+1 14 Dtool_kd_idS4g 0 7 9 252 0 14 Dtool_kd_idS4g 0 0 
+2 14 Dtool_kd_ikBIS 0 7 3 254 0 14 Dtool_kd_ikBIS 0 1 4 this 3 253  
+3 14 Dtool_kd_i_Yr4 0 7 4 253 118 14 Dtool_kd_i_Yr4 0 1 4 this 3 254  
+4 14 Dtool_kd_iqPoC 0 6 6 255 0 14 Dtool_kd_iqPoC 0 1 4 this 3 253  
+5 14 Dtool_kd_iUoYV 0 7 7 253 118 14 Dtool_kd_iUoYV 0 1 4 this 3 255  
+6 14 Dtool_kd_iRc6P 0 7 17 257 124 14 Dtool_kd_iRc6P 1438 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::bind_thread
 //       Access: Published, Static
 //  Description: Returns a new Panda Thread object associated with the
@@ -1492,8 +1583,8 @@ void Semaphore::output(ostream &out) const;
 //               thread, or twice within a given thread, unless it is
 //               given the same name each time (in which case the same
 //               pointer will be returned each time).
-//////////////////////////////////////////////////////////////////// 2 4 name 1 255  9 sync_name 1 255  
-7 0 0 6 18 255 0 0 565 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 name 1 256  9 sync_name 1 256  
+7 14 Dtool_kd_ijq87 0 6 18 256 0 14 Dtool_kd_ijq87 565 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::get_sync_name
 //       Access: Published
 //  Description: Returns the sync name of the thread.  This name
@@ -1502,30 +1593,30 @@ void Semaphore::output(ostream &out) const;
 //               for the benefit of PStats; threads with the same sync
 //               name can be ticked all at once via the thread_tick()
 //               call.
-//////////////////////////////////////////////////////////////////// 1 4 this 3 257  
-8 0 0 6 19 259 0 0 476 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 258  
+8 14 Dtool_kd_iH7ri 0 6 19 260 0 14 Dtool_kd_iH7ri 476 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::get_pstats_index
 //       Access: Published
 //  Description: Returns the PStats index associated with this thread,
 //               or -1 if no index has yet been associated with this
 //               thread.  This is used internally by the PStatClient;
 //               you should not need to call this directly.
-//////////////////////////////////////////////////////////////////// 1 4 this 3 257  
-9 0 0 6 20 255 0 0 402 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 258  
+9 14 Dtool_kd_igw2i 0 6 20 256 0 14 Dtool_kd_igw2i 402 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::get_unique_id
 //       Access: Published
 //  Description: Returns a string that is guaranteed to be unique to
 //               this thread, across all processes on the machine,
 //               during at least the lifetime of this process.
-//////////////////////////////////////////////////////////////////// 1 4 this 3 257  
-10 0 0 6 21 259 0 0 409 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 258  
+10 14 Dtool_kd_imKhn 0 6 21 260 0 14 Dtool_kd_imKhn 409 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::get_pipeline_stage
 //       Access: Published
 //  Description: Returns the Pipeline stage number associated with
 //               this thread.  The default stage is 0 if no stage is
 //               specified otherwise.  See set_pipeline_stage().
-//////////////////////////////////////////////////////////////////// 1 4 this 3 257  
-11 0 0 4 22 260 0 0 831 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 258  
+11 14 Dtool_kd_iiVSW 0 4 22 261 0 14 Dtool_kd_iiVSW 831 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::set_pipeline_stage
 //       Access: Published
 //  Description: Specifies the Pipeline stage number associated with
@@ -1539,21 +1630,21 @@ void Semaphore::output(ostream &out) const;
 //               this at 0, but a render thread may set it to 1 or 2
 //               (to operate on the previous frame's data, or the
 //               second previous frame's data).
-//////////////////////////////////////////////////////////////////// 2 4 this 3 256  14 pipeline_stage 1 259  
-12 0 0 4 23 260 0 0 392 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 257  14 pipeline_stage 1 260  
+12 14 Dtool_kd_iOmlk 0 4 23 261 0 14 Dtool_kd_iOmlk 392 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::set_min_pipeline_stage
 //       Access: Published
 //  Description: Sets this thread's pipeline stage number to at least
 //               the indicated value, unless it is already larger.
 //               See set_pipeline_stage().
-//////////////////////////////////////////////////////////////////// 2 4 this 3 256  18 min_pipeline_stage 1 259  
-13 0 0 7 24 256 123 0 345 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 257  18 min_pipeline_stage 1 260  
+13 14 Dtool_kd_iY2Dw 0 7 24 257 124 14 Dtool_kd_iY2Dw 345 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::get_main_thread
 //       Access: Published, Static
 //  Description: Returns a pointer to the "main" Thread object--this
 //               is the Thread that started the whole process.
 //////////////////////////////////////////////////////////////////// 0 
-14 0 0 7 25 256 123 0 531 ////////////////////////////////////////////////////////////////////
+14 14 Dtool_kd_iD1UC 0 7 25 257 124 14 Dtool_kd_iD1UC 531 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::get_external_thread
 //       Access: Published, Static
 //  Description: Returns a pointer to the "external" Thread
@@ -1562,7 +1653,7 @@ void Semaphore::output(ostream &out) const;
 //               threading interface.  Note that multiple different
 //               threads may share this same pointer.
 //////////////////////////////////////////////////////////////////// 0 
-15 0 0 7 26 256 123 0 738 ////////////////////////////////////////////////////////////////////
+15 14 Dtool_kd_i3TiV 0 7 26 257 124 14 Dtool_kd_i3TiV 738 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::get_current_thread
 //       Access: Published, Static
 //  Description: Returns a pointer to the currently-executing Thread
@@ -1575,7 +1666,7 @@ void Semaphore::output(ostream &out) const;
 //               although all non-Panda threads will return the exact
 //               same Thread pointer.
 //////////////////////////////////////////////////////////////////// 0 
-16 0 0 6 27 259 0 0 485 ////////////////////////////////////////////////////////////////////
+16 14 Dtool_kd_iqF2R 0 6 27 260 0 14 Dtool_kd_iqF2R 485 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::get_current_pipeline_stage
 //       Access: Published, Static
 //  Description: Returns the integer pipeline stage associated with
@@ -1583,14 +1674,14 @@ void Semaphore::output(ostream &out) const;
 //               get_current_thread()->get_pipeline_stage(), but it
 //               may be faster to retrieve in some contexts.
 //////////////////////////////////////////////////////////////////// 0 
-17 0 0 6 28 261 0 0 417 ////////////////////////////////////////////////////////////////////
+17 14 Dtool_kd_i5vLQ 0 6 28 262 0 14 Dtool_kd_i5vLQ 417 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::is_threading_supported
 //       Access: Published, Static
 //  Description: Returns true if threading support has been compiled
 //               in and enabled, or false if no threading is available
 //               (and Thread::start() will always fail).
 //////////////////////////////////////////////////////////////////// 0 
-18 0 0 6 29 261 0 0 461 ////////////////////////////////////////////////////////////////////
+18 14 Dtool_kd_iyg5j 0 6 29 262 0 14 Dtool_kd_iyg5j 461 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::is_true_threads
 //       Access: Published, Static
 //  Description: Returns true if a real threading library is available
@@ -1598,7 +1689,7 @@ void Semaphore::output(ostream &out) const;
 //               if the only threading we can provide is simulated
 //               user-space threading.
 //////////////////////////////////////////////////////////////////// 0 
-19 0 0 6 30 261 0 0 722 ////////////////////////////////////////////////////////////////////
+19 14 Dtool_kd_iQd5Y 0 6 30 262 0 14 Dtool_kd_iQd5Y 722 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::is_simple_threads
 //       Access: Published, Static
 //  Description: Returns true if Panda is currently compiled for
@@ -1610,20 +1701,20 @@ void Semaphore::output(ostream &out) const;
 //               threads with mutex protection to ensure only one runs
 //               at a time.
 //////////////////////////////////////////////////////////////////// 0 
-20 0 0 4 31 260 0 0 360 ////////////////////////////////////////////////////////////////////
+20 14 Dtool_kd_iEK72 0 4 31 261 0 14 Dtool_kd_iEK72 360 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::sleep
 //       Access: Published, Static
 //  Description: Suspends the current thread for at least the
 //               indicated amount of time.  It might be suspended for
 //               longer.
-//////////////////////////////////////////////////////////////////// 1 7 seconds 1 262  
-21 0 0 4 32 260 0 0 306 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 7 seconds 1 263  
+21 14 Dtool_kd_iA_Rs 0 4 32 261 0 14 Dtool_kd_iA_Rs 306 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::field_yield
 //       Access: Published, Static
 //  Description: Suspends the current thread for the rest of the
 //               current epoch.
 //////////////////////////////////////////////////////////////////// 0 
-22 0 0 4 33 260 0 0 520 ////////////////////////////////////////////////////////////////////
+22 14 Dtool_kd_iMrcC 0 4 33 261 0 14 Dtool_kd_iMrcC 520 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::consider_yield
 //       Access: Published, Static
 //  Description: Possibly suspends the current thread for the rest of
@@ -1632,37 +1723,37 @@ void Semaphore::output(ostream &out) const;
 //               thread implementation, which relies on cooperative
 //               yields like this.
 //////////////////////////////////////////////////////////////////// 0 
-23 0 0 4 34 260 0 0 222 ////////////////////////////////////////////////////////////////////
+23 14 Dtool_kd_iffd4 0 4 34 261 0 14 Dtool_kd_iffd4 222 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::output
 //       Access: Published, Virtual
 //  Description:
-//////////////////////////////////////////////////////////////////// 2 4 this 3 257  3 out 1 263  
-24 0 0 4 35 260 0 0 440 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 258  3 out 1 264  
+24 14 Dtool_kd_iIMot 0 4 35 261 0 14 Dtool_kd_iIMot 440 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::output_blocker
 //       Access: Published
 //  Description: Writes a description of the mutex or condition
 //               variable that this thread is blocked on.  Writes
 //               nothing if there is no blocker, or if we are not in
 //               DEBUG_THREADS mode.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 257  3 out 1 263  
-25 0 0 4 36 260 0 0 227 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 258  3 out 1 264  
+25 14 Dtool_kd_iTfGZ 0 4 36 261 0 14 Dtool_kd_iTfGZ 227 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::write_status
 //       Access: Published, Static
 //  Description:
-//////////////////////////////////////////////////////////////////// 1 3 out 1 263  
-26 0 0 6 37 261 0 0 338 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 3 out 1 264  
+26 14 Dtool_kd_i9pHH 0 6 37 262 0 14 Dtool_kd_i9pHH 338 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::is_started
 //       Access: Published
 //  Description: Returns true if the thread has been started, false if
 //               it has not, or if join() has already been called.
-//////////////////////////////////////////////////////////////////// 1 4 this 3 257  
-27 0 0 6 38 261 0 0 302 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 258  
+27 14 Dtool_kd_ifYmX 0 6 38 262 0 14 Dtool_kd_ifYmX 302 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::is_joinable
 //       Access: Published
 //  Description: Returns the value of joinable that was passed to the
 //               start() call.
-//////////////////////////////////////////////////////////////////// 1 4 this 3 257  
-28 0 0 6 39 261 0 0 1333 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 258  
+28 14 Dtool_kd_i6vf2 0 6 39 262 0 14 Dtool_kd_i6vf2 1333 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::start
 //       Access: Public
 //  Description: Starts the thread executing.  It is only valid to
@@ -1688,23 +1779,23 @@ void Semaphore::output(ostream &out) const;
 //
 //               The return value is true if the thread is
 //               successfully started, false otherwise.
-//////////////////////////////////////////////////////////////////// 3 4 this 3 256  8 priority 1 232  8 joinable 1 261  
-29 0 0 4 40 260 0 0 366 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 3 4 this 3 257  8 priority 1 233  8 joinable 1 262  
+29 14 Dtool_kd_iz6lV 0 4 40 261 0 14 Dtool_kd_iz6lV 366 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::join
 //       Access: Published
 //  Description: Blocks the calling process until the thread
 //               terminates.  If the thread has already terminated,
 //               this returns immediately.
-//////////////////////////////////////////////////////////////////// 1 4 this 3 256  
-30 0 0 4 41 260 0 0 432 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 257  
+30 14 Dtool_kd_iEmqG 0 4 41 261 0 14 Dtool_kd_iEmqG 432 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::preempt
 //       Access: Published
 //  Description: Indicates that this thread should run as soon as
 //               possible, preemptying any other threads that may be
 //               scheduled to run.  This may not be implemented on
 //               every platform.
-//////////////////////////////////////////////////////////////////// 1 4 this 3 256  
-31 0 0 4 42 260 0 0 543 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 257  
+31 14 Dtool_kd_iBnhA 0 4 42 261 0 14 Dtool_kd_iBnhA 543 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::set_python_data
 //       Access: Published
 //  Description: Sets an arbitrary Python object that may be
@@ -1712,33 +1803,33 @@ void Semaphore::output(ostream &out) const;
 //               the purposes of associated arbitrary Python data with
 //               the C++ object; other than managing the reference
 //               count, the C++ code does nothing with this object.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 256  11 python_data 1 265  
-32 0 0 6 43 265 0 0 302 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 257  11 python_data 1 266  
+32 14 Dtool_kd_i3PGe 0 6 43 266 0 14 Dtool_kd_i3PGe 302 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::get_python_data
 //       Access: Published
 //  Description: Returns the Python object that was set with
 //               set_python_data().
-//////////////////////////////////////////////////////////////////// 1 4 this 3 257  
-33 0 0 7 44 252 117 0 402 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 258  
+33 14 Dtool_kd_iHhFW 0 7 44 253 118 14 Dtool_kd_iHhFW 402 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::get_current_task
 //       Access: Published
 //  Description: Returns the task currently executing on this thread
 //               (via the AsyncTaskManager), if any, or NULL if the
 //               thread is not currently servicing a task.
-//////////////////////////////////////////////////////////////////// 1 4 this 3 257  
-34 0 0 4 45 260 0 0 387 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 258  
+34 14 Dtool_kd_iwYwm 0 4 45 261 0 14 Dtool_kd_iwYwm 387 ////////////////////////////////////////////////////////////////////
 //     Function: Thread::prepare_for_exit
 //       Access: Published
 //  Description: Should be called by the main thread just before
 //               exiting the program, this blocks until any remaining
 //               thread cleanup has finished.
 //////////////////////////////////////////////////////////////////// 0 
-35 0 0 7 46 251 0 0 0 0 
-36 0 0 7 12 253 0 0 0 1 4 this 3 256  
-37 0 0 7 13 256 123 0 0 1 4 this 3 253  
-38 0 0 6 14 254 0 0 0 1 4 this 3 256  
-39 0 0 7 15 256 123 0 0 1 4 this 3 254  
-40 0 0 4 48 260 0 0 735 ////////////////////////////////////////////////////////////////////
+35 14 Dtool_kd_i_lqM 0 7 46 252 0 14 Dtool_kd_i_lqM 0 0 
+36 14 Dtool_kd_im7Dx 0 7 12 254 0 14 Dtool_kd_im7Dx 0 1 4 this 3 257  
+37 14 Dtool_kd_iiO2P 0 7 13 257 124 14 Dtool_kd_iiO2P 0 1 4 this 3 254  
+38 14 Dtool_kd_ilnUX 0 6 14 255 0 14 Dtool_kd_ilnUX 0 1 4 this 3 257  
+39 14 Dtool_kd_iFtoz 0 7 15 257 124 14 Dtool_kd_iFtoz 0 1 4 this 3 255  
+40 14 Dtool_kd_iOui6 0 4 48 261 0 14 Dtool_kd_iOui6 735 ////////////////////////////////////////////////////////////////////
 //     Function: MutexDirect::acquire
 //       Access: Published
 //  Description: Grabs the mutex if it is available.  If it is not
@@ -1753,14 +1844,14 @@ void Semaphore::output(ostream &out) const;
 //
 //               Also see MutexHolder.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 268  
-41 0 0 6 49 261 0 0 369 ////////////////////////////////////////////////////////////////////
+41 14 Dtool_kd_ia7c4 0 6 49 262 0 14 Dtool_kd_ia7c4 369 ////////////////////////////////////////////////////////////////////
 //     Function: MutexDirect::try_acquire
 //       Access: Published
 //  Description: Returns immediately, with a true value indicating the
 //               mutex has been acquired, and false indicating it has
 //               not.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 268  
-42 0 0 4 50 260 0 0 515 ////////////////////////////////////////////////////////////////////
+42 14 Dtool_kd_ippbs 0 4 50 261 0 14 Dtool_kd_ippbs 515 ////////////////////////////////////////////////////////////////////
 //     Function: MutexDirect::release
 //       Access: Published
 //  Description: Releases the mutex.  It is an error to call this if
@@ -1770,7 +1861,7 @@ void Semaphore::output(ostream &out) const;
 //               and unlock const mutexes, mainly to allow thread-safe
 //               access to otherwise const data.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 268  
-43 0 0 6 51 261 0 0 572 ////////////////////////////////////////////////////////////////////
+43 14 Dtool_kd_iHTyM 0 6 51 262 0 14 Dtool_kd_iHTyM 572 ////////////////////////////////////////////////////////////////////
 //     Function: MutexDirect::debug_is_locked
 //       Access: Published
 //  Description: Returns true if the current thread has locked the
@@ -1780,53 +1871,66 @@ void Semaphore::output(ostream &out) const;
 //               there's not a reliable way to determine this
 //               otherwise.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 268  
-44 0 0 4 52 260 0 0 303 ////////////////////////////////////////////////////////////////////
+44 14 Dtool_kd_i9_B4 0 4 52 261 0 14 Dtool_kd_i9_B4 303 ////////////////////////////////////////////////////////////////////
 //     Function: MutexDirect::set_name
 //       Access: Public
 //  Description: The mutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 270  4 name 1 255  
-45 0 0 4 53 260 0 0 305 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 270  4 name 1 256  
+45 14 Dtool_kd_iJnDd 0 4 53 261 0 14 Dtool_kd_iJnDd 305 ////////////////////////////////////////////////////////////////////
 //     Function: MutexDirect::clear_name
 //       Access: Public
 //  Description: The mutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 270  
-46 0 0 6 54 261 0 0 303 ////////////////////////////////////////////////////////////////////
+46 14 Dtool_kd_iqC3W 0 6 54 262 0 14 Dtool_kd_iqC3W 303 ////////////////////////////////////////////////////////////////////
 //     Function: MutexDirect::has_name
 //       Access: Public
 //  Description: The mutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 268  
-47 0 0 6 55 255 0 0 303 ////////////////////////////////////////////////////////////////////
+47 14 Dtool_kd_iAGiT 0 6 55 256 0 14 Dtool_kd_iAGiT 303 ////////////////////////////////////////////////////////////////////
 //     Function: MutexDirect::get_name
 //       Access: Public
 //  Description: The mutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 268  
-48 0 0 4 56 260 0 0 311 ////////////////////////////////////////////////////////////////////
+48 14 Dtool_kd_iyEWt 0 4 56 261 0 14 Dtool_kd_iyEWt 311 ////////////////////////////////////////////////////////////////////
 //     Function: MutexDirect::output
 //       Access: Public
 //  Description: This method is declared virtual in MutexDebug, but
 //               non-virtual in MutexDirect.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 268  3 out 1 263  
-49 0 0 7 58 271 164 0 217 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 268  3 out 1 264  
+49 14 Dtool_kd_iNvQQ 0 7 58 271 165 14 Dtool_kd_iNvQQ 699 // Filename: pmutex.I
+// Created by:  drose (08Aug02)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 //     Function: Mutex::Constructor
 //       Access: Published
 //  Description:
 //////////////////////////////////////////////////////////////////// 0 
-50 0 0 7 58 271 164 0 217 ////////////////////////////////////////////////////////////////////
+50 14 Dtool_kd_idp7X 0 7 58 271 165 14 Dtool_kd_idp7X 217 ////////////////////////////////////////////////////////////////////
 //     Function: Mutex::Constructor
 //       Access: Published
 //  Description:
-//////////////////////////////////////////////////////////////////// 1 4 name 1 255  
-51 0 0 6 62 270 0 0 301 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 name 1 256  
+51 14 Dtool_kd_iD016 0 6 62 270 0 14 Dtool_kd_iD016 301 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarDirect::get_mutex
 //       Access: Public
 //  Description: Returns the mutex associated with this condition
 //               variable.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 272  
-52 0 0 4 63 260 0 0 1330 ////////////////////////////////////////////////////////////////////
+52 14 Dtool_kd_iG44v 0 4 63 261 0 14 Dtool_kd_iG44v 1330 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarDirect::wait
 //       Access: Public
 //  Description: Waits on the condition.  The caller must already be
@@ -1851,7 +1955,7 @@ void Semaphore::output(ostream &out) const;
 //               be temporarily released during the wait() call
 //               itself.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 274  
-53 0 0 4 63 260 0 0 613 ////////////////////////////////////////////////////////////////////
+53 14 Dtool_kd_i2oja 0 4 63 261 0 14 Dtool_kd_i2oja 613 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarDirect::wait
 //       Access: Published
 //  Description: Waits on the condition, with a timeout.  The function
@@ -1861,8 +1965,8 @@ void Semaphore::output(ostream &out) const;
 //               in fact happened (spurious wakeups are possible).
 //
 //               See wait() with no parameters for more.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 274  7 timeout 1 262  
-54 0 0 4 64 260 0 0 903 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 274  7 timeout 1 263  
+54 14 Dtool_kd_ilhob 0 4 64 261 0 14 Dtool_kd_ilhob 903 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarDirect::notify
 //       Access: Public
 //  Description: Informs one of the other threads who are currently
@@ -1879,13 +1983,26 @@ void Semaphore::output(ostream &out) const;
 //               If no threads are waiting, this is a no-op: the
 //               notify event is lost.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 274  
-55 0 0 4 65 260 0 0 332 ////////////////////////////////////////////////////////////////////
+55 14 Dtool_kd_i_ndm 0 4 65 261 0 14 Dtool_kd_i_ndm 332 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarDirect::output
 //       Access: Public
 //  Description: This method is declared virtual in ConditionVarDebug,
 //               but non-virtual in ConditionVarDirect.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 272  3 out 1 263  
-56 0 0 7 67 275 171 0 568 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 272  3 out 1 264  
+56 14 Dtool_kd_iYPq5 0 7 67 275 172 14 Dtool_kd_iYPq5 1056 // Filename: conditionVar.I
+// Created by:  drose (09Aug02)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 //     Function: ConditionVar::Constructor
 //       Access: Published
 //  Description: You must pass in a Mutex to the condition variable
@@ -1895,19 +2012,19 @@ void Semaphore::output(ostream &out) const;
 //               destruct during the lifetime of the condition
 //               variable.
 //////////////////////////////////////////////////////////////////// 1 5 mutex 1 271  
-57 0 0 6 69 271 0 0 298 ////////////////////////////////////////////////////////////////////
+57 14 Dtool_kd_iVf1V 0 6 69 271 0 14 Dtool_kd_iVf1V 298 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVar::get_mutex
 //       Access: Published
 //  Description: Returns the mutex associated with this condition
 //               variable.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 276  
-58 0 0 6 72 270 0 0 308 ////////////////////////////////////////////////////////////////////
+58 14 Dtool_kd_ij3dq 0 6 72 270 0 14 Dtool_kd_ij3dq 308 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarFullDirect::get_mutex
 //       Access: Published
 //  Description: Returns the mutex associated with this condition
 //               variable.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 278  
-59 0 0 4 73 260 0 0 1341 ////////////////////////////////////////////////////////////////////
+59 14 Dtool_kd_iqoyJ 0 4 73 261 0 14 Dtool_kd_iqoyJ 1341 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarFullDirect::wait
 //       Access: Published
 //  Description: Waits on the condition.  The caller must already be
@@ -1932,7 +2049,7 @@ void Semaphore::output(ostream &out) const;
 //               be temporarily released during the wait() call
 //               itself.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 280  
-60 0 0 4 73 260 0 0 617 ////////////////////////////////////////////////////////////////////
+60 14 Dtool_kd_i20dk 0 4 73 261 0 14 Dtool_kd_i20dk 617 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarFullDirect::wait
 //       Access: Published
 //  Description: Waits on the condition, with a timeout.  The function
@@ -1942,8 +2059,8 @@ void Semaphore::output(ostream &out) const;
 //               in fact happened (spurious wakeups are possible).
 //
 //               See wait() with no parameters for more.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 280  7 timeout 1 262  
-61 0 0 4 74 260 0 0 904 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 280  7 timeout 1 263  
+61 14 Dtool_kd_iqZiM 0 4 74 261 0 14 Dtool_kd_iqZiM 904 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarFullDirect::notify
 //       Access: Published
 //  Description: Informs one of the other threads who are currently
@@ -1960,7 +2077,7 @@ void Semaphore::output(ostream &out) const;
 //               If no threads are waiting, this is a no-op: the
 //               notify is lost.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 280  
-62 0 0 4 75 260 0 0 673 ////////////////////////////////////////////////////////////////////
+62 14 Dtool_kd_iDEGf 0 4 75 261 0 14 Dtool_kd_iDEGf 673 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarFullDirect::notify_all
 //       Access: Published
 //  Description: Informs all of the other threads who are currently
@@ -1974,13 +2091,26 @@ void Semaphore::output(ostream &out) const;
 //               If no threads are waiting, this is a no-op: the
 //               notify event is lost.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 280  
-63 0 0 4 76 260 0 0 344 ////////////////////////////////////////////////////////////////////
+63 14 Dtool_kd_ipZKZ 0 4 76 261 0 14 Dtool_kd_ipZKZ 344 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarFullDirect::output
 //       Access: Public
 //  Description: This method is declared virtual in ConditionVarFullDebug,
 //               but non-virtual in ConditionVarFullDirect.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 278  3 out 1 263  
-64 0 0 7 78 281 180 0 572 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 278  3 out 1 264  
+64 14 Dtool_kd_i7JQC 0 7 78 281 181 14 Dtool_kd_i7JQC 1064 // Filename: conditionVarFull.I
+// Created by:  drose (28Aug06)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarFull::Constructor
 //       Access: Published
 //  Description: You must pass in a Mutex to the condition variable
@@ -1990,13 +2120,13 @@ void Semaphore::output(ostream &out) const;
 //               destruct during the lifetime of the condition
 //               variable.
 //////////////////////////////////////////////////////////////////// 1 5 mutex 1 271  
-65 0 0 6 80 271 0 0 302 ////////////////////////////////////////////////////////////////////
+65 14 Dtool_kd_iHhKo 0 6 80 271 0 14 Dtool_kd_iHhKo 302 ////////////////////////////////////////////////////////////////////
 //     Function: ConditionVarFull::get_mutex
 //       Access: Published
 //  Description: Returns the mutex associated with this condition
 //               variable.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 282  
-66 0 0 4 82 260 0 0 745 ////////////////////////////////////////////////////////////////////
+66 14 Dtool_kd_it6SB 0 4 82 261 0 14 Dtool_kd_it6SB 745 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutexDirect::acquire
 //       Access: Published
 //  Description: Grabs the reMutex if it is available.  If it is not
@@ -2011,28 +2141,28 @@ void Semaphore::output(ostream &out) const;
 //
 //               Also see ReMutexHolder.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 284  
-67 0 0 4 82 260 0 0 368 ////////////////////////////////////////////////////////////////////
+67 14 Dtool_kd_iUbPW 0 4 82 261 0 14 Dtool_kd_iUbPW 368 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutexDirect::acquire
 //       Access: Published
 //  Description: This variant on acquire() accepts the current thread as
 //               a parameter, if it is already known, as an
 //               optimization.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 284  14 current_thread 1 256  
-68 0 0 6 83 261 0 0 371 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 284  14 current_thread 1 257  
+68 14 Dtool_kd_irrov 0 6 83 262 0 14 Dtool_kd_irrov 371 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutexDirect::try_acquire
 //       Access: Published
 //  Description: Returns immediately, with a true value indicating the
 //               mutex has been acquired, and false indicating it has
 //               not.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 284  
-69 0 0 6 83 261 0 0 371 ////////////////////////////////////////////////////////////////////
+69 14 Dtool_kd_iOL6E 0 6 83 262 0 14 Dtool_kd_iOL6E 371 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutexDirect::try_acquire
 //       Access: Published
 //  Description: Returns immediately, with a true value indicating the
 //               mutex has been acquired, and false indicating it has
 //               not.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 284  14 current_thread 1 256  
-70 0 0 4 84 260 0 0 819 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 284  14 current_thread 1 257  
+70 14 Dtool_kd_ipqNB 0 4 84 261 0 14 Dtool_kd_ipqNB 819 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutexDirect::elevate_lock
 //       Access: Published
 //  Description: This method increments the lock count, assuming the
@@ -2047,7 +2177,7 @@ void Semaphore::output(ostream &out) const;
 //               call this when the calling thread does not hold the
 //               lock.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 284  
-71 0 0 4 85 260 0 0 523 ////////////////////////////////////////////////////////////////////
+71 14 Dtool_kd_iKHzQ 0 4 85 261 0 14 Dtool_kd_iKHzQ 523 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutexDirect::release
 //       Access: Published
 //  Description: Releases the reMutex.  It is an error to call this if
@@ -2057,7 +2187,7 @@ void Semaphore::output(ostream &out) const;
 //               and unlock const reMutexes, mainly to allow thread-safe
 //               access to otherwise const data.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 284  
-72 0 0 6 86 261 0 0 578 ////////////////////////////////////////////////////////////////////
+72 14 Dtool_kd_i7UUZ 0 6 86 262 0 14 Dtool_kd_i7UUZ 578 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutexDirect::debug_is_locked
 //       Access: Published
 //  Description: Returns true if the current thread has locked the
@@ -2067,48 +2197,61 @@ void Semaphore::output(ostream &out) const;
 //               there's not a reliable way to determine this
 //               otherwise.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 284  
-73 0 0 4 87 260 0 0 305 ////////////////////////////////////////////////////////////////////
+73 14 Dtool_kd_i_Nyn 0 4 87 261 0 14 Dtool_kd_i_Nyn 305 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutexDirect::set_name
 //       Access: Public
 //  Description: The mutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 286  4 name 1 255  
-74 0 0 4 88 260 0 0 307 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 286  4 name 1 256  
+74 14 Dtool_kd_ibDp3 0 4 88 261 0 14 Dtool_kd_ibDp3 307 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutexDirect::clear_name
 //       Access: Public
 //  Description: The mutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 286  
-75 0 0 6 89 261 0 0 305 ////////////////////////////////////////////////////////////////////
+75 14 Dtool_kd_iMADE 0 6 89 262 0 14 Dtool_kd_iMADE 305 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutexDirect::has_name
 //       Access: Public
 //  Description: The mutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 284  
-76 0 0 6 90 255 0 0 305 ////////////////////////////////////////////////////////////////////
+76 14 Dtool_kd_iCBpz 0 6 90 256 0 14 Dtool_kd_iCBpz 305 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutexDirect::get_name
 //       Access: Public
 //  Description: The mutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 284  
-77 0 0 4 91 260 0 0 318 ////////////////////////////////////////////////////////////////////
+77 14 Dtool_kd_iywef 0 4 91 261 0 14 Dtool_kd_iywef 318 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutexDirect::output
 //       Access: Published
 //  Description: This method is declared virtual in MutexDebug, but
 //               non-virtual in ReMutexDirect.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 284  3 out 1 263  
-78 0 0 7 93 287 193 0 216 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 284  3 out 1 264  
+78 14 Dtool_kd_iyZ9B 0 7 93 287 194 14 Dtool_kd_iyZ9B 699 // Filename: reMutex.I
+// Created by:  drose (15Jan06)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 //     Function: ReMutex::Constructor
 //       Access: Public
 //  Description:
 //////////////////////////////////////////////////////////////////// 0 
-79 0 0 7 93 287 193 0 216 ////////////////////////////////////////////////////////////////////
+79 14 Dtool_kd_irzYG 0 7 93 287 194 14 Dtool_kd_irzYG 216 ////////////////////////////////////////////////////////////////////
 //     Function: ReMutex::Constructor
 //       Access: Public
 //  Description:
-//////////////////////////////////////////////////////////////////// 1 4 name 1 255  
-80 0 0 7 96 251 0 0 0 0 
-81 0 0 4 99 260 0 0 760 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 name 1 256  
+80 14 Dtool_kd_iSmL_ 0 7 96 252 0 14 Dtool_kd_iSmL_ 0 0 
+81 14 Dtool_kd_igIId 0 4 99 261 0 14 Dtool_kd_igIId 760 ////////////////////////////////////////////////////////////////////
 //     Function: LightMutexDirect::acquire
 //       Access: Published
 //  Description: Grabs the lightMutex if it is available.  If it is not
@@ -2123,7 +2266,7 @@ void Semaphore::output(ostream &out) const;
 //
 //               Also see LightMutexHolder.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 288  
-82 0 0 4 100 260 0 0 535 ////////////////////////////////////////////////////////////////////
+82 14 Dtool_kd_iv86A 0 4 100 261 0 14 Dtool_kd_iv86A 535 ////////////////////////////////////////////////////////////////////
 //     Function: LightMutexDirect::release
 //       Access: Published
 //  Description: Releases the lightMutex.  It is an error to call this if
@@ -2133,7 +2276,7 @@ void Semaphore::output(ostream &out) const;
 //               and unlock const lightMutexes, mainly to allow thread-safe
 //               access to otherwise const data.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 288  
-83 0 0 6 101 261 0 0 587 ////////////////////////////////////////////////////////////////////
+83 14 Dtool_kd_isRoB 0 6 101 262 0 14 Dtool_kd_isRoB 587 ////////////////////////////////////////////////////////////////////
 //     Function: LightMutexDirect::debug_is_locked
 //       Access: Published
 //  Description: Returns true if the current thread has locked the
@@ -2143,47 +2286,60 @@ void Semaphore::output(ostream &out) const;
 //               there's not a reliable way to determine this
 //               otherwise.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 288  
-84 0 0 4 102 260 0 0 313 ////////////////////////////////////////////////////////////////////
+84 14 Dtool_kd_iMAKY 0 4 102 261 0 14 Dtool_kd_iMAKY 313 ////////////////////////////////////////////////////////////////////
 //     Function: LightMutexDirect::set_name
 //       Access: Public
 //  Description: The lightMutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 290  4 name 1 255  
-85 0 0 4 103 260 0 0 315 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 290  4 name 1 256  
+85 14 Dtool_kd_i39Ii 0 4 103 261 0 14 Dtool_kd_i39Ii 315 ////////////////////////////////////////////////////////////////////
 //     Function: LightMutexDirect::clear_name
 //       Access: Public
 //  Description: The lightMutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 290  
-86 0 0 6 104 261 0 0 313 ////////////////////////////////////////////////////////////////////
+86 14 Dtool_kd_ifUxV 0 6 104 262 0 14 Dtool_kd_ifUxV 313 ////////////////////////////////////////////////////////////////////
 //     Function: LightMutexDirect::has_name
 //       Access: Public
 //  Description: The lightMutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 288  
-87 0 0 6 105 255 0 0 313 ////////////////////////////////////////////////////////////////////
+87 14 Dtool_kd_iPdHP 0 6 105 256 0 14 Dtool_kd_iPdHP 313 ////////////////////////////////////////////////////////////////////
 //     Function: LightMutexDirect::get_name
 //       Access: Public
 //  Description: The lightMutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 288  
-88 0 0 4 106 260 0 0 326 ////////////////////////////////////////////////////////////////////
+88 14 Dtool_kd_i5WyC 0 4 106 261 0 14 Dtool_kd_i5WyC 326 ////////////////////////////////////////////////////////////////////
 //     Function: LightMutexDirect::output
 //       Access: Public
 //  Description: This method is declared virtual in LightMutexDebug, but
 //               non-virtual in LightMutexDirect.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 288  3 out 1 263  
-89 0 0 7 108 291 205 0 222 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 288  3 out 1 264  
+89 14 Dtool_kd_iwke4 0 7 108 291 206 14 Dtool_kd_iwke4 708 // Filename: lightMutex.I
+// Created by:  drose (08Oct08)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 //     Function: LightMutex::Constructor
 //       Access: Published
 //  Description:
 //////////////////////////////////////////////////////////////////// 0 
-90 0 0 7 108 291 205 0 222 ////////////////////////////////////////////////////////////////////
+90 14 Dtool_kd_iMnVX 0 7 108 291 206 14 Dtool_kd_iMnVX 222 ////////////////////////////////////////////////////////////////////
 //     Function: LightMutex::Constructor
 //       Access: Published
 //  Description:
-//////////////////////////////////////////////////////////////////// 1 4 name 1 255  
-91 0 0 4 111 260 0 0 770 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 name 1 256  
+91 14 Dtool_kd_ipFmq 0 4 111 261 0 14 Dtool_kd_ipFmq 770 ////////////////////////////////////////////////////////////////////
 //     Function: LightReMutexDirect::acquire
 //       Access: Published
 //  Description: Grabs the lightReMutex if it is available.  If it is not
@@ -2198,14 +2354,14 @@ void Semaphore::output(ostream &out) const;
 //
 //               Also see LightReMutexHolder.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 292  
-92 0 0 4 111 260 0 0 373 ////////////////////////////////////////////////////////////////////
+92 14 Dtool_kd_iq5jU 0 4 111 261 0 14 Dtool_kd_iq5jU 373 ////////////////////////////////////////////////////////////////////
 //     Function: LightReMutexDirect::acquire
 //       Access: Published
 //  Description: This variant on acquire() accepts the current thread as
 //               a parameter, if it is already known, as an
 //               optimization.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 292  14 current_thread 1 256  
-93 0 0 4 112 260 0 0 824 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 292  14 current_thread 1 257  
+93 14 Dtool_kd_iN2dq 0 4 112 261 0 14 Dtool_kd_iN2dq 824 ////////////////////////////////////////////////////////////////////
 //     Function: LightReMutexDirect::elevate_lock
 //       Access: Published
 //  Description: This method increments the lock count, assuming the
@@ -2220,7 +2376,7 @@ void Semaphore::output(ostream &out) const;
 //               call this when the calling thread does not hold the
 //               lock.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 292  
-94 0 0 4 113 260 0 0 543 ////////////////////////////////////////////////////////////////////
+94 14 Dtool_kd_iqsmJ 0 4 113 261 0 14 Dtool_kd_iqsmJ 543 ////////////////////////////////////////////////////////////////////
 //     Function: LightReMutexDirect::release
 //       Access: Published
 //  Description: Releases the lightReMutex.  It is an error to call this if
@@ -2230,7 +2386,7 @@ void Semaphore::output(ostream &out) const;
 //               and unlock const lightReMutexes, mainly to allow thread-safe
 //               access to otherwise const data.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 292  
-95 0 0 6 114 261 0 0 593 ////////////////////////////////////////////////////////////////////
+95 14 Dtool_kd_i9mua 0 6 114 262 0 14 Dtool_kd_i9mua 593 ////////////////////////////////////////////////////////////////////
 //     Function: LightReMutexDirect::debug_is_locked
 //       Access: Published
 //  Description: Returns true if the current thread has locked the
@@ -2240,53 +2396,66 @@ void Semaphore::output(ostream &out) const;
 //               there's not a reliable way to determine this
 //               otherwise.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 292  
-96 0 0 4 115 260 0 0 310 ////////////////////////////////////////////////////////////////////
+96 14 Dtool_kd_iVMm3 0 4 115 261 0 14 Dtool_kd_iVMm3 310 ////////////////////////////////////////////////////////////////////
 //     Function: LightReMutexDirect::set_name
 //       Access: Public
 //  Description: The mutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 294  4 name 1 255  
-97 0 0 4 116 260 0 0 312 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 294  4 name 1 256  
+97 14 Dtool_kd_iSRSX 0 4 116 261 0 14 Dtool_kd_iSRSX 312 ////////////////////////////////////////////////////////////////////
 //     Function: LightReMutexDirect::clear_name
 //       Access: Public
 //  Description: The mutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 294  
-98 0 0 6 117 261 0 0 310 ////////////////////////////////////////////////////////////////////
+98 14 Dtool_kd_iO1Hw 0 6 117 262 0 14 Dtool_kd_iO1Hw 310 ////////////////////////////////////////////////////////////////////
 //     Function: LightReMutexDirect::has_name
 //       Access: Public
 //  Description: The mutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 292  
-99 0 0 6 118 255 0 0 310 ////////////////////////////////////////////////////////////////////
+99 14 Dtool_kd_iE3TP 0 6 118 256 0 14 Dtool_kd_iE3TP 310 ////////////////////////////////////////////////////////////////////
 //     Function: LightReMutexDirect::get_name
 //       Access: Public
 //  Description: The mutex name is only defined when compiling in
 //               DEBUG_THREADS mode.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 292  
-100 0 0 4 119 260 0 0 328 ////////////////////////////////////////////////////////////////////
+100 14 Dtool_kd_iYWCn 0 4 119 261 0 14 Dtool_kd_iYWCn 328 ////////////////////////////////////////////////////////////////////
 //     Function: LightReMutexDirect::output
 //       Access: Published
 //  Description: This method is declared virtual in MutexDebug, but
 //               non-virtual in LightReMutexDirect.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 292  3 out 1 263  
-101 0 0 7 121 295 216 0 221 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 292  3 out 1 264  
+101 14 Dtool_kd_idgTl 0 7 121 295 217 14 Dtool_kd_idgTl 709 // Filename: lightReMutex.I
+// Created by:  drose (08Oct08)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 //     Function: LightReMutex::Constructor
 //       Access: Public
 //  Description:
 //////////////////////////////////////////////////////////////////// 0 
-102 0 0 7 121 295 216 0 221 ////////////////////////////////////////////////////////////////////
+102 14 Dtool_kd_id1K3 0 7 121 295 217 14 Dtool_kd_id1K3 221 ////////////////////////////////////////////////////////////////////
 //     Function: LightReMutex::Constructor
 //       Access: Public
 //  Description:
-//////////////////////////////////////////////////////////////////// 1 4 name 1 255  
-103 0 0 7 124 251 0 0 0 0 
-104 0 0 7 127 296 123 0 224 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 name 1 256  
+103 14 Dtool_kd_iLWAo 0 7 124 252 0 14 Dtool_kd_iLWAo 0 0 
+104 14 Dtool_kd_iwMgt 0 7 127 296 124 14 Dtool_kd_iwMgt 224 ////////////////////////////////////////////////////////////////////
 //     Function: PythonThread::Constructor
 //       Access: Published
 //  Description:
-//////////////////////////////////////////////////////////////////// 4 8 function 1 265  4 args 1 265  4 name 1 255  9 sync_name 1 255  
-105 0 0 6 128 265 0 0 506 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 4 8 function 1 266  4 args 1 266  4 name 1 256  9 sync_name 1 256  
+105 14 Dtool_kd_iSXFP 0 6 128 266 0 14 Dtool_kd_iSXFP 506 ////////////////////////////////////////////////////////////////////
 //     Function: PythonThread::join
 //       Access: Published
 //  Description: Blocks the calling process until the thread
@@ -2296,26 +2465,57 @@ void Semaphore::output(ostream &out) const;
 //               The PythonThread flavor of this function returns the
 //               same value returned by the thread function.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 296  
-106 0 0 7 129 251 0 0 0 0 
-107 0 0 7 131 297 223 0 222 ////////////////////////////////////////////////////////////////////
+106 14 Dtool_kd_iKwfX 0 7 129 252 0 14 Dtool_kd_iKwfX 0 0 
+107 14 Dtool_kd_iCIsB 0 7 131 297 224 14 Dtool_kd_iCIsB 708 // Filename: psemaphore.I
+// Created by:  drose (13Oct08)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 //     Function: Semaphore::Constructor
 //       Access: Published
 //  Description: 
-//////////////////////////////////////////////////////////////////// 1 13 initial_count 1 259  
-108 0 0 4 133 260 0 0 372 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 13 initial_count 1 260  
+108 14 Dtool_kd_idG23 0 7 131 297 224 14 Dtool_kd_idG23 708 // Filename: psemaphore.I
+// Created by:  drose (13Oct08)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
+//     Function: Semaphore::Constructor
+//       Access: Published
+//  Description: 
+//////////////////////////////////////////////////////////////////// 0 
+109 14 Dtool_kd_iu2W_ 0 4 133 261 0 14 Dtool_kd_iu2W_ 372 ////////////////////////////////////////////////////////////////////
 //     Function: Semaphore::acquire
 //       Access: Published
 //  Description: Decrements the internal count.  If the count was
 //               already at zero, blocks until the count is nonzero,
 //               then decrements it.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 297  
-109 0 0 6 134 261 0 0 342 ////////////////////////////////////////////////////////////////////
+110 14 Dtool_kd_ifUgs 0 6 134 262 0 14 Dtool_kd_ifUgs 342 ////////////////////////////////////////////////////////////////////
 //     Function: Semaphore::try_acquire
 //       Access: Published
 //  Description: If the semaphore can be acquired without blocking,
 //               does so and returns true.  Otherwise, returns false.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 297  
-110 0 0 6 135 259 0 0 401 ////////////////////////////////////////////////////////////////////
+111 14 Dtool_kd_iyIK2 0 6 135 260 0 14 Dtool_kd_iyIK2 401 ////////////////////////////////////////////////////////////////////
 //     Function: Semaphore::release
 //       Access: Published
 //  Description: Increments the semaphore's internal count.  This may
@@ -2323,20 +2523,20 @@ void Semaphore::output(ostream &out) const;
 //
 //               Returns the count of the semaphore upon release.
 //////////////////////////////////////////////////////////////////// 1 4 this 3 297  
-111 0 0 6 136 259 0 0 366 ////////////////////////////////////////////////////////////////////
+112 14 Dtool_kd_i_IPX 0 6 136 260 0 14 Dtool_kd_i_IPX 366 ////////////////////////////////////////////////////////////////////
 //     Function: Semaphore::get_count
 //       Access: Published
 //  Description: Returns the current semaphore count.  Note that this
 //               call is not thread-safe (the count may change at any
 //               time).
 //////////////////////////////////////////////////////////////////// 1 4 this 3 298  
-112 0 0 4 137 260 0 0 217 ////////////////////////////////////////////////////////////////////
+113 14 Dtool_kd_iMF_3 0 4 137 261 0 14 Dtool_kd_iMF_3 217 ////////////////////////////////////////////////////////////////////
 //     Function: Semaphore::output
 //       Access: Published
 //  Description: 
-//////////////////////////////////////////////////////////////////// 2 4 this 3 298  3 out 1 263  
-71
-229 13 AsyncTaskBase 0 26625 13 AsyncTaskBase 13 AsyncTaskBase 0 0 0 0 117 0 1 118 0 0 2 3 230 113 114 3 231 115 116 0 0 346
+//////////////////////////////////////////////////////////////////// 2 4 this 3 298  3 out 1 264  
+70
+230 13 AsyncTaskBase 0 26625 13 AsyncTaskBase 13 AsyncTaskBase 0 0 0 0 118 0 1 119 0 0 2 3 231 114 115 3 232 116 117 0 0 346
 ////////////////////////////////////////////////////////////////////
 //       Class : AsyncTaskBase
 // Description : The abstract base class for AsyncTask.  This is
@@ -2344,7 +2544,7 @@ void Semaphore::output(ostream &out) const;
 //               current task on the Thread.
 ////////////////////////////////////////////////////////////////////
 
-230 19 TypedReferenceCount 0 2049 19 TypedReferenceCount 19 TypedReferenceCount 0 0 0 0 0 0 0 0 0 0 0 0 710
+231 19 TypedReferenceCount 0 2049 19 TypedReferenceCount 19 TypedReferenceCount 0 0 0 0 0 0 0 0 0 0 0 0 710
 ////////////////////////////////////////////////////////////////////
 //       Class : TypedReferenceCount
 // Description : A base class for things which need to inherit from
@@ -2358,7 +2558,7 @@ void Semaphore::output(ostream &out) const;
 //               See also TypedObject for detailed instructions.
 ////////////////////////////////////////////////////////////////////
 
-231 7 Namable 0 2049 7 Namable 7 Namable 0 0 0 0 0 0 0 0 0 0 0 0 324
+232 7 Namable 0 2049 7 Namable 7 Namable 0 0 0 0 0 0 0 0 0 0 0 0 324
 ////////////////////////////////////////////////////////////////////
 //       Class : Namable
 // Description : A base class for all things which can have a name.
@@ -2366,17 +2566,13 @@ void Semaphore::output(ostream &out) const;
 //               NULL.
 ////////////////////////////////////////////////////////////////////
 
-232 14 ThreadPriority 0 532481 14 ThreadPriority 14 ThreadPriority 0 0 0 0 0 0 0 0 0 0 4 6 TP_low 6 TP_low 0
-0 9 TP_normal 9 TP_normal 0
-1 7 TP_high 7 TP_high 0
-2 9 TP_urgent 9 TP_urgent 0
-3 0 243
+233 14 ThreadPriority 0 532481 14 ThreadPriority 14 ThreadPriority 0 0 0 0 0 0 0 0 0 0 4 6 TP_low 6 TP_low 0 9 TP_normal 9 TP_normal 1 7 TP_high 7 TP_high 2 9 TP_urgent 9 TP_urgent 3 0 243
 ////////////////////////////////////////////////////////////////////
 // An enumerated type used by Thread to specify a suggested relative
 // priority for a particular thread.
 ////////////////////////////////////////////////////////////////////
 
-233 6 Thread 0 26625 6 Thread 6 Thread 0 0 0 0 123 0 30 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 0 0 2 3 230 119 120 3 231 121 122 0 0 668
+234 6 Thread 0 26625 6 Thread 6 Thread 0 0 0 0 124 0 30 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 0 0 2 3 231 120 121 3 232 122 123 0 0 668
 ////////////////////////////////////////////////////////////////////
 //       Class : Thread
 // Description : A thread; that is, a lightweight process.  This is an
@@ -2390,7 +2586,7 @@ void Semaphore::output(ostream &out) const;
 //               are referencing it.
 ////////////////////////////////////////////////////////////////////
 
-234 11 MutexDirect 0 43009 11 MutexDirect 11 MutexDirect 0 0 0 0 0 0 9 154 155 156 157 158 159 160 161 162 0 0 0 0 0 364
+235 11 MutexDirect 0 43009 11 MutexDirect 11 MutexDirect 0 0 0 0 0 0 9 155 156 157 158 159 160 161 162 163 0 0 0 0 0 364
 ////////////////////////////////////////////////////////////////////
 //       Class : MutexDirect
 // Description : This class implements a standard mutex by making
@@ -2398,9 +2594,9 @@ void Semaphore::output(ostream &out) const;
 //               It doesn't perform any debugging operations.
 ////////////////////////////////////////////////////////////////////
 
-235 5 Mutex 0 26625 5 Mutex 5 Mutex 0 0 0 1 163 164 0 0 0 0 1 0 234 0 0 0 0 0
+236 5 Mutex 0 26625 5 Mutex 5 Mutex 0 0 0 1 164 165 0 0 0 0 1 0 235 0 0 0 0 0
 
-236 18 ConditionVarDirect 0 26625 18 ConditionVarDirect 18 ConditionVarDirect 0 0 0 0 165 0 4 166 167 168 169 0 0 0 0 0 661
+237 18 ConditionVarDirect 0 26625 18 ConditionVarDirect 18 ConditionVarDirect 0 0 0 0 166 0 4 167 168 169 170 0 0 0 0 0 661
 ////////////////////////////////////////////////////////////////////
 //       Class : ConditionVarDirect
 // Description : A condition variable, usually used to communicate
@@ -2414,9 +2610,9 @@ void Semaphore::output(ostream &out) const;
 //               same mutex.
 ////////////////////////////////////////////////////////////////////
 
-237 12 ConditionVar 0 26625 12 ConditionVar 12 ConditionVar 0 0 0 1 170 171 0 1 172 0 0 1 0 236 0 0 0 0 0
+238 12 ConditionVar 0 26625 12 ConditionVar 12 ConditionVar 0 0 0 1 171 172 0 1 173 0 0 1 0 237 0 0 0 0 0
 
-238 22 ConditionVarFullDirect 0 26625 22 ConditionVarFullDirect 22 ConditionVarFullDirect 0 0 0 0 173 0 5 174 175 176 177 178 0 0 0 0 0 665
+239 22 ConditionVarFullDirect 0 26625 22 ConditionVarFullDirect 22 ConditionVarFullDirect 0 0 0 0 174 0 5 175 176 177 178 179 0 0 0 0 0 665
 ////////////////////////////////////////////////////////////////////
 //       Class : ConditionVarFullDirect
 // Description : A condition variable, usually used to communicate
@@ -2430,9 +2626,9 @@ void Semaphore::output(ostream &out) const;
 //               same mutex.
 ////////////////////////////////////////////////////////////////////
 
-239 16 ConditionVarFull 0 26625 16 ConditionVarFull 16 ConditionVarFull 0 0 0 1 179 180 0 1 181 0 0 1 0 238 0 0 0 0 0
+240 16 ConditionVarFull 0 26625 16 ConditionVarFull 16 ConditionVarFull 0 0 0 1 180 181 0 1 182 0 0 1 0 239 0 0 0 0 0
 
-240 13 ReMutexDirect 0 43009 13 ReMutexDirect 13 ReMutexDirect 0 0 0 0 0 0 10 182 183 184 185 186 187 188 189 190 191 0 0 0 0 0 368
+241 13 ReMutexDirect 0 43009 13 ReMutexDirect 13 ReMutexDirect 0 0 0 0 0 0 10 183 184 185 186 187 188 189 190 191 192 0 0 0 0 0 368
 ////////////////////////////////////////////////////////////////////
 //       Class : ReMutexDirect
 // Description : This class implements a standard reMutex by making
@@ -2440,9 +2636,9 @@ void Semaphore::output(ostream &out) const;
 //               It doesn't perform any debugging operations.
 ////////////////////////////////////////////////////////////////////
 
-241 7 ReMutex 0 26625 7 ReMutex 7 ReMutex 0 0 0 1 192 193 0 0 0 0 1 0 240 0 0 0 0 0
+242 7 ReMutex 0 26625 7 ReMutex 7 ReMutex 0 0 0 1 193 194 0 0 0 0 1 0 241 0 0 0 0 0
 
-242 14 ExternalThread 0 141313 14 ExternalThread 14 ExternalThread 0 0 0 0 195 0 1 194 0 0 1 0 233 0 0 0 0 356
+243 14 ExternalThread 0 141313 14 ExternalThread 14 ExternalThread 0 0 0 0 196 0 1 195 0 0 1 0 234 0 0 0 0 356
 ////////////////////////////////////////////////////////////////////
 //       Class : ExternalThread
 // Description : The special "external thread" class.  There is one
@@ -2450,7 +2646,7 @@ void Semaphore::output(ostream &out) const;
 //               Thread::get_external_thread().
 ////////////////////////////////////////////////////////////////////
 
-243 16 LightMutexDirect 0 43009 16 LightMutexDirect 16 LightMutexDirect 0 0 0 0 0 0 8 196 197 198 199 200 201 202 203 0 0 0 0 0 372
+244 16 LightMutexDirect 0 43009 16 LightMutexDirect 16 LightMutexDirect 0 0 0 0 0 0 8 197 198 199 200 201 202 203 204 0 0 0 0 0 372
 ////////////////////////////////////////////////////////////////////
 //       Class : LightMutexDirect
 // Description : This class implements a lightweight Mutex by making
@@ -2458,9 +2654,9 @@ void Semaphore::output(ostream &out) const;
 //               It doesn't perform any debugging operations.
 ////////////////////////////////////////////////////////////////////
 
-244 10 LightMutex 0 26625 10 LightMutex 10 LightMutex 0 0 0 1 204 205 0 0 0 0 1 0 243 0 0 0 0 0
+245 10 LightMutex 0 26625 10 LightMutex 10 LightMutex 0 0 0 1 205 206 0 0 0 0 1 0 244 0 0 0 0 0
 
-245 18 LightReMutexDirect 0 43009 18 LightReMutexDirect 18 LightReMutexDirect 0 0 0 0 0 0 9 206 207 208 209 210 211 212 213 214 0 0 0 0 0 378
+246 18 LightReMutexDirect 0 43009 18 LightReMutexDirect 18 LightReMutexDirect 0 0 0 0 0 0 9 207 208 209 210 211 212 213 214 215 0 0 0 0 0 378
 ////////////////////////////////////////////////////////////////////
 //       Class : LightReMutexDirect
 // Description : This class implements a standard lightReMutex by making
@@ -2468,9 +2664,9 @@ void Semaphore::output(ostream &out) const;
 //               It doesn't perform any debugging operations.
 ////////////////////////////////////////////////////////////////////
 
-246 12 LightReMutex 0 26625 12 LightReMutex 12 LightReMutex 0 0 0 1 215 216 0 0 0 0 1 0 245 0 0 0 0 0
+247 12 LightReMutex 0 26625 12 LightReMutex 12 LightReMutex 0 0 0 1 216 217 0 0 0 0 1 0 246 0 0 0 0 0
 
-247 10 MainThread 0 141313 10 MainThread 10 MainThread 0 0 0 0 218 0 1 217 0 0 1 0 233 0 0 0 0 344
+248 10 MainThread 0 141313 10 MainThread 10 MainThread 0 0 0 0 219 0 1 218 0 0 1 0 234 0 0 0 0 344
 ////////////////////////////////////////////////////////////////////
 //       Class : MainThread
 // Description : The special "main thread" class.  There is one
@@ -2478,7 +2674,7 @@ void Semaphore::output(ostream &out) const;
 //               Thread::get_main_thread().
 ////////////////////////////////////////////////////////////////////
 
-248 12 PythonThread 0 75777 12 PythonThread 12 PythonThread 0 0 0 1 219 123 0 2 220 221 0 0 1 0 233 0 0 0 0 376
+249 12 PythonThread 0 75777 12 PythonThread 12 PythonThread 0 0 0 1 220 124 0 2 221 222 0 0 1 0 234 0 0 0 0 376
 ////////////////////////////////////////////////////////////////////
 //       Class : PythonThread
 // Description : This class is exposed to Python to allow creation of
@@ -2486,7 +2682,7 @@ void Semaphore::output(ostream &out) const;
 //               a thread that executes an arbitrary Python functor.
 ////////////////////////////////////////////////////////////////////
 
-249 9 Semaphore 0 26625 9 Semaphore 9 Semaphore 0 0 0 1 222 223 0 5 224 225 226 227 228 0 0 0 0 0 594
+250 9 Semaphore 0 26625 9 Semaphore 9 Semaphore 0 0 0 1 223 224 0 5 225 226 227 228 229 0 0 0 0 0 594
 ////////////////////////////////////////////////////////////////////
 //       Class : Semaphore
 // Description : A classic semaphore synchronization primitive.  
@@ -2499,7 +2695,7 @@ void Semaphore::output(ostream &out) const;
 //               release().
 ////////////////////////////////////////////////////////////////////
 
-250 10 TypeHandle 0 2048 10 TypeHandle 10 TypeHandle 0 0 0 0 0 0 0 0 0 0 0 0 1098
+251 10 TypeHandle 0 2048 10 TypeHandle 10 TypeHandle 0 0 0 0 0 0 0 0 0 0 0 0 1098
 ////////////////////////////////////////////////////////////////////
 //       Class : TypeHandle
 // Description : TypeHandle is the identifier used to differentiate
@@ -2519,103 +2715,101 @@ void Semaphore::output(ostream &out) const;
 //               type name may be retrieved for run-time display.
 ////////////////////////////////////////////////////////////////////
 
-251 12 TypeHandle * 0 8576 12 TypeHandle * 12 TypeHandle * 0 0 250 0 0 0 0 0 0 0 0 0 0
+252 12 TypeHandle * 0 8576 12 TypeHandle * 12 TypeHandle * 0 0 251 0 0 0 0 0 0 0 0 0 0
 
-252 15 AsyncTaskBase * 0 8576 15 AsyncTaskBase * 15 AsyncTaskBase * 0 0 229 0 0 0 0 0 0 0 0 0 0
+253 15 AsyncTaskBase * 0 8576 15 AsyncTaskBase * 15 AsyncTaskBase * 0 0 230 0 0 0 0 0 0 0 0 0 0
 
-253 21 TypedReferenceCount * 0 8576 21 TypedReferenceCount * 21 TypedReferenceCount * 0 0 230 0 0 0 0 0 0 0 0 0 0
+254 21 TypedReferenceCount * 0 8576 21 TypedReferenceCount * 21 TypedReferenceCount * 0 0 231 0 0 0 0 0 0 0 0 0 0
 
-254 9 Namable * 0 8576 9 Namable * 9 Namable * 0 0 231 0 0 0 0 0 0 0 0 0 0
+255 9 Namable * 0 8576 9 Namable * 9 Namable * 0 0 232 0 0 0 0 0 0 0 0 0 0
 
-255 13 atomic string 0 2 13 atomic string 13 atomic string 0 7 0 0 0 0 0 0 0 0 0 0 0
+256 13 atomic string 0 2 13 atomic string 13 atomic string 0 7 0 0 0 0 0 0 0 0 0 0 0
 
-256 8 Thread * 0 8576 8 Thread * 8 Thread * 0 0 233 0 0 0 0 0 0 0 0 0 0
+257 8 Thread * 0 8576 8 Thread * 8 Thread * 0 0 234 0 0 0 0 0 0 0 0 0 0
 
-257 14 Thread const * 0 8576 14 Thread const * 14 Thread const * 0 0 258 0 0 0 0 0 0 0 0 0 0
+258 14 Thread const * 0 8576 14 Thread const * 14 Thread const * 0 0 259 0 0 0 0 0 0 0 0 0 0
 
-258 12 Thread const 0 8832 12 Thread const 12 Thread const 0 0 233 0 0 0 0 0 0 0 0 0 0
+259 12 Thread const 0 8832 12 Thread const 12 Thread const 0 0 234 0 0 0 0 0 0 0 0 0 0
 
-259 3 int 0 8194 3 int 3 int 0 1 0 0 0 0 0 0 0 0 0 0 0
+260 3 int 0 8194 3 int 3 int 0 1 0 0 0 0 0 0 0 0 0 0 0
 
-260 4 void 0 8194 4 void 4 void 0 6 0 0 0 0 0 0 0 0 0 0 0
+261 4 void 0 8194 4 void 4 void 0 6 0 0 0 0 0 0 0 0 0 0 0
 
-261 4 bool 0 8194 4 bool 4 bool 0 4 0 0 0 0 0 0 0 0 0 0 0
+262 4 bool 0 8194 4 bool 4 bool 0 4 0 0 0 0 0 0 0 0 0 0 0
 
-262 6 double 0 8194 6 double 6 double 0 3 0 0 0 0 0 0 0 0 0 0 0
+263 6 double 0 8194 6 double 6 double 0 3 0 0 0 0 0 0 0 0 0 0 0
 
-263 9 ostream * 0 8576 9 ostream * 9 ostream * 0 0 264 0 0 0 0 0 0 0 0 0 0
+264 9 ostream * 0 8576 9 ostream * 9 ostream * 0 0 265 0 0 0 0 0 0 0 0 0 0
 
-264 7 ostream 0 2048 7 ostream 7 ostream 0 0 0 0 0 0 0 0 0 0 0 0 0
+265 7 ostream 0 2048 7 ostream 7 ostream 0 0 0 0 0 0 0 0 0 0 0 0 0
 
-265 10 PyObject * 0 8576 10 PyObject * 10 PyObject * 0 0 266 0 0 0 0 0 0 0 0 0 0
+266 10 PyObject * 0 8576 10 PyObject * 10 PyObject * 0 0 267 0 0 0 0 0 0 0 0 0 0
 
-266 8 PyObject 0 2105344 8 PyObject 8 PyObject 0 0 267 0 0 0 0 0 0 0 0 0 0
-
-267 7 _object 0 1024 7 _object 7 _object 0 0 0 0 0 0 0 0 0 0 0 0 0
+267 8 PyObject 0 2048 8 PyObject 8 PyObject 0 0 0 0 0 0 0 0 0 0 0 0 0
 
 268 19 MutexDirect const * 0 8576 19 MutexDirect const * 19 MutexDirect const * 0 0 269 0 0 0 0 0 0 0 0 0 0
 
-269 17 MutexDirect const 0 8832 17 MutexDirect const 17 MutexDirect const 0 0 234 0 0 0 0 0 0 0 0 0 0
+269 17 MutexDirect const 0 8832 17 MutexDirect const 17 MutexDirect const 0 0 235 0 0 0 0 0 0 0 0 0 0
 
-270 13 MutexDirect * 0 8576 13 MutexDirect * 13 MutexDirect * 0 0 234 0 0 0 0 0 0 0 0 0 0
+270 13 MutexDirect * 0 8576 13 MutexDirect * 13 MutexDirect * 0 0 235 0 0 0 0 0 0 0 0 0 0
 
-271 7 Mutex * 0 8576 7 Mutex * 7 Mutex * 0 0 235 0 0 0 0 0 0 0 0 0 0
+271 7 Mutex * 0 8576 7 Mutex * 7 Mutex * 0 0 236 0 0 0 0 0 0 0 0 0 0
 
 272 26 ConditionVarDirect const * 0 8576 26 ConditionVarDirect const * 26 ConditionVarDirect const * 0 0 273 0 0 0 0 0 0 0 0 0 0
 
-273 24 ConditionVarDirect const 0 8832 24 ConditionVarDirect const 24 ConditionVarDirect const 0 0 236 0 0 0 0 0 0 0 0 0 0
+273 24 ConditionVarDirect const 0 8832 24 ConditionVarDirect const 24 ConditionVarDirect const 0 0 237 0 0 0 0 0 0 0 0 0 0
 
-274 20 ConditionVarDirect * 0 8576 20 ConditionVarDirect * 20 ConditionVarDirect * 0 0 236 0 0 0 0 0 0 0 0 0 0
+274 20 ConditionVarDirect * 0 8576 20 ConditionVarDirect * 20 ConditionVarDirect * 0 0 237 0 0 0 0 0 0 0 0 0 0
 
-275 14 ConditionVar * 0 8576 14 ConditionVar * 14 ConditionVar * 0 0 237 0 0 0 0 0 0 0 0 0 0
+275 14 ConditionVar * 0 8576 14 ConditionVar * 14 ConditionVar * 0 0 238 0 0 0 0 0 0 0 0 0 0
 
 276 20 ConditionVar const * 0 8576 20 ConditionVar const * 20 ConditionVar const * 0 0 277 0 0 0 0 0 0 0 0 0 0
 
-277 18 ConditionVar const 0 8832 18 ConditionVar const 18 ConditionVar const 0 0 237 0 0 0 0 0 0 0 0 0 0
+277 18 ConditionVar const 0 8832 18 ConditionVar const 18 ConditionVar const 0 0 238 0 0 0 0 0 0 0 0 0 0
 
 278 30 ConditionVarFullDirect const * 0 8576 30 ConditionVarFullDirect const * 30 ConditionVarFullDirect const * 0 0 279 0 0 0 0 0 0 0 0 0 0
 
-279 28 ConditionVarFullDirect const 0 8832 28 ConditionVarFullDirect const 28 ConditionVarFullDirect const 0 0 238 0 0 0 0 0 0 0 0 0 0
+279 28 ConditionVarFullDirect const 0 8832 28 ConditionVarFullDirect const 28 ConditionVarFullDirect const 0 0 239 0 0 0 0 0 0 0 0 0 0
 
-280 24 ConditionVarFullDirect * 0 8576 24 ConditionVarFullDirect * 24 ConditionVarFullDirect * 0 0 238 0 0 0 0 0 0 0 0 0 0
+280 24 ConditionVarFullDirect * 0 8576 24 ConditionVarFullDirect * 24 ConditionVarFullDirect * 0 0 239 0 0 0 0 0 0 0 0 0 0
 
-281 18 ConditionVarFull * 0 8576 18 ConditionVarFull * 18 ConditionVarFull * 0 0 239 0 0 0 0 0 0 0 0 0 0
+281 18 ConditionVarFull * 0 8576 18 ConditionVarFull * 18 ConditionVarFull * 0 0 240 0 0 0 0 0 0 0 0 0 0
 
 282 24 ConditionVarFull const * 0 8576 24 ConditionVarFull const * 24 ConditionVarFull const * 0 0 283 0 0 0 0 0 0 0 0 0 0
 
-283 22 ConditionVarFull const 0 8832 22 ConditionVarFull const 22 ConditionVarFull const 0 0 239 0 0 0 0 0 0 0 0 0 0
+283 22 ConditionVarFull const 0 8832 22 ConditionVarFull const 22 ConditionVarFull const 0 0 240 0 0 0 0 0 0 0 0 0 0
 
 284 21 ReMutexDirect const * 0 8576 21 ReMutexDirect const * 21 ReMutexDirect const * 0 0 285 0 0 0 0 0 0 0 0 0 0
 
-285 19 ReMutexDirect const 0 8832 19 ReMutexDirect const 19 ReMutexDirect const 0 0 240 0 0 0 0 0 0 0 0 0 0
+285 19 ReMutexDirect const 0 8832 19 ReMutexDirect const 19 ReMutexDirect const 0 0 241 0 0 0 0 0 0 0 0 0 0
 
-286 15 ReMutexDirect * 0 8576 15 ReMutexDirect * 15 ReMutexDirect * 0 0 240 0 0 0 0 0 0 0 0 0 0
+286 15 ReMutexDirect * 0 8576 15 ReMutexDirect * 15 ReMutexDirect * 0 0 241 0 0 0 0 0 0 0 0 0 0
 
-287 9 ReMutex * 0 8576 9 ReMutex * 9 ReMutex * 0 0 241 0 0 0 0 0 0 0 0 0 0
+287 9 ReMutex * 0 8576 9 ReMutex * 9 ReMutex * 0 0 242 0 0 0 0 0 0 0 0 0 0
 
 288 24 LightMutexDirect const * 0 8576 24 LightMutexDirect const * 24 LightMutexDirect const * 0 0 289 0 0 0 0 0 0 0 0 0 0
 
-289 22 LightMutexDirect const 0 8832 22 LightMutexDirect const 22 LightMutexDirect const 0 0 243 0 0 0 0 0 0 0 0 0 0
+289 22 LightMutexDirect const 0 8832 22 LightMutexDirect const 22 LightMutexDirect const 0 0 244 0 0 0 0 0 0 0 0 0 0
 
-290 18 LightMutexDirect * 0 8576 18 LightMutexDirect * 18 LightMutexDirect * 0 0 243 0 0 0 0 0 0 0 0 0 0
+290 18 LightMutexDirect * 0 8576 18 LightMutexDirect * 18 LightMutexDirect * 0 0 244 0 0 0 0 0 0 0 0 0 0
 
-291 12 LightMutex * 0 8576 12 LightMutex * 12 LightMutex * 0 0 244 0 0 0 0 0 0 0 0 0 0
+291 12 LightMutex * 0 8576 12 LightMutex * 12 LightMutex * 0 0 245 0 0 0 0 0 0 0 0 0 0
 
 292 26 LightReMutexDirect const * 0 8576 26 LightReMutexDirect const * 26 LightReMutexDirect const * 0 0 293 0 0 0 0 0 0 0 0 0 0
 
-293 24 LightReMutexDirect const 0 8832 24 LightReMutexDirect const 24 LightReMutexDirect const 0 0 245 0 0 0 0 0 0 0 0 0 0
+293 24 LightReMutexDirect const 0 8832 24 LightReMutexDirect const 24 LightReMutexDirect const 0 0 246 0 0 0 0 0 0 0 0 0 0
 
-294 20 LightReMutexDirect * 0 8576 20 LightReMutexDirect * 20 LightReMutexDirect * 0 0 245 0 0 0 0 0 0 0 0 0 0
+294 20 LightReMutexDirect * 0 8576 20 LightReMutexDirect * 20 LightReMutexDirect * 0 0 246 0 0 0 0 0 0 0 0 0 0
 
-295 14 LightReMutex * 0 8576 14 LightReMutex * 14 LightReMutex * 0 0 246 0 0 0 0 0 0 0 0 0 0
+295 14 LightReMutex * 0 8576 14 LightReMutex * 14 LightReMutex * 0 0 247 0 0 0 0 0 0 0 0 0 0
 
-296 14 PythonThread * 0 8576 14 PythonThread * 14 PythonThread * 0 0 248 0 0 0 0 0 0 0 0 0 0
+296 14 PythonThread * 0 8576 14 PythonThread * 14 PythonThread * 0 0 249 0 0 0 0 0 0 0 0 0 0
 
-297 11 Semaphore * 0 8576 11 Semaphore * 11 Semaphore * 0 0 249 0 0 0 0 0 0 0 0 0 0
+297 11 Semaphore * 0 8576 11 Semaphore * 11 Semaphore * 0 0 250 0 0 0 0 0 0 0 0 0 0
 
 298 17 Semaphore const * 0 8576 17 Semaphore const * 17 Semaphore const * 0 0 299 0 0 0 0 0 0 0 0 0 0
 
-299 15 Semaphore const 0 8832 15 Semaphore const 15 Semaphore const 0 0 249 0 0 0 0 0 0 0 0 0 0
+299 15 Semaphore const 0 8832 15 Semaphore const 15 Semaphore const 0 0 250 0 0 0 0 0 0 0 0 0 0
 
 0
 0

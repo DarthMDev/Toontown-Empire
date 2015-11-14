@@ -18,7 +18,8 @@
 #include "pandabase.h"
 
 #include "collisionSolid.h"
-#include "lensNode.h"
+
+class LensNode;
 
 ////////////////////////////////////////////////////////////////////
 //       Class : CollisionRay

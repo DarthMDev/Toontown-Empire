@@ -2,10 +2,10 @@
 
 __all__ = ['OnscreenText', 'Plain', 'ScreenTitle', 'ScreenPrompt', 'NameConfirm', 'BlackOnWhite']
 
-from panda3d.core import *
+from pandac.PandaModules import *
 import DirectGuiGlobals as DGG
 from direct.showbase.DirectObject import DirectObject
-import types
+import string,types
 
 ## These are the styles of text we might commonly see.  They set the
 ## overall appearance of the text according to one of a number of

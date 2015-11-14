@@ -22,9 +22,9 @@
 template<>
 class Extension<FLOATNAME(LVector4)> : public ExtensionBase<FLOATNAME(LVector4)> {
 public:
-  INLINE_LINMATH PyObject *__getattr__(PyObject *self, const string &attr_name) const;
+  INLINE_LINMATH PyObject *__getattr__(const string &attr_name) const;
   INLINE_LINMATH int __setattr__(PyObject *self, const string &attr_name, PyObject *assign);
-  INLINE_LINMATH string __repr__() const;
+  INLINE_LINMATH void python_repr(ostream &out, const string &class_name) const;
 };
 
 #include "lvector4_ext_src.I"

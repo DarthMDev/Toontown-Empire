@@ -11,8 +11,6 @@
 // with this source code in a file named "LICENSE."
 //
 ////////////////////////////////////////////////////////////////////
-
-
 INLINE void OdeRayGeom::
 set_length(dReal length) {
   dGeomRaySetLength(_id, length);

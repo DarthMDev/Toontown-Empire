@@ -19,9 +19,7 @@
 #include "graphicsWindow.h"
 #include "pmap.h"
 
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN 1  // get rid of mfc win32 hdr stuff
-#endif
+#define WIN32_LEAN_AND_MEAN   // get rid of mfc win32 hdr stuff
 #ifndef STRICT
 // enable strict type checking in windows.h, see msdn
 #define STRICT

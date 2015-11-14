@@ -15,7 +15,7 @@
 ////////////////////////////////////////////////////////////////////
 //     Function: CullTraverserData::Constructor
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE CullTraverserData::
 CullTraverserData(const NodePath &start,
@@ -29,18 +29,16 @@ CullTraverserData(const NodePath &start,
   _state(state),
   _view_frustum(view_frustum),
   _cull_planes(CullPlanes::make_empty()),
-  _draw_mask(DrawMask::all_on()),
-  _portal_depth(0)
+  _draw_mask(DrawMask::all_on())
 {
-  // Only update the bounding volume if we're going to end up needing it.
-  bool check_bounds = (view_frustum != (GeometricBoundingVolume *)NULL);
-  _node_reader.check_cached(check_bounds);
+  _node_reader.check_bounds();
+  _portal_depth = 0;
 }
 
 ////////////////////////////////////////////////////////////////////
 //     Function: CullTraverserData::Copy Constructor
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE CullTraverserData::
 CullTraverserData(const CullTraverserData &copy) :
@@ -58,7 +56,7 @@ CullTraverserData(const CullTraverserData &copy) :
 ////////////////////////////////////////////////////////////////////
 //     Function: CullTraverserData::Copy Assignment Operator
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE void CullTraverserData::
 operator = (const CullTraverserData &copy) {
@@ -86,19 +84,16 @@ CullTraverserData(const CullTraverserData &parent, PandaNode *child) :
   _state(parent._state),
   _view_frustum(parent._view_frustum),
   _cull_planes(parent._cull_planes),
-  _draw_mask(parent._draw_mask),
-  _portal_depth(parent._portal_depth)
+  _draw_mask(parent._draw_mask)
 {
-  // Only update the bounding volume if we're going to end up needing it.
-  bool check_bounds = !_cull_planes->is_empty() ||
-                    (_view_frustum != (GeometricBoundingVolume *)NULL);
-  _node_reader.check_cached(check_bounds);
+  _node_reader.check_bounds();
+  _portal_depth = parent._portal_depth;
 }
 
 ////////////////////////////////////////////////////////////////////
 //     Function: CullTraverserData::Destructor
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE CullTraverserData::
 ~CullTraverserData() {
@@ -134,28 +129,6 @@ node_reader() {
 INLINE const PandaNodePipelineReader *CullTraverserData::
 node_reader() const {
   return &_node_reader;
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: CullTraverserData::get_modelview_transform
-//       Access: Published
-//  Description: Returns the modelview transform: the relative
-//               transform from the camera to the model.
-////////////////////////////////////////////////////////////////////
-INLINE CPT(TransformState) CullTraverserData::
-get_modelview_transform(const CullTraverser *trav) const {
-  return trav->get_world_transform()->compose(_net_transform);
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: CullTraverserData::get_internal_transform
-//       Access: Published
-//  Description: Returns the internal transform: the modelview
-//               transform in the GSG's internal coordinate system.
-////////////////////////////////////////////////////////////////////
-INLINE CPT(TransformState) CullTraverserData::
-get_internal_transform(const CullTraverser *trav) const {
-  return trav->get_scene()->get_cs_world_transform()->compose(_net_transform);
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -212,7 +185,7 @@ is_in_view(const DrawMask &camera_mask) {
 //               rendered.
 ////////////////////////////////////////////////////////////////////
 INLINE bool CullTraverserData::
-is_this_node_hidden(const DrawMask &camera_mask) const {
+is_this_node_hidden(const CullTraverser *trav) const {
   return (_draw_mask & PandaNode::get_overall_bit()).is_zero() ||
-    (_draw_mask & camera_mask).is_zero();
+    (_draw_mask & trav->get_camera_mask()).is_zero();
 }

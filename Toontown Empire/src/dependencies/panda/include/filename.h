@@ -68,13 +68,8 @@ PUBLISHED:
   Filename(const Filename &dirname, const Filename &basename);
   INLINE ~Filename();
 
-#ifdef USE_MOVE_SEMANTICS
-  INLINE Filename(string &&filename) NOEXCEPT;
-  INLINE Filename(Filename &&from) NOEXCEPT;
-#endif
-
 #ifdef HAVE_PYTHON
-  EXTENSION(PyObject *__reduce__(PyObject *self) const);
+  PyObject *__reduce__(PyObject *self) const;
 #endif
 
   // Static constructors to explicitly create a filename that refers
@@ -93,7 +88,7 @@ PUBLISHED:
                                    Type type = T_general);
   static Filename from_os_specific_w(const wstring &os_specific,
                                      Type type = T_general);
-  static Filename expand_from(const string &user_string,
+  static Filename expand_from(const string &user_string, 
                               Type type = T_general);
   static Filename temporary(const string &dirname, const string &prefix,
                             const string &suffix = string(),
@@ -110,11 +105,6 @@ PUBLISHED:
   INLINE Filename &operator = (const char *filename);
   INLINE Filename &operator = (const Filename &copy);
 
-#ifdef USE_MOVE_SEMANTICS
-  INLINE Filename &operator = (string &&filename) NOEXCEPT;
-  INLINE Filename &operator = (Filename &&from) NOEXCEPT;
-#endif
-
   // And retrieval is by any of the classic string operations.
   INLINE operator const string & () const;
   INLINE const char *c_str() const;
@@ -122,13 +112,9 @@ PUBLISHED:
   INLINE size_t length() const;
   INLINE char operator [] (int n) const;
 
-  EXTENSION(PyObject *__repr__() const);
-
   INLINE string substr(size_t begin, size_t end = string::npos) const;
   INLINE void operator += (const string &other);
   INLINE Filename operator + (const string &other) const;
-
-  INLINE Filename operator / (const Filename &other) const;
 
   // Or, you can use any of these.
   INLINE string get_fullpath() const;
@@ -204,11 +190,11 @@ PUBLISHED:
                         const string &default_extension = string());
   bool make_relative_to(Filename directory, bool allow_backups = true);
   int find_on_searchpath(const DSearchPath &searchpath);
-
+  
   bool scan_directory(vector_string &contents) const;
 #ifdef HAVE_PYTHON
-  EXTENSION(PyObject *scan_directory() const);
-#endif
+  PyObject *scan_directory() const;
+#endif 
 
   bool open_read(ifstream &stream) const;
   bool open_write(ofstream &stream, bool truncate = true) const;
@@ -276,11 +262,6 @@ protected:
   static TVOLATILE AtomicAdjust::Pointer _temp_directory;
   static TVOLATILE AtomicAdjust::Pointer _user_appdata_directory;
   static TVOLATILE AtomicAdjust::Pointer _common_appdata_directory;
-
-#ifdef ANDROID
-public:
-  static string _internal_data_dir;
-#endif
 
 public:
   static TypeHandle get_class_type() {

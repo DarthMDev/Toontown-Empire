@@ -5,8 +5,11 @@ __all__ = ['EventManager']
 
 from MessengerGlobal import *
 from direct.directnotify.DirectNotifyGlobal import *
-from direct.task.TaskManagerGlobal import taskMgr
-from panda3d.core import PStatCollector, EventQueue, EventHandler
+
+# This module may not import pandac.PandaModules, since it is imported
+# by the Toontown Launcher before the complete PandaModules have been
+# downloaded.
+#from pandac.PandaModules import *
 
 class EventManager:
 
@@ -15,6 +18,11 @@ class EventManager:
     # delayed import, since this is imported by the Toontown Launcher
     # before the complete PandaModules have been downloaded.
     PStatCollector = None
+
+    # for efficiency, only call import once per module
+    EventStorePandaNode = None
+    EventQueue = None
+    EventHandler = None
     
     def __init__(self, eventQueue = None):
         """
@@ -35,6 +43,7 @@ class EventManager:
         """
         if self._wantPstats is None:
             self._wantPstats = config.GetBool('pstats-eventmanager', 0)
+            from pandac.PandaModules import PStatCollector
             EventManager.PStatCollector = PStatCollector
         # use different methods for handling events with and without pstats tracking
         # for efficiency
@@ -71,8 +80,18 @@ class EventManager:
             return None
         else:
             # Must be some user defined type, return the ptr
-            # which will be downcast to that type.
-            return eventParameter.getPtr()
+            # which will be downcast to that type
+            ptr = eventParameter.getPtr()
+
+            if EventManager.EventStorePandaNode is None:
+                from pandac.PandaModules import EventStorePandaNode
+                EventManager.EventStorePandaNode = EventStorePandaNode
+            if isinstance(ptr, EventManager.EventStorePandaNode):
+                # Actually, it's a kludgey wrapper around a PandaNode
+                # pointer.  Return the node.
+                ptr = ptr.getValue()
+
+            return ptr
         
     def processEvent(self, event):
         """
@@ -171,24 +190,28 @@ class EventManager:
 
 
     def restart(self):
+        if None in (EventManager.EventQueue, EventManager.EventHandler):
+            from pandac.PandaModules import EventQueue, EventHandler
+            EventManager.EventQueue = EventQueue
+            EventManager.EventHandler = EventHandler
+        
         if self.eventQueue == None:
-            self.eventQueue = EventQueue.getGlobalEventQueue()
+            self.eventQueue = EventManager.EventQueue.getGlobalEventQueue()
 
         if self.eventHandler == None:
-            if self.eventQueue == EventQueue.getGlobalEventQueue():
+            if self.eventQueue == EventManager.EventQueue.getGlobalEventQueue():
                 # If we are using the global event queue, then we also
                 # want to use the global event handler.
-                self.eventHandler = EventHandler.getGlobalEventHandler()
+                self.eventHandler = EventManager.EventHandler.getGlobalEventHandler()
             else:
                 # Otherwise, we need our own event handler.
-                self.eventHandler = EventHandler(self.eventQueue)
+                self.eventHandler = EventManager.EventHandler(self.eventQueue)
 
+        # Should be safe to import the global taskMgr by now.
+        from direct.task.TaskManagerGlobal import taskMgr
         taskMgr.add(self.eventLoopTask, 'eventManager')
 
     def shutdown(self):
+        # Should be safe to import the global taskMgr by now.
+        from direct.task.TaskManagerGlobal import taskMgr
         taskMgr.remove('eventManager')
-
-        # Flush the event queue.  We do this after removing the task
-        # since the task removal itself might also fire off an event.
-        if self.eventQueue is not None:
-            self.eventQueue.clear()

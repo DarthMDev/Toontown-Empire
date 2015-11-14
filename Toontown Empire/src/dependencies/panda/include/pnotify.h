@@ -51,9 +51,9 @@ PUBLISHED:
   bool has_assert_handler() const;
   AssertHandler *get_assert_handler() const;
 
-  INLINE bool has_assert_failed() const;
-  INLINE const string &get_assert_error_message() const;
-  INLINE void clear_assert_failed();
+  bool has_assert_failed() const;
+  const string &get_assert_error_message() const;
+  void clear_assert_failed();
 
   NotifyCategory *get_top_category();
   NotifyCategory *get_category(const string &basename,
@@ -127,10 +127,6 @@ private:
 // checking user input parameters, where optimal performance is not
 // paramount.
 
-// nassert_static() is a compile-time assertion.  It should only be
-// used with constant expressions and compilation will fail if the
-// assertion is not true.
-
 #ifdef NDEBUG
 
 #define nassertr(condition, return_value)
@@ -194,15 +190,6 @@ private:
 
 #endif  // NDEBUG
 
-#if __cplusplus >= 201103
-#define __nassert_static(condition, line, file) static_assert((condition), #condition " at line " #line " of " file)
-#define _nassert_static(condition, line, file) __nassert_static(condition, line, file)
-#define nassert_static(condition) _nassert_static(condition, __LINE__, __FILE__)
-#else
-#define __nassert_static(condition, suffix) typedef char nassert_static_ ## suffix [(condition) ? 1 : -1];
-#define _nassert_static(condition, suffix) __nassert_static(condition, suffix)
-#define nassert_static(condition) _nassert_static(condition, __COUNTER__)
-#endif
 
 #include "pnotify.I"
 

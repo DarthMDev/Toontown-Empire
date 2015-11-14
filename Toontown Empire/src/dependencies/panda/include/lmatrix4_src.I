@@ -21,11 +21,11 @@
 INLINE_LINMATH FLOATNAME(LMatrix4)::Row::
 Row(FLOATTYPE *row) : _row(row) {
 }
-
+    
 ////////////////////////////////////////////////////////////////////
 //     Function: LMatrix4::Row::operator []
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE_LINMATH FLOATTYPE FLOATNAME(LMatrix4)::Row::
 operator [](int i) const {
@@ -36,7 +36,7 @@ operator [](int i) const {
 ////////////////////////////////////////////////////////////////////
 //     Function: LMatrix4::Row::operator []
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE_LINMATH FLOATTYPE &FLOATNAME(LMatrix4)::Row::
 operator [](int i) {
@@ -62,11 +62,11 @@ size() {
 INLINE_LINMATH FLOATNAME(LMatrix4)::CRow::
 CRow(const FLOATTYPE *row) : _row(row) {
 }
-
+    
 ////////////////////////////////////////////////////////////////////
 //     Function: LMatrix4::CRow::operator []
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE_LINMATH FLOATTYPE FLOATNAME(LMatrix4)::CRow::
 operator [](int i) const {
@@ -166,7 +166,7 @@ INLINE_LINMATH FLOATNAME(LMatrix4) &FLOATNAME(LMatrix4)::
 operator = (const FLOATNAME(UnalignedLMatrix4) &copy) {
   TAU_PROFILE("void LMatrix4::operator = (const UnalignedLMatrix4 &)", " ", TAU_USER);
 
-  memcpy(&_m(0, 0), copy.get_data(), sizeof(FLOATTYPE) * num_components);
+  memcpy(&_m(0, 0), copy.get_data(), sizeof(FLOATTYPE) * get_num_components());
   return *this;
 }
 
@@ -617,18 +617,6 @@ is_nan() const {
 }
 
 ////////////////////////////////////////////////////////////////////
-//     Function: LMatrix4::is_identity
-//       Access: Public
-//  Description: Returns true if this is (close enough to) the
-//               identity matrix, false otherwise.
-////////////////////////////////////////////////////////////////////
-INLINE_LINMATH bool FLOATNAME(LMatrix4)::
-is_identity() const {
-  // Eigen has isIdentity, but it seems to be twice as slow as this.
-  return almost_equal(ident_mat(), NEARLY_ZERO(FLOATTYPE));
-}
-
-////////////////////////////////////////////////////////////////////
 //     Function: LMatrix4::get_cell
 //       Access: Public
 //  Description: Returns a particular element of the matrix.
@@ -747,7 +735,7 @@ operator == (const FLOATNAME(LMatrix4) &other) const {
 ////////////////////////////////////////////////////////////////////
 INLINE_LINMATH bool FLOATNAME(LMatrix4)::
 operator != (const FLOATNAME(LMatrix4) &other) const {
-  return compare_to(other) != 0;
+  return !operator == (other);
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -843,7 +831,7 @@ xform(const FLOATNAME(LVecBase4) &v) const {
 
 #ifdef HAVE_EIGEN
   v_res._v.noalias() = v._v * _m;
-#else
+#else  
   VECTOR4_MATRIX4_PRODUCT(v_res, v,(*this));
 #endif  // HAVE_EIGEN
   return v_res;
@@ -865,12 +853,12 @@ xform_point(const FLOATNAME(LVecBase3) &v) const {
 
 #ifdef HAVE_EIGEN
   v_res._v.noalias() = v._v * _m.block<3, 3>(0, 0) + _m.block<1, 3>(3, 0);
-#else
+#else  
   v_res._v(0) = v._v(0)*_m(0, 0) + v._v(1)*_m(1, 0) + v._v(2)*_m(2, 0) + _m(3, 0);
   v_res._v(1) = v._v(0)*_m(0, 1) + v._v(1)*_m(1, 1) + v._v(2)*_m(2, 1) + _m(3, 1);
   v_res._v(2) = v._v(0)*_m(0, 2) + v._v(1)*_m(1, 2) + v._v(2)*_m(2, 2) + _m(3, 2);
 #endif  // HAVE_EIGEN
-
+  
   return v_res;
 }
 
@@ -900,17 +888,17 @@ INLINE_LINMATH FLOATNAME(LVecBase3) FLOATNAME(LMatrix4)::
 xform_vec(const FLOATNAME(LVecBase3) &v) const {
   TAU_PROFILE("LVecBase3 LMatrix4::xform_vec(const LVecBase3 &)", " ", TAU_USER);
   FLOATNAME(LVecBase3) v_res;
-
+  
   // v._v(3) == 0.0f for this case
-
+  
 #ifdef HAVE_EIGEN
   v_res._v.noalias() = v._v * _m.block<3, 3>(0, 0);
-#else
+#else  
   v_res._v(0) = v._v(0)*_m(0, 0) + v._v(1)*_m(1, 0) + v._v(2)*_m(2, 0);
   v_res._v(1) = v._v(0)*_m(0, 1) + v._v(1)*_m(1, 1) + v._v(2)*_m(2, 1);
   v_res._v(2) = v._v(0)*_m(0, 2) + v._v(1)*_m(1, 2) + v._v(2)*_m(2, 2);
 #endif  // HAVE_EIGEN
-
+  
   return v_res;
 }
 
@@ -946,7 +934,7 @@ xform_in_place(FLOATNAME(LVecBase4) &v) const {
 
 #ifdef HAVE_EIGEN
   v._v = v._v * _m;
-#else
+#else  
   v = xform(v);
 #endif  // HAVE_EIGEN
 }
@@ -965,7 +953,7 @@ xform_point_in_place(FLOATNAME(LVecBase3) &v) const {
 
 #ifdef HAVE_EIGEN
   v._v = v._v * _m.block<3, 3>(0, 0) + _m.block<1, 3>(3, 0);
-#else
+#else  
   v = xform_point(v);
 #endif  // HAVE_EIGEN
 }
@@ -993,10 +981,10 @@ INLINE_LINMATH void FLOATNAME(LMatrix4)::
 xform_vec_in_place(FLOATNAME(LVecBase3) &v) const {
   TAU_PROFILE("void LMatrix4::xform_vec_in_place(LVecBase3 &)", " ", TAU_USER);
   // v._v(3) == 0.0f for this case
-
+  
 #ifdef HAVE_EIGEN
   v._v = v._v * _m.block<3, 3>(0, 0);
-#else
+#else  
   v = xform_vec(v);
 #endif  // HAVE_EIGEN
 }
@@ -1081,7 +1069,7 @@ operator * (FLOATTYPE scalar) const {
 #ifdef HAVE_EIGEN
   t._m = _m * scalar;
 
-#else
+#else 
   t._m(0, 0) = _m(0, 0) * scalar;
   t._m(0, 1) = _m(0, 1) * scalar;
   t._m(0, 2) = _m(0, 2) * scalar;
@@ -1257,38 +1245,6 @@ operator /= (FLOATTYPE scalar) {
   return operator *= (recip_scalar);
 }
 
-////////////////////////////////////////////////////////////////////
-//     Function: LMatrix4::componentwise_mult
-//       Access: Published
-//  Description:
-////////////////////////////////////////////////////////////////////
-INLINE_LINMATH void FLOATNAME(LMatrix4)::
-componentwise_mult(const FLOATNAME(LMatrix4) &other) {
-#ifdef HAVE_EIGEN
-  _m = _m.cwiseProduct(other._m);
-#else
-  _m(0, 0) *= other._m(0, 0);
-  _m(0, 1) *= other._m(0, 1);
-  _m(0, 2) *= other._m(0, 2);
-  _m(0, 3) *= other._m(0, 3);
-
-  _m(1, 0) *= other._m(1, 0);
-  _m(1, 1) *= other._m(1, 1);
-  _m(1, 2) *= other._m(1, 2);
-  _m(1, 3) *= other._m(1, 3);
-
-  _m(2, 0) *= other._m(2, 0);
-  _m(2, 1) *= other._m(2, 1);
-  _m(2, 2) *= other._m(2, 2);
-  _m(2, 3) *= other._m(2, 3);
-
-  _m(3, 0) *= other._m(3, 0);
-  _m(3, 1) *= other._m(3, 1);
-  _m(3, 2) *= other._m(3, 2);
-  _m(3, 3) *= other._m(3, 3);
-#endif  // HAVE_EIGEN
-}
-
 
 ////////////////////////////////////////////////////////////////////
 //     Function: LMatrix4::transpose_from
@@ -1337,12 +1293,14 @@ transpose_in_place() {
   _m.transposeInPlace();
 
 #else
-  std::swap(_m(0, 1), _m(1, 0));
-  std::swap(_m(0, 2), _m(2, 0));
-  std::swap(_m(0, 3), _m(3, 0));
-  std::swap(_m(1, 2), _m(2, 1));
-  std::swap(_m(1, 3), _m(3, 1));
-  std::swap(_m(2, 3), _m(3, 2));
+  #define SWAP__(x,y) { FLOATTYPE temp = (x);  (x) = (y);  (y) = temp;}
+  SWAP__(_m(0, 1),_m(1, 0));
+  SWAP__(_m(0, 2),_m(2, 0));
+  SWAP__(_m(0, 3),_m(3, 0));
+  SWAP__(_m(1, 2),_m(2, 1));
+  SWAP__(_m(1, 3),_m(3, 1));
+  SWAP__(_m(2, 3),_m(3, 2));
+  #undef SWAP__
 #endif  // HAVE_EIGEN
 }
 
@@ -1366,19 +1324,13 @@ INLINE_LINMATH bool FLOATNAME(LMatrix4)::
 invert_from(const FLOATNAME(LMatrix4) &other) {
   TAU_PROFILE("bool LMatrix4::invert_from(const LMatrix4 &)", " ", TAU_USER);
 #ifdef HAVE_EIGEN
-  // We use the squared nearly_zero value as determinant threshold
-  // for checking whether a matrix is singular, since that's the
-  // same constant we use in the non-Eigen case (see lmatrix3_src.I)
-  // and also because we otherwise run into issues very quickly.
   bool invertible;
-  other._m.computeInverseWithCheck(_m, invertible,
-    NEARLY_ZERO(FLOATTYPE) * NEARLY_ZERO(FLOATTYPE));
+  other._m.computeInverseWithCheck(_m, invertible);
 
   if (!invertible) {
-#ifdef NOTIFY_DEBUG
+#ifdef NDEBUG
     linmath_cat.warning() << "Tried to invert singular LMatrix4.\n";
 #endif
-
     (*this) = ident_mat();
     nassertr(!no_singular_invert, false);
   }
@@ -1398,10 +1350,9 @@ invert_from(const FLOATNAME(LMatrix4) &other) {
   int index[4];
 
   if (!decompose_mat(index)) {
-#ifdef NOTIFY_DEBUG
+#ifdef NDEBUG
     linmath_cat.warning() << "Tried to invert singular LMatrix4.\n";
 #endif
-
     (*this) = ident_mat();
     nassertr(!no_singular_invert, false);
     return false;
@@ -1458,11 +1409,11 @@ invert_affine_from(const FLOATNAME(LMatrix4) &other) {
   _m(3, 0) = -(other._m(3, 0) * _m(0, 0) +
                other._m(3, 1) * _m(1, 0) +
                other._m(3, 2) * _m(2, 0));
-
+  
   _m(3, 1) = -(other._m(3, 0) * _m(0, 1) +
                other._m(3, 1) * _m(1, 1) +
                other._m(3, 2) * _m(2, 1));
-
+  
   _m(3, 2) = -(other._m(3, 0) * _m(0, 2) +
                other._m(3, 1) * _m(1, 2) +
                other._m(3, 2) * _m(2, 2));
@@ -1498,17 +1449,17 @@ accumulate(const FLOATNAME(LMatrix4) &other, FLOATTYPE weight) {
   _m(0, 1) += other._m(0, 1) * weight;
   _m(0, 2) += other._m(0, 2) * weight;
   _m(0, 3) += other._m(0, 3) * weight;
-
+  
   _m(1, 0) += other._m(1, 0) * weight;
   _m(1, 1) += other._m(1, 1) * weight;
   _m(1, 2) += other._m(1, 2) * weight;
   _m(1, 3) += other._m(1, 3) * weight;
-
+  
   _m(2, 0) += other._m(2, 0) * weight;
   _m(2, 1) += other._m(2, 1) * weight;
   _m(2, 2) += other._m(2, 2) * weight;
   _m(2, 3) += other._m(2, 3) * weight;
-
+  
   _m(3, 0) += other._m(3, 0) * weight;
   _m(3, 1) += other._m(3, 1) * weight;
   _m(3, 2) += other._m(3, 2) * weight;
@@ -1702,7 +1653,7 @@ shear_mat(const FLOATNAME(LVecBase3) &shear, CoordinateSystem cs) {
 //               shear in each of the three planes.
 ////////////////////////////////////////////////////////////////////
 INLINE_LINMATH FLOATNAME(LMatrix4) FLOATNAME(LMatrix4)::
-shear_mat(FLOATTYPE shxy, FLOATTYPE shxz, FLOATTYPE shyz,
+shear_mat(FLOATTYPE shxy, FLOATTYPE shxz, FLOATTYPE shyz, 
           CoordinateSystem cs) {
   FLOATNAME(LMatrix4) mat;
   mat.set_shear_mat(FLOATNAME(LVecBase3)(shxy, shxz, shyz), cs);
@@ -1848,7 +1799,7 @@ FLOATNAME(UnalignedLMatrix4)(const FLOATNAME(UnalignedLMatrix4) &copy) : _m(copy
 ////////////////////////////////////////////////////////////////////
 INLINE_LINMATH FLOATNAME(UnalignedLMatrix4) &FLOATNAME(UnalignedLMatrix4)::
 operator = (const FLOATNAME(LMatrix4) &copy) {
-  memcpy(&_m(0, 0), copy.get_data(), sizeof(FLOATTYPE) * num_components);
+  memcpy(&_m(0, 0), copy.get_data(), sizeof(FLOATTYPE) * get_num_components());
   return *this;
 }
 

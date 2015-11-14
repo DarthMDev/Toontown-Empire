@@ -2,8 +2,7 @@
 
 __all__ = ['SoundInterval']
 
-from panda3d.core import *
-from panda3d.direct import *
+from pandac.PandaModules import *
 from direct.directnotify.DirectNotifyGlobal import *
 import Interval
 import random

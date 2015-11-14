@@ -61,8 +61,8 @@ PUBLISHED:
   string get_const_prefix() const;
   int match_files(vector_string &results, const Filename &cwd = Filename()) const;
 #ifdef HAVE_PYTHON
-  EXTENSION(PyObject *match_files(const Filename &cwd = Filename()) const);
-#endif
+  PyObject *match_files(const Filename &cwd = Filename()) const;
+#endif 
 
 private:
   bool matches_substr(string::const_iterator pi,
