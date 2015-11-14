@@ -2,11 +2,11 @@ import math
 from pandac.PandaModules import CardMaker, TextNode
 from direct.gui.DirectGui import DirectFrame, DirectLabel, DirectButton
 from direct.task import Task
-from toontown.toon import NPCToons
-from toontown.hood import ZoneUtil
-from toontown.toonbase import ToontownGlobals
-from toontown.quest import Quests
-from toontown.suit import SuitPlannerBase
+from src.toontown.toon import NPCToons
+from src.toontown.hood import ZoneUtil
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.quest import Quests
+from src.toontown.suit import SuitPlannerBase
 import QuestMapGlobals
 
 class QuestMap(DirectFrame):

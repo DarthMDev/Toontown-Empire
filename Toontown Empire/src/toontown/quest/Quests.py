@@ -1,13 +1,13 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase import PythonUtil
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.battle import SuitBattleGlobals
-from toontown.coghq import CogDisguiseGlobals
-from toontown.toon import NPCToons
-from toontown.hood import ZoneUtil
-from otp.otpbase import OTPGlobals
+from src.toontown.toonbase import ToontownBattleGlobals
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.battle import SuitBattleGlobals
+from src.toontown.coghq import CogDisguiseGlobals
+from src.toontown.toon import NPCToons
+from src.toontown.hood import ZoneUtil
+from src.otp.otpbase import OTPGlobals
 import random
 import copy
 import string

@@ -1,9 +1,9 @@
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 import QuestPoster
-from toontown.toonbase import ToontownTimer
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownTimer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
 
 class QuestChoiceGui(DirectFrame):

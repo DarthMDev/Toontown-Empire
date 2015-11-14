@@ -2,12 +2,12 @@ from pandac.PandaModules import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
 from direct.showbase import DirectObject
-from otp.speedchat import SpeedChatGlobals
-from toontown.chat.ChatGlobals import *
-from toontown.suit import Suit, SuitDNA
-from toontown.toon import ToonHeadFrame
-from toontown.toonbase import TTLocalizer, ToontownBattleGlobals
-from toontown.quest import QuestScripts
+from src.otp.speedchat import SpeedChatGlobals
+from src.toontown.chat.ChatGlobals import *
+from src.toontown.suit import Suit, SuitDNA
+from src.toontown.toon import ToonHeadFrame
+from src.toontown.toonbase import TTLocalizer, ToontownBattleGlobals
+from src.toontown.quest import QuestScripts
 import copy, re, tokenize, BlinkingArrows, StringIO
 
 notify = DirectNotifyGlobal.directNotify.newCategory('QuestParser')

@@ -1,21 +1,21 @@
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 import Quests
-from toontown.toon import NPCToons
-from toontown.toon import ToonHead
-from toontown.toon import ToonDNA
-from toontown.suit import SuitDNA
-from toontown.suit import Suit
-from toontown.hood import ZoneUtil
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from src.toontown.toon import NPCToons
+from src.toontown.toon import ToonHead
+from src.toontown.toon import ToonDNA
+from src.toontown.suit import SuitDNA
+from src.toontown.suit import Suit
+from src.toontown.hood import ZoneUtil
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import TTLocalizer
 import string, types
-from toontown.toon import LaffMeter
-from toontown.toonbase.ToontownBattleGlobals import AvPropsNew
+from src.toontown.toon import LaffMeter
+from src.toontown.toonbase.ToontownBattleGlobals import AvPropsNew
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toontowngui import TTDialog
-from otp.otpbase import OTPLocalizer
-from toontown.building import DistributedBuildingQueryMgr
+from src.toontown.toontowngui import TTDialog
+from src.otp.otpbase import OTPLocalizer
+from src.toontown.building import DistributedBuildingQueryMgr
 
 IMAGE_SCALE_LARGE = 0.2
 IMAGE_SCALE_SMALL = 0.15
