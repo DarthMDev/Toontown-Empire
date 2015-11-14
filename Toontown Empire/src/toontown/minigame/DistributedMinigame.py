@@ -101,7 +101,7 @@ class DistributedMinigame(DistributedObject.DistributedObject):
         self.normalExit = 1
         count = self.modelCount
         zoneId = 0 #TODO: Make a system for picking minigame backgrounds
-        loader.beginBulkLoad('minigame', TTLocalizer.HeadingToMinigameTitle % self.getTitle(), count, 1, TTLocalizer.TIP_MINIGAME, zoneId)
+        loader.beginBulkLoad('minigame', TTLocalizer.HeadingToMinigameTitle % self.getTitle(), count, 1, TTLocalizer.TIP_MINIGAME)
         self.load()
         loader.endBulkLoad('minigame')
         globalClock.syncFrameTime()

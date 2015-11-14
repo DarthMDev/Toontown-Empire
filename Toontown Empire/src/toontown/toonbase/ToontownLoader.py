@@ -22,7 +22,7 @@ class ToontownLoader(Loader.Loader):
     def loadDNAFile(self, dnastore, filename):
         return loadDNAFile(dnastore, filename)
 
-    def beginBulkLoad(self, name, label, range, gui, tipCategory, zoneId):
+    def beginBulkLoad(self, name, label, range, gui, tipCategory):
         self._loadStartT = globalClock.getRealTime()
         Loader.Loader.notify.info("starting bulk load of block '%s'" % name)
         if self.inBulkBlock:
