@@ -1,9 +1,9 @@
 from direct.gui.DirectGui import *
-from panda3d.core import *
+from pandac.PandaModules import *
 import QuestPoster
-from src.toontown.toonbase import ToontownTimer
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownTimer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
 
 class QuestChoiceGui(DirectFrame):
@@ -19,8 +19,8 @@ class QuestChoiceGui(DirectFrame):
         self.timer = ToontownTimer.ToontownTimer()
         self.timer.reparentTo(self)
         self.timer.setScale(0.3)
-        base.setCellsAvailable(base.leftCells, 0)
-        base.setCellsAvailable([base.bottomCells[0], base.bottomCells[1]], 0)
+        base.setCellsActive(base.leftCells, 0)
+        base.setCellsActive([base.bottomCells[0], base.bottomCells[1]], 0)
 
     def setQuests(self, quests, fromNpcId, timeout):
         for i in xrange(0, len(quests), 3):
@@ -56,8 +56,8 @@ class QuestChoiceGui(DirectFrame):
         if questId != 0:
             if base.config.GetBool('want-qa-regression', 0):
                 self.notify.info('QA-REGRESSION: CREATEATASK: Create A Task.')
-        base.setCellsAvailable(base.leftCells, 1)
-        base.setCellsAvailable([base.bottomCells[0], base.bottomCells[1]], 1)
+        base.setCellsActive(base.leftCells, 1)
+        base.setCellsActive([base.bottomCells[0], base.bottomCells[1]], 1)
         self.timer.stop()
         messenger.send('chooseQuest', [questId])
 
