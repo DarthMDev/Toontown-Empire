@@ -22,5 +22,6 @@ notifications:
 
 
 # command to run tests
+script: cd ../toontown-empire
 script: cd "Toontown Empire/src/build"
 script: python2.7 -m make
