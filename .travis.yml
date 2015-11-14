@@ -23,4 +23,4 @@ notifications:
 
 
 # command to run tests
-script: python2.7 "Toontown Empire/src/build/make.py"
+script: /usr/bin/python2 "Toontown Empire/src/build/make.py"
