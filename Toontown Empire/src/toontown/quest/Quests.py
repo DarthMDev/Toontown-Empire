@@ -80,7 +80,7 @@ PHONE_QUEST_ID = 175
 NEWBIE_HP = 25
 SELLBOT_HQ_NEWBIE_HP = 50
 CASHBOT_HQ_NEWBIE_HP = 85
-from toontown.toonbase.ToontownGlobals import FT_FullSuit, FT_Leg, FT_Arm, FT_Torso
+from src.toontown.toonbase.ToontownGlobals import FT_FullSuit, FT_Leg, FT_Arm, FT_Torso
 QuestRandGen = random.Random()
 
 def seedRandomGen(npcId, avId, tier, rewardHistory):

@@ -5,7 +5,6 @@ from src.toontown.effects.DistributedFireworkShowAI import DistributedFireworkSh
 from src.toontown.effects import FireworkShows
 from src.toontown.toonbase import ToontownGlobals
 from src.toontown.parties import PartyGlobals
-import HolidayGlobals
 import datetime, random
 
 class NewsManagerAI(DistributedObjectAI):
