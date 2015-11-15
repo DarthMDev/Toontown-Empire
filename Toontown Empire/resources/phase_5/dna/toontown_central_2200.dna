@@ -489,13 +489,6 @@ group "toontownCentral" [
     ]
    ]
   ]
-  group "props" [
-  ]
-  prop "prop_tt_m_ara_gen_tunnelAheadSign_DNARoot" [
-   code [ "prop_tt_m_ara_gen_tunnelAheadSign" ]
-   pos [ -588.889 -25.385 -0.5 ]
-   nhpr [ 180 0 0 ]
-  ]
  ]
  visgroup "2202" [
   vis [   "2201"   "2202"   "2203"   "2204"   "2205"   "2227"   ]
@@ -9044,13 +9037,6 @@ group "toontownCentral" [
      ]
     ]
    ]
-  ]
-  group "props" [
-  ]
-  prop "prop_tt_m_ara_gen_tunnelAheadSign_DNARoot" [
-   code [ "prop_tt_m_ara_gen_tunnelAheadSign" ]
-   pos [ -79.3193 86.4648 -0.500008 ]
-   nhpr [ -105 0 -0 ]
   ]
  ]
  visgroup "2227" [

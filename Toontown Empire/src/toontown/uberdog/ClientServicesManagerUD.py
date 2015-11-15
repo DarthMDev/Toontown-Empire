@@ -12,7 +12,6 @@ from src.toontown.toonbase import TTLocalizer
 from src.toontown.uberdog import NameJudgeBlacklist
 
 from panda3d.core import *
-from sys import platform
 
 import hashlib, hmac, json
 import anydbm, math, os
@@ -138,11 +137,8 @@ class AccountDB:
 
         filename = config.GetString('account-bridge-filename', 'account-bridge.db')
         filename = os.path.join('src/dependencies', filename)
-        if platform == 'darwin':
-            self.dbm = dumbdbm.open(filename, 'c')
-        else:
-            self.dbm = anydbm.open(filename, 'c')
 
+        self.dbm = anydbm.open(filename, 'c')
 
     def addNameRequest(self, avId, name, accountID = None):
         return True

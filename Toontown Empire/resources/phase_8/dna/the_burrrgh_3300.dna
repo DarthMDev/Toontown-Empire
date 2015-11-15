@@ -509,11 +509,6 @@ group "theBurrrgh" [
    pos [ 75.8168 225.281 7.62939e-006 ]
    nhpr [ -90 0 0 ]
   ]
-  prop "prop_tt_m_ara_gen_tunnelAheadSign_DNARoot" [
-   code [ "prop_tt_m_ara_gen_tunnelAheadSign" ]
-   pos [ 51.3094 205.7 -0.499985 ]
-   nhpr [ 165 0 0 ]
-  ]
  ]
  visgroup "3302" [
   vis [   "3302"   "3301"   "3303"   "3304"   "3305"   ]
@@ -7719,11 +7714,6 @@ group "theBurrrgh" [
      ]
     ]
    ]
-  ]
-  prop "prop_tt_m_ara_gen_tunnelAheadSign_DNARoot" [
-   code [ "prop_tt_m_ara_gen_tunnelAheadSign" ]
-   pos [ 226.921 378.492 -0.500034 ]
-   nhpr [ 90 0 0 ]
   ]
  ]
  visgroup "3327" [
