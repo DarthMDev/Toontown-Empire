@@ -96,6 +96,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.cogSuitMessageSent = False
 
     def createManagers(self):
+        self.toontownTimeManager = ToontownTimeManagerAI()    
         self.timeManager = TimeManagerAI(self)
         self.timeManager.generateWithRequired(2)
         self.magicWordManager = MagicWordManagerAI(self)
@@ -198,7 +199,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.claimOwnership(self.districtId)
 
         self.districtStats = ToontownDistrictStatsAI(self)
-        self.districtStats.settoontownDistrictId(self.districtId)
+        self.districtStats.setDistrictId(self.districtId)
         self.districtStats.generateWithRequiredAndId(
             self.allocateChannel(), self.getGameDoId(), 3)
         self.notify.info('Created ToontownDistrictStats(%d)' % self.districtStats.doId)
