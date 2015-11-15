@@ -105,7 +105,7 @@ want-talkative-tyler #f #Why isn’t he removed
 estate-day-night #t
 want-garden-game #f
 want-language-selection #t
-want-mongo #t
+#want-mongo #t
 want-toontorial #t
 want-news-tab #t
 want-news-page #t

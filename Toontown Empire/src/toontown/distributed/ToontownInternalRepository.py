@@ -19,7 +19,7 @@ class ToontownInternalRepository(AstronInternalRepository):
     def handleConnected(self):
         self.__messenger = ToontownNetMessengerAI(self)
         if config.GetBool('want-mongo', False):
-            from src.dependencies.panda import pymongo
+            from src import pymongo
             self.dbConn = pymongo.MongoClient(config.GetString('mongodb-url', 'localhost'))
             self.dbGlobalCursor = self.dbConn.toontownempire
             self.dbCursor = self.dbGlobalCursor['air-%d' % self.ourChannel]
