@@ -212,7 +212,8 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
                 del self.treasures[treasureId]
                 treasure.d_setGrab(avId)
                 self.grabbingTreasures[treasureId] = treasure
-                taskMgr.doMethodLater(5, self.__recycleTreasure, treasure.uniqueName('recycleTreasure'), extraArgs=[treasure])
+                taskMgr.doMethodLater(5, self.__recycleTreasure, treasure.uniqueName('recycleTreasure'),
+                extraArgs=[treasure])
             else:
                 treasure.d_setReject()
 

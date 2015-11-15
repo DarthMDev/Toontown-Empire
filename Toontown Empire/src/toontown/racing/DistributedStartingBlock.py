@@ -53,7 +53,7 @@ class DistributedStartingBlock(DistributedObject.DistributedObject, FSM):
         self.kart = None
         self.holeActor = None
         self.exitRequested = False
-        if (__debug__):
+        if __debug__:
             self.testLOD = False
         self.id = DistributedStartingBlock.id
         DistributedStartingBlock.id += 1

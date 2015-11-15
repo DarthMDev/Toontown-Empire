@@ -283,7 +283,7 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         self.cagedToonDialogIndex = 100
         self.__saySomethingLater()
 
-    def __saySomething(self, task = None):
+    def __saySomething(self, task= None):
         index = None
         avId = 0
         if len(self.involvedToons) == 0:

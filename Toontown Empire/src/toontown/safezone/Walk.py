@@ -82,7 +82,7 @@ class Walk(StateData.StateData):
     def __swimSoundTest(self, task):
         speed, rotSpeed, slideSpeed = base.localAvatar.controlManager.getSpeeds()
 
-        if (speed or rotSpeed):
+        if speed or rotSpeed:
             if not self.swimSoundPlaying:
                 self.swimSoundPlaying = 1
                 base.playSfx(self.swimSound, looping=1)

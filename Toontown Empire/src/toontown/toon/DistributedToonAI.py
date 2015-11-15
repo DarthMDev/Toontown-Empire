@@ -953,7 +953,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
                 self.d_setHp(self.hp)
 
     def b_setMaxHp(self, maxHp):
-        if (maxHp > ToontownGlobals.MaxHpLimit):
+        if maxHp > ToontownGlobals.MaxHpLimit:
             self.air.writeServerEvent('suspicious', self.doId, 'Toon tried to go over the HP limit.')
             self.d_setMaxHp(ToontownGlobals.MaxHpLimit)
             self.setMaxHp(ToontownGlobals.MaxHpLimit)
@@ -3957,7 +3957,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self._gmType = gmType
 
     def isGM(self):
-        return (self._isGM and (not self._gmDisabled))
+        return self._isGM and (not self._gmDisabled)
 
     def getGMType(self):
         gmType = self._gmType
@@ -5425,7 +5425,7 @@ def SuperInventory():
     invoker = spellbook.getInvoker()
     inventory = invoker.inventory
     invoker.b_setInventory(inventory.makeNetString())
-    print("inventory.makeNetString()")
+    print "inventory.makeNetString()"
 
 @magicWord(category=CATEGORY_PROGRAMMER)
 def dump_doId2do():

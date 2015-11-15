@@ -81,7 +81,7 @@ class DistributedClubElevatorAI(DistributedElevatorFSMAI.DistributedElevatorFSMA
     def avIsOKToBoard(self, av):
         if av.hp > 0 and self.accepting:
             pass
-        return not (self.isLocked)
+        return not self.isLocked
 
     def acceptBoarder(self, avId, seatIndex):
         DistributedElevatorFSMAI.DistributedElevatorFSMAI.acceptBoarder(self, avId, seatIndex)

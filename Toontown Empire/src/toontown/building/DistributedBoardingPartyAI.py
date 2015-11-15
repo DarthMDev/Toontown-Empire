@@ -131,7 +131,7 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
                     self.sendUpdateToAvatarId(inviteeId, 'postMessageInvitationFailed', [inviterId])
                     return
 
-                if ((len(self.getGroupMemberList(leaderId)) + len(self.getGroupMemberList(inviteeLeaderId))) <= self.maxSize):
+                if (len(self.getGroupMemberList(leaderId)) + len(self.getGroupMemberList(inviteeLeaderId))) <= self.maxSize:
                     # Lets send the invitation to the person in authority...
                     invitee = simbase.air.doId2do.get(inviteeLeaderId)
                     inviteeId = inviteeLeaderId
@@ -276,7 +276,7 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
                     self.sendUpdateToAvatarId(inviteeId, 'postSomethingMissing', [])
                     return
                 # Lets make sure we still CAN merge them in
-                if ((len(self.getGroupMemberList(leaderId)) + len(self.getGroupMemberList(inviteeId))) > self.maxSize):
+                if (len(self.getGroupMemberList(leaderId)) + len(self.getGroupMemberList(inviteeId))) > self.maxSize:
                     reason = BoardingPartyBase.BOARDCODE_GROUPS_TO_LARGE
                     self.sendUpdateToAvatarId(inviterId, 'postInviteNotQualify', [inviteeId, reason, 0])
                     self.sendUpdateToAvatarId(inviteeId, 'postMessageInvitationFailed', [inviterId])
