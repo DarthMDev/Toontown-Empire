@@ -15,7 +15,7 @@ from src.toontown.building import SuitBuildingGlobals
 from src.toontown.dna.DNAParser import DNASuitPoint
 from src.toontown.hood import ZoneUtil
 from src.toontown.suit.SuitInvasionGlobals import IFSkelecog, IFWaiter, IFV2
-from src.toontown.suit.SuitLegList import *
+from libpandadna import *
 from src.toontown.toon import NPCToons
 from src.toontown.toonbase import ToontownBattleGlobals
 from src.toontown.toonbase import ToontownGlobals

@@ -5,8 +5,6 @@ from src.toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
 from src.toontown.building import SuitBuildingGlobals
 from src.toontown.dna.DNAParser import *
 
-from src.toontown.dna.DNAInteractiveProp import DNAInteractiveProp
-
 class SuitPlannerBase:
     notify = directNotify.newCategory('SuitPlannerBase')
     SuitHoodInfo = [[2100,

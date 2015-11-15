@@ -19,12 +19,6 @@ group "theBurrrgh" [
     nhpr [ 146 0 0 ]
     color [ 0.59 1 0.92 1 ]
    ]
-  prop "prop_blockade_DNARoot" [
-   code [ "prop_blockade" ]
-   pos [ -156.039 -2.215 10.14 ]
-   nhpr [ -269 0 0 ]
-   scale [ 0.42 0.42 0.42 ]
-  ]
    prop "fishing_spot_DNARoot" [
     code [ "fishing_spot" ]
     pos [ -66.3804 -33.1704 2.5 ]
@@ -983,6 +977,10 @@ group "theBurrrgh" [
     title [ "Clothing Shop" ]
     pos [ -127.028 -116.91 6.16666 ]
     nhpr [ 130 0 0 ]
+    door [
+     code [ "door_double_clothesshop_ur" ]
+     color [ 0 0.87 0.69 1 ]
+    ]
     sign [
      baseline [
       code [ "mickey" ]
@@ -1033,37 +1031,25 @@ group "theBurrrgh" [
       ]
      ]
     ]
-    door [
-     code [ "door_double_clothesshop_ur" ]
-     color [ 0 0.87 0.69 1 ]
-    ]
    ]
    prop "linktunnel_br_3301_DNARoot" [
     code [ "prop_safe_zone_tunnel" ]
     pos [ 100.11 152.01 -0.54 ]
     nhpr [ 150 0 0 ]
     sign [
-     code [ "tunnel_sign_blue" ]
+     code [ "sign_cogHQ" ]
      pos [ 0 0 -0.830334 ]
      scale [ 1.18118 1 1.20103 ]
      baseline [
-      code [ "mickey" ]
-      color [ 0 0.501961 0.752941 1 ]
-      pos [ 0.0633007 0 -0.559566 ]
-      scale [ 1.68608 1 1.31726 ]
-      kern [ -0.00178057 ]
-      stomp [ 0.0262698 ]
-      width [ 37.081 ]
-      height [ 37.081 ]
+      code [ "humanist" ]
+      color [ 1 0 0 1 ]
+      pos [ -0.17 0 0.32 ]
+      scale [ 2 1 2.2  ]
+      wiggle [ 1.5802 ]
+      stomp [ 0.050618 ]
       flags [ "d" ]
       text [
-       letters [ "P" ]
-      ]
-      text [
-       letters [ "O" ]
-      ]
-      text [
-       letters [ "L" ]
+       letters [ "W" ]
       ]
       text [
        letters [ "A" ]
@@ -1072,74 +1058,91 @@ group "theBurrrgh" [
        letters [ "R" ]
       ]
       text [
-       letters [ " " ]
+       letters [ "N" ]
       ]
       text [
-       letters [ "P" ]
+       letters [ "I" ]
       ]
       text [
-       letters [ "L" ]
-      ]
-      text [
-       letters [ "A" ]
-      ]
-      text [
-       letters [ "C" ]
-      ]
-      text [
-       letters [ "E" ]
-      ]
-     ]
-     baseline [
-      code [ "mickey" ]
-      color [ 0 0.501961 0.752941 1 ]
-      pos [ 0.11 0 -1.85129 ]
-      scale [ 1.04591 1 1.17771 ]
-      kern [ 0.02 ]
-      wiggle [ 0.30413 ]
-      stumble [ 0.004736 ]
-      stomp [ 0.04 ]
-      width [ 37.4411 ]
-      height [ 37.4411 ]
-      flags [ "d" ]
-      text [
-       letters [ "T" ]
-      ]
-      text [
-       letters [ "H" ]
-      ]
-      text [
-       letters [ "E" ]
-      ]
-      text [
-       letters [ " " ]
-      ]
-      text [
-       letters [ "B" ]
-      ]
-      text [
-       letters [ "R" ]
-      ]
-      text [
-       letters [ "R" ]
-      ]
-      text [
-       letters [ "R" ]
+       letters [ "N" ]
       ]
       text [
        letters [ "G" ]
       ]
       text [
-       letters [ "H" ]
+       letters [ "!" ]
+      ]
+      text [
+       letters [ "!" ]
       ]
      ]
      baseline [
-      pos [ 0 0 1.61849 ]
-      scale [ 2.8058 1 2.25258 ]
-      graphic [
-       code [ "plutoSZ" ]
+      code [ "suit" ]
+      pos [ 0.11 0 -1.51 ]
+      scale [ 0.9 1 1.3 ]
+      kern [ 0.02 ]
+      wiggle [ 0.30413 ]
+      stumble [ 0.004736 ]
+      stomp [ 0.04 ]
+      flags [ "d" ]
+      text [
+       letters [ "T" ]
       ]
+      text [
+       letters [ "O" ]
+      ]
+      text [
+       letters [ " " ]
+      ]
+      text [
+       letters [ "C" ]
+      ]
+      text [
+       letters [ "O" ]
+      ]
+      text [
+       letters [ "G" ]
+      ]
+      text [
+       letters [ " " ]
+      ]
+      text [
+       letters [ "H" ]
+      ]
+      text [
+       letters [ "E" ]
+      ]
+      text [
+       letters [ "A" ]
+      ]
+      text [
+       letters [ "D" ]
+      ]
+      text [
+       letters [ "Q" ]
+      ]
+      text [
+       letters [ "U" ]
+      ]
+      text [
+       letters [ "A" ]
+      ]
+      text [
+       letters [ "R" ]
+      ]
+      text [
+       letters [ "T" ]
+      ]
+      text [
+       letters [ "E" ]
+      ]
+      text [
+       letters [ "R" ]
+      ]
+      text [
+       letters [ "S" ]
      ]
+	 ]
     ]
    ]
   ]
@@ -1398,19 +1401,9 @@ group "theBurrrgh" [
      text [
       letters [ "p" ]
      ]
+	 ]
     ]
    ]
-  ]
-  prop "neighborhood_sign_lawBotHQ_DNARoot" [
-   code [ "neighborhood_sign_lawBotHQ" ]
-   pos [ 11.2916 92.378 6.18851 ]
-   nhpr [ 150 0 0 ]
-  ]
-  prop "neighborhood_sign_lawBotHQ_DNARoot" [
-   code [ "neighborhood_sign_lawBotHQ" ]
-   pos [ -11.2839 104.749 6.17428 ]
-   nhpr [ -30 0 0 ]
-  ]
   prop "prop_party_gate_DNARoot" [
    code [ "prop_party_gate" ]
    pos [ -142.689 36.0939 6.19787 ]
