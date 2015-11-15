@@ -95,7 +95,7 @@ class QuestManagerAI:
         else:
             # They haven't completed any quests so we have to give them choices.
             # If they've got a full pouch then reject them.
-            if (len(avQuests) == avQuestPocketSize*5):
+            if len(avQuests) == avQuestPocketSize*5:
                 npc.rejectAvatar(avId)
                 return
             elif isinstance(npc, DistributedNPCSpecialQuestGiverAI):
@@ -541,7 +541,7 @@ def quests(command, arg0=0, arg1=0):
     carrying = len(currQuests) / 5
     canCarry = False
 
-    if (carrying < pocketSize):
+    if carrying < pocketSize:
         canCarry = True
 
     if command == 'clear':

@@ -935,7 +935,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
                         node.detachNode()
                     return Task.done
 
-                def detachNodeLater(node = node):
+                def detachNodeLater(node= node):
                     if node.isEmpty():
                         return
                     center = node.node().getBounds().getCenter()
@@ -1210,7 +1210,8 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         return (track, toHpr)
 
     def getCurTurnSpeed(self):
-        result = ToontownGlobals.BossbotTurnSpeedMax - (ToontownGlobals.BossbotTurnSpeedMax - ToontownGlobals.BossbotTurnSpeedMin) * self.getFractionalSpeedDamage()
+        result = ToontownGlobals.BossbotTurnSpeedMax - (ToontownGlobals.BossbotTurnSpeedMax
+         - ToontownGlobals.BossbotTurnSpeedMin) * self.getFractionalSpeedDamage()
         return result
 
     def getCurRollSpeed(self):

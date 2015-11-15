@@ -519,7 +519,7 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
         self.__loadToonInCannon()
 
     def __destroyToonModels(self):
-        if (0):
+        if 0:
             self.av.dropShadow.show()
             if self.dropShadow != None:
                 self.dropShadow.removeNode()

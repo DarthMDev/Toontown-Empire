@@ -399,7 +399,7 @@ class DistributedDivingGameAI(DistributedMinigameAI):
         if avId in self.treasureHolders:
             self.air.writeServerEvent('suspicious', avId, 'DivingGameAI.pickupTreasure: already holding treasure')
             return
-        if not (0 <= chestId < len(self.treasureHolders)):
+        if not 0 <= chestId < len(self.treasureHolders):
             self.air.writeServerEvent('suspicious', avId, 'DivingGameAI.pickupTreasure: invalid chest requested (#%d)' % chestId)
             return
         if self.treasureHolders[chestId]:

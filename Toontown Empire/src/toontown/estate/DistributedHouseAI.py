@@ -302,7 +302,7 @@ class DistributedHouseAI(DistributedObjectAI):
         self.interior.furnitureManager.loadFromHouse()
     
     def initializeInterior(self):
-        if (not self.isInteriorInitialized):
+        if not self.isInteriorInitialized:
             self.notify.info('Initializing interior...')
             self.interior.initialize()
             self.b_setInteriorInitialized(1)

@@ -39,7 +39,7 @@ class DistributedLawOfficeElevatorIntAI(DistributedElevatorFloorAI.DistributedEl
     def enterClosed(self):
         print 'DistributedLawOfficeElevatorIntAI.elevatorClosed %s' % self.doId
         DistributedElevatorFloorAI.DistributedElevatorFloorAI.enterClosed(self)
-        if not (self.hasOpenedLocked) or not (self.isLocked):
+        if not self.hasOpenedLocked or not self.isLocked:
             self.fsm.request('opening')
             if self.isLocked:
                 self.hasOpenedLocked = 1

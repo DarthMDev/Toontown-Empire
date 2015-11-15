@@ -561,7 +561,7 @@ class GardenDropGame:
         self.frame.destroy()
         del self.frame
 
-        if (GardenGameGlobals.acceptErrorDialog and GardenGameGlobals.acceptErrorDialog.cleanup()):
+        if GardenGameGlobals.acceptErrorDialog and GardenGameGlobals.acceptErrorDialog.cleanup():
             GardenGameGlobals.acceptErrorDialog = 1
 
     def unloadHelp(self):
@@ -581,7 +581,7 @@ class GardenDropGame:
             base.cr.playGame.getPlace().fsm.forceTransition('walk')
 
         self.playGardenDrop()
-        if (hasattr(self, 'frame') and self.frame.hide()):
+        if hasattr(self, 'frame') and self.frame.hide():
             self.unload()
             messenger.send(GardenGameGlobals.doneEvent)
 

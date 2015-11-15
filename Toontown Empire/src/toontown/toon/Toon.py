@@ -30,7 +30,7 @@ from src.toontown.toonbase import TTLocalizer
 from src.toontown.toonbase import ToontownGlobals
 from src.toontown.toon import LaughingManGlobals
 
-def teleportDebug(requestStatus, msg, onlyIfToAv = True):
+def teleportDebug(requestStatus, msg, onlyIfToAv= True):
     if teleportNotify.getDebug():
         teleport = 'teleport'
         if 'how' in requestStatus and requestStatus['how'][:len(teleport)] == teleport:
@@ -241,7 +241,7 @@ def loadBossbotHQAnims():
 def unloadBossbotHQAnims():
     loadPhaseAnims('phase_12', 0)
 
-def loadPhaseAnims(phaseStr = 'phase_3', loadFlag = 1):
+def loadPhaseAnims(phaseStr= 'phase_3', loadFlag= 1):
     if phaseStr == 'phase_3':
         animList = Phase3AnimList
     elif phaseStr == 'phase_3.5':
@@ -340,37 +340,44 @@ def loadDialog():
     for file in catDialogueFiles:
         CatDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
 
-    horseDialogueFiles = ('AV_horse_short', 'AV_horse_med', 'AV_horse_long', 'AV_horse_question', 'AV_horse_exclaim', 'AV_horse_howl')
+    horseDialogueFiles = ('AV_horse_short', 'AV_horse_med', 'AV_horse_long',
+     'AV_horse_question', 'AV_horse_exclaim', 'AV_horse_howl')
     global HorseDialogueArray
     for file in horseDialogueFiles:
         HorseDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
 
-    rabbitDialogueFiles = ('AV_rabbit_short', 'AV_rabbit_med', 'AV_rabbit_long', 'AV_rabbit_question', 'AV_rabbit_exclaim', 'AV_rabbit_howl')
+    rabbitDialogueFiles = ('AV_rabbit_short', 'AV_rabbit_med', 'AV_rabbit_long', 'AV_rabbit_question',
+     'AV_rabbit_exclaim', 'AV_rabbit_howl')
     global RabbitDialogueArray
     for file in rabbitDialogueFiles:
         RabbitDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
 
-    mouseDialogueFiles = ('AV_mouse_short', 'AV_mouse_med', 'AV_mouse_long', 'AV_mouse_question', 'AV_mouse_exclaim', 'AV_mouse_howl')
+    mouseDialogueFiles = ('AV_mouse_short', 'AV_mouse_med', 'AV_mouse_long', 'AV_mouse_question', 'AV_mouse_exclaim',
+     'AV_mouse_howl')
     global MouseDialogueArray
     for file in mouseDialogueFiles:
         MouseDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
 
-    duckDialogueFiles = ('AV_duck_short', 'AV_duck_med', 'AV_duck_long', 'AV_duck_question', 'AV_duck_exclaim', 'AV_duck_howl')
+    duckDialogueFiles = ('AV_duck_short', 'AV_duck_med', 'AV_duck_long', 
+    'AV_duck_question', 'AV_duck_exclaim', 'AV_duck_howl')
     global DuckDialogueArray
     for file in duckDialogueFiles:
         DuckDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
 
-    monkeyDialogueFiles = ('AV_monkey_short', 'AV_monkey_med', 'AV_monkey_long', 'AV_monkey_question', 'AV_monkey_exclaim', 'AV_monkey_howl')
+    monkeyDialogueFiles = ('AV_monkey_short', 'AV_monkey_med', 'AV_monkey_long', 
+    'AV_monkey_question', 'AV_monkey_exclaim', 'AV_monkey_howl')
     global MonkeyDialogueArray
     for file in monkeyDialogueFiles:
         MonkeyDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
 
-    bearDialogueFiles = ('AV_bear_short', 'AV_bear_med', 'AV_bear_long', 'AV_bear_question', 'AV_bear_exclaim', 'AV_bear_howl')
+    bearDialogueFiles = ('AV_bear_short', 'AV_bear_med', 'AV_bear_long', 'AV_bear_question', 'AV_bear_exclaim',
+     'AV_bear_howl')
     global BearDialogueArray
     for file in bearDialogueFiles:
         BearDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
 
-    pigDialogueFiles = ('AV_pig_short', 'AV_pig_med', 'AV_pig_long', 'AV_pig_question', 'AV_pig_exclaim', 'AV_pig_howl')
+    pigDialogueFiles = ('AV_pig_short', 'AV_pig_med', 'AV_pig_long', 'AV_pig_question', 'AV_pig_exclaim',
+     'AV_pig_howl')
     global PigDialogueArray
     for file in pigDialogueFiles:
         PigDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
@@ -407,7 +414,7 @@ class Toon(Avatar.Avatar, ToonHead):
     def __init__(self):
         try:
             self.Toon_initialized
-            return
+            #return
         except:
             self.Toon_initialized = 1
 
@@ -509,7 +516,8 @@ class Toon(Avatar.Avatar, ToonHead):
             if not self.animFSM.isInternalStateInFlux():
                 self.animFSM.request('off')
             else:
-                self.notify.warning('animFSM in flux, state=%s, not requesting off' % self.animFSM.getCurrentState().getName())
+                self.notify.warning('animFSM in flux, state=%s, not requesting off' %\
+                self.animFSM.getCurrentState().getName())
         else:
             self.notify.warning('animFSM has been deleted')
         if self.effectTrack != None:
@@ -561,7 +569,7 @@ class Toon(Avatar.Avatar, ToonHead):
             Avatar.Avatar.delete(self)
             ToonHead.delete(self)
 
-    def updateToonDNA(self, newDNA, fForce = 0):
+    def updateToonDNA(self, newDNA, fForce= 0):
         self.style.gender = newDNA.getGender()
         oldDNA = self.style
         if fForce or newDNA.head != oldDNA.head or newDNA.laughingMan != oldDNA.laughingMan:
@@ -733,7 +741,8 @@ class Toon(Avatar.Avatar, ToonHead):
             animal = self.style.getAnimal()
             bodyScale = ToontownGlobals.toonBodyScales[animal]
             headScale = ToontownGlobals.toonHeadScales[animal][2]
-            shoulderHeight = ToontownGlobals.legHeightDict[self.style.legs] * bodyScale + ToontownGlobals.torsoHeightDict[self.style.torso] * bodyScale
+            shoulderHeight = ToontownGlobals.legHeightDict[self.style.legs] * bodyScale +\
+            ToontownGlobals.torsoHeightDict[self.style.torso] * bodyScale
             height = shoulderHeight + ToontownGlobals.headHeightDict[self.style.head] * headScale
             self.shoulderHeight = shoulderHeight
             if self.cheesyEffect == ToontownGlobals.CEBigToon or self.cheesyEffect == ToontownGlobals.CEBigWhite:
@@ -749,7 +758,7 @@ class Toon(Avatar.Avatar, ToonHead):
                 height *= ToontownGlobals.BeanToonScale
             self.setHeight(height)
 
-    def generateToonLegs(self, copy = 1):
+    def generateToonLegs(self, copy= 1):
         global Preloaded
         legStyle = self.style.legs
         filePrefix = LegDict.get(legStyle)
@@ -770,7 +779,7 @@ class Toon(Avatar.Avatar, ToonHead):
         self.findAllMatches('**/shoes').stash()
         return
 
-    def swapToonLegs(self, legStyle, copy = 1):
+    def swapToonLegs(self, legStyle, copy= 1):
         self.unparentToonParts()
         self.removePart('legs', '1000')
         self.removePart('legs', '500')
@@ -788,7 +797,7 @@ class Toon(Avatar.Avatar, ToonHead):
         self.initializeDropShadow()
         self.initializeNametag3d()
 
-    def generateToonTorso(self, copy = 1, genClothes = 1):
+    def generateToonTorso(self, copy= 1, genClothes= 1):
         global Preloaded
         torsoStyle = self.style.torso
         filePrefix = TorsoDict.get(torsoStyle)
@@ -812,7 +821,7 @@ class Toon(Avatar.Avatar, ToonHead):
             self.generateToonClothes()
         return
 
-    def swapToonTorso(self, torsoStyle, copy = 1, genClothes = 1):
+    def swapToonTorso(self, torsoStyle, copy= 1, genClothes= 1):
         self.unparentToonParts()
         self.removePart('torso', '1000')
         self.removePart('torso', '500')
@@ -829,14 +838,14 @@ class Toon(Avatar.Avatar, ToonHead):
         self.setupToonNodes()
         self.generateBackpack()
 
-    def generateToonHead(self, copy = 1):
+    def generateToonHead(self, copy= 1):
         headHeight = ToonHead.generateToonHead(self, copy, self.style, ('1000', '500', '250'))
         if self.style.getAnimal() == 'dog':
             self.loadAnims(HeadAnimDict[self.style.head], 'head', '1000')
             self.loadAnims(HeadAnimDict[self.style.head], 'head', '500')
             self.loadAnims(HeadAnimDict[self.style.head], 'head', '250')
 
-    def swapToonHead(self, headStyle=-1, laughingMan=0, copy = 1):
+    def swapToonHead(self, headStyle=-1, laughingMan=0, copy= 1):
         self.stopLookAroundNow()
         self.eyelids.request('open')
         self.unparentToonParts()

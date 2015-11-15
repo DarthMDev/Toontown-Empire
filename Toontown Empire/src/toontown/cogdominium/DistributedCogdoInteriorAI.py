@@ -99,7 +99,7 @@ class DistributedCogdoInteriorAI(DistributedObjectAI, FSM.FSM):
         maxStars = min(2, int(math.ceil(difficulty / 5.)))
         minStars = max(0, maxStars - 1)
 
-        while not (minStars <= getStars(v) <= maxStars):
+        while not minStars <= getStars(v) <= maxStars:
             v = g()
 
         self.notify.info('selected SOS %s (stars = %s)' % (v, getStars(v)))
