@@ -1,5 +1,4 @@
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
-import HolidayGlobals
 import datetime
 
 class DistributedEffectMgrAI(DistributedObjectAI):
@@ -12,7 +11,8 @@ class DistributedEffectMgrAI(DistributedObjectAI):
     def getHoliday(self):
         return self.holiday
 
-    def requestEffect(self):
+    #todo fix v
+    """def requestEffect(self):
         if not self.air.newsManager.isHolidayRunning(self.holiday):
             return
 
@@ -40,4 +40,4 @@ class DistributedEffectMgrAI(DistributedObjectAI):
                 av.b_setCheesyEffect(self.effectId, 0, expireTime)
         else:
             av.b_setCheesyEffect(self.effectId, 0, expireTime)
-            self.sendUpdateToAvatarId(avId, 'effectDone', [0])
+            self.sendUpdateToAvatarId(avId, 'effectDone', [0])"""
