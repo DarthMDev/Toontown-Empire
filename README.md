@@ -19,5 +19,6 @@ Official Repo for Toontown Empire, a new Toontown game based on Disney's Toontow
 9. Jacob- 3D Modeler
 10. Trevor- Composor 
 11. King Ned- Server Security
+12. EpicrockersMC- Moderator
 
 # Do not push broken code to the master branch, because it messes up the game and makes it harder for the developers to add features, and fix bugs in the game! When you revert something broken, please post the crash to make life easier for the coders.
