@@ -231,7 +231,7 @@ find_stashed(PandaNode *node, Thread *current_thread) const {
 //               level, and has nothing to do with what render
 //               attributes may be inherited from parent nodes.
 ////////////////////////////////////////////////////////////////////
-INLINE CPT(RenderAttrib) PandaNode::
+INLINE const RenderAttrib *PandaNode::
 get_attrib(TypeHandle type) const {
   CDReader cdata(_cycler);
   return cdata->_state->get_attrib(type);
@@ -246,7 +246,7 @@ get_attrib(TypeHandle type) const {
 //               level, and has nothing to do with what render
 //               attributes may be inherited from parent nodes.
 ////////////////////////////////////////////////////////////////////
-INLINE CPT(RenderAttrib) PandaNode::
+INLINE const RenderAttrib *PandaNode::
 get_attrib(int slot) const {
   CDReader cdata(_cycler);
   return cdata->_state->get_attrib(slot);
@@ -299,7 +299,7 @@ clear_attrib(TypeHandle type) {
 //  Description: Returns the render effect of the indicated type,
 //               if it is defined on the node, or NULL if it is not.
 ////////////////////////////////////////////////////////////////////
-INLINE CPT(RenderEffect) PandaNode::
+INLINE const RenderEffect *PandaNode::
 get_effect(TypeHandle type) const {
   CDReader cdata(_cycler);
   int index = cdata->_effects->find_effect(type);
@@ -332,10 +332,10 @@ has_effect(TypeHandle type) const {
 //               particular node, and has nothing to do with state
 //               that might be inherited from above.
 ////////////////////////////////////////////////////////////////////
-INLINE CPT(RenderState) PandaNode::
+INLINE const RenderState *PandaNode::
 get_state(Thread *current_thread) const {
   CDReader cdata(_cycler, current_thread);
-  return cdata->_state.p();
+  return cdata->_state;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -357,7 +357,7 @@ clear_state(Thread *current_thread) {
 //  Description: Returns the complete RenderEffects that will be
 //               applied to this node.
 ////////////////////////////////////////////////////////////////////
-INLINE CPT(RenderEffects) PandaNode::
+INLINE const RenderEffects *PandaNode::
 get_effects(Thread *current_thread) const {
   CDReader cdata(_cycler, current_thread);
   return cdata->_effects;
@@ -381,10 +381,10 @@ clear_effects(Thread *current_thread) {
 //               the root, but simply the transform on this particular
 //               node.
 ////////////////////////////////////////////////////////////////////
-INLINE CPT(TransformState) PandaNode::
+INLINE const TransformState *PandaNode::
 get_transform(Thread *current_thread) const {
   CDReader cdata(_cycler, current_thread);
-  return cdata->_transform.p();
+  return cdata->_transform;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -405,10 +405,10 @@ clear_transform(Thread *current_thread) {
 //               node's "previous" position.  See
 //               set_prev_transform().
 ////////////////////////////////////////////////////////////////////
-INLINE CPT(TransformState) PandaNode::
+const TransformState *PandaNode::
 get_prev_transform(Thread *current_thread) const {
   CDReader cdata(_cycler, current_thread);
-  return cdata->_prev_transform.p();
+  return cdata->_prev_transform;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -632,14 +632,14 @@ get_internal_vertices(Thread *current_thread) const {
 //     Function: PandaNode::is_bounds_stale
 //       Access: Published
 //  Description: Returns true if the bounding volume of this node is
-//               stale and will be implicitly recomputed at the next
-//               call to get_bounds(), or false if it is fresh and
-//               need not be recomputed.
+//                stale and will be implicitly recomputed at the next
+//                call to get_bounds(), or false if it is fresh and
+//                need not be recomputed.
 ////////////////////////////////////////////////////////////////////
 bool PandaNode::
 is_bounds_stale() const {
   CDReader cdata(_cycler);
-  return (cdata->_last_bounds_update != cdata->_next_update);
+  return (cdata->_last_update != cdata->_next_update);
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -721,19 +721,18 @@ get_user_bounds(int pipeline_stage, Thread *current_thread) const {
 ////////////////////////////////////////////////////////////////////
 INLINE void PandaNode::
 mark_bounds_stale(int pipeline_stage, Thread *current_thread) const {
-  // We check whether it is already marked stale.  If so, we don't have
-  // to make the call to force_bounds_stale().
+  // It's important that we don't hold the lock during the call to
+  // force_bounds_stale().
   bool is_stale_bounds;
   {
     CDStageReader cdata(_cycler, pipeline_stage, current_thread);
     is_stale_bounds = (cdata->_last_update != cdata->_next_update);
   }
-  // It's important that we don't hold the lock during the call to
-  // force_bounds_stale().
   if (!is_stale_bounds) {
     ((PandaNode *)this)->force_bounds_stale(pipeline_stage, current_thread);
   }
 }
+
 
 ////////////////////////////////////////////////////////////////////
 //     Function: PandaNode::mark_internal_bounds_stale
@@ -908,7 +907,7 @@ operator < (const DownConnection &other) const {
 ////////////////////////////////////////////////////////////////////
 //     Function: PandaNode::DownConnection::get_child
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE PandaNode *PandaNode::DownConnection::
 get_child() const {
@@ -928,7 +927,7 @@ set_child(PandaNode *child) {
 ////////////////////////////////////////////////////////////////////
 //     Function: PandaNode::DownConnection::get_sort
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE int PandaNode::DownConnection::
 get_sort() const {
@@ -964,7 +963,7 @@ operator < (const UpConnection &other) const {
 ////////////////////////////////////////////////////////////////////
 //     Function: PandaNode::UpConnection::get_parent
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE PandaNode *PandaNode::UpConnection::
 get_parent() const {
@@ -1131,29 +1130,6 @@ operator = (const PandaNode::Children &copy) {
   _down = copy._down;
 }
 
-#ifdef USE_MOVE_SEMANTICS
-////////////////////////////////////////////////////////////////////
-//     Function: PandaNode::Children::Move Constructor
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-INLINE PandaNode::Children::
-Children(PandaNode::Children &&from) NOEXCEPT :
-  _down(move(from._down))
-{
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: PandaNode::Children::Move Assignment Operator
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-INLINE void PandaNode::Children::
-operator = (PandaNode::Children &&from) NOEXCEPT {
-  _down = move(from._down);
-}
-#endif  // USE_MOVE_SEMANTICS
-
 ////////////////////////////////////////////////////////////////////
 //     Function: PandaNode::Children::get_num_children
 //       Access: Public
@@ -1232,29 +1208,6 @@ operator = (const PandaNode::Stashed &copy) {
   _stashed = copy._stashed;
 }
 
-#ifdef USE_MOVE_SEMANTICS
-////////////////////////////////////////////////////////////////////
-//     Function: PandaNode::Stashed::Move Constructor
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-INLINE PandaNode::Stashed::
-Stashed(PandaNode::Stashed &&from) NOEXCEPT :
-  _stashed(move(from._stashed))
-{
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: PandaNode::Stashed::Move Assignment Operator
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-INLINE void PandaNode::Stashed::
-operator = (PandaNode::Stashed &&from) NOEXCEPT {
-  _stashed = move(from._stashed);
-}
-#endif  // USE_MOVE_SEMANTICS
-
 ////////////////////////////////////////////////////////////////////
 //     Function: PandaNode::Stashed::get_num_stashed
 //       Access: Public
@@ -1332,29 +1285,6 @@ INLINE void PandaNode::Parents::
 operator = (const PandaNode::Parents &copy) {
   _up = copy._up;
 }
-
-#ifdef USE_MOVE_SEMANTICS
-////////////////////////////////////////////////////////////////////
-//     Function: PandaNode::Parents::Move Constructor
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-INLINE PandaNode::Parents::
-Parents(PandaNode::Parents &&from) NOEXCEPT :
-  _up(move(from._up))
-{
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: PandaNode::Parents::Move Assignment Operator
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-INLINE void PandaNode::Parents::
-operator = (PandaNode::Parents &&from) NOEXCEPT {
-  _up = move(from._up);
-}
-#endif  // USE_MOVE_SEMANTICS
 
 ////////////////////////////////////////////////////////////////////
 //     Function: PandaNode::Parents::get_num_parents
@@ -1835,7 +1765,7 @@ get_off_clip_planes() const {
 ////////////////////////////////////////////////////////////////////
 INLINE CPT(BoundingVolume) PandaNodePipelineReader::
 get_bounds() const {
-  nassertr(_cdata->_last_bounds_update == _cdata->_next_update, _cdata->_external_bounds);
+  nassertr(_cdata->_last_update == _cdata->_next_update, _cdata->_external_bounds);
   return _cdata->_external_bounds;
 }
 
@@ -1854,7 +1784,7 @@ get_bounds() const {
 ////////////////////////////////////////////////////////////////////
 INLINE int PandaNodePipelineReader::
 get_nested_vertices() const {
-  nassertr(_cdata->_last_bounds_update == _cdata->_next_update, _cdata->_nested_vertices);
+  nassertr(_cdata->_last_update == _cdata->_next_update, _cdata->_nested_vertices);
   return _cdata->_nested_vertices;
 }
 
@@ -1946,7 +1876,7 @@ get_parents() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: PandaNode::BamReaderAuxDataDown::Constructor
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE PandaNode::BamReaderAuxDataDown::
 BamReaderAuxDataDown() :

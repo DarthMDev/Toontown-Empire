@@ -45,7 +45,6 @@
 
 #define LCAST(numeric_type, object) lcast_to((numeric_type *)0, object)
 
-BEGIN_PUBLISH
 
 // Now we define some handy typedefs for these classes.
 typedef LPoint3f LVertexf;
@@ -185,7 +184,5 @@ typedef LQuaterniond Quat;
 #endif // CPPPARSER
 
 #endif  // STDFLOAT_DOUBLE
-
-END_PUBLISH
 
 #endif

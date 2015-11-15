@@ -1,11 +1,14 @@
-from panda3d.core import TrueClock
+from pandac.libpandaexpressModules import TrueClock
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.showbase.PythonUtil import (
     StdoutCapture, _installProfileCustomFuncs,_removeProfileCustomFuncs,
-    _getProfileResultFileInfo, _setProfileResultsFileInfo)
+    _profileWithoutGarbageLeak, _getProfileResultFileInfo, _setProfileResultsFileInfo,
+    _clearProfileResultFileInfo, )
 import __builtin__
 import profile
 import pstats
+from StringIO import StringIO
+import marshal
 
 class PercentStats(pstats.Stats):
     # prints more useful output when sampled durations are shorter than a millisecond

@@ -26,7 +26,7 @@ class IndexRemapper;
 // Description : An internal representation of a data element, like a
 //               data member or a global variable.
 ////////////////////////////////////////////////////////////////////
-class EXPCL_INTERROGATEDB InterrogateElement : public InterrogateComponent {
+class EXPCL_DTOOLCONFIG InterrogateElement : public InterrogateComponent {
 public:
   INLINE InterrogateElement(InterrogateModuleDef *def = NULL);
   INLINE InterrogateElement(const InterrogateElement &copy);
@@ -36,9 +36,6 @@ public:
 
   INLINE bool has_scoped_name() const;
   INLINE const string &get_scoped_name() const;
-
-  INLINE bool has_comment() const;
-  INLINE const string &get_comment() const;
 
   INLINE TypeIndex get_type() const;
   INLINE bool has_getter() const;
@@ -60,7 +57,6 @@ private:
 
   int _flags;
   string _scoped_name;
-  string _comment;
   TypeIndex _type;
   FunctionIndex _getter;
   FunctionIndex _setter;

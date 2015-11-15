@@ -3,19 +3,18 @@ within a Panda3D Multifile, which can be easily be downloaded and/or
 patched onto a client machine, for the purpose of running a large
 application. """
 
-__all__ = ["Packager", "PackagerError", "OutsideOfPackageError", "ArgumentError"]
-
 # Important to import panda3d first, to avoid naming conflicts with
 # Python's "string" and "Loader" names that are imported later.
 from panda3d.core import *
 import sys
 import os
 import glob
+import marshal
 import string
 import types
 import getpass
+import platform
 import struct
-import subprocess
 from direct.p3d.FileSpec import FileSpec
 from direct.p3d.SeqValue import SeqValue
 from direct.showbase import Loader
@@ -59,7 +58,7 @@ class Packager:
             self.required = required
 
             if not self.newName:
-                self.newName = str(self.filename)
+                self.newName = self.filename.cStr()
 
             ext = Filename(self.newName).getExtension()
             if ext == 'pz':
@@ -67,7 +66,7 @@ class Packager:
                 # within the Multifile without it.
                 filename = Filename(self.newName)
                 filename.setExtension('')
-                self.newName = str(filename)
+                self.newName = filename.cStr()
                 ext = Filename(self.newName).getExtension()
                 if self.compress is None:
                     self.compress = True
@@ -81,8 +80,8 @@ class Packager:
 
             if self.executable and self.dependencyDir is None:
                 # By default, install executable dependencies in the
-                # root directory, which is the one that's added to PATH.
-                self.dependencyDir = ''
+                # same directory with the executable itself.
+                self.dependencyDir = Filename(self.newName).getDirname()
 
             if self.extract is None:
                 self.extract = self.executable or (ext in packager.extractExtensions)
@@ -94,13 +93,13 @@ class Packager:
 
             if self.executable:
                 # Look up the filename along the system PATH, if necessary.
-                if not packager.resolveLibrary(self.filename):
+                if not self.filename.resolveFilename(packager.executablePath):
                     # If it wasn't found, try looking it up under its
                     # basename only.  Sometimes a Mac user will copy
                     # the library file out of a framework and put that
                     # along the PATH, instead of the framework itself.
                     basename = Filename(self.filename.getBasename())
-                    if packager.resolveLibrary(basename):
+                    if basename.resolveFilename(packager.executablePath):
                         self.filename = basename
 
             if ext in packager.textExtensions and not self.executable:
@@ -157,7 +156,7 @@ class Packager:
             if not self.localOnly:
                 filename = Filename(filename)
                 filename.makeCanonical()
-            self.glob = GlobPattern(str(filename))
+            self.glob = GlobPattern(filename.cStr())
 
             if self.packager.platform.startswith('win'):
                 self.glob.setCaseSensitive(False)
@@ -168,7 +167,7 @@ class Packager:
             if self.localOnly:
                 return self.glob.matches(filename.getBasename())
             else:
-                return self.glob.matches(str(filename))
+                return self.glob.matches(filename.cStr())
 
     class PackageEntry:
         """ This corresponds to a <package> entry in the contents.xml
@@ -587,9 +586,9 @@ class Packager:
                     # (i.e. missing) modules.
                     continue
 
-                #if newName == '__main__':
-                #    # Ignore this special case.
-                #    continue
+                if newName == '__main__':
+                    # Ignore this special case.
+                    continue
 
                 self.moduleNames[newName] = mdef
 
@@ -938,7 +937,7 @@ class Packager:
                         # means we should include the manifest
                         # file itself in the package.
                         newName = Filename(file.dependencyDir, mfile.getBasename())
-                        self.addFile(mfile, newName = str(newName),
+                        self.addFile(mfile, newName = newName.cStr(),
                                      explicit = False, executable = True)
 
                     if afilenames is None and out != 31:
@@ -958,7 +957,7 @@ class Packager:
                     filename.makeTrueCase()
 
                     newName = Filename(file.dependencyDir, filename.getBasename())
-                    self.addFile(filename, newName = str(newName),
+                    self.addFile(filename, newName = newName.cStr(),
                                  explicit = False, executable = True)
 
         def __parseDependenciesWindows(self, tempFile):
@@ -1119,19 +1118,14 @@ class Packager:
                     # Skip this file.
                     continue
 
-                origFilename = Filename(file.filename)
-
                 tempFile = Filename.temporary('', 'p3d_', '.txt')
                 command = '/usr/bin/otool -arch all -L "%s" >"%s"' % (
-                    origFilename.toOsSpecific(),
+                    file.filename.toOsSpecific(),
                     tempFile.toOsSpecific())
                 if self.arch:
-                    arch = self.arch
-                    if arch == "amd64":
-                        arch = "x86_64"
                     command = '/usr/bin/otool -arch %s -L "%s" >"%s"' % (
-                        arch,
-                        origFilename.toOsSpecific(),
+                        self.arch,
+                        file.filename.toOsSpecific(),
                         tempFile.toOsSpecific())
                 exitStatus = os.system(command)
                 if exitStatus != 0:
@@ -1142,13 +1136,13 @@ class Packager:
                     filenames = self.__parseDependenciesOSX(tempFile)
                     tempFile.unlink()
                 if filenames is None:
-                    self.notify.warning("Unable to determine dependencies from %s" % (origFilename))
+                    self.notify.warning("Unable to determine dependencies from %s" % (file.filename))
                     continue
 
                 # Attempt to resolve the dependent filename relative
                 # to the original filename, before we resolve it along
                 # the PATH.
-                path = DSearchPath(Filename(origFilename.getDirname()))
+                path = DSearchPath(Filename(file.filename.getDirname()))
 
                 # Find the dependencies that are referencing a framework
                 framework_deps = []
@@ -1161,10 +1155,7 @@ class Packager:
                     self.__alterFrameworkDependencies(file, framework_deps)
 
                 for filename in filenames:
-                    if '@loader_path' in filename:
-                        filename = filename.replace('@loader_path', origFilename.getDirname())
-
-                    if False and '.framework/' in filename:
+                    if '.framework/' in filename:
                         # It references a framework, and besides the fact
                         # that those often contain absolute paths, they
                         # aren't commonly on the library path either.
@@ -1181,7 +1172,7 @@ class Packager:
                             # It's a fully-specified filename; look
                             # for it under the system root first.
                             if self.packager.systemRoot:
-                                f2 = Filename(self.packager.systemRoot, filename)
+                                f2 = Filename(self.packager.systemRoot + filename.cStr())
                                 if f2.exists():
                                     filename = f2
 
@@ -1190,7 +1181,7 @@ class Packager:
                         continue
 
                     newName = Filename(file.dependencyDir, filename.getBasename())
-                    self.addFile(filename, newName = str(newName),
+                    self.addFile(filename, newName = newName.cStr(),
                                  explicit = False, executable = True)
 
         def __parseDependenciesOSX(self, tempFile):
@@ -1355,7 +1346,6 @@ class Packager:
 
                 # If that failed, perhaps ldd will help us.
                 if filenames is None:
-                    self.notify.warning("Reading ELF library %s failed, using ldd instead" % (file.filename))
                     tempFile = Filename.temporary('', 'p3d_', '.txt')
                     command = 'ldd "%s" >"%s"' % (
                         file.filename.toOsSpecific(),
@@ -1389,7 +1379,7 @@ class Packager:
                     filename.setBinary()
 
                     newName = Filename(file.dependencyDir, filename.getBasename())
-                    self.addFile(filename, newName = str(newName),
+                    self.addFile(filename, newName = newName.cStr(),
                                  explicit = False, executable = True)
 
         def __parseDependenciesPosix(self, tempFile):
@@ -1480,7 +1470,7 @@ class Packager:
             # compatible with older versions of the core API that
             # didn't understand the SF_text flag.
             filename.setBinary()
-
+            
             doc.SaveFile(filename.toOsSpecific())
 
             # It's important not to compress this file: the core API
@@ -1782,6 +1772,8 @@ class Packager:
 
             return xspec
 
+
+
         def addPyFile(self, file):
             """ Adds the indicated python file, identified by filename
             instead of by module name, to the package. """
@@ -1801,18 +1793,6 @@ class Packager:
                 # deal with it again.
                 return
 
-            # Make sure that it is actually in a package.
-            parentName = moduleName
-            while '.' in parentName:
-                parentName = parentName.rsplit('.', 1)[0]
-                if parentName not in self.freezer.modules:
-                    message = 'Cannot add Python file %s; not in package' % (file.newName)
-                    if file.required or file.explicit:
-                        raise StandardError, message
-                    else:
-                        self.notify.warning(message)
-                    return
-
             self.freezer.addModule(moduleName, filename = file.filename)
 
         def addEggFile(self, file):
@@ -1823,7 +1803,7 @@ class Packager:
 
             bamName = Filename(file.newName)
             bamName.setExtension('bam')
-            self.addNode(np.node(), file.filename, str(bamName))
+            self.addNode(np.node(), file.filename, bamName.cStr())
 
         def addBamFile(self, file):
             # Load the bam file so we can massage its textures.
@@ -2090,10 +2070,6 @@ class Packager:
             # particular architecture, use lipo to strip out the
             # part of the file for that architecture.
 
-            arch = self.arch
-            if arch == "amd64":
-                arch = "x86_64"
-
             # First, we need to verify that it is in fact a
             # universal binary.
             tfile = Filename.temporary('', 'p3d_')
@@ -2119,24 +2095,25 @@ class Packager:
                 arches = lipoData.rsplit(':', 1)[1]
                 arches = arches.split()
 
-            if arches == [arch]:
+            if arches == [self.arch]:
                 # The file only contains the one architecture that
                 # we want anyway.
                 file.filename.setBinary()
                 self.multifile.addSubfile(file.newName, file.filename, compressionLevel)
                 return True
 
-            if arch not in arches:
+            if self.arch not in arches:
                 # The file doesn't support the architecture that we
                 # want at all.  Omit the file.
                 self.notify.warning("%s doesn't support architecture %s" % (
                     file.filename, self.arch))
                 return False
 
+
             # The file contains multiple architectures.  Get
             # out just the one we want.
             command = '/usr/bin/lipo -thin %s -output "%s" "%s"' % (
-                arch, tfile.toOsSpecific(),
+                self.arch, tfile.toOsSpecific(),
                 file.filename.toOsSpecific())
             exitStatus = os.system(command)
             if exitStatus != 0:
@@ -2230,9 +2207,6 @@ class Packager:
         cvar = ConfigVariableSearchPath('pdef-path')
         self.installSearch = list(map(Filename, cvar.getDirectories()))
 
-        # This is where we cache the location of libraries.
-        self.libraryCache = {}
-
         # The system PATH, for searching dll's and exe's.
         self.executablePath = DSearchPath()
 
@@ -2245,36 +2219,22 @@ class Packager:
         # Now add the actual system search path.
         if self.platform.startswith('win'):
             self.addWindowsSearchPath(self.executablePath, "PATH")
-
-        else:
-            if self.platform.startswith('osx'):
-                self.addPosixSearchPath(self.executablePath, "DYLD_LIBRARY_PATH")
-
+        elif self.platform.startswith('osx'):
+            self.addPosixSearchPath(self.executablePath, "DYLD_LIBRARY_PATH")
             self.addPosixSearchPath(self.executablePath, "LD_LIBRARY_PATH")
             self.addPosixSearchPath(self.executablePath, "PATH")
+            self.executablePath.appendDirectory('/lib')
+            self.executablePath.appendDirectory('/usr/lib')
+            self.executablePath.appendDirectory('/usr/local/lib')
+        else:
+            self.addPosixSearchPath(self.executablePath, "LD_LIBRARY_PATH")
+            self.addPosixSearchPath(self.executablePath, "PATH")
+            self.executablePath.appendDirectory('/lib')
+            self.executablePath.appendDirectory('/usr/lib')
+            self.executablePath.appendDirectory('/usr/local/lib')
 
-            if self.platform.startswith('linux'):
-                # It used to be okay to just add some common paths on Linux.
-                # But nowadays, each distribution has their own convention for
-                # where they put their libraries.  Instead, we query the ldconfig
-                # cache, which contains the location of all libraries.
-
-                if not self.loadLdconfigCache():
-                    # Ugh, failure.  All that remains is to guess.  This should
-                    # work for the most common Debian configurations.
-                    multiarchDir = "/lib/%s-linux-gnu" % (os.uname()[4])
-                    if os.path.isdir(multiarchDir):
-                        self.executablePath.appendDirectory(multiarchDir)
-                    if os.path.isdir("/usr/" + multiarchDir):
-                        self.executablePath.appendDirectory("/usr/" + multiarchDir)
-
-            else:
-                # FreeBSD, or some other system that still makes sense.
-                self.executablePath.appendDirectory('/lib')
-                self.executablePath.appendDirectory('/usr/lib')
-                self.executablePath.appendDirectory('/usr/local/lib')
-
-        if self.platform.startswith('freebsd') and os.uname()[1] == "pcbsd":
+        import platform
+        if platform.uname()[1]=="pcbsd":
             self.executablePath.appendDirectory('/usr/PCBSD/local/lib')
 
         # Set this flag true to automatically add allow_python_dev to
@@ -2400,8 +2360,7 @@ class Packager:
             'shell32.dll', 'ntdll.dll', 'ws2help.dll', 'rpcrt4.dll',
             'imm32.dll', 'ddraw.dll', 'shlwapi.dll', 'secur32.dll',
             'dciman32.dll', 'comdlg32.dll', 'comctl32.dll', 'ole32.dll',
-            'oleaut32.dll', 'gdiplus.dll', 'winmm.dll', 'iphlpapi.dll',
-            'msvcrt.dll', 'kernelbase.dll', 'msimg32.dll', 'msacm32.dll',
+            'oleaut32.dll', 'gdiplus.dll', 'winmm.dll',
 
             'libsystem.b.dylib', 'libmathcommon.a.dylib', 'libmx.a.dylib',
             'libstdc++.6.dylib', 'libobjc.a.dylib', 'libauto.dylib',
@@ -2411,7 +2370,6 @@ class Packager:
         # filenames.
         self.excludeSystemGlobs = [
             GlobPattern('d3dx9_*.dll'),
-            GlobPattern('api-ms-win-*.dll'),
 
             GlobPattern('libGL.so*'),
             GlobPattern('libGLU.so*'),
@@ -2430,7 +2388,6 @@ class Packager:
             GlobPattern('libpthread.so*'),
             GlobPattern('libthr.so*'),
             GlobPattern('ld-linux.so*'),
-            GlobPattern('ld-linux-*.so*'),
             ]
 
         # A Loader for loading models.
@@ -2447,60 +2404,6 @@ class Packager:
         # A list of PackageEntry objects read from the contents.xml
         # file.
         self.contents = {}
-
-    def loadLdconfigCache(self):
-        """ On GNU/Linux, runs ldconfig -p to find out where all the
-        libraries on the system are located.  Assumes that the platform
-        has already been set. """
-
-        if not os.path.isfile('/sbin/ldconfig'):
-            return False
-
-        handle = subprocess.Popen(['/sbin/ldconfig', '-p'], stdout=subprocess.PIPE)
-        out, err = handle.communicate()
-
-        if handle.returncode != 0:
-            self.notify.warning("/sbin/ldconfig -p returned code %d" %(handle.returncode))
-            return False
-
-        for line in out.splitlines():
-            if '=>' not in line:
-                continue
-
-            prefix, location = line.rsplit('=>', 1)
-            prefix = prefix.strip()
-            location = location.strip()
-
-            if not location or not prefix or ' ' not in prefix:
-                self.notify.warning("Ignoring malformed ldconfig -p line: " + line)
-                continue
-
-            lib, opts = prefix.split(' ', 1)
-            if ('x86-64' in opts) != self.platform.endswith('_amd64'):
-                # This entry isn't meant for our architecture.  I think
-                # x86-64 is the only platform where ldconfig supplies
-                # this extra arch string.
-                continue
-
-            self.libraryCache[lib] = Filename.fromOsSpecific(location)
-
-        return True
-
-    def resolveLibrary(self, filename):
-        """ Resolves the given shared library filename along the executable path,
-        or by cross-referencing it with the library cache. """
-
-        path = str(filename)
-
-        if path in self.libraryCache:
-            filename.setFullpath(self.libraryCache[path].getFullpath())
-            return True
-
-        if filename.resolveFilename(self.executablePath):
-            self.libraryCache[path] = Filename(filename)
-            return True
-
-        return False
 
     def setPlatform(self, platform = None):
         """ Sets the platform that this Packager will compute for.  On
@@ -3240,17 +3143,9 @@ class Packager:
         for moduleName in args:
             self.currentPackage.freezer.excludeModule(moduleName)
 
-    def do_main(self, filename):
-        """ Includes the indicated file as __main__ module of the application.
-        Also updates mainModule to point to this module. """
-
-        self.addModule(['__main__'], '__main__', filename, required = True)
-        self.currentPackage.mainModule = ('__main__', '__main__')
-
     def do_mainModule(self, moduleName, newName = None, filename = None):
         """ Names the indicated module as the "main" module of the
-        application or exe.  In most cases, you will want to use main()
-        instead. """
+        application or exe. """
 
         if not self.currentPackage:
             raise OutsideOfPackageError
@@ -3267,7 +3162,7 @@ class Packager:
             newFilename = Filename('/'.join(moduleName.split('.')))
             newFilename.setExtension(filename.getExtension())
             self.currentPackage.addFile(
-                filename, newName = str(newFilename),
+                filename, newName = newFilename.cStr(),
                 explicit = True, extract = True, required = True)
 
         self.currentPackage.mainModule = (moduleName, newName)
@@ -3299,9 +3194,7 @@ class Packager:
         # Multifile, so this file can't itself be in the Multifile.
 
         # This requires a bit of care, because we only want to freeze
-        # VFSImporter.py, and not any other part of direct.  We do
-        # also want panda3d/__init__.py, though, since it would
-        # otherwise be part of the multifile.
+        # VFSImporter.py, and not any other part of direct.
         self.do_excludeModule('direct')
 
         # Import the actual VFSImporter module to get its filename on
@@ -3312,7 +3205,7 @@ class Packager:
         self.do_module('VFSImporter', filename = filename)
         self.do_freeze('_vfsimporter', compileToExe = False)
 
-        self.do_file('panda3d/core.pyd');
+        self.do_file('libpandaexpress.dll');
 
         # Now that we're done freezing, explicitly add 'direct' to
         # counteract the previous explicit excludeModule().
@@ -3545,13 +3438,13 @@ class Packager:
                     # build.
                     dllFilename = Filename(filename)
                     dllFilename.setExtension('so')
-                    dllFilename = Filename.dsoFilename(str(dllFilename))
+                    dllFilename = Filename.dsoFilename(dllFilename.cStr())
                     if dllFilename != filename:
                         thisFiles = glob.glob(filename.toOsSpecific())
                         if not thisFiles:
                             # We have to resolve this filename to
                             # determine if it's a _d or not.
-                            if self.resolveLibrary(dllFilename):
+                            if dllFilename.resolveFilename(self.executablePath):
                                 thisFiles = [dllFilename.toOsSpecific()]
                             else:
                                 thisFiles = [filename.toOsSpecific()]
@@ -3562,7 +3455,7 @@ class Packager:
 
         prefix = ''
         if newDir is not None:
-            prefix = str(Filename(newDir))
+            prefix = Filename(newDir).cStr()
             if prefix and prefix[-1] != '/':
                 prefix += '/'
 
@@ -3634,22 +3527,13 @@ class Packager:
         sys.path.append(dirname.toOsSpecific())
         self.__recurseDir(dirname, newDir, unprocessed = unprocessed)
 
-    def __recurseDir(self, filename, newName, unprocessed = None, packageTree = None):
+    def __recurseDir(self, filename, newName, unprocessed = None):
         dirList = vfs.scanDirectory(filename)
         if dirList:
             # It's a directory name.  Recurse.
             prefix = newName
             if prefix and prefix[-1] != '/':
                 prefix += '/'
-
-            # First check if this is a Python package tree.  If so, add it
-            # implicitly as a module.
-            for subfile in dirList:
-                filename = subfile.getFilename()
-                if filename.getBasename() == '__init__.py':
-                    moduleName = newName.replace("/", ".")
-                    self.addModule([moduleName], filename=filename)
-
             for subfile in dirList:
                 filename = subfile.getFilename()
                 self.__recurseDir(filename, prefix + filename.getBasename(),
@@ -3666,7 +3550,7 @@ class Packager:
                 # Strip off an implicit .pz extension.
                 newFilename = Filename(filename)
                 newFilename.setExtension('')
-                newFilename = Filename(str(newFilename))
+                newFilename = Filename(newFilename.cStr())
                 ext = newFilename.getExtension()
 
             if ext in self.knownExtensions:

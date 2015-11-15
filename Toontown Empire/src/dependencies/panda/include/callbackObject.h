@@ -38,8 +38,6 @@ public:
 PUBLISHED:
   virtual void output(ostream &out) const;
 
-  EXTENSION(static PT(CallbackObject) make(PyObject *function));
-
 public:
   virtual void do_callback(CallbackData *cbdata);
 

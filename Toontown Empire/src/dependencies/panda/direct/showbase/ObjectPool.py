@@ -6,6 +6,7 @@ from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.showbase.PythonUtil import invertDictLossless, makeList, safeRepr
 from direct.showbase.PythonUtil import getNumberedTypedString, getNumberedTypedSortedString
 from direct.showbase.PythonUtil import getNumberedTypedSortedStringWithReferrersGen
+import types
 import gc
 
 class Diff:

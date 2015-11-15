@@ -1,7 +1,8 @@
 import wx
+import os
 from wx.lib.agw import fourwaysplitter as FWS
 
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.showbase.ShowBase import *
 from direct.directtools.DirectGlobals import *
 

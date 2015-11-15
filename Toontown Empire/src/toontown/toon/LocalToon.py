@@ -163,6 +163,9 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.accept(self.systemMsgAckGuiDoneEvent, self.hideSystemMsgAckGui)
             self.systemMsgAckGui = None
             self.createSystemMsgAckGui()
+            if not hasattr(base.cr, 'lastLoggedIn'):
+                base.cr.lastLoggedIn = self.cr.toontownTimeManager.convertStrToToontownTime('')            
+            self.setLastTimeReadNews(base.cr.lastLoggedIn)
             self.acceptingNewFriends = True
             self.acceptingNonFriendWhispers = True
             self.physControls.event.addAgainPattern('again%in')
@@ -1018,8 +1021,8 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         else:
             zoneId = '?'
         strPosCoordText = 'X: %.3f' % pos[0] + ', Y: %.3f' % pos[1] + '\nZ: %.3f' % pos[2] + ', H: %.3f' % hpr[0] + '\nZone: %s' % str(zoneId) + ', Ver: %s, ' % serverVersion + 'District: %s' % districtName
-        return strPosCoordText
         self.refreshOnscreenButtons()
+        return strPosCoordText
         return
 
     def thinkPos(self):
@@ -1761,7 +1764,11 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         elif av:
             self.notify.warning('setSleepAutoReply from non-toon %s' % fromId)
 
+    def setLastTimeReadNews(self, newTime):
+        self.lastTimeReadNews = newTime
 
+    def getLastTimeReadNews(self):
+        return self.lastTimeReadNews
 
     def cheatCogdoMazeGame(self, kindOfCheat = 0):
         if base.config.GetBool('allow-cogdo-maze-suit-hit-cheat'):
@@ -1870,5 +1877,4 @@ def animation(anim):
     invoker.enterCatching()
   else: 
     return 'Animation is Invalid.'
-
 

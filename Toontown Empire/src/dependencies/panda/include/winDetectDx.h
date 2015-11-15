@@ -38,7 +38,10 @@ static DISPLAY_FORMAT display_format_array [ ] = {
   D3DFMT_R5G6B5,      16, FALSE,
   D3DFMT_X1R5G5B5,    16, FALSE,
 
+#if DX8 
+#else
   D3DFMT_A2R10G10B10, 32, TRUE,
+#endif
 
   // terminator
   D3DFMT_UNKNOWN,      0, FALSE,
@@ -223,7 +226,7 @@ static int get_display_information (DisplaySearchParameters &display_search_para
           get_adapter_display_mode_state = true;
         }
         else {
-          get_adapter_display_mode_state = false;
+          get_adapter_display_mode_state = false;    
         }
 
         flags = 0;
@@ -231,7 +234,10 @@ static int get_display_information (DisplaySearchParameters &display_search_para
           // print adapter info
           d3d_adapter_identifier.Driver;
           d3d_adapter_identifier.Description;
+          #if DX8 
+          #else
           d3d_adapter_identifier.DeviceName;
+          #endif
           d3d_adapter_identifier.DriverVersion;
           d3d_adapter_identifier.VendorId;
           d3d_adapter_identifier.DeviceId;
@@ -239,12 +245,12 @@ static int get_display_information (DisplaySearchParameters &display_search_para
           d3d_adapter_identifier.Revision;
           d3d_adapter_identifier.DeviceIdentifier;
           d3d_adapter_identifier.WHQLLevel;
-
+          
           if (debug) {
             printf ("Driver: %s\n", d3d_adapter_identifier.Driver);
             printf ("Description: %s\n", d3d_adapter_identifier.Description);
           }
-
+          
           char system_directory [MAX_PATH];
           char dll_file_path [MAX_PATH];
 
@@ -332,6 +338,9 @@ static int get_display_information (DisplaySearchParameters &display_search_para
 
         if (direct_3d -> GetDeviceCaps (adapter, device_type, &d3d_caps) == D3D_OK) {
 
+#if DX8
+          // shaders not supported in DX8
+#else
           int vertex_shader_version_major;
           int vertex_shader_version_minor;
           int pixel_shader_version_major;
@@ -365,6 +374,7 @@ static int get_display_information (DisplaySearchParameters &display_search_para
               shader_model = GraphicsStateGuardian::SM_40;
               break;
           }
+#endif
 
           if (debug) {
             printf ("shader_model = %d \n", shader_model);
@@ -384,26 +394,35 @@ static int get_display_information (DisplaySearchParameters &display_search_para
         format_index = 0;
         maximum_display_modes = 0;
 
-        while (display_format_array [format_index].d3d_format != D3DFMT_UNKNOWN) {
+        while (display_format_array [format_index].d3d_format != D3DFMT_UNKNOWN) {      
           d3d_format = display_format_array [format_index].d3d_format;
 
+#if DX8
+          display_mode_count = direct_3d -> GetAdapterModeCount (adapter);
+#else
           display_mode_count = direct_3d -> GetAdapterModeCount (adapter, d3d_format);
+#endif
           if (display_mode_count > 0) {
             UINT mode_index;
             D3DDISPLAYMODE d3d_display_mode;
 
             for (mode_index = 0; mode_index < display_mode_count; mode_index++) {
-              if (direct_3d -> EnumAdapterModes (adapter, d3d_format, mode_index, &d3d_display_mode) == D3D_OK) {
+#if DX8
+              if (direct_3d -> EnumAdapterModes (adapter, mode_index, &d3d_display_mode) == D3D_OK)
+#else
+              if (direct_3d -> EnumAdapterModes (adapter, d3d_format, mode_index, &d3d_display_mode) == D3D_OK)
+#endif          
+              {
                 if (d3d_display_mode.Width >= minimum_width && d3d_display_mode.Height >= minimum_height &&
-                    d3d_display_mode.Width <= maximum_width && d3d_display_mode.Height <= maximum_height) {
+                    d3d_display_mode.Width <= maximum_width && d3d_display_mode.Height <= maximum_height) {                  
                   if (display_format_array [format_index].bits_per_pixel >= minimum_bits_per_pixel &&
-                      display_format_array [format_index].bits_per_pixel <= maximum_bits_per_pixel) {
+                      display_format_array [format_index].bits_per_pixel <= maximum_bits_per_pixel) {                
                     if (d3d_format == d3d_display_mode.Format) {
-                      maximum_display_modes++;
+                      maximum_display_modes++;                
                     }
                   }
                 }
-              }
+              }            
             }
           }
 
@@ -417,17 +436,26 @@ static int get_display_information (DisplaySearchParameters &display_search_para
         display_mode_array = new DisplayMode [maximum_display_modes];
 
         format_index = 0;
-        while (display_format_array [format_index].d3d_format != D3DFMT_UNKNOWN) {
+        while (display_format_array [format_index].d3d_format != D3DFMT_UNKNOWN) {      
           d3d_format = display_format_array [format_index].d3d_format;
+#if DX8
+          display_mode_count = direct_3d -> GetAdapterModeCount (adapter);
+#else
           display_mode_count = direct_3d -> GetAdapterModeCount (adapter, d3d_format);
+#endif      
           if (display_mode_count > 0) {
             UINT mode_index;
             D3DDISPLAYMODE d3d_display_mode;
 
             for (mode_index = 0; mode_index < display_mode_count; mode_index++) {
-              if (direct_3d -> EnumAdapterModes (adapter, d3d_format, mode_index, &d3d_display_mode) == D3D_OK) {
+#if DX8
+              if (direct_3d -> EnumAdapterModes (adapter, mode_index, &d3d_display_mode) == D3D_OK)
+#else
+              if (direct_3d -> EnumAdapterModes (adapter, d3d_format, mode_index, &d3d_display_mode) == D3D_OK)
+#endif          
+              {
                 if (d3d_display_mode.Width >= minimum_width && d3d_display_mode.Height >= minimum_height &&
-                    d3d_display_mode.Width <= maximum_width && d3d_display_mode.Height <= maximum_height) {
+                    d3d_display_mode.Width <= maximum_width && d3d_display_mode.Height <= maximum_height) {                  
                   if (display_format_array [format_index].bits_per_pixel >= minimum_bits_per_pixel &&
                       display_format_array [format_index].bits_per_pixel <= maximum_bits_per_pixel) {
                     if (debug) {
@@ -487,7 +515,7 @@ static int get_display_information (DisplaySearchParameters &display_search_para
           direct_3d_device = 0;
           memset (&present_parameters, 0, sizeof (D3DPRESENT_PARAMETERS));
 
-          present_parameters.BackBufferWidth = width;
+          present_parameters.BackBufferWidth = width; 
           present_parameters.BackBufferHeight = height;
           present_parameters.BackBufferFormat = D3DFMT_X8R8G8B8;
           present_parameters.BackBufferCount = 1;
@@ -500,7 +528,11 @@ static int get_display_information (DisplaySearchParameters &display_search_para
           present_parameters.AutoDepthStencilFormat = D3DFMT_D24S8;
 
           present_parameters.FullScreen_RefreshRateInHz;
+
+#if DX8
+#else
           present_parameters.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
+#endif
 
           if (d3d_caps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT) {
             behavior_flags = D3DCREATE_HARDWARE_VERTEXPROCESSING;
@@ -514,18 +546,32 @@ static int get_display_information (DisplaySearchParameters &display_search_para
           HRESULT result;
 
           result = direct_3d -> CreateDevice (adapter, device_type, window_handle, behavior_flags, &present_parameters, &direct_3d_device);
-          if (result == D3D_OK) {
+          if (result == D3D_OK) {  
 
-            // allocate 512x512 32-bit textures (1MB size) until we run out or hit the limit
+            // allocate 512x512 32-bit textures (1MB size) until we run out or hit the limit            
             #define MAXIMUM_TEXTURES (2048 - 1)
-
+            
             int total_textures;
-            HRESULT texture_result;
+            HRESULT texture_result; 
+            #if DX8
+            IDirect3DTexture8 *texture_array [MAXIMUM_TEXTURES];
+            #else
             IDirect3DTexture9 *texture_array [MAXIMUM_TEXTURES];
-
+            #endif
+            
             total_textures = 0;
             while (total_textures < MAXIMUM_TEXTURES) {
 
+              #if DX8
+              texture_result = direct_3d_device -> CreateTexture (
+                512,
+                512,
+                1,
+                D3DUSAGE_RENDERTARGET,
+                D3DFMT_A8R8G8B8,
+                D3DPOOL_DEFAULT,
+                &texture_array [total_textures]);
+              #else
               texture_result = direct_3d_device -> CreateTexture (
                 512,
                 512,
@@ -535,27 +581,28 @@ static int get_display_information (DisplaySearchParameters &display_search_para
                 D3DPOOL_DEFAULT,
                 &texture_array [total_textures],
                 NULL);
-              if (texture_result == D3D_OK) {
+              #endif
+              if (texture_result == D3D_OK) {                
                 total_textures++;
               }
               else {
                 if (texture_result == D3DERR_OUTOFVIDEOMEMORY) {
                   if (debug) {
                     printf ("D3DERR_OUTOFVIDEOMEMORY \n");
-                  }
-                }
+                  }                
+                }                
                 break;
-              }
+              }               
             }
 
             // free all allocated textures
-            int index;
+            int index;           
             for (index = 0; index < total_textures; index++) {
-              texture_array [index] -> Release ( );
+              texture_array [index] -> Release ( );            
             }
 
             video_memory = (total_textures * 1024 * 1024);
-
+            
             if (debug) {
               printf ("video_memory = %d \n", video_memory);
             }
@@ -565,9 +612,9 @@ static int get_display_information (DisplaySearchParameters &display_search_para
               printf ("texture_memory = %d \n", texture_memory);
             }
 
-            direct_3d_device -> Release ( );
+            direct_3d_device -> Release ( );    
 
-            state = DisplayInformation::DS_success;
+            state = DisplayInformation::DS_success;    
             success = true;
           }
           else
@@ -576,7 +623,7 @@ static int get_display_information (DisplaySearchParameters &display_search_para
               printf ("CreateDevice failed.\n");
             }
 
-            state = DisplayInformation::DS_create_device_error;
+            state = DisplayInformation::DS_create_device_error;    
             success = true;
           }
 
@@ -594,7 +641,7 @@ static int get_display_information (DisplaySearchParameters &display_search_para
       }
     }
     else {
-      state = DisplayInformation::DS_direct_3d_create_error;
+      state = DisplayInformation::DS_direct_3d_create_error;  
     }
 
     FreeLibrary (d3d_dll);

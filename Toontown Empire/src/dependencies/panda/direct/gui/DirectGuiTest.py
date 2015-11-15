@@ -4,12 +4,10 @@ __all__ = []
 
 
 if __name__ == "__main__":
-    from direct.showbase.ShowBase import ShowBase
+    from direct.directbase import DirectStart
     from DirectGui import *
     #from whrandom import *
     from random import *
-
-    base = ShowBase()
 
     # EXAMPLE CODE
     # Load a model

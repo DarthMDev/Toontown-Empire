@@ -1,10 +1,10 @@
-print('TestStart: Starting up test environment.')
+print 'TestStart: Starting up test environment.'
 
-from panda3d.core import *
+from pandac.PandaModules import *
 
 from direct.showbase.PythonUtil import *
 from direct.showbase import ShowBase
-base = ShowBase.ShowBase()
+ShowBase.ShowBase()
 
 # Put an axis in the world:
 loader.loadModel("models/misc/xyzAxis").reparentTo(render)

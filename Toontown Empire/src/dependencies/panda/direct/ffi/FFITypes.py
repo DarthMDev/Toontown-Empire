@@ -8,6 +8,7 @@ They get constructed by and stored in FFIInterrogateDatabase.
 
 """
 
+import sys
 import os
 import string
 import FFIConstants

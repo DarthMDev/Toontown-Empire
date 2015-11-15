@@ -65,7 +65,7 @@ is_stereo() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::operator <<
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE ostream &
 operator << (ostream &out, const FrameBufferProperties &properties) {
@@ -76,7 +76,7 @@ operator << (ostream &out, const FrameBufferProperties &properties) {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::get_depth_bits
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE int FrameBufferProperties::
 get_depth_bits() const {
@@ -86,50 +86,17 @@ get_depth_bits() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::get_color_bits
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE int FrameBufferProperties::
 get_color_bits() const {
-  return max(_property[FBP_color_bits],
-             _property[FBP_red_bits] +
-             _property[FBP_green_bits] +
-             _property[FBP_blue_bits]);
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: FrameBufferProperties::get_red_bits
-//       Access: Published
-//  Description:
-////////////////////////////////////////////////////////////////////
-INLINE int FrameBufferProperties::
-get_red_bits() const {
-  return _property[FBP_red_bits];
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: FrameBufferProperties::get_green_bits
-//       Access: Published
-//  Description:
-////////////////////////////////////////////////////////////////////
-INLINE int FrameBufferProperties::
-get_green_bits() const {
-  return _property[FBP_green_bits];
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: FrameBufferProperties::get_blue_bits
-//       Access: Published
-//  Description:
-////////////////////////////////////////////////////////////////////
-INLINE int FrameBufferProperties::
-get_blue_bits() const {
-  return _property[FBP_blue_bits];
+  return _property[FBP_color_bits];
 }
 
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::get_alpha_bits
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE int FrameBufferProperties::
 get_alpha_bits() const {
@@ -139,7 +106,7 @@ get_alpha_bits() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::get_stencil_bits
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE int FrameBufferProperties::
 get_stencil_bits() const {
@@ -149,7 +116,7 @@ get_stencil_bits() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::get_accum_bits
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE int FrameBufferProperties::
 get_accum_bits() const {
@@ -159,7 +126,7 @@ get_accum_bits() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::get_aux_rgba
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE int FrameBufferProperties::
 get_aux_rgba() const {
@@ -169,7 +136,7 @@ get_aux_rgba() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::get_aux_hrgba
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE int FrameBufferProperties::
 get_aux_hrgba() const {
@@ -179,7 +146,7 @@ get_aux_hrgba() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::get_aux_float
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE int FrameBufferProperties::
 get_aux_float() const {
@@ -189,7 +156,7 @@ get_aux_float() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::get_multisamples
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE int FrameBufferProperties::
 get_multisamples() const {
@@ -210,7 +177,7 @@ get_coverage_samples() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::get_back_buffers
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE int FrameBufferProperties::
 get_back_buffers() const {
@@ -220,7 +187,7 @@ get_back_buffers() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::get_indexed_color
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE bool FrameBufferProperties::
 get_indexed_color() const {
@@ -230,7 +197,7 @@ get_indexed_color() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::get_rgb_color
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE bool FrameBufferProperties::
 get_rgb_color() const {
@@ -240,7 +207,7 @@ get_rgb_color() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::get_stereo
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE bool FrameBufferProperties::
 get_stereo() const {
@@ -250,7 +217,7 @@ get_stereo() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::get_force_hardware
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE bool FrameBufferProperties::
 get_force_hardware() const {
@@ -260,7 +227,7 @@ get_force_hardware() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::get_force_software
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE bool FrameBufferProperties::
 get_force_software() const {
@@ -270,7 +237,7 @@ get_force_software() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::get_srgb_color
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE bool FrameBufferProperties::
 get_srgb_color() const {
@@ -280,7 +247,7 @@ get_srgb_color() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::get_float_color
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE bool FrameBufferProperties::
 get_float_color() const {
@@ -290,7 +257,7 @@ get_float_color() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::get_float_depth
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE bool FrameBufferProperties::
 get_float_depth() const {
@@ -300,160 +267,103 @@ get_float_depth() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::set_depth_bits
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE void FrameBufferProperties::
 set_depth_bits(int n) {
   _property[FBP_depth_bits] = n;
-  _specified |= (1 << FBP_depth_bits);
+  _specified[FBP_depth_bits] = true;
 }
 
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::set_color_bits
 //       Access: Published
-//  Description: Sets the number of requested color bits as a single
-//               number that represents the sum of the individual
-//               numbers of red, green and blue bits.  Panda won't
-//               care how the individual bits are divided up.
-//
-//               See also set_rgba_bits, which allows you to specify
-//               requirements for the individual components.
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE void FrameBufferProperties::
 set_color_bits(int n) {
   _property[FBP_color_bits] = n;
-  _specified |= (1 << FBP_color_bits);
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: FrameBufferProperties::set_rgba_bits
-//       Access: Published
-//  Description: Convenience method for setting the red, green, blue
-//               and alpha bits in one go.
-////////////////////////////////////////////////////////////////////
-INLINE void FrameBufferProperties::
-set_rgba_bits(int r, int g, int b, int a) {
-  _property[FBP_red_bits] = r;
-  _property[FBP_green_bits] = g;
-  _property[FBP_blue_bits] = b;
-  _property[FBP_alpha_bits] = a;
-  _property[FBP_color_bits] = r + g + b;
-  _specified |= (1 << FBP_color_bits) | (1 << FBP_red_bits) |
-                (1 << FBP_green_bits) | (1 << FBP_blue_bits) |
-                (1 << FBP_alpha_bits);
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: FrameBufferProperties::set_red_bits
-//       Access: Published
-//  Description:
-////////////////////////////////////////////////////////////////////
-INLINE void FrameBufferProperties::
-set_red_bits(int n) {
-  _property[FBP_red_bits] = n;
-  _specified |= (1 << FBP_red_bits);
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: FrameBufferProperties::set_green_bits
-//       Access: Published
-//  Description:
-////////////////////////////////////////////////////////////////////
-INLINE void FrameBufferProperties::
-set_green_bits(int n) {
-  _property[FBP_green_bits] = n;
-  _specified |= (1 << FBP_green_bits);
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: FrameBufferProperties::set_blue_bits
-//       Access: Published
-//  Description:
-////////////////////////////////////////////////////////////////////
-INLINE void FrameBufferProperties::
-set_blue_bits(int n) {
-  _property[FBP_blue_bits] = n;
-  _specified |= (1 << FBP_blue_bits);
+  _specified[FBP_color_bits] = true;
 }
 
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::set_alpha_bits
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE void FrameBufferProperties::
 set_alpha_bits(int n) {
   _property[FBP_alpha_bits] = n;
-  _specified |= (1 << FBP_alpha_bits);
+  _specified[FBP_alpha_bits] = true;
 }
 
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::set_stencil_bits
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE void FrameBufferProperties::
 set_stencil_bits(int n) {
   _property[FBP_stencil_bits] = n;
-  _specified |= (1 << FBP_stencil_bits);
+  _specified[FBP_stencil_bits] = true;
 }
 
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::set_accum_bits
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE void FrameBufferProperties::
 set_accum_bits(int n) {
   _property[FBP_accum_bits] = n;
-  _specified |= (1 << FBP_accum_bits);
+  _specified[FBP_accum_bits] = true;
 }
 
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::set_aux_rgba
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE void FrameBufferProperties::
 set_aux_rgba(int n) {
   nassertv(n < 4);
   _property[FBP_aux_rgba] = n;
-  _specified |= (1 << FBP_aux_rgba);
+  _specified[FBP_aux_rgba] = true;
 }
 
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::set_aux_hrgba
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE void FrameBufferProperties::
 set_aux_hrgba(int n) {
   nassertv(n < 4);
   _property[FBP_aux_hrgba] = n;
-  _specified |= (1 << FBP_aux_hrgba);
+  _specified[FBP_aux_hrgba] = true;
 }
 
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::set_aux_float
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE void FrameBufferProperties::
 set_aux_float(int n) {
   nassertv(n < 4);
   _property[FBP_aux_float] = n;
-  _specified |= (1 << FBP_aux_float);
+  _specified[FBP_aux_float] = true;
 }
 
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::set_multisamples
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE void FrameBufferProperties::
 set_multisamples(int n) {
   _property[FBP_multisamples] = n;
-  _specified |= (1 << FBP_multisamples);
+  _specified[FBP_multisamples] = true;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -465,24 +375,24 @@ set_multisamples(int n) {
 INLINE void FrameBufferProperties::
 set_coverage_samples(int n) {
   _property[FBP_coverage_samples] = n;
-  _specified |= (1 << FBP_coverage_samples);
+  _specified[FBP_coverage_samples] = true;
 }
 
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::set_back_buffers
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE void FrameBufferProperties::
 set_back_buffers(int n) {
   _property[FBP_back_buffers] = n;
-  _specified |= (1 << FBP_back_buffers);
+  _specified[FBP_back_buffers] = true;
 }
 
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::set_indexed_color
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE void FrameBufferProperties::
 set_indexed_color(bool n) {
@@ -497,7 +407,7 @@ set_indexed_color(bool n) {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::set_rgb_color
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE void FrameBufferProperties::
 set_rgb_color(bool n) {
@@ -512,7 +422,7 @@ set_rgb_color(bool n) {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::set_stereo
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE void FrameBufferProperties::
 set_stereo(bool n) {
@@ -527,7 +437,7 @@ set_stereo(bool n) {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::set_force_hardware
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE void FrameBufferProperties::
 set_force_hardware(bool n) {
@@ -542,7 +452,7 @@ set_force_hardware(bool n) {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::set_force_software
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE void FrameBufferProperties::
 set_force_software(bool n) {
@@ -557,7 +467,7 @@ set_force_software(bool n) {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::set_srgb_color
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE void FrameBufferProperties::
 set_srgb_color(bool n) {
@@ -572,7 +482,7 @@ set_srgb_color(bool n) {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::set_float_color
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE void FrameBufferProperties::
 set_float_color(bool n) {
@@ -587,7 +497,7 @@ set_float_color(bool n) {
 ////////////////////////////////////////////////////////////////////
 //     Function: FrameBufferProperties::set_float_depth
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE void FrameBufferProperties::
 set_float_depth(bool n) {

@@ -34,7 +34,7 @@ class DatagramIterator;
 //               but it may be used anywhere a list of ButtonEvents
 //               is desired.
 ////////////////////////////////////////////////////////////////////
-class EXPCL_PANDA_EVENT ButtonEventList : public ParamValueBase {
+class EXPCL_PANDA_EVENT ButtonEventList : public EventStoreValueBase {
 public:
   INLINE ButtonEventList();
   INLINE ButtonEventList(const ButtonEventList &copy);
@@ -64,15 +64,15 @@ protected:
 
 public:
   void fillin(DatagramIterator &scan, BamReader *manager);
-
+  
 public:
   static TypeHandle get_class_type() {
     return _type_handle;
   }
   static void init_type() {
-    ParamValueBase::init_type();
+    EventStoreValueBase::init_type();
     register_type(_type_handle, "ButtonEventList",
-                  ParamValueBase::get_class_type());
+                  EventStoreValueBase::get_class_type());
   }
   virtual TypeHandle get_type() const {
     return get_class_type();

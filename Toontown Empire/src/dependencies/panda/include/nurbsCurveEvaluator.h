@@ -22,7 +22,6 @@
 #include "pointerTo.h"
 #include "vector_stdfloat.h"
 #include "pvector.h"
-#include "epvector.h"
 #include "nodePath.h"
 #include "referenceCount.h"
 #include "luse.h"

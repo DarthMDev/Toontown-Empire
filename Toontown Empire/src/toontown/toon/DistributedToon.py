@@ -419,7 +419,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             return
 
     def refreshName(self):
-        return
         self.notify.debug('Refreshing GM Nametag String: %s Color: %s State: %s' % (self.gmNameTagString, self.gmNameTagColor, self.gmNameTagEnabled))
         if hasattr(self, 'nametag') and self.gmNameTagEnabled:
             self.setDisplayName(self.gmNameTagString)

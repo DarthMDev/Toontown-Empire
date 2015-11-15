@@ -36,11 +36,8 @@ public:
   virtual void add_declaration(CPPDeclaration *decl, CPPScope *global_scope,
                                CPPPreprocessor *preprocessor,
                                const cppyyltype &pos);
-  virtual void add_enum_value(CPPInstance *inst,
-                              CPPPreprocessor *preprocessor,
-                              const cppyyltype &pos);
-  virtual void define_extension_type(CPPExtensionType *type,
-                                     CPPPreprocessor *error_sink = NULL);
+  virtual void add_enum_value(CPPInstance *inst);
+  virtual void define_extension_type(CPPExtensionType *type);
   virtual void define_namespace(CPPNamespace *scope);
   virtual void add_using(CPPUsing *using_decl, CPPScope *global_scope,
                          CPPPreprocessor *error_sink = NULL);

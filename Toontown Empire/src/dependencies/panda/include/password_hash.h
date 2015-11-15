@@ -23,9 +23,8 @@
 
 BEGIN_PUBLISH
 
-EXPCL_PANDAEXPRESS string password_hash(const string &password,
-                                        const string &salt,
-                                        int iters, int keylen);
+string password_hash(const string &password, const string &salt, 
+                     int iters, int keylen);
 
 END_PUBLISH
 

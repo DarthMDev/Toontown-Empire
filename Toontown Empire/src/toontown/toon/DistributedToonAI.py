@@ -568,15 +568,17 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def resetNPCFriendsDict(self):
         self.b_setNPCFriendsDict([])
 
-    def attemptAddNPCFriend(self, npcFriend, method=Quests.WithCheat):
+    def attemptAddNPCFriend(self, npcFriend):
         numCalls = simbase.air.config.GetInt('sos-card-reward', 1)
-
+        
         if numCalls <= 0:
             self.notify.warning('invalid numCalls: %d' % numCalls)
             return 0
         if npcFriend in self.NPCFriendsDict:
             self.NPCFriendsDict[npcFriend] += numCalls
         elif npcFriend in npcFriends:
+            if len(self.NPCFriendsDict.keys()) >= self.maxNPCFriends:
+                return 0
             self.NPCFriendsDict[npcFriend] = numCalls
         else:
             self.notify.warning('invalid NPC: %d' % npcFriend)
@@ -584,7 +586,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         if self.NPCFriendsDict[npcFriend] > self.maxCallsPerNPC:
             self.NPCFriendsDict[npcFriend] = self.maxCallsPerNPC
         self.d_setNPCFriendsDict(self.NPCFriendsDict)
-        self.air.questManager.toonMadeNPCFriend(self, numCalls, method)
+        if self.sosPageFlag == 0:
+            self.b_setMaxNPCFriends(self.maxNPCFriends | 32768)
         return 1
 
     def attemptSubtractNPCFriend(self, npcFriend):

@@ -24,7 +24,6 @@
 #include "angularForce.h"
 
 #include "pvector.h"
-#include "epvector.h"
 
 class Physical;
 
@@ -42,7 +41,7 @@ public:
 
   virtual ~BaseIntegrator();
 
-PUBLISHED:
+PUBLISHED:  
   virtual void output(ostream &out) const;
   virtual void write_precomputed_linear_matrices(ostream &out,
                                                  unsigned int indent=0) const;

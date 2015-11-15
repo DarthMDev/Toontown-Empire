@@ -36,7 +36,6 @@ PUBLISHED:
   INLINE_MATHUTIL bool extend_by(const GeometricBoundingVolume *vol);
   INLINE_MATHUTIL bool extend_by(const LPoint3 &point);
 
-public:
   // It might be nice to make these template member functions so we
   // could have true STL-style first/last iterators, but that's
   // impossible for virtual functions.
@@ -44,7 +43,6 @@ public:
                               const GeometricBoundingVolume **last);
   INLINE_MATHUTIL bool around(const LPoint3 *first, const LPoint3 *last);
 
-PUBLISHED:
   INLINE_MATHUTIL int contains(const GeometricBoundingVolume *vol) const;
   INLINE_MATHUTIL int contains(const LPoint3 &point) const;
   INLINE_MATHUTIL int contains(const LPoint3 &a, const LPoint3 &b) const;

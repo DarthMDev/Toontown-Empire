@@ -243,7 +243,7 @@ class PlayGame(StateData.StateData):
         if not loader.inBulkBlock:
             if hoodId == ToontownGlobals.MyEstate:
                 if avId == -1:
-                    loader.beginBulkLoad('hood', TTLocalizer.HeadingToYourEstate, count, 1, TTLocalizer.TIP_ESTATE, zoneId)
+                    loader.beginBulkLoad('hood', TTLocalizer.HeadingToYourEstate, count, 1, TTLocalizer.TIP_ESTATE)
                 else:
                     owner = base.cr.identifyAvatar(ownerId)
                     if owner == None:

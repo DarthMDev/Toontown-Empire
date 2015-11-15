@@ -1,11 +1,9 @@
-__all__ = ["ScanDirectoryNode"]
-
-from panda3d.core import VirtualFileSystem, VirtualFileMountSystem, Filename, TiXmlDocument
+from pandac.PandaModules import VirtualFileSystem, VirtualFileMountSystem, Filename, TiXmlDocument
 vfs = VirtualFileSystem.getGlobalPtr()
 
 class ScanDirectoryNode:
     """ This class is used to scan a list of files on disk. """
-
+    
     def __init__(self, pathname, ignoreUsageXml = False):
         self.pathname = pathname
         self.filenames = []
@@ -40,7 +38,7 @@ class ScanDirectoryNode:
                 if not isinstance(vfile.getMount(), VirtualFileMountSystem):
                     # Not a real file; ignore it.
                     continue
-
+                
             if vfile.isDirectory():
                 # A nested directory.
                 subdir = ScanDirectoryNode(vfile.getFilename(), ignoreUsageXml = ignoreUsageXml)
@@ -51,7 +49,7 @@ class ScanDirectoryNode:
                 # A nested file.
                 self.filenames.append(vfile.getFilename())
                 self.fileSize += vfile.getFileSize()
-
+                
             else:
                 # Some other wacky file thing.
                 self.filenames.append(vfile.getFilename())
@@ -60,7 +58,7 @@ class ScanDirectoryNode:
             # Now update the usage.xml file with the newly-determined
             # disk space.
             xusage.SetAttribute('disk_space', str(self.getTotalSize()))
-            tfile = Filename.temporary(str(pathname), '.xml')
+            tfile = Filename.temporary(pathname.cStr(), '.xml')
             if doc.SaveFile(tfile.toOsSpecific()):
                 tfile.renameTo(usageFilename)
 
@@ -80,7 +78,7 @@ class ScanDirectoryNode:
                 self.nested.remove(subdir)
                 self.nestedSize -= subdir.getTotalSize()
                 return subdir
-
+            
             result = subdir.extractSubdir(pathname)
             if result:
                 self.nestedSize -= result.getTotalSize()
@@ -91,5 +89,5 @@ class ScanDirectoryNode:
                 return result
 
         return None
-
+    
 

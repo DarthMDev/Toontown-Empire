@@ -2,8 +2,8 @@
 
 __all__ = ['doTest']
 
-from panda3d.core import *
-from panda3d.direct import *
+from pandac.PandaModules import *
+from direct.directbase.DirectStart import *
 from IntervalGlobal import *
 
 def doTest():

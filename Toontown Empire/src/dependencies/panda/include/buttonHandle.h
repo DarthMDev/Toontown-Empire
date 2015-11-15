@@ -29,19 +29,16 @@ class EXPCL_PANDA_PUTIL ButtonHandle {
 PUBLISHED:
   INLINE ButtonHandle();
   INLINE ButtonHandle(int index);
-  INLINE ButtonHandle(const ButtonHandle &copy);
   ButtonHandle(const string &name);
 
-PUBLISHED:
+public:
+  INLINE ButtonHandle(const ButtonHandle &copy);
+
   INLINE bool operator == (const ButtonHandle &other) const;
   INLINE bool operator != (const ButtonHandle &other) const;
   INLINE bool operator < (const ButtonHandle &other) const;
-  INLINE bool operator <= (const ButtonHandle &other) const;
-  INLINE bool operator > (const ButtonHandle &other) const;
-  INLINE bool operator >= (const ButtonHandle &other) const;
-  INLINE int compare_to(const ButtonHandle &other) const;
-  INLINE size_t get_hash() const;
 
+PUBLISHED:
   string get_name() const;
   INLINE bool has_ascii_equivalent() const;
   INLINE char get_ascii_equivalent() const;
@@ -53,8 +50,6 @@ PUBLISHED:
   INLINE int get_index() const;
   INLINE void output(ostream &out) const;
   INLINE static ButtonHandle none();
-
-  INLINE operator bool () const;
 
 private:
   int _index;

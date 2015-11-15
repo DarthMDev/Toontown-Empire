@@ -1,8 +1,13 @@
-1436948407
-2 3
+1412104298
+2 2
 13 libp3recorder 4 ayCl 12 panda3d.core 
-51
-50 13 ~RecorderBase 0 6 101 27 RecorderBase::~RecorderBase 0 0 232
+47
+47 24 upcast_to_ReferenceCount 0 12 94 38 RecorderBase::upcast_to_ReferenceCount 0 1 4 42
+upcast from RecorderBase to ReferenceCount
+61
+ReferenceCount *RecorderBase::upcast_to_ReferenceCount(void);
+
+48 13 ~RecorderBase 0 6 94 27 RecorderBase::~RecorderBase 0 0 232
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderBase::Destructor
 //       Access: Published, Virtual
@@ -11,7 +16,20 @@
 42
 virtual RecorderBase::~RecorderBase(void);
 
-51 12 is_recording 0 4 101 26 RecorderBase::is_recording 0 1 1 446
+49 12 is_recording 0 4 94 26 RecorderBase::is_recording 0 1 1 934
+// Filename: recorderBase.I
+// Created by:  drose (24Jan04)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderBase::is_recording
 //       Access: Published
@@ -23,7 +41,7 @@ virtual RecorderBase::~RecorderBase(void);
 51
 inline bool RecorderBase::is_recording(void) const;
 
-52 10 is_playing 0 4 101 24 RecorderBase::is_playing 0 1 2 418
+50 10 is_playing 0 4 94 24 RecorderBase::is_playing 0 1 2 418
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderBase::is_playing
 //       Access: Published
@@ -34,40 +52,40 @@ inline bool RecorderBase::is_recording(void) const;
 49
 inline bool RecorderBase::is_playing(void) const;
 
-53 14 get_class_type 0 4 101 28 RecorderBase::get_class_type 0 1 3 0
+51 14 get_class_type 0 4 94 28 RecorderBase::get_class_type 0 1 3 0
 53
 static TypeHandle RecorderBase::get_class_type(void);
 
-54 18 upcast_to_DataNode 0 12 102 33 MouseRecorder::upcast_to_DataNode 0 1 6 37
+52 18 upcast_to_DataNode 0 12 96 33 MouseRecorder::upcast_to_DataNode 0 1 7 37
 upcast from MouseRecorder to DataNode
 50
 DataNode *MouseRecorder::upcast_to_DataNode(void);
 
-55 25 downcast_to_MouseRecorder 0 12 103 35 DataNode::downcast_to_MouseRecorder 0 1 7 39
+53 25 downcast_to_MouseRecorder 0 12 97 35 DataNode::downcast_to_MouseRecorder 0 1 8 39
 downcast from DataNode to MouseRecorder
 57
 MouseRecorder *DataNode::downcast_to_MouseRecorder(void);
 
-56 22 upcast_to_RecorderBase 0 12 102 37 MouseRecorder::upcast_to_RecorderBase 0 1 8 41
+54 22 upcast_to_RecorderBase 0 12 96 37 MouseRecorder::upcast_to_RecorderBase 0 1 9 41
 upcast from MouseRecorder to RecorderBase
 58
 RecorderBase *MouseRecorder::upcast_to_RecorderBase(void);
 
-57 25 downcast_to_MouseRecorder 0 12 101 39 RecorderBase::downcast_to_MouseRecorder 0 1 9 43
+55 25 downcast_to_MouseRecorder 0 12 94 39 RecorderBase::downcast_to_MouseRecorder 0 1 10 43
 downcast from RecorderBase to MouseRecorder
 61
 MouseRecorder *RecorderBase::downcast_to_MouseRecorder(void);
 
-58 13 MouseRecorder 0 4 102 28 MouseRecorder::MouseRecorder 0 1 4 225
+56 13 MouseRecorder 0 4 96 28 MouseRecorder::MouseRecorder 0 1 5 225
 ////////////////////////////////////////////////////////////////////
 //     Function: MouseRecorder::Constructor
 //       Access: Published
 //  Description:
 ////////////////////////////////////////////////////////////////////
-49
-MouseRecorder::MouseRecorder(string const &name);
+63
+MouseRecorder::MouseRecorder(basic_string< char > const &name);
 
-59 14 ~MouseRecorder 0 6 102 29 MouseRecorder::~MouseRecorder 0 0 233
+57 14 ~MouseRecorder 0 6 96 29 MouseRecorder::~MouseRecorder 0 0 233
 ////////////////////////////////////////////////////////////////////
 //     Function: MouseRecorder::Destructor
 //       Access: Published, Virtual
@@ -76,11 +94,11 @@ MouseRecorder::MouseRecorder(string const &name);
 44
 virtual MouseRecorder::~MouseRecorder(void);
 
-60 14 get_class_type 0 4 102 29 MouseRecorder::get_class_type 0 1 5 0
+58 14 get_class_type 0 4 96 29 MouseRecorder::get_class_type 0 1 6 0
 54
 static TypeHandle MouseRecorder::get_class_type(void);
 
-61 18 RecorderController 0 4 104 38 RecorderController::RecorderController 0 1 10 230
+59 18 RecorderController 0 4 98 38 RecorderController::RecorderController 0 1 11 230
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::Constructor
 //       Access: Published
@@ -89,7 +107,7 @@ static TypeHandle MouseRecorder::get_class_type(void);
 45
 RecorderController::RecorderController(void);
 
-62 12 begin_record 0 4 104 32 RecorderController::begin_record 0 1 11 375
+60 12 begin_record 0 4 98 32 RecorderController::begin_record 0 1 12 375
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::begin_record
 //       Access: Published
@@ -100,7 +118,7 @@ RecorderController::RecorderController(void);
 64
 bool RecorderController::begin_record(Filename const &filename);
 
-63 14 begin_playback 0 4 104 34 RecorderController::begin_playback 0 1 12 661
+61 14 begin_playback 0 4 98 34 RecorderController::begin_playback 0 1 13 661
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::begin_playback
 //       Access: Published
@@ -115,7 +133,7 @@ bool RecorderController::begin_record(Filename const &filename);
 66
 bool RecorderController::begin_playback(Filename const &filename);
 
-64 5 close 0 4 104 25 RecorderController::close 0 1 13 275
+62 5 close 0 4 98 25 RecorderController::close 0 1 14 275
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::close
 //       Access: Published
@@ -124,7 +142,20 @@ bool RecorderController::begin_playback(Filename const &filename);
 37
 void RecorderController::close(void);
 
-65 14 get_start_time 0 4 104 34 RecorderController::get_start_time 0 1 14 418
+63 14 get_start_time 0 4 98 34 RecorderController::get_start_time 0 1 15 912
+// Filename: recorderController.I
+// Created by:  drose (24Jan04)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::get_start_time
 //       Access: Published
@@ -132,10 +163,10 @@ void RecorderController::close(void);
 //               session was originally recorded (or, in recording
 //               mode, the time at which the current session began).
 ////////////////////////////////////////////////////////////////////
-61
-inline time_t RecorderController::get_start_time(void) const;
+67
+inline unsigned int RecorderController::get_start_time(void) const;
 
-66 15 set_random_seed 0 4 104 35 RecorderController::set_random_seed 0 1 15 472
+64 15 set_random_seed 0 4 98 35 RecorderController::set_random_seed 0 1 16 472
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::set_random_seed
 //       Access: Published
@@ -147,7 +178,7 @@ inline time_t RecorderController::get_start_time(void) const;
 65
 inline void RecorderController::set_random_seed(int random_seed);
 
-67 15 get_random_seed 0 4 104 35 RecorderController::get_random_seed 0 1 16 444
+65 15 get_random_seed 0 4 98 35 RecorderController::get_random_seed 0 1 17 444
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::get_random_seed
 //       Access: Published
@@ -159,7 +190,7 @@ inline void RecorderController::set_random_seed(int random_seed);
 59
 inline int RecorderController::get_random_seed(void) const;
 
-68 12 is_recording 0 4 104 32 RecorderController::is_recording 0 1 17 324
+66 12 is_recording 0 4 98 32 RecorderController::is_recording 0 1 18 324
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::is_recording
 //       Access: Published
@@ -169,7 +200,7 @@ inline int RecorderController::get_random_seed(void) const;
 57
 inline bool RecorderController::is_recording(void) const;
 
-69 10 is_playing 0 4 104 30 RecorderController::is_playing 0 1 18 321
+67 10 is_playing 0 4 98 30 RecorderController::is_playing 0 1 19 321
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::is_playing
 //       Access: Published
@@ -179,7 +210,7 @@ inline bool RecorderController::is_recording(void) const;
 55
 inline bool RecorderController::is_playing(void) const;
 
-70 7 is_open 0 4 104 27 RecorderController::is_open 0 1 19 335
+68 7 is_open 0 4 98 27 RecorderController::is_open 0 1 20 335
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::is_open
 //       Access: Published
@@ -189,7 +220,7 @@ inline bool RecorderController::is_playing(void) const;
 52
 inline bool RecorderController::is_open(void) const;
 
-71 12 get_filename 0 4 104 32 RecorderController::get_filename 0 1 20 348
+69 12 get_filename 0 4 98 32 RecorderController::get_filename 0 1 21 348
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::get_filename
 //       Access: Published
@@ -199,7 +230,7 @@ inline bool RecorderController::is_open(void) const;
 68
 inline Filename const &RecorderController::get_filename(void) const;
 
-72 8 is_error 0 4 104 28 RecorderController::is_error 0 1 21 453
+70 8 is_error 0 4 98 28 RecorderController::is_error 0 1 22 453
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::is_error
 //       Access: Published
@@ -211,7 +242,7 @@ inline Filename const &RecorderController::get_filename(void) const;
 47
 inline bool RecorderController::is_error(void);
 
-73 16 get_clock_offset 0 4 104 36 RecorderController::get_clock_offset 0 1 22 456
+71 16 get_clock_offset 0 4 98 36 RecorderController::get_clock_offset 0 1 23 456
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::get_clock_offset
 //       Access: Published
@@ -223,7 +254,7 @@ inline bool RecorderController::is_error(void);
 63
 inline double RecorderController::get_clock_offset(void) const;
 
-74 16 get_frame_offset 0 4 104 36 RecorderController::get_frame_offset 0 1 23 466
+72 16 get_frame_offset 0 4 98 36 RecorderController::get_frame_offset 0 1 24 466
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::get_frame_offset
 //       Access: Published
@@ -235,7 +266,7 @@ inline double RecorderController::get_clock_offset(void) const;
 60
 inline int RecorderController::get_frame_offset(void) const;
 
-75 12 add_recorder 0 4 104 32 RecorderController::add_recorder 0 1 24 654
+73 12 add_recorder 0 4 98 32 RecorderController::add_recorder 0 1 25 654
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::add_recorder
 //       Access: Published
@@ -248,10 +279,10 @@ inline int RecorderController::get_frame_offset(void) const;
 //               and the name and type matches a recorder in the
 //               session file, the recorder will begin receiving data.
 ////////////////////////////////////////////////////////////////////
-89
-inline void RecorderController::add_recorder(string const &name, RecorderBase *recorder);
+103
+inline void RecorderController::add_recorder(basic_string< char > const &name, RecorderBase *recorder);
 
-76 12 has_recorder 0 4 104 32 RecorderController::has_recorder 0 1 25 643
+74 12 has_recorder 0 4 98 32 RecorderController::has_recorder 0 1 26 643
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::has_recorder
 //       Access: Published
@@ -264,10 +295,10 @@ inline void RecorderController::add_recorder(string const &name, RecorderBase *r
 //               session file but was never explicitly added via
 //               add_recorder(); see get_recorder().
 ////////////////////////////////////////////////////////////////////
-71
-inline bool RecorderController::has_recorder(string const &name) const;
+85
+inline bool RecorderController::has_recorder(basic_string< char > const &name) const;
 
-77 12 get_recorder 0 4 104 32 RecorderController::get_recorder 0 1 26 714
+75 12 get_recorder 0 4 98 32 RecorderController::get_recorder 0 1 27 714
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::get_recorder
 //       Access: Published
@@ -281,10 +312,10 @@ inline bool RecorderController::has_recorder(string const &name) const;
 //               has_recorder() may return false, but get_recorder()
 //               will return a non-NULL value.
 ////////////////////////////////////////////////////////////////////
-80
-inline RecorderBase *RecorderController::get_recorder(string const &name) const;
+94
+inline RecorderBase *RecorderController::get_recorder(basic_string< char > const &name) const;
 
-78 15 remove_recorder 0 4 104 35 RecorderController::remove_recorder 0 1 27 822
+76 15 remove_recorder 0 4 98 35 RecorderController::remove_recorder 0 1 28 822
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::remove_recorder
 //       Access: Published
@@ -300,10 +331,10 @@ inline RecorderBase *RecorderController::get_recorder(string const &name) const;
 //               recorder will take its place to decode the data from
 //               the session file).
 ////////////////////////////////////////////////////////////////////
-68
-inline bool RecorderController::remove_recorder(string const &name);
+82
+inline bool RecorderController::remove_recorder(basic_string< char > const &name);
 
-79 13 set_frame_tie 0 4 104 33 RecorderController::set_frame_tie 0 1 28 895
+77 13 set_frame_tie 0 4 98 33 RecorderController::set_frame_tie 0 1 29 895
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::set_frame_tie
 //       Access: Published
@@ -324,7 +355,7 @@ inline bool RecorderController::remove_recorder(string const &name);
 62
 inline void RecorderController::set_frame_tie(bool frame_tie);
 
-80 13 get_frame_tie 0 4 104 33 RecorderController::get_frame_tie 0 1 29 253
+78 13 get_frame_tie 0 4 98 33 RecorderController::get_frame_tie 0 1 30 253
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::get_frame_tie
 //       Access: Published
@@ -333,7 +364,7 @@ inline void RecorderController::set_frame_tie(bool frame_tie);
 58
 inline bool RecorderController::get_frame_tie(void) const;
 
-81 12 record_frame 0 4 104 32 RecorderController::record_frame 0 1 30 341
+79 12 record_frame 0 4 98 32 RecorderController::record_frame 0 1 31 341
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::record_frame
 //       Access: Published
@@ -343,7 +374,7 @@ inline bool RecorderController::get_frame_tie(void) const;
 44
 void RecorderController::record_frame(void);
 
-82 10 play_frame 0 4 104 30 RecorderController::play_frame 0 1 31 339
+80 10 play_frame 0 4 98 30 RecorderController::play_frame 0 1 32 339
 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::play_frame
 //       Access: Published
@@ -353,31 +384,24 @@ void RecorderController::record_frame(void);
 42
 void RecorderController::play_frame(void);
 
-83 14 get_class_type 0 4 104 34 RecorderController::get_class_type 0 1 32 0
+81 14 get_class_type 0 4 98 34 RecorderController::get_class_type 0 1 33 0
 59
 static TypeHandle RecorderController::get_class_type(void);
 
-84 22 upcast_to_RecorderBase 0 12 106 44 SocketStreamRecorder::upcast_to_RecorderBase 0 1 46 48
-upcast from SocketStreamRecorder to RecorderBase
-65
-RecorderBase *SocketStreamRecorder::upcast_to_RecorderBase(void);
-
-85 32 downcast_to_SocketStreamRecorder 0 12 101 46 RecorderBase::downcast_to_SocketStreamRecorder 0 1 47 50
-downcast from RecorderBase to SocketStreamRecorder
-75
-SocketStreamRecorder *RecorderBase::downcast_to_SocketStreamRecorder(void);
-
-86 24 upcast_to_ReferenceCount 0 12 106 46 SocketStreamRecorder::upcast_to_ReferenceCount 0 1 48 50
-upcast from SocketStreamRecorder to ReferenceCount
-69
-ReferenceCount *SocketStreamRecorder::upcast_to_ReferenceCount(void);
-
-87 32 downcast_to_SocketStreamRecorder 0 12 107 48 ReferenceCount::downcast_to_SocketStreamRecorder 0 1 49 52
-downcast from ReferenceCount to SocketStreamRecorder
-77
-SocketStreamRecorder *ReferenceCount::downcast_to_SocketStreamRecorder(void);
-
-88 20 SocketStreamRecorder 0 4 106 42 SocketStreamRecorder::SocketStreamRecorder 0 2 33 34 466
+82 20 SocketStreamRecorder 0 4 100 42 SocketStreamRecorder::SocketStreamRecorder 0 2 34 35 962
+// Filename: socketStreamRecorder.I
+// Created by:  drose (28Jan04)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::Constructor
 //       Access: Published
@@ -393,16 +417,7 @@ SocketStreamRecorder *ReferenceCount::downcast_to_SocketStreamRecorder(void);
 inline SocketStreamRecorder::SocketStreamRecorder(void);
 inline SocketStreamRecorder::SocketStreamRecorder(SocketStream *stream, bool owns_stream);
 
-89 21 ~SocketStreamRecorder 0 6 106 43 SocketStreamRecorder::~SocketStreamRecorder 0 0 231
-////////////////////////////////////////////////////////////////////
-//     Function: SocketStreamRecorder::Destructor
-//       Access: Published
-//  Description:
-////////////////////////////////////////////////////////////////////
-65
-virtual inline SocketStreamRecorder::~SocketStreamRecorder(void);
-
-90 16 receive_datagram 0 4 106 38 SocketStreamRecorder::receive_datagram 0 1 35 536
+83 16 receive_datagram 0 4 100 38 SocketStreamRecorder::receive_datagram 0 1 36 536
 ////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::receive_datagram
 //       Access: Public
@@ -415,7 +430,7 @@ virtual inline SocketStreamRecorder::~SocketStreamRecorder(void);
 58
 bool SocketStreamRecorder::receive_datagram(Datagram &dg);
 
-91 13 send_datagram 0 4 106 35 SocketStreamRecorder::send_datagram 0 1 36 266
+84 13 send_datagram 0 4 100 35 SocketStreamRecorder::send_datagram 0 1 37 266
 ////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::send_datagram
 //       Access: Public
@@ -424,7 +439,7 @@ bool SocketStreamRecorder::receive_datagram(Datagram &dg);
 68
 inline bool SocketStreamRecorder::send_datagram(Datagram const &dg);
 
-92 9 is_closed 0 4 106 31 SocketStreamRecorder::is_closed 0 1 37 261
+85 9 is_closed 0 4 100 31 SocketStreamRecorder::is_closed 0 1 38 261
 ////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::is_closed
 //       Access: Published
@@ -433,7 +448,7 @@ inline bool SocketStreamRecorder::send_datagram(Datagram const &dg);
 50
 inline bool SocketStreamRecorder::is_closed(void);
 
-93 5 close 0 4 106 27 SocketStreamRecorder::close 0 1 38 253
+86 5 close 0 4 100 27 SocketStreamRecorder::close 0 1 39 253
 ////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::close
 //       Access: Published
@@ -442,7 +457,7 @@ inline bool SocketStreamRecorder::is_closed(void);
 46
 inline void SocketStreamRecorder::close(void);
 
-94 15 set_collect_tcp 0 4 106 37 SocketStreamRecorder::set_collect_tcp 0 1 39 273
+87 15 set_collect_tcp 0 4 100 37 SocketStreamRecorder::set_collect_tcp 0 1 40 273
 ////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::set_collect_tcp
 //       Access: Published
@@ -451,7 +466,7 @@ inline void SocketStreamRecorder::close(void);
 68
 inline void SocketStreamRecorder::set_collect_tcp(bool collect_tcp);
 
-95 15 get_collect_tcp 0 4 106 37 SocketStreamRecorder::get_collect_tcp 0 1 40 273
+88 15 get_collect_tcp 0 4 100 37 SocketStreamRecorder::get_collect_tcp 0 1 41 273
 ////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::get_collect_tcp
 //       Access: Published
@@ -460,7 +475,7 @@ inline void SocketStreamRecorder::set_collect_tcp(bool collect_tcp);
 62
 inline bool SocketStreamRecorder::get_collect_tcp(void) const;
 
-96 24 set_collect_tcp_interval 0 4 106 46 SocketStreamRecorder::set_collect_tcp_interval 0 1 41 291
+89 24 set_collect_tcp_interval 0 4 100 46 SocketStreamRecorder::set_collect_tcp_interval 0 1 42 291
 ////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::set_collect_tcp_interval
 //       Access: Published
@@ -469,7 +484,7 @@ inline bool SocketStreamRecorder::get_collect_tcp(void) const;
 76
 inline void SocketStreamRecorder::set_collect_tcp_interval(double interval);
 
-97 24 get_collect_tcp_interval 0 4 106 46 SocketStreamRecorder::get_collect_tcp_interval 0 1 42 291
+90 24 get_collect_tcp_interval 0 4 100 46 SocketStreamRecorder::get_collect_tcp_interval 0 1 43 291
 ////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::get_collect_tcp_interval
 //       Access: Published
@@ -478,7 +493,7 @@ inline void SocketStreamRecorder::set_collect_tcp_interval(double interval);
 73
 inline double SocketStreamRecorder::get_collect_tcp_interval(void) const;
 
-98 14 consider_flush 0 4 106 36 SocketStreamRecorder::consider_flush 0 1 43 270
+91 14 consider_flush 0 4 100 36 SocketStreamRecorder::consider_flush 0 1 44 270
 ////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::consider_flush
 //       Access: Published
@@ -487,7 +502,7 @@ inline double SocketStreamRecorder::get_collect_tcp_interval(void) const;
 55
 inline bool SocketStreamRecorder::consider_flush(void);
 
-99 5 flush 0 4 106 27 SocketStreamRecorder::flush 0 1 44 252
+92 5 flush 0 4 100 27 SocketStreamRecorder::flush 0 1 45 252
 ////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::flush
 //       Access: Published
@@ -496,50 +511,64 @@ inline bool SocketStreamRecorder::consider_flush(void);
 46
 inline bool SocketStreamRecorder::flush(void);
 
-100 14 get_class_type 0 4 106 36 SocketStreamRecorder::get_class_type 0 1 45 0
+93 14 get_class_type 0 4 100 36 SocketStreamRecorder::get_class_type 0 1 46 0
 61
 static TypeHandle SocketStreamRecorder::get_class_type(void);
 
-49
-1 0 0 6 3 110 0 0 446 ////////////////////////////////////////////////////////////////////
+46
+1 14 Dtool_ayClK8hL 0 6 5 103 0 14 Dtool_ayClK8hL 934 // Filename: recorderBase.I
+// Created by:  drose (24Jan04)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 //     Function: RecorderBase::is_recording
 //       Access: Published
 //  Description: Returns true if this recorder is presently recording
 //               data for saving to a session file, false otherwise.
 //               If this is true, record_data() will be called from
 //               time to time.
-//////////////////////////////////////////////////////////////////// 1 4 this 3 108  
-2 0 0 6 4 110 0 0 418 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 101  
+2 14 Dtool_ayClYULh 0 6 6 103 0 14 Dtool_ayClYULh 418 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderBase::is_playing
 //       Access: Published
 //  Description: Returns true if this recorder is presently playing back
 //               data from session file, false otherwise.  If this is
 //               true, play_data() will be called from time to time.
-//////////////////////////////////////////////////////////////////// 1 4 this 3 108  
-3 0 0 7 5 112 0 0 0 0 
-4 0 0 7 12 114 59 0 225 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 101  
+3 14 Dtool_ayClFTOU 0 7 7 105 0 14 Dtool_ayClFTOU 0 0 
+4 14 Dtool_ayClY6Qp 0 7 3 107 0 14 Dtool_ayClY6Qp 0 1 4 this 3 106  
+5 14 Dtool_ayClqf6S 0 7 14 109 57 14 Dtool_ayClqf6S 225 ////////////////////////////////////////////////////////////////////
 //     Function: MouseRecorder::Constructor
 //       Access: Published
 //  Description:
-//////////////////////////////////////////////////////////////////// 1 4 name 1 113  
-5 0 0 7 14 112 0 0 0 0 
-6 0 0 7 8 115 0 0 0 1 4 this 3 114  
-7 0 0 7 9 114 59 0 0 1 4 this 3 115  
-8 0 0 6 10 116 0 0 0 1 4 this 3 114  
-9 0 0 7 11 114 59 0 0 1 4 this 3 116  
-10 0 0 7 17 117 0 0 230 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 name 1 108  
+6 14 Dtool_ayClHvdt 0 7 16 105 0 14 Dtool_ayClHvdt 0 0 
+7 14 Dtool_ayClCU8Q 0 7 10 110 0 14 Dtool_ayClCU8Q 0 1 4 this 3 109  
+8 14 Dtool_ayClujBb 0 7 11 109 57 14 Dtool_ayClujBb 0 1 4 this 3 110  
+9 14 Dtool_ayClKZwc 0 7 12 106 48 14 Dtool_ayClKZwc 0 1 4 this 3 109  
+10 14 Dtool_ayClAqBt 0 7 13 109 57 14 Dtool_ayClAqBt 0 1 4 this 3 106  
+11 14 Dtool_ayClgOQz 0 7 19 111 0 14 Dtool_ayClgOQz 230 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::Constructor
 //       Access: Published
 //  Description:
 //////////////////////////////////////////////////////////////////// 0 
-11 0 0 6 18 110 0 0 375 ////////////////////////////////////////////////////////////////////
+12 14 Dtool_ayClEoI_ 0 6 20 103 0 14 Dtool_ayClEoI_ 375 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::begin_record
 //       Access: Published
 //  Description: Begins recording data to the indicated filename.  All
 //               of the recorders in use should already have been
 //               added.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 117  8 filename 1 118  
-12 0 0 6 19 110 0 0 661 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 111  8 filename 1 112  
+13 14 Dtool_ayClD04q 0 6 21 103 0 14 Dtool_ayClD04q 661 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::begin_playback
 //       Access: Published
 //  Description: Begins playing back data from the indicated filename.
@@ -549,84 +578,97 @@ static TypeHandle SocketStreamRecorder::get_class_type(void);
 //               will not be used).  This may also undefine recorders
 //               that were previously added but are not present in the
 //               file.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 117  8 filename 1 118  
-13 0 0 4 20 121 0 0 275 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 111  8 filename 1 112  
+14 14 Dtool_ayCl3TyG 0 4 22 115 0 14 Dtool_ayCl3TyG 275 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::close
 //       Access: Published
 //  Description: Finishes recording data to the indicated filename.
-//////////////////////////////////////////////////////////////////// 1 4 this 3 117  
-14 0 0 6 21 124 0 0 418 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 111  
+15 14 Dtool_ayCl7lBc 0 6 23 118 0 14 Dtool_ayCl7lBc 912 // Filename: recorderController.I
+// Created by:  drose (24Jan04)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::get_start_time
 //       Access: Published
 //  Description: Returns the time (and date) at which the current
 //               session was originally recorded (or, in recording
 //               mode, the time at which the current session began).
-//////////////////////////////////////////////////////////////////// 1 4 this 3 122  
-15 0 0 4 22 121 0 0 472 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 116  
+16 14 Dtool_ayClEIcS 0 4 24 115 0 14 Dtool_ayClEIcS 472 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::set_random_seed
 //       Access: Published
 //  Description: Indicates an arbitrary number to be recorded in the
 //               session file as a random seed, should the application
 //               wish to take advantage of it.  This must be set
 //               before begin_record() is called.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 117  11 random_seed 1 126  
-16 0 0 6 23 126 0 0 444 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 111  11 random_seed 1 119  
+17 14 Dtool_ayClzhjD 0 6 25 119 0 14 Dtool_ayClzhjD 444 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::get_random_seed
 //       Access: Published
 //  Description: Returns the random seed that was set by a previous
 //               call to set_random_seed(), or the number read from
 //               the session file after begin_playback() has been
 //               called.
-//////////////////////////////////////////////////////////////////// 1 4 this 3 122  
-17 0 0 6 24 110 0 0 324 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 116  
+18 14 Dtool_ayCl3xMb 0 6 26 103 0 14 Dtool_ayCl3xMb 324 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::is_recording
 //       Access: Published
 //  Description: Returns true if the controller has been opened for
 //               output, false otherwise.
-//////////////////////////////////////////////////////////////////// 1 4 this 3 122  
-18 0 0 6 25 110 0 0 321 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 116  
+19 14 Dtool_ayClBF0E 0 6 27 103 0 14 Dtool_ayClBF0E 321 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::is_playing
 //       Access: Published
 //  Description: Returns true if the controller has been opened for
 //               input, false otherwise.
-//////////////////////////////////////////////////////////////////// 1 4 this 3 122  
-19 0 0 6 26 110 0 0 335 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 116  
+20 14 Dtool_ayCl7Ejw 0 6 28 103 0 14 Dtool_ayCl7Ejw 335 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::is_open
 //       Access: Published
 //  Description: Returns true if the controller has been opened for
 //               either input or output, false otherwise.
-//////////////////////////////////////////////////////////////////// 1 4 this 3 122  
-20 0 0 6 27 118 0 0 348 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 116  
+21 14 Dtool_ayClE6J_ 0 6 29 112 0 14 Dtool_ayClE6J_ 348 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::get_filename
 //       Access: Published
 //  Description: Returns the filename that was passed to the most
 //               recent call to begin_record() or begin_playback().
-//////////////////////////////////////////////////////////////////// 1 4 this 3 122  
-21 0 0 6 28 110 0 0 453 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 116  
+22 14 Dtool_ayClm_or 0 6 30 103 0 14 Dtool_ayClm_or 453 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::is_error
 //       Access: Published
 //  Description: Returns true if the controller has been opened for
 //               input or output output and there is an error on the
 //               stream, or false if the controller is closed or if
 //               there is no problem.
-//////////////////////////////////////////////////////////////////// 1 4 this 3 117  
-22 0 0 6 29 127 0 0 456 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 111  
+23 14 Dtool_ayClN6bw 0 6 31 120 0 14 Dtool_ayClN6bw 456 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::get_clock_offset
 //       Access: Published
 //  Description: Returns the delta offset between the actual frame
 //               time and the frame time written to the log.  This is
 //               essentially the time at which the recording (or
 //               playback) started.
-//////////////////////////////////////////////////////////////////// 1 4 this 3 122  
-23 0 0 6 30 126 0 0 466 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 116  
+24 14 Dtool_ayClyEgj 0 6 32 119 0 14 Dtool_ayClyEgj 466 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::get_frame_offset
 //       Access: Published
 //  Description: Returns the delta offset between the actual frame
 //               count and the frame count written to the log.  This is
 //               essentially the frame number at which the recording
 //               (or playback) started.
-//////////////////////////////////////////////////////////////////// 1 4 this 3 122  
-24 0 0 4 31 121 0 0 654 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 116  
+25 14 Dtool_ayClAnOD 0 4 33 115 0 14 Dtool_ayClAnOD 654 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::add_recorder
 //       Access: Published
 //  Description: Adds the named recorder to the set of recorders that
@@ -637,8 +679,8 @@ static TypeHandle SocketStreamRecorder::get_class_type(void);
 //               session file.  If the controller is in playback mode
 //               and the name and type matches a recorder in the
 //               session file, the recorder will begin receiving data.
-//////////////////////////////////////////////////////////////////// 3 4 this 3 117  4 name 1 113  8 recorder 1 116  
-25 0 0 6 32 110 0 0 643 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 3 4 this 3 111  4 name 1 108  8 recorder 1 106  
+26 14 Dtool_ayClSl_W 0 6 34 103 0 14 Dtool_ayClSl_W 643 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::has_recorder
 //       Access: Published
 //  Description: Returns true if the named recorder has been added to
@@ -649,8 +691,8 @@ static TypeHandle SocketStreamRecorder::get_class_type(void);
 //               return false for a recorder that was found in the
 //               session file but was never explicitly added via
 //               add_recorder(); see get_recorder().
-//////////////////////////////////////////////////////////////////// 2 4 this 3 122  4 name 1 113  
-26 0 0 6 33 116 0 0 714 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 116  4 name 1 108  
+27 14 Dtool_ayClNjK2 0 7 35 106 48 14 Dtool_ayClNjK2 714 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::get_recorder
 //       Access: Published
 //  Description: Returns the recorder with the indicated name, or NULL
@@ -662,8 +704,8 @@ static TypeHandle SocketStreamRecorder::get_class_type(void);
 //               added to the table by the user.  In this case,
 //               has_recorder() may return false, but get_recorder()
 //               will return a non-NULL value.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 122  4 name 1 113  
-27 0 0 6 34 110 0 0 822 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 116  4 name 1 108  
+28 14 Dtool_ayClcpvX 0 6 36 103 0 14 Dtool_ayClcpvX 822 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::remove_recorder
 //       Access: Published
 //  Description: Removes the named recorder from the table.  Returns
@@ -677,8 +719,8 @@ static TypeHandle SocketStreamRecorder::get_class_type(void);
 //               session file still has data for this name, a default
 //               recorder will take its place to decode the data from
 //               the session file).
-//////////////////////////////////////////////////////////////////// 2 4 this 3 117  4 name 1 113  
-28 0 0 4 35 121 0 0 895 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 111  4 name 1 108  
+29 14 Dtool_ayClsgOd 0 4 37 115 0 14 Dtool_ayClsgOd 895 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::set_frame_tie
 //       Access: Published
 //  Description: Sets the frame_tie flag.
@@ -694,36 +736,49 @@ static TypeHandle SocketStreamRecorder::get_class_type(void);
 //               This may introduce playback discrepencies if the
 //               frames do not fall at exactly the same times as they
 //               did in the original.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 117  9 frame_tie 1 110  
-29 0 0 6 36 110 0 0 253 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 111  9 frame_tie 1 103  
+30 14 Dtool_ayClzYut 0 6 38 103 0 14 Dtool_ayClzYut 253 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::get_frame_tie
 //       Access: Published
 //  Description: See set_frame_tie().
-//////////////////////////////////////////////////////////////////// 1 4 this 3 122  
-30 0 0 4 37 121 0 0 341 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 116  
+31 14 Dtool_ayClDD1N 0 4 39 115 0 14 Dtool_ayClDD1N 341 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::record_frame
 //       Access: Published
 //  Description: Gets the next frame of data from all of the active
 //               recorders and adds it to the output file.
-//////////////////////////////////////////////////////////////////// 1 4 this 3 117  
-31 0 0 4 38 121 0 0 339 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 111  
+32 14 Dtool_ayClcjvm 0 4 40 115 0 14 Dtool_ayClcjvm 339 ////////////////////////////////////////////////////////////////////
 //     Function: RecorderController::play_frame
 //       Access: Published
 //  Description: Gets the next frame of data from all of the active
 //               recorders and adds it to the output file.
-//////////////////////////////////////////////////////////////////// 1 4 this 3 117  
-32 0 0 7 39 112 0 0 0 0 
-33 0 0 7 46 128 89 0 232 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 111  
+33 14 Dtool_ayClnwuH 0 7 41 105 0 14 Dtool_ayClnwuH 0 0 
+34 14 Dtool_ayCl4hpl 0 7 43 121 48 14 Dtool_ayCl4hpl 728 // Filename: socketStreamRecorder.I
+// Created by:  drose (28Jan04)
+//
+////////////////////////////////////////////////////////////////////
+//
+// PANDA 3D SOFTWARE
+// Copyright (c) Carnegie Mellon University.  All rights reserved.
+//
+// All use of this software is subject to the terms of the revised BSD
+// license.  You should have received a copy of this license along
+// with this source code in a file named "LICENSE."
+//
+////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::Constructor
 //       Access: Published
 //  Description:
 //////////////////////////////////////////////////////////////////// 0 
-34 0 0 7 46 128 89 0 232 ////////////////////////////////////////////////////////////////////
+35 14 Dtool_ayClsab4 0 7 43 121 48 14 Dtool_ayClsab4 232 ////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::Constructor
 //       Access: Published
 //  Description:
-//////////////////////////////////////////////////////////////////// 2 6 stream 1 129  11 owns_stream 1 110  
-35 0 0 6 48 110 0 0 536 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 6 stream 1 122  11 owns_stream 1 103  
+36 14 Dtool_ayCl4uRL 0 6 44 103 0 14 Dtool_ayCl4uRL 536 ////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::receive_datagram
 //       Access: Public
 //  Description: Receives a datagram over the socket by expecting a
@@ -731,59 +786,55 @@ static TypeHandle SocketStreamRecorder::get_class_type(void);
 //               socket stream is non-blocking, may return false if
 //               the data is not available; otherwise, returns false
 //               only if the socket closes.
-//////////////////////////////////////////////////////////////////// 2 4 this 3 128  2 dg 1 131  
-36 0 0 6 49 110 0 0 266 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 121  2 dg 1 124  
+37 14 Dtool_ayCl9r0L 0 6 45 103 0 14 Dtool_ayCl9r0L 266 ////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::send_datagram
 //       Access: Public
 //  Description: See SocketStream::send_datagram().
-//////////////////////////////////////////////////////////////////// 2 4 this 3 128  2 dg 1 133  
-37 0 0 6 50 110 0 0 261 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 121  2 dg 1 126  
+38 14 Dtool_ayCl5XJQ 0 6 46 103 0 14 Dtool_ayCl5XJQ 261 ////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::is_closed
 //       Access: Published
 //  Description: See SocketStream::is_closed().
-//////////////////////////////////////////////////////////////////// 1 4 this 3 128  
-38 0 0 4 51 121 0 0 253 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 121  
+39 14 Dtool_ayCl2w02 0 4 47 115 0 14 Dtool_ayCl2w02 253 ////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::close
 //       Access: Published
 //  Description: See SocketStream::close().
-//////////////////////////////////////////////////////////////////// 1 4 this 3 128  
-39 0 0 4 52 121 0 0 273 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 121  
+40 14 Dtool_ayClhdjA 0 4 48 115 0 14 Dtool_ayClhdjA 273 ////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::set_collect_tcp
 //       Access: Published
 //  Description: See SocketStream::set_collect_tcp().
-//////////////////////////////////////////////////////////////////// 2 4 this 3 128  11 collect_tcp 1 110  
-40 0 0 6 53 110 0 0 273 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 121  11 collect_tcp 1 103  
+41 14 Dtool_ayClg_ig 0 6 49 103 0 14 Dtool_ayClg_ig 273 ////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::get_collect_tcp
 //       Access: Published
 //  Description: See SocketStream::get_collect_tcp().
-//////////////////////////////////////////////////////////////////// 1 4 this 3 135  
-41 0 0 4 54 121 0 0 291 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 128  
+42 14 Dtool_ayClvs9Y 0 4 50 115 0 14 Dtool_ayClvs9Y 291 ////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::set_collect_tcp_interval
 //       Access: Published
 //  Description: See SocketStream::set_collect_tcp_interval().
-//////////////////////////////////////////////////////////////////// 2 4 this 3 128  8 interval 1 127  
-42 0 0 6 55 127 0 0 291 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 2 4 this 3 121  8 interval 1 120  
+43 14 Dtool_ayCls4oX 0 6 51 120 0 14 Dtool_ayCls4oX 291 ////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::get_collect_tcp_interval
 //       Access: Published
 //  Description: See SocketStream::get_collect_tcp_interval().
-//////////////////////////////////////////////////////////////////// 1 4 this 3 135  
-43 0 0 6 56 110 0 0 270 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 128  
+44 14 Dtool_ayClHOJb 0 6 52 103 0 14 Dtool_ayClHOJb 270 ////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::consider_flush
 //       Access: Published
 //  Description: See SocketStream::consider_flush()
-//////////////////////////////////////////////////////////////////// 1 4 this 3 128  
-44 0 0 6 57 110 0 0 252 ////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////// 1 4 this 3 121  
+45 14 Dtool_ayCl8T3a 0 6 53 103 0 14 Dtool_ayCl8T3a 252 ////////////////////////////////////////////////////////////////////
 //     Function: SocketStreamRecorder::flush
 //       Access: Published
 //  Description: See SocketStream::flush()
-//////////////////////////////////////////////////////////////////// 1 4 this 3 128  
-45 0 0 7 58 112 0 0 0 0 
-46 0 0 6 41 116 0 0 0 1 4 this 3 128  
-47 0 0 7 42 128 89 0 0 1 4 this 3 116  
-48 0 0 7 44 137 0 0 0 1 4 this 3 128  
-49 0 0 7 45 128 89 0 0 1 4 this 3 137  
-37
-101 12 RecorderBase 0 26625 12 RecorderBase 12 RecorderBase 0 0 0 0 50 0 3 51 52 53 0 0 0 0 0 1517
+//////////////////////////////////////////////////////////////////// 1 4 this 3 121  
+46 14 Dtool_ayCltYL0 0 7 54 105 0 14 Dtool_ayCltYL0 0 0 
+36
+94 12 RecorderBase 0 26625 12 RecorderBase 12 RecorderBase 0 0 0 0 48 0 3 49 50 51 0 0 1 5 95 47 0 0 0 1274
 ////////////////////////////////////////////////////////////////////
 //       Class : RecorderBase
 // Description : This is the base class to a number of objects that
@@ -806,14 +857,18 @@ static TypeHandle SocketStreamRecorder::get_class_type(void);
 //               write_recorder() to do exactly the same thing as
 //               write_datagram(), or they may choose to write
 //               something slightly different.
-//
-//               Most types of recorders should derive from Recorder,
-//               as it derives from ReferenceCount, except for
-//               MouseRecorder, which would otherwise doubly inherit
-//               from ReferenceCount.
 ////////////////////////////////////////////////////////////////////
 
-102 13 MouseRecorder 0 26625 13 MouseRecorder 13 MouseRecorder 0 0 0 1 58 59 0 1 60 0 0 2 3 103 54 55 3 101 56 57 0 0 626
+95 14 ReferenceCount 0 2049 14 ReferenceCount 14 ReferenceCount 0 0 0 0 0 0 0 0 0 0 0 0 425
+////////////////////////////////////////////////////////////////////
+//       Class : ReferenceCount
+// Description : A base class for all things that want to be
+//               reference-counted.  ReferenceCount works in
+//               conjunction with PointerTo to automatically delete
+//               objects when the last pointer to them goes away.
+////////////////////////////////////////////////////////////////////
+
+96 13 MouseRecorder 0 26625 13 MouseRecorder 13 MouseRecorder 0 0 0 1 56 57 0 1 58 0 0 2 3 97 52 53 3 94 54 55 0 0 626
 ////////////////////////////////////////////////////////////////////
 //       Class : MouseRecorder
 // Description : This object records any data generated by a
@@ -825,7 +880,7 @@ static TypeHandle SocketStreamRecorder::get_class_type(void);
 //               child nodes may be parented directly to it.
 ////////////////////////////////////////////////////////////////////
 
-103 8 DataNode 0 2049 8 DataNode 8 DataNode 0 0 0 0 0 0 0 0 0 0 0 0 695
+97 8 DataNode 0 2049 8 DataNode 8 DataNode 0 0 0 0 0 0 0 0 0 0 0 0 695
 ////////////////////////////////////////////////////////////////////
 //       Class : DataNode
 // Description : The fundamental type of node for the data graph.  The
@@ -839,7 +894,7 @@ static TypeHandle SocketStreamRecorder::get_class_type(void);
 //               used only within a single thread.
 ////////////////////////////////////////////////////////////////////
 
-104 18 RecorderController 0 75777 18 RecorderController 18 RecorderController 0 0 0 1 61 0 0 22 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 0 0 1 0 105 0 0 0 0 353
+98 18 RecorderController 0 75777 18 RecorderController 18 RecorderController 0 0 0 1 59 0 0 22 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 0 0 1 0 99 0 0 0 0 353
 ////////////////////////////////////////////////////////////////////
 //       Class : RecorderController
 // Description : This object manages the process of recording the
@@ -847,7 +902,7 @@ static TypeHandle SocketStreamRecorder::get_class_type(void);
 //               session can be recreated later.
 ////////////////////////////////////////////////////////////////////
 
-105 19 TypedReferenceCount 0 2049 19 TypedReferenceCount 19 TypedReferenceCount 0 0 0 0 0 0 0 0 0 0 0 0 710
+99 19 TypedReferenceCount 0 2049 19 TypedReferenceCount 19 TypedReferenceCount 0 0 0 0 0 0 0 0 0 0 0 0 710
 ////////////////////////////////////////////////////////////////////
 //       Class : TypedReferenceCount
 // Description : A base class for things which need to inherit from
@@ -861,7 +916,7 @@ static TypeHandle SocketStreamRecorder::get_class_type(void);
 //               See also TypedObject for detailed instructions.
 ////////////////////////////////////////////////////////////////////
 
-106 20 SocketStreamRecorder 0 26625 20 SocketStreamRecorder 20 SocketStreamRecorder 0 0 0 1 88 89 0 11 90 91 92 93 94 95 96 97 98 99 100 0 0 2 3 101 84 85 3 107 86 87 0 0 622
+100 20 SocketStreamRecorder 0 75777 20 SocketStreamRecorder 20 SocketStreamRecorder 0 0 0 1 82 48 0 11 83 84 85 86 87 88 89 90 91 92 93 0 0 1 0 94 0 0 0 0 622
 ////////////////////////////////////////////////////////////////////
 //       Class : SocketStreamRecorder
 // Description : Records any data received from the indicated socket
@@ -874,22 +929,13 @@ static TypeHandle SocketStreamRecorder::get_class_type(void);
 //               silently ignored if it is not.
 ////////////////////////////////////////////////////////////////////
 
-107 14 ReferenceCount 0 2049 14 ReferenceCount 14 ReferenceCount 0 0 0 0 0 0 0 0 0 0 0 0 425
-////////////////////////////////////////////////////////////////////
-//       Class : ReferenceCount
-// Description : A base class for all things that want to be
-//               reference-counted.  ReferenceCount works in
-//               conjunction with PointerTo to automatically delete
-//               objects when the last pointer to them goes away.
-////////////////////////////////////////////////////////////////////
+101 20 RecorderBase const * 0 8576 20 RecorderBase const * 20 RecorderBase const * 0 0 102 0 0 0 0 0 0 0 0 0 0
 
-108 20 RecorderBase const * 0 8576 20 RecorderBase const * 20 RecorderBase const * 0 0 109 0 0 0 0 0 0 0 0 0 0
+102 18 RecorderBase const 0 8832 18 RecorderBase const 18 RecorderBase const 0 0 94 0 0 0 0 0 0 0 0 0 0
 
-109 18 RecorderBase const 0 8832 18 RecorderBase const 18 RecorderBase const 0 0 101 0 0 0 0 0 0 0 0 0 0
+103 4 bool 0 8194 4 bool 4 bool 0 4 0 0 0 0 0 0 0 0 0 0 0
 
-110 4 bool 0 8194 4 bool 4 bool 0 4 0 0 0 0 0 0 0 0 0 0 0
-
-111 10 TypeHandle 0 2048 10 TypeHandle 10 TypeHandle 0 0 0 0 0 0 0 0 0 0 0 0 1098
+104 10 TypeHandle 0 2048 10 TypeHandle 10 TypeHandle 0 0 0 0 0 0 0 0 0 0 0 0 1098
 ////////////////////////////////////////////////////////////////////
 //       Class : TypeHandle
 // Description : TypeHandle is the identifier used to differentiate
@@ -909,23 +955,25 @@ static TypeHandle SocketStreamRecorder::get_class_type(void);
 //               type name may be retrieved for run-time display.
 ////////////////////////////////////////////////////////////////////
 
-112 12 TypeHandle * 0 8576 12 TypeHandle * 12 TypeHandle * 0 0 111 0 0 0 0 0 0 0 0 0 0
+105 12 TypeHandle * 0 8576 12 TypeHandle * 12 TypeHandle * 0 0 104 0 0 0 0 0 0 0 0 0 0
 
-113 13 atomic string 0 2 13 atomic string 13 atomic string 0 7 0 0 0 0 0 0 0 0 0 0 0
+106 14 RecorderBase * 0 8576 14 RecorderBase * 14 RecorderBase * 0 0 94 0 0 0 0 0 0 0 0 0 0
 
-114 15 MouseRecorder * 0 8576 15 MouseRecorder * 15 MouseRecorder * 0 0 102 0 0 0 0 0 0 0 0 0 0
+107 16 ReferenceCount * 0 8576 16 ReferenceCount * 16 ReferenceCount * 0 0 95 0 0 0 0 0 0 0 0 0 0
 
-115 10 DataNode * 0 8576 10 DataNode * 10 DataNode * 0 0 103 0 0 0 0 0 0 0 0 0 0
+108 13 atomic string 0 2 13 atomic string 13 atomic string 0 7 0 0 0 0 0 0 0 0 0 0 0
 
-116 14 RecorderBase * 0 8576 14 RecorderBase * 14 RecorderBase * 0 0 101 0 0 0 0 0 0 0 0 0 0
+109 15 MouseRecorder * 0 8576 15 MouseRecorder * 15 MouseRecorder * 0 0 96 0 0 0 0 0 0 0 0 0 0
 
-117 20 RecorderController * 0 8576 20 RecorderController * 20 RecorderController * 0 0 104 0 0 0 0 0 0 0 0 0 0
+110 10 DataNode * 0 8576 10 DataNode * 10 DataNode * 0 0 97 0 0 0 0 0 0 0 0 0 0
 
-118 16 Filename const * 0 8576 16 Filename const * 16 Filename const * 0 0 119 0 0 0 0 0 0 0 0 0 0
+111 20 RecorderController * 0 8576 20 RecorderController * 20 RecorderController * 0 0 98 0 0 0 0 0 0 0 0 0 0
 
-119 14 Filename const 0 8832 14 Filename const 14 Filename const 0 0 120 0 0 0 0 0 0 0 0 0 0
+112 16 Filename const * 0 8576 16 Filename const * 16 Filename const * 0 0 113 0 0 0 0 0 0 0 0 0 0
 
-120 8 Filename 0 2048 8 Filename 8 Filename 0 0 0 0 0 0 0 0 0 0 0 0 869
+113 14 Filename const 0 8832 14 Filename const 14 Filename const 0 0 114 0 0 0 0 0 0 0 0 0 0
+
+114 8 Filename 0 2048 8 Filename 8 Filename 0 0 0 0 0 0 0 0 0 0 0 0 869
 ////////////////////////////////////////////////////////////////////
 //       Class : Filename
 // Description : The name of a file, such as a texture file or an Egg
@@ -942,34 +990,32 @@ static TypeHandle SocketStreamRecorder::get_class_type(void);
 //               fstream for reading or writing.
 ////////////////////////////////////////////////////////////////////
 
-121 4 void 0 8194 4 void 4 void 0 6 0 0 0 0 0 0 0 0 0 0 0
+115 4 void 0 8194 4 void 4 void 0 6 0 0 0 0 0 0 0 0 0 0 0
 
-122 26 RecorderController const * 0 8576 26 RecorderController const * 26 RecorderController const * 0 0 123 0 0 0 0 0 0 0 0 0 0
+116 26 RecorderController const * 0 8576 26 RecorderController const * 26 RecorderController const * 0 0 117 0 0 0 0 0 0 0 0 0 0
 
-123 24 RecorderController const 0 8832 24 RecorderController const 24 RecorderController const 0 0 104 0 0 0 0 0 0 0 0 0 0
+117 24 RecorderController const 0 8832 24 RecorderController const 24 RecorderController const 0 0 98 0 0 0 0 0 0 0 0 0 0
 
-124 6 time_t 0 2105344 6 time_t 6 time_t 0 0 125 0 0 0 0 0 0 0 0 0 0
+118 12 unsigned int 0 8198 12 unsigned int 12 unsigned int 0 1 0 0 0 0 0 0 0 0 0 0 0
 
-125 12 unsigned int 0 8198 12 unsigned int 12 unsigned int 0 1 0 0 0 0 0 0 0 0 0 0 0
+119 3 int 0 8194 3 int 3 int 0 1 0 0 0 0 0 0 0 0 0 0 0
 
-126 3 int 0 8194 3 int 3 int 0 1 0 0 0 0 0 0 0 0 0 0 0
+120 6 double 0 8194 6 double 6 double 0 3 0 0 0 0 0 0 0 0 0 0 0
 
-127 6 double 0 8194 6 double 6 double 0 3 0 0 0 0 0 0 0 0 0 0 0
+121 22 SocketStreamRecorder * 0 8576 22 SocketStreamRecorder * 22 SocketStreamRecorder * 0 0 100 0 0 0 0 0 0 0 0 0 0
 
-128 22 SocketStreamRecorder * 0 8576 22 SocketStreamRecorder * 22 SocketStreamRecorder * 0 0 106 0 0 0 0 0 0 0 0 0 0
+122 14 SocketStream * 0 8576 14 SocketStream * 14 SocketStream * 0 0 123 0 0 0 0 0 0 0 0 0 0
 
-129 14 SocketStream * 0 8576 14 SocketStream * 14 SocketStream * 0 0 130 0 0 0 0 0 0 0 0 0 0
-
-130 12 SocketStream 0 2048 12 SocketStream 12 SocketStream 0 0 0 0 0 0 0 0 0 0 0 0 285
+123 12 SocketStream 0 2048 12 SocketStream 12 SocketStream 0 0 0 0 0 0 0 0 0 0 0 0 285
 ////////////////////////////////////////////////////////////////////
 //       Class : SocketStream
 // Description : A base class for iostreams that read and write to a
 //               (possibly non-blocking) socket.
 ////////////////////////////////////////////////////////////////////
 
-131 10 Datagram * 0 8576 10 Datagram * 10 Datagram * 0 0 132 0 0 0 0 0 0 0 0 0 0
+124 10 Datagram * 0 8576 10 Datagram * 10 Datagram * 0 0 125 0 0 0 0 0 0 0 0 0 0
 
-132 8 Datagram 0 2048 8 Datagram 8 Datagram 0 0 0 0 0 0 0 0 0 0 0 0 900
+125 8 Datagram 0 2048 8 Datagram 8 Datagram 0 0 0 0 0 0 0 0 0 0 0 0 900
 ////////////////////////////////////////////////////////////////////
 //       Class : Datagram
 // Description : An ordered list of data elements, formatted in memory
@@ -988,15 +1034,13 @@ static TypeHandle SocketStreamRecorder::get_class_type(void);
 //               collection of data elements.
 ////////////////////////////////////////////////////////////////////
 
-133 16 Datagram const * 0 8576 16 Datagram const * 16 Datagram const * 0 0 134 0 0 0 0 0 0 0 0 0 0
+126 16 Datagram const * 0 8576 16 Datagram const * 16 Datagram const * 0 0 127 0 0 0 0 0 0 0 0 0 0
 
-134 14 Datagram const 0 8832 14 Datagram const 14 Datagram const 0 0 132 0 0 0 0 0 0 0 0 0 0
+127 14 Datagram const 0 8832 14 Datagram const 14 Datagram const 0 0 125 0 0 0 0 0 0 0 0 0 0
 
-135 28 SocketStreamRecorder const * 0 8576 28 SocketStreamRecorder const * 28 SocketStreamRecorder const * 0 0 136 0 0 0 0 0 0 0 0 0 0
+128 28 SocketStreamRecorder const * 0 8576 28 SocketStreamRecorder const * 28 SocketStreamRecorder const * 0 0 129 0 0 0 0 0 0 0 0 0 0
 
-136 26 SocketStreamRecorder const 0 8832 26 SocketStreamRecorder const 26 SocketStreamRecorder const 0 0 106 0 0 0 0 0 0 0 0 0 0
-
-137 16 ReferenceCount * 0 8576 16 ReferenceCount * 16 ReferenceCount * 0 0 107 0 0 0 0 0 0 0 0 0 0
+129 26 SocketStreamRecorder const 0 8832 26 SocketStreamRecorder const 26 SocketStreamRecorder const 0 0 100 0 0 0 0 0 0 0 0 0 0
 
 0
 0

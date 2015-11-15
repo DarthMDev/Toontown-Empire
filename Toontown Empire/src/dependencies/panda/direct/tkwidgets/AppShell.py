@@ -17,6 +17,7 @@ import Floater
 import Slider
 import EntryScale
 import VectorWidgets
+import sys, string
 import ProgressBar
 
 """

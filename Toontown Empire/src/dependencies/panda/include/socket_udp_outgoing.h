@@ -1,9 +1,6 @@
 #ifndef __SOCKET_UDP_OUTGOING_H__
 #define __SOCKET_UDP_OUTGOING_H__
 
-#include "config_nativenet.h"
-#include "socket_ip.h"
-
 /////////////////////////////////////////////////////////////////////
 // Class : Socket_UDP_Outgoing
 //

@@ -20,7 +20,6 @@ class AstronDatabaseInterface:
         self.air = air
 
         self._callbacks = {}
-        self._dclasses = {}
 
     def createObject(self, databaseId, dclass, fields={}, callback=None):
         """
@@ -74,7 +73,7 @@ class AstronDatabaseInterface:
 
         del self._callbacks[ctx]
 
-    def queryObject(self, databaseId, doId, callback, dclass=None, fieldNames=()):
+    def queryObject(self, databaseId, doId, callback):
         """
         Query object `doId` out of the database.
 
@@ -86,44 +85,21 @@ class AstronDatabaseInterface:
         # Save the callback:
         ctx = self.air.getContext()
         self._callbacks[ctx] = callback
-        self._dclasses[ctx] = dclass
 
         # Generate and send the datagram:
         dg = PyDatagram()
-
-        if not fieldNames:
-            dg.addServerHeader(databaseId, self.air.ourChannel,
-                               DBSERVER_OBJECT_GET_ALL)
-        else:
-            # We need a dclass in order to convert the field names into field IDs:
-            assert dclass is not None
-
-            if len(fieldNames) > 1:
-                dg.addServerHeader(databaseId, self.air.ourChannel,
-                                   DBSERVER_OBJECT_GET_FIELDS)
-            else:
-                dg.addServerHeader(databaseId, self.air.ourChannel,
-                                   DBSERVER_OBJECT_GET_FIELD)
-
+        dg.addServerHeader(databaseId, self.air.ourChannel, DBSERVER_OBJECT_GET_ALL)
         dg.addUint32(ctx)
         dg.addUint32(doId)
-        if len(fieldNames) > 1:
-            dg.addUint16(len(fieldNames))
-        for fieldName in fieldNames:
-            field = dclass.getFieldByName(fieldName)
-            if field is None:
-                self.notify.error('Bad field named %s in query for'
-                                  ' %s object' % (fieldName, dclass.getName()))
-            dg.addUint16(field.getNumber())
         self.air.send(dg)
 
-    def handleQueryObjectResp(self, msgType, di):
+    def handleQueryObjectResp(self, di):
         ctx = di.getUint32()
         success = di.getUint8()
 
         if ctx not in self._callbacks:
-            self.notify.warning('Received unexpected %s'
-                                ' (ctx %d)' % (MsgId2Names[msgType], ctx))
+            self.notify.warning('Received unexpected DBSERVER_OBJECT_GET_ALL_RESP'
+                                ' (ctx %d)' % (ctx))
             return
 
         try:
@@ -132,20 +108,14 @@ class AstronDatabaseInterface:
                     self._callbacks[ctx](None, None)
                 return
 
-            if msgType == DBSERVER_OBJECT_GET_ALL_RESP:
-                dclassId = di.getUint16()
-                dclass = self.air.dclassesByNumber.get(dclassId)
-            else:
-                dclass = self._dclasses[ctx]
+            dclassId = di.getUint16()
+            dclass = self.air.dclassesByNumber.get(dclassId)
 
             if not dclass:
                 self.notify.error('Received bad dclass %d in'
                                   ' DBSERVER_OBJECT_GET_ALL_RESP' % (dclassId))
 
-            if msgType == DBSERVER_OBJECT_GET_FIELD_RESP:
-                fieldCount = 1
-            else:
-                fieldCount = di.getUint16()
+            fieldCount = di.getUint16()
             unpacker = DCPacker()
             unpacker.setUnpackData(di.getRemainingBytes())
             fields = {}
@@ -157,6 +127,7 @@ class AstronDatabaseInterface:
                     self.notify.error('Received bad field %d in query for'
                                       ' %s object' % (fieldId, dclass.getName()))
 
+
                 unpacker.beginUnpack(field)
                 fields[field.getName()] = field.unpackArgs(unpacker)
                 unpacker.endUnpack()
@@ -166,7 +137,6 @@ class AstronDatabaseInterface:
 
         finally:
             del self._callbacks[ctx]
-            del self._dclasses[ctx]
 
     def updateObject(self, databaseId, doId, dclass, newFields, oldFields=None, callback=None):
         """
@@ -297,10 +267,8 @@ class AstronDatabaseInterface:
     def handleDatagram(self, msgType, di):
         if msgType == DBSERVER_CREATE_OBJECT_RESP:
             self.handleCreateObjectResp(di)
-        elif msgType in (DBSERVER_OBJECT_GET_ALL_RESP,
-                         DBSERVER_OBJECT_GET_FIELDS_RESP,
-                         DBSERVER_OBJECT_GET_FIELD_RESP):
-            self.handleQueryObjectResp(msgType, di)
+        elif msgType == DBSERVER_OBJECT_GET_ALL_RESP:
+            self.handleQueryObjectResp(di)
         elif msgType == DBSERVER_OBJECT_SET_FIELD_IF_EQUALS_RESP:
             self.handleUpdateObjectResp(di, False)
         elif msgType == DBSERVER_OBJECT_SET_FIELDS_IF_EQUALS_RESP:

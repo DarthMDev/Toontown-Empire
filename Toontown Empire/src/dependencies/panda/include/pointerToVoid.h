@@ -20,8 +20,6 @@
 #include "memoryBase.h"
 #include "atomicAdjust.h"
 
-#include <algorithm>
-
 ////////////////////////////////////////////////////////////////////
 //       Class : PointerToVoid
 // Description : This is the non-template part of the base class for
@@ -53,8 +51,6 @@ public:
 
   INLINE bool operator == (const PointerToVoid &other) const;
   INLINE bool operator != (const PointerToVoid &other) const;
-
-  INLINE void swap(PointerToVoid &other) NOEXCEPT;
 
 protected:
   // Within the PointerToVoid class, we only store a void pointer.

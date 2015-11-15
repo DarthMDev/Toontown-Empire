@@ -1,5 +1,4 @@
-__all__ = []
-print('Using deprecated DirectStart interface.')
+print 'DirectStart: Starting the game.'
 
 from direct.showbase import ShowBase
 base = ShowBase.ShowBase()

@@ -24,7 +24,7 @@
 //               be used from the extension method.
 ////////////////////////////////////////////////////////////////////
 template<class T>
-class EXPCL_INTERROGATEDB ExtensionBase {
+class EXPCL_DTOOLCONFIG ExtensionBase {
 public:
   T * _this;
 };
@@ -36,7 +36,7 @@ public:
 //               a specialization of this class template.
 ////////////////////////////////////////////////////////////////////
 template<class T>
-class EXPCL_INTERROGATEDB Extension : public ExtensionBase<T> {
+class EXPCL_DTOOLCONFIG Extension : public ExtensionBase<T> {
 };
 
 ////////////////////////////////////////////////////////////////////

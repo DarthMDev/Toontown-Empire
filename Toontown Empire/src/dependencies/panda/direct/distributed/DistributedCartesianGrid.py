@@ -250,7 +250,7 @@ class DistributedCartesianGrid(DistributedNode, CartesianGridBase):
         assert self.notify.debug("removeObjectFromGrid %s" % av)
         # TODO: WHAT LOCATION SHOULD WE SET THIS TO?
         #av.reparentTo(hidden)
-        if av.getParent() == self:
+        if (av.getParent().compareTo(self) == 0):
             # only detach if object is directly parented
             av.detachNode()
         #av.b_setLocation(0, 0)

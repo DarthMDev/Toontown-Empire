@@ -6,8 +6,8 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
 from panda3d.core import *
 from src.otp.chat import ChatManager
-from TTChatInputSpeedChat import TTChatInputSpeedChat
-from TTChatInputWhiteList import TTChatInputWhiteList
+from src.TTChatInputSpeedChat import TTChatInputSpeedChat
+from src.TTChatInputWhiteList import TTChatInputWhiteList
 
 class ToontownChatManager(ChatManager.ChatManager):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownChatManager')
@@ -35,7 +35,7 @@ class ToontownChatManager(ChatManager.ChatManager):
         ChatManager.ChatManager.__init__(self, cr, localAvatar)
         self.chatInputSpeedChat = TTChatInputSpeedChat(self)
         self.normalPos = Vec3(0.25, 0, -0.196)
-        self.whisperPos = Vec3(0.25, 0, -0.28)
+        self.whisperPos = Vec3(0, 0, -0.296)
         self.speedChatPlusPos = Vec3(-0.35, 0, 0.71)
         self.SCWhisperPos = Vec3(0, 0, 0)
         self.chatInputWhiteList = TTChatInputWhiteList()
@@ -93,27 +93,24 @@ class ToontownChatManager(ChatManager.ChatManager):
         else:
             ChatManager.ChatManager.enterMainMenu(self)
 
-    def enterNoTrueFriends(self):
-        if self.noTrueFriends == None:
+    def enterNoTrueFriendsAtAll(self):
+        if self.noTrueFriendsAtAll == None:
             buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
             okButtonImage = (buttons.find('**/ChtBx_OKBtn_UP'), buttons.find('**/ChtBx_OKBtn_DN'), buttons.find('**/ChtBx_OKBtn_Rllvr'))
-            self.noTrueFriends = DirectFrame(parent=aspect2dp, pos=(0.0, 0.1, 0.2), relief=None, image=DGG.getDefaultDialogGeom(), image_color=OTPGlobals.GlobalDialogColor, image_scale=(1.4, 1.0, 1.1), text=OTPLocalizer.NoTrueFriends, text_wordwrap=20, textMayChange=0, text_scale=0.06, text_pos=(0, 0.3))
-            DirectLabel(parent=self.noTrueFriends, relief=None, pos=(0, 0, 0.4), text=OTPLocalizer.NoTrueFriendsTitle, textMayChange=0, text_scale=0.08)
-            DirectButton(self.noTrueFriends, image=okButtonImage, relief=None, text=OTPLocalizer.NoTrueFriendsOK, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=0, pos=(0.0, 0.0, -0.4), command=self.__handleNoTrueFriendsOK)
+            self.noTrueFriendsAtAll = DirectFrame(parent=aspect2dp, pos=(0.0, 0.1, 0.2), relief=None, image=DGG.getDefaultDialogGeom(), image_color=OTPGlobals.GlobalDialogColor, image_scale=(1.4, 1.0, 1.1), text=OTPLocalizer.NoTrueFriendsAtAll, text_wordwrap=20, textMayChange=0, text_scale=0.06, text_pos=(0, 0.3))
+            DirectLabel(parent=self.noTrueFriendsAtAll, relief=None, pos=(0, 0, 0.4), text=OTPLocalizer.NoTrueFriendsAtAllTitle, textMayChange=0, text_scale=0.08)
+            DirectButton(self.noTrueFriendsAtAll, image=okButtonImage, relief=None, text=OTPLocalizer.NoTrueFriendsAtAllOK, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=0, pos=(0.0, 0.0, -0.4), command=self.__handleNoTrueFriendsAtAllOK)
             buttons.removeNode()
-        self.noTrueFriends.show()
+        self.noTrueFriendsAtAll.show()
         return
 
-    def exitNoTrueFriends(self):
-        self.noTrueFriends.hide()
+    def exitNoTrueFriendsAtAll(self):
+        self.noTrueFriendsAtAll.hide()
 
     def __normalButtonPressed(self):
         if base.config.GetBool('want-qa-regression', 0):
             self.notify.info('QA-REGRESSION: CHAT: Speedchat Plus')
         messenger.send('wakeup')
-        if not settings['trueFriends'] and not settings['speedchatPlus']:
-            self.fsm.request('noSpeedchatPlus')
-            return
         self.fsm.request('normalChat')
 
     def __scButtonPressed(self):
@@ -125,47 +122,40 @@ class ToontownChatManager(ChatManager.ChatManager):
 
     def __whisperButtonPressed(self, avatarName, avatarId):
         messenger.send('wakeup')
-        if not settings['trueFriends'] and not settings['speedchatPlus']:
-            self.fsm.request('noSpeedchatPlus')
-            return
         if avatarId:
             self.enterWhisperChat(avatarName, avatarId)
         self.whisperFrame.hide()
         return
 
     def enterNormalChat(self):
-        if not settings['trueFriends'] and not settings['speedchatPlus']:
-            self.fsm.request('mainMenu')
-            return
         result = ChatManager.ChatManager.enterNormalChat(self)
         if result == None:
             self.notify.warning('something went wrong in enterNormalChat, falling back to main menu')
             self.fsm.request('mainMenu')
+        return
 
     def enterWhisperChat(self, avatarName, avatarId):
-        if not settings['trueFriends'] and not settings['speedchatPlus']:
-            self.fsm.request('mainMenu')
-            return
         result = ChatManager.ChatManager.enterWhisperChat(self, avatarName, avatarId)
         self.chatInputNormal.reparentTo(base.a2dTopCenter)
         self.chatInputNormal.setPos(self.whisperPos)
         if result == None:
             self.notify.warning('something went wrong in enterWhisperChat, falling back to main menu')
             self.fsm.request('mainMenu')
-
-    def enterNoSpeedchatPlus(self):
-        if self.noSpeedchatPlus == None:
-            buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
-            okButtonImage = (buttons.find('**/ChtBx_OKBtn_UP'), buttons.find('**/ChtBx_OKBtn_DN'), buttons.find('**/ChtBx_OKBtn_Rllvr'))
-            self.noSpeedchatPlus = DirectFrame(parent=aspect2dp, pos=(0.0, 0.1, 0.05), relief=None, image=DGG.getDefaultDialogGeom(), image_color=OTPGlobals.GlobalDialogColor, image_scale=(1.4, 1.0, 1.58), text=OTPLocalizer.NoSpeedchatPlus, text_wordwrap=20, textMayChange=0, text_scale=0.06, text_pos=(0, 0.55))
-            DirectLabel(parent=self.noSpeedchatPlus, relief=None, pos=(0, 0, 0.67), text=OTPLocalizer.NoSpeedchatPlusTitle, textMayChange=0, text_scale=0.08)
-            DirectButton(self.noSpeedchatPlus, image=okButtonImage, relief=None, text=OTPLocalizer.NoTrueFriendsOK, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=0, pos=(0.0, 0.0, -0.64), command=self.__handleNoTrueFriendsOK)
-            buttons.removeNode()
-        self.noSpeedchatPlus.show()
         return
 
-    def exitNoSpeedchatPlus(self):
-        self.noSpeedchatPlus.hide()
+    def enterNoTrueFriendsAtAllAndNoWhitelist(self):
+        if self.noTrueFriendsAtAllAndNoWhitelist == None:
+            buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
+            okButtonImage = (buttons.find('**/ChtBx_OKBtn_UP'), buttons.find('**/ChtBx_OKBtn_DN'), buttons.find('**/ChtBx_OKBtn_Rllvr'))
+            self.noTrueFriendsAtAllAndNoWhitelist = DirectFrame(parent=aspect2dp, pos=(0.0, 0.1, 0.05), relief=None, image=DGG.getDefaultDialogGeom(), image_color=OTPGlobals.GlobalDialogColor, image_scale=(1.4, 1.0, 1.58), text=OTPLocalizer.NoTrueFriendsAtAllAndNoWhitelist, text_wordwrap=20, textMayChange=0, text_scale=0.06, text_pos=(0, 0.55))
+            DirectLabel(parent=self.noTrueFriendsAtAllAndNoWhitelist, relief=None, pos=(0, 0, 0.67), text=OTPLocalizer.NoTrueFriendsAtAllAndNoWhitelistTitle, textMayChange=0, text_scale=0.08)
+            DirectButton(self.noTrueFriendsAtAllAndNoWhitelist, image=okButtonImage, relief=None, text=OTPLocalizer.NoTrueFriendsAtAllOK, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=0, pos=(0.0, 0.0, -0.64), command=self.__handleNoTrueFriendsAtAllOK)
+            buttons.removeNode()
+        self.noTrueFriendsAtAllAndNoWhitelist.show()
+        return
+
+    def exitNoTrueFriendsAtAllAndNoWhitelist(self):
+        self.noTrueFriendsAtAllAndNoWhitelist.hide()
 
     def __whisperScButtonPressed(self, avatarName, avatarId):
         messenger.send('wakeup')
@@ -178,7 +168,7 @@ class ToontownChatManager(ChatManager.ChatManager):
     def __whisperCancelPressed(self):
         self.fsm.request('mainMenu')
 
-    def __handleNoTrueFriendsOK(self):
+    def __handleNoTrueFriendsAtAllOK(self):
         self.fsm.request('mainMenu')
 
     def messageSent(self):

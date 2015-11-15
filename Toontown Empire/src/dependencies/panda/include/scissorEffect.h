@@ -21,9 +21,6 @@
 #include "luse.h"
 #include "nodePath.h"
 
-// Forward declarations
-class Lens;
-
 ////////////////////////////////////////////////////////////////////
 //       Class : ScissorEffect
 // Description : This provides a higher-level wrapper around

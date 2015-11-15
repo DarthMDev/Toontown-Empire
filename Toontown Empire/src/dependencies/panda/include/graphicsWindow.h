@@ -21,6 +21,9 @@
 #include "graphicsWindowInputDevice.h"
 #include "graphicsWindowProc.h"
 #include "graphicsWindowProcCallbackData.h"
+#ifdef HAVE_PYTHON
+#include "pythonGraphicsWindowProc.h"
+#endif
 #include "windowProperties.h"
 #include "mouseData.h"
 #include "modifierButtons.h"
@@ -90,6 +93,11 @@ PUBLISHED:
   MouseData get_pointer(int device) const;
   virtual bool move_pointer(int device, int x, int y);
   virtual void close_ime();
+
+#ifdef HAVE_PYTHON
+  void add_python_event_handler(PyObject* handler, PyObject* name);
+  void remove_python_event_handler(PyObject* name);
+#endif
 
 public:
   // No need to publish these.
@@ -161,7 +169,7 @@ private:
   bool _unexposed_draw;
 
 #ifdef HAVE_PYTHON
-  typedef pset<GraphicsWindowProc*> PythonWinProcClasses;
+  typedef pset<PythonGraphicsWindowProc*> PythonWinProcClasses;
   PythonWinProcClasses _python_window_proc_classes;
 #endif
 
@@ -183,7 +191,6 @@ private:
   static TypeHandle _type_handle;
 
   friend class GraphicsEngine;
-  friend class Extension<GraphicsWindow>;
 };
 
 #include "graphicsWindow.I"

@@ -15,7 +15,7 @@
 #ifndef LINESTREAM_H
 #define LINESTREAM_H
 
-#include "dtoolbase.h"
+#include "pandabase.h"
 
 #include "lineStreamBuf.h"
 
@@ -33,7 +33,7 @@
 //               More text can still be written to it and continuously
 //               extracted.
 ////////////////////////////////////////////////////////////////////
-class EXPCL_DTOOL LineStream : public ostream {
+class EXPCL_PANDA_PUTIL LineStream : public ostream {
 PUBLISHED:
   INLINE LineStream();
 

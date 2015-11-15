@@ -50,9 +50,6 @@ PUBLISHED:
   INLINE static string get_binary_name();
   INLINE static string get_dtool_name();
 
-  INLINE static void set_binary_name(const string &name);
-  INLINE static void set_dtool_name(const string &name);
-
   static Filename get_cwd();
 
 private:

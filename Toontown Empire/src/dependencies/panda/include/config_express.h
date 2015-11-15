@@ -25,9 +25,8 @@
 #include "configVariableList.h"
 #include "configVariableFilename.h"
 
-// Include these so interrogate can find them.
+// Include this so interrogate can find it.
 #include "executionEnvironment.h"
-#include "lineStream.h"
 
 #ifdef ANDROID
 #include <jni.h>

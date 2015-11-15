@@ -20,16 +20,10 @@ class FLOATNAME(UnalignedLMatrix4);
 ////////////////////////////////////////////////////////////////////
 class EXPCL_PANDA_LINMATH ALIGN_LINMATH FLOATNAME(LMatrix4) {
 public:
-  typedef FLOATTYPE numeric_type;
   typedef const FLOATTYPE *iterator;
   typedef const FLOATTYPE *const_iterator;
 
 PUBLISHED:
-  enum {
-    num_components = 16,
-    is_int = 0
-  };
-
   // These helper classes are used to support two-level operator [].
   class Row {
   private:
@@ -37,6 +31,7 @@ PUBLISHED:
   PUBLISHED:
     INLINE_LINMATH FLOATTYPE operator [](int i) const;
     INLINE_LINMATH FLOATTYPE &operator [](int i);
+    EXTENSION(INLINE_LINMATH void __setitem__(int i, FLOATTYPE v));
     INLINE_LINMATH static int size();
   public:
     FLOATTYPE *_row;
@@ -112,7 +107,6 @@ PUBLISHED:
   INLINE_LINMATH static int size();
 
   INLINE_LINMATH bool is_nan() const;
-  INLINE_LINMATH bool is_identity() const;
 
   INLINE_LINMATH FLOATTYPE get_cell(int row, int col) const;
   INLINE_LINMATH void set_cell(int row, int col, FLOATTYPE value);
@@ -183,8 +177,6 @@ PUBLISHED:
   INLINE_LINMATH FLOATNAME(LMatrix4) &operator *= (FLOATTYPE scalar);
   INLINE_LINMATH FLOATNAME(LMatrix4) &operator /= (FLOATTYPE scalar);
 
-  INLINE_LINMATH void componentwise_mult(const FLOATNAME(LMatrix4) &other);
-
   INLINE_LINMATH void transpose_from(const FLOATNAME(LMatrix4) &other);
   INLINE_LINMATH void transpose_in_place();
 
@@ -211,13 +203,13 @@ PUBLISHED:
   INLINE_LINMATH void
     set_scale_mat(const FLOATNAME(LVecBase3) &scale);
   INLINE_LINMATH void
-    set_shear_mat(const FLOATNAME(LVecBase3) &shear,
+    set_shear_mat(const FLOATNAME(LVecBase3) &shear, 
                   CoordinateSystem cs = CS_default);
   INLINE_LINMATH void
     set_scale_shear_mat(const FLOATNAME(LVecBase3) &scale,
-                        const FLOATNAME(LVecBase3) &shear,
+                        const FLOATNAME(LVecBase3) &shear, 
                         CoordinateSystem cs = CS_default);
-
+  
   INLINE_LINMATH static FLOATNAME(LMatrix4)
     translate_mat(const FLOATNAME(LVecBase3) &trans);
   INLINE_LINMATH static FLOATNAME(LMatrix4)
@@ -238,19 +230,19 @@ PUBLISHED:
     scale_mat(FLOATTYPE scale);
 
   static INLINE_LINMATH FLOATNAME(LMatrix4)
-    shear_mat(const FLOATNAME(LVecBase3) &shear,
+    shear_mat(const FLOATNAME(LVecBase3) &shear, 
               CoordinateSystem cs = CS_default);
   static INLINE_LINMATH FLOATNAME(LMatrix4)
-    shear_mat(FLOATTYPE shxy, FLOATTYPE shxz, FLOATTYPE shyz,
+    shear_mat(FLOATTYPE shxy, FLOATTYPE shxz, FLOATTYPE shyz, 
               CoordinateSystem cs = CS_default);
 
   static INLINE_LINMATH FLOATNAME(LMatrix4)
     scale_shear_mat(const FLOATNAME(LVecBase3) &scale,
-                    const FLOATNAME(LVecBase3) &shear,
+                    const FLOATNAME(LVecBase3) &shear, 
                     CoordinateSystem cs = CS_default);
   static INLINE_LINMATH FLOATNAME(LMatrix4)
     scale_shear_mat(FLOATTYPE sx, FLOATTYPE sy, FLOATTYPE sz,
-                    FLOATTYPE shxy, FLOATTYPE shxz, FLOATTYPE shyz,
+                    FLOATTYPE shxy, FLOATTYPE shxz, FLOATTYPE shyz, 
                     CoordinateSystem cs = CS_default);
 
   INLINE_LINMATH static const FLOATNAME(LMatrix4) &y_to_z_up_mat();
@@ -265,7 +257,7 @@ PUBLISHED:
 
   void output(ostream &out) const;
   void write(ostream &out, int indent_level = 0) const;
-  EXTENSION(INLINE_LINMATH string __repr__() const);
+  EXTENSION(INLINE_LINMATH void python_repr(ostream &out, const string &class_name) const);
 
   INLINE_LINMATH void generate_hash(ChecksumHashGenerator &hashgen) const;
   void generate_hash(ChecksumHashGenerator &hashgen, FLOATTYPE scale) const;
@@ -325,10 +317,6 @@ private:
 ////////////////////////////////////////////////////////////////////
 class EXPCL_PANDA_LINMATH FLOATNAME(UnalignedLMatrix4) {
 PUBLISHED:
-  enum {
-    num_components = 16
-  };
-
   INLINE_LINMATH FLOATNAME(UnalignedLMatrix4)();
   INLINE_LINMATH FLOATNAME(UnalignedLMatrix4)(const FLOATNAME(LMatrix4) &copy);
   INLINE_LINMATH FLOATNAME(UnalignedLMatrix4)(const FLOATNAME(UnalignedLMatrix4) &copy);

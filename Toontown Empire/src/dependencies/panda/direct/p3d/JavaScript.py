@@ -2,8 +2,6 @@
 useful when writing code that integrates with JavaScript, especially
 code that runs in a browser via the web plugin. """
 
-__all__ = ["UndefinedObject", "Undefined", "ConcreteStruct", "BrowserObject", "MethodWrapper"]
-
 import types
 
 class UndefinedObject:

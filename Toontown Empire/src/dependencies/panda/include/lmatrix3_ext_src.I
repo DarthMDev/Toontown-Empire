@@ -14,6 +14,17 @@
 
 
 ////////////////////////////////////////////////////////////////////
+//     Function: LMatrix3::Row::__setitem__
+//       Access: Public
+//  Description:
+////////////////////////////////////////////////////////////////////
+INLINE_LINMATH void Extension<FLOATNAME(LMatrix3)::Row>::
+__setitem__(int i, FLOATTYPE v) {
+  nassertv(i >= 0 && i < 3);
+  _this->_row[i] = v;
+}
+
+////////////////////////////////////////////////////////////////////
 //     Function: LMatrix3::__reduce__
 //       Access: Published
 //  Description: This special Python method is implement to provide
@@ -30,7 +41,7 @@ __reduce__(PyObject *self) const {
     return NULL;
   }
 
-  PyObject *result = Py_BuildValue("(O(fffffffff))", this_class,
+  PyObject *result = Py_BuildValue("(O(fffffffff))", this_class, 
     _this->_m(0, 0), _this->_m(0, 1), _this->_m(0, 2),
     _this->_m(1, 0), _this->_m(1, 1), _this->_m(1, 2),
     _this->_m(2, 0), _this->_m(2, 1), _this->_m(2, 2));
@@ -40,14 +51,13 @@ __reduce__(PyObject *self) const {
 }
 
 ////////////////////////////////////////////////////////////////////
-//     Function: LMatrix3::__repr__
+//     Function: LMatrix3::python_repr
 //       Access: Published
 //  Description:
 ////////////////////////////////////////////////////////////////////
-INLINE_LINMATH string Extension<FLOATNAME(LMatrix3)>::
-__repr__() const {
-  ostringstream out;
-  out << "LMatrix3" << FLOATTOKEN << "("
+INLINE_LINMATH void Extension<FLOATNAME(LMatrix3)>::
+python_repr(ostream &out, const string &class_name) const {
+  out << class_name << "(" 
       << MAYBE_ZERO(_this->_m(0, 0)) << ", "
       << MAYBE_ZERO(_this->_m(0, 1)) << ", "
       << MAYBE_ZERO(_this->_m(0, 2)) << ", "
@@ -59,5 +69,5 @@ __repr__() const {
       << MAYBE_ZERO(_this->_m(2, 0)) << ", "
       << MAYBE_ZERO(_this->_m(2, 1)) << ", "
       << MAYBE_ZERO(_this->_m(2, 2)) << ")";
-  return out.str();
 }
+

@@ -1,6 +1,6 @@
 __all__ = ['DirectEntryScroll']
 
-from panda3d.core import *
+from pandac.PandaModules import *
 import DirectGuiGlobals as DGG
 from DirectScrolledFrame import *
 from DirectFrame import *
@@ -114,4 +114,6 @@ class DirectEntryScroll(DirectFrame):
         
     def resetCanvas(self):
         self.canvas.setPos(0,0,0)
-
+        
+        
+        

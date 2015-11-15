@@ -32,7 +32,7 @@ class NurbsCurve;
 //       Class : CurveFitter
 // Description :
 ////////////////////////////////////////////////////////////////////
-class EXPCL_PANDA_GOBJ CurveFitter {
+class CurveFitter {
 PUBLISHED:
   CurveFitter();
   ~CurveFitter();

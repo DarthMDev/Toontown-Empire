@@ -1,9 +1,8 @@
-__all__ = ["PackageMerger", "PackageMergerError"]
-
 from direct.p3d.FileSpec import FileSpec
 from direct.p3d.SeqValue import SeqValue
 from direct.directnotify.DirectNotifyGlobal import *
-from panda3d.core import *
+from pandac.PandaModules import *
+import copy
 import shutil
 import os
 
@@ -19,11 +18,11 @@ class PackageMerger:
     always the most current version of the file. """
 
     notify = directNotify.newCategory("PackageMerger")
-
+ 
     class PackageEntry:
         """ This corresponds to a <package> entry in the contents.xml
         file. """
-
+        
         def __init__(self, xpackage, sourceDir):
             self.sourceDir = sourceDir
             self.loadXml(xpackage)
@@ -49,7 +48,7 @@ class PackageMerger:
             self.descFile.loadXml(xpackage)
 
             self.validatePackageContents()
-
+            
             self.descFile.quickVerify(packageDir = self.sourceDir, notify = PackageMerger.notify, correctSelf = True)
 
             self.packageSeq = SeqValue()
@@ -85,7 +84,7 @@ class PackageMerger:
                 ximport = TiXmlElement('import')
                 self.importDescFile.storeXml(ximport)
                 xpackage.InsertEndChild(ximport)
-
+            
             return xpackage
 
         def validatePackageContents(self):
@@ -171,7 +170,7 @@ class PackageMerger:
             xhost = xcontents.FirstChildElement('host')
             if xhost:
                 self.xhost = xhost.Clone()
-
+                
             xpackage = xcontents.FirstChildElement('package')
             while xpackage:
                 pe = self.PackageEntry(xpackage, sourceDir)
@@ -184,7 +183,7 @@ class PackageMerger:
                     if not other or pe.isNewer(other):
                         # Store this package in the resulting output.
                         self.contents[pe.getKey()] = pe
-
+                    
                 xpackage = xpackage.NextSiblingElement('package')
 
         self.contentsDoc = doc
@@ -248,7 +247,7 @@ class PackageMerger:
             else:
                 # Both the source file and target file are
                 # directories.
-
+                
                 # We have to clean out the target directory first.
                 # Instead of using shutil.rmtree(), remove the files in
                 # this directory one at a time, so we don't inadvertently
@@ -283,10 +282,10 @@ class PackageMerger:
         the current pool.  If packageNames is not None, it is a list
         of package names that we wish to include from the source;
         packages not named in this list will be unchanged. """
-
+        
         if not self.__readContentsFile(sourceDir, packageNames):
             message = "Couldn't read %s" % (sourceDir)
-            raise PackageMergerError, message
+            raise PackageMergerError, message            
 
     def close(self):
         """ Finalizes the results of all of the previous calls to
@@ -303,4 +302,4 @@ class PackageMerger:
 
         self.contentsSeq += 1
         self.__writeContentsFile()
-
+        

@@ -1,8 +1,7 @@
 """ Class used to create and control vrpn devices """
 
 from direct.showbase.DirectObject import DirectObject
-from panda3d.core import *
-from panda3d.vrpn import *
+from pandac.PandaModules import *
 
 ANALOG_MIN = -0.95
 ANALOG_MAX = 0.95
@@ -295,3 +294,18 @@ class DirectTimecodeReader(AnalogNode, DirectObject):
     def __repr__(self):
         str = ('%s: %d:%d:%d:%d' % ((self.name,) + self.getTime()[:-1]))
         return str
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

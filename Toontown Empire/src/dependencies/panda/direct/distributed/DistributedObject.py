@@ -56,7 +56,7 @@ class DistributedObject(DistributedObjectBase):
             # it needs to be optimized in this way.
             self.setCacheable(0)
 
-            # this is for Toontown only, see src.toontown.distributed.DelayDeletable
+            # this is for Toontown only, see toontown.distributed.DelayDeletable
             self._token2delayDeleteName = {}
             self._delayDeleteForceAllow = False
             self._delayDeleted = 0

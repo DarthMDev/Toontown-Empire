@@ -16,7 +16,6 @@
 #define PANDAFRAMEWORK_H
 
 #include "pandabase.h"
-#include "config_framework.h"
 
 #include "windowFramework.h"
 

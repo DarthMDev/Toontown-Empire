@@ -2,10 +2,9 @@
 
 __all__ = ['ProjectileInterval']
 
-from panda3d.core import *
-from panda3d.direct import *
-from direct.directnotify.DirectNotifyGlobal import *
+from pandac.PandaModules import *
 from Interval import Interval
+from direct.showbase.PythonUtil import lerp
 from direct.showbase import PythonUtil
 
 class ProjectileInterval(Interval):

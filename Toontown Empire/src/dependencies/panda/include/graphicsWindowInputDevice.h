@@ -28,8 +28,6 @@
 #include "lightMutex.h"
 #include "lightMutexHolder.h"
 
-// Forward declarations
-class GraphicsWindow;
 
 ////////////////////////////////////////////////////////////////////
 //       Class : GraphicsWindowInputDevice
@@ -76,28 +74,18 @@ public:
 PUBLISHED:
   // The following interface is for the various kinds of
   // GraphicsWindows to record the data incoming on the device.
-  INLINE void button_down(ButtonHandle button);
-  INLINE void button_resume_down(ButtonHandle button);
-  INLINE void button_up(ButtonHandle button);
-  INLINE void keystroke(int keycode);
-  INLINE void focus_lost();
-  INLINE void raw_button_down(ButtonHandle button);
-  INLINE void raw_button_up(ButtonHandle button);
-  INLINE void set_pointer_in_window(double x, double y);
-  INLINE void set_pointer_out_of_window();
-
-  void button_down(ButtonHandle button, double time);
-  void button_resume_down(ButtonHandle button, double time);
-  void button_up(ButtonHandle button, double time);
-  void keystroke(int keycode, double time);
-  void candidate(const wstring &candidate_string, size_t highlight_start,
+  void button_down(ButtonHandle button, double time = ClockObject::get_global_clock()->get_frame_time());
+  void button_resume_down(ButtonHandle button, double time = ClockObject::get_global_clock()->get_frame_time());
+  void button_up(ButtonHandle button, double time = ClockObject::get_global_clock()->get_frame_time());
+  void keystroke(int keycode, double time = ClockObject::get_global_clock()->get_frame_time());
+  void candidate(const wstring &candidate_string, size_t highlight_start, 
                  size_t highlight_end, size_t cursor_pos);
-  void focus_lost(double time);
-  void raw_button_down(ButtonHandle button, double time);
-  void raw_button_up(ButtonHandle button, double time);
+  void focus_lost(double time = ClockObject::get_global_clock()->get_frame_time());
+  void raw_button_down(ButtonHandle button, double time = ClockObject::get_global_clock()->get_frame_time());
+  void raw_button_up(ButtonHandle button, double time = ClockObject::get_global_clock()->get_frame_time());
 
-  INLINE void set_pointer_in_window(double x, double y, double time);
-  INLINE void set_pointer_out_of_window(double time);
+  INLINE void set_pointer_in_window(double x, double y, double time = ClockObject::get_global_clock()->get_frame_time());
+  INLINE void set_pointer_out_of_window(double time = ClockObject::get_global_clock()->get_frame_time());
   void set_pointer(bool inwin, double x, double y, double time);
 
 public:

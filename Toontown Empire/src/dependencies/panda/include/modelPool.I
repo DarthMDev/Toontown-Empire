@@ -17,8 +17,7 @@
 //     Function: ModelPool::has_model
 //       Access: Public, Static
 //  Description: Returns true if the model has ever been loaded,
-//               false otherwise.  Note that this does not guarantee
-//               that the model is still up-to-date.
+//               false otherwise.
 ////////////////////////////////////////////////////////////////////
 INLINE bool ModelPool::
 has_model(const Filename &filename) {
@@ -44,20 +43,6 @@ has_model(const Filename &filename) {
 INLINE bool ModelPool::
 verify_model(const Filename &filename) {
   return load_model(filename) != (ModelRoot *)NULL;
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: ModelPool::get_model
-//       Access: Public, Static
-//  Description: Returns the model that has already been previously
-//               loaded, or NULL otherwise.  If verify is true, it
-//               will check if the file is still up-to-date (and
-//               hasn't been modified in the meantime), and if not,
-//               will still return NULL.
-////////////////////////////////////////////////////////////////////
-INLINE ModelRoot *ModelPool::
-get_model(const Filename &filename, bool verify) {
-  return get_ptr()->ns_get_model(filename, verify);
 }
 
 ////////////////////////////////////////////////////////////////////

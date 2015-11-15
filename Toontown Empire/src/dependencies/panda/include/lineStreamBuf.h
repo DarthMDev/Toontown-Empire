@@ -15,7 +15,7 @@
 #ifndef LINESTREAMBUF_H
 #define LINESTREAMBUF_H
 
-#include "dtoolbase.h"
+#include "pandabase.h"
 
 #include <string>
 
@@ -26,7 +26,7 @@
 //               continuously extracted as a sequence of lines of
 //               text.
 ////////////////////////////////////////////////////////////////////
-class EXPCL_DTOOL LineStreamBuf : public streambuf {
+class EXPCL_PANDA_PUTIL LineStreamBuf : public streambuf {
 public:
   LineStreamBuf();
   virtual ~LineStreamBuf();

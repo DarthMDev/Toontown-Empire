@@ -15,7 +15,7 @@
 #ifndef ODEJOINTCOLLECTION_H
 #define ODEJOINTCOLLECTION_H
 
-#include "odeJoint.h"
+class OdeJoint;
 
 ////////////////////////////////////////////////////////////////////
 //       Class : OdeJointCollection

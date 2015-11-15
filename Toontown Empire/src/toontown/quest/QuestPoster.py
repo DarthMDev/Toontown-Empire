@@ -9,7 +9,7 @@ from src.toontown.suit import Suit
 from src.toontown.hood import ZoneUtil
 from src.toontown.toonbase import ToontownGlobals
 from src.toontown.toonbase import TTLocalizer
-import string, types, random
+import string, types
 from src.toontown.toon import LaffMeter
 from src.toontown.toonbase.ToontownBattleGlobals import AvPropsNew
 from direct.directnotify import DirectNotifyGlobal
@@ -73,8 +73,6 @@ class QuestPoster(DirectFrame):
         self.teleportButton = DirectButton(parent=self.questFrame, relief=None, image=circleModel, text="Teleport", text_scale=0.035, text_pos=(-0.0025, -0.015), pos=(0.175, 0, 0.125), scale=0.75)  #, text_bg=(0, 0.75, 1, 1)
         self.teleportButton.hide()
         self.laffMeter = None
-        self.filmstrip = None
-        self.question = None
         return
 
     def destroy(self):
@@ -87,12 +85,6 @@ class QuestPoster(DirectFrame):
             if geom:
                 if hasattr(geom, 'delete'):
                     geom.delete()
-                elif hasattr(geom, 'destroy'):
-                    geom.destroy()
-        if self.question:
-            self.question.destroy()
-            self.question = None
-        
 
     def mouseEnterPoster(self, event):
         self.reparentTo(self.getParent())
@@ -250,7 +242,7 @@ class QuestPoster(DirectFrame):
         if hasattr(self, 'confirmDeleteButton'):
             self.confirmDeleteButton.cleanup()
             del self.confirmDeleteButton
-        if self.laffMeter is not None:
+        if self.laffMeter != None:
             self.laffMeter.reparentTo(hidden)
             self.laffMeter.destroy()
             self.laffMeter = None
@@ -310,8 +302,7 @@ class QuestPoster(DirectFrame):
             self.showDeleteButton(questDesc)
         else:
             self.hideDeleteButton()
-        if self.laffMeter:
-            self.laffMeter.destroy()
+
         fComplete = quest.getCompletionStatus(base.localAvatar, questDesc) == Quests.COMPLETE
 
         if Quests.isQuestJustForFun(questId, rewardId):
@@ -358,17 +349,7 @@ class QuestPoster(DirectFrame):
         objectiveStrings = quest.getObjectiveStrings()
         captions = map(string.capwords, quest.getObjectiveStrings())
         imageColor = Vec4(*self.colors['white'])
-        if isinstance(quest, Quests.TexturedQuest) and quest.hasFrame():
-            self.teleportButton.hide()
-            frame = quest.getFrame()
-            frameBgColor = frame[1]
-            lIconGeom = frame[0]
-            lIconGeomScale = 0.13
-            if not fComplete:
-                infoText = quest.getLocationName()
-                if infoText == '':
-                    infoText = TTLocalizer.QuestPosterAnywhere
-        elif quest.getType() == Quests.DeliverGagQuest or quest.getType() == Quests.DeliverItemQuest:
+        if quest.getType() == Quests.DeliverGagQuest or quest.getType() == Quests.DeliverItemQuest:
             frameBgColor = 'red'
             if fComplete:
                 self.teleportButton.show()
@@ -416,8 +397,14 @@ class QuestPoster(DirectFrame):
                 else:
                     if holderType == 'track':
                         cogIcons = loader.loadModel('phase_3/models/gui/cog_icons')
-                        if holder in SuitDNA.suitDeptModelPaths:
-                            icon = cogIcons.find(SuitDNA.suitDeptModelPaths[holder])
+                        if holder == 'c':
+                            icon = cogIcons.find('**/CorpIcon')
+                        elif holder == 's':
+                            icon = cogIcons.find('**/SalesIcon')
+                        elif holder == 'l':
+                            icon = cogIcons.find('**/LegalIcon')
+                        elif holder == 'm':
+                            icon = cogIcons.find('**/MoneyIcon')
                         rIconGeom = icon.copyTo(hidden)
                         rIconGeom.setColor(Suit.Suit.medallionColors[holder])
                         rIconGeomScale = 0.12
@@ -445,14 +432,24 @@ class QuestPoster(DirectFrame):
             if not fComplete:
                 infoText = TTLocalizer.QuestPageDestination % (toNpcBuildingName, toNpcStreetName, toNpcLocationName)
         elif quest.getType() == Quests.TrackChoiceQuest:
+            self.teleportButton.hide()
             frameBgColor = 'green'
-            filmstrip = loader.loadModel('phase_3.5/models/gui/filmstrip')
-            lIconGeom = DirectFrame(parent=self, relief=None, image=filmstrip, image_scale=.5)
-            self.question = DirectLabel(parent=lIconGeom, relief=None, pos=(0, 0, 0), text='?', text_scale=0.2, text_pos=(0, -0.04), text_fg=(0.72, 0.72, 0.72, 1))
-            lIconGeom['image_color'] = Vec4(0.7, 0.7, 0.7, 1)
-            self.question['text_fg'] = Vec4(0.6, 0.6, 0.6, 1)
-            rIconGeom = None
-            filmstrip.removeNode()
+            invModel = loader.loadModel('phase_3.5/models/gui/inventory_icons')
+            track1, track2 = quest.getChoices(base.localAvatar)
+            
+            lIconGeom = invModel.find('**/' + AvPropsNew[track1][1])
+            
+            if not fComplete:
+                auxText = TTLocalizer.QuestPosterAuxOr
+                lPos.setX(-0.18)
+                rIconGeom = invModel.find('**/' + AvPropsNew[track2][1])
+                
+                infoText = TTLocalizer.QuestPageNameAndDestination % (toNpcName,
+                 toNpcBuildingName,
+                 toNpcStreetName,
+                 toNpcLocationName)
+                infoZ = -0.02
+            invModel.removeNode()
         elif quest.getType() == Quests.BuildingQuest:
             self.teleportButton.hide()
             frameBgColor = 'blue'
@@ -481,6 +478,47 @@ class QuestPoster(DirectFrame):
                 infoText = quest.getLocationName()
                 if infoText == '':
                     infoText = TTLocalizer.QuestPosterAnywhere
+        elif quest.getType() == Quests.BuildingNewbieQuest:
+            self.teleportButton.hide()
+            frameBgColor = 'blue'
+            track = quest.getBuildingTrack()
+            numFloors = quest.getNumFloors()
+            if track == 'c':
+                rIconGeom = loader.loadModel('phase_4/models/modules/suit_landmark_corp')
+            elif track == 'l':
+                rIconGeom = loader.loadModel('phase_4/models/modules/suit_landmark_legal')
+            elif track == 'm':
+                rIconGeom = loader.loadModel('phase_4/models/modules/suit_landmark_money')
+            elif track == 's':
+                rIconGeom = loader.loadModel('phase_4/models/modules/suit_landmark_sales')
+            else:
+                bookModel = loader.loadModel('phase_3.5/models/gui/stickerbook_gui')
+                rIconGeom = bookModel.find('**/COG_building')
+                bookModel.removeNode()
+            if rIconGeom and track != Quests.Any:
+                self.loadElevator(rIconGeom, numFloors)
+                rIconGeom.setH(180)
+                self.fitGeometry(rIconGeom, fFlip=0)
+                rIconGeomScale = IMAGE_SCALE_SMALL
+            else:
+                rIconGeomScale = 0.13
+            if not fComplete:
+                headlineString = TTLocalizer.QuestsNewbieQuestHeadline
+                captions = [quest.getCaption()]
+                captions.append(map(string.capwords, quest.getObjectiveStrings()))
+                auxText = TTLocalizer.QuestsCogNewbieQuestAux
+                lPos.setX(-0.18)
+                self.laffMeter = self.createLaffMeter(quest.getNewbieLevel())
+                self.laffMeter.setScale(0.04)
+                lIconGeom = None
+                infoText = quest.getLocationName()
+                if infoText == '':
+                    infoText = TTLocalizer.QuestPosterAnywhere
+            else:
+                lIconGeom = rIconGeom
+                rIconGeom = None
+                lIconGeomScale = rIconGeomScale
+                rIconGeomScale = 1
         elif quest.getType() == Quests.FactoryQuest:
             self.teleportButton.hide()
             frameBgColor = 'blue'
@@ -492,6 +530,30 @@ class QuestPoster(DirectFrame):
                 infoText = quest.getLocationName()
                 if infoText == '':
                     infoText = TTLocalizer.QuestPosterAnywhere
+        elif quest.getType() == Quests.FactoryNewbieQuest:
+            self.teleportButton.hide()
+            frameBgColor = 'blue'
+            bookModel = loader.loadModel('phase_3.5/models/gui/stickerbook_gui')
+            rIconGeom = bookModel.find('**/factoryIcon2')
+            bookModel.removeNode()
+            rIconGeomScale = 0.13
+            if not fComplete:
+                headlineString = TTLocalizer.QuestsNewbieQuestHeadline
+                captions = [quest.getCaption()]
+                captions.append(map(string.capwords, quest.getObjectiveStrings()))
+                auxText = TTLocalizer.QuestsCogNewbieQuestAux
+                lPos.setX(-0.18)
+                self.laffMeter = self.createLaffMeter(quest.getNewbieLevel())
+                self.laffMeter.setScale(0.04)
+                lIconGeom = None
+                infoText = quest.getLocationName()
+                if infoText == '':
+                    infoText = TTLocalizer.QuestPosterAnywhere
+            else:
+                lIconGeom = rIconGeom
+                rIconGeom = None
+                lIconGeomScale = rIconGeomScale
+                rIconGeomScale = 1
         elif quest.getType() == Quests.MintQuest:
             self.teleportButton.hide()
             frameBgColor = 'blue'
@@ -503,6 +565,30 @@ class QuestPoster(DirectFrame):
                 infoText = quest.getLocationName()
                 if infoText == '':
                     infoText = TTLocalizer.QuestPosterAnywhere
+        elif quest.getType() == Quests.MintNewbieQuest:
+            self.teleportButton.hide()
+            frameBgColor = 'blue'
+            bookModel = loader.loadModel('phase_3.5/models/gui/stickerbook_gui')
+            rIconGeom = bookModel.find('**/CashBotMint')
+            bookModel.removeNode()
+            rIconGeomScale = 0.13
+            if not fComplete:
+                headlineString = TTLocalizer.QuestsNewbieQuestHeadline
+                captions = [quest.getCaption()]
+                captions.append(map(string.capwords, quest.getObjectiveStrings()))
+                auxText = TTLocalizer.QuestsCogNewbieQuestAux
+                lPos.setX(-0.18)
+                self.laffMeter = self.createLaffMeter(quest.getNewbieLevel())
+                self.laffMeter.setScale(0.04)
+                lIconGeom = None
+                infoText = quest.getLocationName()
+                if infoText == '':
+                    infoText = TTLocalizer.QuestPosterAnywhere
+            else:
+                lIconGeom = rIconGeom
+                rIconGeom = None
+                lIconGeomScale = rIconGeomScale
+                rIconGeomScale = 1
         elif quest.getType() == Quests.CogPartQuest:
             self.teleportButton.hide()
             frameBgColor = 'green'
@@ -514,6 +600,30 @@ class QuestPoster(DirectFrame):
                 infoText = quest.getLocationName()
                 if infoText == '':
                     infoText = TTLocalizer.QuestPosterAnywhere
+        elif quest.getType() == Quests.CogPartNewbieQuest:
+            self.teleportButton.hide()
+            frameBgColor = 'green'
+            bookModel = loader.loadModel('phase_3.5/models/gui/stickerbook_gui')
+            rIconGeom = bookModel.find('**/CogArmIcon2')
+            bookModel.removeNode()
+            rIconGeomScale = 0.13
+            if not fComplete:
+                headlineString = TTLocalizer.QuestsNewbieQuestHeadline
+                captions = [quest.getCaption()]
+                captions.append(map(string.capwords, quest.getObjectiveStrings()))
+                auxText = TTLocalizer.QuestsCogPartQuestAux
+                lPos.setX(-0.18)
+                self.laffMeter = self.createLaffMeter(quest.getNewbieLevel())
+                self.laffMeter.setScale(0.04)
+                lIconGeom = None
+                infoText = quest.getLocationName()
+                if infoText == '':
+                    infoText = TTLocalizer.QuestPosterAnywhere
+            else:
+                lIconGeom = rIconGeom
+                rIconGeom = None
+                lIconGeomScale = rIconGeomScale
+                rIconGeomScale = 1
         elif quest.getType() == Quests.ForemanQuest or quest.getType() == Quests.SupervisorQuest:
             self.teleportButton.hide()
             frameBgColor = 'blue'
@@ -525,13 +635,140 @@ class QuestPoster(DirectFrame):
                 infoText = quest.getLocationName()
                 if infoText == '':
                     infoText = TTLocalizer.QuestPosterAnywhere
+        elif quest.getType() == Quests.ForemanNewbieQuest or quest.getType() == Quests.SupervisorNewbieQuest:
+            self.teleportButton.hide()
+            frameBgColor = 'blue'
+            bookModel = loader.loadModel('phase_3.5/models/gui/stickerbook_gui')
+            rIconGeom = bookModel.find('**/skelecog5')
+            bookModel.removeNode()
+            rIconGeomScale = 0.13
+            if not fComplete:
+                headlineString = TTLocalizer.QuestsNewbieQuestHeadline
+                captions = [quest.getCaption()]
+                captions.append(map(string.capwords, quest.getObjectiveStrings()))
+                auxText = TTLocalizer.QuestsCogNewbieQuestAux
+                lPos.setX(-0.18)
+                self.laffMeter = self.createLaffMeter(quest.getNewbieLevel())
+                self.laffMeter.setScale(0.04)
+                lIconGeom = None
+                infoText = quest.getLocationName()
+                if infoText == '':
+                    infoText = TTLocalizer.QuestPosterAnywhere
+            else:
+                lIconGeom = rIconGeom
+                rIconGeom = None
+                lIconGeomScale = rIconGeomScale
+                rIconGeomScale = 1
+        elif quest.getType() == Quests.VPQuest:
+            self.teleportButton.hide()
+            frameBgColor = 'blue'
+            bookModel = loader.loadModel('phase_3.5/models/gui/stickerbook_gui')
+            lIconGeom = bookModel.find('**/BossHead3Icon')
+            bookModel.removeNode()
+            lIconGeomScale = 0.13
+            if not fComplete:
+                infoText = quest.getLocationName()
+                if infoText == '':
+                    infoText = TTLocalizer.QuestPosterAnywhere
+        elif quest.getType() == Quests.VPNewbieQuest:
+            self.teleportButton.hide()
+            frameBgColor = 'blue'
+            bookModel = loader.loadModel('phase_3.5/models/gui/stickerbook_gui')
+            rIconGeom = bookModel.find('**/BossHead3Icon')
+            bookModel.removeNode()
+            rIconGeomScale = 0.13
+            if not fComplete:
+                headlineString = TTLocalizer.QuestsNewbieQuestHeadline
+                captions = [quest.getCaption()]
+                captions.append(map(string.capwords, quest.getObjectiveStrings()))
+                auxText = TTLocalizer.QuestsCogNewbieQuestAux
+                lPos.setX(-0.18)
+                self.laffMeter = self.createLaffMeter(quest.getNewbieLevel())
+                self.laffMeter.setScale(0.04)
+                lIconGeom = None
+                infoText = quest.getLocationName()
+                if infoText == '':
+                    infoText = TTLocalizer.QuestPosterAnywhere
+            else:
+                lIconGeom = rIconGeom
+                rIconGeom = None
+                lIconGeomScale = rIconGeomScale
+                rIconGeomScale = 1
+        elif quest.getType() == Quests.CFOQuest:
+            self.teleportButton.hide()
+            frameBgColor = 'blue'
+            bookModel = loader.loadModel('phase_3.5/models/gui/stickerbook_gui')
+            lIconGeom = bookModel.find('**/CashBotBossHeadIcon')
+            bookModel.removeNode()
+            lIconGeomScale = 0.13
+            if not fComplete:
+                infoText = quest.getLocationName()
+                if infoText == '':
+                    infoText = TTLocalizer.QuestPosterAnywhere
+        elif quest.getType() == Quests.CFONewbieQuest:
+            self.teleportButton.hide()
+            frameBgColor = 'blue'
+            bookModel = loader.loadModel('phase_3.5/models/gui/stickerbook_gui')
+            rIconGeom = bookModel.find('**/CashBotBossHeadIcon')
+            bookModel.removeNode()
+            rIconGeomScale = 0.13
+            if not fComplete:
+                headlineString = TTLocalizer.QuestsNewbieQuestHeadline
+                captions = [quest.getCaption()]
+                captions.append(map(string.capwords, quest.getObjectiveStrings()))
+                auxText = TTLocalizer.QuestsCogNewbieQuestAux
+                lPos.setX(-0.18)
+                self.laffMeter = self.createLaffMeter(quest.getNewbieLevel())
+                self.laffMeter.setScale(0.04)
+                lIconGeom = None
+                infoText = quest.getLocationName()
+                if infoText == '':
+                    infoText = TTLocalizer.QuestPosterAnywhere
+            else:
+                lIconGeom = rIconGeom
+                rIconGeom = None
+                lIconGeomScale = rIconGeomScale
+                rIconGeomScale = 1
         elif quest.getType() == Quests.RescueQuest:
             self.teleportButton.hide()
             frameBgColor = 'blue'
-            lIconGeom = self.createNpcToonHead(random.choice(NPCToons.HQnpcFriends.keys()))
+            lIconGeom = self.createNpcToonHead(2001)
             lIconGeomScale = 0.13
-            infoText = quest.getLocationName().strip()
+            if not fComplete:
+                infoText = quest.getLocationName()
+                if infoText == '':
+                    infoText = TTLocalizer.QuestPosterAnywhere
+        elif quest.getType() == Quests.RescueNewbieQuest:
+            self.teleportButton.hide()
+            frameBgColor = 'blue'
+            rIconGeom = self.createNpcToonHead(2001)
+            rIconGeomScale = 0.13
+            if not fComplete:
+                headlineString = TTLocalizer.QuestsNewbieQuestHeadline
+                captions = [quest.getCaption()]
+                captions.append(map(string.capwords, quest.getObjectiveStrings()))
+                auxText = TTLocalizer.QuestsRescueQuestAux
+                lPos.setX(-0.18)
+                self.laffMeter = self.createLaffMeter(quest.getNewbieLevel())
+                self.laffMeter.setScale(0.04)
+                lIconGeom = None
+                infoText = quest.getLocationName()
+                if infoText == '':
+                    infoText = TTLocalizer.QuestPosterAnywhere
+            else:
+                lIconGeom = rIconGeom
+                rIconGeom = None
+                lIconGeomScale = rIconGeomScale
+                rIconGeomScale = 1
         elif quest.getType() == Quests.FriendQuest:
+            self.teleportButton.hide()
+            frameBgColor = 'brown'
+            gui = loader.loadModel('phase_3.5/models/gui/friendslist_gui')
+            lIconGeom = gui.find('**/FriendsBox_Closed')
+            lIconGeomScale = 0.45
+            gui.removeNode()
+            infoText = TTLocalizer.QuestPosterAnywhere
+        elif quest.getType() == Quests.FriendNewbieQuest:
             self.teleportButton.hide()
             frameBgColor = 'brown'
             gui = loader.loadModel('phase_3.5/models/gui/friendslist_gui')
@@ -563,6 +800,27 @@ class QuestPoster(DirectFrame):
             lIconGeomScale = 0.12
             bookModel.removeNode()
             infoText = TTLocalizer.QuestPosterOnPhone
+        elif quest.getType() == Quests.MinigameNewbieQuest:
+            self.teleportButton.hide()
+            frameBgColor = 'lightBlue'
+            gui = loader.loadModel('phase_3.5/models/gui/stickerbook_gui')
+            rIconGeom = gui.find('**/trolley')
+            rIconGeomScale = 0.13
+            gui.removeNode()
+            infoText = TTLocalizer.QuestPosterPlayground
+            if not fComplete:
+                captions = [TTLocalizer.QuestsMinigameNewbieQuestCaption % quest.getNewbieLevel()]
+                captions.append(map(string.capwords, quest.getObjectiveStrings()))
+                auxText = TTLocalizer.QuestsMinigameNewbieQuestAux
+                lPos.setX(-0.18)
+                self.laffMeter = self.createLaffMeter(quest.getNewbieLevel())
+                self.laffMeter.setScale(0.04)
+                lIconGeom = None
+            else:
+                lIconGeom = rIconGeom
+                rIconGeom = None
+                lIconGeomScale = rIconGeomScale
+                rIconGeomScale = 1
         else:
             self.teleportButton.hide()
             frameBgColor = 'blue'
@@ -570,8 +828,14 @@ class QuestPoster(DirectFrame):
                 dept = quest.getCogTrack()
                 cogIcons = loader.loadModel('phase_3/models/gui/cog_icons')
                 lIconGeomScale = 0.13
-                if dept in SuitDNA.suitDeptModelPaths:
-                    icon = cogIcons.find(SuitDNA.suitDeptModelPaths[dept])
+                if dept == 'c':
+                    icon = cogIcons.find('**/CorpIcon')
+                elif dept == 's':
+                    icon = cogIcons.find('**/SalesIcon')
+                elif dept == 'l':
+                    icon = cogIcons.find('**/LegalIcon')
+                elif dept == 'm':
+                    icon = cogIcons.find('**/MoneyIcon')
                 lIconGeom = icon.copyTo(hidden)
                 lIconGeom.setColor(Suit.Suit.medallionColors[dept])
                 cogIcons.removeNode()
@@ -589,12 +853,41 @@ class QuestPoster(DirectFrame):
                 lIconGeom = cogIcons.find('**/cog')
                 lIconGeomScale = IMAGE_SCALE_SMALL
                 cogIcons.removeNode()
+            elif quest.getType() == Quests.CogNewbieQuest:
+                if quest.getCogType() != Quests.Any:
+                    rIconGeom = self.createSuitHead(quest.getCogType())
+                    rIconGeomScale = IMAGE_SCALE_SMALL
+                else:
+                    cogIcons = loader.loadModel('phase_3/models/gui/cog_icons')
+                    rIconGeom = cogIcons.find('**/cog')
+                    rIconGeomScale = IMAGE_SCALE_SMALL
+                    cogIcons.removeNode()
+                if not fComplete:
+                    headlineString = TTLocalizer.QuestsNewbieQuestHeadline
+                    captions = [quest.getCaption()]
+                    captions.append(map(string.capwords, quest.getObjectiveStrings()))
+                    auxText = TTLocalizer.QuestsCogNewbieQuestAux
+                    lPos.setX(-0.18)
+                    self.laffMeter = self.createLaffMeter(quest.getNewbieLevel())
+                    self.laffMeter.setScale(0.04)
+                    lIconGeom = None
+                else:
+                    lIconGeom = rIconGeom
+                    rIconGeom = None
+                    lIconGeomScale = rIconGeomScale
+                    rIconGeomScale = 1
             elif quest.getType() == Quests.SkelecogTrackQuest:
                 dept = quest.getCogTrack()
                 cogIcons = loader.loadModel('phase_3/models/gui/cog_icons')
                 lIconGeomScale = 0.13
-                if dept in SuitDNA.suitDeptModelPaths:
-                    icon = cogIcons.find(SuitDNA.suitDeptModelPaths[dept])
+                if dept == 'c':
+                    icon = cogIcons.find('**/CorpIcon')
+                elif dept == 's':
+                    icon = cogIcons.find('**/SalesIcon')
+                elif dept == 'l':
+                    icon = cogIcons.find('**/LegalIcon')
+                elif dept == 'm':
+                    icon = cogIcons.find('**/MoneyIcon')
                 lIconGeom = icon.copyTo(hidden)
                 lIconGeom.setColor(Suit.Suit.medallionColors[dept])
                 cogIcons.removeNode()
@@ -608,6 +901,25 @@ class QuestPoster(DirectFrame):
                 lIconGeom = cogIcons.find('**/skelecog5')
                 lIconGeomScale = IMAGE_SCALE_SMALL
                 cogIcons.removeNode()
+            elif quest.getType() == Quests.SkelecogNewbieQuest:
+                cogIcons = loader.loadModel('phase_3.5/models/gui/stickerbook_gui')
+                rIconGeom = cogIcons.find('**/skelecog5')
+                rIconGeomScale = IMAGE_SCALE_SMALL
+                cogIcons.removeNode()
+                if not fComplete:
+                    headlineString = TTLocalizer.QuestsNewbieQuestHeadline
+                    captions = [quest.getCaption()]
+                    captions.append(map(string.capwords, quest.getObjectiveStrings()))
+                    auxText = TTLocalizer.QuestsCogNewbieQuestAux
+                    lPos.setX(-0.18)
+                    self.laffMeter = self.createLaffMeter(quest.getNewbieLevel())
+                    self.laffMeter.setScale(0.04)
+                    lIconGeom = None
+                else:
+                    lIconGeom = rIconGeom
+                    rIconGeom = None
+                    lIconGeomScale = rIconGeomScale
+                    rIconGeomScale = 1
             elif quest.getType() == Quests.SkeleReviveQuest:
                 cogIcons = loader.loadModel('phase_3.5/models/gui/stickerbook_gui')
                 lIconGeom = cogIcons.find('**/skelecog5')
@@ -629,7 +941,7 @@ class QuestPoster(DirectFrame):
             auxText = TTLocalizer.QuestPosterAuxReturnTo
             headlineString = TTLocalizer.QuestPosterComplete
             infoText = TTLocalizer.QuestPageDestination % (toNpcBuildingName, toNpcStreetName, toNpcLocationName)
-            if self.laffMeter is not None:
+            if self.laffMeter != None:
                 self.laffMeter.reparentTo(hidden)
                 self.laffMeter.destroy()
                 self.laffMeter = None
@@ -639,18 +951,15 @@ class QuestPoster(DirectFrame):
         self['image_color'] = imageColor
         self.headline['text_fg'] = textColor
         self.headline['text'] = headlineString
-        if quest.getType() != Quests.TrackChoiceQuest:
-            self.lPictureFrame.show()
-            self.lPictureFrame.setPos(lPos)
-            self.lPictureFrame['text_scale'] = TEXT_SCALE
-            if lPos[0] != 0:
-                self.lPictureFrame['text_scale'] = 0.0325
-            self.lPictureFrame['text'] = captions[0]
-            self.lPictureFrame['image_color'] = Vec4(*self.colors[frameBgColor])
-        else:
-            self.lPictureFrame['text'] = 'Track Choice'
-            self.lPictureFrame['image_color'] = Vec4(*self.colors[frameBgColor])
-        if len(captions) > 1 and quest.getType() != Quests.TrackChoiceQuest:
+        self.lPictureFrame.show()
+        self.lPictureFrame.setPos(lPos)
+        self.lPictureFrame['text_scale'] = TEXT_SCALE
+        if lPos[0] != 0:
+            self.lPictureFrame['text_scale'] = 0.0325
+        self.lPictureFrame['text'] = captions[0]
+        self.lPictureFrame['image_color'] = Vec4(*self.colors[frameBgColor])
+        if len(captions) > 1:
+            self.rPictureFrame.show()
             self.rPictureFrame['text'] = captions[1]
             self.rPictureFrame['text_scale'] = 0.0325
             self.rPictureFrame['image_color'] = Vec4(*self.colors[frameBgColor])

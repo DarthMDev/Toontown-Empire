@@ -2,7 +2,7 @@
 
 __all__ = ['DirectRadioButton']
 
-from panda3d.core import *
+from pandac.PandaModules import *
 import DirectGuiGlobals as DGG
 from DirectButton import *
 from DirectLabel import *
@@ -43,7 +43,7 @@ class DirectRadioButton(DirectButton):
             ('boxGeom', None, None),
             ('boxGeomColor', None, None),
             ('boxGeomScale', 1.0, None),
-            ('boxImage', None, None),
+            ('boxImage', loader.loadModel('models/gui/radio_button_gui'), None),
             ('boxImageScale', 1.0, None),
             ('boxImageColor', VBase4(1, 1, 1, 1), None),
             ('boxRelief', None, None),
@@ -69,11 +69,9 @@ class DirectRadioButton(DirectButton):
         # Call option initialization functions
         self.initialiseoptions(DirectRadioButton)
         # After initialization with X giving it the correct size, put back space
-        if self['boxGeom'] is None:
-            if not 'boxRelief' in kw and self['boxImage'] is None:
-                self.indicator['relief'] = DGG.SUNKEN
+        if self['boxGeom'] ==  None:
             self.indicator['text'] = (' ', '*')
-            self.indicator['text_pos'] = (0, -.25)
+            self.indicator['text_pos'] = (0, -.5)
         else:
             self.indicator['text'] = (' ', ' ')
 

@@ -22,7 +22,7 @@
 #include <set>
 
 class CPPType;
-class CPPTypedefType;
+class CPPTypedef;
 class CPPTypeDeclaration;
 
 
@@ -39,7 +39,7 @@ public:
 ////////////////////////////////////////////////////////////////////
 class CPPType : public CPPDeclaration {
 public:
-  typedef vector<CPPTypedefType *> Typedefs;
+  typedef vector<CPPTypedef *> Typedefs;
   Typedefs _typedefs;
 
   CPPType(const CPPFile &file);
@@ -48,7 +48,6 @@ public:
                                 CPPScope *global_scope);
 
   virtual bool is_tbd() const;
-  virtual bool is_trivial() const;
   virtual bool is_parameter_expr() const;
 
   bool has_typedef_name() const;

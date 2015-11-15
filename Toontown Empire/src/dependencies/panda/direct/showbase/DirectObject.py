@@ -5,6 +5,7 @@ __all__ = ['DirectObject']
 
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from MessengerGlobal import messenger
+from direct.showbase.PythonUtil import ClassTree
 
 class DirectObject:
     """
@@ -40,6 +41,9 @@ class DirectObject:
 
     def isIgnoring(self, event):
         return messenger.isIgnoring(event, self)
+
+    def classTree(self):
+        return ClassTree(self)
 
     #This function must be used if you want a managed task
     def addTask(self, *args, **kwargs):

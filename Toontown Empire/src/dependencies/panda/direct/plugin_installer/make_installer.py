@@ -40,7 +40,7 @@ parser.add_option('-l', '--license', dest = 'license',
                   default = None)
 parser.add_option('-w', '--website', dest = 'website',
                   help = 'The product website',
-                  default = 'https://www.panda3d.org')
+                  default = 'http://www.panda3d.org')
 parser.add_option('', '--start', dest = 'start',
                   help = 'Specify this option to add a start menu',
                   action = 'store_true', default = False)
@@ -64,9 +64,6 @@ parser.add_option('', '--pvk', dest = 'pvk',
                   default = None)
 parser.add_option('', '--mssdk', dest = 'mssdk',
                   help = 'The path to the MS Platform SDK directory (Windows only).  mssdk/bin should contain cabarc.exe and signcode.exe.',
-                  default = None)
-parser.add_option('', '--regview', dest = 'regview',
-                  help = 'Which registry view to use, 64 or 32.',
                   default = None)
 
 (options, args) = parser.parse_args()
@@ -224,7 +221,7 @@ def parseDependenciesUnix(tempFile):
         filenames.append(l.strip().split(' ', 1)[0])
     return filenames
 
-def addDependencies(path, pathname, file, pluginDependencies, dependentFiles, required=True):
+def addDependencies(path, pathname, file, pluginDependencies, dependentFiles):
     """ Checks the named file for DLL dependencies, and adds any
     appropriate dependencies found into pluginDependencies and
     dependentFiles. """
@@ -274,10 +271,7 @@ def addDependencies(path, pathname, file, pluginDependencies, dependentFiles, re
                         break
                     pathname = None
                 if not pathname:
-                    if required:
-                        sys.exit("Couldn't find %s." % (dfile))
-                    sys.stderr.write("Warning: couldn't find %s." % (dfile))
-                    continue
+                    sys.exit("Couldn't find %s." % (dfile))
                 pathname = os.path.abspath(pathname)
                 dependentFiles[dfilelower] = pathname
 
@@ -447,7 +441,7 @@ def makeInstaller():
         if not os.path.exists(dst_panda3dapp): os.makedirs(os.path.dirname(dst_panda3dapp))
         shutil.copytree(pluginFiles[npapi], dst_npapi)
         shutil.copyfile(pluginFiles[panda3d], dst_panda3d)
-        os.chmod(dst_panda3d, 493) # 0o755
+        os.chmod(dst_panda3d, 0o755)
         shutil.copytree(pluginFiles[panda3dapp], dst_panda3dapp)
         
         tmpresdir = tempfile.mktemp('', 'p3d-resources')
@@ -461,10 +455,7 @@ def makeInstaller():
 
         infoFilename = None
         descriptionFilename = None
-        packagemaker = "/Applications/Xcode.app/Contents/Applications/PackageMaker.app/Contents/MacOS/PackageMaker"
-        if not os.path.exists(packagemaker):
-            packagemaker = "/Developer/usr/bin/packagemaker"
-
+        packagemaker = "/Developer/usr/bin/packagemaker"
         if os.path.exists(packagemaker):
             # PackageMaker 3.0 or better, e.g. OSX 10.5.
             CMD = packagemaker
@@ -472,7 +463,7 @@ def makeInstaller():
             CMD += ' --version "%s"' % options.version
             CMD += ' --title "%s"' % options.long_name
             CMD += ' --out "%s"' % (pkgname)
-            CMD += ' --target 10.5' # The earliest version of OSX supported by Panda
+            CMD += ' --target 10.4' # The earliest version of OSX supported by Panda
             CMD += ' --domain system'
             CMD += ' --root "%s"' % tmproot
             CMD += ' --resources "%s"' % tmpresdir
@@ -523,11 +514,7 @@ def makeInstaller():
         
         # Pack the .pkg into a .dmg
         if not os.path.exists(tmproot): os.makedirs(tmproot)
-        if os.path.isdir(pkgname):
-            shutil.copytree(pkgname, os.path.join(tmproot, pkgname))
-        else:
-            shutil.copyfile(pkgname, os.path.join(tmproot, pkgname))
-
+        shutil.copytree(pkgname, os.path.join(tmproot, pkgname))
         tmpdmg = tempfile.mktemp('', 'p3d-setup') + ".dmg"
         CMD = 'hdiutil create "%s" -srcfolder "%s"' % (tmpdmg, tmproot)
         print ""
@@ -565,9 +552,6 @@ def makeInstaller():
         CMD += '/DPANDA3D_PATH="' + pluginFiles[panda3d] + '" '
         CMD += '/DPANDA3DW="' + panda3dw + '" '
         CMD += '/DPANDA3DW_PATH="' + pluginFiles[panda3dw] + '" '
-
-        if options.regview:
-            CMD += '/DREGVIEW=%s ' % (options.regview)
 
         dependencies = dependentFiles.items()
         for i in range(len(dependencies)):

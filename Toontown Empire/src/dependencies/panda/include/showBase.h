@@ -52,10 +52,11 @@ EXPCL_DIRECT void store_accessibility_shortcut_keys();
 EXPCL_DIRECT void allow_accessibility_shortcut_keys(bool allowKeys);
 
 #ifdef IS_OSX
-EXPCL_DIRECT void activate_osx_application();
+void activate_osx_application();
 #endif
 
 END_PUBLISH
+
 
 
 #if 0

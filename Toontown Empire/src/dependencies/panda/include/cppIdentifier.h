@@ -36,7 +36,7 @@ class CPPTemplateParameterList;
 class CPPIdentifier {
 public:
   CPPIdentifier(const string &name, const CPPFile &file = CPPFile());
-  CPPIdentifier(const CPPNameComponent &name, const CPPFile &file = CPPFile());
+  CPPIdentifier(const CPPNameComponent &name);
   void add_name(const string &name);
   void add_name(const CPPNameComponent &name);
 
@@ -68,10 +68,6 @@ public:
                      CPPPreprocessor *error_sink = NULL) const;
   CPPDeclaration *find_symbol(CPPScope *current_scope,
                               CPPScope *global_scope,
-                              CPPPreprocessor *error_sink = NULL) const;
-  CPPDeclaration *find_symbol(CPPScope *current_scope,
-                              CPPScope *global_scope,
-                              CPPDeclaration::SubstDecl &subst,
                               CPPPreprocessor *error_sink = NULL) const;
   CPPDeclaration *find_template(CPPScope *current_scope,
                                 CPPScope *global_scope,

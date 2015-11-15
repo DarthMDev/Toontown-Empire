@@ -4,9 +4,10 @@ __all__ = ['Interval']
 
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.showbase.DirectObject import DirectObject
+from pandac.PandaModules import *
 from direct.task.Task import Task, TaskManager
-from panda3d.core import *
-from panda3d.direct import *
+from direct.showbase import PythonUtil
+from pandac.PandaModules import *
 import math
 
 class Interval(DirectObject):

@@ -20,7 +20,6 @@
 #include "globPattern.h"
 #include "typeHandle.h"
 #include "pvector.h"
-#include "pnotify.h"
 
 class PandaNode;
 

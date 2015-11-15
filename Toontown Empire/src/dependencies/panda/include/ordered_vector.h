@@ -21,15 +21,15 @@
 // on pc cygwin from  3 minutes to 17 seconds ?? really need to explore interigate to figure out what is 
 // going on ..
 //
-template<class Key, class Compare = less<int>, class Vector = pvector<Key> > class ov_multiset
+template<class Key, class Compare = less<int> > class ov_multiset
 {
 };
 
-template<class Key, class Compare = less<int>, class Vector = pvector<Key> > class ov_set
+template<class Key, class Compare = less<int> > class ov_set
 {
 };
 
-template<class Key, class Compare = less<int>, class Vector = pvector<Key> > class ordered_vector
+template<class Key, class Compare = less<int> > class ordered_vector
 {
 };
 
@@ -105,8 +105,11 @@ template<class Key, class Compare = less<int>, class Vector = pvector<Key> > cla
 //               (4) Random access into the set is easy with the []
 //               operator.
 ////////////////////////////////////////////////////////////////////
-template<class Key, class Compare = less<Key>, class Vector = pvector<Key> >
+template<class Key, class Compare = less<Key> >
 class ordered_vector {
+private:
+  typedef pvector<Key> Vector;
+  
 public:
   // Typedefs
   typedef Key KEY_TYPE;
@@ -149,8 +152,8 @@ public:
   INLINE ordered_vector(TypeHandle type_handle = ov_set_type_handle);
   INLINE ordered_vector(const Compare &compare,
                         TypeHandle type_handle = ov_set_type_handle);
-  INLINE ordered_vector(const ordered_vector<Key, Compare, Vector> &copy);
-  INLINE ordered_vector<Key, Compare, Vector> &operator = (const ordered_vector<Key, Compare, Vector> &copy);
+  INLINE ordered_vector(const ordered_vector<Key, Compare> &copy);
+  INLINE ordered_vector<Key, Compare> &operator = (const ordered_vector<Key, Compare> &copy);
   INLINE ~ordered_vector();
 
   // Iterator access.
@@ -174,13 +177,13 @@ public:
   INLINE bool empty() const;
 
   // Equivalence and lexicographical comparisons.
-  INLINE bool operator == (const ordered_vector<Key, Compare, Vector> &other) const;
-  INLINE bool operator != (const ordered_vector<Key, Compare, Vector> &other) const;
+  INLINE bool operator == (const ordered_vector<Key, Compare> &other) const;
+  INLINE bool operator != (const ordered_vector<Key, Compare> &other) const;
 
-  INLINE bool operator < (const ordered_vector<Key, Compare, Vector> &other) const;
-  INLINE bool operator > (const ordered_vector<Key, Compare, Vector> &other) const;
-  INLINE bool operator <= (const ordered_vector<Key, Compare, Vector> &other) const;
-  INLINE bool operator >= (const ordered_vector<Key, Compare, Vector> &other) const;
+  INLINE bool operator < (const ordered_vector<Key, Compare> &other) const;
+  INLINE bool operator > (const ordered_vector<Key, Compare> &other) const;
+  INLINE bool operator <= (const ordered_vector<Key, Compare> &other) const;
+  INLINE bool operator >= (const ordered_vector<Key, Compare> &other) const;
 
   // Insert operations.
   ITERATOR insert_unique(ITERATOR position, const VALUE_TYPE &key);
@@ -210,7 +213,7 @@ public:
   INLINE pair<CONST_ITERATOR, CONST_ITERATOR> equal_range(const KEY_TYPE &key) const;
 
   // Special operations.
-  INLINE void swap(ordered_vector<Key, Compare, Vector> &other);
+  INLINE void swap(ordered_vector<Key, Compare> &other);
   INLINE void reserve(SIZE_TYPE n);
   INLINE void sort_unique();
   INLINE void sort_nonunique();
@@ -270,17 +273,17 @@ private:
 //               standard STL set: one copy of each element is
 //               allowed.
 ////////////////////////////////////////////////////////////////////
-template<class Key, class Compare = less<Key>, class Vector = pvector<Key> >
-class ov_set : public ordered_vector<Key, Compare, Vector> {
+template<class Key, class Compare = less<Key> >
+class ov_set : public ordered_vector<Key, Compare> {
 public:
-  typedef TYPENAME ordered_vector<Key, Compare, Vector>::ITERATOR ITERATOR;
-  typedef TYPENAME ordered_vector<Key, Compare, Vector>::VALUE_TYPE VALUE_TYPE;
+  typedef TYPENAME ordered_vector<Key, Compare>::ITERATOR ITERATOR;
+  typedef TYPENAME ordered_vector<Key, Compare>::VALUE_TYPE VALUE_TYPE;
 
   INLINE ov_set(TypeHandle type_handle = ov_set_type_handle);
   INLINE ov_set(const Compare &compare,
                 TypeHandle type_handle = ov_set_type_handle);
-  INLINE ov_set(const ov_set<Key, Compare, Vector> &copy);
-  INLINE ov_set<Key, Compare, Vector> &operator = (const ov_set<Key, Compare, Vector> &copy);
+  INLINE ov_set(const ov_set<Key, Compare> &copy);
+  INLINE ov_set<Key, Compare> &operator = (const ov_set<Key, Compare> &copy);
 
   INLINE ITERATOR insert(ITERATOR position, const VALUE_TYPE &key0);
   INLINE pair<ITERATOR, bool> insert(const VALUE_TYPE &key0);
@@ -295,17 +298,17 @@ public:
 //               standard STL set: many copies of each element are
 //               allowed.
 ////////////////////////////////////////////////////////////////////
-template<class Key, class Compare = less<Key>, class Vector = pvector<Key> >
-class ov_multiset : public ordered_vector<Key, Compare, Vector> {
+template<class Key, class Compare = less<Key> >
+class ov_multiset : public ordered_vector<Key, Compare> {
 public:
-  typedef TYPENAME ordered_vector<Key, Compare, Vector>::ITERATOR ITERATOR;
-  typedef TYPENAME ordered_vector<Key, Compare, Vector>::VALUE_TYPE VALUE_TYPE;
+  typedef TYPENAME ordered_vector<Key, Compare>::ITERATOR ITERATOR;
+  typedef TYPENAME ordered_vector<Key, Compare>::VALUE_TYPE VALUE_TYPE;
 
   INLINE ov_multiset(TypeHandle type_handle = ov_set_type_handle);
   INLINE ov_multiset(const Compare &compare,
                      TypeHandle type_handle = ov_set_type_handle);
-  INLINE ov_multiset(const ov_multiset<Key, Compare, Vector> &copy);
-  INLINE ov_multiset<Key, Compare, Vector> &operator = (const ov_multiset<Key, Compare, Vector> &copy);
+  INLINE ov_multiset(const ov_multiset<Key, Compare> &copy);
+  INLINE ov_multiset<Key, Compare> &operator = (const ov_multiset<Key, Compare> &copy);
 
   INLINE ITERATOR insert(ITERATOR position, const VALUE_TYPE &key);
   INLINE ITERATOR insert(const VALUE_TYPE &key);

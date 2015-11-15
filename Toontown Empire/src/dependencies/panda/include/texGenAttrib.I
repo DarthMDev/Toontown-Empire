@@ -22,6 +22,7 @@
 INLINE TexGenAttrib::
 TexGenAttrib() :
   _num_point_sprites(0),
+  _num_light_vectors(0),
   _point_geom_rendering(0),
   _geom_rendering(0)
 {
@@ -38,6 +39,7 @@ TexGenAttrib(const TexGenAttrib &copy) :
   _stages(copy._stages),
   _no_texcoords(copy._no_texcoords),
   _num_point_sprites(copy._num_point_sprites),
+  _num_light_vectors(copy._num_light_vectors),
   _point_geom_rendering(copy._point_geom_rendering),
   _geom_rendering(copy._geom_rendering)
 {
@@ -61,9 +63,21 @@ get_geom_rendering(int geom_rendering) const {
 }
 
 ////////////////////////////////////////////////////////////////////
+//     Function: TexGenAttrib::get_light_vectors
+//       Access: Public
+//  Description: Returns the set of TextureStages that have
+//               M_light_vector in effect, as well as the associated
+//               Lights.
+////////////////////////////////////////////////////////////////////
+INLINE const TexGenAttrib::LightVectors &TexGenAttrib::
+get_light_vectors() const {
+  return _light_vectors;
+}
+
+////////////////////////////////////////////////////////////////////
 //     Function: TexGenAttrib::ModeDef::Constructor
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE TexGenAttrib::ModeDef::
 ModeDef() :
@@ -74,7 +88,7 @@ ModeDef() :
 ////////////////////////////////////////////////////////////////////
 //     Function: TexGenAttrib::ModeDef::compare_to
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE int TexGenAttrib::ModeDef::
 compare_to(const TexGenAttrib::ModeDef &other) const {

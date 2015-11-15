@@ -1,4 +1,4 @@
-from src.toontown.dna.DNAParser import DNASuitPoint
+from src.dependencies.libpandadna import DNASuitPoint
 from src.toontown.suit import SuitTimings
 from src.toontown.toonbase import ToontownGlobals
 

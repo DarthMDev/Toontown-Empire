@@ -33,8 +33,6 @@ class CPPManifest {
 public:
   CPPManifest(const string &args, const CPPFile &file = CPPFile());
   ~CPPManifest();
-
-  static string stringify(const string &source);
   string expand(const vector_string &args = vector_string()) const;
 
   CPPType *determine_type() const;
@@ -44,7 +42,6 @@ public:
   string _name;
   bool _has_parameters;
   int _num_parameters;
-  int _variadic_param;
   CPPFile _file;
   CPPExpression *_expr;
 
@@ -62,11 +59,9 @@ private:
 
   class ExpansionNode {
   public:
-    ExpansionNode(int parm_number, bool stringify, bool paste);
-    ExpansionNode(const string &str, bool paste = false);
+    ExpansionNode(int parm_number);
+    ExpansionNode(const string &str);
     int _parm_number;
-    bool _stringify;
-    bool _paste;
     string _str;
   };
   typedef vector<ExpansionNode> Expansion;

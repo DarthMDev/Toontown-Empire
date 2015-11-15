@@ -17,7 +17,6 @@
 
 #include "pandabase.h"
 #include "simpleAllocator.h"
-#include "vertexDataPage.h"
 #include "referenceCount.h"
 
 class VertexDataPage;

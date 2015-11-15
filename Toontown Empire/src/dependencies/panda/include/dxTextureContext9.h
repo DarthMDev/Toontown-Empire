@@ -19,6 +19,8 @@
 #include "texture.h"
 #include "textureContext.h"
 
+#include "lru.h"
+
 ////////////////////////////////////////////////////////////////////
 //       Class : DXTextureContext9
 // Description :
