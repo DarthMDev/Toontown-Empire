@@ -21,6 +21,7 @@
 #include "pointerTo.h"
 #include "pmap.h"
 #include "lightMutex.h"
+#include "lightMutexHolder.h"
 
 class FactoryParams;
 
@@ -39,15 +40,20 @@ class FactoryParams;
 //               one or more other names, or by giving it a source
 //               string directly.
 ////////////////////////////////////////////////////////////////////
-class EXPCL_PANDA_GOBJ InternalName : public TypedWritableReferenceCount {
+class EXPCL_PANDA_GOBJ InternalName FINAL : public TypedWritableReferenceCount {
 private:
   InternalName(InternalName *parent, const string &basename);
+
+public:
+  INLINE static PT(InternalName) make(const string &name);
+
+  template<int N>
+  INLINE static PT(InternalName) make(const char (&literal)[N]);
 
 PUBLISHED:
   virtual ~InternalName();
   virtual bool unref() const;
 
-  INLINE static PT(InternalName) make(const string &name);
   static PT(InternalName) make(const string &name, int index);
   PT(InternalName) append(const string &basename);
 
@@ -88,6 +94,24 @@ PUBLISHED:
   INLINE static PT(InternalName) get_model();
   INLINE static PT(InternalName) get_view();
 
+#ifdef HAVE_PYTHON
+  // These versions are exposed to Python, which have additional logic
+  // to map from Python interned strings.
+#if PY_MAJOR_VERSION >= 3
+  EXTENSION(static PT(InternalName) make(PyUnicodeObject *str));
+#else
+  EXTENSION(static PT(InternalName) make(PyStringObject *str));
+#endif
+#endif
+
+public:
+#ifdef HAVE_PYTHON
+  // It's OK for us to define it here since these are just pointers of
+  // which the reference is maintained indefinitely.
+  typedef phash_map<PyObject *, InternalName *, pointer_hash> PyInternTable;
+  static PyInternTable _py_intern_table;
+#endif
+
 private:
   PT(InternalName) _parent;
   string _basename;
@@ -95,6 +119,10 @@ private:
   typedef phash_map<string, InternalName *, string_hash> NameTable;
   NameTable _name_table;
   LightMutex _name_table_lock;
+
+  typedef phash_map<const char *, PT(InternalName), pointer_hash> LiteralTable;
+  static LiteralTable _literal_table;
+  static LightMutex _literal_table_lock;
 
   static PT(InternalName) _root;
   static PT(InternalName) _error;
@@ -116,7 +144,7 @@ private:
   static PT(InternalName) _camera;
   static PT(InternalName) _model;
   static PT(InternalName) _view;
-  
+
 public:
   // Datagram stuff
   static void register_with_read_factory();
@@ -153,9 +181,46 @@ private:
 
 INLINE ostream &operator << (ostream &out, const InternalName &tcn);
 
+////////////////////////////////////////////////////////////////////
+//       Class : CPT_InternalName
+// Description : This is a const pointer to an InternalName, and
+//               should be used in lieu of a CPT(InternalName) in
+//               function arguments.  The extra feature that it
+//               offers is that it has a constructor to automatically
+//               convert from a string, so that strings are coerced
+//               by the compiler when passed to such a function.
+////////////////////////////////////////////////////////////////////
+#ifdef CPPPARSER
+// The construct below confuses interrogate, so we give it a typedef.
+typedef ConstPointerTo<InternalName> CPT_InternalName;
+#else
+class CPT_InternalName : public ConstPointerTo<InternalName> {
+public:
+  INLINE CPT_InternalName(const To *ptr = (const To *)NULL);
+  INLINE CPT_InternalName(const PointerTo<InternalName> &copy);
+  INLINE CPT_InternalName(const ConstPointerTo<InternalName> &copy);
+  INLINE CPT_InternalName(const string &name);
+
+  template<int N>
+  INLINE CPT_InternalName(const char (&literal)[N]);
+
+#ifdef USE_MOVE_SEMANTICS
+  INLINE CPT_InternalName(PointerTo<InternalName> &&from) NOEXCEPT;
+  INLINE CPT_InternalName(ConstPointerTo<InternalName> &&from) NOEXCEPT;
+  INLINE CPT_InternalName &operator = (PointerTo<InternalName> &&from) NOEXCEPT;
+  INLINE CPT_InternalName &operator = (ConstPointerTo<InternalName> &&from) NOEXCEPT;
+#endif  // USE_MOVE_SEMANTICS
+
+  INLINE CPT_InternalName &operator = (const To *ptr);
+  INLINE CPT_InternalName &operator = (const PointerTo<InternalName> &copy);
+  INLINE CPT_InternalName &operator = (const ConstPointerTo<InternalName> &copy);
+};
+
+INLINE void swap(CPT_InternalName &one, CPT_InternalName &two) NOEXCEPT {
+  one.swap(two);
+}
+#endif  // CPPPARSER
+
 #include "internalName.I"
 
 #endif
-
-
-  

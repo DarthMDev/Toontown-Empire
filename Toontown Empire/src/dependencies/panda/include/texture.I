@@ -55,14 +55,15 @@ clear() {
 //  Description: Sets the texture to the indicated type and
 //               dimensions, presumably in preparation for calling
 //               read() or load(), or set_ram_image() or
-//               modify_ram_image().
+//               modify_ram_image(), or use set_clear_color to let
+//               the texture be cleared to a solid color.
 ////////////////////////////////////////////////////////////////////
 INLINE void Texture::
 setup_texture(Texture::TextureType texture_type, int x_size, int y_size,
               int z_size, Texture::ComponentType component_type,
               Texture::Format format) {
   CDWriter cdata(_cycler, true);
-  do_setup_texture(cdata, texture_type, x_size, y_size, z_size, 
+  do_setup_texture(cdata, texture_type, x_size, y_size, z_size,
                    component_type, format);
 }
 
@@ -71,7 +72,9 @@ setup_texture(Texture::TextureType texture_type, int x_size, int y_size,
 //       Access: Published
 //  Description: Sets the texture as an empty 1-d texture with no
 //               dimensions.  Follow up with read() or load() to fill
-//               the texture properties and image data.
+//               the texture properties and image data, or use
+//               set_clear_color to let the texture be cleared to a
+//               solid color.
 ////////////////////////////////////////////////////////////////////
 INLINE void Texture::
 setup_1d_texture() {
@@ -84,7 +87,8 @@ setup_1d_texture() {
 //  Description: Sets the texture as an empty 1-d texture with the
 //               specified dimensions and properties.  Follow up with
 //               set_ram_image() or modify_ram_image() to fill the
-//               image data.
+//               image data, or use set_clear_color to let the
+//               texture be cleared to a solid color.
 ////////////////////////////////////////////////////////////////////
 INLINE void Texture::
 setup_1d_texture(int x_size, ComponentType component_type, Format format) {
@@ -96,7 +100,9 @@ setup_1d_texture(int x_size, ComponentType component_type, Format format) {
 //       Access: Published
 //  Description: Sets the texture as an empty 2-d texture with no
 //               dimensions.  Follow up with read() or load() to fill
-//               the texture properties and image data.
+//               the texture properties and image data, or use
+//               set_clear_color to let the texture be cleared to a
+//               solid color.
 ////////////////////////////////////////////////////////////////////
 INLINE void Texture::
 setup_2d_texture() {
@@ -109,10 +115,11 @@ setup_2d_texture() {
 //  Description: Sets the texture as an empty 2-d texture with the
 //               specified dimensions and properties.  Follow up with
 //               set_ram_image() or modify_ram_image() to fill the
-//               image data.
+//               image data, or use set_clear_color to let the
+//               texture be cleared to a solid color.
 ////////////////////////////////////////////////////////////////////
 INLINE void Texture::
-setup_2d_texture(int x_size, int y_size, ComponentType component_type, 
+setup_2d_texture(int x_size, int y_size, ComponentType component_type,
                  Format format) {
   setup_texture(TT_2d_texture, x_size, y_size, 1, component_type, format);
 }
@@ -124,7 +131,8 @@ setup_2d_texture(int x_size, int y_size, ComponentType component_type,
 //               dimensions (though if you know the depth ahead
 //               of time, it saves a bit of reallocation later).
 //               Follow up with read() or load() to fill the texture
-//               properties and image data.
+//               properties and image data, or use set_clear_color
+//               to let the texture be cleared to a solid color.
 ////////////////////////////////////////////////////////////////////
 INLINE void Texture::
 setup_3d_texture(int z_size) {
@@ -152,7 +160,8 @@ setup_3d_texture(int x_size, int y_size, int z_size,
 //               no dimensions (though if you know the depth ahead
 //               of time, it saves a bit of reallocation later).
 //               Follow up with read() or load() to fill the texture
-//               properties and image data.
+//               properties and image data, or use set_clear_color
+//               to let the texture be cleared to a solid color.
 ////////////////////////////////////////////////////////////////////
 INLINE void Texture::
 setup_2d_texture_array(int z_size) {
@@ -165,7 +174,8 @@ setup_2d_texture_array(int z_size) {
 //  Description: Sets the texture as an empty 2-d texture array with the
 //               specified dimensions and properties. Follow up with
 //               set_ram_image() or modify_ram_image() to fill the
-//               image data.
+//               image data, or use set_clear_color to let the
+//               texture be cleared to a solid color.
 ////////////////////////////////////////////////////////////////////
 INLINE void Texture::
 setup_2d_texture_array(int x_size, int y_size, int z_size,
@@ -178,7 +188,9 @@ setup_2d_texture_array(int x_size, int y_size, int z_size,
 //       Access: Published
 //  Description: Sets the texture as an empty cube map texture with no
 //               dimensions.  Follow up with read() or load() to fill
-//               the texture properties and image data.
+//               the texture properties and image data, or use
+//               set_clear_color to let the texture be cleared to a
+//               solid color.
 ////////////////////////////////////////////////////////////////////
 INLINE void Texture::
 setup_cube_map() {
@@ -191,7 +203,8 @@ setup_cube_map() {
 //  Description: Sets the texture as an empty cube map texture with
 //               the specified dimensions and properties.  Follow up
 //               with set_ram_image() or modify_ram_image() to fill
-//               the image data.  
+//               the image data, or use set_clear_color to let the
+//               texture be cleared to a solid color.
 //
 //               Note that a cube map should always consist of six
 //               square images, so x_size and y_size will be the same,
@@ -200,6 +213,107 @@ setup_cube_map() {
 INLINE void Texture::
 setup_cube_map(int size, ComponentType component_type, Format format) {
   setup_texture(TT_cube_map, size, size, 6, component_type, format);
+}
+
+////////////////////////////////////////////////////////////////////
+//     Function: Texture::setup_buffer_texture
+//       Access: Published
+//  Description: Sets the texture as an empty buffer texture with
+//               the specified size and properties.  Follow up
+//               with set_ram_image() or modify_ram_image() to fill
+//               the image data, or use set_clear_color to let the
+//               texture be cleared to a solid color.
+//
+//               Note that a buffer texture's format needs to match
+//               the component type.
+////////////////////////////////////////////////////////////////////
+INLINE void Texture::
+setup_buffer_texture(int size, ComponentType component_type, Format format,
+                     GeomEnums::UsageHint usage) {
+  setup_texture(TT_buffer_texture, size, 1, 1, component_type, format);
+  CDWriter cdata(_cycler);
+  cdata->_usage_hint = usage;
+}
+
+////////////////////////////////////////////////////////////////////
+//     Function: Texture::clear_image
+//       Access: Published
+//  Description: Clears the texture data without changing its format
+//               or resolution.  The texture is cleared on both the
+//               graphics hardware and from RAM, unlike clear_ram_image,
+//               which only removes the data from RAM.
+//
+//               If a clear color has been specified using
+//               set_clear_color, the texture will be cleared using
+//               a solid color.
+//
+//               The texture data will be cleared the first time in
+//               which the texture is used after this method is called.
+////////////////////////////////////////////////////////////////////
+INLINE void Texture::
+clear_image() {
+  CDWriter cdata(_cycler, true);
+  do_clear_ram_image(cdata);
+  do_clear_simple_ram_image(cdata);
+  cdata->inc_image_modified();
+  cdata->inc_simple_image_modified();
+}
+
+////////////////////////////////////////////////////////////////////
+//     Function: Texture::has_clear_color
+//       Access: Published
+//  Description: Returns true if a color was previously set using
+//               set_clear_color.
+////////////////////////////////////////////////////////////////////
+INLINE bool Texture::
+has_clear_color() const {
+  CDReader cdata(_cycler);
+  return cdata->_has_clear_color;
+}
+
+////////////////////////////////////////////////////////////////////
+//     Function: Texture::get_clear_color
+//       Access: Published
+//  Description: Returns the color that was previously set using
+//               set_clear_color.
+////////////////////////////////////////////////////////////////////
+INLINE LColor Texture::
+get_clear_color() const {
+  CDReader cdata(_cycler);
+  return cdata->_clear_color;
+}
+
+////////////////////////////////////////////////////////////////////
+//     Function: Texture::set_clear_color
+//       Access: Published
+//  Description: Sets the color that will be used to fill the
+//               texture image in absence of any image data.  It is
+//               used when any of the setup_texture functions or
+//               clear_image is called and image data is not
+//               provided using read() or modify_ram_image().
+//
+//               This does not affect a texture that has already
+//               been cleared; call clear_image to clear it again.
+////////////////////////////////////////////////////////////////////
+INLINE void Texture::
+set_clear_color(const LColor &color) {
+  CDWriter cdata(_cycler, true);
+  cdata->_clear_color = color;
+  cdata->_has_clear_color = true;
+}
+
+////////////////////////////////////////////////////////////////////
+//     Function: Texture::get_clear_data
+//       Access: Published
+//  Description: Returns the raw image data for a single pixel if
+//               it were set to the clear color.
+////////////////////////////////////////////////////////////////////
+INLINE string Texture::
+get_clear_data() const {
+  CDReader cdata(_cycler);
+  unsigned char data[16];
+  int size = do_get_clear_data(cdata, data);
+  return string((char *)data, size);
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -273,7 +387,7 @@ write(const Filename &fullpath) {
 //               the page index.
 ////////////////////////////////////////////////////////////////////
 INLINE bool Texture::
-write(const Filename &fullpath, int z, int n, 
+write(const Filename &fullpath, int z, int n,
       bool write_pages, bool write_mipmaps) {
   CDWriter cdata(_cycler, false);
   return do_write(cdata, fullpath, z, n, write_pages, write_mipmaps);
@@ -349,6 +463,23 @@ load(const PfmFile &pfm, int z, int n, const LoaderOptions &options) {
     return true;
   }
   return false;
+}
+
+////////////////////////////////////////////////////////////////////
+//     Function: Texture::load_sub_image
+//       Access: Published
+//  Description: Stores the indicated image in a region of the
+//               texture.  The texture properties remain unchanged.
+//               This can be more efficient than updating an entire
+//               texture, but has a few restrictions: for one, you
+//               must ensure that the texture is still in RAM (eg.
+//               using set_keep_ram_image) and it may not be
+//               compressed.
+////////////////////////////////////////////////////////////////////
+INLINE bool Texture::
+load_sub_image(const PNMImage &image, int x, int y, int z, int n) {
+  CDWriter cdata(_cycler, true);
+  return do_load_sub_image(cdata, image, x, y, z, n);
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -506,7 +637,7 @@ has_alpha_fullpath() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: Texture::get_alpha_fullpath
 //       Access: Published
-//  Description: 
+//  Description:
 //               Returns the alpha_fullpath that has been set.  This
 //               is the full path to the alpha part of the image file
 //               as it was found along the texture search path.
@@ -577,7 +708,7 @@ get_num_views() const {
 ////////////////////////////////////////////////////////////////////
 //     Function: Texture::get_num_pages
 //       Access: Published
-//  Description: Returns the total number of pages in the texture.  
+//  Description: Returns the total number of pages in the texture.
 //               Each "page" is a 2-d texture image within the larger
 //               image--a face of a cube map, or a level of a 3-d
 //               texture.  Normally, get_num_pages() is the same as
@@ -776,12 +907,31 @@ get_component_type() const {
 }
 
 ////////////////////////////////////////////////////////////////////
+//     Function: Texture::get_usage_hint
+//       Access: Published
+//  Description: Returns the usage hint specified for buffer textures,
+//               or UH_unspecified for all other texture types.
+////////////////////////////////////////////////////////////////////
+INLINE GeomEnums::UsageHint Texture::
+get_usage_hint() const {
+  CDReader cdata(_cycler);
+  return cdata->_usage_hint;
+}
+
+////////////////////////////////////////////////////////////////////
 //     Function: Texture::set_wrap_u
 //       Access: Published
-//  Description:
+//  Description: This setting determines what happens when the
+//               texture is sampled with a U value outside the range
+//               0.0-1.0.  The default is WM_repeat, which indicates
+//               that the texture should repeat indefinitely.
+//
+//               This sets the default sampler state for this
+//               texture; it may still be overridden by a sampler
+//               state specified at a higher level.
 ////////////////////////////////////////////////////////////////////
 INLINE void Texture::
-set_wrap_u(Texture::WrapMode wrap) {
+set_wrap_u(SamplerState::WrapMode wrap) {
   CDWriter cdata(_cycler, true);
   do_set_wrap_u(cdata, wrap);
 }
@@ -789,10 +939,17 @@ set_wrap_u(Texture::WrapMode wrap) {
 ////////////////////////////////////////////////////////////////////
 //     Function: Texture::set_wrap_v
 //       Access: Published
-//  Description:
+//  Description: This setting determines what happens when the
+//               texture is sampled with a V value outside the range
+//               0.0-1.0.  The default is WM_repeat, which indicates
+//               that the texture should repeat indefinitely.
+//
+//               This sets the default sampler state for this
+//               texture; it may still be overridden by a sampler
+//               state specified at a higher level.
 ////////////////////////////////////////////////////////////////////
 INLINE void Texture::
-set_wrap_v(Texture::WrapMode wrap) {
+set_wrap_v(SamplerState::WrapMode wrap) {
   CDWriter cdata(_cycler, true);
   do_set_wrap_v(cdata, wrap);
 }
@@ -801,9 +958,13 @@ set_wrap_v(Texture::WrapMode wrap) {
 //     Function: Texture::set_wrap_w
 //       Access: Published
 //  Description: The W wrap direction is only used for 3-d textures.
+//
+//               This sets the default sampler state for this
+//               texture; it may still be overridden by a sampler
+//               state specified at a higher level.
 ////////////////////////////////////////////////////////////////////
 INLINE void Texture::
-set_wrap_w(Texture::WrapMode wrap) {
+set_wrap_w(SamplerState::WrapMode wrap) {
   CDWriter cdata(_cycler, true);
   do_set_wrap_w(cdata, wrap);
 }
@@ -811,10 +972,15 @@ set_wrap_w(Texture::WrapMode wrap) {
 ////////////////////////////////////////////////////////////////////
 //     Function: Texture::set_minfilter
 //       Access: Published
-//  Description:
+//  Description: Sets the filtering method that should be used when
+//               viewing the texture from a distance.
+//
+//               This sets the default sampler state for this
+//               texture; it may still be overridden by a sampler
+//               state specified at a higher level.
 ////////////////////////////////////////////////////////////////////
 INLINE void Texture::
-set_minfilter(Texture::FilterType filter) {
+set_minfilter(SamplerState::FilterType filter) {
   CDWriter cdata(_cycler, true);
   do_set_minfilter(cdata, filter);
 }
@@ -822,10 +988,15 @@ set_minfilter(Texture::FilterType filter) {
 ////////////////////////////////////////////////////////////////////
 //     Function: Texture::set_magfilter
 //       Access: Published
-//  Description:
+//  Description: Sets the filtering method that should be used when
+//               viewing the texture up close.
+//
+//               This sets the default sampler state for this
+//               texture; it may still be overridden by a sampler
+//               state specified at a higher level.
 ////////////////////////////////////////////////////////////////////
 INLINE void Texture::
-set_magfilter(Texture::FilterType filter) {
+set_magfilter(SamplerState::FilterType filter) {
   CDWriter cdata(_cycler, true);
   do_set_magfilter(cdata, filter);
 }
@@ -842,6 +1013,10 @@ set_magfilter(Texture::FilterType filter) {
 //               value to 1.  To explicitly enable anisotropic
 //               filtering, set it to a value higher than 1; larger
 //               numbers indicate greater degrees of filtering.
+//
+//               This sets the default sampler state for this
+//               texture; it may still be overridden by a sampler
+//               state specified at a higher level.
 ////////////////////////////////////////////////////////////////////
 INLINE void Texture::
 set_anisotropic_degree(int anisotropic_degree) {
@@ -856,6 +1031,10 @@ set_anisotropic_degree(int anisotropic_degree) {
 //               Some OpenGL implementations use a border for tiling
 //               textures; in Panda, it is only used for specifying
 //               the clamp color.
+//
+//               This sets the default sampler state for this
+//               texture; it may still be overridden by a sampler
+//               state specified at a higher level.
 ////////////////////////////////////////////////////////////////////
 INLINE void Texture::
 set_border_color(const LColor &color) {
@@ -867,7 +1046,7 @@ set_border_color(const LColor &color) {
 //     Function: Texture::set_compression
 //       Access: Published
 //  Description: Requests that this particular Texture be compressed
-//               when it is loaded into texture memory.  
+//               when it is loaded into texture memory.
 //
 //               This refers to the internal compression of the
 //               texture image within texture memory; it is not
@@ -912,15 +1091,56 @@ set_render_to_texture(bool render_to_texture) {
 }
 
 ////////////////////////////////////////////////////////////////////
+//     Function: Texture::get_default_sampler
+//       Access: Published
+//  Description: This returns the default sampler state for this
+//               texture, containing the wrap and filter properties
+//               specified on the texture level; it may still be
+//               overridden by a sampler state specified at a higher
+//               level.
+////////////////////////////////////////////////////////////////////
+INLINE const SamplerState &Texture::
+get_default_sampler() const {
+  CDReader cdata(_cycler);
+  return cdata->_default_sampler;
+}
+
+////////////////////////////////////////////////////////////////////
+//     Function: Texture::set_default_sampler
+//       Access: Published
+//  Description: This sets the default sampler state for this
+//               texture, containing the wrap and filter properties
+//               specified on the texture level; it may still be
+//               overridden by a sampler state specified at a higher
+//               level.  This encompasses the settings for get_wrap_u,
+//               get_minfilter, get_anisotropic_degree, etc.
+//
+//               This makes a copy of the SamplerState object, so
+//               future modifications of the same SamplerState will
+//               have no effect on this texture unless you call
+//               set_default_sampler again.
+////////////////////////////////////////////////////////////////////
+INLINE void Texture::
+set_default_sampler(const SamplerState &sampler) {
+  CDWriter cdata(_cycler, true);
+  cdata->_default_sampler = sampler;
+  cdata->inc_properties_modified();
+}
+
+////////////////////////////////////////////////////////////////////
 //     Function: Texture::get_wrap_u
 //       Access: Published
 //  Description: Returns the wrap mode of the texture in the U
 //               direction.
+//
+//               This returns the default sampler state for this
+//               texture; it may still be overridden by a sampler
+//               state specified at a higher level.
 ////////////////////////////////////////////////////////////////////
-INLINE Texture::WrapMode Texture::
+INLINE SamplerState::WrapMode Texture::
 get_wrap_u() const {
   CDReader cdata(_cycler);
-  return cdata->_wrap_u;
+  return cdata->_default_sampler.get_wrap_u();
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -928,11 +1148,15 @@ get_wrap_u() const {
 //       Access: Published
 //  Description: Returns the wrap mode of the texture in the V
 //               direction.
+//
+//               This returns the default sampler state for this
+//               texture; it may still be overridden by a sampler
+//               state specified at a higher level.
 ////////////////////////////////////////////////////////////////////
-INLINE Texture::WrapMode Texture::
+INLINE SamplerState::WrapMode Texture::
 get_wrap_v() const {
   CDReader cdata(_cycler);
-  return cdata->_wrap_v;
+  return cdata->_default_sampler.get_wrap_v();
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -941,11 +1165,15 @@ get_wrap_v() const {
 //  Description: Returns the wrap mode of the texture in the W
 //               direction.  This is the depth direction of 3-d
 //               textures.
+//
+//               This returns the default sampler state for this
+//               texture; it may still be overridden by a sampler
+//               state specified at a higher level.
 ////////////////////////////////////////////////////////////////////
-INLINE Texture::WrapMode Texture::
+INLINE SamplerState::WrapMode Texture::
 get_wrap_w() const {
   CDReader cdata(_cycler);
-  return cdata->_wrap_w;
+  return cdata->_default_sampler.get_wrap_w();
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -956,11 +1184,15 @@ get_wrap_w() const {
 //               constants, then the texture requires mipmaps.  This
 //               may return FT_default; see also
 //               get_effective_minfilter().
+//
+//               This returns the default sampler state for this
+//               texture; it may still be overridden by a sampler
+//               state specified at a higher level.
 ////////////////////////////////////////////////////////////////////
-INLINE Texture::FilterType Texture::
+INLINE SamplerState::FilterType Texture::
 get_minfilter() const {
   CDReader cdata(_cycler);
-  return cdata->_minfilter;
+  return cdata->_default_sampler.get_minfilter();
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -970,11 +1202,51 @@ get_minfilter() const {
 //               magnification.  The mipmap constants are invalid
 //               here.  This may return FT_default; see also
 //               get_effective_minfilter().
+//
+//               This returns the default sampler state for this
+//               texture; it may still be overridden by a sampler
+//               state specified at a higher level.
 ////////////////////////////////////////////////////////////////////
-INLINE Texture::FilterType Texture::
+INLINE SamplerState::FilterType Texture::
 get_magfilter() const {
   CDReader cdata(_cycler);
-  return cdata->_magfilter;
+  return cdata->_default_sampler.get_magfilter();
+}
+
+////////////////////////////////////////////////////////////////////
+//     Function: Texture::get_effective_minfilter
+//       Access: Published
+//  Description: Returns the filter mode of the texture for
+//               minification, with special treatment for FT_default.
+//               This will normally not return FT_default, unless
+//               there is an error in the config file.
+//
+//               This returns the default sampler state for this
+//               texture; it may still be overridden by a sampler
+//               state specified at a higher level.
+////////////////////////////////////////////////////////////////////
+SamplerState::FilterType Texture::
+get_effective_minfilter() const {
+  CDReader cdata(_cycler);
+  return cdata->_default_sampler.get_effective_minfilter();
+}
+
+////////////////////////////////////////////////////////////////////
+//     Function: Texture::get_effective_magfilter
+//       Access: Published
+//  Description: Returns the filter mode of the texture for
+//               magnification, with special treatment for FT_default.
+//               This will normally not return FT_default, unless
+//               there is an error in the config file.
+//
+//               This returns the default sampler state for this
+//               texture; it may still be overridden by a sampler
+//               state specified at a higher level.
+////////////////////////////////////////////////////////////////////
+SamplerState::FilterType Texture::
+get_effective_magfilter() const {
+  CDReader cdata(_cycler);
+  return cdata->_default_sampler.get_effective_magfilter();
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -984,11 +1256,15 @@ get_magfilter() const {
 //               should be applied to the texture.  This value may
 //               return 0, indicating the default value; see also
 //               get_effective_anisotropic_degree.
+//
+//               This returns the default sampler state for this
+//               texture; it may still be overridden by a sampler
+//               state specified at a higher level.
 ////////////////////////////////////////////////////////////////////
 INLINE int Texture::
 get_anisotropic_degree() const {
   CDReader cdata(_cycler);
-  return cdata->_anisotropic_degree;
+  return cdata->_default_sampler.get_anisotropic_degree();
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -998,14 +1274,15 @@ get_anisotropic_degree() const {
 //               should be applied to the texture.  This value will
 //               normally not return 0, unless there is an error in
 //               the config file.
+//
+//               This returns the default sampler state for this
+//               texture; it may still be overridden by a sampler
+//               state specified at a higher level.
 ////////////////////////////////////////////////////////////////////
 INLINE int Texture::
 get_effective_anisotropic_degree() const {
   CDReader cdata(_cycler);
-  if (cdata->_anisotropic_degree != 0) {
-    return cdata->_anisotropic_degree;
-  }
-  return texture_anisotropic_degree;
+  return cdata->_default_sampler.get_effective_anisotropic_degree();
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -1015,11 +1292,15 @@ get_effective_anisotropic_degree() const {
 //               Some OpenGL implementations use a border for tiling
 //               textures; in Panda, it is only used for specifying
 //               the clamp color.
+//
+//               This returns the default sampler state for this
+//               texture; it may still be overridden by a sampler
+//               state specified at a higher level.
 ////////////////////////////////////////////////////////////////////
 INLINE LColor Texture::
 get_border_color() const {
   CDReader cdata(_cycler);
-  return cdata->_border_color;
+  return cdata->_default_sampler.get_border_color();
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -1090,7 +1371,7 @@ get_render_to_texture() const {
 ////////////////////////////////////////////////////////////////////
 INLINE bool Texture::
 uses_mipmaps() const {
-  return is_mipmap(get_effective_minfilter());
+  return SamplerState::is_mipmap(get_effective_minfilter());
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -2383,7 +2664,7 @@ adjust_this_size(int &x_size, int &y_size, const string &name,
 ////////////////////////////////////////////////////////////////////
 //     Function: Texture::do_get_ram_image_size
 //       Access: Protected
-//  Description: 
+//  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE size_t Texture::
 do_get_ram_image_size(const CData *cdata) const {
@@ -2396,18 +2677,18 @@ do_get_ram_image_size(const CData *cdata) const {
 ////////////////////////////////////////////////////////////////////
 //     Function: Texture::do_has_ram_mipmap_image
 //       Access: Protected
-//  Description: 
+//  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE bool Texture::
 do_has_ram_mipmap_image(const CData *cdata, int n) const {
-  return (n >= 0 && n < (int)cdata->_ram_images.size() && 
+  return (n >= 0 && n < (int)cdata->_ram_images.size() &&
           !cdata->_ram_images[n]._image.empty());
 }
 
 ////////////////////////////////////////////////////////////////////
 //     Function: Texture::do_get_expected_ram_image_size
 //       Access: Protected
-//  Description: 
+//  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE size_t Texture::
 do_get_expected_ram_image_size(const CData *cdata) const {
@@ -2417,7 +2698,7 @@ do_get_expected_ram_image_size(const CData *cdata) const {
 ////////////////////////////////////////////////////////////////////
 //     Function: Texture::do_get_expected_ram_view_size
 //       Access: Protected
-//  Description: 
+//  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE size_t Texture::
 do_get_expected_ram_view_size(const CData *cdata) const {
@@ -2427,7 +2708,7 @@ do_get_expected_ram_view_size(const CData *cdata) const {
 ////////////////////////////////////////////////////////////////////
 //     Function: Texture::do_get_expected_ram_page_size
 //       Access: Protected
-//  Description: 
+//  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE size_t Texture::
 do_get_expected_ram_page_size(const CData *cdata) const {
@@ -2437,7 +2718,7 @@ do_get_expected_ram_page_size(const CData *cdata) const {
 ////////////////////////////////////////////////////////////////////
 //     Function: Texture::do_get_expected_ram_mipmap_image_size
 //       Access: Protected
-//  Description: 
+//  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE size_t Texture::
 do_get_expected_ram_mipmap_image_size(const CData *cdata, int n) const {
@@ -2447,7 +2728,7 @@ do_get_expected_ram_mipmap_image_size(const CData *cdata, int n) const {
 ////////////////////////////////////////////////////////////////////
 //     Function: Texture::do_get_expected_ram_mipmap_view_size
 //       Access: Protected
-//  Description: 
+//  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE size_t Texture::
 do_get_expected_ram_mipmap_view_size(const CData *cdata, int n) const {
@@ -2457,7 +2738,7 @@ do_get_expected_ram_mipmap_view_size(const CData *cdata, int n) const {
 ////////////////////////////////////////////////////////////////////
 //     Function: Texture::do_get_expected_ram_mipmap_page_size
 //       Access: Protected
-//  Description: 
+//  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE size_t Texture::
 do_get_expected_ram_mipmap_page_size(const CData *cdata, int n) const {
@@ -2477,7 +2758,7 @@ do_get_expected_mipmap_num_pages(const CData *cdata, int n) const {
 ////////////////////////////////////////////////////////////////////
 //     Function: Texture::do_clear_ram_image
 //       Access: Protected
-//  Description: 
+//  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE void Texture::
 do_clear_ram_image(CData *cdata) {
@@ -2488,7 +2769,7 @@ do_clear_ram_image(CData *cdata) {
 ////////////////////////////////////////////////////////////////////
 //     Function: Texture::do_get_auto_texture_scale
 //       Access: Protected
-//  Description: 
+//  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE AutoTextureScale Texture::
 do_get_auto_texture_scale(const CData *cdata) const {
@@ -2630,7 +2911,7 @@ is_dds_filename(const Filename &fullpath) {
 ////////////////////////////////////////////////////////////////////
 //     Function: Texture::CData::inc_properties_modified
 //       Access: Public
-//  Description: 
+//  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE void Texture::CData::
 inc_properties_modified() {
@@ -2640,7 +2921,7 @@ inc_properties_modified() {
 ////////////////////////////////////////////////////////////////////
 //     Function: Texture::CData::inc_image_modified
 //       Access: Public
-//  Description: 
+//  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE void Texture::CData::
 inc_image_modified() {
@@ -2650,7 +2931,7 @@ inc_image_modified() {
 ////////////////////////////////////////////////////////////////////
 //     Function: Texture::CData::inc_simple_image_modified
 //       Access: Public
-//  Description: 
+//  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE void Texture::CData::
 inc_simple_image_modified() {
@@ -2660,7 +2941,7 @@ inc_simple_image_modified() {
 ////////////////////////////////////////////////////////////////////
 //     Function: Texture::RamImage::Constructor
 //       Access: Public
-//  Description: 
+//  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE Texture::RamImage::
 RamImage() :

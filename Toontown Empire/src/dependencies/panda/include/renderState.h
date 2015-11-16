@@ -67,6 +67,7 @@ public:
 PUBLISHED:
   int compare_to(const RenderState &other) const;
   int compare_sort(const RenderState &other) const;
+  int compare_mask(const RenderState &other, SlotMask compare_mask) const;
   INLINE size_t get_hash() const;
 
   INLINE bool is_empty() const;
@@ -74,8 +75,8 @@ PUBLISHED:
   INLINE bool has_cull_callback() const;
   bool cull_callback(CullTraverser *trav, const CullTraverserData &data) const;
 
-  static CPT(RenderState) make_empty();
-  static CPT(RenderState) make_full_default();
+  INLINE static CPT(RenderState) make_empty();
+  INLINE static CPT(RenderState) make_full_default();
   static CPT(RenderState) make(const RenderAttrib *attrib, int override = 0);
   static CPT(RenderState) make(const RenderAttrib *attrib1,
                                const RenderAttrib *attrib2, int override = 0);
@@ -88,7 +89,7 @@ PUBLISHED:
                                const RenderAttrib *attrib4, int override = 0);
   static CPT(RenderState) make(const RenderAttrib * const *attrib,
                                int num_attribs, int override = 0);
-  
+
   CPT(RenderState) compose(const RenderState *other) const;
   CPT(RenderState) invert_compose(const RenderState *other) const;
 
@@ -152,11 +153,18 @@ PUBLISHED:
   INLINE int get_draw_order() const;
   INLINE int get_bin_index() const;
   int get_geom_rendering(int geom_rendering) const;
-  
+
 public:
   static void bin_removed(int bin_index);
-  
+
   INLINE static void flush_level();
+
+#ifndef CPPPARSER
+  template<class AttribType>
+  INLINE bool get_attrib(const AttribType *&attrib) const;
+  template<class AttribType>
+  INLINE void get_attrib_def(const AttribType *&attrib) const;
+#endif  // CPPPARSER
 
 private:
   INLINE void check_hash() const;
@@ -214,7 +222,7 @@ public:
   // ShaderAttrib will be synthesized by the runtime and stored here.
   // I can't declare this as a ShaderAttrib because that would create
   // a circular include-file dependency problem.  Aaargh.
-  CPT(RenderAttrib) _generated_shader;
+  mutable CPT(RenderAttrib) _generated_shader;
 
 private:
   // This mutex protects _states.  It also protects any modification
@@ -263,8 +271,8 @@ private:
   // The code to manage this map lives in
   // GraphicsStateGuardian::get_geom_munger().
   typedef pmap<WCPT(GraphicsStateGuardianBase), PT(GeomMunger) > Mungers;
-  Mungers _mungers;
-  Mungers::const_iterator _last_mi;
+  mutable Mungers _mungers;
+  mutable Mungers::const_iterator _last_mi;
 
   // This is used to mark nodes as we visit them to detect cycles.
   UpdateSeq _cycle_detect;
@@ -339,7 +347,7 @@ public:
 protected:
   static TypedWritable *make_from_bam(const FactoryParams &params);
   void fillin(DatagramIterator &scan, BamReader *manager);
-  
+
 public:
   static TypeHandle get_class_type() {
     return _type_handle;

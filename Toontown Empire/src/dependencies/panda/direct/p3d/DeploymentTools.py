@@ -4,13 +4,13 @@ to build for as many platforms as possible. """
 
 __all__ = ["Standalone", "Installer"]
 
-import os, sys, subprocess, tarfile, shutil, time, zipfile, glob, socket, getpass, struct
+import os, sys, subprocess, tarfile, shutil, time, zipfile, socket, getpass, struct
 from cStringIO import StringIO
 from direct.directnotify.DirectNotifyGlobal import *
 from direct.showbase.AppRunnerGlobal import appRunner
-from pandac.PandaModules import PandaSystem, HTTPClient, Filename, VirtualFileSystem, Multifile
-from pandac.PandaModules import TiXmlDocument, TiXmlDeclaration, TiXmlElement, readXmlStream
-from pandac.PandaModules import PNMImage, PNMFileTypeRegistry
+from panda3d.core import PandaSystem, HTTPClient, Filename, VirtualFileSystem, Multifile
+from panda3d.core import TiXmlDocument, TiXmlDeclaration, TiXmlElement, readXmlStream
+from panda3d.core import PNMImage, PNMFileTypeRegistry
 from direct.stdpy.file import *
 from direct.p3d.HostInfo import HostInfo
 # This is important for some reason
@@ -73,7 +73,7 @@ class Standalone:
 
         self.tempDir = Filename.temporary("", self.basename, "") + "/"
         self.tempDir.makeDir()
-        self.host = HostInfo(PandaSystem.getPackageHostUrl(), appRunner = appRunner, hostDir = self.tempDir, asMirror = False, perPlatform = True)
+        self.host = HostInfo(PandaSystem.getPackageHostUrl(), appRunner = appRunner, hostDir = self.tempDir, asMirror = False)
 
         self.http = HTTPClient.getGlobalPtr()
         if not self.host.hasContentsFile:
@@ -233,7 +233,7 @@ class PackageTree:
         if hostUrl in self.hosts:
             return self.hosts[hostUrl]
 
-        host = HostInfo(hostUrl, appRunner = appRunner, hostDir = self.hostDir, asMirror = False, perPlatform = False)
+        host = HostInfo(hostUrl, appRunner = appRunner, hostDir = self.hostDir, asMirror = False)
         if not host.hasContentsFile:
             if not host.readContentsFile():
                 if not host.downloadContentsFile(self.http):
@@ -296,7 +296,7 @@ class Icon:
 
     def __init__(self):
         self.images = {}
-    
+
     def addImage(self, image):
         """ Adds an image to the icon.  Returns False on failure, True on success.
         Only one image per size can be loaded, and the image size must be square. """
@@ -587,15 +587,22 @@ class Installer:
         for package in pkgTree.packages.values():
             xpackage = TiXmlElement('package')
             xpackage.SetAttribute('name', package.packageName)
+
+            filename = package.packageName + "/"
+
+            if package.packageVersion:
+                xpackage.SetAttribute('version', package.packageVersion)
+                filename += package.packageVersion + "/"
+
             if package.platform:
                 xpackage.SetAttribute('platform', package.platform)
+                filename += package.platform + "/"
                 assert package.platform == platform
+
             xpackage.SetAttribute('per_platform', '1')
-            if package.packageVersion:
-                xpackage.SetAttribute('version', version)
-                xpackage.SetAttribute('filename', package.packageName + "/" + package.packageVersion + "/" + package.descFileBasename)
-            else:
-                xpackage.SetAttribute('filename', package.packageName + "/" + package.descFileBasename)
+
+            filename += package.descFileBasename
+            xpackage.SetAttribute('filename', filename)
             xcontents.InsertEndChild(xpackage)
 
         doc.InsertEndChild(xcontents)
@@ -1097,7 +1104,7 @@ class Installer:
 
         # Tell Vista that we require admin rights
         print >>nsi, 'RequestExecutionLevel admin'
-        print >>nsi 
+        print >>nsi
         if self.offerRun:
             print >>nsi, 'Function launch'
             print >>nsi, '  ExecShell "open" "$INSTDIR\\%s.exe"' % self.shortname
@@ -1112,7 +1119,7 @@ class Installer:
                 print >>nsi, '  CreateShortcut "$DESKTOP\\%s.lnk" "$INSTDIR\\%s.exe" "" "$INSTDIR\\%s.ico"' % (self.fullname, self.shortname, self.shortname)
             print >>nsi, 'FunctionEnd'
             print >>nsi
-            
+
         print >>nsi, '!include "MUI2.nsh"'
         print >>nsi, '!define MUI_ABORTWARNING'
         if self.offerRun:
@@ -1213,7 +1220,7 @@ class Installer:
 
         if icofile is not None:
             icofile.unlink()
-        
+
         return output
 
     def os_walk(self, top):

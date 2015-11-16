@@ -17,6 +17,10 @@
 #define SHADERGENERATOR_H
 
 #include "pandabase.h"
+#include "typedReferenceCount.h"
+
+#ifdef HAVE_CG
+
 #include "graphicsStateGuardianBase.h"
 #include "graphicsOutputBase.h"
 #include "nodePath.h"
@@ -29,6 +33,7 @@ class DirectionalLight;
 class PointLight;
 class Spotlight;
 class LightAttrib;
+class GeomVertexAnimationSpec;
 
 ////////////////////////////////////////////////////////////////////
 //       Class : ShaderGenerator
@@ -63,12 +68,12 @@ class LightAttrib;
 //               Thanks to them!
 //
 ////////////////////////////////////////////////////////////////////
-
-class EXPCL_PANDA_PGRAPHNODES ShaderGenerator : public TypedObject {
+class EXPCL_PANDA_PGRAPHNODES ShaderGenerator : public TypedReferenceCount {
 PUBLISHED:
-  ShaderGenerator(PT(GraphicsStateGuardianBase) gsg, PT(GraphicsOutputBase) host);
+  ShaderGenerator(GraphicsStateGuardianBase *gsg, GraphicsOutputBase *host);
   virtual ~ShaderGenerator();
-  virtual CPT(RenderAttrib) synthesize_shader(const RenderState *rs);
+  virtual CPT(ShaderAttrib) synthesize_shader(const RenderState *rs,
+                                              const GeomVertexAnimationSpec &anim);
 
 protected:
   CPT(RenderAttrib) create_shader_attrib(const string &txt);
@@ -86,8 +91,8 @@ protected:
   int _vtregs_used;
   int _ftregs_used;
   void reset_register_allocator();
-  char *alloc_vreg();
-  char *alloc_freg();
+  const char *alloc_vreg();
+  const char *alloc_freg();
 
   // RenderState analysis information.  Created by analyze_renderstate:
 
@@ -143,6 +148,7 @@ protected:
   bool _need_world_normal;
   bool _need_eye_position;
   bool _need_eye_normal;
+  bool _normalize_normals;
   bool _auto_normal_on;
   bool _auto_glow_on;
   bool _auto_gloss_on;
@@ -152,9 +158,9 @@ protected:
   void analyze_renderstate(const RenderState *rs);
   void clear_analysis();
 
-  PT(GraphicsStateGuardianBase) _gsg;
-  PT(GraphicsOutputBase) _host;
-  pmap<WCPT(RenderState), CPT(ShaderAttrib)> _generated_shaders;
+  // This is not a PT() to prevent a circular reference.
+  GraphicsStateGuardianBase *_gsg;
+  GraphicsOutputBase *_host;
 
 public:
   static TypeHandle get_class_type() {
@@ -170,11 +176,34 @@ public:
   }
   virtual TypeHandle force_init_type() {init_type(); return get_class_type();}
 
- private:
+private:
+  static TypeHandle _type_handle;
+};
+
+#else
+
+// If we don't have Cg, let's replace this with a stub.
+class EXPCL_PANDA_PGRAPHNODES ShaderGenerator : public TypedReferenceCount {
+public:
+  static TypeHandle get_class_type() {
+    return _type_handle;
+  }
+  static void init_type() {
+    TypedObject::init_type();
+    register_type(_type_handle, "ShaderGenerator",
+                  TypedObject::get_class_type());
+  }
+  virtual TypeHandle get_type() const {
+    return get_class_type();
+  }
+  virtual TypeHandle force_init_type() {init_type(); return get_class_type();}
+
+private:
   static TypeHandle _type_handle;
 };
 
 #include "shaderGenerator.I"
 
-#endif  // SHADERGENERATOR_H
+#endif  // HAVE_CG
 
+#endif  // SHADERGENERATOR_H

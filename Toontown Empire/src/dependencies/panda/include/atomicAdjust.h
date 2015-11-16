@@ -18,12 +18,20 @@
 #include "dtoolbase.h"
 #include "selectThreadImpl.h"
 
-#if defined(THREAD_DUMMY_IMPL)||defined(THREAD_SIMPLE_IMPL)
+#if defined(CPPPARSER)
+
+struct AtomicAdjust {
+  typedef long Integer;
+  typedef void *UnalignedPointer;
+  typedef UnalignedPointer Pointer;
+};
+
+#elif defined(THREAD_DUMMY_IMPL) || defined(THREAD_SIMPLE_IMPL)
 
 #include "atomicAdjustDummyImpl.h"
 typedef AtomicAdjustDummyImpl AtomicAdjust;
 
-#elif defined(__i386__) || defined(_M_IX86)
+#elif (defined(__i386__) || defined(_M_IX86)) && !defined(__APPLE__)
 // For an i386 architecture, we'll always use the i386 implementation.
 // It should be safe for any OS, and it might be a bit faster than
 // any OS-provided calls.
@@ -39,14 +47,19 @@ typedef AtomicAdjustI386Impl AtomicAdjust;
 #define HAVE_ATOMIC_COMPARE_AND_EXCHANGE 1
 #define HAVE_ATOMIC_COMPARE_AND_EXCHANGE_PTR 1
 
-#elif defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 7))
+#elif (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 7))) || (defined(__clang__) && (__clang_major__ >= 3))
 // GCC 4.7 and above has built-in __atomic functions for atomic operations.
+// Clang 3.0 and above also supports them.
 
 #include "atomicAdjustGccImpl.h"
 typedef AtomicAdjustGccImpl AtomicAdjust;
 
+#if (__GCC_ATOMIC_INT_LOCK_FREE + __GCC_ATOMIC_INT_LOCK_FREE) > 0
 #define HAVE_ATOMIC_COMPARE_AND_EXCHANGE 1
+#endif
+#if __GCC_ATOMIC_POINTER_LOCK_FREE > 0
 #define HAVE_ATOMIC_COMPARE_AND_EXCHANGE_PTR 1
+#endif
 
 #elif defined(THREAD_WIN32_IMPL)
 

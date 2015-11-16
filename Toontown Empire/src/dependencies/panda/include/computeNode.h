@@ -18,6 +18,7 @@
 #include "pandabase.h"
 #include "pandaNode.h"
 #include "callbackObject.h"
+#include "callbackNode.h"
 #include "pointerTo.h"
 
 ////////////////////////////////////////////////////////////////////
@@ -35,6 +36,8 @@ PUBLISHED:
 
   INLINE int get_num_dispatches() const;
   INLINE const LVecBase3i &get_dispatch(int i) const;
+  INLINE void clear_dispatches();
+
   MAKE_SEQ(get_dispatches, get_num_dispatches, get_dispatch);
 
 public:

@@ -164,7 +164,7 @@ INLINE BitMask<WType, nbits>::
 //               BitMask or BitArray interchangeably.
 ////////////////////////////////////////////////////////////////////
 template<class WType, int nbits>
-INLINE bool BitMask<WType, nbits>::
+CONSTEXPR bool BitMask<WType, nbits>::
 has_max_num_bits() {
   return true;
 }
@@ -183,7 +183,7 @@ has_max_num_bits() {
 //               can use BitMask or BitArray interchangeably.
 ////////////////////////////////////////////////////////////////////
 template<class WType, int nbits>
-INLINE int BitMask<WType, nbits>::
+CONSTEXPR int BitMask<WType, nbits>::
 get_max_num_bits() {
   return num_bits;
 }
@@ -195,7 +195,7 @@ get_max_num_bits() {
 //               bitmask.
 ////////////////////////////////////////////////////////////////////
 template<class WType, int nbits>
-INLINE int BitMask<WType, nbits>::
+CONSTEXPR int BitMask<WType, nbits>::
 get_num_bits() {
   return num_bits;
 }
@@ -503,7 +503,7 @@ get_next_higher_different_bit(int low_bit) const {
   // Mask out all of the bits below low_bit.  Since we already know
   // that low_bit is 0, we can use (1 << low_bit) instead of (1 <<
   // (low_bit + 1)), which becomes undefined when (low_bit + 1) == 32.
-  w &= ~((1 << low_bit) - 1);
+  w &= ~(((WordType)1 << low_bit) - 1);
 
   if (w == 0) {
     // All higher bits in the word have the same value.  Since every
@@ -862,10 +862,8 @@ generate_hash(ChecksumHashGenerator &hashgen) const {
 ////////////////////////////////////////////////////////////////////
 template<class WType, int nbits>
 void BitMask<WType, nbits>::
-init_type() {
-  ostringstream str;
-  str << "BitMask" << num_bits;
-  register_type(_type_handle, str.str());
+init_type(const string &name) {
+  register_type(_type_handle, name);
 }
 
 ////////////////////////////////////////////////////////////////////

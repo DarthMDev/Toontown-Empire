@@ -16,10 +16,12 @@
 #define SHADER_H
 
 #include "pandabase.h"
+#include "config_gobj.h"
 #include "typedWritableReferenceCount.h"
 #include "namable.h"
 #include "graphicsStateGuardianBase.h"
 #include "internalName.h"
+#include "pta_int.h"
 #include "pta_float.h"
 #include "pta_double.h"
 #include "pta_stdfloat.h"
@@ -28,6 +30,7 @@
 #include "pta_LVecBase4.h"
 #include "pta_LVecBase3.h"
 #include "pta_LVecBase2.h"
+#include "epvector.h"
 
 #ifdef HAVE_CG
 // I don't want to include the Cg header file into panda as a
@@ -60,6 +63,7 @@ PUBLISHED:
     ST_tess_control,
     ST_tess_evaluation,
     ST_compute,
+    ST_COUNT
   };
 
   enum AutoShaderSwitch {
@@ -78,25 +82,25 @@ PUBLISHED:
     bit_AutoShaderShadow = 4, // bit for AS_shadow
   };
 
-  static PT(Shader) load(const Filename &file, const ShaderLanguage &lang = SL_none);
-  static PT(Shader) make(const string &body, const ShaderLanguage &lang = SL_none);
-  static PT(Shader) load(const ShaderLanguage &lang, 
-                         const Filename &vertex, const Filename &fragment, 
+  static PT(Shader) load(const Filename &file, ShaderLanguage lang = SL_none);
+  static PT(Shader) make(const string &body, ShaderLanguage lang = SL_none);
+  static PT(Shader) load(ShaderLanguage lang,
+                         const Filename &vertex, const Filename &fragment,
                          const Filename &geometry = "",
                          const Filename &tess_control = "",
                          const Filename &tess_evaluation = "");
-  static PT(Shader) load_compute(const ShaderLanguage &lang, const Filename &fn);
-  static PT(Shader) make(const ShaderLanguage &lang, 
-                         const string &vertex, const string &fragment, 
+  static PT(Shader) load_compute(ShaderLanguage lang, const Filename &fn);
+  static PT(Shader) make(ShaderLanguage lang,
+                         const string &vertex, const string &fragment,
                          const string &geometry = "",
                          const string &tess_control = "",
                          const string &tess_evaluation = "");
-  static PT(Shader) make_compute(const ShaderLanguage &lang, const string &body);
+  static PT(Shader) make_compute(ShaderLanguage lang, const string &body);
 
-  INLINE const Filename get_filename(const ShaderType &type = ST_none) const;
+  INLINE Filename get_filename(const ShaderType &type = ST_none) const;
   INLINE const string &get_text(const ShaderType &type = ST_none) const;
-  INLINE const bool get_error_flag() const;
-  INLINE const ShaderLanguage get_language() const;
+  INLINE bool get_error_flag() const;
+  INLINE ShaderLanguage get_language() const;
 
   INLINE static ShaderUtilization get_shader_utilization();
   INLINE static void set_shader_utilization(ShaderUtilization utl);
@@ -107,7 +111,7 @@ PUBLISHED:
   bool release(PreparedGraphicsObjects *prepared_objects);
   int release_all();
 
-  ShaderContext *prepare_now(PreparedGraphicsObjects *prepared_objects, 
+  ShaderContext *prepare_now(PreparedGraphicsObjects *prepared_objects,
                              GraphicsStateGuardianBase *gsg);
 
 public:
@@ -168,6 +172,24 @@ public:
     SMO_frame_number,
     SMO_frame_time,
     SMO_frame_delta,
+
+    SMO_mat_constant_x_attrib,
+    SMO_vec_constant_x_attrib,
+
+    SMO_light_ambient,
+    SMO_light_source_i_attrib,
+
+    SMO_light_product_i_ambient,
+    SMO_light_product_i_diffuse,
+    SMO_light_product_i_specular,
+
+    // SMO_clipplane_x is world coords, GLSL needs eye coords
+    SMO_apiview_clipplane_i,
+
+    SMO_model_to_apiview,
+    SMO_apiview_to_model,
+    SMO_apiview_to_apiclip,
+    SMO_apiclip_to_apiview,
 
     SMO_INVALID
   };
@@ -234,6 +256,7 @@ public:
     SMP_row3x3,
     SMP_upper3x3,
     SMP_transpose3x3,
+    SMP_cell15,
   };
 
   enum ShaderStateDep {
@@ -245,6 +268,8 @@ public:
     SSD_material      = 0x010,
     SSD_shaderinputs  = 0x020,
     SSD_fog           = 0x040,
+    SSD_light         = 0x080,
+    SSD_clip_planes   = 0x100,
   };
 
   enum ShaderBug {
@@ -272,6 +297,7 @@ public:
     ShaderArgType     _type;
     ShaderArgDir      _direction;
     bool              _varying;
+    bool              _integer;
     NotifyCategory   *_cat;
   };
 
@@ -291,7 +317,7 @@ public:
     void *_ptr;
     ShaderPtrType _type;
     bool _updated;
-    int _size; //number of elements vec3[4]=12
+    size_t _size; //number of elements vec3[4]=12
 
   public:
     INLINE ShaderPtrData();
@@ -332,13 +358,14 @@ public:
   };
 
   struct ShaderMatSpec {
+    LMatrix4          _cache[2];
+    LMatrix4          _value;
     ShaderArgId       _id;
     ShaderMatFunc     _func;
     ShaderMatInput    _part[2];
     PT(InternalName)  _arg[2];
     int               _dep[2];
-    LMatrix4          _cache[2];
-    LMatrix4          _value;
+    int               _index;
     ShaderMatPiece    _piece;
   };
 
@@ -354,6 +381,8 @@ public:
     ShaderArgId       _id;
     PT(InternalName)  _name;
     int               _append_uv;
+    int               _elements;
+    bool              _integer;
   };
 
   struct ShaderPtrSpec {
@@ -362,6 +391,7 @@ public:
     int               _dep[2];
     PT(InternalName)  _arg;
     ShaderArgInfo     _info;
+    ShaderPtrType     _type;
   };
 
   class ShaderCaps {
@@ -400,6 +430,8 @@ public:
 
     INLINE void write_datagram(Datagram &dg) const;
     INLINE void read_datagram(DatagramIterator &source);
+
+    INLINE bool operator < (const ShaderFile &other) const;
 
   public:
     bool _separate;
@@ -447,29 +479,23 @@ public:
                           bool &success);
 #endif
 
-  bool compile_parameter(const ShaderArgId        &arg_id,
-                         const ShaderArgClass     &arg_class,
-                         const ShaderArgClass     &arg_subclass,
-                         const ShaderArgType      &arg_type,
-                         const ShaderArgDir       &arg_direction,
-                         bool                      arg_varying,
-                         int                      *arg_dim,
-                         NotifyCategory           *arg_cat);
+  bool compile_parameter(ShaderArgInfo &p, int *arg_dim);
 
   void clear_parameters();
 
-#ifdef HAVE_CG
 private:
+#ifdef HAVE_CG
   ShaderArgClass cg_parameter_class(CGparameter p);
   ShaderArgType cg_parameter_type(CGparameter p);
   ShaderArgDir cg_parameter_dir(CGparameter p);
 
-  CGprogram cg_compile_entry_point(const char *entry, const ShaderCaps &caps, ShaderType type = ST_vertex);
+  CGprogram cg_compile_entry_point(const char *entry, const ShaderCaps &caps,
+                                   CGcontext context, ShaderType type);
 
   bool cg_analyze_entry_point(CGprogram prog, ShaderType type);
 
   bool cg_analyze_shader(const ShaderCaps &caps);
-  bool cg_compile_shader(const ShaderCaps &caps);
+  bool cg_compile_shader(const ShaderCaps &caps, CGcontext context);
   void cg_release_resources();
   void cg_report_errors();
 
@@ -478,7 +504,7 @@ private:
   void cg_get_profile_from_header(ShaderCaps &caps);
 
   ShaderCaps _cg_last_caps;
-  CGcontext  _cg_context;
+  static CGcontext  _cg_context;
   CGprogram  _cg_vprogram;
   CGprogram  _cg_fprogram;
   CGprogram  _cg_gprogram;
@@ -490,10 +516,8 @@ private:
   CGprogram cg_program_from_shadertype(ShaderType type);
 
 public:
-
-  bool cg_compile_for(const ShaderCaps &caps, CGcontext &ctx,
-                      CGprogram &vprogram, CGprogram &fprogram,
-                      CGprogram &gprogram, pvector<CGparameter> &map);
+  bool cg_compile_for(const ShaderCaps &caps, CGcontext context,
+                      CGprogram &combined_program, pvector<CGparameter> &map);
 
 #endif
 
@@ -504,19 +528,25 @@ public:
   pvector <ShaderVarSpec> _var_spec;
 
   bool _error_flag;
-  CPT(ShaderFile) _text;
+  ShaderFile _text;
 
 protected:
-  CPT(ShaderFile) _filename;
+  ShaderFile _filename;
   int _parse;
   bool _loaded;
   ShaderLanguage _language;
+  pvector<Filename> _included_files;
+
+  // Stores full paths, and includes the fullpaths of the shaders
+  // themselves as well as the includes.
+  pvector<Filename> _source_files;
+  time_t _last_modified;
 
   static ShaderCaps _default_caps;
   static ShaderUtilization _shader_utilization;
   static int _shaders_generated;
 
-  typedef pmap < CPT(ShaderFile), Shader * > ShaderTable;
+  typedef pmap<ShaderFile, PT(Shader)> ShaderTable;
 
   static ShaderTable _load_table;
   static ShaderTable _make_table;
@@ -530,11 +560,20 @@ protected:
 private:
   void clear_prepared(PreparedGraphicsObjects *prepared_objects);
 
-  Shader();
+  Shader(ShaderLanguage lang);
+
+  bool read(const ShaderFile &sfile);
+  bool do_read_source(string &into, const Filename &fn);
+  bool r_preprocess_source(ostream &out, const Filename &fn,
+                           const Filename &source_dir,
+                           set<Filename> &open_files, int depth = 0);
+
+  bool check_modified() const;
 
 public:
-  Shader(CPT(ShaderFile) name, CPT(ShaderFile) text, const ShaderLanguage &lang = SL_none);
   ~Shader();
+
+  INLINE Filename get_filename_from_index(int index, ShaderType type) const;
 
 public:
   static void register_with_read_factory();

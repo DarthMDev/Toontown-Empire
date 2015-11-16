@@ -18,7 +18,7 @@
 #include "dtoolbase.h"
 #include "selectThreadImpl.h"
 
-#if defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 7))
+#if (defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 7))) || (defined(__clang__) && (__clang_major__ >= 3))
 
 ////////////////////////////////////////////////////////////////////
 //       Class : AtomicAdjustGccImpl
@@ -26,7 +26,7 @@
 ////////////////////////////////////////////////////////////////////
 class EXPCL_DTOOL AtomicAdjustGccImpl {
 public:
-#if __GCC_ATOMIC_LONG_LOCK_FREE > __GCC_ATOMIC_INT_LOCK_FREE
+#if __GCC_ATOMIC_LONG_LOCK_FREE >= __GCC_ATOMIC_INT_LOCK_FREE
   // If the long can be more lock-free than int, use it instead.
   typedef __attribute__ ((aligned (__SIZEOF_LONG__))) long Integer;
 #else

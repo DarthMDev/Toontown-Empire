@@ -32,7 +32,6 @@ class GraphicsOutputBase;
 
 class VertexBufferContext;
 class IndexBufferContext;
-class OcclusionQueryContext;
 class GeomContext;
 class GeomNode;
 class Geom;
@@ -55,8 +54,10 @@ class PreparedGraphicsObjects;
 class GraphicsOutput;
 class Texture;
 class TextureContext;
-class ShaderContext;
+class SamplerContext;
+class SamplerState;
 class Shader;
+class ShaderContext;
 class RenderState;
 class TransformState;
 class Material;
@@ -123,8 +124,9 @@ PUBLISHED:
 
   virtual bool get_supports_multisample() const=0;
   virtual int get_supported_geom_rendering() const=0;
-  virtual bool get_supports_occlusion_query() const=0;
   virtual bool get_supports_shadow_filter() const=0;
+
+  virtual bool get_supports_texture_srgb() const=0;
 
 public:
   // These are some general interface functions; they're defined here
@@ -148,20 +150,20 @@ public:
   virtual void release_texture(TextureContext *tc)=0;
   virtual bool extract_texture_data(Texture *tex)=0;
 
+  virtual SamplerContext *prepare_sampler(const SamplerState &sampler)=0;
+  virtual void release_sampler(SamplerContext *sc)=0;
+
   virtual GeomContext *prepare_geom(Geom *geom)=0;
   virtual void release_geom(GeomContext *gc)=0;
 
   virtual ShaderContext *prepare_shader(Shader *shader)=0;
   virtual void release_shader(ShaderContext *sc)=0;
-  
+
   virtual VertexBufferContext *prepare_vertex_buffer(GeomVertexArrayData *data)=0;
   virtual void release_vertex_buffer(VertexBufferContext *vbc)=0;
 
   virtual IndexBufferContext *prepare_index_buffer(GeomPrimitive *data)=0;
   virtual void release_index_buffer(IndexBufferContext *ibc)=0;
-
-  virtual void begin_occlusion_query()=0;
-  virtual PT(OcclusionQueryContext) end_occlusion_query()=0;
 
   virtual void dispatch_compute(int size_x, int size_y, int size_z)=0;
 
@@ -196,9 +198,9 @@ public:
   // inconvenient to declare each of those types to be friends of this
   // class.
 
-  virtual bool begin_draw_primitives(const GeomPipelineReader *geom_reader, 
+  virtual bool begin_draw_primitives(const GeomPipelineReader *geom_reader,
                                      const GeomMunger *munger,
-                                     const GeomVertexDataPipelineReader *data_reader, 
+                                     const GeomVertexDataPipelineReader *data_reader,
                                      bool force)=0;
   virtual bool draw_triangles(const GeomPrimitivePipelineReader *reader, bool force)=0;
   virtual bool draw_tristrips(const GeomPrimitivePipelineReader *reader, bool force)=0;
@@ -216,7 +218,7 @@ public:
 
   virtual CoordinateSystem get_internal_coordinate_system() const=0;
 
-  virtual void bind_light(PointLight *light_obj, const NodePath &light, 
+  virtual void bind_light(PointLight *light_obj, const NodePath &light,
                           int light_id) { }
   virtual void bind_light(DirectionalLight *light_obj, const NodePath &light,
                           int light_id) { }

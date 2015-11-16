@@ -21,13 +21,19 @@
 
 ///////////////////////////////////////////////////////////////////
 //       Class : CPPReferenceType
-// Description :
+// Description : Either an lvalue- or rvalue-reference.
 ////////////////////////////////////////////////////////////////////
 class CPPReferenceType : public CPPType {
 public:
-  CPPReferenceType(CPPType *pointing_at);
+  enum ValueCategory {
+    VC_lvalue,
+    VC_rvalue
+  };
+
+  CPPReferenceType(CPPType *pointing_at, ValueCategory vcat=VC_lvalue);
 
   CPPType *_pointing_at;
+  ValueCategory _value_category;
 
   virtual bool is_fully_specified() const;
   virtual CPPDeclaration *substitute_decl(SubstDecl &subst,
@@ -38,6 +44,7 @@ public:
                                 CPPScope *global_scope);
 
   virtual bool is_tbd() const;
+  virtual bool is_trivial() const;
   virtual bool is_equivalent(const CPPType &other) const;
 
   virtual void output(ostream &out, int indent_level, CPPScope *scope,

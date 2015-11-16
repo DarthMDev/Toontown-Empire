@@ -28,7 +28,11 @@ count_bits_in_word(PN_uint16 x) {
 ////////////////////////////////////////////////////////////////////
 INLINE int
 count_bits_in_word(PN_uint32 x) {
+#if defined(__GNUC__) && defined(__POPCNT__)
+  return __builtin_popcount((unsigned int) x);
+#else
   return (int)num_bits_on[x & 0xffff] + (int)num_bits_on[(x >> 16) & 0xffff];
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -37,7 +41,11 @@ count_bits_in_word(PN_uint32 x) {
 ////////////////////////////////////////////////////////////////////
 INLINE int
 count_bits_in_word(PN_uint64 x) {
+#if defined(__GNUC__) && defined(__POPCNT__)
+  return __builtin_popcountll((unsigned long long) x);
+#else
   return count_bits_in_word((PN_uint32)x) + count_bits_in_word((PN_uint32)(x >> 32));
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -137,12 +145,19 @@ flood_bits_up(PN_uint64 x) {
 ////////////////////////////////////////////////////////////////////
 INLINE int
 get_lowest_on_bit(PN_uint16 x) {
+#if defined(_MSC_VER)
+  unsigned long result;
+  return (_BitScanForward(&result, (unsigned long) x) == 0) ? -1 : result;
+#elif defined(__GNUC__)
+  return __builtin_ffs((unsigned int) x) - 1;
+#else
   if (x == 0) {
     return -1;
   }
 
   PN_uint16 w = (x & (~x + 1));
   return (int)num_bits_on[w - 1];
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -152,12 +167,19 @@ get_lowest_on_bit(PN_uint16 x) {
 ////////////////////////////////////////////////////////////////////
 INLINE int
 get_lowest_on_bit(PN_uint32 x) {
+#if defined(_MSC_VER)
+  unsigned long result;
+  return (_BitScanForward(&result, (unsigned long) x) == 0) ? -1 : result;
+#elif defined(__GNUC__)
+  return __builtin_ffs((unsigned int) x) - 1;
+#else
   if (x == 0) {
     return -1;
   }
 
   PN_uint32 w = (x & (~x + 1));
   return count_bits_in_word(w - 1);
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -167,12 +189,19 @@ get_lowest_on_bit(PN_uint32 x) {
 ////////////////////////////////////////////////////////////////////
 INLINE int
 get_lowest_on_bit(PN_uint64 x) {
+#if defined(_MSC_VER) && defined(_M_X64)
+  unsigned long result;
+  return (_BitScanForward64(&result, (unsigned __int64) x) == 0) ? -1 : result;
+#elif defined(__GNUC__)
+  return __builtin_ffsll((unsigned long long) x) - 1;
+#else
   if (x == 0) {
     return -1;
   }
 
   PN_uint64 w = (x & (~x + 1));
   return count_bits_in_word(w - 1);
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -182,8 +211,15 @@ get_lowest_on_bit(PN_uint64 x) {
 ////////////////////////////////////////////////////////////////////
 INLINE int
 get_highest_on_bit(PN_uint16 x) {
+#if defined(_MSC_VER)
+  unsigned long result;
+  return (_BitScanReverse(&result, (unsigned long) x) == 0) ? -1 : result;
+#elif defined(__GNUC__)
+  return (x == 0) ? -1 : 31 - __builtin_clz((unsigned int) x);
+#else
   PN_uint16 w = flood_bits_down(x);
   return count_bits_in_word(w) - 1;
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -193,8 +229,15 @@ get_highest_on_bit(PN_uint16 x) {
 ////////////////////////////////////////////////////////////////////
 INLINE int
 get_highest_on_bit(PN_uint32 x) {
+#if defined(_MSC_VER)
+  unsigned long result;
+  return (_BitScanReverse(&result, (unsigned long) x) == 0) ? -1 : result;
+#elif defined(__GNUC__)
+  return (x == 0) ? -1 : 31 - __builtin_clz((unsigned int) x);
+#else
   PN_uint32 w = flood_bits_down(x);
   return count_bits_in_word(w) - 1;
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -204,8 +247,15 @@ get_highest_on_bit(PN_uint32 x) {
 ////////////////////////////////////////////////////////////////////
 INLINE int
 get_highest_on_bit(PN_uint64 x) {
+#if defined(_MSC_VER) && defined(_M_X64)
+  unsigned long result;
+  return (_BitScanReverse64(&result, (unsigned __int64) x) == 0) ? -1 : result;
+#elif defined(__GNUC__)
+  return (x == 0) ? -1 : 63 - __builtin_clzll((unsigned long long) x);
+#else
   PN_uint64 w = flood_bits_down(x);
   return count_bits_in_word(w) - 1;
+#endif
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -217,8 +267,7 @@ get_highest_on_bit(PN_uint64 x) {
 ////////////////////////////////////////////////////////////////////
 INLINE int
 get_next_higher_bit(PN_uint16 x) {
-  PN_uint16 w = flood_bits_down(x);
-  return count_bits_in_word(w);
+  return get_highest_on_bit(x) + 1;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -230,8 +279,7 @@ get_next_higher_bit(PN_uint16 x) {
 ////////////////////////////////////////////////////////////////////
 INLINE int
 get_next_higher_bit(PN_uint32 x) {
-  PN_uint32 w = flood_bits_down(x);
-  return count_bits_in_word(w);
+  return get_highest_on_bit(x) + 1;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -243,6 +291,5 @@ get_next_higher_bit(PN_uint32 x) {
 ////////////////////////////////////////////////////////////////////
 INLINE int
 get_next_higher_bit(PN_uint64 x) {
-  PN_uint64 w = flood_bits_down(x);
-  return count_bits_in_word(w);
+  return get_highest_on_bit(x) + 1;
 }

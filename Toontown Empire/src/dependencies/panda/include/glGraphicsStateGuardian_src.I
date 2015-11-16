@@ -27,6 +27,7 @@
 INLINE bool CLP(GraphicsStateGuardian)::
 report_errors(int line, const char *source_file) {
 #ifndef NDEBUG
+  PStatTimer timer(_check_error_pcollector);
   GLenum error_code = glGetError();
   if (error_code != GL_NO_ERROR) {
     int error_count = 0;
@@ -46,6 +47,7 @@ INLINE void CLP(GraphicsStateGuardian)::
 report_my_errors(int line, const char *source_file) {
 #ifndef NDEBUG
   if (_check_errors) {
+    PStatTimer timer(_check_error_pcollector);
     GLenum error_code = glGetError();
     if (error_code != GL_NO_ERROR) {
       if (!report_errors_loop(line, source_file, error_code, _error_count)) {
@@ -69,6 +71,7 @@ report_my_errors(int line, const char *source_file) {
 ////////////////////////////////////////////////////////////////////
 INLINE bool CLP(GraphicsStateGuardian)::
 clear_errors(int line, const char *source_file) {
+  PStatTimer timer(_check_error_pcollector);
   GLenum error_code = glGetError();
   if (error_code != GL_NO_ERROR) {
     int error_count = 0;
@@ -92,6 +95,7 @@ clear_errors(int line, const char *source_file) {
 INLINE void CLP(GraphicsStateGuardian)::
 clear_my_errors(int line, const char *source_file) {
   if (_check_errors) {
+    PStatTimer timer(_check_error_pcollector);
     GLenum error_code = glGetError();
     if (error_code != GL_NO_ERROR) {
       int error_count = 0;
@@ -165,6 +169,25 @@ maybe_gl_finish() const {
     glFinish();
   }
 #endif
+}
+
+////////////////////////////////////////////////////////////////////
+//     Function: GLGraphicsStateGuardian::has_extension
+//       Access: Published, Final
+//  Description: Returns true if the indicated extension is reported
+//               by the GL system, false otherwise.  The extension
+//               name is case-sensitive.
+////////////////////////////////////////////////////////////////////
+INLINE bool CLP(GraphicsStateGuardian)::
+has_extension(const string &extension) const {
+  bool has_ext = (_extensions.find(extension) != _extensions.end());
+#ifndef NDEBUG
+  if (GLCAT.is_debug()) {
+    GLCAT.debug()
+      << "HAS EXT " << extension << " " << has_ext << "\n";
+  }
+#endif
+  return has_ext;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -331,7 +354,7 @@ enable_line_smooth(bool val) {
 ////////////////////////////////////////////////////////////////////
 INLINE void CLP(GraphicsStateGuardian)::
 enable_point_smooth(bool val) {
-#ifndef OPENGLES_2
+#ifdef SUPPORT_FIXED_FUNCTION
   if (_point_smooth_enabled != val) {
     _state_mask.clear_bit(TransparencyAttrib::get_class_slot());
     _point_smooth_enabled = val;
@@ -509,6 +532,7 @@ enable_depth_test(bool val) {
   }
 }
 
+#ifdef SUPPORT_FIXED_FUNCTION
 ////////////////////////////////////////////////////////////////////
 //     Function: GLGraphicsStateGuardian::enable_fog
 //       Access:
@@ -516,7 +540,6 @@ enable_depth_test(bool val) {
 ////////////////////////////////////////////////////////////////////
 INLINE void CLP(GraphicsStateGuardian)::
 enable_fog(bool val) {
-#ifndef OPENGLES_2
   if (_fog_enabled != val) {
     _fog_enabled = val;
     if (val) {
@@ -533,9 +556,10 @@ enable_fog(bool val) {
       glDisable(GL_FOG);
     }
   }
-#endif
 }
+#endif
 
+#ifdef SUPPORT_FIXED_FUNCTION
 ////////////////////////////////////////////////////////////////////
 //     Function: GLGraphicsStateGuardian::enable_alpha_test
 //       Access:
@@ -543,7 +567,6 @@ enable_fog(bool val) {
 ////////////////////////////////////////////////////////////////////
 INLINE void CLP(GraphicsStateGuardian)::
 enable_alpha_test(bool val) {
-#ifndef OPENGLES_2
   if (_alpha_test_enabled != val) {
     _alpha_test_enabled = val;
     if (val) {
@@ -560,9 +583,8 @@ enable_alpha_test(bool val) {
       glDisable(GL_ALPHA_TEST);
     }
   }
-#endif // OPENGLES_2
 }
-
+#endif
 
 ////////////////////////////////////////////////////////////////////
 //     Function: GLGraphicsStateGuardian::enable_polygon_offset
@@ -594,6 +616,36 @@ enable_polygon_offset(bool val) {
 }
 
 ////////////////////////////////////////////////////////////////////
+//     Function: GLGraphicsStateGuardian::set_color_write_mask
+//       Access: Protected
+//  Description:
+////////////////////////////////////////////////////////////////////
+INLINE void CLP(GraphicsStateGuardian)::
+set_color_write_mask(int mask) {
+  if (gl_color_mask && _active_color_write_mask != mask) {
+    _active_color_write_mask = mask;
+    glColorMask((_color_write_mask & ColorWriteAttrib::C_red) != 0,
+                (_color_write_mask & ColorWriteAttrib::C_green) != 0,
+                (_color_write_mask & ColorWriteAttrib::C_blue) != 0,
+                (_color_write_mask & ColorWriteAttrib::C_alpha) != 0);
+  }
+}
+
+////////////////////////////////////////////////////////////////////
+//     Function: GLGraphicsStateGuardian::clear_color_write_mask
+//       Access: Protected
+//  Description:
+////////////////////////////////////////////////////////////////////
+INLINE void CLP(GraphicsStateGuardian)::
+clear_color_write_mask() {
+  if (gl_color_mask && _active_color_write_mask != ColorWriteAttrib::C_all) {
+    _active_color_write_mask = ColorWriteAttrib::C_all;
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+  }
+}
+
+#ifdef SUPPORT_FIXED_FUNCTION
+////////////////////////////////////////////////////////////////////
 //     Function: GLGraphicsStateGuardian::call_glFogfv
 //       Access: Public
 //  Description: This method is necessary because there is no
@@ -601,16 +653,16 @@ enable_polygon_offset(bool val) {
 ////////////////////////////////////////////////////////////////////
 INLINE void CLP(GraphicsStateGuardian)::
 call_glFogfv(GLenum pname, const LColor &color) {
-#ifndef OPENGLES_2
 #ifndef STDFLOAT_DOUBLE
   glFogfv(pname, color.get_data());
 #else  // STDFLOAT_DOUBLE
   LColorf fcolor = LCAST(float, color);
   glFogfv(pname, fcolor.get_data());
 #endif  //  STDFLOAT_DOUBLE
-#endif
 }
+#endif
 
+#ifdef SUPPORT_FIXED_FUNCTION
 ////////////////////////////////////////////////////////////////////
 //     Function: GLGraphicsStateGuardian::call_glMaterialfv
 //       Access: Public
@@ -619,16 +671,16 @@ call_glFogfv(GLenum pname, const LColor &color) {
 ////////////////////////////////////////////////////////////////////
 INLINE void CLP(GraphicsStateGuardian)::
 call_glMaterialfv(GLenum face, GLenum pname, const LColor &color) {
-#ifndef OPENGLES_2
 #ifndef STDFLOAT_DOUBLE
   glMaterialfv(face, pname, color.get_data());
 #else  // STDFLOAT_DOUBLE
   LColorf fcolor = LCAST(float, color);
   glMaterialfv(face, pname, fcolor.get_data());
 #endif  //  STDFLOAT_DOUBLE
-#endif
 }
+#endif
 
+#ifdef SUPPORT_FIXED_FUNCTION
 ////////////////////////////////////////////////////////////////////
 //     Function: GLGraphicsStateGuardian::call_glLightfv
 //       Access: Public
@@ -637,16 +689,16 @@ call_glMaterialfv(GLenum face, GLenum pname, const LColor &color) {
 ////////////////////////////////////////////////////////////////////
 INLINE void CLP(GraphicsStateGuardian)::
 call_glLightfv(GLenum light, GLenum pname, const LVecBase4 &value) {
-#ifndef OPENGLES_2
 #ifndef STDFLOAT_DOUBLE
   glLightfv(light, pname, value.get_data());
 #else  // STDFLOAT_DOUBLE
   LVecBase4f fvalue = LCAST(float, value);
   glLightfv(light, pname, fvalue.get_data());
 #endif  //  STDFLOAT_DOUBLE
-#endif
 }
+#endif
 
+#ifdef SUPPORT_FIXED_FUNCTION
 ////////////////////////////////////////////////////////////////////
 //     Function: GLGraphicsStateGuardian::call_glLightfv
 //       Access: Public
@@ -655,16 +707,16 @@ call_glLightfv(GLenum light, GLenum pname, const LVecBase4 &value) {
 ////////////////////////////////////////////////////////////////////
 INLINE void CLP(GraphicsStateGuardian)::
 call_glLightfv(GLenum light, GLenum pname, const LVecBase3 &value) {
-#ifndef OPENGLES_2
 #ifndef STDFLOAT_DOUBLE
   glLightfv(light, pname, value.get_data());
 #else  // STDFLOAT_DOUBLE
   LVecBase3f fvalue = LCAST(float, value);
   glLightfv(light, pname, fvalue.get_data());
 #endif  //  STDFLOAT_DOUBLE
-#endif
 }
+#endif
 
+#ifdef SUPPORT_FIXED_FUNCTION
 ////////////////////////////////////////////////////////////////////
 //     Function: GLGraphicsStateGuardian::call_glLightModelfv
 //       Access: Public
@@ -673,16 +725,16 @@ call_glLightfv(GLenum light, GLenum pname, const LVecBase3 &value) {
 ////////////////////////////////////////////////////////////////////
 INLINE void CLP(GraphicsStateGuardian)::
 call_glLightModelfv(GLenum pname, const LVecBase4 &value) {
-#ifndef OPENGLES_2
 #ifndef STDFLOAT_DOUBLE
   glLightModelfv(pname, value.get_data());
 #else  // STDFLOAT_DOUBLE
   LVecBase4f fvalue = LCAST(float, value);
   glLightModelfv(pname, fvalue.get_data());
 #endif  //  STDFLOAT_DOUBLE
-#endif  // OPENGLES_2
 }
+#endif
 
+#ifdef SUPPORT_FIXED_FUNCTION
 ////////////////////////////////////////////////////////////////////
 //     Function: GLGraphicsStateGuardian::call_glTexEnvfv
 //       Access: Public
@@ -691,15 +743,14 @@ call_glLightModelfv(GLenum pname, const LVecBase4 &value) {
 ////////////////////////////////////////////////////////////////////
 INLINE void CLP(GraphicsStateGuardian)::
 call_glTexEnvfv(GLenum target, GLenum pname, const LVecBase4 &value) {
-#ifndef OPENGLES_2
 #ifndef STDFLOAT_DOUBLE
   glTexEnvfv(target, pname, value.get_data());
 #else  // STDFLOAT_DOUBLE
   LVecBase4f fvalue = LCAST(float, value);
   glTexEnvfv(target, pname, fvalue.get_data());
 #endif  //  STDFLOAT_DOUBLE
-#endif
 }
+#endif
 
 ////////////////////////////////////////////////////////////////////
 //     Function: GLGraphicsStateGuardian::call_glTexParameterfv
@@ -717,17 +768,19 @@ call_glTexParameterfv(GLenum target, GLenum pname, const LVecBase4 &value) {
 #endif  //  STDFLOAT_DOUBLE
 }
 
+#ifdef SUPPORT_FIXED_FUNCTION
 ////////////////////////////////////////////////////////////////////
 //     Function: GLGraphicsStateGuardian::get_light_id
 //       Access: Public
 //  Description: Convert index to gl light id
 ////////////////////////////////////////////////////////////////////
-INLINE GLenum CLP(GraphicsStateGuardian)::get_light_id(int index) const {
-#ifndef OPENGLES_2
+INLINE GLenum CLP(GraphicsStateGuardian)::
+get_light_id(int index) const {
   return GL_LIGHT0 + index;
-#endif
 }
+#endif
 
+#ifdef SUPPORT_FIXED_FUNCTION
 ////////////////////////////////////////////////////////////////////
 //     Function: GLGraphicsStateGuardian::get_clip_plane_id
 //       Access: Public
@@ -735,50 +788,49 @@ INLINE GLenum CLP(GraphicsStateGuardian)::get_light_id(int index) const {
 ////////////////////////////////////////////////////////////////////
 INLINE GLenum CLP(GraphicsStateGuardian)::
 get_clip_plane_id(int index) const {
-#ifndef OPENGLES_2
   return GL_CLIP_PLANE0 + index;
-#endif
 }
+#endif
 
 ////////////////////////////////////////////////////////////////////
 //     Function: CLP(GraphicsStateGuardian)::get_supports_framebuffer_multisample
 //       Access: Public
-//  Description: Returns if this glGsg supports multisample 
+//  Description: Returns if this glGsg supports multisample
 //               antialiasing for framebuffer objects.
 ////////////////////////////////////////////////////////////////////
 INLINE bool CLP(GraphicsStateGuardian)::
 get_supports_framebuffer_multisample() {
-    return _supports_framebuffer_multisample;
+  return _supports_framebuffer_multisample;
 }
 
 ////////////////////////////////////////////////////////////////////
 //     Function: CLP(GraphicsStateGuardian)::get_supports_framebuffer_multisample
 //       Access: Public
-//  Description: Returns if this glGsg supports multisample 
+//  Description: Returns if this glGsg supports multisample
 //               antialiasing for framebuffer objects.
 ////////////////////////////////////////////////////////////////////
 INLINE bool CLP(GraphicsStateGuardian)::
 get_supports_framebuffer_multisample_coverage_nv() {
-    return _supports_framebuffer_multisample_coverage_nv;
+  return _supports_framebuffer_multisample_coverage_nv;
 }
 
 
 ////////////////////////////////////////////////////////////////////
 //     Function: CLP(GraphicsStateGuardian)::get_supports_framebuffer_blit
 //       Access: Public
-//  Description: Returns if this glGsg supports multisample 
+//  Description: Returns if this glGsg supports multisample
 //               antialiasing for framebuffer objects.
 ////////////////////////////////////////////////////////////////////
 INLINE bool CLP(GraphicsStateGuardian)::
 get_supports_framebuffer_blit() {
-    return _supports_framebuffer_blit;
+  return _supports_framebuffer_blit;
 }
 
 #ifndef NDEBUG
 ////////////////////////////////////////////////////////////////////
 //     Function: GLGraphicsStateGuardian::UsageTextureKey::Constructor
 //       Access: Public
-//  Description: 
+//  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE CLP(GraphicsStateGuardian)::UsageTextureKey::
 UsageTextureKey(int x_size, int y_size) :
@@ -792,7 +844,7 @@ UsageTextureKey(int x_size, int y_size) :
 ////////////////////////////////////////////////////////////////////
 //     Function: GLGraphicsStateGuardian::UsageTextureKey::operator <
 //       Access: Public
-//  Description: 
+//  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE bool CLP(GraphicsStateGuardian)::UsageTextureKey::
 operator < (const CLP(GraphicsStateGuardian)::UsageTextureKey &other) const {

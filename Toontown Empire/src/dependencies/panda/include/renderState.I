@@ -52,6 +52,42 @@ has_cull_callback() const {
 }
 
 ////////////////////////////////////////////////////////////////////
+//     Function: RenderState::make_empty
+//       Access: Published, Static
+//  Description: Returns a RenderState with no attributes set.
+////////////////////////////////////////////////////////////////////
+INLINE CPT(RenderState) RenderState::
+make_empty() {
+  // The empty state is asked for so often, we make it a special case
+  // and store a pointer forever once we find it the first time.
+  if (_empty_state == (RenderState *)NULL) {
+    RenderState *state = new RenderState;
+    _empty_state = return_unique(state);
+  }
+
+  return _empty_state;
+}
+
+////////////////////////////////////////////////////////////////////
+//     Function: RenderState::make_full_default
+//       Access: Published, Static
+//  Description: Returns a RenderState with all possible attributes
+//               set to their default value.
+////////////////////////////////////////////////////////////////////
+INLINE CPT(RenderState) RenderState::
+make_full_default() {
+  // The empty state is asked for so often, we make it a special case
+  // and store a pointer forever once we find it the first time.
+  if (_full_default_state == (RenderState *)NULL) {
+    RenderState *state = new RenderState;
+    state->fill_default();
+    _full_default_state = return_unique(state);
+  }
+
+  return _full_default_state;
+}
+
+////////////////////////////////////////////////////////////////////
 //     Function: RenderState::remove_attrib
 //       Access: Published
 //  Description: Returns a new RenderState object that represents the
@@ -477,7 +513,7 @@ consider_update_pstats(int old_referenced_bits) const {
 ////////////////////////////////////////////////////////////////////
 //     Function: RenderState::Composition::Constructor
 //       Access: Public
-//  Description: 
+//  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE RenderState::Composition::
 Composition() {
@@ -486,7 +522,7 @@ Composition() {
 ////////////////////////////////////////////////////////////////////
 //     Function: RenderState::Composition::Copy Constructor
 //       Access: Public
-//  Description: 
+//  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE RenderState::Composition::
 Composition(const RenderState::Composition &copy) :
@@ -509,7 +545,7 @@ Attribute(const RenderAttrib *attrib, int override) :
 ////////////////////////////////////////////////////////////////////
 //     Function: RenderState::Attribute::Constructor
 //       Access: Public
-//  Description: 
+//  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE RenderState::Attribute::
 Attribute(int override) :
@@ -588,6 +624,34 @@ flush_level() {
   _cache_counter.flush_level();
 }
 
+#ifndef CPPPARSER
+////////////////////////////////////////////////////////////////////
+//     Function: RenderState::get_attrib
+//       Access: Public
+//  Description: Handy templated version of get_attrib that
+//               costs to the right type.  Returns true if the
+//               attribute was present, false otherwise.
+////////////////////////////////////////////////////////////////////
+template<class AttribType>
+INLINE bool RenderState::
+get_attrib(const AttribType *&attrib) const {
+  attrib = (const AttribType *)get_attrib((int)AttribType::get_class_slot());
+  return (attrib != (const AttribType *)NULL);
+}
+
+////////////////////////////////////////////////////////////////////
+//     Function: RenderState::get_attrib_def
+//       Access: Public
+//  Description: Handy templated version of get_attrib_def that
+//               costs to the right type.
+////////////////////////////////////////////////////////////////////
+template<class AttribType>
+INLINE void RenderState::
+get_attrib_def(const AttribType *&attrib) const {
+  attrib = (const AttribType *)get_attrib_def((int)AttribType::get_class_slot());
+}
+#endif  // CPPPARSER
+
 ////////////////////////////////////////////////////////////////////
 //     Function: RenderState::check_hash
 //       Access: Private
@@ -641,7 +705,7 @@ calc_hash() {
 ////////////////////////////////////////////////////////////////////
 //     Function: RenderState::CompositionCycleDescEntry::Constructor
 //       Access: Public
-//  Description: 
+//  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE RenderState::CompositionCycleDescEntry::
 CompositionCycleDescEntry(const RenderState *obj,

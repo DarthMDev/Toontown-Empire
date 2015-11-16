@@ -11,6 +11,7 @@
 //  3. Handle Framing and Unframing properly ..
 //
 ////////////////////////////////////////////////////////////////////
+
 #include "pandabase.h"
 #include "socket_base.h"
 #include "datagram.h"
@@ -19,9 +20,12 @@
 #include "buffered_datagramwriter.h"
 #include "config_nativenet.h"
 
+#ifdef HAVE_PYTHON
+#include "py_panda.h"
+#endif
 
 ////////////////////////////////////////////////////////////////
-// there are 3 states   
+// there are 3 states
 //
 //      1. Socket not even assigned,,,,
 //      2. Socket Assigned and trying to get a active connect open
@@ -34,21 +38,28 @@ private:
   struct AddressQueue : private pvector<Socket_Address> // this is used to do a round robin for addres to connect to ..
   {   
     size_t _active_index;   
-    bool GetNext(Socket_Address &out) 
-    {
+
+    INLINE AddressQueue() : _active_index(0) {}
+
+    bool GetNext(Socket_Address &out) {
       size_t the_size = size();
-      if(the_size == 0)
+      if (the_size == 0) {
         return false;
-      
-      if(_active_index >= the_size || _active_index < 0)
+      }
+
+      if (_active_index >= the_size) {
         _active_index = 0;
+      }
+
       out = (*this)[_active_index++];   
       return true;
     }            
 
-    void clear() { pvector<Socket_Address>::clear(); };
-    void push_back(Socket_Address &address)
-    {
+    INLINE void clear() {
+      pvector<Socket_Address>::clear();
+    }
+
+    void push_back(Socket_Address &address) {
       iterator ii;
       for(ii = begin(); ii != end(); ii++)
         if(*ii == address)
@@ -58,8 +69,9 @@ private:
 
     size_t size() { return pvector<Socket_Address>::size(); };
   };
+
 protected:
-  // c++ upcals for 
+  // c++ upcalls for 
   virtual void PostConnect(void) { };
   virtual void NewWriteBuffer(void) { };
   ///////////////////////////////////////////

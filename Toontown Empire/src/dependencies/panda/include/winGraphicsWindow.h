@@ -160,7 +160,6 @@ private:
   bool _ime_open;
   bool _ime_active;
   bool _tracking_mouse_leaving;
-  bool _maximized;
   bool _bCursor_in_WindowClientArea;
   HANDLE _input_device_handle[32];
   HCURSOR _cursor;
@@ -214,6 +213,9 @@ private:
   static int _saved_mouse_trails;
   static BOOL _saved_cursor_shadow;
   static BOOL _saved_mouse_vanish;
+
+  // The mouse constraints before applying mouse mode M_confined.
+  static RECT _mouse_unconfined_cliprect;
 
   // Since the Panda API requests icons and cursors by filename, we
   // need a table mapping filenames to handles, so we can avoid

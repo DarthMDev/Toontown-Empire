@@ -33,11 +33,14 @@ class CPPConstType;
 class CPPExtensionType;
 class CPPStructType;
 class CPPEnumType;
+class CPPTypedefType;
+class CPPArrayType;
 class CPPFunctionType;
 class CPPScope;
 class CPPIdentifier;
 class CPPNameComponent;
 class CPPManifest;
+class CPPMakeProperty;
 class CPPMakeSeq;
 class InterrogateType;
 class InterrogateFunction;
@@ -91,6 +94,7 @@ public:
   void scan_function(CPPInstance *function);
   void scan_struct_type(CPPStructType *type);
   void scan_enum_type(CPPEnumType *type);
+  void scan_typedef_type(CPPTypedefType *type);
   void scan_manifest(CPPManifest *manifest);
   ElementIndex scan_element(CPPInstance *element, CPPStructType *struct_type,
                             CPPScope *scope);
@@ -108,6 +112,9 @@ public:
                CPPStructType *struct_type, CPPScope *scope,
                int flags, const string &expression = string());
 
+  ElementIndex
+  get_make_property(CPPMakeProperty *make_property, CPPStructType *struct_type);
+
   MakeSeqIndex
   get_make_seq(CPPMakeSeq *make_seq, CPPStructType *struct_type);
 
@@ -124,6 +131,8 @@ public:
   void define_method(CPPInstance *function, InterrogateType &itype,
                      CPPStructType *struct_type, CPPScope *scope);
   void define_enum_type(InterrogateType &itype, CPPEnumType *cpptype);
+  void define_typedef_type(InterrogateType &itype, CPPTypedefType *cpptype);
+  void define_array_type(InterrogateType &itype, CPPArrayType *cpptype);
   void define_extension_type(InterrogateType &itype,
                              CPPExtensionType *cpptype);
 
@@ -132,10 +141,12 @@ public:
   typedef map<string, TypeIndex> TypesByName;
   typedef map<string, FunctionIndex> FunctionsByName;
   typedef map<string, MakeSeqIndex> MakeSeqsByName;
+  typedef map<string, ElementIndex> PropertiesByName;
 
   TypesByName _types_by_name;
   FunctionsByName _functions_by_name;
   MakeSeqsByName _make_seqs_by_name;
+  PropertiesByName _properties_by_name;
 
   typedef map<string, char> IncludeFiles;
   IncludeFiles _include_files;

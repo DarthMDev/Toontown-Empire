@@ -125,17 +125,15 @@ PUBLISHED:
     // The union of all of the above composite types.
     GR_composite_bits       = 0x01c00,
 
+    // If strip-cut indices are used to restart a composite primitive.
+    GR_strip_cut_index      = 0x20000,
+
     // If the shade model requires a particular vertex for flat shading.
     GR_flat_first_vertex    = 0x02000,
     GR_flat_last_vertex     = 0x04000,
 
     // The union of the above shade model types.
     GR_shade_model_bits     = 0x06000,
-
-    // If there is a TexGenAttrib in effect with M_light_vector
-    // enabled, meaning we need to generate the tangent space light
-    // vector as the texture coordinates.
-    GR_texcoord_light_vector = 0x08000,
   };
 
   // The shade model specifies whether the per-vertex colors and
@@ -146,12 +144,12 @@ PUBLISHED:
     // SM_uniform: all vertices across all faces have the same colors
     // and normals.  It doesn't really matter which ShadeModelAttrib
     // mode is used to render this primitive.
-    SM_uniform, 
+    SM_uniform,
 
     // SM_smooth: vertices within a single face have different
     // colors/normals that should be smoothed across the face.  This
     // primitive should be rendered with SmoothModelAttrib::M_smooth.
-    SM_smooth,  
+    SM_smooth,
 
     // SM_flat_(first,last)_vertex: each face within the primitive
     // might have a different color/normal than the other faces, but
@@ -179,12 +177,16 @@ PUBLISHED:
   enum NumericType {
     NT_uint8,        // An integer 0..255
     NT_uint16,       // An integer 0..65535
-    NT_uint32,       // An integer 0..4294967296
+    NT_uint32,       // An integer 0..4294967295
     NT_packed_dcba,  // DirectX style, four byte values packed in a uint32
     NT_packed_dabc,  // DirectX packed color order (ARGB)
     NT_float32,      // A single-precision float
     NT_float64,      // A double-precision float
-    NT_stdfloat      // Either single- or double-precision, according to vertices-float64.
+    NT_stdfloat,     // Either single- or double-precision, according to vertices-float64.
+    NT_int8,         // An integer -128..127
+    NT_int16,        // An integer -32768..32767
+    NT_int32,        // An integer -2147483648..2147483647
+    NT_packed_ufloat,// Three 10/11-bit float components packed in a uint32
   };
 
   // The contents determine the semantic meaning of a numeric value
@@ -194,11 +196,19 @@ PUBLISHED:
     C_other,        // Arbitrary meaning, leave it alone
     C_point,        // A point in 3-space or 4-space
     C_clip_point,   // A point pre-transformed into clip coordinates
-    C_vector,       // A surface normal, tangent, or binormal
+    C_vector,       // A surface tangent or binormal (see C_normal for normals)
     C_texcoord,     // A texture coordinate
     C_color,        // 3- or 4-component color, ordered R, G, B, [A]
     C_index,        // An index value into some other table
     C_morph_delta,  // A delta from some base value, defining a blend shape
+
+    // A transformation matrix.  This is typically three or four
+    // columns, but we pretend it's only one for convenience.
+    C_matrix,
+
+    // A special version of C_vector that should be used for normal
+    // vectors, which are scaled differently from other vectors.
+    C_normal,
   };
 
   // The type of animation data that is represented by a particular
@@ -216,4 +226,3 @@ EXPCL_PANDA_GOBJ ostream &operator << (ostream &out, GeomEnums::NumericType nume
 EXPCL_PANDA_GOBJ ostream &operator << (ostream &out, GeomEnums::Contents contents);
 
 #endif
-

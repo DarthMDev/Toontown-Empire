@@ -20,6 +20,7 @@
 #include "shader.h"
 #include "shaderContext.h"
 #include "deletedChain.h"
+#include "paramTexture.h"
 
 class CLP(GraphicsStateGuardian);
 
@@ -35,10 +36,20 @@ public:
   ~CLP(ShaderContext)();
   ALLOC_DELETED_CHAIN(CLP(ShaderContext));
 
+  void reflect_attribute(int i, char *name_buf, GLsizei name_buflen);
+#ifndef OPENGLES
+  void reflect_uniform_block(int i, const char *block_name,
+                             char *name_buffer, GLsizei name_buflen);
+#endif
+  void reflect_uniform(int i, char *name_buffer, GLsizei name_buflen);
+  bool get_sampler_texture_type(int &out, GLenum param_type);
+
   INLINE bool valid(void);
   void bind(bool reissue_parameters = true);
   void unbind();
   void issue_parameters(int altered);
+  void update_transform_table(const TransformTable *table);
+  void update_slider_table(const SliderTable *table);
   void disable_shader_vertex_arrays();
   bool update_shader_vertex_arrays(ShaderContext *prev, bool force);
   void disable_shader_texture_bindings();
@@ -49,6 +60,7 @@ public:
   INLINE bool uses_custom_texture_bindings(void);
 
 private:
+  bool _validated;
   GLuint _glsl_program;
   typedef pvector<GLuint> GLSLShaders;
   GLSLShaders _glsl_shaders;
@@ -63,21 +75,30 @@ private:
   //typedef pvector<ParamContext> ParamContexts;
   //ParamContexts _params;
 
-  pvector<GLint> _glsl_parameter_map;
+  GLint _color_attrib_index;
+  GLint _transform_table_index;
+  GLint _slider_table_index;
+  GLsizei _transform_table_size;
+  GLsizei _slider_table_size;
   pmap<GLint, GLuint64> _glsl_uniform_handles;
 
-  pvector<CPT(InternalName)> _glsl_img_inputs;
-  pvector<CLP(TextureContext)*> _glsl_img_textures;
+  struct ImageInput {
+    CPT(InternalName) _name;
+    CLP(TextureContext) *_gtc;
+    bool _writable;
+  };
+  pvector<ImageInput> _glsl_img_inputs;
 
   CLP(GraphicsStateGuardian) *_glgsg;
 
   bool _uses_standard_vertex_arrays;
+  bool _has_divisor;
 
-  void glsl_report_shader_errors(GLuint shader);
-  void glsl_report_program_errors(GLuint program);
+  void glsl_report_shader_errors(GLuint shader, Shader::ShaderType type, bool fatal);
+  void glsl_report_program_errors(GLuint program, bool fatal);
   bool glsl_compile_shader(Shader::ShaderType type);
   bool glsl_compile_and_link();
-  bool parse_and_set_short_hand_shader_vars(Shader::ShaderArgId &arg_id, Shader *s);
+  bool parse_and_set_short_hand_shader_vars(Shader::ShaderArgId &arg_id, GLenum param_type, GLint param_size, Shader *s);
   void release_resources();
 
 public:

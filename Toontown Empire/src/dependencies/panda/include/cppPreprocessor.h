@@ -64,6 +64,7 @@ public:
              CPPFile file = CPPFile());
 
   CPPCommentBlock *get_comment_before(int line, CPPFile file);
+  CPPCommentBlock *get_comment_on(int line, CPPFile file);
 
   int get_warning_count() const;
   int get_error_count() const;
@@ -75,7 +76,7 @@ public:
   DSearchPath _quote_include_path;
   DSearchPath _angle_include_path;
   bool _noangles;
-  
+
   CPPComments _comments;
 
   typedef set<CPPFile> ParsedFiles;
@@ -105,7 +106,7 @@ protected:
   bool push_file(const CPPFile &file);
   bool push_string(const string &input, bool lock_position);
 
-  string expand_manifests(const string &input_expr);
+  string expand_manifests(const string &input_expr, bool expand_undefined);
   CPPExpression *parse_expr(const string &expr, CPPScope *current_scope,
                             CPPScope *global_scope);
 
@@ -132,6 +133,8 @@ private:
                            int first_col, const CPPFile &first_file);
   void handle_include_directive(const string &args, int first_line,
                                 int first_col, const CPPFile &first_file);
+  void handle_pragma_directive(const string &args, int first_line,
+                               int first_col, const CPPFile &first_file);
   void handle_error_directive(const string &args, int first_line,
                               int first_col, const CPPFile &first_file);
 
@@ -142,16 +145,17 @@ private:
   CPPToken get_identifier(int c);
   CPPToken expand_manifest(const CPPManifest *manifest);
   void extract_manifest_args(const string &name, int num_args,
-                             vector_string &args);
+                             int va_arg, vector_string &args);
   void expand_defined_function(string &expr, size_t q, size_t &p);
   void expand_manifest_inline(string &expr, size_t q, size_t &p,
                               const CPPManifest *manifest);
   void extract_manifest_args_inline(const string &name, int num_args,
-                                    vector_string &args,
+                                    int va_arg, vector_string &args,
                                     const string &expr, size_t &p);
 
   CPPToken get_number(int c, int c2 = 0);
   static int check_keyword(const string &name);
+  int scan_escape_sequence(int c);
   string scan_quoted(int c);
 
   bool should_ignore_manifest(const CPPManifest *manifest) const;
@@ -207,6 +211,7 @@ private:
 
   int _warning_count;
   int _error_count;
+  bool _error_abort;
 };
 
 #endif

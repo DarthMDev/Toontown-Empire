@@ -66,17 +66,14 @@
 //
 ////////////////////////////////////////////////////////////////////
 
-
-
 #ifndef __FMOD_AUDIO_SOUND_H__
 #define __FMOD_AUDIO_SOUND_H__
 
 #include <pandabase.h>
 
-#ifdef HAVE_FMODEX //[
-
 #include "audioSound.h"
 #include "reMutex.h"
+#include "fmodAudioManager.h"
 
 #include <fmod.hpp>
 #include <fmod_errors.h>
@@ -256,11 +253,4 @@ class EXPCL_FMOD_AUDIO FmodAudioSound : public AudioSound {
 
 #include "fmodAudioSound.I"
 
-#endif //]
-
 #endif /* __FMOD_AUDIO_SOUND_H__ */
-
-
-
-
-

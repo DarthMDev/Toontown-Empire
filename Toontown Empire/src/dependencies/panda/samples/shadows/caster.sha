@@ -3,7 +3,7 @@
 void vshader(float4 vtx_position : POSITION,
              uniform float4x4 mat_modelproj,
              uniform float4 k_scale,
-	     out float4 l_position : POSITION,
+             out float4 l_position : POSITION,
              out float4 l_pos : TEXCOORD0
              )
 {
@@ -13,8 +13,8 @@ void vshader(float4 vtx_position : POSITION,
 }
 
 void fshader(in float4 l_pos : TEXCOORD0,
-             out float4 o_color:COLOR)
+             out float4 o_color : COLOR)
 {
   float z = (l_pos.z / l_pos.w) * 0.5 + 0.5;
-  o_color = float4(z,z,z,1);
+  o_color = float4(z, z, z, 1);
 }

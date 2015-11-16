@@ -78,14 +78,14 @@ private:
   GeomVertexData();
 protected:
   virtual PT(CopyOnWriteObject) make_cow_copy();
-  
+
 PUBLISHED:
-  GeomVertexData(const string &name,
-                 const GeomVertexFormat *format, 
-                 UsageHint usage_hint);
+  explicit GeomVertexData(const string &name,
+                          const GeomVertexFormat *format,
+                          UsageHint usage_hint);
   GeomVertexData(const GeomVertexData &copy);
-  GeomVertexData(const GeomVertexData &copy,
-                 const GeomVertexFormat *format);
+  explicit GeomVertexData(const GeomVertexData &copy,
+                          const GeomVertexFormat *format);
   void operator = (const GeomVertexData &copy);
   virtual ~GeomVertexData();
   ALLOC_DELETED_CHAIN(GeomVertexData);
@@ -136,17 +136,17 @@ PUBLISHED:
 
   void copy_from(const GeomVertexData *source, bool keep_data_objects,
                  Thread *current_thread = Thread::get_current_thread());
-  void copy_row_from(int dest_row, const GeomVertexData *source, 
+  void copy_row_from(int dest_row, const GeomVertexData *source,
                      int source_row, Thread *current_thread);
   CPT(GeomVertexData) convert_to(const GeomVertexFormat *new_format) const;
-  CPT(GeomVertexData) 
+  CPT(GeomVertexData)
     scale_color(const LVecBase4 &color_scale) const;
-  CPT(GeomVertexData) 
+  CPT(GeomVertexData)
     scale_color(const LVecBase4 &color_scale, int num_components,
                 NumericType numeric_type, Contents contents) const;
-  CPT(GeomVertexData) 
+  CPT(GeomVertexData)
     set_color(const LColor &color) const;
-  CPT(GeomVertexData) 
+  CPT(GeomVertexData)
     set_color(const LColor &color, int num_components,
               NumericType numeric_type, Contents contents) const;
 
@@ -157,7 +157,7 @@ PUBLISHED:
   void transform_vertices(const LMatrix4 &mat);
   void transform_vertices(const LMatrix4 &mat, int begin_row, int end_row);
 
-  PT(GeomVertexData) 
+  PT(GeomVertexData)
     replace_column(InternalName *name, int num_components,
                    NumericType numeric_type, Contents contents) const;
 
@@ -176,6 +176,11 @@ public:
   static INLINE unsigned int unpack_abcd_c(PN_uint32 data);
   static INLINE unsigned int unpack_abcd_d(PN_uint32 data);
 
+  static INLINE PN_uint32 pack_ufloat(float a, float b, float c);
+  static INLINE float unpack_ufloat_a(PN_uint32 data);
+  static INLINE float unpack_ufloat_b(PN_uint32 data);
+  static INLINE float unpack_ufloat_c(PN_uint32 data);
+
 private:
   static void bytewise_copy(unsigned char *to, int to_stride,
                             const unsigned char *from, int from_stride,
@@ -191,7 +196,7 @@ private:
                             int num_records);
 
   typedef pmap<const VertexTransform *, int> TransformMap;
-  INLINE static int 
+  INLINE static int
   add_transform(TransformTable *table, const VertexTransform *transform,
                 TransformMap &already_added);
 
@@ -212,7 +217,7 @@ private:
     }
 
     CPT(GeomVertexData) _result;
-    
+
   public:
     static TypeHandle get_class_type() {
       return _type_handle;
@@ -220,7 +225,7 @@ private:
     static void init_type() {
       register_type(_type_handle, "GeomVertexData::CDataCache");
     }
-    
+
   private:
     static TypeHandle _type_handle;
   };
@@ -236,15 +241,24 @@ public:
   class EXPCL_PANDA_GOBJ CacheKey {
   public:
     INLINE CacheKey(const GeomVertexFormat *modifier);
+    INLINE CacheKey(const CacheKey &copy);
+#ifdef USE_MOVE_SEMANTICS
+    INLINE CacheKey(CacheKey &&from) NOEXCEPT;
+#endif
+
     INLINE bool operator < (const CacheKey &other) const;
 
     CPT(GeomVertexFormat) _modifier;
   };
-  // It is not clear why MSVC7 needs this class to be public.  
+  // It is not clear why MSVC7 needs this class to be public.
   class EXPCL_PANDA_GOBJ CacheEntry : public GeomCacheEntry {
   public:
     INLINE CacheEntry(GeomVertexData *source,
                       const GeomVertexFormat *modifier);
+    INLINE CacheEntry(GeomVertexData *source, const CacheKey &key);
+#ifdef USE_MOVE_SEMANTICS
+    INLINE CacheEntry(GeomVertexData *source, CacheKey &&key) NOEXCEPT;
+#endif
     ALLOC_DELETED_CHAIN(CacheEntry);
 
     virtual void evict_callback();
@@ -254,7 +268,7 @@ public:
     CacheKey _key;
 
     PipelineCycler<CDataCache> _cycler;
-    
+
   public:
     static TypeHandle get_class_type() {
       return _type_handle;
@@ -264,7 +278,7 @@ public:
       register_type(_type_handle, "GeomVertexData::CacheEntry",
                     GeomCacheEntry::get_class_type());
     }
-    
+
   private:
     static TypeHandle _type_handle;
   };
@@ -294,7 +308,7 @@ private:
     PT(GeomVertexData) _animated_vertices;
     UpdateSeq _animated_vertices_modified;
     UpdateSeq _modified;
-    
+
   public:
     static TypeHandle get_class_type() {
       return _type_handle;
@@ -302,7 +316,7 @@ private:
     static void init_type() {
       register_type(_type_handle, "GeomVertexData::CData");
     }
-    
+
   private:
     static TypeHandle _type_handle;
   };
@@ -323,11 +337,13 @@ private:
                                  const LMatrix4 &mat, int begin_row, int end_row);
   void do_transform_vector_column(const GeomVertexFormat *format, GeomVertexRewriter &data,
                                   const LMatrix4 &mat, int begin_row, int end_row);
-  static void table_xform_point3f(unsigned char *datat, size_t num_rows, 
+  static void table_xform_point3f(unsigned char *datat, size_t num_rows,
                                   size_t stride, const LMatrix4f &matf);
-  static void table_xform_vector3f(unsigned char *datat, size_t num_rows, 
+  static void table_xform_normal3f(unsigned char *datat, size_t num_rows,
                                    size_t stride, const LMatrix4f &matf);
-  static void table_xform_vecbase4f(unsigned char *datat, size_t num_rows, 
+  static void table_xform_vector3f(unsigned char *datat, size_t num_rows,
+                                   size_t stride, const LMatrix4f &matf);
+  static void table_xform_vecbase4f(unsigned char *datat, size_t num_rows,
                                     size_t stride, const LMatrix4f &matf);
 
   static PStatCollector _convert_pcollector;
@@ -386,7 +402,7 @@ private:
 ////////////////////////////////////////////////////////////////////
 class EXPCL_PANDA_GOBJ GeomVertexDataPipelineBase : public GeomEnums {
 protected:
-  INLINE GeomVertexDataPipelineBase(GeomVertexData *object, 
+  INLINE GeomVertexDataPipelineBase(GeomVertexData *object,
                                     Thread *current_thread,
                                     GeomVertexData::CData *cdata);
 
@@ -436,15 +452,21 @@ public:
   INLINE const GeomVertexArrayDataHandle *get_array_reader(int i) const;
   int get_num_rows() const;
 
-  bool get_array_info(const InternalName *name, 
+  bool get_array_info(const InternalName *name,
                       const GeomVertexArrayDataHandle *&array_reader,
-                      int &num_values, NumericType &numeric_type, 
+                      int &num_values, NumericType &numeric_type,
                       int &start, int &stride) const;
+
+  bool get_array_info(const InternalName *name,
+                      const GeomVertexArrayDataHandle *&array_reader,
+                      int &num_values, NumericType &numeric_type,
+                      bool &normalized, int &start, int &stride, int &divisor,
+                      int &num_elements, int &element_stride) const;
 
   INLINE bool has_vertex() const;
   INLINE bool is_vertex_transformed() const;
   bool get_vertex_info(const GeomVertexArrayDataHandle *&array_reader,
-                       int &num_values, NumericType &numeric_type, 
+                       int &num_values, NumericType &numeric_type,
                        int &start, int &stride) const;
 
   INLINE bool has_normal() const;
@@ -454,7 +476,7 @@ public:
 
   INLINE bool has_color() const;
   bool get_color_info(const GeomVertexArrayDataHandle *&array_reader,
-                      int &num_values, NumericType &numeric_type, 
+                      int &num_values, NumericType &numeric_type,
                       int &start, int &stride) const;
 
 private:
