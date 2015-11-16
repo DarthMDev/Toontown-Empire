@@ -14,8 +14,9 @@ before_script:
   - python makepanda/makepanda.py --everything --verbose  --installer --threads 6
   - cd ..
 # command to run tests
-script: /usr/bin/python2 "Toontown Empire/src/tools/prepare_client.py"  --distribution en --build-dir build --src-dir .. --server-ver TTE-1.0 --build-mfs --resources-dir ../resources --include NonRepeatableRandomSourceUD.py --include NonRepeatableRandomSourceAI.py --exclude ServiceStart.py
-script: /usr/bin/python2 "Toontown Empire/src/tools/build_client_linux.py"
+script: cd "Toontown Empire/src/tools"
+script: /usr/bin/python2 "prepare_client.py"  --distribution en --build-dir build --src-dir .. --server-ver TTE-1.0 --build-mfs --resources-dir ../resources --include NonRepeatableRandomSourceUD.py --include NonRepeatableRandomSourceAI.py --exclude ServiceStart.py
+script: /usr/bin/python2 "build_client_linux.py"
 notifications:
   irc:
     channels:
