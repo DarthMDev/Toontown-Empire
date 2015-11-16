@@ -11,8 +11,7 @@ before_script:
   - sudo apt-get update
   - sudo apt-get install python-dev libpng-dev zlib1g-dev libssl-dev libx11-dev libgl1-mesa-dev libxrandr-dev libxxf86dga-dev libxcursor-dev bison flex libfreetype6-dev libvorbis-dev libjpeg-dev libopenal-dev libode-dev nvidia-cg-toolkit git 
   - cd panda3d
-  - python makepanda/makepanda.py --everything --verbose  --installer --threads 6
-  - sudo dpkg -i panda3d*.deb
+  - python makepanda/installpanda.py
   - sudo ldconfig
   - cd ..
   - cd "Toontown Empire/src/tools"
