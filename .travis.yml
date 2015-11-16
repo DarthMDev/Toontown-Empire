@@ -8,10 +8,14 @@ python:
 # command to install dependencies
 before_script:
   - git clone https://github.com/Astron/panda3d
+  - sudo apt-get update
   - sudo apt-get install python-dev libpng-dev zlib1g-dev libssl-dev libx11-dev libgl1-mesa-dev libxrandr-dev libxxf86dga-dev libxcursor-dev bison flex libfreetype6-dev libvorbis-dev libjpeg-dev libopenal-dev libode-dev nvidia-cg-toolkit git 
   - cd panda3d
   - python makepanda/makepanda.py --everything --verbose  --installer --threads 6
   - cd ..
+# command to run tests
+script: /usr/bin/python2 "Toontown Empire/src/tools/prepare_client.py"  --distribution en --build-dir build --src-dir .. --server-ver TTE-1.0 --build-mfs --resources-dir ../resources --include NonRepeatableRandomSourceUD.py --include NonRepeatableRandomSourceAI.py --exclude ServiceStart.py
+script: /usr/bin/python2 "Toontown Empire/src/tools/build_client_linux.py"
 notifications:
   irc:
     channels:
@@ -20,7 +24,3 @@ notifications:
     on_failure: always
     use_notice: true
     skip_join: true
-
-
-# command to run tests
-script: /usr/bin/python2 "Toontown Empire/src/build/make.py"
