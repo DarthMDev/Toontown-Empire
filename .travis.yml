@@ -16,7 +16,7 @@ before_script:
   - sudo ldconfig
   - cd ..
   - cd "Toontown Empire/src/tools"
-  - /usr/bin/python2 -m prepare_client  --distribution en --build-dir build --src-dir .. --server-ver TTE-1.0 --build-mfs --resources-dir ../resources --include NonRepeatableRandomSourceUD.py --include NonRepeatableRandomSourceAI.py --exclude ServiceStart.py
+  - /usr/bin/python2 -m prepare_client  --distribution en --build-dir build --src-dir .. --server-ver TTE-1.0 --build-mfs --resources-dir ../resources --include NonRepeatableRandomSourceUD.py --include NonRepeatableRandomSourceAI.py --exclude ServiceStart.py --vfs
 # command to run tests
 script: /usr/bin/python2 -m build_client_linux
 notifications:
