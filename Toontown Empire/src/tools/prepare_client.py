@@ -123,6 +123,7 @@ with open(configFilePath) as f:
         if 'server-version' in line:
             data[i] = 'server-version ' + args.server_ver
 
+    configData.append('\n'.join(data))
 # Next, we need the DC file:
 dcData = ''
 filepath = os.path.join(args.src_dir, 'dependencies/astron/dclass')
