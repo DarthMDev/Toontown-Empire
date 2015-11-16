@@ -121,7 +121,7 @@ with open(configFilePath) as f:
     # Replace server-version definitions with the desired server version:
     for i, line in enumerate(data):
         if 'server-version' in line:
-            data[i] = 'server-version ' + args
+            data[i] = 'server-version ' + args.server_ver
 
 # Next, we need the DC file:
 dcData = ''
