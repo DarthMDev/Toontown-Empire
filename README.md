@@ -4,6 +4,8 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/a71bcbed1f8c4cd59d7f1fa131c7114d)](https://www.codacy.com)
 
+[![Code Issues](https://www.quantifiedcode.com/api/v1/project/ace720abeb544fbcb8dc1c9aff3a6241/badge.svg)](https://www.quantifiedcode.com/app/project/ace720abeb544fbcb8dc1c9aff3a6241)
+
 Official Repo for Toontown Empire, a new Toontown game based on Disney's Toontown Online.
 
 # Staff Positions:
