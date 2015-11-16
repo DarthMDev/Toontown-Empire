@@ -10,7 +10,7 @@ args = parser.parse_args()
 
 print 'Building the client...'
 
-os.chdir('build')
+os.chdir('../build')
 
 cmd = ('/usr/bin/python2')
 cmd += ' -m direct.showutil.pfreeze'
