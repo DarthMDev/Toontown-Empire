@@ -108,7 +108,7 @@ for module in args.modules:
 
 # First, we need to add the configuration pages:
 configData = []
-with open('../config/general.prc') as f:
+with open('../dependencies/config/general.prc') as f:
     configData.append(f.read())
 
 configFileName = args.distribution + '.prc'
