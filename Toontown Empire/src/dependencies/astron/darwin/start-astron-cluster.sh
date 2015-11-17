@@ -1,3 +1,3 @@
 #!/bin/sh
-
-./astrond --loglevel info ../config/cluster.yml
+cd ..
+./astrond --loglevel info config/cluster.yml
