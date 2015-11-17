@@ -15,7 +15,7 @@ from panda3d.core import *
 from sys import platform
 
 import hashlib, hmac, json
-import anydbm, math, os
+import anydbm, math, os, dumbdbm
 import urllib2, time, urllib
 
 def rejectConfig(issue, securityIssue=True, retarded=True):

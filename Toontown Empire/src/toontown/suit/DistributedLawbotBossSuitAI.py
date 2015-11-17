@@ -1,8 +1,8 @@
-from otp.ai.AIBaseGlobal import *
+from src.otp.ai.AIBaseGlobal import *
 from direct.distributed.ClockDelta import *
 from direct.directnotify import DirectNotifyGlobal
-from toontown.battle import SuitBattleGlobals
-from toontown.toonbase import ToontownGlobals
+from src.toontown.battle import SuitBattleGlobals
+from src.toontown.toonbase import ToontownGlobals
 import DistributedSuitBaseAI
 import random
 from direct.fsm import ClassicFSM, State

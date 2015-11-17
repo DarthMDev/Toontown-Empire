@@ -12,7 +12,7 @@ from src.toontown.battle import BattleManagerAI
 from src.toontown.battle import SuitBattleGlobals
 from src.toontown.building import HQBuildingAI
 from src.toontown.building import SuitBuildingGlobals
-from src.toontown.dna.DNAParser import DNASuitPoint
+from src.toontown.dna.DNASuitPoint import DNASuitPoint
 from src.toontown.hood import ZoneUtil
 from src.toontown.suit.SuitInvasionGlobals import IFSkelecog, IFWaiter, IFV2
 from src.toontown.suit.SuitLegList import *

@@ -123,8 +123,8 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.cogPageManager = CogPageManagerAI.CogPageManagerAI()
         self.codeRedemptionMgr = TTCodeRedemptionMgrAI(self)
         self.codeRedemptionMgr.generateWithRequired(2)
-        self.accountDateMgr = AccountDateAI(self)
-        self.accountDateMgr.generateWithRequired(2)
+       # self.accountDateMgr = AccountDateAI(self)
+        #self.accountDateMgr.generateWithRequired(2)
         self.buildingQueryMgr = DistributedBuildingQueryMgrAI(self)
         self.buildingQueryMgr.generateWithRequired(2)
         self.groupManager.generateWithRequired(2)
@@ -148,8 +148,6 @@ class ToontownAIRepository(ToontownInternalRepository):
         #self.lobbyManager.generateWithRequired(2)
         #self.globalLobbyMgr = self.generateGlobalObject(
         #    OTP_DO_ID_GLOBAL_LOBBY_MANAGER, 'GlobalLobbyManager')
-        self.megaInvasionManager = simbase.air.generateGlobalObject(
-            OTP_DO_ID_MEGA_INVASION_MANAGER, 'MegaInvasionManager')
 
     def createSafeZones(self):
         NPCToons.generateZone2NpcDict()

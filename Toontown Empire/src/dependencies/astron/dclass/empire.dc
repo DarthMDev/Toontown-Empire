@@ -420,7 +420,6 @@ from src.toontown.parties import DistributedPartyJukebox40Activity/AI
 from src.toontown.parties import DistributedPartyValentineJukeboxActivity/AI
 from src.toontown.parties import DistributedPartyValentineJukebox40Activity/AI
 from src.toontown.parties.GlobalPartyManager/AI/UD import GlobalPartyManager/AI/UD
-from src.toontown.uberdog import MegaInvasionManager/AI/UD
 from src.toontown.friends import tteFriendsManager/UD
 from src.toontown.distributed import DistributedTimer/AI
 from src.toontown.distributed import ToontownDistrict/AI
@@ -3261,8 +3260,3 @@ dclass tteFriendsManager : DistributedObjectGlobal {
 dclass ARGManager : DistributedObjectGlobal {
 };
 
-dclass MegaInvasionManager : DistributedObjectGlobal {
-  callInvasion(int16 index) airecv;
-  endInvasion(int16 index) airecv;
-  hello();
-};

@@ -1,9 +1,9 @@
 import time, random
 
-from toontown.battle import SuitBattleGlobals
-from toontown.suit import SuitDNA
-from toontown.suit.SuitInvasionGlobals import *
-from toontown.toonbase import ToontownGlobals
+from src.toontown.battle import SuitBattleGlobals
+from src.toontown.suit import SuitDNA
+from src.toontown.suit.SuitInvasionGlobals import *
+from src.toontown.toonbase import ToontownGlobals
 
 
 class SuitInvasionManagerAI:

@@ -1,17 +1,17 @@
 from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from toontown.coghq import DistributedCashbotBossCraneAI
-from toontown.coghq import DistributedCashbotBossSafeAI
-from toontown.suit import DistributedCashbotBossGoonAI
-from toontown.coghq import DistributedCashbotBossTreasureAI
-from toontown.battle import BattleExperienceAI
-from toontown.chat import ResistanceChat
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.coghq import DistributedCashbotBossCraneAI
+from src.toontown.coghq import DistributedCashbotBossSafeAI
+from src.toontown.suit import DistributedCashbotBossGoonAI
+from src.toontown.coghq import DistributedCashbotBossTreasureAI
+from src.toontown.battle import BattleExperienceAI
+from src.toontown.chat import ResistanceChat
 from direct.fsm import FSM
 import DistributedBossCogAI
 import SuitDNA
 import random
-from otp.ai.MagicWordGlobal import *
+from src.otp.ai.MagicWordGlobal import *
 import math
 
 class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM):
