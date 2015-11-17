@@ -1,10 +1,10 @@
 from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-from src.toontown.battle.BattleProps import *
+from toontown.battle.BattleProps import *
 from direct.directnotify import DirectNotifyGlobal
 import DistributedGoon
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.coghq import MovingPlatform
+from toontown.toonbase import ToontownGlobals
+from toontown.coghq import MovingPlatform
 
 class DistributedGridGoon(DistributedGoon.DistributedGoon):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedGoon')

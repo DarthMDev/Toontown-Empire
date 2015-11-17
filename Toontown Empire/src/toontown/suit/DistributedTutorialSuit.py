@@ -3,7 +3,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from panda3d.core import *
-from src.toontown.distributed.DelayDeletable import DelayDeletable
+from toontown.distributed.DelayDeletable import DelayDeletable
 
 
 class DistributedTutorialSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):

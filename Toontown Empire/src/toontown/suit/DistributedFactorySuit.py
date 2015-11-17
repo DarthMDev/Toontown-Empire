@@ -6,9 +6,9 @@ from direct.directnotify import DirectNotifyGlobal
 import DistributedSuitBase
 from direct.task.Task import Task
 import random
-from src.toontown.toonbase import ToontownGlobals
-from src.otp.level import LevelConstants
-from src.toontown.distributed.DelayDeletable import DelayDeletable
+from toontown.toonbase import ToontownGlobals
+from otp.level import LevelConstants
+from toontown.distributed.DelayDeletable import DelayDeletable
 
 class DistributedFactorySuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFactorySuit')

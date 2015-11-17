@@ -4,9 +4,9 @@ from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 import GoonGlobals
 from direct.task.Task import Task
-from src.toontown.toonbase import ToontownGlobals
-from src.otp.otpbase import OTPGlobals
-from src.toontown.coghq import DistributedCashbotBossObjectAI
+from toontown.toonbase import ToontownGlobals
+from otp.otpbase import OTPGlobals
+from toontown.coghq import DistributedCashbotBossObjectAI
 from direct.showbase import PythonUtil
 import DistributedGoonAI
 import math

@@ -1,4 +1,4 @@
-from src.toontown.suit import DistributedFactorySuit
+from toontown.suit import DistributedFactorySuit
 from direct.directnotify import DirectNotifyGlobal
 
 class DistributedMintSuit(DistributedFactorySuit.DistributedFactorySuit):
