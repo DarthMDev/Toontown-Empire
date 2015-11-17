@@ -3259,3 +3259,7 @@ dclass tteFriendsManager : DistributedObjectGlobal {
 
 dclass ARGManager : DistributedObjectGlobal {
 };
+<<<<<<< HEAD
+
+=======
+>>>>>>> 8fdc7449c494e6ac631d10c4856c8c79f9334e11
