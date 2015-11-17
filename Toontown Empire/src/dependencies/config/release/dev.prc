@@ -20,15 +20,14 @@ dc-file src/dependencies/astron/dclass/empire.dc
 
 # Core features:
 want-pets #t
-#Parties work if you revert the commit called "district reset on estate parties no longer load" but then estates dont work.
-want-parties #f
+want-parties #t
 want-cogdominiums #t
 want-lawbot-cogdo #t
 want-anim-props #t
-want-game-tables #t
-want-find-four #t
-want-chinese-checkers #t
-want-checkers #t
+want-game-tables #f
+want-find-four #f
+want-chinese-checkers #f
+want-checkers #f
 want-house-types #t
 want-gifting #t
 

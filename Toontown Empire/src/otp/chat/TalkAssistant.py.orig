@@ -17,7 +17,6 @@ class TalkAssistant(DirectObject.DirectObject):
         pass
 
 <<<<<<< HEAD
-=======
     def countMessage(self):
         self.messageCount += 1
         return self.messageCount - 1
@@ -340,7 +339,8 @@ class TalkAssistant(DirectObject.DirectObject):
         messenger.send('NewOpenMessage', [newMessage])
         return error
 
->>>>>>> 49cdae8... remove duplicate functions
+=======
+>>>>>>> master
     def sendOpenTalk(self, message):
         if len(message) > 0 and message[0] == '~':
             messenger.send('magicWord', [message])

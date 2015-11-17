@@ -94,7 +94,6 @@ regMaxSkill = 10000
 UberSkill = 250
 MaxSkill = UberSkill + regMaxSkill
 
-ExperienceCap = 1000 ** 10
 
 
 MaxToonAcc = 100

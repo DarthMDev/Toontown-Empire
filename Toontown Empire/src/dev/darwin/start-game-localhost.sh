@@ -5,18 +5,18 @@ export DYLD_LIBRARY_PATH=`pwd`/Libraries.bundle
 export DYLD_FRAMEWORK_PATH="Frameworks"
 
 # Get the user input:
-read -p "Username: " ttsUsername
+read -p "Username: " tteUsername
 
 # Export the environment variables:
-export ttsUsername=$ttsUsername
-export ttsPassword="password"
-export TTS_PLAYCOOKIE=$ttsUsername
-export TTS_GAMESERVER="127.0.0.1"
+export tteUsername=$tteUsername
+export ttePassword="password"
+export TTE_PLAYCOOKIE=$tteUsername
+export TTE_GAMESERVER="127.0.0.1"
 
 echo "==============================="
 echo "Starting Toontown Empire..."
-echo "Username: $ttsUsername"
-echo "Gameserver: $TTS_GAMESERVER"
+echo "Username: $tteUsername"
+echo "Gameserver: $TTE_GAMESERVER"
 echo "==============================="
 
 ppython -m toontown.toonbase.ClientStart

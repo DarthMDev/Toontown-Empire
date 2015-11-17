@@ -25,11 +25,6 @@ node "interior" [
   pos [ -21.4932 5.76027 0 ]
   hpr [ 120 -0.0501863 -0.0440521 ]
  ]
- prop "trunkBoy_DNARoot" [
-  code [ "trunkBoy" ]
-  pos [ -22.5 11.5 0 ]
-  hpr [ 90 0 0 ]
- ]
  prop "rugB_DNARoot" [
   code [ "rugB" ]
   pos [ -20.6508 6.52406 0 ]
@@ -38,7 +33,7 @@ node "interior" [
  ]
  prop "FireplaceSq_DNARoot" [
   code [ "FireplaceSq" ]
-  pos [ -18.8 -10 0 ]
+  pos [ -20 -10 0 ]
   hpr [ 90 0 0 ]
  ]
  prop "chairA_DNARoot" [

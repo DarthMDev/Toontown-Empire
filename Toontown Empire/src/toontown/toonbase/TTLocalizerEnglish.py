@@ -51,7 +51,7 @@ NametagFontNames = (
 )
 NametagLabel = ' Nametag'
 BasicNameTag = 'Basic'
-ScreenshotPath = 'user/screenshots/'
+ScreenshotPath = 'src/user/screenshots/'
 GM_NAMES = ('TOON COUNCIL',
  'TOON TROOPER',
  'RESISTANCE RANGER',
@@ -1861,7 +1861,7 @@ QuestDialogDict = {160: {GREETING: '',
          INCOMPLETE_PROGRESS: 'Flippy can be found in Toon Hall',
          COMPLETE: 'A new type of Cog!\x07Good work!\x07Here is your final disguise part.'}}
 ChatGarblerDog = ['woof', 'arf', 'rruff']
-ChatGarblerCat = ['meow', 'mew']
+ChatGarblerCat = ['meow', 'mew'] #mew = pokemon :D
 ChatGarblerMouse = ['squeak', 'squeaky', 'squeakity']
 ChatGarblerHorse = ['neigh', 'brrr']
 ChatGarblerRabbit = ['eek',
@@ -2190,12 +2190,14 @@ ToonHealJokes = [['What goes TICK-TICK-TICK-WOOF?', 'A watchdog! '],
 MovieHealLaughterMisses = ('hmm',
  'heh',
  'ha',
- 'harr harr')
+ 'harr harr',
+ 'bwah')
 MovieHealLaughterHits1 = ('Ha Ha Ha',
  'Hee Hee',
  'Tee Hee',
+ 'Bwah Ha Ha Ha Ha',
  'Ha Ha')
-MovieHealLaughterHits2 = ('BWAH HAH HAH!', 'HO HO HO!', 'HA HA HA!')
+MovieHealLaughterHits2 = ('BWAH HAH HAH!', 'HO HO HO!', 'HA HA HA!, HUE HUE HUE!, LOL!')
 MovieSOSCallHelp = '%s HELP!'
 MovieSOSWhisperHelp = '%s needs help in battle!'
 MovieSOSObserverHelp = 'HELP!'
@@ -2295,14 +2297,14 @@ SuitMicromanagerS = 'a Micromanager'
 SuitDownsizerS = 'a Downsizer'
 SuitHeadHunterS = 'a Head Hunter'
 SuitCorporateRaiderS = 'a Corporate Raider'
-SuitTheBigCheeseS = 'a The Big Cheese'
+SuitTheBigCheeseS = 'a Big Cheese'
 SuitColdCallerS = 'a Cold Caller'
 SuitTelemarketerS = 'a Telemarketer'
 SuitNameDropperS = 'a Name Dropper'
 SuitGladHanderS = 'a Glad Hander'
 SuitMoverShakerS = 'a Mover & Shaker'
 SuitTwoFaceS = 'a Two-Face'
-SuitTheMinglerS = 'a The Mingler'
+SuitTheMinglerS = 'a Mingler'
 SuitMrHollywoodS = 'a Mr. Hollywood'
 SuitShortChangeS = 'a Short Change'
 SuitPennyPincherS = 'a Penny Pincher'
@@ -2424,6 +2426,7 @@ SuitAttackNames = {'Audit': 'Audit!',
 SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
            "Looks like you're in the red.",
            'Let me help you with your books.',
+           'BANKRUPT!',
            'Your debit column is much too high.',
            "Let's check your assets.",
            'This will put you in debt.',
@@ -2449,6 +2452,8 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
                  "This check isn't going to be tender.",
                  "You're going to be charged for this.",
                  'Check this out.',
+                 'This check is flavored with sour grapes and bouncyness.',
+                 'Bounce away, little check and attack the little toon for your master.',
                  'This is going to cost you.',
                  "I'd like to cash this in.",
                  "I'm just going to kick this back to you.",
@@ -2460,6 +2465,7 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
                 'How about a few rain DROPS?',
                 'Not so sunny now, are you Toon?',
                 'Ready for a down pour?',
+                'Your little brain looks a bit dry, let the storm wash it up for you.',
                 "I'm going to take you by storm.",
                 'I call this a lightning attack.',
                 'I love to be a wet blanket.'],
@@ -2470,6 +2476,7 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
               'Let me put in a good word for you.',
               'I\'ll "B" perfectly clear.',
               'You should "B" more careful.',
+              'This little bee wants to buzz a word into your ear, little Toon.',
               'See if you can dodge this swarm.',
               "Careful, you're about to get stung.",
               'Looks like you have a bad case of hives.'],
@@ -2478,6 +2485,7 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
                "Add it up, you're going down.",
                'Let me help you add this up.',
                'Did you register all your expenses?',
+               'According to my long string of calculations being run by my operating system, you are 99.99999999999% unlikely to defeat me.',
                "According to my calculations, you won't be around much longer.",
                "Here's the grand total.",
                'Wow, your bill is adding up.',
@@ -2498,6 +2506,7 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
            "Here's something to chomp on.",
            'Looking for something to chomp on?',
            "Why don't you chomp on this?",
+           'Chomp Chomp Chomp!',
            "I'm going to have you for dinner.",
            'I love to feed on Toons!'],
  'CigarSmoke': ['Gentlemen.',
@@ -2505,6 +2514,7 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
                 'Take a breath of this.',
                 "It's tradition you know.",
                 'Another day another dollar.',
+                'Smoking is pretty addictive, when it is not controled.',
                 'I always have the occasional cigar.',
                 'I need a good smoke.',
                 'Smoking is a dirty habit.'],
@@ -2517,6 +2527,8 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
                'Do you need help putting this on?',
                'Nothing says powerful like a good tie.',
                "Let's see if this fits.",
+               'You have to be stylish for meetings with your clients.',
+               'Do you think this tie looks stylish or not?',
                'This is going to choke you up.',
                "You'll want to dress up before you go OUT.",
                "I think I'll tie you up."],
@@ -2525,6 +2537,7 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
             "I'll give you something to crunch on!",
             'Crunch on this!',
             'I pack quite a crunch.',
+            'Are you hungry for some Captain Crunch?',
             'Which do you prefer, smooth or crunchy?',
             "I hope you're ready for crunch time.",
             "It sounds like you're getting crunched!",
@@ -2532,6 +2545,7 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
  'Demotion': ["You're moving down the corporate ladder.",
               "I'm sending you back to the Mail Room.",
               'Time to turn in your nameplate.',
+              'PREPARE TO BE DEMOTED!',
               "You're going down, clown.",
               "Looks like you're stuck.",
               "You're going nowhere fast.",
@@ -2556,6 +2570,7 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
                     'Time to make some new living arrangements.',
                     'Consider yourself served.',
                     "You're behind on your lease.",
+                    'Bon Voyage, time to pack your bags!',
                     'This will be extremely unsettling.',
                     "You're about to be uprooted.",
                     "I'm going to send you packing.",
@@ -2566,6 +2581,8 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
              'Could you eye-ball this for me?',
              "Wait.  I've got something in my eye.",
              "I've got my eye on you!",
+             'My eyes are running on Windows 10!',
+             'My eyes are running on Macintosh El Capitan!'
              'Could you keep an eye on this for me?',
              "I've got a real eye for evil.",
              "I'll poke you in the eye!",
@@ -2580,11 +2597,14 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
                 'I never get tired of this one.',
                 'I can talk a blue streak.',
                 'Mind if I bend your ear?',
+                'My code will fill up in 10 seconds.',
                 "I think I'll shoot the breeze.",
                 'I can always get a word in edgewise.'],
  'FingerWag': ['I have told you a thousand times.',
                'Now see here Toon.',
                "Don't make me laugh.",
+               'Did you hear the one about Alfred? *wags his finger*',
+               'Alfred is a dangerous robot that wants to destroy the world. That is what I heard from a rumor weed in my garden.',
                "Don't make me come over there.",
                "I'm tired of repeating myself.",
                "I believe we've been over this.",
@@ -2607,6 +2627,7 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
            'Do you feel a little toasty?',
            "You're going down in flames.",
            "You'll go out in a blaze.",
+           'In summer, the Sun burns hotter than normal.',
            "You're a flash in the pan.",
            'I think I have a bit of a flare about me.',
            "I just sparkle, don't I?",
@@ -2620,6 +2641,7 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
                  'This fountain pen has such a nice font.',
                  "Here, I'll use my pen.",
                  'Can you read my writing?',
+                 '*squirts ink on your face* You look like a squid now.',
                  'I call this the plume of doom.',
                  "There's a blot on your performance.",
                  "Don't you hate when this happens?"],
@@ -2632,6 +2654,8 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
                   'Are you feeling a little blue?',
                   'Let me crystallize my plan.',
                   "You're going to take this hard.",
+                  'The cold never bothered me anyway!',
+                  'Let It Go!',
                   'This should cause freezer burn.',
                   'I hope you like cold cuts.',
                   "I'm very cold blooded."],
@@ -2645,6 +2669,7 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
                  'The eyes have it.',
                  'Peeka-boo, I see you.',
                  'Look into my eyes...',
+                 'Glow in the Dark!',
                  'Shall we take a peek at your future?'],
  'GuiltTrip': ["I'll lay a real guilt trip on you!",
                'Feeling guilty?',
@@ -2652,6 +2677,7 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
                'I always blame everything on you.',
                'Wallow in your own guilt!',
                'Did you have a nice trip?',
+               'Fall on your Face!',
                "You had better say you're sorry.",
                "I  wouldn't forgive you in a million years!",
                'See you next fall.',
@@ -2682,6 +2708,7 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
                 'Honey, I shrunk the toon.',
                 "Hope this doesn't shrink your pride.",
                 'Do you shrink in the wash?',
+                'Have fun being as small as Ant-Man and his ant army!',
                 'I shrink therefore I am.',
                 "It's nothing to lose your head over.",
                 'Are you going out of your head?',
@@ -2696,6 +2723,7 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
             "Always remember, where there's smoke, there's fire.",
             "You're looking a little burned out.",
             'Another meeting up in smoke.',
+            'Yum! Grilled Toon',
             "Guess it's time to add fuel to the fire.",
             'Let me kindle a working relationship.',
             'I have some glowing remarks for you.',
@@ -3310,6 +3338,8 @@ InventoryPagePluralPoints = 'You will get a new\n%(trackName)s gag when you\nget
 InventoryPageSinglePoint = 'You will get a new\n%(trackName)s gag when you\nget %(numPoints)s more %(trackName)s point.'
 InventoryPageNoAccess = 'You do not have access to the %s track yet.'
 NPCFriendPageTitle = 'SOS Toons'
+NPCFriendPageDelete = 'Delete'
+NPCFriendPageDeleteConfirmation = 'Are you sure you want to delete 1 of these SOSs?'
 PartyDateFormat = '%(mm)s %(dd)d, %(yyyy).4d'
 PartyTimeFormat = '%d:%.2d %s'
 PartyTimeFormatMeridiemAM = 'am'
@@ -3427,7 +3457,7 @@ MusicTcSzActivity = 'Toontorial Medley'
 MusicTcSz = 'Strolling Along'
 MusicCreateAToon = 'The New Toon in Town'
 MusictteTheme = 'The Toontown Empire Theme'
-MusictteTheme = 'The Toontown Theme'
+MusicttTheme = 'The Toontown Theme'
 MusicMinigameRace = 'Slow and Steady'
 MusicTcNbrhood = 'Toontown Central'
 MusicMgDiving = 'Treasure Lullaby'
@@ -3910,6 +3940,10 @@ FishingRodNameDict = {0: 'Twig',
  2: 'Hardwood',
  3: 'Steel',
  4: 'Gold'}
+FishTankNameDict = {40: 'Medium',
+ 60: 'Big',
+ 80: 'Large',
+ 100: 'Ultra'}
 FishTrophyNameDict = {0: 'Guppy',
  1: 'Minnow',
  2: 'Fish',
@@ -4541,7 +4575,9 @@ NumToColor = ['White',
  'Sapphire',
  'Crimson',
  'Emerald',
- 'Bronze']
+ 'Bronze',
+ 'Turquoise',
+ 'Forest Green']
 AnimalToSpecies = {'dog': 'Dog',
  'cat': 'Cat',
  'mouse': 'Mouse',
@@ -4763,6 +4799,7 @@ ChatTypeName = 'SpeedChat Phrase'
 EmoteTypeName = 'Acting Lessons'
 BeanTypeName = 'Jellybeans'
 PoleTypeName = 'Fishing Pole'
+TankTypeName = 'Fishing Bucket'
 WindowViewTypeName = 'Window View'
 PetTrickTypeName = 'Doodle Training'
 GardenTypeName = 'Garden Supplies'
@@ -5586,7 +5623,6 @@ NPCToonNames = {20000: 'Tutorial Tom',
  2009: lHQOfficerF,
  2010: lHQOfficerF,
  2012: 'Fisherman Freddy',
- 2018: 'Duff..err..TIP Man',
  2013: 'Clerk Poppy',
  2014: 'Clerk Peppy',
  2015: 'Clerk Pappy',
@@ -5596,6 +5632,7 @@ NPCToonNames = {20000: 'Tutorial Tom',
  2019: 'Doctor Dimm',
  2020: 'Professor Prepostera',
  2021: 'Painter Joey',
+ 2022: 'Duff..err..TIP Man',
  2101: 'Dentist Daniel',
  2102: 'Sheriff Sherry',
  2103: 'Sneezy Kitty',
@@ -8332,14 +8369,16 @@ InteractivePropTrackBonusTerms = {0: 'Super Toon-Up!',
  4: 'Super Throw!',
  5: 'Super Squirt!',
  6: ''}
-GloveSameColorMessage = 'You already have those gloves!'
+GloveInvalidColorMessage = "That's an unpainted color."
+GloveSameColorMessage = "You already have those colors!"
 GloveNoMoneyMessage = "You don't have enough jellybeans!"
-GloveSuccessMessage = 'Have fun with your new gloves!'
-GloveByeMessage = 'See you later!'
+GloveMoreMoneyMessage = 'You need %s jellybeans to buy new gloves!'
+GloveSuccessMessage = 'Have fun with your new colors!'
 GlovePickColorMessage = 'Feel free to choose!'
-GloveGuiTitle = 'Choose a glove color!'
+GloveGuiTitle = 'Choose a color!'
 GloveGuiNotice = 'Costs %s jellybeans.'
 GloveGuiBuy = 'Buy'
+GloveGuiSameColor = 'You already have these!'
 GloveGuiCancel = 'Cancel'
 LanguageButtonText = 'Language'
 LanguageSelectorTitle = 'Choose your language!'
@@ -8433,3 +8472,11 @@ RestockNoMoneyMessage = "You need more jellybeans to restock your laff!"
 RestockLaffMessage = "Have fun!"
 RestockAskMessage = "Would you like to\nrestock %s laff for %s jellybeans?"
 RestockCheaterMessage = "No cheaters allowed! Your transaction has been declined."
+BugReportButton = 'Report a Bug'
+BugReportNotice = 'Attention!\n\nThis button will open a browser which will send you to a third party bug tracker website. This site requires an Ubuntu One account to login. It may ask you to create an account.\n\nAre you sure you want to continue?'
+RestockAskMessage = "Would you like to\nrestock %s laff for %s jellybeans?"
+RestockNoMoneyGuiMessage = "\n\x01WLRed\x01Not enough jellybeans\x02"
+RestockFullLaffMessage = "You're already happy!"
+RestockLessLaffMessage = "Why would you want to be less happy than you are right now?"
+RestockNoMoneyMessage = "You don't have enough jellybeans for that!"
+RestockSuccessfulMessage = "You're welcome! Have fun!"

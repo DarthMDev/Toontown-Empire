@@ -466,13 +466,13 @@ class Avatar(Actor, ShadowCaster):
                     self.__chatSet = 1
                 if pageNumber < self.nametag.getNumChatPages():
 <<<<<<< HEAD
-                    self.nametag.setPageNumber(pageNumber)
-=======
                     if self.__chatAddressee == base.localAvatar.doId and self.__chatQuitButton:
                         if pageNumber == self.nametag.getNumChatPages() - 1:
                             self.nametag.setChatButton(NametagGlobals.quitButton)
                     self.nametag.setChatPageIndex(pageNumber)
->>>>>>> b1ac307... remove uneccesary paranthesis
+=======
+                    self.nametag.setPageNumber(pageNumber)
+>>>>>>> master
                     if pageNumber > 0:
                         if len(self.__chatDialogueList) > pageNumber:
                             dialogue = self.__chatDialogueList[pageNumber]
