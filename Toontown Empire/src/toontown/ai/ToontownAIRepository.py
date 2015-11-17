@@ -148,8 +148,6 @@ class ToontownAIRepository(ToontownInternalRepository):
         #self.lobbyManager.generateWithRequired(2)
         #self.globalLobbyMgr = self.generateGlobalObject(
         #    OTP_DO_ID_GLOBAL_LOBBY_MANAGER, 'GlobalLobbyManager')
-        self.megaInvasionManager = simbase.air.generateGlobalObject(
-            OTP_DO_ID_MEGA_INVASION_MANAGER, 'MegaInvasionManager')
 
     def createSafeZones(self):
         NPCToons.generateZone2NpcDict()
