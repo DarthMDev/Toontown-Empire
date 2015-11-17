@@ -26,7 +26,11 @@ class HolidayManagerAI:
         if date.weekday() == 6:
             # Saturday: Fish Bingo
             self.currentHolidays.append(ToontownGlobals.SILLY_SATURDAY_BINGO)
-
+		
+        if date.month == 6 and date.day == 29:
+		#mgracer48's  birthday
+		    self.currentHolidays.append(ToontownGlobals.MGRACER48_BIRTHDAY)
+		
         simbase.air.newsManager.setHolidayIdList([self.currentHolidays])
 
     def isHolidayRunning(self, holidayId):
