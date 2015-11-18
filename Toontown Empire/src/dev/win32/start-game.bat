@@ -44,7 +44,7 @@ echo.
 
 echo ===============================
 echo Starting Toontown Empire...
-echo ppython: "C:\Panda3D-1.10.0\python\ppython.exe"
+echo ppython: "src/dependencies/panda/python/ppython.exe"
 
 if %INPUT%==2 (
     echo Username: %tteUsername%

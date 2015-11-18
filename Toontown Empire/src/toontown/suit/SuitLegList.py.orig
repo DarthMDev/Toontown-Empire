@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from src.toontown.libpandadna.DNASuitPoint import DNASuitPoint
+=======
+from src.dependencies.libpandadna import DNASuitPoint
+>>>>>>> parent of c7d368b... Not completed
 from src.toontown.suit import SuitTimings
 from src.toontown.toonbase import ToontownGlobals
 

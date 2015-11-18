@@ -9,10 +9,11 @@ import SuitBase
 import SuitDialog
 import SuitDNA
 <<<<<<< HEAD
-from libpandadna import *
-=======
 from src.toontown.suit.SuitLegList import *
->>>>>>> parent of c154722... Revert "Feature/dna for all systems"
+=======
+from SuitLegList import *
+from libpandadna import *
+>>>>>>> parent of c7d368b... Not completed
 from direct.directnotify import DirectNotifyGlobal
 from src.toontown.battle import SuitBattleGlobals
 from src.toontown.building import FADoorCodes

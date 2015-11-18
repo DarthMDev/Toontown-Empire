@@ -143,18 +143,10 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         return
 
     def doNextAttack(self, task):
-        if random.random() <= 0.2:
-            self.b_setAttackCode(ToontownGlobals.BossCogAreaAttack)
-            taskMgr.doMethodLater(7.36, self.__reviveGoons, self.uniqueName('reviveGoons'))
-        else:
-            self.__doDirectedAttack()
-            if self.heldObject == None and not self.waitingForHelmet:
-                self.waitForNextHelmet()
-    
-    def __reviveGoons(self, task):
-        for goon in self.goons:
-            if goon.state == 'Stunned':
-                goon.request('Recovery')
+        self.__doDirectedAttack()
+        if self.heldObject == None and not self.waitingForHelmet:
+            self.waitForNextHelmet()
+        return
 
     def __doDirectedAttack(self):
         if self.toonsToAttack:
@@ -175,6 +167,7 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
             self.toonsToAttack.append(avId)
 
     def makeTreasure(self, goon):
+        return
         if self.state != 'BattleThree':
             return
         pos = goon.getPos(self)
@@ -219,7 +212,8 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
                 del self.treasures[treasureId]
                 treasure.d_setGrab(avId)
                 self.grabbingTreasures[treasureId] = treasure
-                taskMgr.doMethodLater(5, self.__recycleTreasure, treasure.uniqueName('recycleTreasure'), extraArgs=[treasure])
+                taskMgr.doMethodLater(5, self.__recycleTreasure, treasure.uniqueName('recycleTreasure'),
+                extraArgs=[treasure])
             else:
                 treasure.d_setReject()
 
@@ -292,7 +286,6 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
     def stopGoons(self):
         taskName = self.uniqueName('NextGoon')
         taskMgr.remove(taskName)
-        taskMgr.remove(self.uniqueName('reviveGoons'))
 
     def doNextGoon(self, task):
         if self.attackCode != ToontownGlobals.BossCogDizzy:
@@ -471,7 +464,6 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
          'isSupervisor': 0,
          'isVirtual': 0,
          'activeToons': self.involvedToons[:]})
-        self.addStats()
         self.barrier = self.beginBarrier('Victory', self.involvedToons, 30, self.__doneVictory)
         return
 

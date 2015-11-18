@@ -16,17 +16,6 @@ import Suit
 import SuitBase
 import SuitDialog
 import SuitTimings
-<<<<<<< HEAD
-from otp.avatar import DistributedAvatar
-from otp.otpbase import OTPLocalizer
-from toontown.battle import BattleProps
-from toontown.battle import DistributedBattle
-from toontown.distributed.DelayDeletable import DelayDeletable
-from otp.nametag.NametagConstants import *
-from otp.nametag import NametagGlobals
-from libpandadna import *
-from toontown.toonbase import ToontownGlobals
-=======
 from src.otp.avatar import DistributedAvatar
 from src.otp.otpbase import OTPLocalizer
 from src.toontown.battle import BattleProps
@@ -34,9 +23,12 @@ from src.toontown.battle import DistributedBattle
 from src.toontown.distributed.DelayDeletable import DelayDeletable
 from src.otp.nametag.NametagConstants import *
 from src.otp.nametag import NametagGlobals
+<<<<<<< HEAD
 from src.toontown.suit.SuitLegList import *
+=======
+from libpandadna import *
+>>>>>>> parent of c7d368b... Not completed
 from src.toontown.toonbase import ToontownGlobals
->>>>>>> parent of c154722... Revert "Feature/dna for all systems"
 
 
 STAND_OUTSIDE_DOOR = 2.5

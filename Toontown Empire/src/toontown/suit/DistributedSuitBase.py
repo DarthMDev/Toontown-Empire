@@ -4,12 +4,12 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from direct.task import Task
-from otp.avatar import DistributedAvatar
-from otp.otpbase import OTPGlobals
-from otp.nametag.NametagConstants import *
-from otp.nametag import NametagGlobals
-from toontown.battle import BattleProps
-from toontown.toonbase import TTLocalizer, ToontownGlobals
+from src.otp.avatar import DistributedAvatar
+from src.otp.otpbase import OTPGlobals
+from src.otp.nametag.NametagConstants import *
+from src.otp.nametag import NametagGlobals
+from src.toontown.battle import BattleProps
+from src.toontown.toonbase import TTLocalizer, ToontownGlobals
 import Suit, SuitBase, SuitDialog, SuitTimings
 import random
 
@@ -326,12 +326,12 @@ class DistributedSuitBase(DistributedAvatar.DistributedAvatar, Suit.Suit, SuitBa
         self.loop('neutral', 0)
         self.disableBattleDetect()
         self.corpMedallion.hide()
-        self.healthBar.geom.show()
+        self.healthBar.show()
         if self.currHP < self.maxHP:
             self.updateHealthBar(0, 1)
 
     def exitBattle(self):
-        self.healthBar.geom.hide()
+        self.healthBar.hide()
         self.corpMedallion.show()
         self.currHP = self.maxHP
         self.interactivePropTrackBonus = -1

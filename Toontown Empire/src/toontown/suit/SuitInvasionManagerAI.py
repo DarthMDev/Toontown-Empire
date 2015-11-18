@@ -17,6 +17,7 @@ class SuitInvasionManagerAI:
         self.suitDeptIndex = None
         self.suitTypeIndex = None
         self.flags = 0
+        self.type = None
 
         self.air.accept(
             'startInvasion', self.handleStartInvasion)
@@ -36,7 +37,7 @@ class SuitInvasionManagerAI:
         return (self.suitDeptIndex, self.suitTypeIndex, self.flags)
 
     def startInvasion(self, suitDeptIndex=None, suitTypeIndex=None, flags=0,
-                      type=INVASION_TYPE_NORMAL):
+                      type=INVASION_TYPE_NORMAL, amount=None):
         if self.invading:
             # An invasion is currently in progress; ignore this request.
             return False
@@ -71,14 +72,19 @@ class SuitInvasionManagerAI:
         self.suitDeptIndex = suitDeptIndex
         self.suitTypeIndex = suitTypeIndex
         self.flags = flags
+        self.type = type
 
         # How many suits do we want?
         if type == INVASION_TYPE_NORMAL:
             self.total = random.randint(1000, 3000)
         elif type == INVASION_TYPE_MEGA:
-            self.total = 5000
+            self.total = 0xFFFFFFFF
         elif type == INVASION_TYPE_BRUTAL:
             self.total = 10000
+
+        if amount is not None:
+            self.total = amount
+
         self.remaining = self.total
 
         self.flySuits()
@@ -129,6 +135,7 @@ class SuitInvasionManagerAI:
         self.flags = 0
         self.total = 0
         self.remaining = 0
+        self.type = None
         self.flySuits()
 
         self.sendInvasionStatus()
@@ -145,7 +152,9 @@ class SuitInvasionManagerAI:
 
     def notifyInvasionStarted(self):
         msgType = ToontownGlobals.SuitInvasionBegin
-        if self.flags & IFSkelecog:
+        if self.type == INVASION_TYPE_MEGA:
+            msgType = ToontownGlobals.MegaInvasionBegin
+        elif self.flags & IFSkelecog:
             msgType = ToontownGlobals.SkelecogInvasionBegin
         elif self.flags & IFWaiter:
             msgType = ToontownGlobals.WaiterInvasionBegin
@@ -157,7 +166,9 @@ class SuitInvasionManagerAI:
 
     def notifyInvasionEnded(self):
         msgType = ToontownGlobals.SuitInvasionEnd
-        if self.flags & IFSkelecog:
+        if self.type == INVASION_TYPE_MEGA:
+            msgType = ToontownGlobals.MegaInvasionEnd
+        elif self.flags & IFSkelecog:
             msgType = ToontownGlobals.SkelecogInvasionEnd
         elif self.flags & IFWaiter:
             msgType = ToontownGlobals.WaiterInvasionEnd
@@ -174,7 +185,9 @@ class SuitInvasionManagerAI:
 
     def notifyInvasionBulletin(self, avId):
         msgType = ToontownGlobals.SuitInvasionBulletin
-        if self.flags & IFSkelecog:
+        if self.type == INVASION_TYPE_MEGA:
+            msgType = ToontownGlobals.MegaInvasionBulletin
+        elif self.flags & IFSkelecog:
             msgType = ToontownGlobals.SkelecogInvasionBulletin
         elif self.flags & IFWaiter:
             msgType = ToontownGlobals.WaiterInvasionBulletin
