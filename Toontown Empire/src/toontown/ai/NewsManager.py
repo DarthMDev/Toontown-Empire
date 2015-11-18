@@ -66,7 +66,7 @@ class NewsManager(DistributedObject):
             base.localAvatar.chatMgr.chatInputSpeedChat.addHalloweenMenu()
         elif id == ToontownGlobals.CHRISTMAS:
             base.localAvatar.chatMgr.chatInputSpeedChat.addWinterMenu()
-#todo add mgracer48's birthday as double jellybeans and xp
+            
     def endSpecialHoliday(self, id):
         if id == ToontownGlobals.LAUGHING_MAN:
             for toon in base.cr.toons.values():
