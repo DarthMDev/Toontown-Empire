@@ -16,7 +16,7 @@ class DistributedNPCGloveAI(DistributedNPCToonBaseAI):
             return
             
 	    if av.dna.headColor == color and av.dna.legColor == color and av.dna.armColor == color:
-		    self.sendUpdate('doTransformatiion', [avId, 3])
+		    self.sendUpdate('doTransformatiion', [avId, 1])
 		    return
 		    
         if av.getTotalMoney() < ToontownGlobals.GloveCost:
@@ -24,7 +24,7 @@ class DistributedNPCGloveAI(DistributedNPCToonBaseAI):
             return
 	   
         if av.getTotalMoney() < ToontownGlobals.ColorCost:
-            self.sendUpdate('doTransformation', [avId, 4])
+            self.sendUpdate('doTransformation', [avId, 2])
             return
 		
         av.takeMoney(ToontownGlobals.GloveCost)

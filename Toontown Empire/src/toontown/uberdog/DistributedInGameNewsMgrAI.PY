@@ -12,3 +12,4 @@ class DistributedInGameNewsMgrAI(DistributedObjectGlobalAI):
 
     def newIssueUDtoAI(self, todo0):
         pass
+

@@ -5453,9 +5453,9 @@ SpecialEventNames = {1: 'Generic Award',
  17: 'Operation Lawbots Lose Event'}
 NewCatalogNotify = 'There are new items available to order at your phone!'
 NewDeliveryNotify = 'A new delivery has just arrived at your mailbox!'
-CatalogNotifyFirstCatalog = 'Your first cattlelog has arrived!  You may use this to order new items for yourself or for your house.'
-CatalogNotifyNewCatalog = 'Your cattlelog #%s has arrived!  You can go to your phone to order items from this cattlelog.'
-CatalogNotifyNewCatalogNewDelivery = 'A new delivery has arrived at your mailbox!  Also, your cattlelog #%s has arrived!'
+CatalogNotifyFirstCatalog = 'Your first catalog has arrived!  You may use this to order new items for yourself or for your house.'
+CatalogNotifyNewCatalog = 'Your catalog #%s has arrived!  You can go to your phone to order items from this cattlelog.'
+CatalogNotifyNewCatalogNewDelivery = 'A new delivery has arrived at your mailbox!  Also, your catalog #%s has arrived!'
 CatalogNotifyNewDelivery = 'A new delivery has arrived at your mailbox!'
 CatalogNotifyNewCatalogOldDelivery = 'Your cattlelog #%s has arrived, and there are still items waiting in your mailbox!'
 CatalogNotifyOldDelivery = 'There are still items waiting in your mailbox for you to pick up!'
@@ -8322,7 +8322,8 @@ HolidayNamesInCalendar = {1: ('Summer Fireworks', 'Celebrate Summer with a firew
  98: ('Double Bean Days - Fishing', ''),
  99: ('Jellybean Week', 'Celebrate Jellybean Week with double Jellybean rewards!'),
  101: ("Top Toons New Year's Day Marathon", "Chances to win every hour! See the What's New Blog for details!"),
- 105: ('Toons go GREEN!', 'Toons make a green scene at Green Bean Jeans on Oak Street in Daisy Gardens!')}
+ 105: ('Toons go GREEN!', 'Toons make a green scene at Green Bean Jeans on Oak Street in Daisy Gardens!'),
+ 128: ("April Toons' Week", "Celebrate April Toons' Week - a holiday built by Toons for Toons!") }
 UnknownHoliday = 'Unknown Holiday %d'
 HolidayFormat = '%b %d '
 HourFormat = '12'

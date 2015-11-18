@@ -12,3 +12,4 @@ class DistributedInGameNewsMgrUD(DistributedObjectGlobalUD):
 
     def newIssueUDtoAI(self, todo0):
         pass
+
