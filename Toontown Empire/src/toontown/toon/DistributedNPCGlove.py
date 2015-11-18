@@ -162,7 +162,7 @@ class DistributedNPCGlove(DistributedNPCToonBase):
     def popupPickColorGUI(self):
         self.setChatAbsolute('', CFSpeech)
         self.setChatAbsolute(TTLocalizer.GlovePickColorMessage, CFSpeech|CFTimeout)
-        base.setCellsActive(base.bottomCells, 0)
+        base.setCellsAvailable(base.bottomCells, 0)
         self.createGui()
 
     def getMessageById(self, response):
@@ -197,7 +197,7 @@ class DistributedNPCGlove(DistributedNPCToonBase):
     def reset(self, task=None):
         self.fsm.request('off')
         base.cr.playGame.getPlace().setState('walk')
-        base.setCellsActive(base.bottomCells, 1)
+        base.setCellsAvailable(base.bottomCells, 1)
         self.destroyGui()
 
         if task is not None:
