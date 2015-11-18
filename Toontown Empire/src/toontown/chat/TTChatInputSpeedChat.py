@@ -407,7 +407,7 @@ class TTChatInputSpeedChat(DirectObject.DirectObject):
 
     def createSpeedChat(self):
         structure = []
-        structure.append([TTSCPromotionalMenu, OTPLocalizer.SCMenuPromotion])
+        structure.append([OTPLocalizer.SCMenuPromotion])#TTSCPromotionalMenu, OTPLocalizer.SCMenuPromotion])
         structure.append([SCEmoteMenu, OTPLocalizer.SCMenuEmotions])
         structure.append([SCCustomMenu, OTPLocalizer.SCMenuCustom])
         structure.append([TTSCResistanceMenu, OTPLocalizer.SCMenuResistance])

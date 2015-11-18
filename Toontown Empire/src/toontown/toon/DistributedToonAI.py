@@ -1817,7 +1817,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def setTeleportOverride(self, flag):
         self.teleportOverride = flag
-        self.b_setHoodsVisited([1000,2000,3000,4000,5000,6000,7000,8000,9000,10000,11000,12000,13000])
+        self.b_setHoodsVisited([1000,2000,3000,4000,5000,6000,8000,9000,10000,11000,12000,13000])
 
     def b_setScavengerHunt(self, scavengerHuntArray):
         self.setScavengerHunt(scavengerHuntArray)

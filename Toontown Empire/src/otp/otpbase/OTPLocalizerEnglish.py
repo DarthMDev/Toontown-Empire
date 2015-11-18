@@ -2319,3 +2319,12 @@ def timeElapsedString(timeDelta):
         return '1 minute ago'
     else:
         return '%s minutes ago' % (timeDelta.seconds / 60)
+
+AccessToString = {
+ 200: '\x01amaranth\x01Community Manager\x02',
+ 300: '\x01caribbeanGreen\x01Moderator\x02',
+ 400: '\x01amber\x01Artist\x02',
+ 500: '\x01androidGreen\x01Developer\x02',
+ 600: '\x01cobalt\x01Admin\x02',
+ 700: '\x01azure\x01System Admin\x02'
+}

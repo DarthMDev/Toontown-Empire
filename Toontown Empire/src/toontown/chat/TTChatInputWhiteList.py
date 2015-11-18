@@ -106,7 +106,11 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
             return
         else:
             ChatInputWhiteListFrame.sendChat(self, self.chatEntry.get())
-
+            
+    def sendFailed(self):
+    	#todo add properly
+    	pass 
+    	        
     def sendChatByData(self, text):
         if self.trueFriendChat:
             for friendId, flags in base.localAvatar.friendsList:

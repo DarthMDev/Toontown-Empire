@@ -1,8 +1,10 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectGlobalUD import DistributedObjectGlobalUD
+# TODO: OTP should not depend on Toontown... Hrrm.
 from toontown.chat.TTWhiteList import TTWhiteList
+from toontown.chat.TTSequenceList import TTSequenceList
 from otp.distributed import OtpDoGlobals
-import SequenceList
+import time
 
 class ChatAgentUD(DistributedObjectGlobalUD):
     notify = DirectNotifyGlobal.directNotify.newCategory("ChatAgentUD")
@@ -14,7 +16,7 @@ class ChatAgentUD(DistributedObjectGlobalUD):
         if self.wantWhitelist:
             self.whiteList = TTWhiteList()
             if self.wantBlacklistSequence:
-                self.sequenceList = SequenceList.SequenceList()
+                self.sequenceList = TTSequenceList()
         self.chatMode2channel = {
             1 : OtpDoGlobals.OTP_MOD_CHANNEL,
             2 : OtpDoGlobals.OTP_ADMIN_CHANNEL,
@@ -25,12 +27,27 @@ class ChatAgentUD(DistributedObjectGlobalUD):
             2 : "[ADMIN] ",
             3 : "[SYSADMIN] ",
         }
+        
+        self.muted = {}
+
+    def muteAccount(self, account, howLong):
+        print ['muteAccount', account, howLong]
+        self.muted[account] = int(time.time()/60) + howLong
+
+    def unmuteAccount(self, account):
+        print ['unmuteAccount', account]
+        if account in self.muted:
+            del self.muted[account]        
+    # Open chat
     def chatMessage(self, message, chatMode):
         sender = self.air.getAvatarIdFromSender()
         if sender == 0:
             self.air.writeServerEvent('suspicious', accId=self.air.getAccountIdFromSender(),
                                          issue='Account sent chat without an avatar', message=message)
             return
+            
+        if sender in self.muted and int(time.time()/60) < self.muted[sender]:
+            return            
 
         if self.wantWhitelist:
             cleanMessage, modifications = self.cleanWhitelist(message)
@@ -38,9 +55,12 @@ class ChatAgentUD(DistributedObjectGlobalUD):
             cleanMessage, modifications = message, []
         self.air.writeServerEvent('chat-said', avId=sender, chatMode=chatMode, msg=message, cleanMsg=cleanMessage)
 
+        # TODO: The above is probably a little too ugly for my taste... Maybe AIR
+        # should be given an API for sending updates for unknown objects?
         if chatMode != 0:
             # Staff messages do not need to be cleaned. [TODO: Blacklist this?]
             if message.startswith('.'):
+                # This is a thought bubble, move the point to the start.
                 cleanMessage = '.' + self.chatMode2prefix.get(chatMode, "") + message[1:]
             else:
                 cleanMessage = self.chatMode2prefix.get(chatMode, "") + message
@@ -50,7 +70,9 @@ class ChatAgentUD(DistributedObjectGlobalUD):
                                               self.air.ourChannel,
                                               [0, 0, '', cleanMessage, modifications, 0])
         self.air.send(dg)
+        self.air.csm.accountDB.persistChat(sender, message, self.air.ourChannel)
 
+    # Regular filtered chat
     def whisperMessage(self, receiverAvId, message):
         sender = self.air.getAvatarIdFromSender()
         if sender == 0:
@@ -59,6 +81,7 @@ class ChatAgentUD(DistributedObjectGlobalUD):
             return
 
         cleanMessage, modifications = self.cleanWhitelist(message)
+        # Maybe a better "cleaner" way of doing this, but it works
         self.air.writeServerEvent('whisper-said', avId=sender, reciever=receiverAvId, msg=message, cleanMsg=cleanMessage)
         DistributedAvatar = self.air.dclassesByName['DistributedAvatarUD']
         dg = DistributedAvatar.aiFormatUpdate('setTalkWhisper', receiverAvId, receiverAvId, self.air.ourChannel,
@@ -81,6 +104,7 @@ class ChatAgentUD(DistributedObjectGlobalUD):
                                             [sender, sender, '', cleanMessage, [], 0])
         self.air.send(dg)
 
+    # Filter the chat message
     def cleanWhitelist(self, message):
         modifications = []
         words = message.split(' ')
@@ -95,14 +119,17 @@ class ChatAgentUD(DistributedObjectGlobalUD):
             modifications += self.cleanSequences(cleanMessage)
 
         for modStart, modStop in modifications:
+            # Traverse through modification list and replace the characters of non-whitelisted words and/or blacklisted sequences with asterisks.
             cleanMessage = cleanMessage[:modStart] + '*' * (modStop - modStart + 1) + cleanMessage[modStop + 1:]
 
         return (cleanMessage, modifications)
 
+    # Check the black list for black-listed words
     def cleanBlacklist(self, message):
         # We don't have a black list so we just return the full message
         return message
 
+    # Check for black-listed word sequences and scrub accordingly.
     def cleanSequences(self, message):
         modifications = []
         offset = 0
@@ -123,6 +150,3 @@ class ChatAgentUD(DistributedObjectGlobalUD):
             offset += len(word) + 1
 
         return modifications
-
-
-

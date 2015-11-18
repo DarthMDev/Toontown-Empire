@@ -265,7 +265,7 @@ class PlayGame(StateData.StateData):
                  'hood': hoodName}, count, 1, TTLocalizer.TIP_KARTING, zoneId)
             else:
                 loader.beginBulkLoad('hood', TTLocalizer.HeadingToHood % {'to': toHoodPhrase,
-                 'hood': hoodName}, count, 1, TTLocalizer.TIP_GENERAL, zoneId)
+                 'hood': hoodName}, count, 1, TTLocalizer.TIP_GENERAL)
         if hoodId == ToontownGlobals.Tutorial:
             self.loadDnaStoreTutorial()
         else:

@@ -904,7 +904,7 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
         self.b_setBattleDifficulty(self.toonLevels)
 
 
-@magicWord(category=CATEGORY_ADMINISTRATOR)
+@magicWord(category=CATEGORY_PROGRAMMER)
 def skipCJ():
     """
     Skips to the final round of the CJ.
@@ -924,7 +924,7 @@ def skipCJ():
     boss.b_setState('PrepareBattleThree')
 
 
-@magicWord(category=CATEGORY_ADMINISTRATOR)
+@magicWord(category=CATEGORY_PROGRAMMER)
 def killCJ():
     """
     Kills the CJ.

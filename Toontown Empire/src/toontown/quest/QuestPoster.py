@@ -181,7 +181,7 @@ class QuestPoster(DirectFrame):
         avHood = ZoneUtil.getCanonicalHoodId(avZone)
         avShard = base.localAvatar.defaultShard
         avPlace = base.cr.playGame.getPlace()
-        hqZone = {2000:2520, 1000:1507, 3000:3508, 4000:4504, 5000:5502, 7000:7503, 9000:9505}
+        hqZone = {2000:2520, 1000:1507, 3000:3508, 4000:4504, 5000:5502, 9000:9505}
         def callback(flag):
             if flag:
                 npcZone = None
