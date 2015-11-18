@@ -4,7 +4,6 @@ from direct.distributed.PyDatagram import *
 from direct.fsm.FSM import FSM
 import time
 
-# -- FSMS --
 class OperationFSM(FSM):
 
     def __init__(self, mgr, air, senderAvId, targetAvId=None, callback=None):
@@ -33,7 +32,6 @@ class OperationFSM(FSM):
             del self.mgr.operations[self.sender]
 
 
-# -- Friends list --
 class FriendsListOperation(OperationFSM):
 
     def enterStart(self):
@@ -79,7 +77,6 @@ class FriendsListOperation(OperationFSM):
             self.friendsList[self.friendIndex], self.addFriend)
 
 
-# -- Remove Friends --
 class RemoveFriendOperation(OperationFSM):
 
     def __init__(self, mgr, air, senderAvId, targetAvId=None, callback=None, alert=False):
@@ -117,7 +114,6 @@ class RemoveFriendOperation(OperationFSM):
             {'setFriendsList' : [friendsList]})
         self.demand('Off')
 
-# -- Clear List --
 class ClearListOperation(OperationFSM):
 
     def enterStart(self):
@@ -138,7 +134,6 @@ class ClearListOperation(OperationFSM):
             newOperation.demand('Start')
         self.demand('Off')
 
-# -- FriendsManager --
 
 class tteFriendsManagerUD(DistributedObjectGlobalUD):
     notify = directNotify.newCategory('tteFriendsManagerUD')
@@ -153,7 +148,7 @@ class tteFriendsManagerUD(DistributedObjectGlobalUD):
         self.operations = []
         self.delayTime = 1.0
 
-    # -- Friends list --
+
     def requestFriendsList(self):
         avId = self.air.getAvatarIdFromSender()
         newOperation = FriendsListOperation(self, self.air, avId,
@@ -166,22 +161,21 @@ class tteFriendsManagerUD(DistributedObjectGlobalUD):
         if sender not in self.onlineToons:
             self.toonOnline(sender, friendsList)
 
-    # -- Remove Friend --
+
     def removeFriend(self, friendId):
         avId = self.air.getAvatarIdFromSender()
 
-        # Sender remove Friend
+
         newOperation = RemoveFriendOperation(self, self.air, avId, friendId)
         self.operations.append(newOperation)
         newOperation.demand('Start')
 
-        # Friend remove Sender
+
         newOperation = RemoveFriendOperation(self, self.air, friendId, avId,
             alert=True)
         self.operations.append(newOperation)
         newOperation.demand('Start')
 
-    # -- Avatar Info --
     def getAvatarDetails(self, avId):
         senderId = self.air.getAvatarIdFromSender()
         def handleToon(dclass, fields):
@@ -189,7 +183,7 @@ class tteFriendsManagerUD(DistributedObjectGlobalUD):
                 return
             inventory = fields['setInventory'][0]
             trackAccess = fields['setTrackAccess'][0]
-            trophies = 0 # fields['setTrophyScore'][0] is not db
+            trophies = 0 
             hp = fields['setHp'][0]
             maxHp = fields['setMaxHp'][0]
             defaultShard = fields['setDefaultShard'][0]
@@ -221,7 +215,7 @@ class tteFriendsManagerUD(DistributedObjectGlobalUD):
                                                                traits, moods, dna, fields.get("setLastSeenTimestamp", [0])[0]])
         self.air.dbInterface.queryObject(self.air.dbId, avId, handlePet)
 
-    # -- Toon Online/Offline --
+
     def toonOnline(self, doId, friendsList):
         if doId not in self.onlineToons:
             self.onlineToons.append(doId)
@@ -257,13 +251,13 @@ class tteFriendsManagerUD(DistributedObjectGlobalUD):
                 del self.toon2data[doId]
         self.air.dbInterface.queryObject(self.air.dbId, doId, handleToon)
 
-    # -- Clear List --
+
     def clearList(self, doId):
         newOperation = ClearListOperation(self, self.air, doId)
         self.operations.append(newOperation)
         newOperation.demand('Start')
 
-    # -- Teleport and Whispers --
+ 
     def routeTeleportQuery(self, toId):
         fromId = self.air.getAvatarIdFromSender()
         if fromId in self.tpRequests.values():
@@ -273,18 +267,14 @@ class tteFriendsManagerUD(DistributedObjectGlobalUD):
         taskMgr.doMethodLater(5, self.giveUpTeleportQuery, 'tp-query-timeout-%d' % fromId, extraArgs=[fromId, toId])
 
     def giveUpTeleportQuery(self, fromId, toId):
-        # The client didn't respond to the query within the set time,
-        # So we will tell the query sender that the toon is unavailable.
         if fromId in self.tpRequests:
             del self.tpRequests[fromId]
             self.sendUpdateToAvatarId(fromId, 'setTeleportResponse', [toId, 0, 0, 0, 0])
             self.notify.warning('Teleport request that was sent by %d to %d timed out.' % (fromId, toId))
 
     def teleportResponse(self, toId, available, shardId, hoodId, zoneId):
-        # Here is where the toId and fromId swap (because we are now sending it back)
         fromId = self.air.getAvatarIdFromSender()
 
-        # We got the query response, so no need to give up!
         if taskMgr.hasTaskNamed('tp-query-timeout-%d' % toId):
             taskMgr.remove('tp-query-timeout-%d' % toId)
 
@@ -341,7 +331,7 @@ class tteFriendsManagerUD(DistributedObjectGlobalUD):
         self.sendUpdateToAvatarId(toId, 'receiveTalkWhisper', [fromId, message])
         self.air.writeServerEvent('whisper-said', fromId, toId, message)
 
-    # -- Routes --
+
     def battleSOS(self, toId):
         requester = self.air.getAvatarIdFromSender()
         self.sendUpdateToAvatarId(toId, 'setBattleSOS', [requester])
