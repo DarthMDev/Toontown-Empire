@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.parties.DistributedPartyActivityAI import DistributedPartyActivityAI
-from src.toontown.toonbase import TTLocalizer
+from toontown.parties.DistributedPartyActivityAI import DistributedPartyActivityAI
+from toontown.toonbase import TTLocalizer
 import PartyGlobals
 
 

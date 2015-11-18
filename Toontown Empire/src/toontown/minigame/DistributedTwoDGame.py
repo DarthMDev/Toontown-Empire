@@ -1,7 +1,7 @@
 from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-from src.toontown.toonbase.ToonBaseGlobal import *
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase import TTLocalizer
 from direct.gui.DirectFrame import DirectFrame
 from direct.gui.DirectGui import DGG
 from direct.task.Task import Task
@@ -10,7 +10,7 @@ from direct.directnotify import DirectNotifyGlobal
 from DistributedMinigame import *
 import MinigameAvatarScorePanel, ArrowKeys, ToonBlitzAssetMgr, TwoDCamera
 import TwoDSectionMgr, ToonBlitzGlobals, TwoDGameToonSD
-from src.toontown.toonbase import ToontownTimer
+from toontown.toonbase import ToontownTimer
 from TwoDWalk import *
 from TwoDDrive import *
 COLOR_RED = VBase4(1, 0, 0, 0.3)

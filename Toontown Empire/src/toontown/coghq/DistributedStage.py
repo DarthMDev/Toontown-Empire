@@ -3,12 +3,12 @@ from direct.distributed.ClockDelta import *
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase import BulletinBoardWatcher
-from src.otp.otpbase import OTPGlobals
-from src.toontown.toonbase.ToontownGlobals import *
-from src.toontown.toonbase import TTLocalizer
+from otp.otpbase import OTPGlobals
+from toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase import TTLocalizer
 from direct.gui import OnscreenText
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.coghq import DistributedStageRoom, StageLayout, StageRoom
+from toontown.toonbase import ToontownGlobals
+from toontown.coghq import DistributedStageRoom, StageLayout, StageRoom
 import random
 from direct.task.Task import Task
 from direct.interval.IntervalGlobal import *

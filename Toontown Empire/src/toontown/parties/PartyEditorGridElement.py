@@ -4,11 +4,11 @@ from direct.gui import DirectGuiGlobals
 from direct.showbase import DirectObject
 from direct.showbase import PythonUtil
 from direct.task.Task import Task
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.parties import PartyGlobals
-from src.toontown.parties.PartyInfo import PartyInfo
-from src.toontown.parties import PartyUtils
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.parties import PartyGlobals
+from toontown.parties.PartyInfo import PartyInfo
+from toontown.parties import PartyUtils
 
 class PartyEditorGridElement(DirectButton):
     notify = directNotify.newCategory('PartyEditorGridElement')

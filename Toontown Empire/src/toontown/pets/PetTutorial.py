@@ -2,8 +2,8 @@ from direct.gui.DirectGui import *
 from panda3d.core import *
 from direct.fsm import FSM
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 
 class PetTutorial(DirectFrame, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('PetTutorial')

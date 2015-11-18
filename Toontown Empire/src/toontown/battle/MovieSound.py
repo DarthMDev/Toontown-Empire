@@ -8,7 +8,7 @@ import MovieCamera
 from direct.directnotify import DirectNotifyGlobal
 import MovieUtil
 import MovieNPCSOS
-from src.toontown.toonbase import ToontownBattleGlobals
+from toontown.toonbase import ToontownBattleGlobals
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieSound')
 soundFiles = ('AA_sound_bikehorn.ogg', 'AA_sound_whistle.ogg', 'AA_sound_bugle.ogg', 'AA_sound_aoogah.ogg', 'AA_sound_elephant.ogg', 'SZ_DD_foghorn.ogg', 'AA_sound_Opera_Singer.ogg')
 appearSoundFiles = ('MG_tag_1.ogg', 'LB_receive_evidence.ogg', 'm_match_trumpet.ogg', 'TL_step_on_rake.ogg', 'toonbldg_grow.ogg', 'mailbox_full_wobble.ogg', 'mailbox_full_wobble.ogg')

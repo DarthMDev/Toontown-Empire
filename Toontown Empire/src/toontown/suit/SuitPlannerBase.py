@@ -1,11 +1,11 @@
 from panda3d.core import *
 from direct.directnotify.DirectNotifyGlobal import *
-from src.toontown.hood import ZoneUtil, HoodUtil
-from src.toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
-from src.toontown.building import SuitBuildingGlobals
-from src.toontown.dna.DNAParser import *
+from toontown.hood import ZoneUtil, HoodUtil
+from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
+from toontown.building import SuitBuildingGlobals
+from toontown.dna.DNAParser import *
 
-from src.toontown.dna.DNAInteractiveProp import DNAInteractiveProp
+from toontown.dna.DNAInteractiveProp import DNAInteractiveProp
 
 class SuitPlannerBase:
     notify = directNotify.newCategory('SuitPlannerBase')

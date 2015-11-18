@@ -10,9 +10,9 @@ from direct.task import Task
 from direct.fsm.FSM import FSM
 from pandac.PandaModules import CollisionTube, CollisionNode, CollisionSphere
 from pandac.PandaModules import Point3, Vec4, NodePath, TextNode, Mat4
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.battle.BattleProps import globalPropPool
-from src.toontown.battle.BattleSounds import globalBattleSoundCache
+from toontown.toonbase import ToontownGlobals
+from toontown.battle.BattleProps import globalPropPool
+from toontown.battle.BattleSounds import globalBattleSoundCache
 import PartyGlobals
 
 class PartyCogManager:

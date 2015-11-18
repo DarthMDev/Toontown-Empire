@@ -1,8 +1,8 @@
 import TTLocalizer
-from src.otp.otpbase.OTPGlobals import *
+from otp.otpbase.OTPGlobals import *
 from direct.showbase.PythonUtil import Enum, invertDict
 from pandac.PandaModules import BitMask32, Vec4
-from src.toontown.estate import HouseGlobals
+from toontown.estate import HouseGlobals
 MapHotkeyOn = 'alt'
 MapHotkeyOff = 'alt-up'
 MapHotkey = 'alt'
@@ -110,8 +110,8 @@ CogSuitHPLevels = (15 - 1,
  50 - 1)
 setInterfaceFont(TTLocalizer.InterfaceFont)
 setSignFont(TTLocalizer.SignFont)
-from src.toontown.toontowngui import TTDialog
-from src.toontown.toontowngui import TTDialog
+from toontown.toontowngui import TTDialog
+from toontown.toontowngui import TTDialog
 setDialogClasses(TTDialog.TTDialog, TTDialog.TTGlobalDialog)
 ToonFont = None
 BuildingNametagFont = None

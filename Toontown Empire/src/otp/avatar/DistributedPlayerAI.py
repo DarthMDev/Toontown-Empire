@@ -1,12 +1,12 @@
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.MsgTypes import CLIENTAGENT_EJECT
 
-from src.otp.ai.AIBaseGlobal import *
-from src.otp.ai.MagicWordGlobal import *
-from src.otp.avatar import DistributedAvatarAI
-from src.otp.avatar import PlayerBase
-from src.otp.distributed import OtpDoGlobals
-from src.otp.otpbase import OTPLocalizer
+from otp.ai.AIBaseGlobal import *
+from otp.ai.MagicWordGlobal import *
+from otp.avatar import DistributedAvatarAI
+from otp.avatar import PlayerBase
+from otp.distributed import OtpDoGlobals
+from otp.otpbase import OTPLocalizer
 
 class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.PlayerBase):
 

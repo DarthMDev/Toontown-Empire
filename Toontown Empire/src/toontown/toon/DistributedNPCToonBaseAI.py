@@ -1,13 +1,13 @@
-from src.otp.ai.AIBaseGlobal import *
+from otp.ai.AIBaseGlobal import *
 from panda3d.core import *
 import DistributedToonAI
 from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.distributed import ClockDelta
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 import NPCToons
 from direct.task import Task
-from src.toontown.quest import Quests
+from toontown.quest import Quests
 
 class DistributedNPCToonBaseAI(DistributedToonAI.DistributedToonAI):
 

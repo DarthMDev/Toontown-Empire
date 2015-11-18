@@ -1,21 +1,21 @@
-from src.toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase.ToonBaseGlobal import *
 from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.dna.DNAParser import *
+from toontown.toonbase import ToontownGlobals
+from toontown.dna.DNAParser import *
 import ToonInterior
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
 import random
 import ToonInteriorColors
-from src.toontown.hood import ZoneUtil
-from src.toontown.suit import SuitDNA
-from src.toontown.suit import Suit
-from src.toontown.quest import QuestParser
-from src.toontown.toon import DistributedNPCSpecialQuestGiver
-from src.toontown.toonbase import TTLocalizer
-from src.otp.nametag.NametagConstants import CFSpeech
+from toontown.hood import ZoneUtil
+from toontown.suit import SuitDNA
+from toontown.suit import Suit
+from toontown.quest import QuestParser
+from toontown.toon import DistributedNPCSpecialQuestGiver
+from toontown.toonbase import TTLocalizer
+from otp.nametag.NametagConstants import CFSpeech
 
 
 class DistributedTutorialInterior(DistributedObject.DistributedObject):

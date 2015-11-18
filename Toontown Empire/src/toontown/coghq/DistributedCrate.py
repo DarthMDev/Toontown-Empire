@@ -1,6 +1,6 @@
 from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-from src.toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase.ToontownGlobals import *
 from CrateGlobals import *
 from direct.showbase.PythonUtil import fitSrcAngle2Dest
 from direct.distributed import DistributedObject

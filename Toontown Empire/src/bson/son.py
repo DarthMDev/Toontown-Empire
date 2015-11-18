@@ -22,7 +22,7 @@ import collections
 import copy
 import re
 
-from src.bson.py3compat import iteritems
+from bson.py3compat import iteritems
 
 
 # This sort of sucks, but seems to be as good as it gets...

@@ -1,21 +1,21 @@
 
 from panda3d.core import *
-from src.toontown.toonbase.ToonBaseGlobal import *
-from src.toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase.ToontownGlobals import *
 from direct.gui.DirectGui import *
 from direct.distributed.ClockDelta import *
-from src.toontown.hood import Place
+from toontown.hood import Place
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.task.Task import Task
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 import random
 from direct.showbase import PythonUtil
-from src.otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs, TLNull
-from src.toontown.hood import Place
-from src.toontown.hood import SkyUtil
-from src.toontown.parties import PartyPlanner
-from src.toontown.parties.DistributedParty import DistributedParty
+from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs, TLNull
+from toontown.hood import Place
+from toontown.hood import SkyUtil
+from toontown.parties import PartyPlanner
+from toontown.parties.DistributedParty import DistributedParty
 
 class Party(Place.Place):
     notify = DirectNotifyGlobal.directNotify.newCategory('Party')

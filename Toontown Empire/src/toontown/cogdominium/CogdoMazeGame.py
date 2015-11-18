@@ -3,8 +3,8 @@ from direct.showbase.DirectObject import DirectObject
 from direct.showbase.PythonUtil import Functor
 from direct.showbase.RandomNumGen import RandomNumGen
 from direct.task.Task import Task
-from src.toontown.minigame.MazeSuit import MazeSuit
-from src.toontown.toonbase import ToontownGlobals
+from toontown.minigame.MazeSuit import MazeSuit
+from toontown.toonbase import ToontownGlobals
 from CogdoGameGatherable import CogdoMemo
 from CogdoMazePlayer import CogdoMazePlayer
 from CogdoMazeLocalPlayer import CogdoMazeLocalPlayer

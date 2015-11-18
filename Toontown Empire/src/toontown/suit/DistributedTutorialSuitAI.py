@@ -1,10 +1,10 @@
 from direct.directnotify.DirectNotifyGlobal import *
 from panda3d.core import *
 
-from src.toontown.suit import SuitDNA
-from src.toontown.suit import SuitDialog
-from src.toontown.suit.DistributedSuitBaseAI import DistributedSuitBaseAI
-from src.toontown.tutorial.DistributedBattleTutorialAI import DistributedBattleTutorialAI
+from toontown.suit import SuitDNA
+from toontown.suit import SuitDialog
+from toontown.suit.DistributedSuitBaseAI import DistributedSuitBaseAI
+from toontown.tutorial.DistributedBattleTutorialAI import DistributedBattleTutorialAI
 
 
 class FakeBattleManager:

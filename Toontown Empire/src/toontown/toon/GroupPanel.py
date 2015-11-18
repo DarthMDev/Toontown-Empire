@@ -1,11 +1,11 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 from direct.gui.DirectGui import *
 from panda3d.core import *
 from direct.showbase import DirectObject
-from src.toontown.toon import ToonAvatarPanel
-from src.toontown.toontowngui import TTDialog
+from toontown.toon import ToonAvatarPanel
+from toontown.toontowngui import TTDialog
 
 class GroupPanel(DirectObject.DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('GroupPanel')

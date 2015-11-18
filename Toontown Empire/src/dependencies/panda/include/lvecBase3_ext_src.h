@@ -1,4 +1,4 @@
-// Filename: lvecBase3_ext_src.h
+// Filename: lvecBase3_ext_h
 // Created by:  rdb (13Sep13)
 //
 ////////////////////////////////////////////////////////////////////
@@ -31,4 +31,4 @@ public:
   INLINE_LINMATH PyObject *__ipow__(PyObject *self, FLOATTYPE exponent);
 };
 
-#include "lvecBase3_ext_src.I"
+#include "lvecBase3_ext_I"

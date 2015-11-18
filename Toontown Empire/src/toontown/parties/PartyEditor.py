@@ -6,13 +6,13 @@ from direct.gui import DirectGuiGlobals
 from direct.showbase.DirectObject import DirectObject
 from direct.showbase import PythonUtil
 from direct.fsm.FSM import FSM
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.parties import PartyGlobals
-from src.toontown.parties.PartyInfo import PartyInfo
-from src.toontown.parties import PartyUtils
-from src.toontown.parties.PartyEditorGrid import PartyEditorGrid
-from src.toontown.parties.PartyEditorListElement import PartyEditorListElement
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.parties import PartyGlobals
+from toontown.parties.PartyInfo import PartyInfo
+from toontown.parties import PartyUtils
+from toontown.parties.PartyEditorGrid import PartyEditorGrid
+from toontown.parties.PartyEditorListElement import PartyEditorListElement
 
 class PartyEditor(DirectObject, FSM):
     notify = directNotify.newCategory('PartyEditor')

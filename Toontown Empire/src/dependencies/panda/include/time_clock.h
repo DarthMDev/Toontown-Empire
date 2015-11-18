@@ -346,8 +346,8 @@ inline Time_Clock::Time_Clock(long secs, long usecs)
 //////////////////////////////////////////////////////////////
 inline Time_Clock::Time_Clock(const Time_Clock& timeSrc)
 {
-    _my_time.tv_sec = timeSrc._my_time.tv_sec;
-    _my_time.tv_usec = timeSrc._my_time.tv_usec;
+    _my_time.tv_sec = time_my_time.tv_sec;
+    _my_time.tv_usec = time_my_time.tv_usec;
 }
 //////////////////////////////////////////////////////////////
 // Function name : Time_Clock::operator==
@@ -425,7 +425,7 @@ inline const Time_Clock& Time_Clock::operator=(const Time_Clock& timeSrc)
     if (&timeSrc == this)
         return * this;
     
-    _my_time = timeSrc._my_time;
+    _my_time = time_my_time;
     return *this;
 }
 //////////////////////////////////////////////////////////////

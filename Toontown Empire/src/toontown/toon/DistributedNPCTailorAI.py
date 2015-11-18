@@ -1,9 +1,9 @@
-from src.otp.ai.AIBaseGlobal import *
+from otp.ai.AIBaseGlobal import *
 from panda3d.core import *
 from DistributedNPCToonBaseAI import *
 import ToonDNA
 from direct.task.Task import Task
-from src.toontown.estate import ClosetGlobals
+from toontown.estate import ClosetGlobals
 
 class DistributedNPCTailorAI(DistributedNPCToonBaseAI):
     freeClothes = simbase.config.GetBool('free-clothes', 0)

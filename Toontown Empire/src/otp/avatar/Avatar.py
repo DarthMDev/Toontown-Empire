@@ -6,16 +6,16 @@ from direct.showbase.PythonUtil import recordCreationStack
 from panda3d.core import *
 import random
 
-from src.otp.ai import MagicWordManager
-from src.otp.ai.MagicWordGlobal import *
-from src.otp.avatar.ShadowCaster import ShadowCaster
-from src.otp.chat import ChatUtil
-from src.otp.otpbase import OTPGlobals
-from src.otp.otpbase import OTPLocalizer
-from src.otp.otpbase import OTPRender
-from src.otp.nametag.Nametag import Nametag
-from src.otp.nametag.NametagGroup import NametagGroup
-from src.otp.nametag.NametagConstants import *
+from otp.ai import MagicWordManager
+from otp.ai.MagicWordGlobal import *
+from otp.avatar.ShadowCaster import ShadowCaster
+from otp.chat import ChatUtil
+from otp.otpbase import OTPGlobals
+from otp.otpbase import OTPLocalizer
+from otp.otpbase import OTPRender
+from otp.nametag.Nametag import Nametag
+from otp.nametag.NametagGroup import NametagGroup
+from otp.nametag.NametagConstants import *
 
 
 teleportNotify = DirectNotifyGlobal.directNotify.newCategory('Teleport')

@@ -1,7 +1,7 @@
 from panda3d.core import *
 from direct.gui.DirectGui import *
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 
 class BossLobbyGui(DirectFrame):
 
@@ -371,7 +371,7 @@ class BossLobbyGui(DirectFrame):
 
 # The following is made for use with the GUI editor.
 GUI_EDITOR = """
-from src.toontown.coghq.BossLobbyGui import BossLobbyGui
+from toontown.coghq.BossLobbyGui import BossLobbyGui
 
 test = BossLobbyGui(None, None)
 test.loadFrame(1, {'lobbyType': 1})

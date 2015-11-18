@@ -7,10 +7,10 @@ from direct.distributed import DistributedObject
 from direct.showutil import Rope
 from direct.showbase import PythonUtil
 from direct.task import Task
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.otp.otpbase import OTPGlobals
-from src.otp.nametag import NametagGlobals
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from otp.otpbase import OTPGlobals
+from otp.nametag import NametagGlobals
 import random
 
 class DistributedCashbotBossCrane(DistributedObject.DistributedObject, FSM.FSM):

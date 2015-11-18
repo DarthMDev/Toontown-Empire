@@ -1,7 +1,7 @@
 from direct.fsm.StatePush import StateVar
-from src.otp.level.EntityStateVarSet import EntityStateVarSet
+from otp.level.EntityStateVarSet import EntityStateVarSet
 from CogdoUtil import VariableContainer
-from src.toontown.cogdominium.CogdoEntityTypes import CogdoCraneGameSettings, CogdoCraneCogSettings
+from toontown.cogdominium.CogdoEntityTypes import CogdoCraneGameSettings, CogdoCraneCogSettings
 Gameplay = VariableContainer()
 Gameplay.SecondsUntilGameOver = 60.0 * 3.0
 Gameplay.TimeRunningOutSeconds = 45.0

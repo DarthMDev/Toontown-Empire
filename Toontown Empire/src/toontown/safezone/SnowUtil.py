@@ -1,4 +1,4 @@
-from src.toontown.battle import BattleParticles
+from toontown.battle import BattleParticles
 
 def createSnow(geom):
     snow = BattleParticles.loadParticleFile('snowdisk.ptf')

@@ -5,12 +5,12 @@ from direct.distributed import ClockDelta
 from direct.fsm import StateData
 from direct.task.Task import Task
 import ClosetGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toontowngui import TTDialog
-from src.toontown.toon import ToonDNA
-from src.toontown.makeatoon.MakeAToonGlobals import *
-from src.toontown.makeatoon import ShuffleButton
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toontowngui import TTDialog
+from toontown.toon import ToonDNA
+from toontown.makeatoon.MakeAToonGlobals import *
+from toontown.makeatoon import ShuffleButton
 
 class TrunkGUI(StateData.StateData):
     notify = directNotify.newCategory('TrunkGUI')

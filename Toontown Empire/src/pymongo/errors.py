@@ -14,12 +14,12 @@
 
 """Exceptions raised by PyMongo."""
 
-from src.bson.errors import *
+from bson.errors import *
 
 try:
     from ssl import CertificateError
 except ImportError:
-    from src.pymongo.ssl_match_hostname import CertificateError
+    from pymongo.ssl_match_hostname import CertificateError
 
 
 class PyMongoError(Exception):

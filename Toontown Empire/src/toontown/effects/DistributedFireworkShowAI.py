@@ -4,10 +4,10 @@ from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from direct.distributed.ClockDelta import *
 from direct.task import Task
 
-from src.otp.ai.MagicWordGlobal import *
+from otp.ai.MagicWordGlobal import *
 
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.parties import PartyGlobals
+from toontown.toonbase import ToontownGlobals
+from toontown.parties import PartyGlobals
 
 import FireworkShows
 import random

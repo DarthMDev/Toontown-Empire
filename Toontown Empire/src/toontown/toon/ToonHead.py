@@ -1,6 +1,6 @@
 from direct.actor import Actor
 from direct.task import Task
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 import string
 import random
 from panda3d.core import *
@@ -8,7 +8,7 @@ from direct.interval.IntervalGlobal import *
 from direct.fsm.ClassicFSM import ClassicFSM
 from direct.fsm.State import State
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toon import LaughingManGlobals
+from toontown.toon import LaughingManGlobals
 
 if not base.config.GetBool('want-new-anims', 1):
     HeadDict = {'dls': '/models/char/dogMM_Shorts-head-',

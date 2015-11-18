@@ -2,13 +2,13 @@ from pandac.PandaModules import ModelPool, TexturePool
 from direct.task.Task import Task
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
-from src.toontown.hood import Place
-from src.toontown.toonbase.ToonBaseGlobal import *
-from src.toontown.town import TownBattle
-from src.toontown.suit import Suit
-from src.toontown.building import Elevator
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import ToontownBattleGlobals
+from toontown.hood import Place
+from toontown.toonbase.ToonBaseGlobal import *
+from toontown.town import TownBattle
+from toontown.suit import Suit
+from toontown.building import Elevator
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownBattleGlobals
 
 class CogdoInterior(Place.Place):
     notify = DirectNotifyGlobal.directNotify.newCategory('CogdoInterior')

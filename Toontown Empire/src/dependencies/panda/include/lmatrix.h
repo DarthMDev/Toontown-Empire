@@ -33,10 +33,10 @@
 #include "lvecBase2.h"
 
 #include "fltnames.h"
-// lmatrix3_src.h includes lmatrix4_src.h.
-#include "lmatrix3_src.h"
+// lmatrix3_h includes lmatrix4_h.
+#include "lmatrix3_h"
 
 #include "dblnames.h"
-#include "lmatrix3_src.h"
+#include "lmatrix3_h"
 
 #endif

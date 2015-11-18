@@ -1,17 +1,17 @@
 from panda3d.core import *
 from direct.task.Task import Task
-from src.toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase.ToontownGlobals import *
 from direct.gui.DirectGui import *
 from direct.showbase import DirectObject
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toon import ToonTeleportPanel
-from src.toontown.suit import Suit
-from src.toontown.pets import Pet
-from src.otp.otpbase import OTPLocalizer
-from src.otp.otpbase import OTPGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toon import ToonTeleportPanel
+from toontown.suit import Suit
+from toontown.pets import Pet
+from otp.otpbase import OTPLocalizer
+from otp.otpbase import OTPGlobals
 globalFriendInviter = None
 
 def showFriendInviter(avId, avName, avDisableName):
@@ -72,7 +72,7 @@ class FriendInviter(DirectFrame):
          State.State('down', self.enterDown, self.exitDown),
          State.State('cancel', self.enterCancel, self.exitCancel)], 'off', 'off')
         self.context = None
-        from src.toontown.toon import ToonAvatarDetailPanel
+        from toontown.toon import ToonAvatarDetailPanel
         ToonTeleportPanel.hideTeleportPanel()
         ToonAvatarDetailPanel.hideAvatarDetail()
         buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')

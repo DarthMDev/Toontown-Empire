@@ -1,7 +1,7 @@
-from src.toontown.safezone.BRSafeZoneLoader import BRSafeZoneLoader
-from src.toontown.town.BRTownLoader import BRTownLoader
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.hood.ToonHood import ToonHood
+from toontown.safezone.BRSafeZoneLoader import BRSafeZoneLoader
+from toontown.town.BRTownLoader import BRTownLoader
+from toontown.toonbase import ToontownGlobals
+from toontown.hood.ToonHood import ToonHood
 
 class BRHood(ToonHood):
     notify = directNotify.newCategory('BRHood')

@@ -1,9 +1,9 @@
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 import FishGlobals
-from src.toontown.fishing import DistributedPondBingoManager
+from toontown.fishing import DistributedPondBingoManager
 from pandac.PandaModules import Vec3
 from direct.task import Task
 

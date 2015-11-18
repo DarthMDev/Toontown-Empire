@@ -5,9 +5,9 @@ from pandac.PandaModules import RenderAttrib
 from direct.actor.Actor import Actor
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import globalClockDelta
-from src.toontown.effects.FireworkShowMixin import FireworkShowMixin
-from src.toontown.effects.RocketExplosion import RocketExplosion
-from src.toontown.toonbase import TTLocalizer
+from toontown.effects.FireworkShowMixin import FireworkShowMixin
+from toontown.effects.RocketExplosion import RocketExplosion
+from toontown.toonbase import TTLocalizer
 from PartyGlobals import FireworkShows
 from PartyGlobals import ActivityIds
 from PartyGlobals import ActivityTypes

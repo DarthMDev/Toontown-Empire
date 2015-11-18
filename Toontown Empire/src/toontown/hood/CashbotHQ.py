@@ -1,7 +1,7 @@
-from src.toontown.coghq.CashbotCogHQLoader import CashbotCogHQLoader
-from src.toontown.toonbase import ToontownGlobals, TTLocalizer
-from src.toontown.hood.CogHood import CogHood
-from src.toontown.hood import ZoneUtil
+from toontown.coghq.CashbotCogHQLoader import CashbotCogHQLoader
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.hood.CogHood import CogHood
+from toontown.hood import ZoneUtil
 
 
 class CashbotHQ(CogHood):

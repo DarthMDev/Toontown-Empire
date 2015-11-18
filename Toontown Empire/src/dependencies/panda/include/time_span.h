@@ -121,7 +121,7 @@ inline void Time_Span::Set(long lDays, int nHours, int nMins, int nSecs, int use
 //////////////////////////////////////////////////////////////
 inline Time_Span::Time_Span(const Time_Span& Time_SpanSrc)
 {
-    _my_time = Time_SpanSrc._my_time;
+    _my_time = Time_Span_my_time;
 }
 
 //////////////////////////////////////////////////////////////
@@ -130,7 +130,7 @@ inline Time_Span::Time_Span(const Time_Span& Time_SpanSrc)
 //////////////////////////////////////////////////////////////
 inline Time_Span::Time_Span(const Time_Clock& Time_SpanSrc)
 {
-    _my_time = Time_SpanSrc._my_time;
+    _my_time = Time_Span_my_time;
 }
 
 //////////////////////////////////////////////////////////////
@@ -141,7 +141,7 @@ inline const Time_Span& Time_Span::operator=(const Time_Span& Time_SpanSrc)
 {
     if (&Time_SpanSrc == this)
         return * this;
-    _my_time = Time_SpanSrc._my_time; return *this;
+    _my_time = Time_Span_my_time; return *this;
 }
 
 //////////////////////////////////////////////////////////////

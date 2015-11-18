@@ -5,9 +5,9 @@ from direct.interval.IntervalGlobal import *
 import DistributedCloset
 import ClosetGlobals
 import TrunkGUI
-from src.toontown.toon import ToonDNA
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toon import ToonDNA
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
 N_A = 0
 
 class DistributedTrunk(DistributedCloset.DistributedCloset):

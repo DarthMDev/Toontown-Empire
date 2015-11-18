@@ -2,7 +2,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from direct.distributed.ClockDelta import globalClockDelta
 
-from src.toontown.parties import PartyGlobals, PartyUtils
+from toontown.parties import PartyGlobals, PartyUtils
 
 
 class DistributedPartyActivityAI(DistributedObjectAI):

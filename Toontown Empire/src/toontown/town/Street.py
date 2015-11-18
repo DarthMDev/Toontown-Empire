@@ -1,25 +1,25 @@
 from panda3d.core import *
-from src.toontown.battle.BattleProps import *
-from src.toontown.battle.BattleSounds import *
-from src.toontown.distributed.ToontownMsgTypes import *
+from toontown.battle.BattleProps import *
+from toontown.battle.BattleSounds import *
+from toontown.distributed.ToontownMsgTypes import *
 from direct.gui.DirectGui import cleanupDialog
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.hood import Place
-from src.toontown.battle import BattlePlace
+from toontown.hood import Place
+from toontown.battle import BattlePlace
 from direct.showbase import DirectObject
 from direct.fsm import StateData
 from direct.fsm import ClassicFSM, State
 from direct.task import Task
-from src.otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
-from src.toontown.battle import BattleParticles
-from src.toontown.building import Elevator
-from src.toontown.hood import ZoneUtil
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toon.Toon import teleportDebug
-from src.toontown.estate import HouseGlobals
-from src.toontown.toonbase import TTLocalizer
+from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
+from toontown.battle import BattleParticles
+from toontown.building import Elevator
+from toontown.hood import ZoneUtil
+from toontown.toonbase import ToontownGlobals
+from toontown.toon.Toon import teleportDebug
+from toontown.estate import HouseGlobals
+from toontown.toonbase import TTLocalizer
 from direct.interval.IntervalGlobal import *
-from src.otp.nametag import NametagGlobals
+from otp.nametag import NametagGlobals
 
 visualizeZones = base.config.GetBool('visualize-zones', 0)
 

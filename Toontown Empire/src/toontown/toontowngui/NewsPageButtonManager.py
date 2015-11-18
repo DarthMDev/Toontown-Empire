@@ -2,11 +2,11 @@ from pandac.PandaModules import VBase4, VBase3
 from direct.fsm import FSM
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectButton import DirectButton
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.coghq import CogHQBossBattle
+from toontown.toonbase import TTLocalizer
+from toontown.coghq import CogHQBossBattle
 
 class NewsPageButtonManager(FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('NewsPageButtonManager')
@@ -64,7 +64,7 @@ class NewsPageButtonManager(FSM.FSM):
         currentState = base.localAvatar.animFSM.getCurrentState().getName()
         if currentState == 'jumpAirborne':
             return
-        from src.toontown.toon import LocalToon
+        from toontown.toon import LocalToon
         if not LocalToon.WantNewsPage:
             return
         if base.cr and base.cr.playGame and base.cr.playGame.getPlace() and base.cr.playGame.getPlace().fsm:
@@ -164,7 +164,7 @@ class NewsPageButtonManager(FSM.FSM):
 
     def showAppropriateButton(self):
         self.notify.debugStateCall(self)
-        from src.toontown.toon import LocalToon
+        from toontown.toon import LocalToon
         if not LocalToon.WantNewsPage:
             return
         if not self.buttonsLoaded:

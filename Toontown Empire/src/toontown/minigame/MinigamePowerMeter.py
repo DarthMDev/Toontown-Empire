@@ -1,8 +1,8 @@
 from panda3d.core import *
-from src.toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase.ToontownGlobals import *
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 
 class MinigamePowerMeter(DirectFrame):
 

@@ -1,6 +1,6 @@
 from direct.fsm import ClassicFSM, State
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.hood.Hood import Hood
+from toontown.toonbase import ToontownGlobals
+from toontown.hood.Hood import Hood
 
 
 class CogHood(Hood):

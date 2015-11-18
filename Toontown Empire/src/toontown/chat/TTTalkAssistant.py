@@ -1,18 +1,18 @@
 import string
 import sys
 from direct.showbase import DirectObject
-from src.otp.otpbase import OTPLocalizer
-from src.toontown.toonbase import TTLocalizer
+from otp.otpbase import OTPLocalizer
+from toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
-from src.otp.otpbase import OTPGlobals
-from src.otp.speedchat import SCDecoders
+from otp.otpbase import OTPGlobals
+from otp.speedchat import SCDecoders
 from pandac.PandaModules import *
-from src.otp.chat.ChatGlobals import *
-from src.otp.chat.TalkGlobals import *
-from src.otp.speedchat import SpeedChatGlobals
-from src.otp.chat.TalkMessage import TalkMessage
-from src.otp.chat.TalkAssistant import TalkAssistant
-from src.toontown.speedchat import TTSCDecoders
+from otp.chat.ChatGlobals import *
+from otp.chat.TalkGlobals import *
+from otp.speedchat import SpeedChatGlobals
+from otp.chat.TalkMessage import TalkMessage
+from otp.chat.TalkAssistant import TalkAssistant
+from toontown.speedchat import TTSCDecoders
 import time
 
 class TTTalkAssistant(TalkAssistant):

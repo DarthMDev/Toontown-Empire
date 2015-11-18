@@ -1,10 +1,10 @@
 from direct.actor import Actor
 from direct.interval.IntervalGlobal import *
 from direct.showbase import Audio3DManager
-from src.otp.ai.MagicWordGlobal import *
-from src.toontown.dna.DNAParser import *
-from src.toontown.hood import ZoneUtil
-from src.toontown.toon import DistributedNPCToonBase
+from otp.ai.MagicWordGlobal import *
+from toontown.dna.DNAParser import *
+from toontown.hood import ZoneUtil
+from toontown.toon import DistributedNPCToonBase
 from DistributedToonInterior import DistributedToonInterior
 import ToonInteriorColors, random
 

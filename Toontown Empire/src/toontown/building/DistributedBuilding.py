@@ -6,16 +6,16 @@ from ElevatorConstants import *
 from ElevatorUtils import *
 from SuitBuildingGlobals import *
 from direct.gui.DirectGui import *
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.distributed import DistributedObject
 import random
-from src.toontown.suit import SuitDNA
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.distributed import DelayDelete
-from src.toontown.toon import TTEmote
-from src.otp.avatar import Emote
+from toontown.suit import SuitDNA
+from toontown.toonbase import TTLocalizer
+from toontown.distributed import DelayDelete
+from toontown.toon import TTEmote
+from otp.avatar import Emote
 import sys
 FO_DICT = {'s': 'tt_m_ara_cbe_fieldOfficeMoverShaker',
  'l': 'tt_m_ara_cbe_fieldOfficeLegalEagle',
@@ -324,7 +324,7 @@ class DistributedBuilding(DistributedObject.DistributedObject):
                 corpIcon = cogIcons.find(SuitDNA.suitDeptModelPaths[dept]).copyTo(self.cab)
             corpIcon.setPos(0, 6.79, 6.8)
             corpIcon.setScale(3)
-            from src.toontown.suit import Suit
+            from toontown.suit import Suit
             corpIcon.setColor(Suit.Suit.medallionColors[dept])
             cogIcons.removeNode()
         self.leftDoor = self.elevatorModel.find('**/left-door')

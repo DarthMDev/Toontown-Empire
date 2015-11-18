@@ -38,17 +38,17 @@ import warnings
 import weakref
 from collections import defaultdict
 
-from src.bson.py3compat import (integer_types,
+from bson.py3compat import (integer_types,
                             string_type)
-from src.bson.son import SON
-from src.pymongo.common import *
-from src.pymongo.database import * 
-from src.pymongo.message import *
-from src.pymongo.periodic_executor import *
-from src.pymongo.uri_parser import *                     
-from src.pymongo.client_options import ClientOptions
-from src.pymongo.cursor_manager import CursorManager
-from src.pymongo.errors import (AutoReconnect,
+from bson.son import SON
+from pymongo.common import *
+from pymongo.database import * 
+from pymongo.message import *
+from pymongo.periodic_executor import *
+from pymongo.uri_parser import *                     
+from pymongo.client_options import ClientOptions
+from pymongo.cursor_manager import CursorManager
+from pymongo.errors import (AutoReconnect,
                             ConfigurationError,
                             ConnectionFailure,
                             InvalidOperation,
@@ -56,13 +56,13 @@ from src.pymongo.errors import (AutoReconnect,
                             NetworkTimeout,
                             NotMasterError,
                             OperationFailure)
-from src.pymongo.read_preferences import ReadPreference
-from src.pymongo.server_selectors import (writable_preferred_server_selector,
+from pymongo.read_preferences import ReadPreference
+from pymongo.server_selectors import (writable_preferred_server_selector,
                                       writable_server_selector)
-from src.pymongo.server_type import SERVER_TYPE
-from src.pymongo.topology import Topology
-from src.pymongo.topology_description import TOPOLOGY_TYPE
-from src.pymongo.settings import TopologySettings
+from pymongo.server_type import SERVER_TYPE
+from pymongo.topology import Topology
+from pymongo.topology_description import TOPOLOGY_TYPE
+from pymongo.settings import TopologySettings
 
 
 class MongoClient(BaseObject):

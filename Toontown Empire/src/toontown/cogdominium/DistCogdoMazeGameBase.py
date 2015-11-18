@@ -1,5 +1,5 @@
 from direct.showbase.RandomNumGen import RandomNumGen
-from src.toontown.cogdominium.CogdoMaze import CogdoMazeFactory
+from toontown.cogdominium.CogdoMaze import CogdoMazeFactory
 import CogdoMazeGameGlobals as Globals
 
 class DistCogdoMazeGameBase:

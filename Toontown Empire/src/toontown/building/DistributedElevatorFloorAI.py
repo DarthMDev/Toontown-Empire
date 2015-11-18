@@ -4,8 +4,8 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
 from direct.fsm.FSM import FSM
 from direct.task import Task
-from src.otp.ai.AIBase import *
-from src.toontown.toonbase import ToontownGlobals
+from otp.ai.AIBase import *
+from toontown.toonbase import ToontownGlobals
 
 
 class DistributedElevatorFloorAI(DistributedElevatorFSMAI.DistributedElevatorFSMAI):

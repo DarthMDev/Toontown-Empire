@@ -1,4 +1,4 @@
-from src.toontown.parties.DistributedPartyTrampolineActivity import DistributedPartyTrampolineActivity
+from toontown.parties.DistributedPartyTrampolineActivity import DistributedPartyTrampolineActivity
 
 class DistributedPartyValentineTrampolineActivity(DistributedPartyTrampolineActivity):
 

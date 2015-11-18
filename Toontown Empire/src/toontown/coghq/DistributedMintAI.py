@@ -1,9 +1,9 @@
 from direct.distributed import DistributedObjectAI
-from src.otp.level import DistributedLevelAI
+from otp.level import DistributedLevelAI
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.coghq import MintLayout, DistributedMintRoomAI
-from src.toontown.coghq import BattleExperienceAggregatorAI
+from toontown.toonbase import ToontownGlobals
+from toontown.coghq import MintLayout, DistributedMintRoomAI
+from toontown.coghq import BattleExperienceAggregatorAI
 
 class DistributedMintAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedMintAI')

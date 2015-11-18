@@ -1,10 +1,10 @@
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 import PhoneGlobals
-from src.toontown.catalog import CatalogScreen
-from src.toontown.catalog import CatalogItem
-from src.toontown.catalog import GiftAvatar
-from src.toontown.toontowngui import TTDialog
-from src.toontown.toonbase import TTLocalizer
+from toontown.catalog import CatalogScreen
+from toontown.catalog import CatalogItem
+from toontown.catalog import GiftAvatar
+from toontown.toontowngui import TTDialog
+from toontown.toonbase import TTLocalizer
 import DistributedHouseInterior
 from direct.actor import Actor
 import DistributedFurnitureItem
@@ -14,7 +14,7 @@ from direct.showutil import Rope
 from direct.directnotify.DirectNotifyGlobal import *
 from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-from src.toontown.quest import Quests
+from toontown.quest import Quests
 from direct.task import Task
 
 class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):

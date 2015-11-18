@@ -1,21 +1,21 @@
 from panda3d.core import *
 from direct.showbase.PythonUtil import weightedChoice, randFloat, lerp
 from direct.showbase.PythonUtil import contains, list2dict
-from src.toontown.toonbase.PythonUtil import clampScalar
+from toontown.toonbase.PythonUtil import clampScalar
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedSmoothNodeAI
 from direct.distributed import DistributedSmoothNodeBase
 from direct.distributed import ClockDelta
 from direct.fsm import ClassicFSM, State
 from direct.interval.IntervalGlobal import *
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.task import Task
-from src.toontown.pets import PetLookerAI
-from src.toontown.pets import PetConstants, PetDNA, PetTraits
-from src.toontown.pets import PetObserve, PetBrain, PetMood
-from src.toontown.pets import PetActionFSM, PetBase, PetGoal, PetTricks
+from toontown.pets import PetLookerAI
+from toontown.pets import PetConstants, PetDNA, PetTraits
+from toontown.pets import PetObserve, PetBrain, PetMood
+from toontown.pets import PetActionFSM, PetBase, PetGoal, PetTricks
 from direct.fsm import FSM
-from src.toontown.toon import DistributedToonAI
+from toontown.toon import DistributedToonAI
 import random
 import time
 import string

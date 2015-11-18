@@ -1,7 +1,7 @@
 from direct.interval.IntervalGlobal import *
 from direct.task.Task import Task
-from src.otp.otpbase import OTPGlobals
-from src.toontown.toonbase.ToonBaseGlobal import *
+from otp.otpbase import OTPGlobals
+from toontown.toonbase.ToonBaseGlobal import *
 import ArrowKeys
 
 class OrthoDrive:

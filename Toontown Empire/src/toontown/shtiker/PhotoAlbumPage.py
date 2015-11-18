@@ -3,10 +3,10 @@ import ShtikerPage
 import ShtikerBook
 from direct.gui.DirectGui import *
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 import os
 import string
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from sys import platform
 
 class PhotoAlbumPage(ShtikerPage.ShtikerPage):

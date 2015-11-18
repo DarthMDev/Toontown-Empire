@@ -1,7 +1,7 @@
 from direct.showbase.PythonUtil import Functor
-from src.otp.level import EntityCreatorAI
-from src.toontown.cogdominium.CogdoLevelMgrAI import CogdoLevelMgrAI
-from src.toontown.cogdominium import CogdoCraneGameConsts
+from otp.level import EntityCreatorAI
+from toontown.cogdominium.CogdoLevelMgrAI import CogdoLevelMgrAI
+from toontown.cogdominium import CogdoCraneGameConsts
 
 class CogdoEntityCreatorAI(EntityCreatorAI.EntityCreatorAI):
 

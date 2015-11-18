@@ -1,7 +1,7 @@
 from pandac.PandaModules import NodePath
 
-from src.toontown.modpanel.ModPanelFile import ModPanelFile
-from src.toontown.modpanel.ModPanelButton import ModPanelButton
+from toontown.modpanel.ModPanelFile import ModPanelFile
+from toontown.modpanel.ModPanelButton import ModPanelButton
 
 from direct.showbase.DirectObject import DirectObject
 from direct.gui.DirectGui import *

@@ -1,9 +1,9 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from direct.fsm.FSM import FSM
-from src.toontown.estate.DistributedEstateAI import DistributedEstateAI
-from src.toontown.estate.DistributedHouseAI import DistributedHouseAI
-from src.toontown.toon import ToonDNA
+from toontown.estate.DistributedEstateAI import DistributedEstateAI
+from toontown.estate.DistributedHouseAI import DistributedHouseAI
+from toontown.toon import ToonDNA
 import HouseGlobals
 import functools
 

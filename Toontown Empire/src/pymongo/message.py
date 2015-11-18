@@ -24,17 +24,17 @@ import datetime
 import random
 import struct
 
-import src.bson
-from src.bson.codec_options import DEFAULT_CODEC_OPTIONS
-from src.bson.py3compat import b, StringIO
-from src.bson.son import SON
+import bson
+from bson.codec_options import DEFAULT_CODEC_OPTIONS
+from bson.py3compat import b, StringIO
+from bson.son import SON
 try:
-    from src.pymongo import _cmessage
+    from pymongo import _cmessage
     _use_c = True
 except ImportError:
     _use_c = False
-from src.pymongo.errors import DocumentTooLarge, InvalidOperation, OperationFailure
-from src.pymongo.read_preferences import ReadPreference
+from pymongo.errors import DocumentTooLarge, InvalidOperation, OperationFailure
+from pymongo.read_preferences import ReadPreference
 
 
 MAX_INT32 = 2147483647

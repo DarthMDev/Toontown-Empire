@@ -2,10 +2,10 @@ from direct.gui.DirectGui import *
 from panda3d.core import *
 
 import ToonHead
-from src.toontown.distributed import DelayDelete
-from src.otp.nametag.Nametag import Nametag
-from src.otp.nametag.NametagFloat2d import NametagFloat2d
-from src.toontown.toonbase import ToontownGlobals
+from toontown.distributed import DelayDelete
+from otp.nametag.Nametag import Nametag
+from otp.nametag.NametagFloat2d import NametagFloat2d
+from toontown.toonbase import ToontownGlobals
 
 
 class ToonHeadFrame(DirectFrame):

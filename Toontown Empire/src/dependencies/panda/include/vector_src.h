@@ -1,4 +1,4 @@
-// Filename: vector_src.h
+// Filename: vector_h
 // Created by:  drose (15May01)
 //
 ////////////////////////////////////////////////////////////////////
@@ -20,7 +20,7 @@
 //
 // To use this file you must #define a number of symbols and then
 // #include it from a .h file.  You also must do the same thing with
-// vector_something_src.cxx from a .cxx file.
+// vector_something_cxx from a .cxx file.
 //
 // This is necessary because of the complexity involved in exporting a
 // vector class from a DLL.  If we are using the Dinkumware STL

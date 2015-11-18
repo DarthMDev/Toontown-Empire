@@ -1,7 +1,7 @@
 from MarginPopup import *
 from ClickablePopup import *
-from src.otp.nametag import NametagGlobals
-from src.otp.nametag.NametagConstants import *
+from otp.nametag import NametagGlobals
+from otp.nametag.NametagConstants import *
 
 class WhisperPopup(MarginPopup, ClickablePopup):
     WTNormal = WTNormal

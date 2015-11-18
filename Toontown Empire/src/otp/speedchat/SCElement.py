@@ -4,7 +4,7 @@ from direct.task import Task
 from SCConstants import *
 from SCObject import SCObject
 from direct.showbase.PythonUtil import boolEqual
-from src.otp.otpbase import OTPGlobals
+from otp.otpbase import OTPGlobals
 
 class SCElement(SCObject, NodePath):
     font = OTPGlobals.getInterfaceFont()

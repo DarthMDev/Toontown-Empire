@@ -1,7 +1,7 @@
 from panda3d.core import *
 from direct.showbase.PythonUtil import Enum, invertDictLossless
 import math
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 OurPetsMoodChangedKey = 'OurPetsMoodChanged'
 ThinkPeriod = 1.5
 MoodDriftPeriod = 300.0

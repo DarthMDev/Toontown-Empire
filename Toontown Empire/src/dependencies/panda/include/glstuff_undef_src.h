@@ -1,4 +1,4 @@
-// Filename: glstuff_undef_src.h
+// Filename: glstuff_undef_h
 // Created by:  drose (09Feb04)
 //
 ////////////////////////////////////////////////////////////////////
@@ -13,7 +13,7 @@
 ////////////////////////////////////////////////////////////////////
 
 // This header file #undefs all the stuff you had to #define to
-// include glstuff_src.h or glstuff_src.cxx.
+// include glstuff_h or glstuff_cxx.
 
 #undef GLP
 #undef CLP

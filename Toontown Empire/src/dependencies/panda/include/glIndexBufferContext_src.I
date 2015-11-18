@@ -1,4 +1,4 @@
-// Filename: glIndexBufferContext_src.I
+// Filename: glIndexBufferContext_I
 // Created by:  drose (17Mar05)
 //
 ////////////////////////////////////////////////////////////////////

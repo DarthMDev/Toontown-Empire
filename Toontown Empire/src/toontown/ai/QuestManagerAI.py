@@ -1,8 +1,8 @@
-from src.toontown.toon.DistributedNPCSpecialQuestGiverAI import DistributedNPCSpecialQuestGiverAI
-from src.toontown.building import FADoorCodes
-from src.otp.ai.MagicWordGlobal import *
-from src.toontown.hood import ZoneUtil
-from src.toontown.quest import Quests
+from toontown.toon.DistributedNPCSpecialQuestGiverAI import DistributedNPCSpecialQuestGiverAI
+from toontown.building import FADoorCodes
+from otp.ai.MagicWordGlobal import *
+from toontown.hood import ZoneUtil
+from toontown.quest import Quests
 
 
 QuestIdIndex = 0

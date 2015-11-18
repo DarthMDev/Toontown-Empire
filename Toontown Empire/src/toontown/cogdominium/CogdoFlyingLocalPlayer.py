@@ -9,10 +9,10 @@ from direct.interval.IntervalGlobal import Func, LerpFunc, LerpPosInterval, Lerp
 from direct.interval.MetaInterval import Sequence, Parallel
 from direct.showbase.PythonUtil import bound as clamp
 from direct.distributed.ClockDelta import globalClockDelta
-from src.otp.otpbase import OTPGlobals
-from src.toontown.minigame.OrthoDrive import OrthoDrive
-from src.toontown.minigame.OrthoWalk import OrthoWalk
-from src.toontown.toonbase import TTLocalizer
+from otp.otpbase import OTPGlobals
+from toontown.minigame.OrthoDrive import OrthoDrive
+from toontown.minigame.OrthoWalk import OrthoWalk
+from toontown.toonbase import TTLocalizer
 from CogdoFlyingCollisions import CogdoFlyingCollisions
 from CogdoFlyingPlayer import CogdoFlyingPlayer
 from CogdoFlyingGuiManager import CogdoFlyingGuiManager

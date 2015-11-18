@@ -1,12 +1,12 @@
 from direct.gui.DirectGui import *
 from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 from direct.task import Task
-from src.toontown.estate import GardenGlobals
+from toontown.estate import GardenGlobals
 from direct.interval.IntervalGlobal import *
-from src.toontown.estate import SpecialsPhoto
+from toontown.estate import SpecialsPhoto
 USE_SCROLLING_BEAN_BOX = False
 JELLY_BEAN_PICKER_HAS_EMPTY_BOX = False
 CAN_CHANGE_BEAN_COLOR = True

@@ -4,9 +4,9 @@ from direct.task.Task import Task
 import random
 from direct.fsm import ClassicFSM, State
 from direct.actor import Actor
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.hood import Place
+from toontown.hood import Place
 
 class DDPlayground(Playground.Playground):
     notify = DirectNotifyGlobal.directNotify.newCategory('DDPlayground')

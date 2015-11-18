@@ -4,16 +4,16 @@ from panda3d.core import *
 import string
 import time
 
-from src.otp.ai.MagicWordGlobal import *
-from src.otp.avatar import Avatar, PlayerBase, DistributedAvatar
-from src.otp.avatar.Avatar import teleportNotify
-from src.otp.chat import ChatGarbler, TalkAssistant
-from src.otp.distributed.TelemetryLimited import TelemetryLimited
-from src.otp.otpbase import OTPGlobals, OTPLocalizer
-from src.otp.speedchat import SCDecoders
-from src.otp.nametag.NametagConstants import *
-from src.otp.margins.WhisperPopup import WhisperPopup
-from src.toontown.modpanel.ModPanel import ModPanel
+from otp.ai.MagicWordGlobal import *
+from otp.avatar import Avatar, PlayerBase, DistributedAvatar
+from otp.avatar.Avatar import teleportNotify
+from otp.chat import ChatGarbler, TalkAssistant
+from otp.distributed.TelemetryLimited import TelemetryLimited
+from otp.otpbase import OTPGlobals, OTPLocalizer
+from otp.speedchat import SCDecoders
+from otp.nametag.NametagConstants import *
+from otp.margins.WhisperPopup import WhisperPopup
+from toontown.modpanel.ModPanel import ModPanel
 
 class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBase, TelemetryLimited):
     chatGarbler = ChatGarbler.ChatGarbler({'default': OTPLocalizer.ChatGarblerDefault})

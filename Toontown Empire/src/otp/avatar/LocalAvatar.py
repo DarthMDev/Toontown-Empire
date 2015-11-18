@@ -16,11 +16,11 @@ from panda3d.core import *
 import random
 
 import DistributedAvatar
-from src.otp.ai.MagicWordGlobal import *
-from src.otp.otpbase import OTPGlobals
-from src.otp.otpbase import OTPLocalizer
-from src.otp.nametag.NametagConstants import *
-from src.toontown.toonbase import ToontownGlobals
+from otp.ai.MagicWordGlobal import *
+from otp.otpbase import OTPGlobals
+from otp.otpbase import OTPLocalizer
+from otp.nametag.NametagConstants import *
+from toontown.toonbase import ToontownGlobals
 
 
 class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.DistributedSmoothNode):

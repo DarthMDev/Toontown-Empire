@@ -6,9 +6,9 @@ from DistributedNPCToonBase import *
 import NPCToons
 import TailorClothesGUI
 import ToonDNA
-from src.otp.nametag.NametagConstants import *
-from src.toontown.estate import ClosetGlobals
-from src.toontown.toonbase import TTLocalizer
+from otp.nametag.NametagConstants import *
+from toontown.estate import ClosetGlobals
+from toontown.toonbase import TTLocalizer
 
 
 class DistributedNPCTailor(DistributedNPCToonBase):

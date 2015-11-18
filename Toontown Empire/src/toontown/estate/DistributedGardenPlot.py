@@ -4,11 +4,11 @@ from direct.showbase.ShowBase import *
 from direct.interval.IntervalGlobal import *
 from DistributedGardenBox import DistributedGardenBox
 import GardenGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.estate import PlantingGUI
-from src.toontown.estate import PlantTreeGUI
-from src.toontown.estate import ToonStatueSelectionGUI
-from src.toontown.toontowngui import TTDialog
+from toontown.toonbase import TTLocalizer
+from toontown.estate import PlantingGUI
+from toontown.estate import PlantTreeGUI
+from toontown.estate import ToonStatueSelectionGUI
+from toontown.toontowngui import TTDialog
 from pandac.PandaModules import Vec4
 from pandac.PandaModules import NodePath
 import types

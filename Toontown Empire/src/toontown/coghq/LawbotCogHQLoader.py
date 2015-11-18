@@ -7,9 +7,9 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import State
 from direct.fsm import StateData
 from direct.gui import DirectGui
-from src.toontown.toon import Toon
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toon import Toon
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
 
 
 aspectSF = 0.7227

@@ -16,15 +16,15 @@
 """Tools to parse and validate a MongoDB URI."""
 import warnings
 
-from src.bson.py3compat import PY3, iteritems, string_type
+from bson.py3compat import PY3, iteritems, string_type
 
 if PY3:
     from urllib.parse import unquote_plus
 else:
     from urllib import unquote_plus
 
-from src.pymongo.common import (validate as _validate, get_validated_options)
-from src.pymongo.errors import ConfigurationError, InvalidURI
+from pymongo.common import (validate as _validate, get_validated_options)
+from pymongo.errors import ConfigurationError, InvalidURI
 
 
 SCHEME = 'mongodb://'

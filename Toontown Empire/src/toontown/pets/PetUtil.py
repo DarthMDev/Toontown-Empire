@@ -1,6 +1,6 @@
-from src.toontown.pets import PetDNA, PetTraits, PetConstants
+from toontown.pets import PetDNA, PetTraits, PetConstants
 from direct.showbase import PythonUtil
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 import random
 
 def getPetInfoFromSeed(seed, safezoneId):

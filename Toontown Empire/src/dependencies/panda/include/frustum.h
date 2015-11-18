@@ -23,10 +23,10 @@
 #include "config_mathutil.h"
 
 #include "fltnames.h"
-#include "frustum_src.h"
+#include "frustum_h"
 
 #include "dblnames.h"
-#include "frustum_src.h"
+#include "frustum_h"
 
 #ifndef STDFLOAT_DOUBLE
 typedef LFrustumf LFrustum;

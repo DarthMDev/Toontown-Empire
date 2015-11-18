@@ -2,7 +2,7 @@ from direct.interval.IntervalGlobal import LerpFunctionInterval
 from direct.gui.DirectGui import DirectLabel, DirectFrame, DGG
 from direct.showbase.PythonUtil import bound as clamp
 from pandac.PandaModules import TextNode, NodePath
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 import CogdoUtil
 import CogdoFlyingGameGlobals as Globals
 

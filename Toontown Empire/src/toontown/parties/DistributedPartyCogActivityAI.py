@@ -1,8 +1,8 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.task import Task
-from src.toontown.parties.DistributedPartyTeamActivityAI import DistributedPartyTeamActivityAI
-from src.toontown.parties import PartyGlobals
-from src.toontown.toonbase import TTLocalizer
+from toontown.parties.DistributedPartyTeamActivityAI import DistributedPartyTeamActivityAI
+from toontown.parties import PartyGlobals
+from toontown.toonbase import TTLocalizer
 
 NORMAL_HIT = 1
 CRITICAL_HIT = 3

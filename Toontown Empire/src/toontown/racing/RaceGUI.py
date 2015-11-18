@@ -1,5 +1,5 @@
 from panda3d.core import *
-from src.toontown.toonbase.PythonUtil import clampScalar
+from toontown.toonbase.PythonUtil import clampScalar
 from direct.distributed.ClockDelta import *
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
@@ -7,14 +7,14 @@ from direct.gui.DirectLabel import *
 from direct.gui.DirectButton import *
 from direct.showbase import BulletinBoardWatcher
 from direct.interval.IntervalGlobal import *
-from src.otp.otpbase import OTPGlobals
+from otp.otpbase import OTPGlobals
 from direct.interval.IntervalGlobal import *
-from src.toontown.toonbase import ToontownGlobals, TTLocalizer
-from src.toontown.racing.KartDNA import InvalidEntry, getAccessory, getDefaultColor
-from src.toontown.racing.RaceHeadFrame import RaceHeadFrame
-from src.toontown.racing.RaceGag import RaceGag
-from src.toontown.racing.RaceEndPanels import RaceEndPanel
-from src.toontown.racing import RaceGlobals
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.racing.KartDNA import InvalidEntry, getAccessory, getDefaultColor
+from toontown.racing.RaceHeadFrame import RaceHeadFrame
+from toontown.racing.RaceGag import RaceGag
+from toontown.racing.RaceEndPanels import RaceEndPanel
+from toontown.racing import RaceGlobals
 from pandac.PandaModules import CardMaker, OrthographicLens, LineSegs
 from direct.particles.ParticleEffect import *
 from math import fmod

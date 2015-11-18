@@ -7,7 +7,7 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from pandac.PandaModules import NodePath
 from direct.directutil import Mopath
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.actor import Actor
 import ButterflyGlobals
 from direct.showbase import RandomNumGen

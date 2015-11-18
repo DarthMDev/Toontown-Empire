@@ -1,25 +1,25 @@
 from panda3d.core import *
-from src.toontown.battle.BattleProps import *
-from src.toontown.battle.BattleSounds import *
-from src.toontown.distributed.ToontownMsgTypes import *
-from src.toontown.toonbase.ToontownGlobals import *
+from toontown.battle.BattleProps import *
+from toontown.battle.BattleSounds import *
+from toontown.distributed.ToontownMsgTypes import *
+from toontown.toonbase.ToontownGlobals import *
 from direct.gui.DirectGui import cleanupDialog
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.hood import Place
+from toontown.hood import Place
 from direct.showbase import DirectObject
 from direct.fsm import StateData
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.task import Task
 import TownBattle
-from src.toontown.toon import Toon
-from src.toontown.toon.Toon import teleportDebug
-from src.toontown.battle import BattleParticles
+from toontown.toon import Toon
+from toontown.toon.Toon import teleportDebug
+from toontown.battle import BattleParticles
 from direct.fsm import StateData
-from src.toontown.building import ToonInterior
-from src.toontown.hood import QuietZoneState, ZoneUtil, HydrantInteractiveProp, MailboxInteractiveProp, TrashcanInteractiveProp
+from toontown.building import ToonInterior
+from toontown.hood import QuietZoneState, ZoneUtil, HydrantInteractiveProp, MailboxInteractiveProp, TrashcanInteractiveProp
 from direct.interval.IntervalGlobal import *
-from src.toontown.dna.DNAParser import DNABulkLoader
+from toontown.dna.DNAParser import DNABulkLoader
 
 class TownLoader(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('TownLoader')
@@ -298,7 +298,7 @@ class TownLoader(StateData.StateData):
                 else:
                     className = animPropNode.getName()[14:-8]
                 symbols = {}
-                base.cr.importModule(symbols, 'src.toontown.hood', [className])
+                base.cr.importModule(symbols, 'toontown.hood', [className])
                 classObj = getattr(symbols[className], className)
                 animPropObj = classObj(animPropNode)
                 animPropList = self.animPropDict.setdefault(i, [])

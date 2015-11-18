@@ -1,5 +1,5 @@
-from src.toontown.safezone import DGPlayground
-from src.toontown.safezone import SafeZoneLoader
+from toontown.safezone import DGPlayground
+from toontown.safezone import SafeZoneLoader
 
 
 class DGSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):

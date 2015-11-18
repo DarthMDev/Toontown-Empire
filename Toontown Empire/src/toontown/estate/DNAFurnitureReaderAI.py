@@ -1,6 +1,6 @@
-from src.toontown.catalog.CatalogItemList import CatalogItemList
-from src.toontown.catalog.CatalogFurnitureItem import CatalogFurnitureItem
-from src.toontown.catalog import CatalogItem
+from toontown.catalog.CatalogItemList import CatalogItemList
+from toontown.catalog.CatalogFurnitureItem import CatalogFurnitureItem
+from toontown.catalog import CatalogItem
 
 # Mapping of DNA prop codes to furniture ID values. Use None to ignore a code.
 DNA2Furniture = {

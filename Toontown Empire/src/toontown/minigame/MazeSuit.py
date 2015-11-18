@@ -4,9 +4,9 @@ from direct.interval.LerpInterval import LerpPosInterval, LerpHprInterval
 from direct.showbase.RandomNumGen import RandomNumGen
 from pandac.PandaModules import Point3, WaitInterval
 from pandac.PandaModules import CollisionSphere, CollisionNode
-from src.toontown.suit import Suit
-from src.toontown.suit import SuitDNA
-from src.toontown.toonbase import ToontownGlobals
+from toontown.suit import Suit
+from toontown.suit import SuitDNA
+from toontown.toonbase import ToontownGlobals
 import MazeGameGlobals
 
 class MazeSuit(DirectObject):

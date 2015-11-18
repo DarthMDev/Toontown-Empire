@@ -1,9 +1,9 @@
-from src.toontown.battle import DistributedBattleAI
-from src.toontown.battle import DistributedBattleBaseAI
+from toontown.battle import DistributedBattleAI
+from toontown.battle import DistributedBattleBaseAI
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import State
 from direct.fsm import ClassicFSM
-from src.toontown.battle.BattleBase import *
+from toontown.battle.BattleBase import *
 import CogDisguiseGlobals
 from direct.showbase.PythonUtil import addListsByValue
 

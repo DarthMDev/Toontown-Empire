@@ -1,5 +1,5 @@
 from panda3d.core import *
-from src.toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase.ToonBaseGlobal import *
 from direct.interval.IntervalGlobal import *
 from DistributedMinigame import *
 from direct.distributed.ClockDelta import *
@@ -12,8 +12,8 @@ import RingTrack
 import RingGameGlobals
 import RingGroup
 import RingTrackGroups
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 
 class DistributedRingGame(DistributedMinigame):
     UPDATE_ENVIRON_TASK = 'RingGameUpdateEnvironTask'

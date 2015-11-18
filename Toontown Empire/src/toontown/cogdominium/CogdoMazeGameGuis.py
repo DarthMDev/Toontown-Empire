@@ -4,10 +4,10 @@ from direct.task.Task import Task
 from direct.interval.MetaInterval import Sequence, Parallel
 from direct.interval.FunctionInterval import Wait, Func
 from pandac.PandaModules import TextNode, NodePath, Point3, CardMaker
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownIntervals
-from src.toontown.minigame.MazeMapGui import MazeMapGui
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownIntervals
+from toontown.minigame.MazeMapGui import MazeMapGui
 import CogdoMazeGameGlobals as Globals
 import CogdoUtil
 

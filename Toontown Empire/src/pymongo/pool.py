@@ -17,22 +17,22 @@ import os
 import socket
 import threading
 
-from src.bson import DEFAULT_CODEC_OPTIONS
-from src.bson.py3compat import u, itervalues
-from src.pymongo import auth, helpers, thread_util
-from src.pymongo.errors import (AutoReconnect,
+from bson import DEFAULT_CODEC_OPTIONS
+from bson.py3compat import u, itervalues
+from pymongo import auth, helpers, thread_util
+from pymongo.errors import (AutoReconnect,
                             ConnectionFailure,
                             DocumentTooLarge,
                             NetworkTimeout,
                             NotMasterError,
                             OperationFailure)
-from src.pymongo.ismaster import IsMaster
-from src.pymongo.monotonic import time as _time
-from src.pymongo.network import (command,
+from pymongo.ismaster import IsMaster
+from pymongo.monotonic import time as _time
+from pymongo.network import (command,
                              receive_message,
                              socket_closed)
-from src.pymongo.read_preferences import ReadPreference
-from src.pymongo.server_type import SERVER_TYPE
+from pymongo.read_preferences import ReadPreference
+from pymongo.server_type import SERVER_TYPE
 
 
 # If the first getaddrinfo call of this interpreter's life is on a thread,
@@ -45,7 +45,7 @@ try:
     from ssl import match_hostname, CertificateError
 except ImportError:
     # These don't require the ssl module
-    from src.pymongo.ssl_match_hostname import match_hostname, CertificateError
+    from pymongo.ssl_match_hostname import match_hostname, CertificateError
 
 
 def _raise_connection_failure(address, error):

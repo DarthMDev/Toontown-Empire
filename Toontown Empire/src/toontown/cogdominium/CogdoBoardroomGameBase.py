@@ -1,5 +1,5 @@
-from src.toontown.cogdominium import CogdoBoardroomGameSpec
-from src.toontown.cogdominium import CogdoBoardroomGameConsts as Consts
+from toontown.cogdominium import CogdoBoardroomGameSpec
+from toontown.cogdominium import CogdoBoardroomGameConsts as Consts
 
 class CogdoBoardroomGameBase:
 

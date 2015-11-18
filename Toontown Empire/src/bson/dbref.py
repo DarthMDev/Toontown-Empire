@@ -16,8 +16,8 @@
 
 from copy import deepcopy
 
-from src.bson.py3compat import iteritems, string_type
-from src.bson.son import SON
+from bson.py3compat import iteritems, string_type
+from bson.son import SON
 
 
 class DBRef(object):

@@ -4,13 +4,13 @@ from direct.fsm import ClassicFSM, State
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.gui.DirectGui import DirectLabel
 from direct.interval.IntervalGlobal import Sequence, LerpScaleInterval, LerpFunctionInterval, Func, Parallel, LerpPosInterval, Wait, SoundInterval, LerpColorScaleInterval
-from src.toontown.toonbase import ToontownGlobals, TTLocalizer, ToontownTimer
-from src.toontown.minigame import ArrowKeys
-from src.toontown.minigame import DistributedMinigame
-from src.toontown.minigame import DistributedIceWorld
-from src.toontown.minigame import IceGameGlobals
-from src.toontown.minigame import MinigameAvatarScorePanel
-from src.toontown.minigame import IceTreasure
+from toontown.toonbase import ToontownGlobals, TTLocalizer, ToontownTimer
+from toontown.minigame import ArrowKeys
+from toontown.minigame import DistributedMinigame
+from toontown.minigame import DistributedIceWorld
+from toontown.minigame import IceGameGlobals
+from toontown.minigame import MinigameAvatarScorePanel
+from toontown.minigame import IceTreasure
 
 class DistributedIceGame(DistributedMinigame.DistributedMinigame, DistributedIceWorld.DistributedIceWorld):
     notify = directNotify.newCategory('DistributedIceGame')

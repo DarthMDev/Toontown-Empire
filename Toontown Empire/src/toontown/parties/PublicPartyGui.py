@@ -3,11 +3,11 @@ from direct.gui.DirectGui import DGG, DirectFrame, DirectButton, DirectLabel, Di
 from direct.gui import DirectGuiGlobals
 from direct.showbase import DirectObject
 from direct.showbase import PythonUtil
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toontowngui import TTDialog
-from src.toontown.parties import PartyGlobals
-from src.toontown.parties import PartyUtils
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toontowngui import TTDialog
+from toontown.parties import PartyGlobals
+from toontown.parties import PartyUtils
 
 class PublicPartyGui(DirectFrame):
     notify = directNotify.newCategory('PublicPartyGui')

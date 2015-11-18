@@ -16,23 +16,23 @@
 
 import warnings
 
-from src.bson.code import Code
-from src.bson.codec_options import CodecOptions
-from src.bson.dbref import DBRef
-from src.bson.objectid import ObjectId
-from src.bson.py3compat import iteritems, string_type, _unicode
-from src.bson.son import SON
-from src.pymongo import auth, common
-from src.pymongo.collection import Collection
-from src.pymongo.command_cursor import CommandCursor
-from src.pymongo.errors import (CollectionInvalid,
+from bson.code import Code
+from bson.codec_options import CodecOptions
+from bson.dbref import DBRef
+from bson.objectid import ObjectId
+from bson.py3compat import iteritems, string_type, _unicode
+from bson.son import SON
+from pymongo import auth, common
+from pymongo.collection import Collection
+from pymongo.command_cursor import CommandCursor
+from pymongo.errors import (CollectionInvalid,
                             ConfigurationError,
                             InvalidName,
                             OperationFailure)
-from src.pymongo.helpers import _first_batch
-from src.pymongo.read_preferences import ReadPreference
-from src.pymongo.son_manipulator import SONManipulator
-from src.pymongo.write_concern import WriteConcern
+from pymongo.helpers import _first_batch
+from pymongo.read_preferences import ReadPreference
+from pymongo.son_manipulator import SONManipulator
+from pymongo.write_concern import WriteConcern
 
 
 def _check_name(name):

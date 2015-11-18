@@ -289,8 +289,8 @@ class RExec(ihooks._Verbose):
         return dst
 
     def copy_none(self, src):
-        m = self.add_module(src.__name__)
-        m.__doc__ = src.__doc__
+        m = self.add_module(__name__)
+        m.__doc__ = __doc__
         return m
 
     # Add a module -- return an existing module or create one

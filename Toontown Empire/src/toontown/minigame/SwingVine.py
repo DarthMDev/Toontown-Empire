@@ -5,7 +5,7 @@ from direct.interval.IntervalGlobal import *
 from direct.distributed import DistributedObject
 from direct.showutil import Rope
 import math
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 import VineGameGlobals
 import VineSpider
 

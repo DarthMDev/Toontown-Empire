@@ -14,20 +14,20 @@ import random
 
 import DistributedBossCog
 import SuitDNA
-from src.toontown.battle import BattleBase
-from src.toontown.battle import MovieToonVictory
-from src.toontown.battle import RewardPanel
-from src.toontown.battle import SuitBattleGlobals
-from src.toontown.battle.BattleProps import *
-from src.toontown.coghq import CogDisguiseGlobals
-from src.toontown.distributed import DelayDelete
-from src.toontown.suit import SellbotBossGlobals
-from src.toontown.toon import NPCToons
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownBattleGlobals
-from src.toontown.toonbase import ToontownGlobals
-from src.otp.nametag.NametagConstants import *
-from src.otp.nametag import NametagGlobals
+from toontown.battle import BattleBase
+from toontown.battle import MovieToonVictory
+from toontown.battle import RewardPanel
+from toontown.battle import SuitBattleGlobals
+from toontown.battle.BattleProps import *
+from toontown.coghq import CogDisguiseGlobals
+from toontown.distributed import DelayDelete
+from toontown.suit import SellbotBossGlobals
+from toontown.toon import NPCToons
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownBattleGlobals
+from toontown.toonbase import ToontownGlobals
+from otp.nametag.NametagConstants import *
+from otp.nametag import NametagGlobals
 
 OneBossCog = None
 

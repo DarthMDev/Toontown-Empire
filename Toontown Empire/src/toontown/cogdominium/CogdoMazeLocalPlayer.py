@@ -2,10 +2,10 @@ from pandac.PandaModules import Point3, CollisionNode, CollisionSphere, Collisio
 from direct.interval.IntervalGlobal import Func, Sequence, Wait
 from direct.showbase.PythonUtil import bound as clamp
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.minigame.OrthoDrive import OrthoDrive
-from src.toontown.minigame.OrthoWalk import OrthoWalk
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.minigame.OrthoDrive import OrthoDrive
+from toontown.minigame.OrthoWalk import OrthoWalk
+from toontown.toonbase import ToontownGlobals
 import CogdoGameConsts
 import CogdoMazeGameGlobals as Globals
 from CogdoMazePlayer import CogdoMazePlayer

@@ -1,6 +1,6 @@
 from RegenTreasurePlannerAI import RegenTreasurePlannerAI
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 
 class SZTreasurePlannerAI(RegenTreasurePlannerAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('SZTreasurePlannerAI')

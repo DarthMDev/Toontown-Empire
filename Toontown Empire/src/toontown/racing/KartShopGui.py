@@ -4,12 +4,12 @@ from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
 from direct.showbase import DirectObject, PythonUtil
-from src.toontown.toonbase import ToontownGlobals, TTLocalizer
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownTimer
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownTimer
 from KartShopGlobals import *
-from src.toontown.racing.Kart import Kart
-from src.toontown.shtiker.KartPage import KartViewer
+from toontown.racing.Kart import Kart
+from toontown.shtiker.KartPage import KartViewer
 from KartDNA import *
 MENUS = PythonUtil.Enum('MainMenu, BuyKart, BuyAccessory, ReturnKart, ConfirmBuyAccessory, ConfirmBuyKart, BoughtKart, BoughtAccessory')
 MM_OPTIONS = PythonUtil.Enum('Cancel, BuyAccessory, BuyKart', -1)

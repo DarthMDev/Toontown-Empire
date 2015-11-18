@@ -1,8 +1,8 @@
 from direct.directnotify.DirectNotifyGlobal import directNotify
-from src.toontown.cogdominium.DistCogdoLevelGameAI import DistCogdoLevelGameAI
-from src.toontown.cogdominium.DistCogdoCraneAI import DistCogdoCraneAI
-from src.toontown.cogdominium import CogdoCraneGameConsts as GameConsts
-from src.toontown.cogdominium.CogdoCraneGameBase import CogdoCraneGameBase
+from toontown.cogdominium.DistCogdoLevelGameAI import DistCogdoLevelGameAI
+from toontown.cogdominium.DistCogdoCraneAI import DistCogdoCraneAI
+from toontown.cogdominium import CogdoCraneGameConsts as GameConsts
+from toontown.cogdominium.CogdoCraneGameBase import CogdoCraneGameBase
 
 class DistCogdoCraneGameAI(DistCogdoLevelGameAI, CogdoCraneGameBase):
     notify = directNotify.newCategory('DistCogdoCraneGameAI')

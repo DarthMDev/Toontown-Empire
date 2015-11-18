@@ -16,8 +16,8 @@
 
 from collections import Mapping
 
-from src.pymongo.errors import ConfigurationError
-from src.pymongo.server_selectors import (member_with_tags_server_selector,
+from pymongo.errors import ConfigurationError
+from pymongo.server_selectors import (member_with_tags_server_selector,
                                       secondary_with_tags_server_selector,
                                       writable_server_selector)
 

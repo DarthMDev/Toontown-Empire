@@ -1,7 +1,7 @@
-from src.otp.speedchat.SCMenu import SCMenu
+from otp.speedchat.SCMenu import SCMenu
 from TTSCToontaskTerminal import TTSCToontaskTerminal
-from src.otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
-from src.toontown.quest import Quests
+from otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
+from toontown.quest import Quests
 
 class TTSCToontaskMenu(SCMenu):
 

@@ -4,11 +4,11 @@ import string
 import sys, os
 
 import ToonDNA
-from src.toontown.hood import ZoneUtil
-from src.otp.nametag.NametagGroup import *
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownBattleGlobals
-from src.toontown.toonbase import ToontownGlobals
+from toontown.hood import ZoneUtil
+from otp.nametag.NametagGroup import *
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownBattleGlobals
+from toontown.toonbase import ToontownGlobals
 
 
 try:

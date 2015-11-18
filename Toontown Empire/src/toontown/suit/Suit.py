@@ -1,11 +1,11 @@
 from panda3d.core import *
 from direct.actor import Actor
 from direct.task.Task import Task
-from src.otp.avatar import Avatar
-from src.toontown.battle import BattleProps, SuitBattleGlobals
-from src.otp.nametag.NametagGroup import NametagGroup
-from src.toontown.toonbase import TTLocalizer, ToontownGlobals
-from src.toontown.suit import SuitGlobals
+from otp.avatar import Avatar
+from toontown.battle import BattleProps, SuitBattleGlobals
+from otp.nametag.NametagGroup import NametagGroup
+from toontown.toonbase import TTLocalizer, ToontownGlobals
+from toontown.suit import SuitGlobals
 import SuitDNA, string
 
 aSize = 6.06

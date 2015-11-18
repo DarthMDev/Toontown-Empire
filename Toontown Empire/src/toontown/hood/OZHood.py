@@ -1,7 +1,7 @@
 from panda3d.core import Fog, Vec4
-from src.toontown.safezone.OZSafeZoneLoader import OZSafeZoneLoader
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.hood.ToonHood import ToonHood
+from toontown.safezone.OZSafeZoneLoader import OZSafeZoneLoader
+from toontown.toonbase import ToontownGlobals
+from toontown.hood.ToonHood import ToonHood
 
 class OZHood(ToonHood):
     notify = directNotify.newCategory('OZHood')

@@ -6,10 +6,10 @@ from direct.task import Task
 from panda3d.core import *
 
 from Avatar import Avatar
-from src.otp.ai.MagicWordGlobal import *
-from src.otp.otpbase import OTPGlobals
-from src.toontown.battle.BattleProps import globalPropPool
-from src.otp.nametag.Nametag import Nametag
+from otp.ai.MagicWordGlobal import *
+from otp.otpbase import OTPGlobals
+from toontown.battle.BattleProps import globalPropPool
+from otp.nametag.Nametag import Nametag
 
 
 class DistributedAvatar(DistributedActor, Avatar):

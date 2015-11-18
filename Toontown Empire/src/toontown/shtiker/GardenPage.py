@@ -2,12 +2,12 @@ from direct.directnotify import DirectNotifyGlobal
 import ShtikerPage
 from direct.gui.DirectGui import *
 from panda3d.core import *
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.estate import FlowerBrowser
-from src.toontown.estate import GardenGlobals
-from src.toontown.estate import FlowerPicker
-from src.toontown.estate import SpecialsPhoto
-from src.toontown.toontowngui import TTDialog
+from toontown.toonbase import TTLocalizer
+from toontown.estate import FlowerBrowser
+from toontown.estate import GardenGlobals
+from toontown.estate import FlowerPicker
+from toontown.estate import SpecialsPhoto
+from toontown.toontowngui import TTDialog
 GardenPage_Basket = 0
 GardenPage_Collection = 1
 GardenPage_Trophy = 2

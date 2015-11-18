@@ -14,7 +14,7 @@ from direct.showbase.MessengerGlobal import *
 from direct.showbase.PythonUtil import *
 from direct.task import Task
 from direct.task.TaskManagerGlobal import *
-from src.otp.otpbase import BackupManager
+from otp.otpbase import BackupManager
 from panda3d.core import *
 
 
@@ -62,7 +62,7 @@ class AIBase:
             loadPrcFileData('aibase', 'textures-header-only 1')
         self.wantPets = self.config.GetBool('want-pets', 1)
         if self.wantPets:
-            from src.toontown.pets import PetConstants
+            from toontown.pets import PetConstants
             self.petMoodTimescale = self.config.GetFloat('pet-mood-timescale', 1.0)
             self.petMoodDriftPeriod = self.config.GetFloat('pet-mood-drift-period', PetConstants.MoodDriftPeriod)
             self.petThinkPeriod = self.config.GetFloat('pet-think-period', PetConstants.ThinkPeriod)
@@ -71,7 +71,7 @@ class AIBase:
         self.wantBingo = self.config.GetBool('want-fish-bingo', 1)
         self.wantKarts = self.config.GetBool('want-karts', 1)
         self.backups = BackupManager.BackupManager(
-            filepath=self.config.GetString('backups-filepath', 'src/dependencies/backups/'),
+            filepath=self.config.GetString('backups-filepath', 'dependencies/backups/'),
             extension=self.config.GetString('backups-extension', '.json'))
         self.createStats()
         self.restart()

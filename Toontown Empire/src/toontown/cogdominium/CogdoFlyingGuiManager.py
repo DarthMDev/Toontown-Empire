@@ -1,6 +1,6 @@
 from pandac.PandaModules import NodePath
-from src.toontown.toonbase import ToontownIntervals
-from src.toontown.toonbase.ToontownTimer import ToontownTimer
+from toontown.toonbase import ToontownIntervals
+from toontown.toonbase.ToontownTimer import ToontownTimer
 from CogdoFlyingGameGuis import CogdoFlyingFuelGui, CogdoFlyingProgressGui
 from CogdoGameMessageDisplay import CogdoGameMessageDisplay
 from CogdoMemoGui import CogdoMemoGui

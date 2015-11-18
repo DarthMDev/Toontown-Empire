@@ -1,11 +1,11 @@
 from datetime import datetime
 import calendar
 from direct.gui.DirectGui import DirectFrame, DirectLabel
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 from direct.showbase import PythonUtil
 from direct.fsm.FSM import FSM
-from src.toontown.parties import PartyGlobals
-from src.toontown.parties import PartyUtils
+from toontown.parties import PartyGlobals
+from toontown.parties import PartyUtils
 
 class InviteVisual(DirectFrame):
     notify = directNotify.newCategory('InviteVisual')

@@ -1,5 +1,5 @@
 from pandac.PandaModules import CollisionSphere, CollisionNode, BitMask32, CollisionHandlerEvent, CollisionRay
-from src.toontown.minigame import ArrowKeys
+from toontown.minigame import ArrowKeys
 
 class CogdoFlyingInputManager:
 

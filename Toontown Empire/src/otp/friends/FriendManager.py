@@ -1,7 +1,7 @@
 from panda3d.core import *
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from src.otp.otpbase import OTPGlobals
+from otp.otpbase import OTPGlobals
 
 class FriendManager(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('FriendManager')

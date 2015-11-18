@@ -1,8 +1,8 @@
 from panda3d.core import *
 from direct.showbase.DirectObject import DirectObject
-from src.toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase.ToonBaseGlobal import *
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.minigame import ToonBlitzGlobals, TwoDBlock
+from toontown.minigame import ToonBlitzGlobals, TwoDBlock
 from pandac.PandaModules import CardMaker
 
 class ToonBlitzAssetMgr(DirectObject):

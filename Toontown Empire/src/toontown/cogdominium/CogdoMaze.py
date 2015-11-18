@@ -1,7 +1,7 @@
 from pandac.PandaModules import NodePath, VBase4
 from direct.showbase.DirectObject import DirectObject
 from direct.showbase.RandomNumGen import RandomNumGen
-from src.toontown.minigame.MazeBase import MazeBase
+from toontown.minigame.MazeBase import MazeBase
 import CogdoMazeGameGlobals as Globals
 from CogdoMazeGameObjects import CogdoMazeWaterCooler
 import CogdoMazeData

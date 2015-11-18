@@ -22,9 +22,9 @@ from CatalogNametagItem import CatalogNametagItem
 from CatalogAccessoryItem import CatalogAccessoryItem
 from CatalogHouseItem import CatalogHouseItem
 from direct.actor import Actor
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.estate import HouseGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.estate import HouseGlobals
 import types
 import random
 import time

@@ -1,9 +1,9 @@
 from direct.distributed.DistributedObject import DistributedObject
 from direct.interval.IntervalGlobal import *
-from src.toontown.battle import SuitBattleGlobals
-from src.toontown.estate import Estate
-from src.toontown.toonbase import ToontownGlobals, ToontownBattleGlobals, TTLocalizer
-from src.toontown.suit import SuitDNA
+from toontown.battle import SuitBattleGlobals
+from toontown.estate import Estate
+from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals, TTLocalizer
+from toontown.suit import SuitDNA
 import HolidayGlobals
 
 class NewsManager(DistributedObject):

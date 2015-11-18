@@ -1,14 +1,14 @@
 from panda3d.core import *
 from direct.gui.DirectGui import *
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.showbase import DirectObject
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.directnotify import DirectNotifyGlobal
-from src.otp.avatar.Avatar import teleportNotify
+from otp.avatar.Avatar import teleportNotify
 import ToonAvatarDetailPanel
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.hood import ZoneUtil
+from toontown.toonbase import TTLocalizer
+from toontown.hood import ZoneUtil
 globalTeleport = None
 
 def showTeleportPanel(avId, avName, avDisableName):
@@ -81,7 +81,7 @@ class ToonTeleportPanel(DirectFrame):
                 self.enterTeleport,
                 self.exitTeleport)],
             'off', 'off')
-        from src.toontown.friends import FriendInviter
+        from toontown.friends import FriendInviter
         FriendInviter.hideFriendInviter()
         ToonAvatarDetailPanel.hideAvatarDetail()
         buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')

@@ -1,11 +1,11 @@
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.task import Task
-from src.toontown.minigame import CannonGameGlobals
+from toontown.minigame import CannonGameGlobals
 from direct.distributed import DistributedObjectAI
-from src.toontown.minigame import Trajectory
+from toontown.minigame import Trajectory
 import CannonGlobals
 
 class DistributedCannonAI(DistributedObjectAI.DistributedObjectAI):

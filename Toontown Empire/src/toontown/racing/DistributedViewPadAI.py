@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.racing.DistributedKartPadAI import DistributedKartPadAI
+from toontown.racing.DistributedKartPadAI import DistributedKartPadAI
 from direct.distributed.ClockDelta import *
 
 class DistributedViewPadAI(DistributedKartPadAI):

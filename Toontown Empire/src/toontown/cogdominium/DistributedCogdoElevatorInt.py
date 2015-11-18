@@ -1,4 +1,4 @@
-from src.toontown.building.DistributedElevatorInt import DistributedElevatorInt
+from toontown.building.DistributedElevatorInt import DistributedElevatorInt
 
 class DistributedCogdoElevatorInt(DistributedElevatorInt):
 

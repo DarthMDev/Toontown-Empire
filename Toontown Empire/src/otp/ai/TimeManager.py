@@ -5,7 +5,7 @@ from direct.showbase import PythonUtil
 from direct.showbase.DirectObject import *
 from direct.task import Task
 from panda3d.core import *
-from src.otp.otpbase import OTPGlobals
+from otp.otpbase import OTPGlobals
 import time
 
 class TimeManager(DistributedObject.DistributedObject):

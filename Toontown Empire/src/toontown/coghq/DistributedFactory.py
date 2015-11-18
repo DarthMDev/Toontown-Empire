@@ -1,19 +1,19 @@
 from panda3d.core import *
-from src.toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase.ToontownGlobals import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 import random
-from src.otp.level import DistributedLevel
+from otp.level import DistributedLevel
 from direct.directnotify import DirectNotifyGlobal
 import FactoryBase
 import FactoryEntityCreator
 import FactorySpecs
-from src.otp.level import LevelSpec
-from src.otp.level import LevelConstants
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.coghq import FactoryCameraViews
-from src.otp.nametag.NametagConstants import *
-from src.otp.ai.MagicWordGlobal import *
+from otp.level import LevelSpec
+from otp.level import LevelConstants
+from toontown.toonbase import TTLocalizer
+from toontown.coghq import FactoryCameraViews
+from otp.nametag.NametagConstants import *
+from otp.ai.MagicWordGlobal import *
 
 class DistributedFactory(DistributedLevel.DistributedLevel, FactoryBase.FactoryBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFactory')

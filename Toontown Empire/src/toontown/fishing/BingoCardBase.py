@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.fishing import FishGlobals
-from src.toontown.fishing import BingoGlobals
+from toontown.fishing import FishGlobals
+from toontown.fishing import BingoGlobals
 from direct.showbase import RandomNumGen
 from math import ceil, pow
 

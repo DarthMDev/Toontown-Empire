@@ -1,8 +1,8 @@
 from direct.gui.DirectGui import *
 from panda3d.core import *
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toontowngui import TTDialog
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toontowngui import TTDialog
+from toontown.toonbase import TTLocalizer
 import CatalogItemTypes
 import CatalogItem
 from CatalogWallpaperItem import getAllWallpapers
@@ -10,7 +10,7 @@ from CatalogFlooringItem import getAllFloorings
 from CatalogMouldingItem import getAllMouldings
 from CatalogWainscotingItem import getAllWainscotings
 from CatalogFurnitureItem import getAllFurnitures
-from src.otp.otpbase import OTPGlobals
+from otp.otpbase import OTPGlobals
 CATALOG_PANEL_WORDWRAP = 10
 CATALOG_PANEL_CHAT_WORDWRAP = 9
 CATALOG_PANEL_ACCESSORY_WORDWRAP = 11

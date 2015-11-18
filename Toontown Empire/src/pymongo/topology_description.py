@@ -16,10 +16,10 @@
 
 from collections import namedtuple
 
-from src.pymongo import common
-from src.pymongo.server_type import SERVER_TYPE
-from src.pymongo.errors import ConfigurationError
-from src.pymongo.server_description import ServerDescription
+from pymongo import common
+from pymongo.server_type import SERVER_TYPE
+from pymongo.errors import ConfigurationError
+from pymongo.server_description import ServerDescription
 
 
 TOPOLOGY_TYPE = namedtuple('TopologyType', ['Single', 'ReplicaSetNoPrimary',

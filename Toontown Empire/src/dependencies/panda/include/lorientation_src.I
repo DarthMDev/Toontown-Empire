@@ -1,4 +1,4 @@
-// Filename: lorientation_src.I
+// Filename: lorientation_I
 // Created by:  frang, charles (23Jun00)
 //
 ////////////////////////////////////////////////////////////////////

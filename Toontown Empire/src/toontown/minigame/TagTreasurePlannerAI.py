@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.safezone import RegenTreasurePlannerAI
+from toontown.safezone import RegenTreasurePlannerAI
 
 class TagTreasurePlannerAI(RegenTreasurePlannerAI.RegenTreasurePlannerAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('TagTreasurePlannerAI')

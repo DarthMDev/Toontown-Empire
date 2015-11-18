@@ -3,21 +3,21 @@ from direct.gui.DirectGui import *
 from direct.showbase import DirectObject
 import ToonHead
 import LaffMeter
-from src.otp.avatar import Avatar
+from otp.avatar import Avatar
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 import ToonAvatarDetailPanel
 import AvatarPanelBase
-from src.toontown.toontowngui import TTDialog
-from src.otp.otpbase import OTPGlobals
+from toontown.toontowngui import TTDialog
+from otp.otpbase import OTPGlobals
 
 class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonAvatarPanel')
 
     def __init__(self, avatar):
-        from src.toontown.friends import FriendsListPanel
+        from toontown.friends import FriendsListPanel
 
         if base.cr.doId2do.get(avatar.getDoId()):
             avatar = base.cr.doId2do.get(avatar.getDoId())
@@ -341,7 +341,7 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
             toonAvatar = base.cr.doId2do.get(toonAvatar.getDoId())
         petAvatar = base.cr.doId2do.get(toonAvatar.getPetId())
         self.disableAll()
-        from src.toontown.pets import PetDetail
+        from toontown.pets import PetDetail
         PetDetail.PetDetail(toonAvatar.getPetId(), self.__petDetailsLoaded)
 
     def __petDetailsLoaded(self, avatar):

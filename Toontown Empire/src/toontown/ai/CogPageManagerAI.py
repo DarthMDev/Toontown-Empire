@@ -1,5 +1,5 @@
-from src.toontown.suit import SuitDNA
-from src.toontown.shtiker.CogPageGlobals import *
+from toontown.suit import SuitDNA
+from toontown.shtiker.CogPageGlobals import *
 
 class CogPageManagerAI:
 

@@ -1,6 +1,6 @@
 from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
-from src.otp.otpbase import OTPLocalizer
-from src.toontown.hood import ZoneUtil
+from otp.otpbase import OTPLocalizer
+from toontown.hood import ZoneUtil
 
 class tteFriendsManager(DistributedObjectGlobal):
     def d_removeFriend(self, friendId):

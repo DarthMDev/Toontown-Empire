@@ -1,6 +1,6 @@
-from src.otp.otpbase import OTPLocalizer
-from src.otp.speedchat.SCMenu import SCMenu
-from src.otp.speedchat import SCMenuHolder, SCStaticTextTerminal
+from otp.otpbase import OTPLocalizer
+from otp.speedchat.SCMenu import SCMenu
+from otp.speedchat import SCMenuHolder, SCStaticTextTerminal
 
 class SCSpecialMenu(SCMenu):
 

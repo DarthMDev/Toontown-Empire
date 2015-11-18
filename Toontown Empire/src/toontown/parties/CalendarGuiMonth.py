@@ -2,9 +2,9 @@ import calendar
 from datetime import timedelta, datetime
 from pandac.PandaModules import Vec4, TextNode
 from direct.gui.DirectGui import DirectFrame, DirectLabel, DirectButton, DirectScrolledList, DGG
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.parties.CalendarGuiDay import CalendarGuiDay
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.parties.CalendarGuiDay import CalendarGuiDay
 
 class CalendarGuiMonth(DirectFrame):
     notify = directNotify.newCategory('CalendarGuiMonth')

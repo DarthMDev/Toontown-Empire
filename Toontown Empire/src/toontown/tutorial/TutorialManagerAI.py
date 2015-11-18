@@ -1,14 +1,14 @@
 from direct.directnotify.DirectNotifyGlobal import *
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from direct.fsm.FSM import FSM
-from src.toontown.building import FADoorCodes
-from src.toontown.building.HQBuildingAI import HQBuildingAI
-from src.toontown.building.TutorialBuildingAI import TutorialBuildingAI
-from src.toontown.quest import Quests
-from src.toontown.suit.DistributedTutorialSuitAI import DistributedTutorialSuitAI
-from src.toontown.toon import NPCToons
-from src.toontown.toonbase import ToontownBattleGlobals
-from src.toontown.toonbase import ToontownGlobals
+from toontown.building import FADoorCodes
+from toontown.building.HQBuildingAI import HQBuildingAI
+from toontown.building.TutorialBuildingAI import TutorialBuildingAI
+from toontown.quest import Quests
+from toontown.suit.DistributedTutorialSuitAI import DistributedTutorialSuitAI
+from toontown.toon import NPCToons
+from toontown.toonbase import ToontownBattleGlobals
+from toontown.toonbase import ToontownGlobals
 
 
 class TutorialFSM(FSM):

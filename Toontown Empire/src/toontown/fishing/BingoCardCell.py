@@ -3,10 +3,10 @@ from direct.gui.DirectGui import *
 from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.fishing import FishPhoto
-from src.toontown.fishing import BingoGlobals
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.fishing import FishPhoto
+from toontown.fishing import BingoGlobals
 
 class BingoCardCell(DirectButton, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('BingoCardCell')

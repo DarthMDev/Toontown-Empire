@@ -7,10 +7,10 @@ from direct.interval.IntervalGlobal import Sequence, Parallel, LerpScaleInterval
 from direct.directutil import Mopath
 from direct.showbase.PythonUtil import bound as clamp
 from pandac.PandaModules import CollisionSphere, CollisionNode, CollisionTube, CollisionPolygon, Vec3, Point3
-from src.toontown.suit import Suit
-from src.toontown.suit import SuitDNA
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.battle import BattleProps
+from toontown.suit import Suit
+from toontown.suit import SuitDNA
+from toontown.toonbase import ToontownGlobals
+from toontown.battle import BattleProps
 from CogdoFlyingUtil import swapAvatarShadowPlacer
 import CogdoUtil
 import CogdoFlyingGameGlobals as Globals

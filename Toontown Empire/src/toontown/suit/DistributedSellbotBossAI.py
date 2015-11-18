@@ -6,13 +6,13 @@ import SuitDNA
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
 from direct.fsm import FSM
-from src.otp.ai.AIBaseGlobal import *
-from src.toontown.battle import BattleExperienceAI
-from src.toontown.toon import NPCToons
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.quest import Quests
-from src.otp.ai.MagicWordGlobal import *
+from otp.ai.AIBaseGlobal import *
+from toontown.battle import BattleExperienceAI
+from toontown.toon import NPCToons
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.quest import Quests
+from otp.ai.MagicWordGlobal import *
 
 
 class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM):

@@ -1,5 +1,5 @@
 from panda3d.core import *
-from src.toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase.ToonBaseGlobal import *
 from pandac.PandaModules import NodePath
 import Ring
 import RingTrack

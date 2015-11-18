@@ -1,4 +1,4 @@
-from src.otp.ai.AIBase import *
+from otp.ai.AIBase import *
 from direct.distributed.ClockDelta import *
 from direct.distributed import DistributedObjectAI
 

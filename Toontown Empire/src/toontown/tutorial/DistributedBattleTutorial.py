@@ -1,4 +1,4 @@
-from src.toontown.battle import DistributedBattle
+from toontown.battle import DistributedBattle
 from direct.directnotify import DirectNotifyGlobal
 
 class DistributedBattleTutorial(DistributedBattle.DistributedBattle):

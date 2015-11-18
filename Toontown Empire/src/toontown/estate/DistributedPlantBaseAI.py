@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.estate.DistributedLawnDecorAI import DistributedLawnDecorAI
+from toontown.estate.DistributedLawnDecorAI import DistributedLawnDecorAI
 import GardenGlobals
 
 class DistributedPlantBaseAI(DistributedLawnDecorAI):

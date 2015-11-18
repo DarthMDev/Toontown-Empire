@@ -2,12 +2,12 @@ from direct.interval.IntervalGlobal import *
 from panda3d.core import *
 
 from DistributedNPCToonBase import *
-from src.toontown.hood import ZoneUtil
-from src.toontown.quest import QuestChoiceGui
-from src.toontown.quest import QuestParser
-from src.toontown.quest import MultiTrackChoiceGui
-from src.toontown.toonbase import TTLocalizer
-from src.otp.nametag.NametagConstants import *
+from toontown.hood import ZoneUtil
+from toontown.quest import QuestChoiceGui
+from toontown.quest import QuestParser
+from toontown.quest import MultiTrackChoiceGui
+from toontown.toonbase import TTLocalizer
+from otp.nametag.NametagConstants import *
 
 
 ChoiceTimeout = 20

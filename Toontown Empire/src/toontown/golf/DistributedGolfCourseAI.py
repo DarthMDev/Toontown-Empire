@@ -1,11 +1,11 @@
 from direct.distributed import DistributedObjectAI
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.golf import DistributedGolfHoleAI
+from toontown.toonbase import ToontownGlobals
+from toontown.golf import DistributedGolfHoleAI
 from panda3d.core import *
 from direct.fsm.FSM import FSM
-from src.toontown.ai.ToonBarrier import *
-from src.toontown.golf import GolfGlobals
+from toontown.ai.ToonBarrier import *
+from toontown.golf import GolfGlobals
 
 INITIAL = 0
 EXITED = 1
@@ -109,7 +109,7 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
             self.currentHole.requestDelete()
             self.currentHole = None
         self.ignoreAll()
-        from src.toontown.golf import GolfManagerAI
+        from toontown.golf import GolfManagerAI
         GolfManagerAI.GolfManagerAI().removeCourse(self)
         if self.__barrier:
             self.__barrier.cleanup()

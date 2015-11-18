@@ -3,16 +3,16 @@ from direct.gui.DirectGui import DirectFrame
 from direct.gui.DirectGui import DGG
 from direct.gui.DirectGui import DirectLabel
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.shtiker import ShtikerPage
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.shtiker import ShtikerPage
+from toontown.toonbase import TTLocalizer
 UseDirectNewsFrame = config.GetBool('use-direct-news-frame', True)
 HaveNewsFrame = True
 if UseDirectNewsFrame:
-    from src.toontown.shtiker import DirectNewsFrame
+    from toontown.shtiker import DirectNewsFrame
 else:
     try:
-        from src.toontown.shtiker import InGameNewsFrame
+        from toontown.shtiker import InGameNewsFrame
     except:
         HaveNewsFrame = False
 

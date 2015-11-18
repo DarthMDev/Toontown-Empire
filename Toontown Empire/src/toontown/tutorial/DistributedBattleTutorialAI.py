@@ -1,5 +1,5 @@
 from direct.directnotify.DirectNotifyGlobal import *
-from src.toontown.battle.DistributedBattleAI import DistributedBattleAI
+from toontown.battle.DistributedBattleAI import DistributedBattleAI
 
 
 class DistributedBattleTutorialAI(DistributedBattleAI):

@@ -7,14 +7,14 @@ from direct.fsm import ClassicFSM, State
 from direct.interval.IntervalGlobal import *
 from direct.task.Task import Task
 from panda3d.core import *
-from src.toontown.distributed import DelayDelete
-from src.toontown.distributed.DelayDeletable import DelayDeletable
-from src.toontown.hood import ZoneUtil
-from src.toontown.suit import Suit
-from src.toontown.toonbase.ToonBaseGlobal import *
-from src.toontown.toontowngui import TTDialog
-from src.otp.nametag.NametagGroup import NametagGroup
-from src.otp.nametag.Nametag import Nametag
+from toontown.distributed import DelayDelete
+from toontown.distributed.DelayDeletable import DelayDeletable
+from toontown.hood import ZoneUtil
+from toontown.suit import Suit
+from toontown.toonbase.ToonBaseGlobal import *
+from toontown.toontowngui import TTDialog
+from otp.nametag.NametagGroup import NametagGroup
+from otp.nametag.Nametag import Nametag
 
 
 class DistributedDoor(DistributedObject.DistributedObject, DelayDeletable):

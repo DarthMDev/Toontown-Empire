@@ -1,4 +1,4 @@
-from src.toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase.ToontownGlobals import *
 from direct.directnotify import DirectNotifyGlobal
 import BasicEntities
 

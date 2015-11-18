@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-from src.toontown.fishing import FishGlobals
+from toontown.fishing import FishGlobals
 import GardenGlobals
 from direct.actor import Actor
 import random
@@ -141,7 +141,7 @@ class SpecialsPhoto(NodePath):
             nodePath = self.attachNewNode('blank')
             return nodePath
         if specialsIndex >= 105 and specialsIndex <= 108:
-            from src.toontown.estate import DistributedToonStatuary
+            from toontown.estate import DistributedToonStatuary
             self.toonStatuary = DistributedToonStatuary.DistributedToonStatuary(None)
             self.toonStatuary.setupStoneToon(base.localAvatar.style)
             self.toonStatuary.poseToonFromSpecialsIndex(specialsIndex)

@@ -1,12 +1,12 @@
 import ShtikerPage
 from direct.gui.DirectGui import *
 from panda3d.core import *
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.suit import SuitDNA
-from src.toontown.battle import SuitBattleGlobals
-from src.toontown.minigame import MinigamePowerMeter
-from src.toontown.coghq import CogDisguiseGlobals
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.suit import SuitDNA
+from toontown.battle import SuitBattleGlobals
+from toontown.minigame import MinigamePowerMeter
+from toontown.coghq import CogDisguiseGlobals
 DeptColors = (Vec4(0.647, 0.608, 0.596, 1.0),
  Vec4(0.588, 0.635, 0.671, 1.0),
  Vec4(0.596, 0.714, 0.659, 1.0),

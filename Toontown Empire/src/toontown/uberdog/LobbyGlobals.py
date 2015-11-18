@@ -1,7 +1,7 @@
 from pandac.PandaModules import BitMask32
 from pandac.PandaModules import Point3, VBase4
 from direct.showbase import PythonUtil
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 KICK_TO_PLAYGROUND_EVENT = 'lobbies_kickToPlayground'
 UberdogCheckLobbyStartFrequency = 5.0
 UberdogPurgeLobbyPeriod = 24.0

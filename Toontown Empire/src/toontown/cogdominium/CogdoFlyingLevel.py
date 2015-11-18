@@ -9,7 +9,7 @@ from CogdoFlyingLevelQuadrant import CogdoFlyingLevelQuadrant
 from CogdoFlyingObjects import CogdoFlyingGatherableFactory, CogdoFlyingPlatform, CogdoFlyingLevelFog
 from CogdoFlyingObstacles import CogdoFlyingObstacleFactory
 from CogdoGameExit import CogdoGameExit
-from src.otp.otpbase import OTPGlobals
+from otp.otpbase import OTPGlobals
 
 class CogdoFlyingLevel(DirectObject):
     notify = directNotify.newCategory('CogdoFlyingLevel')

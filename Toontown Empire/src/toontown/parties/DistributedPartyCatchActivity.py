@@ -10,19 +10,19 @@ from direct.task.Task import Task
 from direct.distributed import DistributedSmoothNode
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.FunctionInterval import Wait, Func
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toon import Toon
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.minigame.Trajectory import Trajectory
-from src.toontown.minigame.OrthoDrive import OrthoDrive
-from src.toontown.minigame.OrthoWalk import OrthoWalk
-from src.toontown.minigame.DropPlacer import PartyRegionDropPlacer
-from src.toontown.parties import PartyGlobals
-from src.toontown.parties.PartyCatchActivityToonSD import PartyCatchActivityToonSD
-from src.toontown.parties.DistributedPartyActivity import DistributedPartyActivity
-from src.toontown.parties.DistributedPartyCatchActivityBase import DistributedPartyCatchActivityBase
-from src.toontown.parties.DistributedPartyCannonActivity import DistributedPartyCannonActivity
-from src.toontown.parties.activityFSMs import CatchActivityFSM
+from toontown.toonbase import TTLocalizer
+from toontown.toon import Toon
+from toontown.toonbase import ToontownGlobals
+from toontown.minigame.Trajectory import Trajectory
+from toontown.minigame.OrthoDrive import OrthoDrive
+from toontown.minigame.OrthoWalk import OrthoWalk
+from toontown.minigame.DropPlacer import PartyRegionDropPlacer
+from toontown.parties import PartyGlobals
+from toontown.parties.PartyCatchActivityToonSD import PartyCatchActivityToonSD
+from toontown.parties.DistributedPartyActivity import DistributedPartyActivity
+from toontown.parties.DistributedPartyCatchActivityBase import DistributedPartyCatchActivityBase
+from toontown.parties.DistributedPartyCannonActivity import DistributedPartyCannonActivity
+from toontown.parties.activityFSMs import CatchActivityFSM
 
 class DistributedPartyCatchActivity(DistributedPartyActivity, DistributedPartyCatchActivityBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPartyCatchActivity')

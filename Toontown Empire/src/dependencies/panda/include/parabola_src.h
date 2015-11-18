@@ -1,4 +1,4 @@
-// Filename: parabola_src.h
+// Filename: parabola_h
 // Created by:  drose (10Oct07)
 //
 ////////////////////////////////////////////////////////////////////
@@ -57,4 +57,4 @@ operator << (ostream &out, const FLOATNAME(LParabola) &p) {
   return out;
 }
 
-#include "parabola_src.I"
+#include "parabola_I"

@@ -4,22 +4,22 @@ import time
 from pandac.PandaModules import TextNode, BitMask32, Point3, Vec3, Vec4, deg2Rad, Mat3, NodePath, VBase4, OdeTriMeshData, OdeTriMeshGeom, OdeRayGeom, CollisionTraverser, CollisionSegment, CollisionNode, CollisionHandlerQueue
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from src.otp.otpbase import OTPGlobals
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownTimer
+from otp.otpbase import OTPGlobals
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownTimer
 from direct.gui.DirectGui import DirectWaitBar, DGG, DirectLabel
 from direct.task import Task
 from direct.fsm.FSM import FSM
-from src.toontown.minigame import ArrowKeys
+from toontown.minigame import ArrowKeys
 from direct.showbase import PythonUtil
-from src.toontown.golf import BuildGeometry
-from src.toontown.golf import DistributedPhysicsWorld
-from src.toontown.golf import GolfGlobals
+from toontown.golf import BuildGeometry
+from toontown.golf import DistributedPhysicsWorld
+from toontown.golf import GolfGlobals
 from direct.interval.IntervalGlobal import Sequence, Parallel, LerpScaleInterval, LerpFunctionInterval, Func, Wait, SoundInterval, ParallelEndTogether, LerpPosInterval, ActorInterval, LerpPosHprInterval, LerpColorScaleInterval, WaitInterval
 from direct.actor import Actor
-from src.toontown.golf import GolfHoleBase
-from src.toontown.distributed import DelayDelete
+from toontown.golf import GolfHoleBase
+from toontown.distributed import DelayDelete
 
 class DistributedGolfHole(DistributedPhysicsWorld.DistributedPhysicsWorld, FSM, GolfHoleBase.GolfHoleBase):
     defaultTransitions = {'Off': ['Cleanup', 'ChooseTee', 'WatchTee'],

@@ -3,12 +3,12 @@ from direct.task.Task import Task
 from direct.distributed.ClockDelta import *
 from direct.fsm.FSM import FSM
 from direct.interval.IntervalGlobal import *
-from src.toontown.racing.DistributedKartPad import DistributedKartPad
-from src.toontown.racing import RaceGlobals
-from src.toontown.toonbase.ToontownTimer import ToontownTimer
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.racing.KartShopGlobals import KartGlobals
+from toontown.racing.DistributedKartPad import DistributedKartPad
+from toontown.racing import RaceGlobals
+from toontown.toonbase.ToontownTimer import ToontownTimer
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.racing.KartShopGlobals import KartGlobals
 
 class DistributedRacePad(DistributedKartPad, FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedRacePad')

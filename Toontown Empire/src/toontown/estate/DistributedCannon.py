@@ -1,28 +1,28 @@
 from panda3d.core import *
-from src.toontown.toonbase.ToonBaseGlobal import *
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase import ToontownGlobals
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import ToontownTimer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownTimer
 from direct.task.Task import Task
-from src.toontown.minigame import Trajectory
+from toontown.minigame import Trajectory
 import math
-from src.toontown.toon import ToonHead
-from src.toontown.effects import Splash
-from src.toontown.effects import DustCloud
-from src.toontown.minigame import CannonGameGlobals
+from toontown.toon import ToonHead
+from toontown.effects import Splash
+from toontown.effects import DustCloud
+from toontown.minigame import CannonGameGlobals
 import CannonGlobals
 from direct.gui.DirectGui import *
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 from direct.distributed import DistributedObject
-from src.toontown.effects import Wake
+from toontown.effects import Wake
 from direct.controls.ControlManager import CollisionHandlerRayStart
 
-from src.otp.nametag.NametagFloat3d import NametagFloat3d
-from src.otp.nametag.Nametag import Nametag
+from otp.nametag.NametagFloat3d import NametagFloat3d
+from otp.nametag.Nametag import Nametag
 
 LAND_TIME = 2
 WORLD_SCALE = 2.0

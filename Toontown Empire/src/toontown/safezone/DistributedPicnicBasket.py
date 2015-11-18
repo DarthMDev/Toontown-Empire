@@ -3,19 +3,19 @@ from direct.distributed.ClockDelta import *
 from direct.task.Task import Task
 from direct.interval.IntervalGlobal import *
 from TrolleyConstants import *
-from src.toontown.golf import GolfGlobals
-from src.toontown.toonbase import ToontownGlobals
+from toontown.golf import GolfGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from src.toontown.distributed import DelayDelete
-from src.toontown.toonbase.ToontownTimer import ToontownTimer
+from toontown.distributed import DelayDelete
+from toontown.toonbase.ToontownTimer import ToontownTimer
 from direct.task.Task import Task
 from direct.showbase import PythonUtil
-from src.toontown.toon import ToonDNA
+from toontown.toon import ToonDNA
 from direct.showbase import RandomNumGen
-from src.toontown.battle.BattleSounds import *
+from toontown.battle.BattleSounds import *
 
 class DistributedPicnicBasket(DistributedObject.DistributedObject):
     seatState = Enum('Empty, Full, Eating')

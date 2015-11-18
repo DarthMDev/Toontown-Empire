@@ -1,8 +1,8 @@
 import CatalogItem
 from CatalogAccessoryItemGlobals import *
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toon import ToonDNA
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toon import ToonDNA
 import random, types
 from direct.showbase import PythonUtil
 from direct.gui.DirectGui import *
@@ -219,7 +219,7 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
         return model
 
     def requestPurchase(self, phone, callback):
-        from src.toontown.toontowngui import TTDialog
+        from toontown.toontowngui import TTDialog
         avatar = base.localAvatar
         accessoriesOnOrder = 0
         for item in avatar.onOrder + avatar.mailboxContents + avatar.onGiftOrder:
@@ -241,7 +241,7 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
             del self.dialog
 
     def __handleFullPurchaseDialog(self, phone, callback, buttonValue):
-        from src.toontown.toontowngui import TTDialog
+        from toontown.toontowngui import TTDialog
         self.requestPurchaseCleanup()
         if buttonValue == DGG.DIALOG_OK:
             CatalogItem.CatalogItem.requestPurchase(self, phone, callback)

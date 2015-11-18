@@ -1,4 +1,4 @@
-// Filename: glIndexBufferContext_src.h
+// Filename: glIndexBufferContext_h
 // Created by:  drose (17Mar05)
 //
 ////////////////////////////////////////////////////////////////////
@@ -53,5 +53,5 @@ private:
   static TypeHandle _type_handle;
 };
 
-#include "glIndexBufferContext_src.I"
+#include "glIndexBufferContext_I"
 

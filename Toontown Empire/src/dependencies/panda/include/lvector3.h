@@ -24,12 +24,12 @@
 #include "lvector2.h"
 
 #include "fltnames.h"
-#include "lvector3_src.h"
+#include "lvector3_h"
 
 #include "dblnames.h"
-#include "lvector3_src.h"
+#include "lvector3_h"
 
 #include "intnames.h"
-#include "lvector3_src.h"
+#include "lvector3_h"
 
 #endif

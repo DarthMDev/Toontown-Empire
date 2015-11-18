@@ -1,9 +1,9 @@
 from panda3d.core import *
-from src.toontown.toonbase.ToontownBattleGlobals import *
+from toontown.toonbase.ToontownBattleGlobals import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
-from src.otp.otpbase import OTPGlobals
+from otp.otpbase import OTPGlobals
 
 class Experience:
     notify = DirectNotifyGlobal.directNotify.newCategory('Experience')

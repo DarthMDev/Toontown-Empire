@@ -2,12 +2,12 @@ from direct.interval.IntervalGlobal import *
 from panda3d.core import *
 import random
 
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownBattleGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownBattleGlobals
 
 
 if process == 'client':
-    from src.toontown.battle import BattleParticles
+    from toontown.battle import BattleParticles
 
 
 try:

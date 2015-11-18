@@ -6,14 +6,14 @@ from direct.showbase import RandomNumGen
 from direct.showbase import PythonUtil
 from direct.interval.IntervalGlobal import Sequence, Parallel, ActorInterval
 from direct.interval.FunctionInterval import Wait
-from src.otp.avatar import Emote
-from src.otp.otpbase import OTPGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.parties import PartyGlobals
-from src.toontown.minigame.MinigameRulesPanel import MinigameRulesPanel
-from src.toontown.toontowngui import TTDialog
-from src.toontown.parties.JellybeanRewardGui import JellybeanRewardGui
-from src.toontown.parties.PartyUtils import getPartyActivityIcon, getCenterPosFromGridSize
+from otp.avatar import Emote
+from otp.otpbase import OTPGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.parties import PartyGlobals
+from toontown.minigame.MinigameRulesPanel import MinigameRulesPanel
+from toontown.toontowngui import TTDialog
+from toontown.parties.JellybeanRewardGui import JellybeanRewardGui
+from toontown.parties.PartyUtils import getPartyActivityIcon, getCenterPosFromGridSize
 
 class DistributedPartyActivity(DistributedObject.DistributedObject):
     def __init__(self, cr, activityId, activityType, wantLever = False, wantRewardGui = False):

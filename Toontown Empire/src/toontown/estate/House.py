@@ -1,15 +1,15 @@
 from panda3d.core import *
-from src.toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase.ToonBaseGlobal import *
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.hood import Place
+from toontown.hood import Place
 from direct.showbase import DirectObject
 from direct.fsm import StateData
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.task import Task
-from src.otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
+from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 
 class House(Place.Place):
     notify = DirectNotifyGlobal.directNotify.newCategory('House')

@@ -1,14 +1,14 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
-from src.toontown.toonbase.ToontownGlobals import *
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.parties import PartyGlobals
-from src.toontown.hood import *
+from toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase import TTLocalizer
+from toontown.parties import PartyGlobals
+from toontown.hood import *
 import Fireworks
 import FireworkShows
 from FireworkGlobals import skyTransitionDuration, preShowPauseDuration, postShowPauseDuration, preNormalMusicPauseDuration
-from src.toontown.effects.FireworkShow import FireworkShow
+from toontown.effects.FireworkShow import FireworkShow
 
 class FireworkShowMixin:
     notify = DirectNotifyGlobal.directNotify.newCategory('FireworkShowMixin')
@@ -31,7 +31,7 @@ class FireworkShowMixin:
                 ivalMgr.finishIntervalsMatching('shootFirework*')
             else:
                 self.destroyFireworkShow()
-        from src.toontown.hood import DDHood
+        from toontown.hood import DDHood
         if isinstance(self.getHood(), DDHood.DDHood):
             self.getHood().whiteFogColor = Vec4(0.8, 0.8, 0.8, 1)
         self.restoreCameraLens()
@@ -257,7 +257,7 @@ class FireworkShowMixin:
         return None
 
     def __checkDDFog(self):
-        from src.toontown.hood import DDHood
+        from toontown.hood import DDHood
         if isinstance(self.getHood(), DDHood.DDHood):
             self.getHood().whiteFogColor = Vec4(0.2, 0.2, 0.2, 1)
             if hasattr(base.cr.playGame.getPlace(), 'cameraSubmerged'):
@@ -265,7 +265,7 @@ class FireworkShowMixin:
                     self.getHood().setWhiteFog()
 
     def __restoreDDFog(self):
-        from src.toontown.hood import DDHood
+        from toontown.hood import DDHood
         if isinstance(self.getHood(), DDHood.DDHood):
             self.getHood().whiteFogColor = Vec4(0.8, 0.8, 0.8, 1)
             if hasattr(base.cr.playGame.getPlace(), 'cameraSubmerged'):

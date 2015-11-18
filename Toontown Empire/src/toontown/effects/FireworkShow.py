@@ -1,9 +1,9 @@
 from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-from src.toontown.effects.FireworkGlobals import *
-from src.toontown.effects.Firework import Firework
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.parties import PartyGlobals
+from toontown.effects.FireworkGlobals import *
+from toontown.effects.Firework import Firework
+from toontown.toonbase import ToontownGlobals
+from toontown.parties import PartyGlobals
 import random
 colors = [Vec4(1, 1, 1, 1),
  Vec4(1, 0.1, 0.1, 1),
@@ -22,25 +22,25 @@ fireworkShowTypes = [ToontownGlobals.SUMMER_FIREWORKS,
 
 class FireworkShow(NodePath):
 
-    def r(self):
+    def r():
         return random.randint(8, 12) / 10.0
 
-    def rV(self):
+    def rV():
         return Vec3(random.randint(-60, 60), random.randint(10, 30), random.randint(125, 150))
 
-    def rP(self):
+    def rP():
         return Point3(0, 0, 0)
 
-    def rS(self):
+    def rS():
         return 1.0 + random.random() / 2.0
 
-    def rC(self):
+    def rC():
         return random.choice(colors)
 
-    def rT(self):
+    def rT():
         return random.randint(12, 20) / 10.0
 
-    def rD(self):
+    def rD():
         return random.randint(1, 20) / 10.0
 
     showData = {ToontownGlobals.SUMMER_FIREWORKS: [[FireworkType.GlowFlare,
@@ -1122,7 +1122,7 @@ class FireworkShow(NodePath):
             trailDur = fireworkInfo[6]
             delay = fireworkInfo[7]
             firework = Firework(typeId, velocity, scale, color1, color2, trailDur)
-            firework.reparentTo(self)
+            firework.reparentTo()
             firework.setPos(pos)
             self.fireworks.append(firework)
             sectionIval.append(Sequence(Wait(time), firework.generateFireworkIval()))
@@ -1133,7 +1133,7 @@ class FireworkShow(NodePath):
         self.curOffset = offset
         self.delaySectionStart = FrameDelayedCall('delaySectionStart', self.startCurSection, frames=24)
 
-    def startCurSection(self):
+    def startCurSection():
         self.curSection.start(self.curOffset)
 
     def begin(self, timestamp):
@@ -1169,14 +1169,14 @@ class FireworkShow(NodePath):
 
         return duration
 
-    def isPlaying(self):
+    def isPlaying():
         for ival in self.sectionIvals:
             if ival.isPlaying():
                 return True
 
         return False
 
-    def cleanupShow(self):
+    def cleanupShow():
         if self.delaySectionStart:
             self.delaySectionStart.destroy()
             del self.delaySectionStart

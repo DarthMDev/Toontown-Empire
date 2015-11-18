@@ -1,21 +1,21 @@
 from panda3d.core import *
-from src.toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase.ToonBaseGlobal import *
 from direct.gui.DirectGui import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 import math
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.distributed import DistributedObject
 from direct.task.Task import Task
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 import random
 import cPickle
 import time
 import HouseGlobals
-from src.toontown.estate import GardenGlobals
-from src.toontown.estate import FlowerSellGUI
-from src.toontown.toontowngui import TTDialog
-from src.toontown.fishing import FishSellGUI
+from toontown.estate import GardenGlobals
+from toontown.estate import FlowerSellGUI
+from toontown.toontowngui import TTDialog
+from toontown.fishing import FishSellGUI
 
 class DistributedEstate(DistributedObject.DistributedObject):
     notify = directNotify.newCategory('DistributedEstate')

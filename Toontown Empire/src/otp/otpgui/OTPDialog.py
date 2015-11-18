@@ -1,8 +1,8 @@
 from direct.gui.DirectGui import *
 from direct.directnotify import DirectNotifyGlobal
 import string
-from src.otp.otpbase import OTPGlobals
-from src.otp.otpbase import OTPLocalizer
+from otp.otpbase import OTPGlobals
+from otp.otpbase import OTPLocalizer
 NoButtons = 0
 Acknowledge = 1
 CancelOnly = 2

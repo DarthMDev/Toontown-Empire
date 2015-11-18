@@ -1,11 +1,11 @@
-from src.otp.ai.AIBaseGlobal import *
+from otp.ai.AIBaseGlobal import *
 from panda3d.core import *
 from DistributedNPCToonBaseAI import *
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 from direct.task import Task
-from src.toontown.fishing import FishGlobals
-from src.toontown.pets import PetUtil, PetDNA, PetConstants
-from src.toontown.hood import ZoneUtil
+from toontown.fishing import FishGlobals
+from toontown.pets import PetUtil, PetDNA, PetConstants
+from toontown.hood import ZoneUtil
 
 class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
 
@@ -91,7 +91,7 @@ class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
             return
         av = simbase.air.doId2do.get(avId)
         if av:
-            from src.toontown.hood import ZoneUtil
+            from toontown.hood import ZoneUtil
             zoneId = ZoneUtil.getCanonicalSafeZoneId(self.zoneId)
             if petNum not in xrange(0, len(self.petSeeds)):
                 self.air.writeServerEvent('suspicious', avId, 'DistributedNPCPetshopAI.petAdopted and no such pet!')

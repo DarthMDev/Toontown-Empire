@@ -1,9 +1,9 @@
 from direct.gui.DirectGui import *
 from panda3d.core import *
 import QuestPoster
-from src.toontown.toonbase import ToontownTimer
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownTimer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
 
 class QuestChoiceGui(DirectFrame):

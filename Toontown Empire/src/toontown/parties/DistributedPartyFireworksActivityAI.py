@@ -1,8 +1,8 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.parties.DistributedPartyActivityAI import DistributedPartyActivityAI
+from toontown.parties.DistributedPartyActivityAI import DistributedPartyActivityAI
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.fsm.FSM import FSM
-from src.toontown.effects import FireworkShows
+from toontown.effects import FireworkShows
 import PartyGlobals
 import random
 

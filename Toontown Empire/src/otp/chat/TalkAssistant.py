@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase import DirectObject
-from src.otp.chat.ChatGlobals import *
-from src.otp.nametag.NametagConstants import *
+from otp.chat.ChatGlobals import *
+from otp.nametag.NametagConstants import *
 import ChatUtil
 
 class TalkAssistant(DirectObject.DirectObject):

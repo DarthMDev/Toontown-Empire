@@ -1,5 +1,5 @@
-from src.otp.ai.AIBaseGlobal import *
-from src.otp.otpbase import OTPGlobals
+from otp.ai.AIBaseGlobal import *
+from otp.otpbase import OTPGlobals
 from direct.distributed import DistributedNodeAI
 
 class DistributedAvatarAI(DistributedNodeAI.DistributedNodeAI):

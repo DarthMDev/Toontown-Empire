@@ -94,7 +94,7 @@ class SCMenu(SCObject, NodePath):
 
     def appendFromStructure(self, structure):
         from SpeedChatTypes import SCMenuHolder, SCStaticTextTerminal
-        from src.otp.otpbase import OTPLocalizer
+        from otp.otpbase import OTPLocalizer
 
         def addChildren(menu, childList):
             for child in childList:

@@ -7,7 +7,7 @@ except:
     language = 'English'
 
 print 'OTPLocalizer: Running in language: %s' % language
-from src.otp.otpbase.OTPLocalizerEnglish import *
+from otp.otpbase.OTPLocalizerEnglish import *
 
 if language != 'English':
     l = {}

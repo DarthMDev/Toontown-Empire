@@ -1,18 +1,18 @@
 from panda3d.core import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
-from src.toontown.building import ElevatorConstants
-from src.toontown.building import ElevatorUtils
-from src.toontown.building import DistributedElevatorFSM
-from src.toontown.toonbase import ToontownGlobals
+from toontown.building import ElevatorConstants
+from toontown.building import ElevatorUtils
+from toontown.building import DistributedElevatorFSM
+from toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM
 from direct.fsm import State
-from src.toontown.hood import ZoneUtil
-from src.toontown.toonbase import TTLocalizer
+from toontown.hood import ZoneUtil
+from toontown.toonbase import TTLocalizer
 from direct.fsm.FSM import FSM
 from direct.task import Task
-from src.toontown.distributed import DelayDelete
+from toontown.distributed import DelayDelete
 from direct.showbase import PythonUtil
 
 class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):

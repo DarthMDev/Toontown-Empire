@@ -1,4 +1,4 @@
-from src.toontown.modpanel import ModPanelGlobals
+from toontown.modpanel import ModPanelGlobals
 
 from direct.gui import DirectGuiGlobals
 from direct.gui.DirectGui import DirectButton

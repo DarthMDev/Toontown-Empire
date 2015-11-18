@@ -1,10 +1,10 @@
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.task import Task
-from src.toontown.effects.DistributedFireworkShowAI import DistributedFireworkShowAI
-from src.toontown.effects import FireworkShows
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.parties import PartyGlobals
+from toontown.effects.DistributedFireworkShowAI import DistributedFireworkShowAI
+from toontown.effects import FireworkShows
+from toontown.toonbase import ToontownGlobals
+from toontown.parties import PartyGlobals
 import datetime, random
 import HolidayGlobals
 

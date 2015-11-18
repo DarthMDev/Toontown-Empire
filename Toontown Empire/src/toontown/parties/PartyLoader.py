@@ -5,10 +5,10 @@ from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
 from pandac.PandaModules import *
 from pandac.PandaModules import NodePath
-from src.toontown.toonbase.ToontownGlobals import *
-from src.toontown.safezone import SafeZoneLoader
-from src.toontown.parties import Party
-from src.toontown.parties.PartyGlobals import FireworksStartedEvent, FireworksFinishedEvent
+from toontown.toonbase.ToontownGlobals import *
+from toontown.safezone import SafeZoneLoader
+from toontown.parties import Party
+from toontown.parties.PartyGlobals import FireworksStartedEvent, FireworksFinishedEvent
 
 class PartyLoader(SafeZoneLoader.SafeZoneLoader):
     notify = DirectNotifyGlobal.directNotify.newCategory('PartyLoader')

@@ -1,14 +1,14 @@
-from src.toontown.hood import HoodAI
+from toontown.hood import HoodAI
 from panda3d.core import *
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.distributed.DistributedTimerAI import DistributedTimerAI
+from toontown.toonbase import ToontownGlobals
+from toontown.distributed.DistributedTimerAI import DistributedTimerAI
 import string
-from src.toontown.dna.DNAParser import DNAGroup, DNAVisGroup
-from src.toontown.safezone.DistributedPicnicBasketAI import DistributedPicnicBasketAI
-from src.toontown.safezone import DistributedPicnicTableAI
-from src.toontown.safezone import DistributedChineseCheckersAI
-from src.toontown.safezone import DistributedCheckersAI
-from src.toontown.hood import ZoneUtil
+from toontown.dna.DNAParser import DNAGroup, DNAVisGroup
+from toontown.safezone.DistributedPicnicBasketAI import DistributedPicnicBasketAI
+from toontown.safezone import DistributedPicnicTableAI
+from toontown.safezone import DistributedChineseCheckersAI
+from toontown.safezone import DistributedCheckersAI
+from toontown.hood import ZoneUtil
 import random
 
 

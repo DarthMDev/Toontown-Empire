@@ -2,10 +2,10 @@ from pandac.PandaModules import Point3
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.fsm import ClassicFSM, State
 from direct.task import Task
-from src.toontown.minigame import DistributedMinigameAI
-from src.toontown.minigame import MinigameGlobals
-from src.toontown.minigame import IceGameGlobals
-from src.toontown.ai.ToonBarrier import ToonBarrier
+from toontown.minigame import DistributedMinigameAI
+from toontown.minigame import MinigameGlobals
+from toontown.minigame import IceGameGlobals
+from toontown.ai.ToonBarrier import ToonBarrier
 
 class DistributedIceGameAI(DistributedMinigameAI.DistributedMinigameAI):
     notify = directNotify.newCategory('DistributedIceGameAI')

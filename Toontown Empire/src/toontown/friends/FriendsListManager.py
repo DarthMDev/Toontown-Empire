@@ -4,17 +4,17 @@ import FriendInviter
 import FriendInvitee
 import FriendNotifier
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toon import ToonTeleportPanel
-from src.toontown.pets import PetAvatarPanel
-from src.toontown.toon import ToonAvatarPanel
-from src.toontown.suit import SuitAvatarPanel
-from src.toontown.toon import ToonDNA
-from src.toontown.toon import ToonAvatarDetailPanel
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toon import Toon
+from toontown.toon import ToonTeleportPanel
+from toontown.pets import PetAvatarPanel
+from toontown.toon import ToonAvatarPanel
+from toontown.suit import SuitAvatarPanel
+from toontown.toon import ToonDNA
+from toontown.toon import ToonAvatarDetailPanel
+from toontown.toonbase import ToontownGlobals
+from toontown.toon import Toon
 import FriendHandle
-from src.otp.otpbase import OTPGlobals
-from src.otp.nametag import NametagGlobals
+from otp.otpbase import OTPGlobals
+from otp.nametag import NametagGlobals
 
 class FriendsListManager:
     notify = DirectNotifyGlobal.directNotify.newCategory('FriendsListManager')

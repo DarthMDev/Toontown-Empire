@@ -16,13 +16,13 @@
 
 import weakref
 
-from src.bson.codec_options import DEFAULT_CODEC_OPTIONS
-from src.pymongo import common, helpers, message, periodic_executor
-from src.pymongo.server_type import SERVER_TYPE
-from src.pymongo.ismaster import IsMaster
-from src.pymongo.monotonic import time as _time
-from src.pymongo.read_preferences import MovingAverage
-from src.pymongo.server_description import ServerDescription
+from bson.codec_options import DEFAULT_CODEC_OPTIONS
+from pymongo import common, helpers, message, periodic_executor
+from pymongo.server_type import SERVER_TYPE
+from pymongo.ismaster import IsMaster
+from pymongo.monotonic import time as _time
+from pymongo.read_preferences import MovingAverage
+from pymongo.server_description import ServerDescription
 
 
 class Monitor(object):

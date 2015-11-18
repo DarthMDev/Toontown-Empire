@@ -4,7 +4,7 @@ from direct.task.Task import Task
 from direct.interval.IntervalGlobal import *
 from TrolleyConstants import *
 from direct.gui.DirectGui import *
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 from direct.distributed import DistributedNode
 from direct.distributed.ClockDelta import globalClockDelta
 from ChineseCheckersBoard import ChineseCheckersBoard
@@ -12,11 +12,11 @@ from GameTutorials import *
 from GameMenu import GameMenu
 from direct.fsm import ClassicFSM, State
 from direct.fsm import StateData
-from src.toontown.distributed import DelayDelete
-from src.toontown.toonbase.ToontownTimer import ToontownTimer
-from src.toontown.toonbase import ToontownGlobals
+from toontown.distributed import DelayDelete
+from toontown.toonbase.ToontownTimer import ToontownTimer
+from toontown.toonbase import ToontownGlobals
 from direct.showbase import PythonUtil
-from src.otp.otpbase import OTPGlobals
+from otp.otpbase import OTPGlobals
 
 class DistributedPicnicTable(DistributedNode.DistributedNode):
 

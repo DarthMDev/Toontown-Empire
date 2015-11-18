@@ -1,5 +1,5 @@
-from src.toontown.coghq import CogDisguiseGlobals
-from src.toontown.suit import SuitDNA
+from toontown.coghq import CogDisguiseGlobals
+from toontown.suit import SuitDNA
 
 class CogSuitManagerAI:
 

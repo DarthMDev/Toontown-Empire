@@ -1,7 +1,7 @@
-from src.toontown.safezone.DGSafeZoneLoader import DGSafeZoneLoader
-from src.toontown.town.DGTownLoader import DGTownLoader
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.hood.ToonHood import ToonHood
+from toontown.safezone.DGSafeZoneLoader import DGSafeZoneLoader
+from toontown.town.DGTownLoader import DGTownLoader
+from toontown.toonbase import ToontownGlobals
+from toontown.hood.ToonHood import ToonHood
 
 class DGHood(ToonHood):
     notify = directNotify.newCategory('DGHood')

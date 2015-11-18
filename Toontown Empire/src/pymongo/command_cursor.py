@@ -18,10 +18,10 @@ import datetime
 
 from collections import deque
 
-from src.bson.py3compat import integer_types
-from src.pymongo import helpers
-from src.pymongo.errors import AutoReconnect, NotMasterError, OperationFailure
-from src.pymongo.message import _CursorAddress, _GetMore, _convert_exception
+from bson.py3compat import integer_types
+from pymongo import helpers
+from pymongo.errors import AutoReconnect, NotMasterError, OperationFailure
+from pymongo.message import _CursorAddress, _GetMore, _convert_exception
 
 
 class CommandCursor(object):

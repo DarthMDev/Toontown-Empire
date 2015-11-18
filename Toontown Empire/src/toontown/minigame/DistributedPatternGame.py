@@ -9,13 +9,13 @@ import string
 import ArrowKeys
 from DistributedMinigame import *
 import PatternGameGlobals
-from src.otp.nametag.NametagConstants import *
-from src.toontown.toon import NPCToons
-from src.toontown.toon import ToonHead
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import ToontownTimer
-from src.toontown.toonbase.ToonBaseGlobal import *
+from otp.nametag.NametagConstants import *
+from toontown.toon import NPCToons
+from toontown.toon import ToonHead
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownTimer
+from toontown.toonbase.ToonBaseGlobal import *
 
 
 class DistributedPatternGame(DistributedMinigame):

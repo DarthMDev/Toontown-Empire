@@ -18,56 +18,56 @@ import Experience
 import InventoryNew
 import TTEmote
 import Toon
-from src.otp.ai.MagicWordGlobal import *
-from src.otp.avatar import Avatar, DistributedAvatar
-from src.otp.avatar import DistributedPlayer
-from src.otp.chat import TalkAssistant, ChatUtil
-from src.otp.otpbase import OTPGlobals
-from src.otp.otpbase import OTPLocalizer
-from src.otp.speedchat import SCDecoders
-from src.toontown.catalog import CatalogItem
-from src.toontown.catalog import CatalogItemList
-from src.toontown.chat import ResistanceChat
-from src.toontown.chat import ToonChatGarbler
-from src.otp.nametag.NametagConstants import *
-from src.otp.margins.WhisperPopup import *
-from src.toontown.coghq import CogDisguiseGlobals
-from src.toontown.distributed import DelayDelete
-from src.toontown.distributed import DelayDelete
-from src.toontown.distributed.DelayDeletable import DelayDeletable
-from src.toontown.effects.ScavengerHuntEffects import *
-from src.toontown.estate import DistributedGagTree
-from src.toontown.estate import FlowerBasket
-from src.toontown.estate import FlowerCollection
-from src.toontown.estate import GardenDropGame
-from src.toontown.estate import GardenGlobals
-from src.toontown.fishing import FishCollection
-from src.toontown.fishing import FishTank
-from src.toontown.friends import FriendHandle
-from src.toontown.golf import GolfGlobals
-from src.toontown.hood import ZoneUtil
-from src.otp.nametag import NametagGroup
-from src.otp.nametag.NametagGroup import *
-from src.toontown.parties import PartyGlobals
-from src.toontown.parties.InviteInfo import InviteInfo
-from src.toontown.parties.PartyGlobals import InviteStatus, PartyStatus
-from src.toontown.parties.PartyInfo import PartyInfo
-from src.toontown.parties.PartyReplyInfo import PartyReplyInfoBase
-from src.toontown.parties.SimpleMailBase import SimpleMailBase
-from src.toontown.shtiker.OptionsPage import speedChatStyles
-from src.toontown.speedchat import TTSCDecoders
-from src.toontown.suit import SuitDNA
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.battle import BattleParticles
+from otp.ai.MagicWordGlobal import *
+from otp.avatar import Avatar, DistributedAvatar
+from otp.avatar import DistributedPlayer
+from otp.chat import TalkAssistant, ChatUtil
+from otp.otpbase import OTPGlobals
+from otp.otpbase import OTPLocalizer
+from otp.speedchat import SCDecoders
+from toontown.catalog import CatalogItem
+from toontown.catalog import CatalogItemList
+from toontown.chat import ResistanceChat
+from toontown.chat import ToonChatGarbler
+from otp.nametag.NametagConstants import *
+from otp.margins.WhisperPopup import *
+from toontown.coghq import CogDisguiseGlobals
+from toontown.distributed import DelayDelete
+from toontown.distributed import DelayDelete
+from toontown.distributed.DelayDeletable import DelayDeletable
+from toontown.effects.ScavengerHuntEffects import *
+from toontown.estate import DistributedGagTree
+from toontown.estate import FlowerBasket
+from toontown.estate import FlowerCollection
+from toontown.estate import GardenDropGame
+from toontown.estate import GardenGlobals
+from toontown.fishing import FishCollection
+from toontown.fishing import FishTank
+from toontown.friends import FriendHandle
+from toontown.golf import GolfGlobals
+from toontown.hood import ZoneUtil
+from otp.nametag import NametagGroup
+from otp.nametag.NametagGroup import *
+from toontown.parties import PartyGlobals
+from toontown.parties.InviteInfo import InviteInfo
+from toontown.parties.PartyGlobals import InviteStatus, PartyStatus
+from toontown.parties.PartyInfo import PartyInfo
+from toontown.parties.PartyReplyInfo import PartyReplyInfoBase
+from toontown.parties.SimpleMailBase import SimpleMailBase
+from toontown.shtiker.OptionsPage import speedChatStyles
+from toontown.speedchat import TTSCDecoders
+from toontown.suit import SuitDNA
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.battle import BattleParticles
 
 if base.wantKarts:
-    from src.toontown.racing.KartDNA import *
+    from toontown.racing.KartDNA import *
 
 class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, DistributedSmoothNode.DistributedSmoothNode, DelayDeletable):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedToon')
     partyNotify = DirectNotifyGlobal.directNotify.newCategory('DistributedToon_Party')
-    chatGarbler = ToonChatGarbler.ToonChatGarbler()
+   # chatGarbler = ToonChatGarbler.ToonChatGarbler()
     gmNameTag = None
 
     def __init__(self, cr, bFake = False):
@@ -1056,7 +1056,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.monthlyCatalog = CatalogItemList.CatalogItemList(monthlyCatalog)
         self.weeklyCatalog = CatalogItemList.CatalogItemList(weeklyCatalog)
         self.backCatalog = CatalogItemList.CatalogItemList(backCatalog)
-        from src.toontown.catalog import CatalogHouseItem
+        from toontown.catalog import CatalogHouseItem
         self.backCatalog.extend(CatalogHouseItem.getAllHouses())
 
         if self.catalogNotify == ToontownGlobals.NewItems:
@@ -1127,7 +1127,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             if random.random() < 0.1:
                 self.sendLogSuspiciousEvent('AvatarHackWarning! playing hacked splash effect')
             return
-        from src.toontown.effects import Splash
+        from toontown.effects import Splash
         if self.splash == None:
             self.splash = Splash.Splash(render)
         self.splash.setPos(x, y, z)
@@ -1691,7 +1691,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
         def lookupPetDNA(self):
             if self.petId and not self.petDNA:
-                from src.toontown.pets import PetDetail
+                from toontown.pets import PetDetail
                 PetDetail.PetDetail(self.petId, self.__petDetailsLoaded)
 
         def __petDetailsLoaded(self, pet):
@@ -2242,7 +2242,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         for partyInfo in self.hostedParties:
             if partyInfo.partyId == partyId:
                 partyInfo.status = PartyGlobals.PartyStatus.CanStart
-                from src.toontown.shtiker import EventsPage
+                from toontown.shtiker import EventsPage
                 if hasattr(self, 'eventsPage') and base.localAvatar.book.entered and base.localAvatar.book.isOnPage(self.eventsPage) and self.eventsPage.getMode() == EventsPage.EventsPage_Host:
                     base.localAvatar.eventsPage.loadHostedPartyInfo()
                 if hasattr(self, 'displaySystemClickableWhisper'):
@@ -2263,7 +2263,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             if partyInfo.partyId == partyId:
                 partyInfo.status = newStatus
                 found = True
-                from src.toontown.shtiker import EventsPage
+                from toontown.shtiker import EventsPage
                 if hasattr(self, 'eventsPage') and base.localAvatar.book.entered and base.localAvatar.book.isOnPage(self.eventsPage) and self.eventsPage.getMode() == EventsPage.EventsPage_Invited:
                     base.localAvatar.eventsPage.loadInvitations()
                 if newStatus == PartyStatus.Started and hasattr(self, 'displaySystemClickableWhisper'):

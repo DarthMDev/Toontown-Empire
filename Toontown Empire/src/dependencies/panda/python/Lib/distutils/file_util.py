@@ -48,7 +48,7 @@ def _copy_file_contents(src, dst, buffer_size=16*1024):
 
         while 1:
             try:
-                buf = fsrc.read(buffer_size)
+                buf = fread(buffer_size)
             except os.error, (errno, errstr):
                 raise DistutilsFileError(
                       "could not read from '%s': %s" % (src, errstr))
@@ -66,7 +66,7 @@ def _copy_file_contents(src, dst, buffer_size=16*1024):
         if fdst:
             fdst.close()
         if fsrc:
-            fsrc.close()
+            fclose()
 
 def copy_file(src, dst, preserve_mode=1, preserve_times=1, update=0,
               link=None, verbose=1, dry_run=0):

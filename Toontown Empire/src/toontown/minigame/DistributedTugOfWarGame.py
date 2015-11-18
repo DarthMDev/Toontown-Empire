@@ -1,27 +1,27 @@
 from panda3d.core import *
-from src.toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase.ToonBaseGlobal import *
 from direct.interval.IntervalGlobal import *
 from DistributedMinigame import *
 from direct.gui.DirectGui import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from src.toontown.toonbase import ToontownTimer
-from src.toontown.toon import ToonHead
-from src.toontown.suit import SuitDNA
-from src.toontown.suit import Suit
+from toontown.toonbase import ToontownTimer
+from toontown.toon import ToonHead
+from toontown.suit import SuitDNA
+from toontown.suit import Suit
 import ArrowKeys
 import random
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 import string
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 import TugOfWarGameGlobals
 from direct.showutil import Rope
-from src.toontown.effects import Splash
-from src.toontown.effects import Ripples
-from src.toontown.toonbase import TTLocalizer
+from toontown.effects import Splash
+from toontown.effects import Ripples
+from toontown.toonbase import TTLocalizer
 import MinigamePowerMeter
 from direct.task.Task import Task
-from src.otp.nametag import NametagGlobals
+from otp.nametag import NametagGlobals
 
 class DistributedTugOfWarGame(DistributedMinigame):
     bgm = 'phase_4/audio/bgm/MG_tug_o_war.ogg'

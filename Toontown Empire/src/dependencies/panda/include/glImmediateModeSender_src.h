@@ -1,4 +1,4 @@
-// Filename: glImmediateModeSender_src.h
+// Filename: glImmediateModeSender_h
 // Created by:  drose (15Aug05)
 //
 ////////////////////////////////////////////////////////////////////
@@ -235,7 +235,7 @@ private:
   ComponentSenders _senders;
 };
 
-#include "glImmediateModeSender_src.I"
+#include "glImmediateModeSender_I"
 
 #endif  // SUPPORT_IMMEDIATE_MODE
 

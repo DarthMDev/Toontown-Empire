@@ -1,11 +1,11 @@
-from src.toontown.building import DistributedCFOElevatorAI
-from src.toontown.building import FADoorCodes
-from src.toontown.building.DistributedBoardingPartyAI import DistributedBoardingPartyAI
-from src.toontown.coghq.DistributedMintElevatorExtAI import DistributedMintElevatorExtAI
-from src.toontown.hood import CogHQAI
-from src.toontown.suit import DistributedCashbotBossAI
-from src.toontown.suit import DistributedSuitPlannerAI
-from src.toontown.toonbase import ToontownGlobals
+from toontown.building import DistributedCFOElevatorAI
+from toontown.building import FADoorCodes
+from toontown.building.DistributedBoardingPartyAI import DistributedBoardingPartyAI
+from toontown.coghq.DistributedMintElevatorExtAI import DistributedMintElevatorExtAI
+from toontown.hood import CogHQAI
+from toontown.suit import DistributedCashbotBossAI
+from toontown.suit import DistributedSuitPlannerAI
+from toontown.toonbase import ToontownGlobals
 
 
 class CashbotHQAI(CogHQAI.CogHQAI):

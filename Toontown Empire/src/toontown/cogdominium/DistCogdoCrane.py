@@ -7,10 +7,10 @@ from direct.distributed import DistributedObject
 from direct.showutil import Rope
 from direct.showbase import PythonUtil
 from direct.task import Task
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.otp.otpbase import OTPGlobals
-from src.toontown.cogdominium import CogdoCraneGameConsts as GameConsts
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from otp.otpbase import OTPGlobals
+from toontown.cogdominium import CogdoCraneGameConsts as GameConsts
 import random
 
 class DistCogdoCrane(DistributedObject.DistributedObject, FSM.FSM):

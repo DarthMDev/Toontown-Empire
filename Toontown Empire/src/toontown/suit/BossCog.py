@@ -10,13 +10,13 @@ import types
 import random
 import Suit
 import SuitDNA
-from src.otp.avatar import Avatar
-from src.toontown.battle import BattleParticles
-from src.toontown.battle import BattleProps
-from src.otp.nametag.NametagGroup import NametagGroup
-from src.otp.nametag.NametagConstants import *
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
+from otp.avatar import Avatar
+from toontown.battle import BattleParticles
+from toontown.battle import BattleProps
+from otp.nametag.NametagGroup import NametagGroup
+from otp.nametag.NametagConstants import *
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
 
 
 GenericModel = 'phase_9/models/char/bossCog'

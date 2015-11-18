@@ -1,16 +1,16 @@
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from panda3d.core import *
 from math import *
 import math
 from direct.fsm.FSM import FSM
-from src.toontown.minigame import ArrowKeys
+from toontown.minigame import ArrowKeys
 from direct.showbase import PythonUtil
 from direct.task import Task
 from direct.distributed.ClockDelta import *
 import BuildGeometry
-from src.toontown.golf import GolfGlobals
+from toontown.golf import GolfGlobals
 import random, time
 
 def scalp(vec, scal):

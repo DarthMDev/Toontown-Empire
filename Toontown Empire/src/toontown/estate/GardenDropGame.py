@@ -2,7 +2,7 @@ import math, random, GameSprite, GardenGameGlobals
 from math import pi
 from direct.gui.DirectGui import *
 from direct.distributed.ClockDelta import *
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 
 LevelNumber = 1
 

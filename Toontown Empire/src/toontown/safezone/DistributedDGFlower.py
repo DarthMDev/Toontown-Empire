@@ -1,7 +1,7 @@
 from panda3d.core import *
 from direct.distributed.ClockDelta import *
 from direct.distributed import DistributedObject
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.task import Task
 SPIN_RATE = 12.5
 

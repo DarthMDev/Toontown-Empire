@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.battle import DistributedBattleBldg
+from toontown.toonbase import TTLocalizer
+from toontown.battle import DistributedBattleBldg
 
 class DistributedCogdoBattleBldg(DistributedBattleBldg.DistributedBattleBldg):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCogdoBattleBldg')

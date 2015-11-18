@@ -15,15 +15,15 @@ import GenderShop
 from MakeAToonGlobals import *
 import MakeClothesGUI
 import NameShop
-from src.otp.avatar import Avatar
-from src.otp.nametag.NametagConstants import *
-from src.toontown.distributed.ToontownMsgTypes import *
-from src.toontown.toon import LocalToon
-from src.toontown.toon import Toon
-from src.toontown.toon import ToonDNA
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toontowngui import TTDialog
+from otp.avatar import Avatar
+from otp.nametag.NametagConstants import *
+from toontown.distributed.ToontownMsgTypes import *
+from toontown.toon import LocalToon
+from toontown.toon import Toon
+from toontown.toon import ToonDNA
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toontowngui import TTDialog
 
 
 class MakeAToon(StateData.StateData):

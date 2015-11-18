@@ -4,13 +4,13 @@ from direct.distributed.PyDatagram import PyDatagram
 from direct.stdpy import threading2
 import re
 
-from src.otp.distributed import OtpDoGlobals
-from src.toontown.distributed.ShardStatusReceiver import ShardStatusReceiver
-from src.toontown.rpc.ToontownRPCHandlerBase import *
-from src.toontown.suit.SuitInvasionGlobals import INVASION_TYPE_NORMAL
-from src.toontown.toon import ToonDNA
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.uberdog.ClientServicesManagerUD import executeHttpRequest
+from otp.distributed import OtpDoGlobals
+from toontown.distributed.ShardStatusReceiver import ShardStatusReceiver
+from toontown.rpc.ToontownRPCHandlerBase import *
+from toontown.suit.SuitInvasionGlobals import INVASION_TYPE_NORMAL
+from toontown.toon import ToonDNA
+from toontown.toonbase import TTLocalizer
+from toontown.uberdog.ClientServicesManagerUD import executeHttpRequest
 
 
 class ToontownRPCHandler(ToontownRPCHandlerBase):

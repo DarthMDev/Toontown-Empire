@@ -1,4 +1,4 @@
-// Filename: lpoint4_src.h
+// Filename: lpoint4_h
 // Created by:  drose (08Mar00)
 //
 ////////////////////////////////////////////////////////////////////
@@ -68,4 +68,4 @@ private:
   static TypeHandle _type_handle;
 };
 
-#include "lpoint4_src.I"
+#include "lpoint4_I"

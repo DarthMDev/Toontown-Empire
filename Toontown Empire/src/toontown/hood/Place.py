@@ -1,21 +1,21 @@
 from panda3d.core import *
-from src.toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase.ToonBaseGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
-from src.toontown.toonbase.PythonUtil import PriorityCallbacks
-from src.toontown.safezone import PublicWalk
+from toontown.toonbase.PythonUtil import PriorityCallbacks
+from toontown.safezone import PublicWalk
 import ZoneUtil
-from src.toontown.friends import FriendsListManager
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toon.Toon import teleportDebug
-from src.toontown.estate import HouseGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.otp.otpbase import OTPLocalizer
-from src.otp.avatar import Emote
-from src.otp.avatar.Avatar import teleportNotify
+from toontown.friends import FriendsListManager
+from toontown.toonbase import ToontownGlobals
+from toontown.toon.Toon import teleportDebug
+from toontown.estate import HouseGlobals
+from toontown.toonbase import TTLocalizer
+from otp.otpbase import OTPLocalizer
+from otp.avatar import Emote
+from otp.avatar.Avatar import teleportNotify
 from direct.task import Task
 import QuietZoneState
-from src.toontown.distributed import ToontownDistrictStats
+from toontown.distributed import ToontownDistrictStats
 
 class Place(StateData.StateData, FriendsListManager.FriendsListManager):
     notify = DirectNotifyGlobal.directNotify.newCategory('Place')

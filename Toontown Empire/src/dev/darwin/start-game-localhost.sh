@@ -19,4 +19,4 @@ echo "Username: $tteUsername"
 echo "Gameserver: $TTE_GAMESERVER"
 echo "==============================="
 
-ppython -m toontown.toonbase.ClientStart
+ppython -m toontown.toonbase.ToontownStart

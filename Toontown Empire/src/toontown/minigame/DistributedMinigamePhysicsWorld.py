@@ -1,6 +1,6 @@
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.minigame import MinigamePhysicsWorldBase
+from toontown.minigame import MinigamePhysicsWorldBase
 
 class DistributedMinigamePhysicsWorld(DistributedObject.DistributedObject, MinigamePhysicsWorldBase.MinigamePhysicsWorldBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedMinigamePhysicsWorld')

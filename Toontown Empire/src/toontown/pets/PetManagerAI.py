@@ -1,5 +1,5 @@
 import PetUtil, PetDNA
-from src.toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase import ToontownGlobals, TTLocalizer
 import time, random, os
 
 MINUTE = 60

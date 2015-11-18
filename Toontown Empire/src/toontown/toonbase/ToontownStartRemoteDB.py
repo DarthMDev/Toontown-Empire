@@ -23,8 +23,8 @@ else:
     if response['status'] != 7:
         print response['message']
     else:
-        os.environ['tte_PLAYCOOKIE'] = response['token']
-        os.environ['tte_GAMESERVER'] = response['gameserver']
+        os.environ['TTE_PLAYCOOKIE'] = response['token']
+        os.environ['TTE_GAMESERVER'] = response['gameserver']
 
         # Start the game:
-        import src.toontown.toonbase.ToontownStart
+        import toontown.toonbase.ToontownStart

@@ -1,10 +1,10 @@
-from src.otp.ai.AIBaseGlobal import *
+from otp.ai.AIBaseGlobal import *
 from panda3d.core import *
 from DistributedNPCToonBaseAI import *
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 from direct.task import Task
-from src.toontown.racing.KartShopGlobals import *
-from src.toontown.racing.KartDNA import *
+from toontown.racing.KartShopGlobals import *
+from toontown.racing.KartDNA import *
 
 class DistributedNPCKartClerkAI(DistributedNPCToonBaseAI):
 

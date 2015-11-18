@@ -3,8 +3,8 @@ from direct.showbase.DirectObject import DirectObject
 from direct.gui.DirectGui import DirectButton
 from direct.gui.OnscreenText import OnscreenText
 from direct.task import Task
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.parties.KeyCodes import KeyCodes, KEYCODE_TIMEOUT_SECONDS
+from toontown.toonbase import ToontownGlobals
+from toontown.parties.KeyCodes import KeyCodes, KEYCODE_TIMEOUT_SECONDS
 KEY_TO_INDEX = {'u': 0,
  'r': 1,
  'd': 2,

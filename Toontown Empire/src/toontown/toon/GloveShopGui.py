@@ -1,7 +1,7 @@
 from direct.gui.DirectGui import DirectButton, DirectLabel, DGG
 from direct.task.Task import Task
-from src.toontown.toon import ToonDNA
-from src.toontown.toonbase import ToontownGlobals, TTLocalizer, ToontownTimer
+from toontown.toon import ToonDNA
+from toontown.toonbase import ToontownGlobals, TTLocalizer, ToontownTimer
 import GloveNPCGlobals, time
 
 class GloveShopGui:

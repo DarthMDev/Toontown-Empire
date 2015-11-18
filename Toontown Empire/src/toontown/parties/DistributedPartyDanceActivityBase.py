@@ -4,19 +4,19 @@ from direct.interval.FunctionInterval import Wait, Func
 from direct.interval.MetaInterval import Sequence, Parallel
 from direct.showbase.PythonUtil import lerp, Enum
 from direct.fsm import FSM
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.minigame.OrthoDrive import OrthoDrive
-from src.toontown.minigame.OrthoWalk import OrthoWalk
-from src.toontown.parties.activityFSMs import DanceActivityFSM
-from src.toontown.parties.PartyGlobals import ActivityIds, ActivityTypes
-from src.toontown.parties.PartyGlobals import DancePatternToAnims, DanceAnimToName
-from src.toontown.parties.DistributedPartyActivity import DistributedPartyActivity
-from src.toontown.parties.PartyDanceActivityToonFSM import PartyDanceActivityToonFSM
-from src.toontown.parties.PartyDanceActivityToonFSM import ToonDancingStates
-from src.toontown.parties.KeyCodes import KeyCodes
-from src.toontown.parties.KeyCodesGui import KeyCodesGui
-from src.toontown.parties import PartyGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.minigame.OrthoDrive import OrthoDrive
+from toontown.minigame.OrthoWalk import OrthoWalk
+from toontown.parties.activityFSMs import DanceActivityFSM
+from toontown.parties.PartyGlobals import ActivityIds, ActivityTypes
+from toontown.parties.PartyGlobals import DancePatternToAnims, DanceAnimToName
+from toontown.parties.DistributedPartyActivity import DistributedPartyActivity
+from toontown.parties.PartyDanceActivityToonFSM import PartyDanceActivityToonFSM
+from toontown.parties.PartyDanceActivityToonFSM import ToonDancingStates
+from toontown.parties.KeyCodes import KeyCodes
+from toontown.parties.KeyCodesGui import KeyCodesGui
+from toontown.parties import PartyGlobals
 DANCE_FLOOR_COLLISION = 'danceFloor_collision'
 DanceViews = Enum(('Normal', 'Dancing', 'Isometric'))
 

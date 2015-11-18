@@ -1,7 +1,7 @@
 from panda3d.core import *
-from src.toontown.hood import Place, ZoneUtil
-from src.toontown.toon import Toon
-from src.toontown.toonbase import ToontownGlobals
+from toontown.hood import Place, ZoneUtil
+from toontown.toon import Toon
+from toontown.toonbase import ToontownGlobals
 
 
 class BattlePlace(Place.Place):

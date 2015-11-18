@@ -21,12 +21,12 @@
 #include "lvecBase4_ext.h"
 
 #include "fltnames.h"
-#include "lvector4_ext_src.h"
+#include "lvector4_ext_h"
 
 #include "dblnames.h"
-#include "lvector4_ext_src.h"
+#include "lvector4_ext_h"
 
 #include "intnames.h"
-#include "lvector4_ext_src.h"
+#include "lvector4_ext_h"
 
 #endif

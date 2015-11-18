@@ -6,8 +6,8 @@ import BuildGeometry
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObjectAI
 from panda3d.core import *
-from src.toontown.golf import PhysicsWorldBase
-from src.toontown.toonbase import ToontownGlobals
+from toontown.golf import PhysicsWorldBase
+from toontown.toonbase import ToontownGlobals
 
 
 class DistributedPhysicsWorldAI(DistributedObjectAI.DistributedObjectAI, PhysicsWorldBase.PhysicsWorldBase):

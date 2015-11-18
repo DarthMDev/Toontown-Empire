@@ -1,6 +1,6 @@
 from direct.task.Task import Task
-from src.otp.ai.AIBaseGlobal import *
-from src.toontown.toonbase import ToontownGlobals
+from otp.ai.AIBaseGlobal import *
+from toontown.toonbase import ToontownGlobals
 import DistributedAnimatedPropAI
 import time
 

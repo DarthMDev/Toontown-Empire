@@ -6,13 +6,13 @@ from direct.distributed import DistributedSmoothNode
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.distributed.MsgTypes import *
 from direct.task import Task
-from src.otp.otpbase import OTPGlobals
-from src.toontown.pets import Pet, PetBase, PetTraits, PetConstants, PetManager, PetAvatarPanel
-from src.toontown.pets import PetMood, PetTricks
-from src.toontown.hood import ZoneUtil
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.distributed import DelayDelete
-from src.toontown.distributed.DelayDeletable import DelayDeletable
+from otp.otpbase import OTPGlobals
+from toontown.pets import Pet, PetBase, PetTraits, PetConstants, PetManager, PetAvatarPanel
+from toontown.pets import PetMood, PetTricks
+from toontown.hood import ZoneUtil
+from toontown.toonbase import TTLocalizer
+from toontown.distributed import DelayDelete
+from toontown.distributed.DelayDeletable import DelayDeletable
 import random
 BeanColors = (VBase4(1.0, 0.2, 0.2, 1.0),
  VBase4(0.2, 1.0, 0.2, 1.0),

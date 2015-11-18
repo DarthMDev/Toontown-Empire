@@ -5,12 +5,12 @@ from direct.distributed.ClockDelta import globalClockDelta
 from direct.distributed.DistributedObject import DistributedObject
 from direct.fsm import ClassicFSM, State
 from direct.fsm.StatePush import StateVar, FunctionCall
-from src.toontown.cogdominium import CogdoGameConsts
-from src.toontown.cogdominium.DistCogdoGameBase import DistCogdoGameBase
-from src.toontown.minigame.MinigameRulesPanel import MinigameRulesPanel
-from src.toontown.cogdominium.CogdoGameRulesPanel import CogdoGameRulesPanel
-from src.toontown.minigame import MinigameGlobals
-from src.toontown.toonbase import TTLocalizer as TTL
+from toontown.cogdominium import CogdoGameConsts
+from toontown.cogdominium.DistCogdoGameBase import DistCogdoGameBase
+from toontown.minigame.MinigameRulesPanel import MinigameRulesPanel
+from toontown.cogdominium.CogdoGameRulesPanel import CogdoGameRulesPanel
+from toontown.minigame import MinigameGlobals
+from toontown.toonbase import TTLocalizer as TTL
 
 class DistCogdoGame(DistCogdoGameBase, DistributedObject):
     notify = directNotify.newCategory('DistCogdoGame')

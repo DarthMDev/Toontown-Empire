@@ -6,13 +6,13 @@ from direct.distributed import DistributedNode
 from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.directutil import Mopath
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.hood import FishAnimatedProp
+from toontown.toonbase import ToontownGlobals
+from toontown.hood import FishAnimatedProp
 from direct.actor import Actor
 import FishingTargetGlobals
 import random
 import math
-from src.toontown.effects import Bubbles
+from toontown.effects import Bubbles
 
 class DistributedFishingTarget(DistributedNode.DistributedNode):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFishingTarget')

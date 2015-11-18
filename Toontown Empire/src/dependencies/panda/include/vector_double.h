@@ -33,7 +33,7 @@
 #define TYPE double
 #define NAME vector_double
 
-#include "vector_src.h"
+#include "vector_h"
 
 // Tell GCC that we'll take care of the instantiation explicitly here.
 #ifdef __GNUC__

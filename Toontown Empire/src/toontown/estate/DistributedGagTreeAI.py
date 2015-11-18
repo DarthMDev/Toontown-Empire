@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.otp.ai.MagicWordGlobal import *
-from src.toontown.estate.DistributedPlantBaseAI import DistributedPlantBaseAI
+from otp.ai.MagicWordGlobal import *
+from toontown.estate.DistributedPlantBaseAI import DistributedPlantBaseAI
 import GardenGlobals, time
 
 ONE_DAY = 86400

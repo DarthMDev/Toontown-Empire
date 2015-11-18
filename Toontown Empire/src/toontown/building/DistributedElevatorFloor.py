@@ -4,12 +4,12 @@ from direct.interval.IntervalGlobal import *
 from ElevatorConstants import *
 from ElevatorUtils import *
 import DistributedElevatorFSM
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM
 from direct.fsm import State
-from src.toontown.hood import ZoneUtil
-from src.toontown.toonbase import TTLocalizer
+from toontown.hood import ZoneUtil
+from toontown.toonbase import TTLocalizer
 from direct.fsm.FSM import FSM
 from direct.task import Task
 

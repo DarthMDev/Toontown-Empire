@@ -2,7 +2,7 @@ from direct.gui.DirectGui import DirectFrame, DirectButton, DirectLabel
 from direct.gui.DirectGui import DirectScrolledList, DirectCheckButton
 from direct.gui.DirectCheckBox import DirectCheckBox
 from direct.gui import DirectGuiGlobals
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from pandac.PandaModules import Vec3, Vec4, PlaneNode, Plane, Point3, TextNode, VBase4, NodePath
 
 class ScrolledFriendList(DirectScrolledList):

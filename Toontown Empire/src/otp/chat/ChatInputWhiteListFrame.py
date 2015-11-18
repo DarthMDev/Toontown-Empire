@@ -2,7 +2,7 @@ from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
 from direct.fsm import FSM
-from src.otp.otpbase import OTPGlobals
+from otp.otpbase import OTPGlobals
 
 class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('ChatInputWhiteList')

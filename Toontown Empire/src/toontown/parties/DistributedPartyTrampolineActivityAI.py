@@ -2,8 +2,8 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
 from direct.fsm.FSM import FSM
 from direct.task import Task
-from src.toontown.parties.DistributedPartyActivityAI import DistributedPartyActivityAI
-from src.toontown.toonbase import TTLocalizer
+from toontown.parties.DistributedPartyActivityAI import DistributedPartyActivityAI
+from toontown.toonbase import TTLocalizer
 import PartyGlobals
 
 class DistributedPartyTrampolineActivityAI(DistributedPartyActivityAI, FSM):

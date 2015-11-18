@@ -2,12 +2,12 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from panda3d.core import *
-from src.toontown.battle import BattlePlace
-from src.toontown.building import Elevator
-from src.toontown.coghq import CogHQExterior
-from src.toontown.dna.DNAParser import loadDNAFileAI, DNAStorage
-from src.toontown.hood import ZoneUtil
-from src.toontown.toonbase import ToontownGlobals
+from toontown.battle import BattlePlace
+from toontown.building import Elevator
+from toontown.coghq import CogHQExterior
+from toontown.dna.DNAParser import loadDNAFileAI, DNAStorage
+from toontown.hood import ZoneUtil
+from toontown.toonbase import ToontownGlobals
 
 
 class LawbotHQExterior(CogHQExterior.CogHQExterior):

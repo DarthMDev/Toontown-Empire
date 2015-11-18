@@ -1,4 +1,4 @@
-// Filename: glGeomContext_src.h
+// Filename: glGeomContext_h
 // Created by:  drose (19Mar04)
 //
 ////////////////////////////////////////////////////////////////////
@@ -74,5 +74,5 @@ private:
   static TypeHandle _type_handle;
 };
 
-#include "glGeomContext_src.I"
+#include "glGeomContext_I"
 

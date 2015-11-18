@@ -5,15 +5,15 @@ from direct.interval.IntervalGlobal import *
 from panda3d.core import *
 import random
 
-from src.otp.avatar import Emote
-from src.toontown.battle import DistributedBattle
-from src.toontown.battle import SuitBattleGlobals
-from src.toontown.battle.BattleBase import *
-from src.otp.nametag.NametagConstants import *
-from src.otp.nametag import NametagGlobals
-from src.toontown.suit import SuitDNA
-from src.toontown.toon import TTEmote
-from src.toontown.toonbase import ToontownGlobals
+from otp.avatar import Emote
+from toontown.battle import DistributedBattle
+from toontown.battle import SuitBattleGlobals
+from toontown.battle.BattleBase import *
+from otp.nametag.NametagConstants import *
+from otp.nametag import NametagGlobals
+from toontown.suit import SuitDNA
+from toontown.toon import TTEmote
+from toontown.toonbase import ToontownGlobals
 
 
 class DistributedLevelBattle(DistributedBattle.DistributedBattle):

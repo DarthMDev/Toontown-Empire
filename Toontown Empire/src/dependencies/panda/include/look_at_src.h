@@ -1,4 +1,4 @@
-// Filename: look_at_src.h
+// Filename: look_at_h
 // Created by:  drose (25Sep99)
 //
 ////////////////////////////////////////////////////////////////////
@@ -80,4 +80,4 @@ look_at(FLOATNAME(LQuaternion) &quat, const FLOATNAME(LVector3) &fwd,
 
 END_PUBLISH
 
-#include "look_at_src.I"
+#include "look_at_I"

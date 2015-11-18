@@ -1,7 +1,7 @@
 from direct.task.Task import Task
 import random
 
-from src.toontown.town import Street
+from toontown.town import Street
 
 
 class BRStreet(Street.Street):

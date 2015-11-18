@@ -27,10 +27,10 @@ from collections import namedtuple
 from hashlib import md5, sha1
 from random import SystemRandom
 
-from src.bson.binary import Binary
-from src.bson.py3compat import b, string_type, _unicode, PY3
-from src.bson.son import SON
-from src.pymongo.errors import ConfigurationError, OperationFailure
+from bson.binary import Binary
+from bson.py3compat import b, string_type, _unicode, PY3
+from bson.son import SON
+from pymongo.errors import ConfigurationError, OperationFailure
 
 
 MECHANISMS = frozenset(

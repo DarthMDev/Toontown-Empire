@@ -21,12 +21,12 @@
 #include "lvecBase3_ext.h"
 
 #include "fltnames.h"
-#include "lpoint3_ext_src.h"
+#include "lpoint3_ext_h"
 
 #include "dblnames.h"
-#include "lpoint3_ext_src.h"
+#include "lpoint3_ext_h"
 
 #include "intnames.h"
-#include "lpoint3_ext_src.h"
+#include "lpoint3_ext_h"
 
 #endif

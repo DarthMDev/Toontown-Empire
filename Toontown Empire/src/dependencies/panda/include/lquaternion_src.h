@@ -1,4 +1,4 @@
-// Filename: lquaternion_src.h
+// Filename: lquaternion_h
 // Created by:  frang (06Jun00)
 //
 ////////////////////////////////////////////////////////////////////
@@ -140,4 +140,4 @@ INLINE_LINMATH FLOATNAME(LMatrix4)
 operator * (const FLOATNAME(LMatrix4) &m, const FLOATNAME(LQuaternion) &q);
 END_PUBLISH
 
-#include "lquaternion_src.I"
+#include "lquaternion_I"

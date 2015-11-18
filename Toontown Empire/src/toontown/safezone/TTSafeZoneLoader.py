@@ -1,5 +1,5 @@
-from src.toontown.safezone import SafeZoneLoader
-from src.toontown.safezone import TTPlayground
+from toontown.safezone import SafeZoneLoader
+from toontown.safezone import TTPlayground
 
 class TTSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
     def __init__(self, hood, parentFSM, doneEvent):

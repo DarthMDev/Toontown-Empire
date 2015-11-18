@@ -1,4 +1,4 @@
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 import SellbotLegFactorySpec
 import SellbotLegFactoryCogs
 import LawbotLegFactorySpec

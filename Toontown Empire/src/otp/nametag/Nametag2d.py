@@ -1,5 +1,5 @@
 from Nametag import *
-from src.otp.margins.MarginPopup import *
+from otp.margins.MarginPopup import *
 from pandac.PandaModules import *
 import math
 

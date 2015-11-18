@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.PythonUtil import invertDictLossless
-from src.toontown.coghq import MintRoomSpecs
-from src.toontown.toonbase import ToontownGlobals
+from toontown.coghq import MintRoomSpecs
+from toontown.toonbase import ToontownGlobals
 from direct.showbase.PythonUtil import normalDistrib, lerp
 import random
 
@@ -23,7 +23,7 @@ def printAllCashbotInfo():
 
 
 def iterateCashbotMints(func):
-    from src.toontown.toonbase import ToontownGlobals
+    from toontown.toonbase import ToontownGlobals
     for mintId in [ToontownGlobals.CashbotMintIntA, ToontownGlobals.CashbotMintIntB, ToontownGlobals.CashbotMintIntC]:
         for floorNum in xrange(ToontownGlobals.MintNumFloors[mintId]):
             func(MintLayout(mintId, floorNum))

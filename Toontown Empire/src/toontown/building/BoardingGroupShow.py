@@ -1,10 +1,10 @@
 from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.task.Task import Task
 from direct.interval.IntervalGlobal import *
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.effects import DustCloud
+from toontown.toonbase import TTLocalizer
+from toontown.effects import DustCloud
 TRACK_TYPE_TELEPORT = 1
 TRACK_TYPE_RUN = 2
 TRACK_TYPE_POOF = 3

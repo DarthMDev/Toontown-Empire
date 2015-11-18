@@ -1,8 +1,8 @@
 from panda3d.core import *
 import CatalogAtticItem
 import CatalogItem
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 WVTModelName = 0
 WVTBasePrice = 1
 WVTSkyName = 2

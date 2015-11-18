@@ -5,10 +5,10 @@ from direct.interval.MetaInterval import Sequence
 from direct.directutil import Mopath
 from direct.showbase import PythonUtil
 from panda3d.core import *
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.suit import Suit
-from src.toontown.suit import SuitDNA
-from src.toontown.battle import BattleProps
+from toontown.toonbase import ToontownGlobals
+from toontown.suit import Suit
+from toontown.suit import SuitDNA
+from toontown.battle import BattleProps
 import CogdoUtil
 import CogdoFlyingGameGlobals as Globals
 from CogdoFlyingUtil import swapAvatarShadowPlacer

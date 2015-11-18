@@ -1,6 +1,6 @@
 import PurchaseManager
-from src.toontown.quest import QuestParser
-from src.toontown.toon import NPCToons
+from toontown.quest import QuestParser
+from toontown.toon import NPCToons
 
 class NewbiePurchaseManager(PurchaseManager.PurchaseManager):
 

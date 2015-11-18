@@ -75,19 +75,19 @@ import json
 import re
 import uuid
 
-from src.bson import EPOCH_AWARE, RE_TYPE, SON
-from src.bson.binary import Binary
-from src.bson.code import Code
-from src.bson.dbref import DBRef
-from src.bson.int64 import Int64
-from src.bson.max_key import MaxKey
-from src.bson.min_key import MinKey
-from src.bson.objectid import ObjectId
-from src.bson.regex import Regex
-from src.bson.timestamp import Timestamp
-from src.bson.tz_util import utc
+from bson import EPOCH_AWARE, RE_TYPE, SON
+from bson.binary import Binary
+from bson.code import Code
+from bson.dbref import DBRef
+from bson.int64 import Int64
+from bson.max_key import MaxKey
+from bson.min_key import MinKey
+from bson.objectid import ObjectId
+from bson.regex import Regex
+from bson.timestamp import Timestamp
+from bson.tz_util import utc
 
-from src.bson.py3compat import PY3, iteritems, string_type, text_type
+from bson.py3compat import PY3, iteritems, string_type, text_type
 
 
 _RE_OPT_TABLE = {

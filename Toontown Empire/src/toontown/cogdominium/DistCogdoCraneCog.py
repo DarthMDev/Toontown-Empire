@@ -2,8 +2,8 @@ from pandac import PandaModules as PM
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.distributed.DistributedObject import DistributedObject
 from direct.interval import IntervalGlobal as IG
-from src.toontown.cogdominium import CogdoCraneGameConsts as GameConsts
-from src.toontown.suit.Suit import Suit
+from toontown.cogdominium import CogdoCraneGameConsts as GameConsts
+from toontown.suit.Suit import Suit
 
 class DistCogdoCraneCog(Suit, DistributedObject):
 

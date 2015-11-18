@@ -1,4 +1,4 @@
-// Filename: lrotation_src.h
+// Filename: lrotation_h
 // Created by:  frang, charles (23Jun00)
 //
 ////////////////////////////////////////////////////////////////////
@@ -45,4 +45,4 @@ private:
   static TypeHandle _type_handle;
 };
 
-#include "lrotation_src.I"
+#include "lrotation_I"

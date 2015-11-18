@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 import DistributedFactoryAI
-from src.toontown.toon import NPCToons
+from toontown.toon import NPCToons
 import random
 
 class DistributedMegaCorpAI(DistributedFactoryAI.DistributedFactoryAI):

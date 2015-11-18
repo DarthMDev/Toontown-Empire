@@ -14,7 +14,7 @@
 
 from uuid import UUID
 
-from src.bson.py3compat import PY3
+from bson.py3compat import PY3
 
 """Tools for representing BSON binary data.
 """

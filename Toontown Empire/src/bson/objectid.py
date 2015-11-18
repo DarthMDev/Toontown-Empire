@@ -27,9 +27,9 @@ import struct
 import threading
 import time
 
-from src.bson.errors import InvalidId
-from src.bson.py3compat import PY3, bytes_from_hex, string_type, text_type
-from src.bson.tz_util import utc
+from bson.errors import InvalidId
+from bson.py3compat import PY3, bytes_from_hex, string_type, text_type
+from bson.tz_util import utc
 
 
 def _machine_bytes():

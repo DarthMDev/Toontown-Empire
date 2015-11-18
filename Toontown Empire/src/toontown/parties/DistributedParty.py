@@ -7,12 +7,12 @@ from direct.task import Task
 from direct.interval.IntervalGlobal import *
 from direct.gui.DirectGui import DirectLabel
 from direct.gui import OnscreenText
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.parties.PartyInfo import PartyInfo
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toon import Toon
-from src.toontown.parties import PartyGlobals
-from src.toontown.parties.Decoration import Decoration
+from toontown.toonbase import ToontownGlobals
+from toontown.parties.PartyInfo import PartyInfo
+from toontown.toonbase import TTLocalizer
+from toontown.toon import Toon
+from toontown.parties import PartyGlobals
+from toontown.parties.Decoration import Decoration
 import PartyUtils
 
 class DistributedParty(DistributedObject.DistributedObject):

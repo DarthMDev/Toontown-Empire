@@ -741,7 +741,7 @@ proc auto_execok name {
 # This procedure is called by Tcl's core when attempts to call the
 # filesystem's copydirectory function fail.  The semantics of the call
 # are that 'dest' does not yet exist, i.e. dest should become the exact
-# image of src.  If dest does exist, we throw an error.  
+# image of   If dest does exist, we throw an error.  
 # 
 # Note that making changes to this procedure can change the results
 # of running Tcl's tests.

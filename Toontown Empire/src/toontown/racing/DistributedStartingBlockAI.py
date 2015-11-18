@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
-from src.toontown.racing.KartShopGlobals import KartGlobals
-from src.toontown.racing import RaceGlobals
+from toontown.racing.KartShopGlobals import KartGlobals
+from toontown.racing import RaceGlobals
 
 class DistributedStartingBlockAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedStartingBlockAI")

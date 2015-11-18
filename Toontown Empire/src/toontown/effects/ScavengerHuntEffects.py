@@ -1,7 +1,7 @@
 from direct.interval.IntervalGlobal import *
 from direct.gui.DirectFrame import DirectFrame
 from direct.gui.DirectLabel import DirectLabel
-from src.toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase import ToontownGlobals, TTLocalizer
 
 class ScavengerHuntEffect:
     images = None

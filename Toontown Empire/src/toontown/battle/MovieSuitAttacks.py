@@ -10,12 +10,12 @@ from BattleSounds import *
 import MovieCamera
 import MovieUtil
 from SuitBattleGlobals import *
-from src.otp.nametag.NametagConstants import *
-from src.otp.nametag import NametagGlobals
-from src.toontown.suit.SuitDNA import *
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase.ToontownGlobals import *
+from otp.nametag.NametagConstants import *
+from otp.nametag import NametagGlobals
+from toontown.suit.SuitDNA import *
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase.ToontownGlobals import *
 
 
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieSuitAttacks')

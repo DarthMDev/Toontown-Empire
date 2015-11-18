@@ -3,10 +3,10 @@ from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.fsm import StateData
-from src.toontown.safezone import DistributedChineseCheckersAI
-from src.toontown.safezone import DistributedCheckersAI
-from src.toontown.safezone import DistributedFindFourAI
-from src.toontown.safezone import GameGlobals
+from toontown.safezone import DistributedChineseCheckersAI
+from toontown.safezone import DistributedCheckersAI
+from toontown.safezone import DistributedFindFourAI
+from toontown.safezone import GameGlobals
 
 class DistributedPicnicTableAI(DistributedNodeAI):
 

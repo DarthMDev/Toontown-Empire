@@ -1,5 +1,5 @@
 from panda3d.core import *
-from src.toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase.ToonBaseGlobal import *
 import DistributedSZTreasure
 from direct.task.Task import Task
 import math

@@ -1,5 +1,5 @@
-from src.toontown.safezone import MMPlayground
-from src.toontown.safezone import SafeZoneLoader
+from toontown.safezone import MMPlayground
+from toontown.safezone import SafeZoneLoader
 
 
 class MMSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):

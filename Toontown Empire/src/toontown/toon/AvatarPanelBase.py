@@ -1,10 +1,10 @@
 from panda3d.core import *
 from direct.gui.DirectGui import *
 from direct.showbase import DirectObject
-from src.otp.avatar import AvatarPanel
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toontowngui import TTDialog
-from src.toontown.ai import ReportGlobals
+from otp.avatar import AvatarPanel
+from toontown.toonbase import TTLocalizer
+from toontown.toontowngui import TTDialog
+from toontown.ai import ReportGlobals
 IGNORE_SCALE = 0.06
 STOP_IGNORE_SCALE = 0.04
 

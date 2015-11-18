@@ -1,16 +1,16 @@
 from panda3d.core import *
-from src.toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase.ToontownGlobals import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 import random
-from src.otp.level import DistributedLevel
+from otp.level import DistributedLevel
 from direct.directnotify import DirectNotifyGlobal
 import CountryClubRoomBase, CountryClubRoom
 import FactoryEntityCreator
 import CountryClubRoomSpecs
-from src.otp.level import LevelSpec, LevelConstants
-from src.otp.nametag.NametagConstants import *
-from src.toontown.toonbase import TTLocalizer
+from otp.level import LevelSpec, LevelConstants
+from otp.nametag.NametagConstants import *
+from toontown.toonbase import TTLocalizer
 
 def getCountryClubRoomReadyPostName(doId):
     return 'countryClubRoomReady-%s' % doId
@@ -87,7 +87,7 @@ class DistributedCountryClubRoom(DistributedLevel.DistributedLevel, CountryClubR
 
     def setDefeated(self):
         self.notify.info('setDefeated')
-        from src.toontown.coghq import DistributedCountryClub
+        from toontown.coghq import DistributedCountryClub
         messenger.send(DistributedCountryClub.DistributedCountryClub.WinEvent)
 
     def initVisibility(self, *args, **kw):

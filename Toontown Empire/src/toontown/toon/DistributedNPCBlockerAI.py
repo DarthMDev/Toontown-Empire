@@ -1,4 +1,4 @@
-from src.otp.ai.AIBaseGlobal import *
+from otp.ai.AIBaseGlobal import *
 from panda3d.core import *
 from DistributedNPCToonBaseAI import *
 import NPCToons

@@ -4,10 +4,10 @@ import DistributedDoorAI
 import DistributedPetshopInteriorAI
 import FADoorCodes
 import DoorTypes
-from src.toontown.toon import NPCToons
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.quest import Quests
-from src.toontown.hood import ZoneUtil
+from toontown.toon import NPCToons
+from toontown.toonbase import ToontownGlobals
+from toontown.quest import Quests
+from toontown.hood import ZoneUtil
 
 class PetshopBuildingAI:
     notify = DirectNotifyGlobal.directNotify.newCategory('PetshopBuildingAI')

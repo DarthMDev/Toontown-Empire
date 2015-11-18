@@ -1,6 +1,6 @@
 from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-from src.toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase.ToontownGlobals import *
 from direct.directnotify import DirectNotifyGlobal
 import DistributedBarrelBase
 
@@ -25,7 +25,7 @@ class DistributedGagBarrel(DistributedBarrelBase.DistributedBarrelBase):
     def applyLabel(self):
         invModel = loader.loadModel('phase_3.5/models/gui/inventory_icons')
         self.invModels = []
-        from src.toontown.toonbase import ToontownBattleGlobals
+        from toontown.toonbase import ToontownBattleGlobals
         for gagTrack in xrange(len(ToontownBattleGlobals.AvPropsNew)):
             itemList = []
             for item in xrange(len(ToontownBattleGlobals.AvPropsNew[gagTrack])):

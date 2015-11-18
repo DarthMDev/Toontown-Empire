@@ -6,16 +6,16 @@ from direct.showbase import DirectObject
 from direct.task import Task
 from panda3d.core import *
 import DistributedToonInterior
-from src.otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
-from src.toontown.hood import Place
-from src.toontown.hood import ZoneUtil
-from src.otp.nametag.NametagConstants import *
-from src.otp.nametag import NametagGlobals
-from src.toontown.toon import HealthForceAcknowledge
-from src.toontown.toon import NPCForceAcknowledge
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase.ToonBaseGlobal import *
+from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
+from toontown.hood import Place
+from toontown.hood import ZoneUtil
+from otp.nametag.NametagConstants import *
+from otp.nametag import NametagGlobals
+from toontown.toon import HealthForceAcknowledge
+from toontown.toon import NPCForceAcknowledge
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase.ToonBaseGlobal import *
 
 ##[x, y, h]
 InteriorTypes = {'toon_interior':[1.0, 13.0, 8.0],

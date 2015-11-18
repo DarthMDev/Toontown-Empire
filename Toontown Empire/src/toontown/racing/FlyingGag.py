@@ -1,7 +1,7 @@
 from panda3d.core import *
 from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
-from src.otp.avatar.ShadowCaster import ShadowCaster
+from otp.avatar.ShadowCaster import ShadowCaster
 
 class FlyingGag(NodePath, ShadowCaster):
 

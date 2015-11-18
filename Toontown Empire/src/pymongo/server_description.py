@@ -14,8 +14,8 @@
 
 """Represent one server in the topology."""
 
-from src.pymongo.server_type import SERVER_TYPE
-from src.pymongo.ismaster import IsMaster
+from pymongo.server_type import SERVER_TYPE
+from pymongo.ismaster import IsMaster
 
 
 class ServerDescription(object):

@@ -4,10 +4,10 @@ from pandac.PandaModules import TextNode, Vec3, Vec4, PlaneNode, Plane, Point3
 from direct.gui.DirectGui import DirectFrame, DirectLabel, DirectButton, DirectScrolledList, DGG
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui import DirectGuiGlobals
-from src.toontown.ai import HolidayGlobals
-from src.toontown.toonbase import TTLocalizer, ToontownGlobals
-from src.toontown.parties.PartyInfo import PartyInfo
-from src.toontown.parties import PartyGlobals
+from toontown.ai import HolidayGlobals
+from toontown.toonbase import TTLocalizer, ToontownGlobals
+from toontown.parties.PartyInfo import PartyInfo
+from toontown.parties import PartyGlobals
 
 def myStrftime(myTime):
     result = ''

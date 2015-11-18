@@ -1,12 +1,12 @@
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
-from src.toontown.estate.DistributedHouseInteriorAI import DistributedHouseInteriorAI
-from src.toontown.estate.DistributedHouseDoorAI import DistributedHouseDoorAI
-from src.toontown.estate.DistributedMailboxAI import DistributedMailboxAI
-from src.toontown.building import DoorTypes
-from src.toontown.catalog.CatalogItemList import CatalogItemList
-from src.otp.ai.MagicWordGlobal import *
-from src.toontown.catalog.CatalogFurnitureItem import *
-from src.toontown.catalog.CatalogItem import Customization, WindowPlacement, Location
+from toontown.estate.DistributedHouseInteriorAI import DistributedHouseInteriorAI
+from toontown.estate.DistributedHouseDoorAI import DistributedHouseDoorAI
+from toontown.estate.DistributedMailboxAI import DistributedMailboxAI
+from toontown.building import DoorTypes
+from toontown.catalog.CatalogItemList import CatalogItemList
+from otp.ai.MagicWordGlobal import *
+from toontown.catalog.CatalogFurnitureItem import *
+from toontown.catalog.CatalogItem import Customization, WindowPlacement, Location
 
 
 class DistributedHouseAI(DistributedObjectAI):

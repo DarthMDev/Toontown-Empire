@@ -4,7 +4,7 @@ from direct.interval.IntervalGlobal import *
 from direct.gui.DirectGui import *
 from direct.fsm import FSM
 from direct.distributed.DistributedSmoothNode import DistributedSmoothNode
-from src.otp.avatar.ShadowCaster import ShadowCaster
+from otp.avatar.ShadowCaster import ShadowCaster
 
 class DistributedProjectile(DistributedSmoothNode, ShadowCaster, NodePath):
 

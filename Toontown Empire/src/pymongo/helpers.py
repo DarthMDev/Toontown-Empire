@@ -18,12 +18,12 @@ import collections
 import datetime
 import struct
 
-import src.bson
-from src.bson.codec_options import CodecOptions
-from src.bson.py3compat import itervalues, string_type, iteritems, u
-from src.bson.son import SON
-from src.pymongo import ASCENDING
-from src.pymongo.errors import (CursorNotFound,
+import bson
+from bson.codec_options import CodecOptions
+from bson.py3compat import itervalues, string_type, iteritems, u
+from bson.son import SON
+from pymongo import ASCENDING
+from pymongo.errors import (CursorNotFound,
                             DuplicateKeyError,
                             ExecutionTimeout,
                             NotMasterError,
@@ -31,7 +31,7 @@ from src.pymongo.errors import (CursorNotFound,
                             WriteError,
                             WriteConcernError,
                             WTimeoutError)
-from src.pymongo.message import _Query, _convert_exception
+from pymongo.message import _Query, _convert_exception
 
 
 _UUNDER = u("_")

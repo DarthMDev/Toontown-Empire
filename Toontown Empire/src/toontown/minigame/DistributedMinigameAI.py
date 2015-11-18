@@ -1,16 +1,16 @@
-from src.otp.ai.AIBase import *
+from otp.ai.AIBase import *
 from direct.distributed.ClockDelta import *
-from src.toontown.ai.ToonBarrier import *
+from toontown.ai.ToonBarrier import *
 from direct.distributed import DistributedObjectAI
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from src.toontown.shtiker import PurchaseManagerAI
-from src.toontown.shtiker import NewbiePurchaseManagerAI
+from toontown.shtiker import PurchaseManagerAI
+from toontown.shtiker import NewbiePurchaseManagerAI
 import MinigameCreatorAI
 from direct.task import Task
 import MinigameGlobals
 from direct.showbase import PythonUtil
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 EXITED = 0
 EXPECTED = 1
 JOINED = 2

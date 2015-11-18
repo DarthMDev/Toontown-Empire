@@ -6,7 +6,7 @@ import select
 import socket
 import urlparse
 
-from src.toontown.rpc.ToontownRPCConnection import ToontownRPCConnection
+from toontown.rpc.ToontownRPCConnection import ToontownRPCConnection
 
 
 class ToontownRPCServer:

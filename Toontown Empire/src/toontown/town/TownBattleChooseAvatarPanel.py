@@ -1,11 +1,11 @@
-from src.toontown.toonbase.ToontownBattleGlobals import *
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase.ToontownBattleGlobals import *
+from toontown.toonbase import ToontownGlobals
 from direct.fsm import StateData
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.battle import BattleBase
+from toontown.battle import BattleBase
 from direct.gui.DirectGui import *
 from panda3d.core import *
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 
 class TownBattleChooseAvatarPanel(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('ChooseAvatarPanel')

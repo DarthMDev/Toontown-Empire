@@ -4,13 +4,13 @@ from StomperGlobals import *
 from direct.distributed import ClockDelta
 from direct.showbase.PythonUtil import lerp
 import math
-from src.otp.level import DistributedEntity
+from otp.level import DistributedEntity
 from direct.directnotify import DirectNotifyGlobal
 from pandac.PandaModules import NodePath
-from src.otp.level import BasicEntities
+from otp.level import BasicEntities
 from direct.task import Task
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.coghq import BattleBlocker
+from toontown.toonbase import ToontownGlobals
+from toontown.coghq import BattleBlocker
 import random
 from math import *
 

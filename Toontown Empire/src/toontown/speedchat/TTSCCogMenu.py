@@ -1,5 +1,5 @@
-from src.otp.speedchat.SCMenu import SCMenu
-from src.otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
+from otp.speedchat.SCMenu import SCMenu
+from otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
 
 class TTSCCogMenu(SCMenu):
 

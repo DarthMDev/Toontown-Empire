@@ -5,13 +5,13 @@ from ElevatorConstants import *
 from ElevatorUtils import *
 import DistributedElevator
 import DistributedElevatorExt
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM
 from direct.fsm import State
-from src.toontown.hood import ZoneUtil
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toontowngui import TTDialog
+from toontown.hood import ZoneUtil
+from toontown.toonbase import TTLocalizer
+from toontown.toontowngui import TTDialog
 
 class DistributedBossElevator(DistributedElevatorExt.DistributedElevatorExt):
 

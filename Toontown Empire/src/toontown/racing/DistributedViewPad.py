@@ -2,8 +2,8 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
 from direct.task import Task
 from panda3d.core import *
-from src.toontown.racing.DistributedKartPad import DistributedKartPad
-from src.toontown.racing.KartShopGlobals import KartGlobals
+from toontown.racing.DistributedKartPad import DistributedKartPad
+from toontown.racing.KartShopGlobals import KartGlobals
 
 class DistributedViewPad(DistributedKartPad):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedViewPad')

@@ -1,6 +1,6 @@
 from direct.distributed import DistributedObject
-from src.toontown.catalog import CatalogItem
-from src.toontown.catalog import CatalogItemList
+from toontown.catalog import CatalogItem
+from toontown.catalog import CatalogItemList
 from direct.directnotify.DirectNotifyGlobal import *
 
 class DistributedFurnitureManager(DistributedObject.DistributedObject):

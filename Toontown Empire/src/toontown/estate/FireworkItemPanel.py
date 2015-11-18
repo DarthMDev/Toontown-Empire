@@ -1,9 +1,9 @@
 from direct.gui.DirectGui import *
 from panda3d.core import *
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.effects import FireworkGlobals
-from src.toontown.effects import Fireworks
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.effects import FireworkGlobals
+from toontown.effects import Fireworks
 import FireworksGui
 
 class FireworkItemPanel(DirectFrame):

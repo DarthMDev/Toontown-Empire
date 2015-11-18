@@ -6,11 +6,11 @@ import random
 import types
 
 import Toon, ToonDNA
-from src.otp.avatar import Emote
-from src.otp.otpbase import OTPLocalizer
-from src.otp.nametag.NametagConstants import *
-from src.otp.nametag.NametagGroup import *
-from src.toontown.toonbase import TTLocalizer
+from otp.avatar import Emote
+from otp.otpbase import OTPLocalizer
+from otp.nametag.NametagConstants import *
+from otp.nametag.NametagGroup import *
+from toontown.toonbase import TTLocalizer
 
 
 EmoteSleepIndex = 4

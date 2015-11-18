@@ -25,23 +25,18 @@ from direct.extensions_native import NodePath_extensions
 
 from panda3d.core import loadPrcFile
 
-#Once WX is fixed it'll be re-enabled and NonWX will be disabled
-
-#Please do not re-enable the injector, as we have came to a decision to remove it. At least, temporarily. 
-
-
 #Added for when injector code detection is added.
-######################from src.toontown.cheatdetection import CheatDector
+######################from toontown.cheatdetection import CheatDector
  
 if __debug__:
     import sys
     from direct.stdpy import threading
 
-    loadPrcFile('src/dependencies/config/general.prc')
-    loadPrcFile('src/dependencies/config/release/dev.prc')
+    loadPrcFile('dependencies/config/general.prc')
+    loadPrcFile('dependencies/config/release/dev.prc')
 
-    if os.path.isfile('src/dependencies/config/local.prc'):
-        loadPrcFile('src/dependencies/config/local.prc')
+    if os.path.isfile('dependencies/config/local.prc'):
+        loadPrcFile('dependencies/config/local.prc')
 
     defaultText = ""
 
@@ -51,8 +46,8 @@ from direct.directnotify.DirectNotifyGlobal import directNotify
 notify = directNotify.newCategory('ToontownStart')
 notify.setInfo(True)
 
-from src.otp.settings.Settings import Settings
-from src.otp.otpbase import OTPGlobals
+from otp.settings.Settings import Settings
+from otp.otpbase import OTPGlobals
 
 preferencesFilename = ConfigVariableString(
     'preferences-filename',
@@ -105,7 +100,7 @@ import time
 import sys
 import random
 import __builtin__
-from src.toontown.launcher.tteLauncher import tteLauncher
+from toontown.launcher.tteLauncher import tteLauncher
 
 __builtin__.launcher = tteLauncher()
 
@@ -157,20 +152,20 @@ serverVersion = base.config.GetString('server-version', 'no_version_set')
 version = OnscreenText(serverVersion, pos=(-1.3, -0.975), scale=0.06, fg=Vec4(0, 0, 1, 0.6), align=TextNode.ALeft)
 version.setPos(0.03,0.03)
 version.reparentTo(base.a2dBottomLeft)
-from src.toontown.suit import Suit
+from toontown.suit import Suit
 Suit.loadModels()
-loader.beginBulkLoad('init', TTLocalizer.LoaderLabel, 138, 0, TTLocalizer.TIP_NONE, 0)
+loader.beginBulkLoad('init', TTLocalizer.LoaderLabel, 138, 0, 0)
 from ToonBaseGlobal import *
 from direct.showbase.MessengerGlobal import *
-from src.toontown.distributed import ToontownClientRepository
+from toontown.distributed import ToontownClientRepository
 cr = ToontownClientRepository.ToontownClientRepository(serverVersion)
 cr.music = music
 del music
 base.initNametagGlobals()
 base.cr = cr
 loader.endBulkLoad('init')
-from src.otp.friends import FriendManager
-from src.otp.distributed.OtpDoGlobals import *
+from otp.friends import FriendManager
+from otp.distributed.OtpDoGlobals import *
 cr.generateGlobalObject(OTP_DO_ID_FRIEND_MANAGER, 'FriendManager')
 base.startShow(cr)
 backgroundNodePath.reparentTo(hidden)

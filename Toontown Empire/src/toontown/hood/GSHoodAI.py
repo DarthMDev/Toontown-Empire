@@ -1,13 +1,13 @@
-from src.toontown.dna.DNAParser import DNAGroup, DNAVisGroup
-from src.toontown.hood import HoodAI
-from src.toontown.hood import ZoneUtil
-from src.toontown.racing import RaceGlobals
-from src.toontown.racing.DistributedRacePadAI import DistributedRacePadAI
-from src.toontown.racing.DistributedStartingBlockAI import DistributedStartingBlockAI
-from src.toontown.racing.DistributedViewPadAI import DistributedViewPadAI
-from src.toontown.racing.DistributedStartingBlockAI import DistributedViewingBlockAI
-from src.toontown.racing.DistributedLeaderBoardAI import DistributedLeaderBoardAI
-from src.toontown.toonbase import ToontownGlobals
+from toontown.dna.DNAParser import DNAGroup, DNAVisGroup
+from toontown.hood import HoodAI
+from toontown.hood import ZoneUtil
+from toontown.racing import RaceGlobals
+from toontown.racing.DistributedRacePadAI import DistributedRacePadAI
+from toontown.racing.DistributedStartingBlockAI import DistributedStartingBlockAI
+from toontown.racing.DistributedViewPadAI import DistributedViewPadAI
+from toontown.racing.DistributedStartingBlockAI import DistributedViewingBlockAI
+from toontown.racing.DistributedLeaderBoardAI import DistributedLeaderBoardAI
+from toontown.toonbase import ToontownGlobals
 
 class GSHoodAI(HoodAI.HoodAI):
     def __init__(self, air):

@@ -1,7 +1,7 @@
-from src.toontown.safezone.MMSafeZoneLoader import MMSafeZoneLoader
-from src.toontown.town.MMTownLoader import MMTownLoader
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.hood.ToonHood import ToonHood
+from toontown.safezone.MMSafeZoneLoader import MMSafeZoneLoader
+from toontown.town.MMTownLoader import MMTownLoader
+from toontown.toonbase import ToontownGlobals
+from toontown.hood.ToonHood import ToonHood
 
 
 class MMHood(ToonHood):

@@ -1,11 +1,11 @@
 from panda3d.core import *
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.showbase import DirectObject
-from src.toontown.toon import ToonDNA
-from src.toontown.toon import ToonHead
-from src.toontown.toontowngui import TTDialog
+from toontown.toon import ToonDNA
+from toontown.toon import ToonHead
+from toontown.toontowngui import TTDialog
 from direct.gui.DirectGui import *
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
 NAME_ROTATIONS = (7, -11, 1, -5, 3.5, -5)
 NAME_POSITIONS = ((0, 0, 0.26),

@@ -14,8 +14,8 @@
 
 """Tools for working with write concerns."""
 
-from src.bson.py3compat import integer_types, string_type
-from src.pymongo.errors import ConfigurationError
+from bson.py3compat import integer_types, string_type
+from pymongo.errors import ConfigurationError
 
 class WriteConcern(object):
     """WriteConcern

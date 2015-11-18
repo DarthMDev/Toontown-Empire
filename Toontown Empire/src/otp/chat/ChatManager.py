@@ -4,8 +4,8 @@ from direct.fsm import State
 from direct.gui.DirectGui import *
 from direct.showbase import DirectObject
 from panda3d.core import *
-from src.otp.otpbase import OTPLocalizer
-from src.otp.nametag.NametagConstants import *
+from otp.otpbase import OTPLocalizer
+from otp.nametag.NametagConstants import *
 import ChatUtil
 
 ChatEvent = 'ChatEvent'

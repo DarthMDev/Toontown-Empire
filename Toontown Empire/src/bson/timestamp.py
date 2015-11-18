@@ -18,8 +18,8 @@
 import calendar
 import datetime
 
-from src.bson.py3compat import integer_types
-from src.bson.tz_util import utc
+from bson.py3compat import integer_types
+from bson.tz_util import utc
 
 UPPERBOUND = 4294967296
 

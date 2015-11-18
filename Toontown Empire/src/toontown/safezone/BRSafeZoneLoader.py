@@ -1,5 +1,5 @@
-from src.toontown.safezone import BRPlayground
-from src.toontown.safezone import SafeZoneLoader
+from toontown.safezone import BRPlayground
+from toontown.safezone import SafeZoneLoader
 import SnowUtil
 
 class BRSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):

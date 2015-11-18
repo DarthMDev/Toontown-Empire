@@ -24,7 +24,7 @@ installed on a client by calling
 """
 
 import weakref
-from src.bson.py3compat import integer_types
+from bson.py3compat import integer_types
 
 
 class CursorManager(object):

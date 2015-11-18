@@ -1,5 +1,5 @@
 from direct.distributed.ClockDelta import globalClockDelta
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 from CogdoFlyingGame import CogdoFlyingGame
 from DistCogdoGame import DistCogdoGame
 import CogdoFlyingGameGlobals

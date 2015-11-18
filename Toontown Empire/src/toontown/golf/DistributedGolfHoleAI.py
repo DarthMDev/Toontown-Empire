@@ -1,13 +1,13 @@
 from direct.distributed import DistributedObjectAI
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from panda3d.core import *
 import DistributedPhysicsWorldAI
 from direct.fsm.FSM import FSM
-from src.toontown.ai.ToonBarrier import *
-from src.toontown.golf import GolfGlobals
+from toontown.ai.ToonBarrier import *
+from toontown.golf import GolfGlobals
 import random
-from src.toontown.golf import GolfHoleBase
+from toontown.golf import GolfHoleBase
 
 class DistributedGolfHoleAI(DistributedPhysicsWorldAI.DistributedPhysicsWorldAI, FSM, GolfHoleBase.GolfHoleBase):
     defaultTransitions = {'Off': ['Cleanup', 'WaitTee'],

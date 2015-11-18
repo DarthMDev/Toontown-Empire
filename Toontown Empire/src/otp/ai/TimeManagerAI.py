@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from direct.distributed.ClockDelta import globalClockDelta
-from src.otp.otpbase import OTPGlobals
+from otp.otpbase import OTPGlobals
 import time
 
 class TimeManagerAI(DistributedObjectAI):

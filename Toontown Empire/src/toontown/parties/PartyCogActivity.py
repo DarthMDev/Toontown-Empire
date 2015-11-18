@@ -8,9 +8,9 @@ from direct.showbase.PythonUtil import bound, lerp
 from direct.showbase.DirectObject import DirectObject
 from pandac.PandaModules import NodePath, Point3, TextNode
 from pandac.PandaModules import CollisionSphere, CollisionNode, CollisionHandlerEvent
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase.ToontownTimer import ToontownTimer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase.ToontownTimer import ToontownTimer
 import PartyGlobals
 import PartyCogUtils
 from PartyCog import PartyCogManager
@@ -489,8 +489,8 @@ class PartyCogActivity(DirectObject):
         self.toonPieTracks[avId] = pieTrack
 
     def getTossPieInterval(self, toon, x, y, z, h, p, r, power, beginFlyIval = Sequence()):
-        from src.toontown.toonbase import ToontownBattleGlobals
-        from src.toontown.battle import BattleProps
+        from toontown.toonbase import ToontownBattleGlobals
+        from toontown.battle import BattleProps
         pie = toon.getPieModel()
         pie.setScale(0.5)
         flyPie = pie.copyTo(NodePath('a'))

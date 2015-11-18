@@ -4,11 +4,11 @@ from direct.gui.DirectGui import *
 from direct.showbase import DirectObject
 from panda3d.core import *
 
-from src.toontown.effects import DistributedFireworkShow
-from src.otp.nametag import NametagGlobals
-from src.toontown.parties import DistributedPartyFireworksActivity
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
+from toontown.effects import DistributedFireworkShow
+from otp.nametag import NametagGlobals
+from toontown.parties import DistributedPartyFireworksActivity
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
 
 
 class ShtikerBook(DirectFrame, StateData.StateData):
@@ -200,7 +200,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         page.setPageName(pageName)
         page.reparentTo(self)
         self.addPageTab(page, pageIndex, pageName)
-        from src.toontown.shtiker import MapPage
+        from toontown.shtiker import MapPage
         if isinstance(page, MapPage.MapPage):
             self.pageBeforeNews = page
 
@@ -319,7 +319,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         if enterPage:
             self.showPageArrows()
             page.enter()
-        from src.toontown.shtiker import NewsPage
+        from toontown.shtiker import NewsPage
         if not isinstance(page, NewsPage.NewsPage):
             self.pageBeforeNews = page
         return
@@ -420,7 +420,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         self.setPageTabIndex(self.currPageIndex)
         self.showPageArrows()
         page = self.pages[self.currPageIndex]
-        from src.toontown.shtiker import NewsPage
+        from toontown.shtiker import NewsPage
         if isinstance(page, NewsPage.NewsPage):
             self.goToNewsPage(page)
         else:
@@ -442,7 +442,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
             self.nextArrow.show()
 
     def __checkForNewsPage(self):
-        from src.toontown.shtiker import NewsPage
+        from toontown.shtiker import NewsPage
         self.ignore('arrow_left')
         self.ignore('arrow_right')
         if isinstance(self.pages[self.currPageIndex], NewsPage.NewsPage):

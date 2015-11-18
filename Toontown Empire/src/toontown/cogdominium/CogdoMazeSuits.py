@@ -2,9 +2,9 @@ from pandac.PandaModules import Point3, VBase4
 from direct.fsm.FSM import FSM
 from direct.interval.IntervalGlobal import Sequence, Parallel, ActorInterval, Func, Wait, ParticleInterval, Track, LerpColorScaleInterval, LerpScaleInterval, LerpHprInterval
 from direct.task.Task import Task
-from src.toontown.battle import BattleParticles
-from src.toontown.battle import MovieUtil
-from src.toontown.minigame.MazeSuit import MazeSuit
+from toontown.battle import BattleParticles
+from toontown.battle import MovieUtil
+from toontown.minigame.MazeSuit import MazeSuit
 from CogdoMazeGameObjects import CogdoMazeSplattable
 import CogdoMazeGameGlobals as Globals
 import random

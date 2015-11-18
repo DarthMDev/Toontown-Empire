@@ -1,21 +1,21 @@
 from direct.gui.DirectGui import *
 from panda3d.core import *
-from src.otp.speedchat.SpeedChatTypes import *
-from src.toontown.speedchat.TTSpeedChatTypes import *
-from src.otp.speedchat.SpeedChat import SpeedChat
-from src.otp.speedchat import SpeedChatGlobals
-from src.toontown.speedchat import TTSpeedChatGlobals
-from src.toontown.speedchat import TTSCIndexedTerminal
+from otp.speedchat.SpeedChatTypes import *
+from toontown.speedchat.TTSpeedChatTypes import *
+from otp.speedchat.SpeedChat import SpeedChat
+from otp.speedchat import SpeedChatGlobals
+from toontown.speedchat import TTSpeedChatGlobals
+from toontown.speedchat import TTSCIndexedTerminal
 from direct.showbase import DirectObject
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 import string
-from src.otp.otpbase import OTPLocalizer
-from src.otp.otpbase import OTPGlobals
-from src.toontown.shtiker.OptionsPage import speedChatStyles
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.parties.PartyGlobals import ActivityIds, DecorationIds
-from src.toontown.toonbase import ToontownGlobals
+from otp.otpbase import OTPLocalizer
+from otp.otpbase import OTPGlobals
+from toontown.shtiker.OptionsPage import speedChatStyles
+from toontown.toonbase import TTLocalizer
+from toontown.parties.PartyGlobals import ActivityIds, DecorationIds
+from toontown.toonbase import ToontownGlobals
 scStructure = [
  [OTPLocalizer.SCMenuHello,
   {100: 0},

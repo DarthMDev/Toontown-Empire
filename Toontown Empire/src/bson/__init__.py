@@ -27,33 +27,33 @@ import uuid
 from codecs import (utf_8_decode as _utf_8_decode,
                     utf_8_encode as _utf_8_encode)
 
-from src.bson.binary import (Binary, OLD_UUID_SUBTYPE,
+from bson.binary import (Binary, OLD_UUID_SUBTYPE,
                          JAVA_LEGACY, CSHARP_LEGACY,
                          UUIDLegacy)
-from src.bson.code import Code
-from src.bson.codec_options import CodecOptions, DEFAULT_CODEC_OPTIONS
-from src.bson.dbref import DBRef
-from src.bson.errors import (InvalidBSON,
+from bson.code import Code
+from bson.codec_options import CodecOptions, DEFAULT_CODEC_OPTIONS
+from bson.dbref import DBRef
+from bson.errors import (InvalidBSON,
                          InvalidDocument,
                          InvalidStringData)
-from src.bson.int64 import Int64
-from src.bson.max_key import MaxKey
-from src.bson.min_key import MinKey
-from src.bson.objectid import ObjectId
-from src.bson.py3compat import (b,
+from bson.int64 import Int64
+from bson.max_key import MaxKey
+from bson.min_key import MinKey
+from bson.objectid import ObjectId
+from bson.py3compat import (b,
                             PY3,
                             iteritems,
                             text_type,
                             string_type,
                             reraise)
-from src.bson.regex import Regex
-from src.bson.son import SON, RE_TYPE
-from src.bson.timestamp import Timestamp
-from src.bson.tz_util import utc
+from bson.regex import Regex
+from bson.son import SON, RE_TYPE
+from bson.timestamp import Timestamp
+from bson.tz_util import utc
 
 
 try:
-    from src.bson import _cbson
+    from bson import _cbson
     _USE_C = True
 except ImportError:
     _USE_C = False

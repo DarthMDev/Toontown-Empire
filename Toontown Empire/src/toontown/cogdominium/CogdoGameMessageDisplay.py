@@ -2,7 +2,7 @@ from direct.interval.FunctionInterval import Func
 from direct.interval.LerpInterval import LerpFunc
 from direct.interval.MetaInterval import Sequence
 from pandac.PandaModules import TextNode
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 import CogdoGameConsts
 
 class CogdoGameMessageDisplay:

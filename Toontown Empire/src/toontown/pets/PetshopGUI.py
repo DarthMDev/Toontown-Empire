@@ -2,20 +2,20 @@ from direct.gui.DirectGui import *
 from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.DirectObject import DirectObject
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownTimer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownTimer
 from direct.task import Task
-from src.otp.namepanel import NameTumbler
-from src.otp.otpbase import OTPGlobals
-from src.otp.otpbase import OTPLocalizer
-from src.toontown.fishing import FishSellGUI
-from src.toontown.pets import Pet, PetConstants
-from src.toontown.pets import PetDNA
-from src.toontown.pets import PetUtil
-from src.toontown.pets import PetDetail
-from src.toontown.pets import PetTraits
-from src.toontown.hood import ZoneUtil
+from otp.namepanel import NameTumbler
+from otp.otpbase import OTPGlobals
+from otp.otpbase import OTPLocalizer
+from toontown.fishing import FishSellGUI
+from toontown.pets import Pet, PetConstants
+from toontown.pets import PetDNA
+from toontown.pets import PetUtil
+from toontown.pets import PetDetail
+from toontown.pets import PetTraits
+from toontown.hood import ZoneUtil
 import string
 import random
 Dialog_MainMenu = 0

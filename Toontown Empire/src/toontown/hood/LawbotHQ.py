@@ -1,6 +1,6 @@
-from src.toontown.coghq.LawbotCogHQLoader import LawbotCogHQLoader
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.hood.CogHood import CogHood
+from toontown.coghq.LawbotCogHQLoader import LawbotCogHQLoader
+from toontown.toonbase import ToontownGlobals
+from toontown.hood.CogHood import CogHood
 
 
 class LawbotHQ(CogHood):

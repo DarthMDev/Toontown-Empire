@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.otp.level.DistributedEntityAI import DistributedEntityAI
+from otp.level.DistributedEntityAI import DistributedEntityAI
 
 class DistributedInteractiveEntityAI(DistributedEntityAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedInteractiveEntityAI")

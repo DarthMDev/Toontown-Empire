@@ -8,10 +8,10 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM
 from direct.distributed import DistributedObject
 from direct.fsm import State
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
 from direct.task.Task import Task
-from src.toontown.hood import ZoneUtil
+from toontown.hood import ZoneUtil
 from direct.fsm.FSM import FSM
 
 class DistributedElevatorFSM(DistributedObject.DistributedObject, FSM):

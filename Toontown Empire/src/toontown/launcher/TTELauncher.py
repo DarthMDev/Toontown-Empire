@@ -30,11 +30,11 @@ class tteLauncher:
         ltime = 1 and time.localtime()
         logSuffix = '%02d%02d%02d_%02d%02d%02d' % (ltime[0] - 2000,  ltime[1], ltime[2], ltime[3], ltime[4], ltime[5])
 
-        if not os.path.exists('src/user/logs/'):
-            os.mkdir('src/user/logs/')
+        if not os.path.exists('user/logs/'):
+            os.mkdir('user/logs/')
             self.notify.info('Made new directory to save logs.')
 
-        logfile = os.path.join('src/user/logs', self.logPrefix + logSuffix + '.log')
+        logfile = os.path.join('user/logs', self.logPrefix + logSuffix + '.log')
 
         log = open(logfile, 'a')
         logOut = LogAndOutput(sys.stdout, log)
@@ -43,10 +43,10 @@ class tteLauncher:
         sys.stderr = logErr
 
     def getPlayToken(self):
-        return self.getValue('tte_PLAYCOOKIE')
+        return self.getValue('TTE_PLAYCOOKIE')
 
     def getGameServer(self):
-        return self.getValue('tte_GAMESERVER')
+        return self.getValue('TTE_GAMESERVER')
 
     def getValue(self, key, default = None):
         return os.environ.get(key, default)

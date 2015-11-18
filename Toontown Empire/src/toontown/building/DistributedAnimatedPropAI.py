@@ -1,7 +1,7 @@
 from direct.distributed import DistributedObjectAI
 from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
-from src.otp.ai.AIBaseGlobal import *
+from otp.ai.AIBaseGlobal import *
 
 
 class DistributedAnimatedPropAI(DistributedObjectAI.DistributedObjectAI):

@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.PythonUtil import invertDictLossless
-from src.toontown.coghq import StageRoomSpecs
-from src.toontown.toonbase import ToontownGlobals
+from toontown.coghq import StageRoomSpecs
+from toontown.toonbase import ToontownGlobals
 from direct.showbase.PythonUtil import normalDistrib, lerp
 import random
 
@@ -23,7 +23,7 @@ def printAllCashbotInfo():
 
 
 def iterateLawbotStages(func):
-    from src.toontown.toonbase import ToontownGlobals
+    from toontown.toonbase import ToontownGlobals
     for layoutId in xrange(len(stageLayouts)):
         for floorNum in xrange(getNumFloors(layoutId)):
             func(StageLayout(0, floorNum, layoutId))

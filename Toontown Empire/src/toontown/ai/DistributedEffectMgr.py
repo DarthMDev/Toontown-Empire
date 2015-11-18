@@ -1,5 +1,5 @@
 from direct.distributed.DistributedObject import DistributedObject
-from src.otp.speedchat import SpeedChatGlobals
+from otp.speedchat import SpeedChatGlobals
 import HolidayGlobals, time
 
 class DistributedEffectMgr(DistributedObject):

@@ -19,16 +19,16 @@ import random
 import threading
 import warnings
 
-from src.bson.py3compat import itervalues
-from src.pymongo import common
-from src.pymongo.pool import PoolOptions
-from src.pymongo.topology_description import (updated_topology_description,
+from bson.py3compat import itervalues
+from pymongo import common
+from pymongo.pool import PoolOptions
+from pymongo.topology_description import (updated_topology_description,
                                           TOPOLOGY_TYPE,
                                           TopologyDescription)
-from src.pymongo.errors import ServerSelectionTimeoutError, InvalidOperation
-from src.pymongo.monotonic import time as _time
-from src.pymongo.server import Server
-from src.pymongo.server_selectors import (any_server_selector,
+from pymongo.errors import ServerSelectionTimeoutError, InvalidOperation
+from pymongo.monotonic import time as _time
+from pymongo.server import Server
+from pymongo.server_selectors import (any_server_selector,
                                       apply_local_threshold,
                                       arbiter_server_selector,
                                       secondary_server_selector,

@@ -1,8 +1,8 @@
 from panda3d.core import *
 from direct.directnotify.DirectNotifyGlobal import *
 from direct.showbase import Loader
-from src.toontown.toontowngui import ToontownLoadingScreen
-from src.toontown.dna.DNAParser import *
+from toontown.toontowngui import ToontownLoadingScreen
+from toontown.dna.DNAParser import *
 
 class ToontownLoader(Loader.Loader):
     TickPeriod = 0.2
@@ -31,7 +31,7 @@ class ToontownLoader(Loader.Loader):
         self.inBulkBlock = 1
         self._lastTickT = globalClock.getRealTime()
         self.blockName = name
-        self.loadingScreen.begin(range, label, gui, tipCategory, zoneId)
+        self.loadingScreen.begin(range, label, gui, tipCategory)
         return None
 
     def endBulkLoad(self, name):

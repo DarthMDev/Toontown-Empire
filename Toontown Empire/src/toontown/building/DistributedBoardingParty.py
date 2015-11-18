@@ -5,16 +5,16 @@ from direct.interval.IntervalGlobal import *
 from panda3d.core import *
 
 import BoardingGroupShow
-from src.toontown.building import BoardingPartyBase
-from src.otp.nametag.NametagConstants import *
-from src.otp.margins.WhisperPopup import *
-from src.toontown.hood import ZoneUtil
-from src.toontown.toon import BoardingGroupInviterPanels
-from src.toontown.toon import GroupInvitee
-from src.toontown.toon import GroupPanel
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toontowngui import TTDialog
+from toontown.building import BoardingPartyBase
+from otp.nametag.NametagConstants import *
+from otp.margins.WhisperPopup import *
+from toontown.hood import ZoneUtil
+from toontown.toon import BoardingGroupInviterPanels
+from toontown.toon import GroupInvitee
+from toontown.toon import GroupPanel
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toontowngui import TTDialog
 
 
 class DistributedBoardingParty(DistributedObject.DistributedObject, BoardingPartyBase.BoardingPartyBase):

@@ -1,10 +1,10 @@
 from panda3d.core import *
 from direct.showbase.DirectObject import DirectObject
-from src.toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase.ToonBaseGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
-from src.toontown.battle.BattleProps import *
-from src.toontown.battle import MovieUtil
+from toontown.battle.BattleProps import *
+from toontown.battle import MovieUtil
 import math
 
 class TwoDBattleMgr(DirectObject):

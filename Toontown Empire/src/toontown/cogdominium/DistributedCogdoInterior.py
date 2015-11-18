@@ -1,24 +1,24 @@
 import random
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
-from src.toontown.building.ElevatorConstants import *
-from src.toontown.toon import NPCToons
+from toontown.building.ElevatorConstants import *
+from toontown.toon import NPCToons
 from pandac.PandaModules import NodePath
-from src.toontown.building import ElevatorUtils
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import ToontownBattleGlobals
+from toontown.building import ElevatorUtils
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownBattleGlobals
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.distributed import DistributedObject
 from direct.fsm import State
 from direct.fsm.StatePush import StateVar, FunctionCall
-from src.toontown.battle import BattleBase
-from src.toontown.hood import ZoneUtil
-from src.toontown.cogdominium.CogdoLayout import CogdoLayout
-from src.toontown.cogdominium import CogdoGameConsts
-from src.toontown.cogdominium import CogdoBarrelRoom, CogdoBarrelRoomConsts
-from src.toontown.distributed import DelayDelete
-from src.toontown.toonbase import TTLocalizer
+from toontown.battle import BattleBase
+from toontown.hood import ZoneUtil
+from toontown.cogdominium.CogdoLayout import CogdoLayout
+from toontown.cogdominium import CogdoGameConsts
+from toontown.cogdominium import CogdoBarrelRoom, CogdoBarrelRoomConsts
+from toontown.distributed import DelayDelete
+from toontown.toonbase import TTLocalizer
 from CogdoExecutiveSuiteMovies import CogdoExecutiveSuiteIntro
 from CogdoBarrelRoomMovies import CogdoBarrelRoomIntro
 from CogdoElevatorMovie import CogdoElevatorMovie
@@ -31,7 +31,7 @@ PAINTING_DICT = {'s': 'tt_m_ara_crg_paintingMoverShaker',
  'm': 'tt_m_ara_crg_paintingMoverShaker',
  'c': 'tt_m_ara_crg_paintingMoverShaker'}
 
-from src.otp.nametag.NametagConstants import *
+from otp.nametag.NametagConstants import *
 
 class DistributedCogdoInterior(DistributedObject.DistributedObject):
     id = 0

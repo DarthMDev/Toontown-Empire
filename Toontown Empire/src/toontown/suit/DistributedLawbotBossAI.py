@@ -1,25 +1,25 @@
-from src.otp.ai.AIBaseGlobal import *
+from otp.ai.AIBaseGlobal import *
 from direct.distributed.ClockDelta import *
-from src.otp.ai.MagicWordGlobal import *
+from otp.ai.MagicWordGlobal import *
 import DistributedBossCogAI
 from direct.directnotify import DirectNotifyGlobal
-from src.otp.avatar import DistributedAvatarAI
+from otp.avatar import DistributedAvatarAI
 import DistributedSuitAI
-from src.toontown.battle import BattleExperienceAI
+from toontown.battle import BattleExperienceAI
 from direct.fsm import FSM
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toon import InventoryBase
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.battle import BattleBase
-from src.toontown.toon import NPCToons
-from src.toontown.building import SuitBuildingGlobals
+from toontown.toonbase import ToontownGlobals
+from toontown.toon import InventoryBase
+from toontown.toonbase import TTLocalizer
+from toontown.battle import BattleBase
+from toontown.toon import NPCToons
+from toontown.building import SuitBuildingGlobals
 import SuitDNA
 import random
-from src.toontown.coghq import DistributedLawbotBossGavelAI
-from src.toontown.suit import DistributedLawbotBossSuitAI
-from src.toontown.coghq import DistributedLawbotCannonAI
-from src.toontown.coghq import DistributedLawbotChairAI
-from src.toontown.toonbase import ToontownBattleGlobals
+from toontown.coghq import DistributedLawbotBossGavelAI
+from toontown.suit import DistributedLawbotBossSuitAI
+from toontown.coghq import DistributedLawbotCannonAI
+from toontown.coghq import DistributedLawbotChairAI
+from toontown.toonbase import ToontownBattleGlobals
 import math
 
 

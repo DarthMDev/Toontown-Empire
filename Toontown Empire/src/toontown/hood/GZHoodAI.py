@@ -1,9 +1,9 @@
 from panda3d.core import *
-from src.toontown.dna.DNAParser import DNAGroup, DNAVisGroup
-from src.toontown.hood import HoodAI
-from src.toontown.hood import ZoneUtil
-from src.toontown.safezone.DistributedGolfKartAI import DistributedGolfKartAI
-from src.toontown.toonbase import ToontownGlobals
+from toontown.dna.DNAParser import DNAGroup, DNAVisGroup
+from toontown.hood import HoodAI
+from toontown.hood import ZoneUtil
+from toontown.safezone.DistributedGolfKartAI import DistributedGolfKartAI
+from toontown.toonbase import ToontownGlobals
 
 
 class GZHoodAI(HoodAI.HoodAI):

@@ -1,15 +1,15 @@
 from panda3d.core import *
-from src.toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase.ToontownGlobals import *
 from direct.gui.DirectGui import *
 from direct.showbase import DirectObject
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 import types
-from src.toontown.toon import NPCToons
-from src.toontown.toon import NPCFriendPanel
-from src.toontown.toonbase import ToontownBattleGlobals
+from toontown.toon import NPCToons
+from toontown.toon import NPCFriendPanel
+from toontown.toonbase import ToontownBattleGlobals
 
 class TownBattleSOSPanel(DirectFrame, StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('TownBattleSOSPanel')

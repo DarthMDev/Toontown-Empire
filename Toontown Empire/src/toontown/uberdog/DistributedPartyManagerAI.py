@@ -1,13 +1,13 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
-from src.toontown.catalog.CatalogBeanItem import CatalogBeanItem
-from src.otp.distributed.OtpDoGlobals import *
+from toontown.catalog.CatalogBeanItem import CatalogBeanItem
+from otp.distributed.OtpDoGlobals import *
 from panda3d.core import *
-from src.toontown.parties.DistributedPartyAI import DistributedPartyAI
-from src.toontown.parties.PartyGlobals import *
-from src.otp.ai.MagicWordGlobal import *
-from src.toontown.toonbase.TTLocalizer import EventsPageCancelPartyResultOk
-from src.toontown.toonbase.ToontownGlobals import GIFT_partyrefund, MaxMailboxContents
+from toontown.parties.DistributedPartyAI import DistributedPartyAI
+from toontown.parties.PartyGlobals import *
+from otp.ai.MagicWordGlobal import *
+from toontown.toonbase.TTLocalizer import EventsPageCancelPartyResultOk
+from toontown.toonbase.ToontownGlobals import GIFT_partyrefund, MaxMailboxContents
 
 from datetime import datetime
 import time

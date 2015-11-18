@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.otp.ai.MagicWordGlobal import *
+from otp.ai.MagicWordGlobal import *
 from DistributedPlantBaseAI import DistributedPlantBaseAI
 from FlowerBase import FlowerBase
 

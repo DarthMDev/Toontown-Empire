@@ -3,19 +3,19 @@ from direct.interval.IntervalGlobal import Sequence, Parallel, Func, Wait, LerpP
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectFrame import DirectFrame
 from direct.gui.DirectGui import DGG
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.task.Task import Task
 from direct.fsm import ClassicFSM, State
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.minigame.DistributedMinigame import DistributedMinigame
-from src.toontown.minigame import SwingVine
-from src.toontown.minigame import ArrowKeys
-from src.toontown.minigame import VineGameGlobals
-from src.toontown.minigame import VineTreasure
-from src.toontown.minigame import MinigameAvatarScorePanel
-from src.toontown.toonbase import ToontownTimer
-from src.toontown.minigame import VineHeadFrame
-from src.toontown.minigame import VineBat
+from toontown.toonbase import TTLocalizer
+from toontown.minigame.DistributedMinigame import DistributedMinigame
+from toontown.minigame import SwingVine
+from toontown.minigame import ArrowKeys
+from toontown.minigame import VineGameGlobals
+from toontown.minigame import VineTreasure
+from toontown.minigame import MinigameAvatarScorePanel
+from toontown.toonbase import ToontownTimer
+from toontown.minigame import VineHeadFrame
+from toontown.minigame import VineBat
 
 class DistributedVineGame(DistributedMinigame):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedVineGame')

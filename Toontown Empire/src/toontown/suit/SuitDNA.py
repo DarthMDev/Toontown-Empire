@@ -1,7 +1,7 @@
 import random
 from panda3d.core import *
 from direct.directnotify.DirectNotifyGlobal import *
-from src.toontown.toonbase import TTLocalizer, ToontownGlobals
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 import random
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator

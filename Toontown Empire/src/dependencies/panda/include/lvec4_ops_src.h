@@ -1,4 +1,4 @@
-// Filename: lvec4_ops_src.h
+// Filename: lvec4_ops_h
 // Created by:  drose (08Mar00)
 //
 ////////////////////////////////////////////////////////////////////
@@ -49,4 +49,4 @@ INLINE_LINMATH void
 generic_read_datagram(FLOATNAME(LVecBase4) &result, DatagramIterator &source);
 
 
-#include "lvec4_ops_src.I"
+#include "lvec4_ops_I"

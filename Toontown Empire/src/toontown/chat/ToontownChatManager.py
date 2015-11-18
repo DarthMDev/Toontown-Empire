@@ -1,13 +1,13 @@
 from direct.showbase import DirectObject
-from src.otp.otpbase import OTPGlobals
-from src.otp.otpbase import OTPLocalizer
-from src.toontown.toonbase import TTLocalizer
+from otp.otpbase import OTPGlobals
+from otp.otpbase import OTPLocalizer
+from toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
 from panda3d.core import *
-from src.otp.chat import ChatManager
-from src.TTChatInputSpeedChat import TTChatInputSpeedChat
-from src.TTChatInputWhiteList import TTChatInputWhiteList
+from otp.chat import ChatManager
+from toontown.chat.TTChatInputSpeedChat import TTChatInputSpeedChat
+from toontown.chat.TTChatInputWhiteList import TTChatInputWhiteList
 
 class ToontownChatManager(ChatManager.ChatManager):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownChatManager')

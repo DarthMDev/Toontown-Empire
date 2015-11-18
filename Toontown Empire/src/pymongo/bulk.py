@@ -17,22 +17,22 @@
 .. versionadded:: 2.7
 """
 
-from src.bson.objectid import ObjectId
-from src.bson.py3compat import u
-from src.bson.son import SON
-from src.pymongo.common import (validate_is_mapping,
+from bson.objectid import ObjectId
+from bson.py3compat import u
+from bson.son import SON
+from pymongo.common import (validate_is_mapping,
                             validate_is_mutable_mapping,
                             validate_ok_for_replace,
                             validate_ok_for_update)
-from src.pymongo.errors import (BulkWriteError,
+from pymongo.errors import (BulkWriteError,
                             DocumentTooLarge,
                             InvalidOperation,
                             OperationFailure)
-from src.pymongo.message import (_INSERT, _UPDATE, _DELETE,
+from pymongo.message import (_INSERT, _UPDATE, _DELETE,
                              _do_batched_write_command,
                              _randint,
                              _BulkWriteContext)
-from src.pymongo.write_concern import WriteConcern
+from pymongo.write_concern import WriteConcern
 
 
 _DELETE_ALL = 0

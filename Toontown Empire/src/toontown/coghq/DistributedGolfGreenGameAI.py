@@ -1,13 +1,13 @@
-from src.otp.ai.AIBase import *
+from otp.ai.AIBase import *
 from direct.interval.IntervalGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import ClockDelta
 from direct.task import Task
-from src.otp.level import DistributedEntityAI
-from src.otp.level import BasicEntities
-from src.toontown.coghq import BattleBlockerAI
+from otp.level import DistributedEntityAI
+from otp.level import BasicEntities
+from toontown.coghq import BattleBlockerAI
 from direct.distributed.ClockDelta import *
-from src.toontown.toonbase import ToontownBattleGlobals
+from toontown.toonbase import ToontownBattleGlobals
 from GolfGreenGameGlobals import *
 import random
 import time

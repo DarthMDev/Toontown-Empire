@@ -1,7 +1,7 @@
 import os
 os.chdir('../../../')
 
-from src.otp.chat import WhiteListData
+from otp.chat import WhiteListData
 
 def acceptWord():
     word = raw_input('> ').rstrip().lower()

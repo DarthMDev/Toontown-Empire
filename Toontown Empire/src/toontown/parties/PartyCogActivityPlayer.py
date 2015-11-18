@@ -7,10 +7,10 @@ from direct.interval.SoundInterval import SoundInterval
 from direct.interval.LerpInterval import LerpScaleInterval, LerpFunc
 from direct.directnotify import DirectNotifyGlobal
 from pandac.PandaModules import NodePath, Point3, VBase3
-from src.toontown.minigame.OrthoDrive import OrthoDrive
-from src.toontown.minigame.OrthoWalk import OrthoWalk
-from src.toontown.battle.BattleProps import globalPropPool
-from src.toontown.battle.BattleSounds import globalBattleSoundCache
+from toontown.minigame.OrthoDrive import OrthoDrive
+from toontown.minigame.OrthoWalk import OrthoWalk
+from toontown.battle.BattleProps import globalPropPool
+from toontown.battle.BattleSounds import globalBattleSoundCache
 import PartyGlobals
 from PartyCogActivityInput import PartyCogActivityInput
 from PartyCogActivityGui import PartyCogActivityGui

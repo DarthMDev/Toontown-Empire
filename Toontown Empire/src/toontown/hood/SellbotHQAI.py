@@ -1,11 +1,11 @@
-from src.toontown.building import DistributedVPElevatorAI
-from src.toontown.building import FADoorCodes
-from src.toontown.building.DistributedBoardingPartyAI import DistributedBoardingPartyAI
-from src.toontown.coghq.DistributedFactoryElevatorExtAI import DistributedFactoryElevatorExtAI
-from src.toontown.hood import CogHQAI
-from src.toontown.suit import DistributedSellbotBossAI
-from src.toontown.suit import DistributedSuitPlannerAI
-from src.toontown.toonbase import ToontownGlobals
+from toontown.building import DistributedVPElevatorAI
+from toontown.building import FADoorCodes
+from toontown.building.DistributedBoardingPartyAI import DistributedBoardingPartyAI
+from toontown.coghq.DistributedFactoryElevatorExtAI import DistributedFactoryElevatorExtAI
+from toontown.hood import CogHQAI
+from toontown.suit import DistributedSellbotBossAI
+from toontown.suit import DistributedSuitPlannerAI
+from toontown.toonbase import ToontownGlobals
 
 
 class SellbotHQAI(CogHQAI.CogHQAI):

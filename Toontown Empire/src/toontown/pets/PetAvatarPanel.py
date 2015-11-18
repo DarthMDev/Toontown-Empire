@@ -5,13 +5,13 @@ from direct.showbase import DirectObject
 from direct.showbase.PythonUtil import Functor
 from direct.task.Task import Task
 from direct.distributed import DistributedObject
-from src.otp.avatar import Avatar, AvatarPanel
-from src.toontown.toon import ToonHead
-from src.toontown.toon import LaffMeter
-from src.toontown.toon import ToonAvatarDetailPanel
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.pets import Pet, PetConstants, PetDetailPanel
+from otp.avatar import Avatar, AvatarPanel
+from toontown.toon import ToonHead
+from toontown.toon import LaffMeter
+from toontown.toon import ToonAvatarDetailPanel
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.pets import Pet, PetConstants, PetDetailPanel
 
 class PetAvatarPanel(AvatarPanel.AvatarPanel):
     notify = directNotify.newCategory('PetAvatarPanel')
@@ -25,7 +25,7 @@ class PetAvatarPanel(AvatarPanel.AvatarPanel):
         else:
             self.avatar = avatar
             self.petIsLocal = False
-        from src.toontown.friends import FriendsListPanel
+        from toontown.friends import FriendsListPanel
         AvatarPanel.AvatarPanel.__init__(self, self.avatar, FriendsListPanel=FriendsListPanel)
         base.localAvatar.obscureFriendsListButton(1)
         base.panel = self
@@ -203,7 +203,7 @@ class PetAvatarPanel(AvatarPanel.AvatarPanel):
             messenger.send('clickedNametag', [handle])
         else:
             self.disableAll()
-            from src.toontown.toon import ToonDetail
+            from toontown.toon import ToonDetail
             self.toonDetail = ToonDetail.ToonDetail(self.avatar.ownerId, self.__ownerDetailsLoaded)
         return
 

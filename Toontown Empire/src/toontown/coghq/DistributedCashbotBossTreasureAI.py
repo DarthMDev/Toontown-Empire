@@ -1,4 +1,4 @@
-from src.toontown.safezone import DistributedTreasureAI
+from toontown.safezone import DistributedTreasureAI
 
 class DistributedCashbotBossTreasureAI(DistributedTreasureAI.DistributedTreasureAI):
 

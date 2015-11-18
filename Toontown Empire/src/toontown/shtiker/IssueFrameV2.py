@@ -1,7 +1,7 @@
 from pandac.PandaModules import Filename
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import DGG, DirectFrame, DirectButton
-from src.toontown.shtiker import IssueFrame
+from toontown.shtiker import IssueFrame
 
 class IssueFrameV2(IssueFrame.IssueFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('IssueFrameV2')

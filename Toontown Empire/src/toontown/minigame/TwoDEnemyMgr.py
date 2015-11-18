@@ -1,8 +1,8 @@
 from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.DirectObject import DirectObject
-from src.toontown.minigame import ToonBlitzGlobals
-from src.toontown.minigame import TwoDEnemy
+from toontown.minigame import ToonBlitzGlobals
+from toontown.minigame import TwoDEnemy
 
 class TwoDEnemyMgr(DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('TwoDEnemyMgr')

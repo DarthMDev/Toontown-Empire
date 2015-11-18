@@ -1,6 +1,6 @@
 from direct.gui.DirectGui import OnscreenImage, DirectLabel, DirectButton
-from src.toontown.toonbase import ToontownGlobals, TTLocalizer
-from src.toontown.toontowngui import TTDialog
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toontowngui import TTDialog
 import os
 
 class LanguageSelector:

@@ -1,7 +1,7 @@
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.estate import MailboxGlobals
-from src.toontown.parties.PartyGlobals import InviteStatus
+from toontown.toonbase import ToontownGlobals
+from toontown.estate import MailboxGlobals
+from toontown.parties.PartyGlobals import InviteStatus
 
 
 class DistributedMailboxAI(DistributedObjectAI):

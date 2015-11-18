@@ -2,7 +2,7 @@
 distribution dev
 
 # Art assets:
-model-path resources/
+model-path ../resources/
 
 # Server:
 server-version tte-dev
@@ -16,7 +16,7 @@ want-rpc-server #f
 rpc-server-endpoint http://localhost:8080/
 
 # DClass file:
-dc-file src/dependencies/astron/dclass/empire.dc
+dc-file dependencies/astron/dclass/empire.dc
 
 # Core features:
 want-pets #t

@@ -1,9 +1,9 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
-from src.toontown.fishing import FishGlobals
-from src.toontown.fishing.FishBase import FishBase
+from toontown.fishing import FishGlobals
+from toontown.fishing.FishBase import FishBase
 from direct.task import Task
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 
 
 

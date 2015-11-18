@@ -1,4 +1,4 @@
-// Filename: lmatrix4_src.h
+// Filename: lmatrix4_h
 // Created by:  drose (15Jan99)
 //
 ////////////////////////////////////////////////////////////////////
@@ -375,4 +375,4 @@ INLINE_LINMATH FLOATNAME(LMatrix4) transpose(const FLOATNAME(LMatrix4) &a);
 INLINE_LINMATH FLOATNAME(LMatrix4) invert(const FLOATNAME(LMatrix4) &a);
 END_PUBLISH
 
-#include "lmatrix4_src.I"
+#include "lmatrix4_I"

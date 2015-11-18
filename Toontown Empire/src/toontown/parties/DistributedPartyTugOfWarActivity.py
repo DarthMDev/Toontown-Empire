@@ -14,11 +14,11 @@ from direct.interval.FunctionInterval import Func
 from direct.showutil.Rope import Rope
 from direct.showbase.PythonUtil import fitDestAngle2Src
 from direct.fsm.StatePush import StateVar, FunctionCall
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.effects import Splash
-from src.toontown.minigame.MinigamePowerMeter import MinigamePowerMeter
-from src.toontown.minigame.ArrowKeys import ArrowKeys
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.effects import Splash
+from toontown.minigame.MinigamePowerMeter import MinigamePowerMeter
+from toontown.minigame.ArrowKeys import ArrowKeys
 import PartyGlobals
 import PartyUtils
 from DistributedPartyTeamActivity import DistributedPartyTeamActivity

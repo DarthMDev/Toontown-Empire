@@ -13,34 +13,34 @@ from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.showbase.PythonUtil import Functor, ScratchPad
 from direct.showbase.InputStateGlobal import inputState
-from src.otp.avatar import Avatar
-from src.otp.avatar import DistributedAvatar
-from src.otp.friends import FriendManager
-from src.otp.distributed import OTPClientRepository
-from src.otp.distributed import PotentialAvatar
-from src.otp.distributed import PotentialShard
-from src.otp.distributed import DistributedDistrict
-from src.otp.distributed.OtpDoGlobals import *
-from src.otp.distributed import OtpDoGlobals
-from src.otp.otpbase import OTPGlobals
-from src.otp.otpbase import OTPLocalizer
-from src.otp.avatar.Avatar import teleportNotify
-from src.toontown.toonbase.ToonBaseGlobal import *
-from src.toontown.toonbase.ToontownGlobals import *
-from src.toontown.distributed import DelayDelete
-from src.toontown.friends import FriendHandle
-from src.toontown.friends import FriendsListPanel
-from src.toontown.login import AvatarChooser
-from src.toontown.makeatoon import MakeAToon
-from src.toontown.pets import DistributedPet, PetDetail, PetHandle
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toontowngui import TTDialog
-from src.toontown.toon import LocalToon
-from src.toontown.toon import ToonDNA
-from src.toontown.distributed import ToontownDistrictStats
-from src.toontown.makeatoon import TTPickANamePattern
-from src.toontown.parties import ToontownTimeManager
-from src.toontown.toon import Toon, DistributedToon
+from otp.avatar import Avatar
+from otp.avatar import DistributedAvatar
+from otp.friends import FriendManager
+from otp.distributed import OTPClientRepository
+from otp.distributed import PotentialAvatar
+from otp.distributed import PotentialShard
+from otp.distributed import DistributedDistrict
+from otp.distributed.OtpDoGlobals import *
+from otp.distributed import OtpDoGlobals
+from otp.otpbase import OTPGlobals
+from otp.otpbase import OTPLocalizer
+from otp.avatar.Avatar import teleportNotify
+from toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase.ToontownGlobals import *
+from toontown.distributed import DelayDelete
+from toontown.friends import FriendHandle
+from toontown.friends import FriendsListPanel
+from toontown.login import AvatarChooser
+from toontown.makeatoon import MakeAToon
+from toontown.pets import DistributedPet, PetDetail, PetHandle
+from toontown.toonbase import TTLocalizer
+from toontown.toontowngui import TTDialog
+from toontown.toon import LocalToon
+from toontown.toon import ToonDNA
+from toontown.distributed import ToontownDistrictStats
+from toontown.makeatoon import TTPickANamePattern
+from toontown.parties import ToontownTimeManager
+from toontown.toon import Toon, DistributedToon
 from ToontownMsgTypes import *
 import HoodMgr
 import PlayGame
@@ -679,7 +679,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
     def cleanPetsFromFriendsMap(self):
         for objId, obj in self.friendsMap.items():
-            from src.toontown.pets import DistributedPet
+            from toontown.pets import DistributedPet
             if isinstance(obj, DistributedPet.DistributedPet):
                 print 'Removing %s reference from the friendsMap' % obj.getName()
                 del self.friendsMap[objId]
@@ -757,7 +757,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             self.handleAvatarResponseMsg(doId, di)
 
     def getFirstBattle(self):
-        from src.toontown.battle import DistributedBattleBase
+        from toontown.battle import DistributedBattleBase
         for dobj in self.doId2do.values():
             if isinstance(dobj, DistributedBattleBase.DistributedBattleBase):
                 return dobj

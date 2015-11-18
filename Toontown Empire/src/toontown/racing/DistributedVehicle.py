@@ -5,21 +5,21 @@ from direct.gui.DirectGui import *
 from direct.fsm import FSM
 from direct.distributed import DistributedSmoothNode
 from direct.interval.IntervalGlobal import *
-from src.toontown.toonbase.PythonUtil import clampScalar
-from src.otp.otpbase import OTPGlobals
-from src.otp.avatar import ShadowCaster
-from src.toontown.racing import Kart
-from src.toontown.racing.KartDNA import *
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.effects.Drift import Drift
-from src.toontown.effects.Sparks import Sparks
+from toontown.toonbase.PythonUtil import clampScalar
+from otp.otpbase import OTPGlobals
+from otp.avatar import ShadowCaster
+from toontown.racing import Kart
+from toontown.racing.KartDNA import *
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.effects.Drift import Drift
+from toontown.effects.Sparks import Sparks
 from direct.interval.ProjectileInterval import *
-from src.toontown.battle.BattleProps import *
+from toontown.battle.BattleProps import *
 import random
 from direct.showbase.PythonUtil import randFloat
 from direct.task.Task import Task
-from src.otp.nametag import NametagGlobals
+from otp.nametag import NametagGlobals
 import math
 iceTurnFactor = 0.25
 iceAccelFactor = 0.4

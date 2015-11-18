@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 import DistributedMintAI
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.coghq import MintLayout
+from toontown.toonbase import ToontownGlobals
+from toontown.coghq import MintLayout
 from direct.showbase import DirectObject
 import random
 
@@ -39,7 +39,7 @@ class MintManagerAI(DirectObject.DirectObject):
                     if roomId in layout.getRoomIds():
                         floor = i
                 else:
-                    from src.toontown.coghq import MintRoomSpecs
+                    from toontown.coghq import MintRoomSpecs
                     roomName = MintRoomSpecs.CashbotMintRoomId2RoomName[roomId]
                     MintManagerAI.notify.warning('room %s (%s) not found in any floor of mint %s' % (roomId, roomName, mintId))
 

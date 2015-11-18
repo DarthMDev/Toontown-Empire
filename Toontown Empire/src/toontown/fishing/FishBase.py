@@ -1,5 +1,5 @@
 import FishGlobals
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
 
 class FishBase:

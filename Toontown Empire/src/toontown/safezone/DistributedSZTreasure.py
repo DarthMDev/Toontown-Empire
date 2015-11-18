@@ -1,7 +1,7 @@
 import DistributedTreasure
 from pandac.PandaModules import VBase3, VBase4
 from direct.interval.IntervalGlobal import Sequence, Wait, Func, LerpColorScaleInterval, LerpScaleInterval
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 
 class DistributedSZTreasure(DistributedTreasure.DistributedTreasure):
 

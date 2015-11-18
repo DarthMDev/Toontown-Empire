@@ -1,4 +1,4 @@
-// Filename: lmatrix3_src.h
+// Filename: lmatrix3_h
 // Created by:  drose (29Jan99)
 //
 ////////////////////////////////////////////////////////////////////
@@ -341,8 +341,8 @@ INLINE_LINMATH FLOATNAME(LMatrix3) transpose(const FLOATNAME(LMatrix3) &a);
 INLINE_LINMATH FLOATNAME(LMatrix3) invert(const FLOATNAME(LMatrix3) &a);
 END_PUBLISH
 
-// We can safely include lmatrix4_src.h down here and avoid circular
+// We can safely include lmatrix4_h down here and avoid circular
 // dependencies.
-#include "lmatrix4_src.h"
+#include "lmatrix4_h"
 
-#include "lmatrix3_src.I"
+#include "lmatrix3_I"

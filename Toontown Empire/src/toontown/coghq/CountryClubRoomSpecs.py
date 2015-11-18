@@ -1,28 +1,28 @@
 from direct.showbase.PythonUtil import invertDict
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.coghq import BossbotCountryClubFairwayRoom_Battle00_Cogs
-from src.toontown.coghq import BossbotCountryClubMazeRoom_Battle00_Cogs
-from src.toontown.coghq import BossbotCountryClubMazeRoom_Battle01_Cogs
-from src.toontown.coghq import BossbotCountryClubMazeRoom_Battle02_Cogs
-from src.toontown.coghq import BossbotCountryClubMazeRoom_Battle03_Cogs
-from src.toontown.coghq import NullCogs
-from src.toontown.coghq import BossbotCountryClubKartRoom_Battle00_Cogs
-from src.toontown.coghq import BossbotCountryClubPresidentRoom_Battle00_Cogs
+from toontown.toonbase import ToontownGlobals
+from toontown.coghq import BossbotCountryClubFairwayRoom_Battle00_Cogs
+from toontown.coghq import BossbotCountryClubMazeRoom_Battle00_Cogs
+from toontown.coghq import BossbotCountryClubMazeRoom_Battle01_Cogs
+from toontown.coghq import BossbotCountryClubMazeRoom_Battle02_Cogs
+from toontown.coghq import BossbotCountryClubMazeRoom_Battle03_Cogs
+from toontown.coghq import NullCogs
+from toontown.coghq import BossbotCountryClubKartRoom_Battle00_Cogs
+from toontown.coghq import BossbotCountryClubPresidentRoom_Battle00_Cogs
 
 # Explicit imports...
-from src.toontown.coghq import BossbotCountryClubEntrance_Action00
-from src.toontown.coghq import BossbotCountryClubTeeOffRoom_Action00
-from src.toontown.coghq import BossbotCountryClubFairwayRoom_Battle00
-from src.toontown.coghq import BossbotCountryClubMazeRoom_Battle00
-from src.toontown.coghq import BossbotCountryClubMazeRoom_Battle01
-from src.toontown.coghq import BossbotCountryClubMazeRoom_Battle02
-from src.toontown.coghq import BossbotCountryClubGreenRoom_Action00
-from src.toontown.coghq import BossbotCountryClubKartRoom_Battle00
-from src.toontown.coghq import BossbotCountryClubPresidentRoom_Battle00
-from src.toontown.coghq import BossbotCountryClubTeeOffRoom_Action01
-from src.toontown.coghq import BossbotCountryClubTeeOffRoom_Action02
-from src.toontown.coghq import BossbotCountryClubGreenRoom_Action01
-from src.toontown.coghq import BossbotCountryClubGreenRoom_Action02
+from toontown.coghq import BossbotCountryClubEntrance_Action00
+from toontown.coghq import BossbotCountryClubTeeOffRoom_Action00
+from toontown.coghq import BossbotCountryClubFairwayRoom_Battle00
+from toontown.coghq import BossbotCountryClubMazeRoom_Battle00
+from toontown.coghq import BossbotCountryClubMazeRoom_Battle01
+from toontown.coghq import BossbotCountryClubMazeRoom_Battle02
+from toontown.coghq import BossbotCountryClubGreenRoom_Action00
+from toontown.coghq import BossbotCountryClubKartRoom_Battle00
+from toontown.coghq import BossbotCountryClubPresidentRoom_Battle00
+from toontown.coghq import BossbotCountryClubTeeOffRoom_Action01
+from toontown.coghq import BossbotCountryClubTeeOffRoom_Action02
+from toontown.coghq import BossbotCountryClubGreenRoom_Action01
+from toontown.coghq import BossbotCountryClubGreenRoom_Action02
 
 def getCountryClubRoomSpecModule(roomId):
     return CashbotMintSpecModules[roomId]

@@ -1,11 +1,11 @@
 from panda3d.core import *
 from direct.fsm import StateData
 from direct.gui.DirectGui import *
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.pets import Pet, PetTricks, PetDetailPanel
-from src.toontown.speedchat import TTSCPetTrickMenu
-from src.otp.speedchat import SpeedChatGlobals, SCSettings
-from src.otp.otpbase import OTPLocalizer
+from toontown.toonbase import TTLocalizer
+from toontown.pets import Pet, PetTricks, PetDetailPanel
+from toontown.speedchat import TTSCPetTrickMenu
+from otp.speedchat import SpeedChatGlobals, SCSettings
+from otp.otpbase import OTPLocalizer
 
 class TownBattleSOSPetInfoPanel(StateData.StateData):
 

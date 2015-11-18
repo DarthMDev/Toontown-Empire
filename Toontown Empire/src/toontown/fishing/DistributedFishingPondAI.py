@@ -1,7 +1,7 @@
 from direct.directnotify.DirectNotifyGlobal import *
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
-from src.toontown.fishing import FishingTargetGlobals
-from src.toontown.fishing.DistributedFishingTargetAI import DistributedFishingTargetAI
+from toontown.fishing import FishingTargetGlobals
+from toontown.fishing.DistributedFishingTargetAI import DistributedFishingTargetAI
 
 
 class DistributedFishingPondAI(DistributedObjectAI):

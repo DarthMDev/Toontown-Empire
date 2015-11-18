@@ -1,12 +1,12 @@
 from panda3d.core import *
-from src.toontown.battle import BattleProps
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase.ToontownBattleGlobals import *
+from toontown.battle import BattleProps
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase.ToontownBattleGlobals import *
 from direct.directnotify import DirectNotifyGlobal
 import string
-from src.toontown.suit import Suit
+from toontown.suit import Suit
 from direct.gui.DirectGui import *
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 from direct.task.Task import Task
 
 class TownBattleCogPanel(DirectFrame):

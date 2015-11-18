@@ -1,6 +1,6 @@
 from direct.fsm import ClassicFSM, State
-from src.toontown.safezone import Playground
-from src.toontown.toonbase import ToontownGlobals
+from toontown.safezone import Playground
+from toontown.toonbase import ToontownGlobals
 import random
 
 class MMPlayground(Playground.Playground):

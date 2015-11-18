@@ -15,14 +15,14 @@ from direct.distributed import DistributedObjectAI
 from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
 from direct.task.Task import Task
-from src.otp.ai.AIBaseGlobal import *
-from src.toontown.cogdominium.CogdoLayout import CogdoLayout
-from src.toontown.cogdominium.DistributedCogdoElevatorExtAI import DistributedCogdoElevatorExtAI
-from src.toontown.cogdominium.DistributedCogdoInteriorAI import DistributedCogdoInteriorAI
-from src.toontown.cogdominium.CogdoLayout import CogdoLayout
-from src.toontown.cogdominium.SuitPlannerCogdoInteriorAI import SuitPlannerCogdoInteriorAI
-from src.toontown.hood import ZoneUtil
-from src.toontown.toonbase.ToontownGlobals import ToonHall
+from otp.ai.AIBaseGlobal import *
+from toontown.cogdominium.CogdoLayout import CogdoLayout
+from toontown.cogdominium.DistributedCogdoElevatorExtAI import DistributedCogdoElevatorExtAI
+from toontown.cogdominium.DistributedCogdoInteriorAI import DistributedCogdoInteriorAI
+from toontown.cogdominium.CogdoLayout import CogdoLayout
+from toontown.cogdominium.SuitPlannerCogdoInteriorAI import SuitPlannerCogdoInteriorAI
+from toontown.hood import ZoneUtil
+from toontown.toonbase.ToontownGlobals import ToonHall
 
 
 class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):

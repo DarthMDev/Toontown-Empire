@@ -1,13 +1,13 @@
 from BattleBase import *
 from DistributedBattleAI import *
-from src.toontown.toonbase.ToontownBattleGlobals import *
+from toontown.toonbase.ToontownBattleGlobals import *
 import random
-from src.toontown.suit import DistributedSuitBaseAI
+from toontown.suit import DistributedSuitBaseAI
 import SuitBattleGlobals
 import BattleExperienceAI
-from src.toontown.toon import NPCToons
-from src.toontown.pets import PetTricks
-from src.toontown.hood import ZoneUtil
+from toontown.toon import NPCToons
+from toontown.pets import PetTricks
+from toontown.hood import ZoneUtil
 from direct.showbase.PythonUtil import lerp
 import sys
 

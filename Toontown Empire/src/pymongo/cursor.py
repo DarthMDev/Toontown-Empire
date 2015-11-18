@@ -19,21 +19,21 @@ import datetime
 
 from collections import deque
 
-from src.bson import RE_TYPE
-from src.bson.code import Code
-from src.bson.py3compat import (iteritems,
+from bson import RE_TYPE
+from bson.code import Code
+from bson.py3compat import (iteritems,
                             integer_types,
                             string_type)
-from src.bson.son import SON
-import src.pymongo.helpers
-from src.pymongo.common import validate_boolean, validate_is_mapping
-from src.pymongo.errors import (AutoReconnect,
+from bson.son import SON
+import pymongo.helpers
+from pymongo.common import validate_boolean, validate_is_mapping
+from pymongo.errors import (AutoReconnect,
                             ConnectionFailure,
                             InvalidOperation,
                             NotMasterError,
                             OperationFailure)
-from src.pymongo.message import _CursorAddress, _GetMore, _Query, _convert_exception
-from src.pymongo.read_preferences import ReadPreference
+from pymongo.message import _CursorAddress, _GetMore, _Query, _convert_exception
+from pymongo.read_preferences import ReadPreference
 
 _QUERY_OPTIONS = {
     "tailable_cursor": 2,

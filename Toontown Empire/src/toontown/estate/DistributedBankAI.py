@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.estate.DistributedFurnitureItemAI import DistributedFurnitureItemAI
+from toontown.estate.DistributedFurnitureItemAI import DistributedFurnitureItemAI
 from direct.distributed.ClockDelta import *
 import BankGlobals
 

@@ -1,11 +1,11 @@
-from src.toontown.building import DistributedCJElevatorAI
-from src.toontown.building import FADoorCodes
-from src.toontown.building.DistributedBoardingPartyAI import DistributedBoardingPartyAI
-from src.toontown.coghq.DistributedLawOfficeElevatorExtAI import DistributedLawOfficeElevatorExtAI
-from src.toontown.hood import CogHQAI
-from src.toontown.suit import DistributedLawbotBossAI
-from src.toontown.suit import DistributedSuitPlannerAI
-from src.toontown.toonbase import ToontownGlobals
+from toontown.building import DistributedCJElevatorAI
+from toontown.building import FADoorCodes
+from toontown.building.DistributedBoardingPartyAI import DistributedBoardingPartyAI
+from toontown.coghq.DistributedLawOfficeElevatorExtAI import DistributedLawOfficeElevatorExtAI
+from toontown.hood import CogHQAI
+from toontown.suit import DistributedLawbotBossAI
+from toontown.suit import DistributedSuitPlannerAI
+from toontown.toonbase import ToontownGlobals
 
 
 class LawbotHQAI(CogHQAI.CogHQAI):

@@ -4,7 +4,7 @@ from direct.showbase.RandomNumGen import RandomNumGen
 from direct.interval.FunctionInterval import Wait
 from direct.interval.IntervalGlobal import Func
 from direct.interval.MetaInterval import Sequence, Parallel
-from src.toontown.toonbase import TTLocalizer, ToontownGlobals
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 import CogdoFlyingGameGlobals as Globals
 from CogdoFlyingLocalPlayer import CogdoFlyingLocalPlayer
 from CogdoGameAudioManager import CogdoGameAudioManager

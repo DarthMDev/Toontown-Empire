@@ -3,7 +3,7 @@ from direct.interval.IntervalGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.ShowBase import *
 import GardenGlobals
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 
 class DistributedPlantBase(DistributedLawnDecor.DistributedLawnDecor):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPlantBase')

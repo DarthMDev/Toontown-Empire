@@ -4,26 +4,26 @@ from direct.gui.DirectGui import *
 from direct.directtools.DirectGeometry import LineNodePath
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.fishing import FishGlobals
-from src.toontown.shtiker import FishPage
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.quest import Quests
+from toontown.toonbase import ToontownGlobals
+from toontown.fishing import FishGlobals
+from toontown.shtiker import FishPage
+from toontown.toonbase import TTLocalizer
+from toontown.quest import Quests
 from direct.actor import Actor
 from direct.showutil import Rope
 import math
 from direct.task.Task import Task
 import random
 import random
-from src.toontown.fishing import FishingTargetGlobals
-from src.toontown.fishing import FishBase
-from src.toontown.fishing import FishPanel
-from src.toontown.effects import Ripples
-from src.toontown.toontowngui import TTDialog
-from src.toontown.toonbase import ToontownTimer
+from toontown.fishing import FishingTargetGlobals
+from toontown.fishing import FishBase
+from toontown.fishing import FishPanel
+from toontown.effects import Ripples
+from toontown.toontowngui import TTDialog
+from toontown.toonbase import ToontownTimer
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from src.toontown.hood import ZoneUtil
+from toontown.hood import ZoneUtil
 
 class DistributedFishingSpot(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFishingSpot')

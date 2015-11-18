@@ -1,9 +1,9 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.task import Task
-from src.otp.level import DistributedLevelAI, LevelSpec
-from src.toontown.suit import DistributedFactorySuitAI
-from src.toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
-from src.toontown.coghq import DistributedBattleFactoryAI
+from otp.level import DistributedLevelAI, LevelSpec
+from toontown.suit import DistributedFactorySuitAI
+from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
+from toontown.coghq import DistributedBattleFactoryAI
 import FactoryBase, FactoryEntityCreatorAI, FactorySpecs, LevelSuitPlannerAI
 
 class DistributedFactoryAI(DistributedLevelAI.DistributedLevelAI, FactoryBase.FactoryBase):

@@ -3,10 +3,10 @@ from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
 import hmac
 from panda3d.core import *
 
-from src.otp.distributed.PotentialAvatar import PotentialAvatar
-from src.otp.otpbase import OTPGlobals
-from src.otp.nametag.NametagConstants import WTSystem
-from src.otp.margins.WhisperPopup import WhisperPopup
+from otp.distributed.PotentialAvatar import PotentialAvatar
+from otp.otpbase import OTPGlobals
+from otp.nametag.NametagConstants import WTSystem
+from otp.margins.WhisperPopup import WhisperPopup
 
 
 class ClientServicesManager(DistributedObjectGlobal):

@@ -1,7 +1,7 @@
 from direct.task import Task
-from src.toontown.parties import PartyGlobals
-from src.toontown.parties.DistributedPartyTeamActivityAI import DistributedPartyTeamActivityAI
-from src.toontown.toonbase.TTLocalizer import PartyTeamActivityRewardMessage
+from toontown.parties import PartyGlobals
+from toontown.parties.DistributedPartyTeamActivityAI import DistributedPartyTeamActivityAI
+from toontown.toonbase.TTLocalizer import PartyTeamActivityRewardMessage
 
 GAME_TIED = 3
 MOVEMENT_MULTIPLIER = 0.04

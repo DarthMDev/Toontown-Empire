@@ -1,11 +1,11 @@
-from src.toontown.hood import HoodAI
-from src.toontown.safezone import ButterflyGlobals
-from src.toontown.safezone import DistributedButterflyAI
-from src.toontown.safezone import DistributedTrolleyAI
-from src.toontown.toon import NPCToons
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.ai import DistributedEffectMgrAI
+from toontown.hood import HoodAI
+from toontown.safezone import ButterflyGlobals
+from toontown.safezone import DistributedButterflyAI
+from toontown.safezone import DistributedTrolleyAI
+from toontown.toon import NPCToons
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.ai import DistributedEffectMgrAI
 
 class TTHoodAI(HoodAI.HoodAI):
     def __init__(self, air):

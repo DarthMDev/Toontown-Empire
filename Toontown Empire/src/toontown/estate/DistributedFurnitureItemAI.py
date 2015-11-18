@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedSmoothNodeAI import DistributedSmoothNodeAI
-from src.toontown.catalog import CatalogItem
+from toontown.catalog import CatalogItem
 import HouseGlobals
 
 class DistributedFurnitureItemAI(DistributedSmoothNodeAI):

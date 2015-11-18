@@ -9,11 +9,11 @@ import random
 
 import DistributedToon
 import NPCToons
-from src.otp.nametag.NametagGroup import NametagGroup
-from src.toontown.quest import QuestChoiceGui
-from src.toontown.quest import QuestParser
-from src.toontown.quest import Quests
-from src.toontown.toonbase import ToontownGlobals
+from otp.nametag.NametagGroup import NametagGroup
+from toontown.quest import QuestChoiceGui
+from toontown.quest import QuestParser
+from toontown.quest import Quests
+from toontown.toonbase import ToontownGlobals
 
 
 class DistributedNPCToonBase(DistributedToon.DistributedToon):

@@ -1,4 +1,4 @@
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from pandac.PandaModules import BitMask32
 NumVines = 20
 GameDuration = 70

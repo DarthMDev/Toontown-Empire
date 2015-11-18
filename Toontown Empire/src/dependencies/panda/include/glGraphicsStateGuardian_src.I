@@ -1,4 +1,4 @@
-// Filename: glGraphicsStateGuardian_src.I
+// Filename: glGraphicsStateGuardian_I
 // Created by:  drose (02Feb99)
 //
 ////////////////////////////////////////////////////////////////////

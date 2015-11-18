@@ -1,11 +1,11 @@
 from panda3d.core import *
-from src.toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase.ToontownGlobals import *
 from direct.gui.DirectGui import *
 from direct.showbase import DirectObject
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.pets import PetTricks
-from src.otp.otpbase import OTPLocalizer
+from toontown.toonbase import TTLocalizer
+from toontown.pets import PetTricks
+from otp.otpbase import OTPLocalizer
 from direct.showbase.PythonUtil import lerp
 FUDGE_FACTOR = 0.01
 

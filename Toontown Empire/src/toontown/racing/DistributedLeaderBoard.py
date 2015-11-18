@@ -1,10 +1,10 @@
 from panda3d.core import *
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.racing import KartShopGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase.ToonBaseGlobal import *
-from src.toontown.toonbase.ToontownGlobals import *
+from toontown.racing import KartShopGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase.ToontownGlobals import *
 
 class DistributedLeaderBoard(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DisributedLeaderBoard')

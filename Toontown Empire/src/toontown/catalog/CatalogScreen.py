@@ -1,21 +1,21 @@
 from panda3d.core import *
 from direct.gui.DirectGui import *
 from direct.gui.DirectScrolledList import *
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toontowngui import TTDialog
-from src.toontown.friends import FriendHandle
+from toontown.toonbase import ToontownGlobals
+from toontown.toontowngui import TTDialog
+from toontown.friends import FriendHandle
 import CatalogItem
 import CatalogInvalidItem
 import CatalogFurnitureItem
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 import CatalogItemPanel
 import CatalogItemTypes
 from direct.actor import Actor
 import random
-from src.toontown.toon import DistributedToon
+from toontown.toon import DistributedToon
 from direct.directnotify import DirectNotifyGlobal
-from src.otp.nametag.ChatBalloon import ChatBalloon
-from src.otp.nametag import NametagGroup, NametagConstants
+from otp.nametag.ChatBalloon import ChatBalloon
+from otp.nametag import NametagGroup, NametagConstants
 
 NUM_CATALOG_ROWS = 3
 NUM_CATALOG_COLS = 2

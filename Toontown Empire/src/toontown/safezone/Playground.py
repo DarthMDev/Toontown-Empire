@@ -1,26 +1,26 @@
 from direct.interval.IntervalGlobal import *
 from panda3d.core import *
-from src.toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase.ToonBaseGlobal import *
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.hood import Place
+from toontown.hood import Place
 from direct.showbase import DirectObject
 from direct.fsm import StateData
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.task import Task
-from src.toontown.toon import DeathForceAcknowledge
-from src.toontown.toon import HealthForceAcknowledge
-from src.toontown.toon import NPCForceAcknowledge
-from src.toontown.trolley import Trolley
-from src.toontown.toontowngui import TTDialog
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toon.Toon import teleportDebug
-from src.toontown.toonbase import TTLocalizer
+from toontown.toon import DeathForceAcknowledge
+from toontown.toon import HealthForceAcknowledge
+from toontown.toon import NPCForceAcknowledge
+from toontown.trolley import Trolley
+from toontown.toontowngui import TTDialog
+from toontown.toonbase import ToontownGlobals
+from toontown.toon.Toon import teleportDebug
+from toontown.toonbase import TTLocalizer
 from direct.gui import DirectLabel
-from src.otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
-from src.toontown.quest import Quests
-from src.toontown.battle import BattleParticles
-from src.toontown.dna.DNAParser import DNABulkLoader
+from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
+from toontown.quest import Quests
+from toontown.battle import BattleParticles
+from toontown.dna.DNAParser import DNABulkLoader
 
 class Playground(Place.Place):
     notify = DirectNotifyGlobal.directNotify.newCategory('Playground')

@@ -1,5 +1,5 @@
 from direct.gui.DirectGui import *
-from src.toontown.toonbase import TTLocalizer, ToontownGlobals, ToontownBattleGlobals
+from toontown.toonbase import TTLocalizer, ToontownGlobals, ToontownBattleGlobals
 import NPCToons, ToonDNA, ToonHead
 
 def createNPCToonHead(NPCID, dimension = 0.5):

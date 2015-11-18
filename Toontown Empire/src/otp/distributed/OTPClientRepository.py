@@ -9,14 +9,14 @@ from direct.fsm.State import State
 from direct.gui.DirectGui import *
 from direct.task import Task
 from panda3d.core import *
-from src.otp.avatar import Avatar, DistributedAvatar
-from src.otp.avatar.DistributedPlayer import DistributedPlayer
-from src.otp.distributed import OtpDoGlobals
-from src.otp.distributed.OtpDoGlobals import *
-from src.otp.distributed.TelemetryLimiter import TelemetryLimiter
-from src.otp.otpbase import OTPGlobals, OTPLocalizer
-from src.otp.otpgui import OTPDialog
-from src.otp.nametag.NametagConstants import *
+from otp.avatar import Avatar, DistributedAvatar
+from otp.avatar.DistributedPlayer import DistributedPlayer
+from otp.distributed import OtpDoGlobals
+from otp.distributed.OtpDoGlobals import *
+from otp.distributed.TelemetryLimiter import TelemetryLimiter
+from otp.otpbase import OTPGlobals, OTPLocalizer
+from otp.otpgui import OTPDialog
+from otp.nametag.NametagConstants import *
 import sys, time, types, random
 
 class OTPClientRepository(ClientRepositoryBase):

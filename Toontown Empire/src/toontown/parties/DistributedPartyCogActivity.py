@@ -1,6 +1,6 @@
 from direct.distributed.ClockDelta import globalClockDelta
 from pandac.PandaModules import Point3
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 import PartyGlobals
 from DistributedPartyTeamActivity import DistributedPartyTeamActivity
 from PartyCogActivity import PartyCogActivity

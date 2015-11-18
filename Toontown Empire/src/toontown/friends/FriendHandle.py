@@ -1,7 +1,7 @@
-from src.otp.ai.MagicWordGlobal import *
-from src.otp.avatar.Avatar import teleportNotify
-from src.toontown.chat import ToonChatGarbler
-from src.toontown.toonbase import ToontownGlobals
+from otp.ai.MagicWordGlobal import *
+from otp.avatar.Avatar import teleportNotify
+from toontown.chat import ToonChatGarbler
+from toontown.toonbase import ToontownGlobals
 
 class FriendHandle:
     def __init__(self, doId, name, style, adminAccess, petId, isAPet = False):

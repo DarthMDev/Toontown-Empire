@@ -14,8 +14,8 @@
 
 """Operation class definitions."""
 
-from src.pymongo.common import validate_boolean, validate_is_mapping
-from src.pymongo.helpers import _gen_index_name, _index_document, _index_list
+from pymongo.common import validate_boolean, validate_is_mapping
+from pymongo.helpers import _gen_index_name, _index_document, _index_list
 
 
 class _WriteOp(object):

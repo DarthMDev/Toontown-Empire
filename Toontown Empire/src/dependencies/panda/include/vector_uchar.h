@@ -33,7 +33,7 @@
 #define TYPE unsigned char
 #define NAME vector_uchar
 
-#include "vector_src.h"
+#include "vector_h"
 
 // Tell GCC that we'll take care of the instantiation explicitly here.
 #ifdef __GNUC__

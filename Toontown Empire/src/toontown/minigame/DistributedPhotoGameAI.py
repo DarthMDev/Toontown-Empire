@@ -4,7 +4,7 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.task import Task
 import PhotoGameGlobals
-from src.toontown.minigame import PhotoGameBase
+from toontown.minigame import PhotoGameBase
 import random
 
 class DistributedPhotoGameAI(DistributedMinigameAI, PhotoGameBase.PhotoGameBase):

@@ -1,8 +1,8 @@
 import random
 from panda3d.core import *
 from direct.interval.IntervalGlobal import Sequence, Func, Parallel, Wait, LerpHprInterval, LerpScaleInterval, LerpFunctionInterval
-from src.otp.otpbase import OTPGlobals
-from src.toontown.toonbase import ToontownGlobals
+from otp.otpbase import OTPGlobals
+from toontown.toonbase import ToontownGlobals
 from CogdoGameGatherable import CogdoGameGatherable, CogdoMemo
 import CogdoFlyingGameGlobals as Globals
 import CogdoUtil

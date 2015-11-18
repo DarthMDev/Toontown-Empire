@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectGlobalUD import DistributedObjectGlobalUD
-from src.toontown.chat.TTWhiteList import TTWhiteList
-from src.otp.distributed import OtpDoGlobals
+from toontown.chat.TTWhiteList import TTWhiteList
+from otp.distributed import OtpDoGlobals
 import SequenceList
 
 class ChatAgentUD(DistributedObjectGlobalUD):

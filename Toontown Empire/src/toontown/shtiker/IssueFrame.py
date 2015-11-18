@@ -6,8 +6,8 @@ from pandac.PandaModules import Point2
 from direct.showbase import DirectObject
 from direct.gui.DirectGui import DirectFrame, DirectButton, DGG, DirectLabel
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
 WEB_WIDTH_PIXELS = 784
 WEB_HEIGHT_PIXELS = 451
 WEB_WIDTH = 1024

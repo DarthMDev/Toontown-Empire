@@ -16,9 +16,9 @@
 
 import itertools
 
-from src.bson.py3compat import imap
-from src.pymongo import common
-from src.pymongo.server_type import SERVER_TYPE
+from bson.py3compat import imap
+from pymongo import common
+from pymongo.server_type import SERVER_TYPE
 
 
 def _get_server_type(doc):

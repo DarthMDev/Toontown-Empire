@@ -1,4 +1,4 @@
-from src.otp.otpbase.OTPTimer import OTPTimer
+from otp.otpbase.OTPTimer import OTPTimer
 from pandac.PandaModules import *
 
 class ToontownTimer(OTPTimer):

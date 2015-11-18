@@ -4,16 +4,16 @@
 '''
 from direct.distributed.PyDatagram import *
 from pandac.PandaModules import *
-from src.otp.ai.MagicWordManagerAI import MagicWordManagerAI
-from src.otp.distributed.OtpDoGlobals import *
-from src.otp.friends.FriendManagerAI import FriendManagerAI
-from src.toontown.toon import NPCToons
-from src.toontown.toon import ToonDNA
-from src.toontown.toon import Toon
-from src.toontown.toon import DistributedToon
-from src.toontown.toon import DistributedToonAI
-from src.toontown.toon import LocalToon
-from src.toontown.toonbase import ToontownGlobals
+from otp.ai.MagicWordManagerAI import MagicWordManagerAI
+from otp.distributed.OtpDoGlobals import *
+from otp.friends.FriendManagerAI import FriendManagerAI
+from toontown.toon import NPCToons
+from toontown.toon import ToonDNA
+from toontown.toon import Toon
+from toontown.toon import DistributedToon
+from toontown.toon import DistributedToonAI
+from toontown.toon import LocalToon
+from toontown.toonbase import ToontownGlobals
 '''
 #Disabled Above Temporary
-#from src.otp.avatar import LocalAvatar
+#from otp.avatar import LocalAvatar

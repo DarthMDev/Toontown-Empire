@@ -1,8 +1,8 @@
-from src.toontown.building import DoorTypes
-from src.toontown.building.DistributedBoardingPartyAI import DistributedBoardingPartyAI
-from src.toontown.coghq import DistributedCogHQDoorAI, DistributedCogHQExteriorDoorAI, LobbyManagerAI
-from src.toontown.toonbase import TTLocalizer, ToontownGlobals
-from src.toontown.toon import NPCToons
+from toontown.building import DoorTypes
+from toontown.building.DistributedBoardingPartyAI import DistributedBoardingPartyAI
+from toontown.coghq import DistributedCogHQDoorAI, DistributedCogHQExteriorDoorAI, LobbyManagerAI
+from toontown.toonbase import TTLocalizer, ToontownGlobals
+from toontown.toon import NPCToons
 
 class CogHQAI:
     notify = directNotify.newCategory('CogHQAI')

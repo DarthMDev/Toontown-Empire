@@ -1,6 +1,6 @@
-from src.otp.otpbase import OTPGlobals
-from src.otp.ai.AIBase import *
-from src.toontown.toonbase import ToontownGlobals
+from otp.otpbase import OTPGlobals
+from otp.ai.AIBase import *
+from toontown.toonbase import ToontownGlobals
 from direct.distributed.ClockDelta import *
 from ElevatorConstants import *
 from direct.distributed import DistributedObjectAI
@@ -8,7 +8,7 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.task import Task
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.building import BoardingPartyBase
+from toontown.building import BoardingPartyBase
 GROUPMEMBER = 0
 GROUPINVITE = 1
 

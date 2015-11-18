@@ -1,4 +1,4 @@
-// Filename: lvecBase4_src.h
+// Filename: lvecBase4_h
 // Created by:  drose (08Mar00)
 //
 ////////////////////////////////////////////////////////////////////
@@ -259,4 +259,4 @@ INLINE ostream &operator << (ostream &out, const FLOATNAME(LVecBase4) &vec) {
   return out;
 }
 
-#include "lvecBase4_src.I"
+#include "lvecBase4_I"

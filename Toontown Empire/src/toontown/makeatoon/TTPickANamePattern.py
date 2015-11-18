@@ -1,6 +1,6 @@
 from direct.showbase.PythonUtil import listToItem2index
-from src.otp.namepanel.PickANamePattern import PickANamePatternTwoPartLastName
-from src.toontown.makeatoon.NameGenerator import NameGenerator
+from otp.namepanel.PickANamePattern import PickANamePatternTwoPartLastName
+from toontown.makeatoon.NameGenerator import NameGenerator
 import types
 
 class TTPickANamePattern(PickANamePatternTwoPartLastName):

@@ -8,12 +8,12 @@ from panda3d.core import *
 import DistributedElevator
 from ElevatorConstants import *
 from ElevatorUtils import *
-from src.toontown.hood import ZoneUtil
-from src.otp.nametag.NametagGroup import NametagGroup
-from src.otp.nametag.Nametag import Nametag
-from src.otp.nametag.NametagConstants import *
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
+from toontown.hood import ZoneUtil
+from otp.nametag.NametagGroup import NametagGroup
+from otp.nametag.Nametag import Nametag
+from otp.nametag.NametagConstants import *
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
 
 class DistributedElevatorExt(DistributedElevator.DistributedElevator):
 

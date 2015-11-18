@@ -5,11 +5,11 @@ from panda3d.core import *
 
 import DistributedAnimatedProp
 from KnockKnockJokes import *
-from src.toontown.distributed import DelayDelete
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
-from src.otp.nametag.NametagGroup import NametagGroup
-from src.otp.nametag.NametagConstants import *
+from toontown.distributed import DelayDelete
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from otp.nametag.NametagGroup import NametagGroup
+from otp.nametag.NametagConstants import *
 import random
 
 class DistributedKnockKnockDoor(DistributedAnimatedProp.DistributedAnimatedProp):

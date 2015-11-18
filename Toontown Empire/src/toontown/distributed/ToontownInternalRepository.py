@@ -1,6 +1,6 @@
 from direct.distributed.AstronInternalRepository import AstronInternalRepository
-from src.otp.distributed.OtpDoGlobals import *
-from src.toontown.distributed.ToontownNetMessengerAI import ToontownNetMessengerAI
+from otp.distributed.OtpDoGlobals import *
+from toontown.distributed.ToontownNetMessengerAI import ToontownNetMessengerAI
 from direct.distributed.PyDatagram import PyDatagram
 import traceback
 import sys

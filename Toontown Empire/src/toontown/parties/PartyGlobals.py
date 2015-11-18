@@ -2,7 +2,7 @@ from pandac.PandaModules import Point3, VBase4, BitMask32
 
 from direct.showbase import PythonUtil
 
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 
 
 KICK_TO_PLAYGROUND_EVENT = 'parties_kickToPlayground'

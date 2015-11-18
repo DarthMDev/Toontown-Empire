@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase import PythonUtil
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 from panda3d.core import *
 from KartShopGlobals import *
 import types, copy

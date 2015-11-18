@@ -3,7 +3,7 @@ from direct.distributed import DistributedObject
 from direct.distributed.ClockDelta import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
-from src.toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase.ToonBaseGlobal import *
 import HouseGlobals
 
 class DistributedGarden(DistributedObject.DistributedObject):

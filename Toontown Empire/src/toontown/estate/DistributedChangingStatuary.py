@@ -1,8 +1,8 @@
 from pandac.PandaModules import NodePath
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.estate import DistributedStatuary
-from src.toontown.estate import GardenGlobals
+from toontown.toonbase import ToontownGlobals
+from toontown.estate import DistributedStatuary
+from toontown.estate import GardenGlobals
 
 class DistributedChangingStatuary(DistributedStatuary.DistributedStatuary):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedChangingStatuary')

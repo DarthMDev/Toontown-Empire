@@ -1,4 +1,4 @@
-from src.otp.ai.AIBaseGlobal import *
+from otp.ai.AIBaseGlobal import *
 from panda3d.core import *
 from direct.distributed.ClockDelta import *
 from PurchaseManagerConstants import *
@@ -6,8 +6,8 @@ import copy
 from direct.task.Task import Task
 from direct.distributed import DistributedObjectAI
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.minigame import MinigameGlobals
+from toontown.toonbase import ToontownGlobals
+from toontown.minigame import MinigameGlobals
 
 class PurchaseManagerAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('PurchaseManagerAI')
@@ -241,7 +241,7 @@ class PurchaseManagerAI(DistributedObjectAI.DistributedObjectAI):
             self.notify.warning('Got shutDown twice')
             return
         self.isShutdown = 1
-        from src.toontown.minigame import MinigameCreatorAI
+        from toontown.minigame import MinigameCreatorAI
         playAgainNum = self.getNumPlayAgain()
         if playAgainNum > 0:
             MinigameCreatorAI.createMinigame(self.air, self.getPlayAgainList(), self.trolleyZone, minigameZone=self.zoneId, previousGameId=self.previousMinigameId, newbieIds=self.newbieIds)

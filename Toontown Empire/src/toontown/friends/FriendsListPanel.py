@@ -1,11 +1,11 @@
 from panda3d.core import *
 from direct.gui.DirectGui import *
 from direct.fsm import StateData
-from src.toontown.toon import ToonAvatarPanel
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.otp.nametag.NametagGroup import *
-from src.otp.otpbase import OTPGlobals
+from toontown.toon import ToonAvatarPanel
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from otp.nametag.NametagGroup import *
+from otp.otpbase import OTPGlobals
 FLPPets = 1
 FLPOnline = 2
 FLPAll = 3
@@ -260,7 +260,7 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
                         friends.insert(0, friendId)
         elif self.panelType == FLPPets and base.wantPets:
             for avId, av in base.cr.doId2do.items():
-                from src.toontown.pets import DistributedPet
+                from toontown.pets import DistributedPet
                 if isinstance(av, DistributedPet.DistributedPet):
                     petFriends.append(avId)
 

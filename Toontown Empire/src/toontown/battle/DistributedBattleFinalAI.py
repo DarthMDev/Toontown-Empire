@@ -1,7 +1,7 @@
-from src.otp.ai.AIBase import *
+from otp.ai.AIBase import *
 from BattleBase import *
 from BattleCalculatorAI import *
-from src.toontown.toonbase.ToontownBattleGlobals import *
+from toontown.toonbase.ToontownBattleGlobals import *
 from SuitBattleGlobals import *
 import DistributedBattleBaseAI
 from direct.task import Task

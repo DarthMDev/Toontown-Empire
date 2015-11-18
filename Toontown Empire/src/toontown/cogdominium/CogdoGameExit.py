@@ -2,8 +2,8 @@ from pandac.PandaModules import NodePath, Point3
 from direct.interval.MetaInterval import Parallel, Sequence
 from direct.interval.SoundInterval import SoundInterval
 from direct.interval.FunctionInterval import Wait, Func
-from src.toontown.building import ElevatorConstants
-from src.toontown.building import ElevatorUtils
+from toontown.building import ElevatorConstants
+from toontown.building import ElevatorUtils
 import CogdoUtil
 import CogdoGameConsts
 

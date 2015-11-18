@@ -3,7 +3,7 @@ from SCObject import SCObject
 from SCMenu import SCMenu
 from direct.fsm.StatePush import StateVar, FunctionCall
 from direct.showbase.DirectObject import DirectObject
-from src.otp.avatar import Emote
+from otp.avatar import Emote
 SCTerminalSelectedEvent = 'SCTerminalSelected'
 SCTerminalLinkedEmoteEvent = 'SCTerminalLinkedEmoteEvent'
 SCWhisperModeChangeEvent = 'SCWhisperModeChange'

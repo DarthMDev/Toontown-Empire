@@ -1,11 +1,11 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.racing.DistributedKartPadAI import DistributedKartPadAI
-from src.toontown.racing.DistributedRaceAI import DistributedRaceAI
-from src.toontown.racing import RaceGlobals
+from toontown.racing.DistributedKartPadAI import DistributedKartPadAI
+from toontown.racing.DistributedRaceAI import DistributedRaceAI
+from toontown.racing import RaceGlobals
 from direct.fsm.FSM import FSM
 from direct.distributed.ClockDelta import *
 from direct.task import *
-from src.toontown.racing.KartShopGlobals import KartGlobals
+from toontown.racing.KartShopGlobals import KartGlobals
 
 #TODO - change race type
 

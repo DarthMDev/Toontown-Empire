@@ -3,12 +3,12 @@ from direct.gui.DirectGui import *
 from panda3d.core import *
 from direct.showbase import PythonUtil
 from direct.task import Task
-from src.toontown.fishing.FishPhoto import DirectRegion
-from src.toontown.racing.KartDNA import *
-from src.toontown.racing.Kart import Kart
-from src.toontown.racing import RaceGlobals
-from src.toontown.shtiker.ShtikerPage import ShtikerPage
-from src.toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.fishing.FishPhoto import DirectRegion
+from toontown.racing.KartDNA import *
+from toontown.racing.Kart import Kart
+from toontown.racing import RaceGlobals
+from toontown.shtiker.ShtikerPage import ShtikerPage
+from toontown.toonbase import ToontownGlobals, TTLocalizer
 from FishPage import FishingTrophy
 PageMode = PythonUtil.Enum('Customize, Records, Trophy')
 

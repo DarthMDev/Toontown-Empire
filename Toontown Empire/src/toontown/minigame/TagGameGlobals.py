@@ -1,4 +1,4 @@
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 
 DURATION = 90
 DEFAULT_SKY = 'phase_3.5/models/props/TT_sky'

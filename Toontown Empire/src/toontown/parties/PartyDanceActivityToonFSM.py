@@ -2,7 +2,7 @@ from pandac.PandaModules import *
 from direct.fsm.FSM import FSM
 from direct.showbase import PythonUtil
 from direct.interval.MetaInterval import Sequence
-from src.toontown.parties.PartyGlobals import DanceReverseLoopAnims, ToonDancingStates
+from toontown.parties.PartyGlobals import DanceReverseLoopAnims, ToonDancingStates
 
 class PartyDanceActivityToonFSM(FSM):
     notify = directNotify.newCategory('PartyDanceActivityToonFSM')

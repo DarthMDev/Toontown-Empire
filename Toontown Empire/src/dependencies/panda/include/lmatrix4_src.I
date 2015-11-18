@@ -1,4 +1,4 @@
-// Filename: lmatrix4_src.I
+// Filename: lmatrix4_I
 // Created by:  drose (15Jan99)
 //
 ////////////////////////////////////////////////////////////////////
@@ -1368,7 +1368,7 @@ invert_from(const FLOATNAME(LMatrix4) &other) {
 #ifdef HAVE_EIGEN
   // We use the squared nearly_zero value as determinant threshold
   // for checking whether a matrix is singular, since that's the
-  // same constant we use in the non-Eigen case (see lmatrix3_src.I)
+  // same constant we use in the non-Eigen case (see lmatrix3_I)
   // and also because we otherwise run into issues very quickly.
   bool invertible;
   other._m.computeInverseWithCheck(_m, invertible,

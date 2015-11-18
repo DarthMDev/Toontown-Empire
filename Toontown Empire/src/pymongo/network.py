@@ -29,8 +29,8 @@ try:
 except ImportError:
     _HAS_POLL = False
 
-from src.pymongo import helpers, message
-from src.pymongo.errors import AutoReconnect, NotMasterError, OperationFailure
+from pymongo import helpers, message
+from pymongo.errors import AutoReconnect, NotMasterError, OperationFailure
 
 _UNPACK_INT = struct.Struct("<i").unpack
 

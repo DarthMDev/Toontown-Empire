@@ -3,13 +3,13 @@ from direct.distributed.DistributedObjectGlobalUD import DistributedObjectGlobal
 from direct.distributed.PyDatagram import *
 from direct.fsm.FSM import FSM
 
-from src.otp.ai.MagicWordGlobal import *
-from src.otp.distributed import OtpDoGlobals
+from otp.ai.MagicWordGlobal import *
+from otp.distributed import OtpDoGlobals
 
-from src.toontown.makeatoon.NameGenerator import NameGenerator
-from src.toontown.toon.ToonDNA import ToonDNA
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.uberdog import NameJudgeBlacklist
+from toontown.makeatoon.NameGenerator import NameGenerator
+from toontown.toon.ToonDNA import ToonDNA
+from toontown.toonbase import TTLocalizer
+from toontown.uberdog import NameJudgeBlacklist
 
 from panda3d.core import *
 from sys import platform
@@ -137,7 +137,7 @@ class AccountDB:
         self.csm = csm
 
         filename = config.GetString('account-bridge-filename', 'account-bridge.db')
-        filename = os.path.join('src/dependencies', filename)
+        filename = os.path.join('dependencies', filename)
         if platform == 'darwin':
             self.dbm = dumbdbm.open(filename, 'c')
         else:

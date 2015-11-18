@@ -1,4 +1,4 @@
-// Filename: glGraphicsBuffer_src.h
+// Filename: glGraphicsBuffer_h
 // Created by:  jyelon (15Jan06)
 // Modified by: kleonard (27Jun07)
 //
@@ -171,4 +171,4 @@ private:
   friend class CLP(GraphicsStateGuardian);
 };
 
-#include "glGraphicsBuffer_src.I"
+#include "glGraphicsBuffer_I"

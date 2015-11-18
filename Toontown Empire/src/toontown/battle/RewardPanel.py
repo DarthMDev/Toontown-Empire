@@ -7,14 +7,14 @@ from panda3d.core import *
 import random
 
 import Fanfare
-from src.otp.otpbase import OTPGlobals
-from src.toontown.coghq import CogDisguiseGlobals
-from src.toontown.quest import Quests
-from src.toontown.shtiker import DisguisePage
-from src.toontown.suit import SuitDNA
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownBattleGlobals
-from src.toontown.toonbase import ToontownGlobals
+from otp.otpbase import OTPGlobals
+from toontown.coghq import CogDisguiseGlobals
+from toontown.quest import Quests
+from toontown.shtiker import DisguisePage
+from toontown.suit import SuitDNA
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownBattleGlobals
+from toontown.toonbase import ToontownGlobals
 
 
 class RewardPanel(DirectFrame):

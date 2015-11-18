@@ -1,10 +1,10 @@
 from panda3d.core import *
-from src.toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase.ToontownGlobals import *
 from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
-from src.toontown.safezone import SafeZoneLoader
+from toontown.safezone import SafeZoneLoader
 import random, math, House, Estate, HouseGlobals
-from src.toontown.coghq import MovingPlatform
+from toontown.coghq import MovingPlatform
 from direct.directnotify import DirectNotifyGlobal
 
 class EstateLoader(SafeZoneLoader.SafeZoneLoader):

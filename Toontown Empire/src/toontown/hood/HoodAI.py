@@ -1,17 +1,17 @@
 from direct.directnotify.DirectNotifyGlobal import *
-from src.toontown.building import DistributedBuildingMgrAI
-from src.toontown.dna.DNAParser import DNAStorage, DNAGroup, DNAVisGroup
-from src.toontown.fishing.DistributedFishingPondAI import DistributedFishingPondAI
-from src.toontown.hood import ZoneUtil
-from src.toontown.safezone import TreasureGlobals
-from src.toontown.safezone.DistributedFishingSpotAI import DistributedFishingSpotAI
-from src.toontown.fishing.DistributedPondBingoManagerAI import DistributedPondBingoManagerAI
-from src.toontown.safezone.DistributedPartyGateAI import DistributedPartyGateAI
-from src.toontown.safezone.SZTreasurePlannerAI import SZTreasurePlannerAI
-from src.toontown.suit import DistributedSuitPlannerAI
-from src.toontown.toon import NPCToons
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
+from toontown.building import DistributedBuildingMgrAI
+from toontown.dna.DNAParser import DNAStorage, DNAGroup, DNAVisGroup
+from toontown.fishing.DistributedFishingPondAI import DistributedFishingPondAI
+from toontown.hood import ZoneUtil
+from toontown.safezone import TreasureGlobals
+from toontown.safezone.DistributedFishingSpotAI import DistributedFishingSpotAI
+from toontown.fishing.DistributedPondBingoManagerAI import DistributedPondBingoManagerAI
+from toontown.safezone.DistributedPartyGateAI import DistributedPartyGateAI
+from toontown.safezone.SZTreasurePlannerAI import SZTreasurePlannerAI
+from toontown.suit import DistributedSuitPlannerAI
+from toontown.toon import NPCToons
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
 
 
 class HoodAI:

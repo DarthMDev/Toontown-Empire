@@ -1,6 +1,6 @@
-import src.toontown
-import src.otp
+import toontown
+import otp
 import direct
-from src.toontown.cheatdetection import CheatDectorAI
+from toontown.cheatdetection import CheatDectorAI
 
 #In-till injector detection is added, This will have no purpose.

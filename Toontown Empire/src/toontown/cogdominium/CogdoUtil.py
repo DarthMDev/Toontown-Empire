@@ -1,5 +1,5 @@
 from pandac.PandaModules import ColorBlendAttrib
-from src.toontown.suit import SuitDNA
+from toontown.suit import SuitDNA
 import random
 
 ModelPhase = 5
@@ -80,7 +80,7 @@ class CogdoGameMovie:
         return
 
     def load(self):
-        from src.toontown.toonbase import ToontownGlobals
+        from toontown.toonbase import ToontownGlobals
         from pandac.PandaModules import TextNode
         textNode = TextNode('moviedialogue')
         textNode.setTextColor(0, 0, 0, 1)

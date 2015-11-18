@@ -33,12 +33,12 @@ class Datagram;
 class DatagramIterator;
 
 #include "fltnames.h"
-#include "lvecBase2_src.h"
+#include "lvecBase2_h"
 
 #include "dblnames.h"
-#include "lvecBase2_src.h"
+#include "lvecBase2_h"
 
 #include "intnames.h"
-#include "lvecBase2_src.h"
+#include "lvecBase2_h"
 
 #endif

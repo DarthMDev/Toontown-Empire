@@ -4,8 +4,8 @@ from pandac.PandaModules import CollisionTraverser, CollisionHandlerQueue
 from pandac.PandaModules import CollisionRay, CollisionNode
 from math import pi, sin, cos
 from direct.showbase.PythonUtil import bound as clamp
-from src.otp.otpbase import OTPGlobals
-from src.toontown.toonbase import ToontownGlobals
+from otp.otpbase import OTPGlobals
+from toontown.toonbase import ToontownGlobals
 import CogdoFlyingGameGlobals as Globals
 INVERSE_E = 1.0 / math.e
 

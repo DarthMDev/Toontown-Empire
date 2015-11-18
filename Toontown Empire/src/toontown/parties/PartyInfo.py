@@ -1,8 +1,8 @@
 from datetime import datetime
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.parties.PartyGlobals import InviteTheme
-from src.toontown.parties.DecorBase import DecorBase
-from src.toontown.parties.ActivityBase import ActivityBase
+from toontown.parties.PartyGlobals import InviteTheme
+from toontown.parties.DecorBase import DecorBase
+from toontown.parties.ActivityBase import ActivityBase
 
 class PartyInfoBase:
     notify = DirectNotifyGlobal.directNotify.newCategory('PartyInfoBase')

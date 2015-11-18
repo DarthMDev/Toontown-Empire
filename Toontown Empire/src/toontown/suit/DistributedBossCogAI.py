@@ -1,13 +1,13 @@
 import random
 from direct.directnotify import DirectNotifyGlobal
-from src.otp.avatar import DistributedAvatarAI
-from src.toontown.battle import BattleExperienceAI
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import ToontownBattleGlobals
-from src.toontown.toon import InventoryBase
-from src.toontown.battle import DistributedBattleFinalAI
-from src.toontown.building import SuitPlannerInteriorAI
-from src.toontown.battle import BattleBase
+from otp.avatar import DistributedAvatarAI
+from toontown.battle import BattleExperienceAI
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownBattleGlobals
+from toontown.toon import InventoryBase
+from toontown.battle import DistributedBattleFinalAI
+from toontown.building import SuitPlannerInteriorAI
+from toontown.battle import BattleBase
 from panda3d.core import *
 import SuitDNA
 import random

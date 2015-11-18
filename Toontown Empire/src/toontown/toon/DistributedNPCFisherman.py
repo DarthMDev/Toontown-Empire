@@ -6,9 +6,9 @@ import time
 
 from DistributedNPCToonBase import *
 import NPCToons
-from src.toontown.fishing import FishSellGUI
-from src.toontown.toonbase import TTLocalizer
-from src.otp.nametag.NametagConstants import *
+from toontown.fishing import FishSellGUI
+from toontown.toonbase import TTLocalizer
+from otp.nametag.NametagConstants import *
 
 
 class DistributedNPCFisherman(DistributedNPCToonBase):

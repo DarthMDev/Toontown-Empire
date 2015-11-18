@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.otp.ai.MagicWordGlobal import *
+from otp.ai.MagicWordGlobal import *
 from DistributedLawnDecorAI import DistributedLawnDecorAI
 import GardenGlobals
 

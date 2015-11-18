@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
-from src.otp.distributed import DistributedDistrict
+from otp.distributed import DistributedDistrict
 
 class ToontownDistrict(DistributedDistrict.DistributedDistrict):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownDistrict')

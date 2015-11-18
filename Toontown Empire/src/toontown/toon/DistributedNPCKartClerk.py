@@ -4,10 +4,10 @@ from panda3d.core import *
 
 from DistributedNPCToonBase import *
 import NPCToons
-from src.toontown.racing.KartShopGlobals import *
-from src.toontown.racing.KartShopGui import *
-from src.toontown.toonbase import TTLocalizer
-from src.otp.nametag.NametagConstants import *
+from toontown.racing.KartShopGlobals import *
+from toontown.racing.KartShopGui import *
+from toontown.toonbase import TTLocalizer
+from otp.nametag.NametagConstants import *
 
 
 class DistributedNPCKartClerk(DistributedNPCToonBase):

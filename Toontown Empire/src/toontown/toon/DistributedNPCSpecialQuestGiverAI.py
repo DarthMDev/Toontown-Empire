@@ -1,8 +1,8 @@
-from src.otp.ai.AIBaseGlobal import *
+from otp.ai.AIBaseGlobal import *
 from direct.task.Task import Task
 from panda3d.core import *
 from DistributedNPCToonBaseAI import *
-from src.toontown.quest import Quests
+from toontown.quest import Quests
 
 class DistributedNPCSpecialQuestGiverAI(DistributedNPCToonBaseAI):
 

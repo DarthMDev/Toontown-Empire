@@ -1,12 +1,12 @@
 from direct.directnotify.DirectNotifyGlobal import *
 
-from src.otp.ai.AIBaseGlobal import *
-from src.toontown.building import DistributedBuildingAI
-from src.toontown.building import GagshopBuildingAI
-from src.toontown.building import HQBuildingAI
-from src.toontown.building import KartShopBuildingAI
-from src.toontown.building import PetshopBuildingAI
-from src.toontown.hood import ZoneUtil
+from otp.ai.AIBaseGlobal import *
+from toontown.building import DistributedBuildingAI
+from toontown.building import GagshopBuildingAI
+from toontown.building import HQBuildingAI
+from toontown.building import KartShopBuildingAI
+from toontown.building import PetshopBuildingAI
+from toontown.hood import ZoneUtil
 
 
 class DistributedBuildingMgrAI:

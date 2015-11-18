@@ -20,9 +20,9 @@ installed on a database by calling
 
 import collections
 
-from src.bson.dbref import DBRef
-from src.bson.objectid import ObjectId
-from src.bson.son import SON
+from bson.dbref import DBRef
+from bson.objectid import ObjectId
+from bson.son import SON
 
 
 class SONManipulator(object):

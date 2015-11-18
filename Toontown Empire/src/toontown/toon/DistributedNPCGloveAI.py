@@ -1,6 +1,6 @@
 from DistributedNPCToonBaseAI import DistributedNPCToonBaseAI
 from ToonDNA import ToonDNA
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 
 class DistributedNPCGloveAI(DistributedNPCToonBaseAI):
 

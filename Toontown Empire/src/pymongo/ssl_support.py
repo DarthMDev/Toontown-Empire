@@ -38,8 +38,8 @@ try:
 except ImportError:
     pass
 
-from src.bson.py3compat import string_type
-from src.pymongo.errors import ConfigurationError
+from bson.py3compat import string_type
+from pymongo.errors import ConfigurationError
 
 _WINCERTSLOCK = threading.Lock()
 _WINCERTS = None
@@ -49,7 +49,7 @@ if HAVE_SSL:
         # Python 3.2 and above.
         from ssl import SSLContext
     except ImportError:
-        from src.pymongo.ssl_context import SSLContext
+        from pymongo.ssl_context import SSLContext
 
     def validate_cert_reqs(option, value):
         """Validate the cert reqs are valid. It must be None or one of the

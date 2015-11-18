@@ -1,8 +1,8 @@
-from src.otp.ai.AIBase import *
+from otp.ai.AIBase import *
 from direct.distributed.ClockDelta import *
 from BattleBase import *
 from BattleCalculatorAI import *
-from src.toontown.toonbase.ToontownBattleGlobals import *
+from toontown.toonbase.ToontownBattleGlobals import *
 from SuitBattleGlobals import *
 from panda3d.core import *
 import BattleExperienceAI
@@ -10,12 +10,12 @@ from direct.distributed import DistributedObjectAI
 from direct.fsm import ClassicFSM, State
 from direct.task import Task
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toon import InventoryBase
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.pets import DistributedPetProxyAI
+from toontown.toon import InventoryBase
+from toontown.toonbase import ToontownGlobals
+from toontown.pets import DistributedPetProxyAI
 import random
-from src.toontown.toon import NPCToons
-from src.otp.ai.MagicWordGlobal import *
+from toontown.toon import NPCToons
+from otp.ai.MagicWordGlobal import *
 
 class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattleBaseAI')

@@ -1,4 +1,4 @@
-// Filename: glTextureContext_src.h
+// Filename: glTextureContext_h
 // Created by:  drose (07Oct99)
 //
 ////////////////////////////////////////////////////////////////////
@@ -89,5 +89,5 @@ private:
   static TypeHandle _type_handle;
 };
 
-#include "glTextureContext_src.I"
+#include "glTextureContext_I"
 

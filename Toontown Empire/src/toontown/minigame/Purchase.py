@@ -5,12 +5,12 @@ from direct.task.Task import Task
 
 import MinigameGlobals
 from PurchaseBase import *
-from src.toontown.distributed import DelayDelete
-from src.otp.nametag.NametagFloat2d import *
-from src.otp.nametag import NametagGlobals
-from src.toontown.toon import ToonHead
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import ToontownTimer
+from toontown.distributed import DelayDelete
+from otp.nametag.NametagFloat2d import *
+from otp.nametag import NametagGlobals
+from toontown.toon import ToonHead
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownTimer
 
 
 COUNT_UP_RATE = 0.15

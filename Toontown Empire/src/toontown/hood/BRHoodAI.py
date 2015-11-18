@@ -1,8 +1,8 @@
-from src.toontown.hood import HoodAI
-from src.toontown.safezone import DistributedTrolleyAI
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.ai import DistributedPolarPlaceEffectMgrAI
-from src.toontown.ai import DistributedEffectMgrAI
+from toontown.hood import HoodAI
+from toontown.safezone import DistributedTrolleyAI
+from toontown.toonbase import ToontownGlobals
+from toontown.ai import DistributedPolarPlaceEffectMgrAI
+from toontown.ai import DistributedEffectMgrAI
 
 class BRHoodAI(HoodAI.HoodAI):
     def __init__(self, air):

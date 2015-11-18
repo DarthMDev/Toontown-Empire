@@ -1,6 +1,6 @@
 from pandac.PandaModules import *
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
 GAME_TIME = 60
 MAX_SCORE = 23
 MIN_SCORE = 5

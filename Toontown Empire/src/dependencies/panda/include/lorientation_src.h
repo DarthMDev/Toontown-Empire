@@ -1,4 +1,4 @@
-// Filename: lorientation_src.h
+// Filename: lorientation_h
 // Created by:  frang, charles (23Jun00)
 //
 ////////////////////////////////////////////////////////////////////
@@ -42,4 +42,4 @@ private:
   static TypeHandle _type_handle;
 };
 
-#include "lorientation_src.I"
+#include "lorientation_I"

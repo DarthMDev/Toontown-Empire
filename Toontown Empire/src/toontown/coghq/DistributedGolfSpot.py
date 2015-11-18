@@ -8,9 +8,9 @@ from direct.gui.DirectGui import DGG, DirectButton, DirectLabel, DirectWaitBar
 from direct.interval.IntervalGlobal import Sequence, Wait, ActorInterval, Parallel, Func, LerpPosInterval, LerpHprInterval, ProjectileInterval, LerpScaleInterval, SoundInterval
 from direct.showbase import PythonUtil
 from direct.task import Task
-from src.toontown.golf import GolfGlobals
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
+from toontown.golf import GolfGlobals
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 
 class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedGolfSpot')
@@ -729,8 +729,8 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
                 pass
 
     def getFlyBallSplatInterval(self, x, y, z, flyBallCode, throwerId):
-        from src.toontown.toonbase import ToontownBattleGlobals
-        from src.toontown.battle import BattleProps
+        from toontown.toonbase import ToontownBattleGlobals
+        from toontown.battle import BattleProps
         splatName = 'dust'
         splat = BattleProps.globalPropPool.getProp(splatName)
         splat.setBillboardPointWorld(2)

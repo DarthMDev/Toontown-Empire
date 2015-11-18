@@ -1,5 +1,5 @@
 import string
-from src.otp.otpbase.OTPLocalizerEnglishProperty import *
+from otp.otpbase.OTPLocalizerEnglishProperty import *
 lTheBrrrgh = 'The Brrrgh'
 lDaisyGardens = 'Daisy Gardens'
 lDonaldsDock = "Donald's Dock"

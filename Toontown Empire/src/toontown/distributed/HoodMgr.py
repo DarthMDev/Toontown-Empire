@@ -3,8 +3,8 @@ from direct.showbase import DirectObject
 from panda3d.core import *
 import random
 
-from src.toontown.hood import ZoneUtil
-from src.toontown.toonbase import ToontownGlobals
+from toontown.hood import ZoneUtil
+from toontown.toonbase import ToontownGlobals
 
 
 class HoodMgr(DirectObject.DirectObject):

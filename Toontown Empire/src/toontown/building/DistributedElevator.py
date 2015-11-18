@@ -8,11 +8,11 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.distributed import DistributedObject
 from direct.fsm import State
-from src.toontown.toonbase import TTLocalizer, ToontownGlobals
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 from direct.task.Task import Task
-from src.toontown.distributed import DelayDelete
-from src.toontown.hood import ZoneUtil
-from src.toontown.building import BoardingGroupShow
+from toontown.distributed import DelayDelete
+from toontown.hood import ZoneUtil
+from toontown.building import BoardingGroupShow
 
 class DistributedElevator(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedElevator')

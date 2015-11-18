@@ -1,19 +1,19 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 import HouseGlobals
 import time, random
 
-from src.toontown.fishing.DistributedFishingPondAI import DistributedFishingPondAI
-from src.toontown.fishing.DistributedPondBingoManagerAI import DistributedPondBingoManagerAI
-from src.toontown.fishing import FishingTargetGlobals, FishGlobals
-from src.toontown.safezone import TreasureGlobals
-from src.toontown.safezone.SZTreasurePlannerAI import SZTreasurePlannerAI
-from src.toontown.safezone import DistributedTreasureAI
-from src.toontown.safezone import ButterflyGlobals
-from src.toontown.safezone import DistributedButterflyAI
-from src.toontown.safezone.DistributedFishingSpotAI import DistributedFishingSpotAI
-from src.toontown.parties.DistributedPartyJukeboxActivityAI import DistributedPartyJukeboxActivityAI
+from toontown.fishing.DistributedFishingPondAI import DistributedFishingPondAI
+from toontown.fishing.DistributedPondBingoManagerAI import DistributedPondBingoManagerAI
+from toontown.fishing import FishingTargetGlobals, FishGlobals
+from toontown.safezone import TreasureGlobals
+from toontown.safezone.SZTreasurePlannerAI import SZTreasurePlannerAI
+from toontown.safezone import DistributedTreasureAI
+from toontown.safezone import ButterflyGlobals
+from toontown.safezone import DistributedButterflyAI
+from toontown.safezone.DistributedFishingSpotAI import DistributedFishingSpotAI
+from toontown.parties.DistributedPartyJukeboxActivityAI import DistributedPartyJukeboxActivityAI
 
 from DistributedGardenBoxAI import *
 from DistributedGardenPlotAI import *

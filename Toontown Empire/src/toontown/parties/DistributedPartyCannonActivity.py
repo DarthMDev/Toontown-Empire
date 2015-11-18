@@ -3,22 +3,22 @@ from pandac.PandaModules import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from direct.task import Task
-from src.toontown.toontowngui import TTDialog
-from src.toontown.toonbase.ToonBaseGlobal import *
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.effects import Splash, DustCloud, Wake
-from src.toontown.minigame import Trajectory
-from src.toontown.minigame import CannonGameGlobals
-from src.toontown.parties import PartyGlobals
-from src.toontown.parties.PartyGlobals import ActivityIds
-from src.toontown.parties.PartyGlobals import ActivityTypes
-from src.toontown.parties.PartyGlobals import FireworksStartedEvent
-from src.toontown.parties.PartyGlobals import FireworksFinishedEvent
-from src.toontown.parties.PartyGlobals import PartyCannonCollisions
-from src.toontown.parties.DistributedPartyActivity import DistributedPartyActivity
-from src.toontown.parties.CannonGui import CannonGui
-from src.toontown.parties.PartyUtils import toRadians, toDegrees
+from toontown.toontowngui import TTDialog
+from toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.effects import Splash, DustCloud, Wake
+from toontown.minigame import Trajectory
+from toontown.minigame import CannonGameGlobals
+from toontown.parties import PartyGlobals
+from toontown.parties.PartyGlobals import ActivityIds
+from toontown.parties.PartyGlobals import ActivityTypes
+from toontown.parties.PartyGlobals import FireworksStartedEvent
+from toontown.parties.PartyGlobals import FireworksFinishedEvent
+from toontown.parties.PartyGlobals import PartyCannonCollisions
+from toontown.parties.DistributedPartyActivity import DistributedPartyActivity
+from toontown.parties.CannonGui import CannonGui
+from toontown.parties.PartyUtils import toRadians, toDegrees
 CANNON_ROTATION_VEL = 15.0
 CANNON_ANGLE_VEL = 15.0
 GROUND_PLANE_MIN = -15

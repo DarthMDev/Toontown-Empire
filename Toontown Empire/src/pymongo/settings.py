@@ -16,11 +16,11 @@
 
 import threading
 
-from src.pymongo import monitor, pool
-from src.pymongo.common import LOCAL_THRESHOLD_MS, SERVER_SELECTION_TIMEOUT
-from src.pymongo.topology_description import TOPOLOGY_TYPE
-from src.pymongo.pool import PoolOptions
-from src.pymongo.server_description import ServerDescription
+from pymongo import monitor, pool
+from pymongo.common import LOCAL_THRESHOLD_MS, SERVER_SELECTION_TIMEOUT
+from pymongo.topology_description import TOPOLOGY_TYPE
+from pymongo.pool import PoolOptions
+from pymongo.server_description import ServerDescription
 
 
 class TopologySettings(object):

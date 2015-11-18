@@ -1,6 +1,6 @@
 import math
 from pandac.PandaModules import Point3
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 InputTimeout = 15
 TireMovieTimeout = 120
 MinWall = (-20.0, -15.0)

@@ -1,8 +1,8 @@
 from BattleBase import *
 import random
 from direct.directnotify import DirectNotifyGlobal
-from src.otp.otpbase import OTPLocalizer
-from src.toontown.toonbase import TTLocalizer
+from otp.otpbase import OTPLocalizer
+from toontown.toonbase import TTLocalizer
 notify = DirectNotifyGlobal.directNotify.newCategory('SuitBattleGlobals')
 debugAttackSequence = {}
 

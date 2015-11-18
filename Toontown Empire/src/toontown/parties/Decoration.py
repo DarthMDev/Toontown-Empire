@@ -1,10 +1,10 @@
 from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
 from direct.actor import Actor
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 import random
-from src.toontown.parties import PartyGlobals
-from src.toontown.parties.PartyUtils import getCenterPosFromGridSize
+from toontown.parties import PartyGlobals
+from toontown.parties.PartyUtils import getCenterPosFromGridSize
 
 class Decoration(NodePath):
     notify = directNotify.newCategory('Decoration')

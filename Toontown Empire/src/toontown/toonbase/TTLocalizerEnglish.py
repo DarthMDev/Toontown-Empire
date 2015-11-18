@@ -1,6 +1,6 @@
-from src.toontown.toonbase.TTLocalizerEnglishProperty import *
-from src.toontown.catalog import CatalogAccessoryItemGlobals
-from src.otp.otpbase import OTPLocalizer as OL
+from toontown.toonbase.TTLocalizerEnglishProperty import *
+from toontown.catalog import CatalogAccessoryItemGlobals
+from otp.otpbase import OTPLocalizer as OL
 import random
 OL.SpeedChatStaticText = OL.SpeedChatStaticTextToontown.copy()
 for key in OL.SpeedChatStaticTextCommon.iterkeys():
@@ -51,7 +51,7 @@ NametagFontNames = (
 )
 NametagLabel = ' Nametag'
 BasicNameTag = 'Basic'
-ScreenshotPath = 'src/user/screenshots/'
+ScreenshotPath = 'user/screenshots/'
 GM_NAMES = ('TOON COUNCIL',
  'TOON TROOPER',
  'RESISTANCE RANGER',
@@ -7302,7 +7302,7 @@ LeaderBoard_Weekly = 'Weekly Scores'
 LeaderBoard_AllTime = 'All Time Best Scores'
 RecordPeriodStrings = [LeaderBoard_Daily, LeaderBoard_Weekly, LeaderBoard_AllTime]
 KartRace_RaceNames = ['Practice', 'Toon Battle', 'Grand Prix']
-from src.toontown.racing import RaceGlobals
+from toontown.racing import RaceGlobals
 KartRace_Go = 'Go!'
 KartRace_Reverse = ' Rev'
 KartRace_TrackNames = {RaceGlobals.RT_Speedway_1: 'Screwball Stadium',
@@ -7882,7 +7882,7 @@ GolfShotDesc = {-4: GolfCondor,
  1: GolfBogey,
  2: GolfDoubleBogey,
  3: GolfTripleBogey}
-from src.toontown.golf import GolfGlobals
+from toontown.golf import GolfGlobals
 CoursesCompleted = 'Courses Completed'
 CoursesUnderPar = 'Courses Under Par'
 HoleInOneShots = 'Hole In One Shots'
@@ -8493,3 +8493,31 @@ SummerFireworksStart = 'Celebrate Summer with a fireworks show every hour in eac
 SummerFireworksEnd = 'Summer Fireworks are over. Hope you had fun.'
 NewYearFireworksStart = 'Happy New Year! Enjoy a fireworks show every hour in each playground!'
 NewYearFireworksEnd = 'New Year Fireworks are over. See you next year!'
+TeaserDefault = ',\nyou need to become a Member.\n\nJoin us!'
+TeaserOtherHoods = 'For unlimited adventures in all 6 neighborhoods'
+TeaserTypeAName = 'Type in your favorite name for your Toon!'
+TeaserSixToons = 'To play more than one Toon'
+TeaserClothing = 'To buy items from the Cattlelog \nto customize your toon'
+TeaserCogHQ = 'To access awesome Cog HQs'
+TeaserSecretChat = 'To use the True Friends Chat feature'
+TeaserSpecies = 'To pick this type of Toon'
+TeaserFishing = 'To fish in all 6 neighborhoods'
+TeaserGolf = 'To play Toon MiniGolf'
+TeaserParties = 'To plan a party'
+TeaserSubscribe = 'Subscribe'
+TeaserContinue = 'Return To Game'
+TeaserEmotions = 'To make your Toon more expressive'
+TeaserKarting = 'To access unlimited Kart Racing'
+TeaserKartingAccessories = 'To customize your Kart'
+TeaserGardening = 'To continue gardening at your Toon Estate'
+TeaserHaveFun = 'Have more fun!'
+TeaserJoinUs = 'Join us!'
+TeaserPlantGags = 'To plant these gags'
+TeaserPickGags = 'To pick these gags'
+TeaserRestockGags = 'To restock these gags'
+TeaserGetGags = 'To get these gags'
+TeaserUseGags = 'To use these gags'
+TeaserMinigames = TeaserOtherHoods
+TeaserQuests = TeaserOtherHoods
+TeaserOtherGags = TeaserOtherHoods
+TeaserTricks = TeaserOtherHoods

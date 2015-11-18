@@ -26,7 +26,8 @@ class GlobalPartyManagerAI(DistributedObjectGlobalAI):
 
     def heartbeatResponse(self):
         self.uberdogUp = True
-        self.notify.info('heartbeatResponse')
+        #this causes spam
+        #self.notify.info('heartbeatResponse')
         taskMgr.remove('heartbeatLostTask')
 
     def reportUdLost(self, task):

@@ -8,13 +8,13 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import Sequence, ProjectileInterval, Parallel, LerpHprInterval, ActorInterval, Func, Wait, SoundInterval, LerpPosHprInterval, LerpScaleInterval
 from direct.gui.DirectGui import DGG, DirectButton, DirectLabel, DirectWaitBar
 from direct.task import Task
-from src.toontown.suit import Suit
-from src.toontown.suit import SuitDNA
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.coghq import BanquetTableBase
-from src.toontown.coghq import DinerStatusIndicator
-from src.toontown.battle import MovieUtil
+from toontown.suit import Suit
+from toontown.suit import SuitDNA
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.coghq import BanquetTableBase
+from toontown.coghq import DinerStatusIndicator
+from toontown.battle import MovieUtil
 
 class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, BanquetTableBase.BanquetTableBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBanquetTable')

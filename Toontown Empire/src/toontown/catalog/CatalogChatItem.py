@@ -1,8 +1,8 @@
 from panda3d.core import *
 import CatalogItem
-from src.toontown.toonbase import ToontownGlobals
-from src.otp.otpbase import OTPLocalizer
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from otp.otpbase import OTPLocalizer
+from toontown.toonbase import TTLocalizer
 bannedPhrases = [11009]
 
 class CatalogChatItem(CatalogItem.CatalogItem):

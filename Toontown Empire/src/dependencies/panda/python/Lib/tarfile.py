@@ -269,13 +269,13 @@ def copyfileobj(src, dst, length=None):
     BUFSIZE = 16 * 1024
     blocks, remainder = divmod(length, BUFSIZE)
     for b in xrange(blocks):
-        buf = src.read(BUFSIZE)
+        buf = read(BUFSIZE)
         if len(buf) < BUFSIZE:
             raise IOError("end of file reached")
         dst.write(buf)
 
     if remainder != 0:
-        buf = src.read(remainder)
+        buf = read(remainder)
         if len(buf) < remainder:
             raise IOError("end of file reached")
         dst.write(buf)

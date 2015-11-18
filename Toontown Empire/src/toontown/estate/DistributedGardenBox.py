@@ -2,9 +2,9 @@ import DistributedLawnDecor
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.ShowBase import *
 import GardenGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.estate import PlantingGUI
-from src.toontown.estate import PlantTreeGUI
+from toontown.toonbase import TTLocalizer
+from toontown.estate import PlantingGUI
+from toontown.estate import PlantTreeGUI
 from direct.distributed import DistributedNode
 from pandac.PandaModules import NodePath
 from pandac.PandaModules import Vec3

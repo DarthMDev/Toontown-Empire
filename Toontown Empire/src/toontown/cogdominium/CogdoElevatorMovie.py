@@ -6,10 +6,10 @@ from direct.showbase.RandomNumGen import RandomNumGen
 from direct.interval.MetaInterval import Sequence, Parallel
 from direct.interval.FunctionInterval import Func, Wait
 from direct.gui.DirectGui import *
-from src.toontown.toonbase.ToontownGlobals import *
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.suit import Suit, SuitDNA
-from src.toontown.toon import Toon, ToonHead, ToonDNA
+from toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase import TTLocalizer
+from toontown.suit import Suit, SuitDNA
+from toontown.toon import Toon, ToonHead, ToonDNA
 from DistributedCogdoInterior import *
 from CogdoUtil import CogdoGameMovie
 import CogdoUtil

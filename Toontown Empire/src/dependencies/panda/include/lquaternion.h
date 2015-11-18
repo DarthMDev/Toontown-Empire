@@ -26,9 +26,9 @@
 #include "pnotify.h"
 
 #include "fltnames.h"
-#include "lquaternion_src.h"
+#include "lquaternion_h"
 
 #include "dblnames.h"
-#include "lquaternion_src.h"
+#include "lquaternion_h"
 
 #endif /* __LQUATERNION_H__ */

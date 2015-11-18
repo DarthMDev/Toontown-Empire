@@ -3,9 +3,9 @@ from direct.distributed.ClockDelta import *
 from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
 from panda3d.core import *
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.safezone import PicnicGameGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.safezone import PicnicGameGlobals
 
 
 class PicnicGameSelectMenu(DirectFrame):

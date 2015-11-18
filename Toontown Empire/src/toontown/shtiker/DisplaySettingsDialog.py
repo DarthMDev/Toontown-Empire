@@ -4,9 +4,9 @@ from direct.gui.DirectGui import *
 from direct.task.Task import Task
 from panda3d.core import *
 
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toontowngui import TTDialog
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toontowngui import TTDialog
 
 
 class DisplaySettingsDialog(DirectFrame, StateData.StateData):

@@ -1,4 +1,4 @@
-// Filename: glTimerQueryContext_src.I
+// Filename: glTimerQueryContext_I
 // Created by:  rdb (22Aug14)
 //
 ////////////////////////////////////////////////////////////////////

@@ -3,9 +3,9 @@ import datetime
 from pandac.PandaModules import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase import AppRunnerGlobal
-from src.otp.chat.WhiteList import WhiteList
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.chat import WhiteListData
+from otp.chat.WhiteList import WhiteList
+from toontown.toonbase import TTLocalizer
+from toontown.chat import WhiteListData
 
 class TTWhiteList(WhiteList):
     notify = directNotify.newCategory('TTWhiteList')

@@ -6,20 +6,20 @@ import math
 from pandac.PandaModules import Point3
 import random
 
-from src.otp.ai.MagicWordGlobal import *
-from src.toontown.battle import BattleExperienceAI
-from src.toontown.battle import DistributedBattleDinersAI
-from src.toontown.battle import DistributedBattleWaitersAI
-from src.toontown.building import SuitBuildingGlobals
-from src.toontown.coghq.BanquetTableBase import BanquetTableBase
-from src.toontown.coghq import DistributedBanquetTableAI
-from src.toontown.coghq import DistributedFoodBeltAI
-from src.toontown.coghq import DistributedGolfSpotAI
-from src.toontown.suit import DistributedBossCogAI
-from src.toontown.suit import DistributedSuitAI
-from src.toontown.suit import SuitDNA
-from src.toontown.toonbase import ToontownBattleGlobals
-from src.toontown.toonbase import ToontownGlobals
+from otp.ai.MagicWordGlobal import *
+from toontown.battle import BattleExperienceAI
+from toontown.battle import DistributedBattleDinersAI
+from toontown.battle import DistributedBattleWaitersAI
+from toontown.building import SuitBuildingGlobals
+from toontown.coghq.BanquetTableBase import BanquetTableBase
+from toontown.coghq import DistributedBanquetTableAI
+from toontown.coghq import DistributedFoodBeltAI
+from toontown.coghq import DistributedGolfSpotAI
+from toontown.suit import DistributedBossCogAI
+from toontown.suit import DistributedSuitAI
+from toontown.suit import SuitDNA
+from toontown.toonbase import ToontownBattleGlobals
+from toontown.toonbase import ToontownGlobals
 
 
 class DistributedBossbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM):

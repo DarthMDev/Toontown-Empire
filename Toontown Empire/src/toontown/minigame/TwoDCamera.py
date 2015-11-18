@@ -3,7 +3,7 @@ from direct.interval.IntervalGlobal import *
 from direct.task.Task import Task
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
-from src.toontown.minigame import ToonBlitzGlobals
+from toontown.minigame import ToonBlitzGlobals
 import math
 
 class TwoDCamera(DistributedObject.DistributedObject):

@@ -16,7 +16,7 @@
 
 import warnings
 
-from src.pymongo import mongo_client
+from pymongo import mongo_client
 
 
 class MongoReplicaSetClient(mongo_client.MongoClient):

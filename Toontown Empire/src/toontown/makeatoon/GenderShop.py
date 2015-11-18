@@ -1,10 +1,10 @@
 from panda3d.core import *
 from direct.fsm import StateData
 from direct.gui.DirectGui import *
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toon import ToonDNA
-from src.toontown.toon import Toon
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toon import ToonDNA
+from toontown.toon import Toon
 from MakeAToonGlobals import *
 from direct.directnotify import DirectNotifyGlobal
 import random

@@ -1,19 +1,19 @@
-from src.toontown.toonbase.ToontownGlobals import *
-from src.toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase.ToonBaseGlobal import *
 from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
 import HouseGlobals
-from src.toontown.catalog import CatalogItemList
-from src.toontown.catalog import CatalogItem
-from src.toontown.catalog import CatalogSurfaceItem
-from src.toontown.catalog import CatalogWallpaperItem
-from src.toontown.catalog import CatalogFlooringItem
-from src.toontown.catalog import CatalogMouldingItem
-from src.toontown.catalog import CatalogWainscotingItem
-from src.toontown.dna.DNAParser import *
+from toontown.catalog import CatalogItemList
+from toontown.catalog import CatalogItem
+from toontown.catalog import CatalogSurfaceItem
+from toontown.catalog import CatalogWallpaperItem
+from toontown.catalog import CatalogFlooringItem
+from toontown.catalog import CatalogMouldingItem
+from toontown.catalog import CatalogWainscotingItem
+from toontown.dna.DNAParser import *
 WindowPlugNames = ('**/windowcut_a*', '**/windowcut_b*', '**/windowcut_c*', '**/windowcut_d*', '**/windowcut_e*', '**/windowcut_f*')
 RoomNames = ('**/group2', '**/group1')
 WallNames = ('ceiling*', 'wall_side_middle*', 'wall_front_middle*', 'windowcut_*')

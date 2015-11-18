@@ -1,7 +1,7 @@
 from NametagConstants import *
 import NametagGlobals
-from src.otp.margins.ClickablePopup import ClickablePopup
-from src.otp.otpbase import OTPGlobals
+from otp.margins.ClickablePopup import ClickablePopup
+from otp.otpbase import OTPGlobals
 from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
 

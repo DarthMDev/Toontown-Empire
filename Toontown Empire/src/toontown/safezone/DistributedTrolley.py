@@ -3,14 +3,14 @@ from direct.distributed.ClockDelta import *
 from direct.task.Task import Task
 from direct.interval.IntervalGlobal import *
 from TrolleyConstants import *
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from src.toontown.distributed import DelayDelete
+from toontown.distributed import DelayDelete
 from direct.task.Task import Task
-from src.toontown.hood import ZoneUtil
+from toontown.hood import ZoneUtil
 
 class DistributedTrolley(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedTrolley')

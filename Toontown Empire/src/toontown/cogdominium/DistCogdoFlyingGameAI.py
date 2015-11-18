@@ -1,8 +1,8 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
-from src.toontown.battle import BattleBase
-from src.toontown.building.ElevatorConstants import *
-from src.toontown.cogdominium.DistCogdoGameAI import DistCogdoGameAI
+from toontown.battle import BattleBase
+from toontown.building.ElevatorConstants import *
+from toontown.cogdominium.DistCogdoGameAI import DistCogdoGameAI
 import CogdoFlyingGameGlobals as Globals
 
 class DistCogdoFlyingGameAI(DistCogdoGameAI):
@@ -108,7 +108,7 @@ class DistCogdoFlyingGameAI(DistCogdoGameAI):
     def getTotalMemos(self):
         return self.totalMemos
 
-from src.otp.ai.MagicWordGlobal import *
+from otp.ai.MagicWordGlobal import *
 @magicWord(category=CATEGORY_PROGRAMMER)
 def endFly():
     if hasattr(simbase.air, 'cogdoGame'):

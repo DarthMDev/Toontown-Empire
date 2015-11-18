@@ -10,24 +10,24 @@ from direct.showbase import PythonUtil
 from pandac.PandaModules import *
 from pandac.PandaModules import Vec3, Vec4, Point3, TextNode, VBase4
 
-from src.otp.otpbase import OTPGlobals
-from src.otp.otpbase import OTPLocalizer
-from src.toontown.friends.FriendsListPanel import determineFriendName
-from src.otp.nametag.NametagGroup import NametagGroup
-from src.otp.nametag.Nametag import Nametag
-from src.otp.nametag.NametagFloat2d import *
-from src.toontown.parties import PartyGlobals
-from src.toontown.parties import PartyUtils
-from src.toontown.parties.CalendarGuiMonth import CalendarGuiMonth
-from src.toontown.parties.InviteVisual import InviteVisual
-from src.toontown.parties.PartyEditor import PartyEditor
-from src.toontown.parties.PartyInfo import PartyInfo
-from src.toontown.parties.ScrolledFriendList import ScrolledFriendList
-from src.toontown.toon import ToonHead
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toontowngui import TTDialog
-from src.toontown.toontowngui.TeaserPanel import TeaserPanel
+from otp.otpbase import OTPGlobals
+from otp.otpbase import OTPLocalizer
+from toontown.friends.FriendsListPanel import determineFriendName
+from otp.nametag.NametagGroup import NametagGroup
+from otp.nametag.Nametag import Nametag
+from otp.nametag.NametagFloat2d import *
+from toontown.parties import PartyGlobals
+from toontown.parties import PartyUtils
+from toontown.parties.CalendarGuiMonth import CalendarGuiMonth
+from toontown.parties.InviteVisual import InviteVisual
+from toontown.parties.PartyEditor import PartyEditor
+from toontown.parties.PartyInfo import PartyInfo
+from toontown.parties.ScrolledFriendList import ScrolledFriendList
+from toontown.toon import ToonHead
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toontowngui import TTDialog
+from toontown.toontowngui.TeaserPanel import TeaserPanel
 
 
 class PartyPlanner(DirectFrame, FSM):

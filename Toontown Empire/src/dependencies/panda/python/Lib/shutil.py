@@ -46,7 +46,7 @@ except NameError:
 def copyfileobj(fsrc, fdst, length=16*1024):
     """copy data from file-like object fsrc to file-like object fdst"""
     while 1:
-        buf = fsrc.read(length)
+        buf = fread(length)
         if not buf:
             break
         fdst.write(buf)
@@ -304,7 +304,7 @@ def move(src, dst):
 def _destinsrc(src, dst):
     src = abspath(src)
     dst = abspath(dst)
-    if not src.endswith(os.path.sep):
+    if not endswith(os.path.sep):
         src += os.path.sep
     if not dst.endswith(os.path.sep):
         dst += os.path.sep

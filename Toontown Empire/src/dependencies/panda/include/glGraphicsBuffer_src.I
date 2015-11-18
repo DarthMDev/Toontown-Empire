@@ -1,4 +1,4 @@
-// Filename: glGraphicsBuffer_src.I
+// Filename: glGraphicsBuffer_I
 // Created by:  jyelon (15Jan06)
 //
 ////////////////////////////////////////////////////////////////////

@@ -1,4 +1,4 @@
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 
 def calcPropType(node):
     propType = ToontownGlobals.AnimPropTypes.Unknown

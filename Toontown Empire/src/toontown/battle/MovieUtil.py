@@ -6,7 +6,7 @@ import random
 from direct.particles import ParticleEffect
 import BattleParticles
 import BattleProps
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieUtil')
 SUIT_LOSE_DURATION = 6.0
 SUIT_LOSE_REVIVE_DURATION = 6.0

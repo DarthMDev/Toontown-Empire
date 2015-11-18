@@ -1,4 +1,4 @@
-// Filename: glOcclusionQueryContext_src.h
+// Filename: glOcclusionQueryContext_h
 // Created by:  drose (27Mar06)
 //
 ////////////////////////////////////////////////////////////////////
@@ -55,7 +55,7 @@ private:
   static TypeHandle _type_handle;
 };
 
-#include "glOcclusionQueryContext_src.I"
+#include "glOcclusionQueryContext_I"
 
 #endif  // OPENGLES
 

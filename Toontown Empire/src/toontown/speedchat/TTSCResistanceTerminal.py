@@ -1,5 +1,5 @@
-from src.otp.speedchat.SCTerminal import SCTerminal
-from src.toontown.chat import ResistanceChat
+from otp.speedchat.SCTerminal import SCTerminal
+from toontown.chat import ResistanceChat
 
 TTSCResistanceMsgEvent = 'TTSCResistanceMsg'
 

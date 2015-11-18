@@ -1,4 +1,4 @@
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 
 TreasureTT = 0
 TreasureDD = 1

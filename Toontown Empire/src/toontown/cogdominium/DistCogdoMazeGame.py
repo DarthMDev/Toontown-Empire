@@ -1,7 +1,7 @@
 from direct.distributed.ClockDelta import globalClockDelta
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 from DistCogdoGame import DistCogdoGame
-from src.toontown.cogdominium.DistCogdoMazeGameBase import DistCogdoMazeGameBase
+from toontown.cogdominium.DistCogdoMazeGameBase import DistCogdoMazeGameBase
 from CogdoMazeGame import CogdoMazeGame
 from CogdoMaze import CogdoMazeFactory
 import CogdoMazeGameGlobals
@@ -229,7 +229,7 @@ class DistCogdoMazeGame(DistCogdoGame, DistCogdoMazeGameBase):
         DistCogdoGame.setToonDisconnect(self, toonId)
         self.game.handleToonDisconnected(toonId)
 
-from src.otp.ai.MagicWordGlobal import *
+from otp.ai.MagicWordGlobal import *
 @magicWord(category=CATEGORY_PROGRAMMER)
 def revealMap():
     if hasattr(base.cr, 'cogdoGame'):

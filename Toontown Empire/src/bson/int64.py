@@ -14,7 +14,7 @@
 
 """A BSON wrapper for long (int in python3)"""
 
-from src.bson.py3compat import PY3
+from bson.py3compat import PY3
 
 if PY3:
     long = int

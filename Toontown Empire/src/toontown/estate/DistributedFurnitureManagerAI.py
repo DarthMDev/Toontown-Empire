@@ -1,18 +1,18 @@
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
-from src.toontown.catalog.CatalogItemList import CatalogItemList
-from src.toontown.catalog import CatalogItem
-from src.toontown.catalog.CatalogFurnitureItem import CatalogFurnitureItem, FLTrunk, FLCloset, FLBank, FLPhone
-from src.toontown.catalog.CatalogWallpaperItem import CatalogWallpaperItem
-from src.toontown.catalog.CatalogMouldingItem import CatalogMouldingItem
-from src.toontown.catalog.CatalogFlooringItem import CatalogFlooringItem
-from src.toontown.catalog.CatalogWainscotingItem import CatalogWainscotingItem
-from src.toontown.toonbase import ToontownGlobals
+from toontown.catalog.CatalogItemList import CatalogItemList
+from toontown.catalog import CatalogItem
+from toontown.catalog.CatalogFurnitureItem import CatalogFurnitureItem, FLTrunk, FLCloset, FLBank, FLPhone
+from toontown.catalog.CatalogWallpaperItem import CatalogWallpaperItem
+from toontown.catalog.CatalogMouldingItem import CatalogMouldingItem
+from toontown.catalog.CatalogFlooringItem import CatalogFlooringItem
+from toontown.catalog.CatalogWainscotingItem import CatalogWainscotingItem
+from toontown.toonbase import ToontownGlobals
 from DistributedFurnitureItemAI import DistributedFurnitureItemAI
 from DistributedPhoneAI import DistributedPhoneAI
 from DistributedClosetAI import DistributedClosetAI
 from DistributedTrunkAI import DistributedTrunkAI
 from DistributedBankAI import DistributedBankAI
-from src.otp.ai.MagicWordGlobal import *
+from otp.ai.MagicWordGlobal import *
 
 class FurnitureError(Exception):
     def __init__(self, code):

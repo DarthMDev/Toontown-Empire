@@ -1,9 +1,9 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.parties.DistributedPartyActivityAI import DistributedPartyActivityAI
-from src.toontown.parties.DistributedPartyCatchActivityBase import DistributedPartyCatchActivityBase
+from toontown.parties.DistributedPartyActivityAI import DistributedPartyActivityAI
+from toontown.parties.DistributedPartyCatchActivityBase import DistributedPartyCatchActivityBase
 from direct.task import Task
 from direct.distributed.ClockDelta import globalClockDelta
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 import PartyGlobals
 
 class DistributedPartyCatchActivityAI(DistributedPartyActivityAI, DistributedPartyCatchActivityBase):

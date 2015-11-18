@@ -3,7 +3,7 @@ from TagTreasurePlannerAI import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.task import Task
-from src.toontown.safezone import TreasureGlobals
+from toontown.safezone import TreasureGlobals
 import random
 import TagGameGlobals
 

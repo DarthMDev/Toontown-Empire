@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
-from src.toontown.toon.ToonDNA import ToonDNA
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toon.ToonDNA import ToonDNA
+from toontown.toonbase import ToontownGlobals
 
 class DistributedBlackCatMgrAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedBlackCatMgrAI")

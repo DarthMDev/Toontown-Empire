@@ -2,11 +2,11 @@ from panda3d.core import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
-from src.otp.level import BasicEntities
-from src.toontown.coghq import MovingPlatform
+from otp.level import BasicEntities
+from toontown.coghq import MovingPlatform
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.minigame import ToonBlitzGlobals
+from toontown.minigame import ToonBlitzGlobals
 
 class TwoDBlock(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('TwoDBlock')

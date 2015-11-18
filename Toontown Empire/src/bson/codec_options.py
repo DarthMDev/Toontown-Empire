@@ -16,7 +16,7 @@
 
 from collections import MutableMapping, namedtuple
 
-from src.bson.binary import (ALL_UUID_REPRESENTATIONS,
+from bson.binary import (ALL_UUID_REPRESENTATIONS,
                          PYTHON_LEGACY,
                          UUID_REPRESENTATION_NAMES)
 

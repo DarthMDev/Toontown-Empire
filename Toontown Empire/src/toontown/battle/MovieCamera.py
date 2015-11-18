@@ -2,7 +2,7 @@ from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from BattleBase import *
 from BattleProps import *
-from src.toontown.toonbase.ToontownBattleGlobals import *
+from toontown.toonbase.ToontownBattleGlobals import *
 from SuitBattleGlobals import *
 from direct.directnotify import DirectNotifyGlobal
 import random

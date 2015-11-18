@@ -1,8 +1,8 @@
-from src.otp.ai.MagicWordGlobal import *
-from src.toontown.safezone.TTSafeZoneLoader import TTSafeZoneLoader
-from src.toontown.town.TTTownLoader import TTTownLoader
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.hood.ToonHood import ToonHood
+from otp.ai.MagicWordGlobal import *
+from toontown.safezone.TTSafeZoneLoader import TTSafeZoneLoader
+from toontown.town.TTTownLoader import TTTownLoader
+from toontown.toonbase import ToontownGlobals
+from toontown.hood.ToonHood import ToonHood
 
 class TTHood(ToonHood):
     notify = directNotify.newCategory('TTHood')

@@ -1,7 +1,7 @@
-from src.otp.nametag.NametagConstants import CFSpeech, CFTimeout
-from src.toontown.minigame import ClerkPurchase
-from src.toontown.toonbase import TTLocalizer, ToontownGlobals
-from src.toontown.toon import NPCToons
+from otp.nametag.NametagConstants import CFSpeech, CFTimeout
+from toontown.minigame import ClerkPurchase
+from toontown.toonbase import TTLocalizer, ToontownGlobals
+from toontown.toon import NPCToons
 from DistributedNPCToonBase import DistributedNPCToonBase
 import time
 

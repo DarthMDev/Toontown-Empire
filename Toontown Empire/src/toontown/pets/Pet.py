@@ -4,13 +4,13 @@ from direct.interval.IntervalGlobal import *
 from direct.fsm.ClassicFSM import *
 from direct.fsm.State import *
 from direct.distributed.ClockDelta import globalClockDelta
-from src.otp.avatar import Avatar
+from otp.avatar import Avatar
 from direct.actor import Actor
 from direct.task import Task
-from src.toontown.pets import PetDNA
+from toontown.pets import PetDNA
 from PetDNA import HeadParts, EarParts, NoseParts, TailParts, BodyTypes, BodyTextures, AllPetColors, getColors, ColorScales, PetEyeColors, EarTextures, TailTextures, getFootTexture, getEarTexture, GiraffeTail, LeopardTail, PetGenders
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
 from direct.showbase import PythonUtil
 import random
 import types
@@ -27,9 +27,9 @@ Component2IconDict = {'boredom': 'Bored',
  'surprise': 'Surprised',
  'affection': 'Love'}
 
-from src.otp.nametag import *
-from src.otp.nametag.NametagConstants import *
-from src.otp.nametag.NametagGroup import *
+from otp.nametag import *
+from otp.nametag.NametagConstants import *
+from otp.nametag.NametagGroup import *
 
 class Pet(Avatar.Avatar):
     notify = DirectNotifyGlobal.directNotify.newCategory('Pet')

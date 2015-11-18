@@ -1,5 +1,5 @@
 from SpecImports import *
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 CogParent = 10000
 CogParent1 = 100021
 BattlePlace1 = 100020

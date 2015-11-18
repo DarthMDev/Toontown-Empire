@@ -6,15 +6,15 @@ from direct.interval.IntervalGlobal import *
 from direct.task import Task
 from panda3d.core import *
 
-from src.toontown.estate import DistributedToonStatuary
-from src.toontown.estate import GardenGlobals
-from src.toontown.estate import PlantingGUI
-from src.otp.nametag import NametagGlobals, NametagConstants
-from src.otp.nametag.NametagGroup import *
-from src.toontown.toon import DistributedToon
-from src.toontown.toon import Toon
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
+from toontown.estate import DistributedToonStatuary
+from toontown.estate import GardenGlobals
+from toontown.estate import PlantingGUI
+from otp.nametag import NametagGlobals, NametagConstants
+from otp.nametag.NametagGroup import *
+from toontown.toon import DistributedToon
+from toontown.toon import Toon
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
 
 
 class ToonStatueSelectionGUI(DirectFrame):

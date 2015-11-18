@@ -87,6 +87,6 @@
 #undef GL_GLEXT_VERSION
 #include "panda_glext.h"
 
-#include "glstuff_src.h"
+#include "glstuff_h"
 
 #endif  // GLGSG_H

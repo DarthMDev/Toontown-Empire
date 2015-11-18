@@ -2,13 +2,13 @@ from direct.gui.DirectGui import *
 from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toontowngui import TTDialog
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.suit import SuitDNA
-from src.toontown.suit import Suit
-from src.toontown.battle import SuitBattleGlobals
-from src.toontown.toon import NPCToons
+from toontown.toonbase import TTLocalizer
+from toontown.toontowngui import TTDialog
+from toontown.toonbase import ToontownGlobals
+from toontown.suit import SuitDNA
+from toontown.suit import Suit
+from toontown.battle import SuitBattleGlobals
+from toontown.toon import NPCToons
 
 class SummonCogDialog(DirectFrame, StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('SummonCogDialog')

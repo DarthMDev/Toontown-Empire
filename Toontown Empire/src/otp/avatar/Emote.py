@@ -1,4 +1,4 @@
-from src.otp.otpbase import OTPLocalizer
+from otp.otpbase import OTPLocalizer
 import types
 
 class Emote:

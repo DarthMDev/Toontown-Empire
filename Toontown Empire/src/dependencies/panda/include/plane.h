@@ -27,10 +27,10 @@ class Datagram;
 class DatagramIterator;
 
 #include "fltnames.h"
-#include "plane_src.h"
+#include "plane_h"
 
 #include "dblnames.h"
-#include "plane_src.h"
+#include "plane_h"
 
 #ifndef STDFLOAT_DOUBLE
 typedef LPlanef LPlane;

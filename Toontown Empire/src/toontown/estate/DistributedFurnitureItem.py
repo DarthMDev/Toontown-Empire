@@ -1,10 +1,10 @@
-from src.toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase.ToontownGlobals import *
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
-from src.toontown.catalog import CatalogItem
-from src.toontown.toonbase import ToontownGlobals
+from toontown.catalog import CatalogItem
+from toontown.toonbase import ToontownGlobals
 from direct.distributed import DistributedObject
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 import DistributedHouseItem
 from direct.distributed import DistributedSmoothNode
 from direct.task import Task

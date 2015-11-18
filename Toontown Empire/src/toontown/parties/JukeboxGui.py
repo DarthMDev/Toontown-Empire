@@ -3,8 +3,8 @@ from direct.showbase.DirectObject import DirectObject
 from direct.gui.DirectGui import DirectFrame, DirectButton, DirectLabel
 from direct.gui.DirectGui import DirectScrolledListItem, DirectScrolledList
 from direct.gui import DirectGuiGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.parties import PartyUtils
+from toontown.toonbase import TTLocalizer
+from toontown.parties import PartyUtils
 
 class JukeboxGui(DirectObject):
     notify = directNotify.newCategory('JukeboxGui')

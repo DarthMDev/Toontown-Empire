@@ -1,7 +1,7 @@
 from direct.directnotify.DirectNotifyGlobal import *
 from direct.showbase import DirectObject
 from panda3d.core import *
-from src.toontown.golf import DistributedGolfCourseAI
+from toontown.golf import DistributedGolfCourseAI
 
 
 RequestHole = {}

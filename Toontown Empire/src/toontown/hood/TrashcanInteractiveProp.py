@@ -1,7 +1,7 @@
 from direct.actor import Actor
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.hood import InteractiveAnimatedProp
-from src.toontown.toonbase import ToontownGlobals, ToontownBattleGlobals, TTLocalizer
+from toontown.hood import InteractiveAnimatedProp
+from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals, TTLocalizer
 
 class TrashcanInteractiveProp(InteractiveAnimatedProp.InteractiveAnimatedProp):
     notify = DirectNotifyGlobal.directNotify.newCategory('TrashcanInteractiveProp')

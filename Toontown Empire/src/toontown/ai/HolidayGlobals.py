@@ -1,5 +1,5 @@
-from src.toontown.toonbase import ToontownGlobals, TTLocalizer
-from src.toontown.parties import ToontownTimeZone
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.parties import ToontownTimeZone
 import calendar, datetime
 
 TIME_ZONE = ToontownTimeZone.ToontownTimeZone()

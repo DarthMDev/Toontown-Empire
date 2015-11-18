@@ -1,6 +1,6 @@
 from FireworkGlobals import *
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.parties import PartyGlobals
+from toontown.toonbase import ToontownGlobals
+from toontown.parties import PartyGlobals
 shows = {ToontownGlobals.JULY4_FIREWORKS: [((2,
                                      ROCKET,
                                      RED,

@@ -1,10 +1,10 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
 import CogHQLoader, MintInterior
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.gui import DirectGui
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toon import Toon
+from toontown.toonbase import TTLocalizer
+from toontown.toon import Toon
 from direct.fsm import State
 import CashbotHQExterior
 import CashbotHQBossBattle

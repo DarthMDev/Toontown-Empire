@@ -3,18 +3,18 @@ from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from direct.distributed.ClockDelta import *
 from direct.fsm import FSM
 from direct.task import Timer
-from src.toontown.battle import BattleBase
-from src.toontown.building.ElevatorConstants import *
-from src.toontown.toonbase.ToontownGlobals import *
-from src.toontown.toonbase.ToontownBattleGlobals import *
+from toontown.battle import BattleBase
+from toontown.building.ElevatorConstants import *
+from toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase.ToontownBattleGlobals import *
 import DistCogdoMazeGameAI, CogdoMazeGameGlobals, DistributedCogdoElevatorIntAI
 import DistCogdoFlyingGameAI, DistributedCogdoBarrelAI
 from DistributedCogdoBattleBldgAI import DistributedCogdoBattleBldgAI
 from SuitPlannerCogdoInteriorAI import SuitPlannerCogdoInteriorAI
-from src.toontown.cogdominium import CogdoBarrelRoomConsts
+from toontown.cogdominium import CogdoBarrelRoomConsts
 
-from src.toontown.toon import NPCToons
-from src.toontown.quest import Quests
+from toontown.toon import NPCToons
+from toontown.quest import Quests
 import random, math
 
 NUM_FLOORS_DICT = {

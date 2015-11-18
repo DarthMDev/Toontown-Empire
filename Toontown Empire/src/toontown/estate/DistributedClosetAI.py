@@ -1,5 +1,5 @@
-from src.toontown.estate.DistributedFurnitureItemAI import DistributedFurnitureItemAI
-from src.toontown.toon.ToonDNA import ToonDNA
+from toontown.estate.DistributedFurnitureItemAI import DistributedFurnitureItemAI
+from toontown.toon.ToonDNA import ToonDNA
 from direct.distributed.ClockDelta import globalClockDelta
 import ClosetGlobals
 

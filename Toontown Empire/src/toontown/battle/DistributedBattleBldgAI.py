@@ -9,8 +9,8 @@ from direct.fsm import State
 from direct.showbase import PythonUtil
 from direct.showbase.PythonUtil import addListsByValue
 from direct.task import Task
-from src.otp.ai.AIBase import *
-from src.toontown.toonbase.ToontownBattleGlobals import *
+from otp.ai.AIBase import *
+from toontown.toonbase.ToontownBattleGlobals import *
 
 
 class DistributedBattleBldgAI(DistributedBattleBaseAI.DistributedBattleBaseAI):

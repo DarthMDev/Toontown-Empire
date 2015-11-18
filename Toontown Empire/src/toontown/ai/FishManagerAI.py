@@ -1,9 +1,9 @@
 import random
 
-from src.otp.ai.MagicWordGlobal import *
-from src.toontown.fishing import FishGlobals
-from src.toontown.fishing.FishBase import FishBase
-from src.toontown.toonbase import TTLocalizer
+from otp.ai.MagicWordGlobal import *
+from toontown.fishing import FishGlobals
+from toontown.fishing.FishBase import FishBase
+from toontown.toonbase import TTLocalizer
 
 
 

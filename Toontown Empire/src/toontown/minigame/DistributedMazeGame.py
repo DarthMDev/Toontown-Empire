@@ -9,8 +9,8 @@ from direct.showbase import RandomNumGen
 from direct.task.Task import Task
 from direct.distributed.ClockDelta import globalClockDelta
 from pandac.PandaModules import Point3, Vec3
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownTimer
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownTimer
 from DistributedMinigame import DistributedMinigame
 from MazeSuit import MazeSuit
 from OrthoWalk import OrthoWalk

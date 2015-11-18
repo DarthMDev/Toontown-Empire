@@ -18,31 +18,31 @@ import collections
 import datetime
 import warnings
 
-from src.bson.code import Code
-from src.bson.objectid import ObjectId
-from src.bson.py3compat import (_unicode,
+from bson.code import Code
+from bson.objectid import ObjectId
+from bson.py3compat import (_unicode,
                             integer_types,
                             string_type,
                             u)
-from src.bson.codec_options import CodecOptions
-from src.bson.son import SON
-from src.pymongo.common import *
-import src.pymongo.common 
-import src.pymongo.helpers
-import src.pymongo.message
-from src.pymongo.bulk import BulkOperationBuilder, _Bulk
-from src.pymongo.command_cursor import CommandCursor
-from src.pymongo.cursor import Cursor
-from src.pymongo.errors import ConfigurationError, InvalidName, OperationFailure
-from src.pymongo.helpers import _check_write_command_response
-from src.pymongo.operations import _WriteOp, IndexModel
-from src.pymongo.read_preferences import ReadPreference
-from src.pymongo.results import (BulkWriteResult,
+from bson.codec_options import CodecOptions
+from bson.son import SON
+from pymongo.common import *
+import pymongo.common 
+import pymongo.helpers
+import pymongo.message
+from pymongo.bulk import BulkOperationBuilder, _Bulk
+from pymongo.command_cursor import CommandCursor
+from pymongo.cursor import Cursor
+from pymongo.errors import ConfigurationError, InvalidName, OperationFailure
+from pymongo.helpers import _check_write_command_response
+from pymongo.operations import _WriteOp, IndexModel
+from pymongo.read_preferences import ReadPreference
+from pymongo.results import (BulkWriteResult,
                              DeleteResult,
                              InsertOneResult,
                              InsertManyResult,
                              UpdateResult)
-from src.pymongo.write_concern import WriteConcern
+from pymongo.write_concern import WriteConcern
 
 try:
     from collections import OrderedDict

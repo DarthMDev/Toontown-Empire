@@ -18,17 +18,17 @@
 import collections
 import warnings
 
-from src.bson.binary import (STANDARD, PYTHON_LEGACY,
+from bson.binary import (STANDARD, PYTHON_LEGACY,
                          JAVA_LEGACY, CSHARP_LEGACY)
-from src.bson.codec_options import CodecOptions
-from src.bson.py3compat import string_type, integer_types, iteritems
-from src.pymongo.auth import MECHANISMS
-from src.pymongo.errors import ConfigurationError
-from src.pymongo.monitoring import _validate_event_listeners
-from src.pymongo.read_preferences import (read_pref_mode_from_name,
+from bson.codec_options import CodecOptions
+from bson.py3compat import string_type, integer_types, iteritems
+from pymongo.auth import MECHANISMS
+from pymongo.errors import ConfigurationError
+from pymongo.monitoring import _validate_event_listeners
+from pymongo.read_preferences import (read_pref_mode_from_name,
                                       _ServerMode)
-from src.pymongo.ssl_support import validate_cert_reqs
-from src.pymongo.write_concern import WriteConcern
+from pymongo.ssl_support import validate_cert_reqs
+from pymongo.write_concern import WriteConcern
 
 # Defaults until we connect to a server and get updated limits.
 MAX_BSON_SIZE = 16 * (1024 ** 2)

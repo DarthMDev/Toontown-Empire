@@ -2,8 +2,8 @@ from direct.interval.IntervalGlobal import *
 import CatalogAtticItem
 import CatalogItem
 import random, glob
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
 from panda3d.core import *
 FTModelName = 0
 FTColor = 1
@@ -1082,7 +1082,7 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
         return model
     
     def startVideo(self, model, file=None):
-        files = glob.glob('src/user/videos/*.mp4')
+        files = glob.glob('user/videos/*.mp4')
         
         if not files:
             model.setTextureOff(TextureStage.getDefault())

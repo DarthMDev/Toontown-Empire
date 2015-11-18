@@ -1,6 +1,6 @@
-from src.toontown.battle import BattleManagerAI
+from toontown.battle import BattleManagerAI
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.coghq import BattleExperienceAggregatorAI
+from toontown.coghq import BattleExperienceAggregatorAI
 
 class LevelBattleManagerAI(BattleManagerAI.BattleManagerAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('LevelBattleManagerAI')

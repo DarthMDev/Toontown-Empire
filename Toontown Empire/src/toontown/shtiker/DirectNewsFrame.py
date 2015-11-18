@@ -8,9 +8,9 @@ from direct.gui.DirectGui import DirectFrame, DGG
 from direct.directnotify import DirectNotifyGlobal
 from direct.task.Task import Task
 from direct.showbase import AppRunnerGlobal
-from src.toontown.shtiker import IssueFrame
-from src.toontown.shtiker import IssueFrameV2
-from src.toontown.toonbase import TTLocalizer
+from toontown.shtiker import IssueFrame
+from toontown.shtiker import IssueFrameV2
+from toontown.toonbase import TTLocalizer
 
 class DirectNewsFrame(DirectObject.DirectObject):
     TaskName = 'HtmlViewUpdateTask'

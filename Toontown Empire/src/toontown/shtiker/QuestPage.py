@@ -1,12 +1,12 @@
 from panda3d.core import *
 import ShtikerPage
 from direct.gui.DirectGui import *
-from src.toontown.quest import Quests
-from src.toontown.toon import NPCToons
-from src.toontown.hood import ZoneUtil
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.quest import QuestBookPoster
+from toontown.quest import Quests
+from toontown.toon import NPCToons
+from toontown.hood import ZoneUtil
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.quest import QuestBookPoster
 from direct.directnotify import DirectNotifyGlobal
 
 class QuestPage(ShtikerPage.ShtikerPage):

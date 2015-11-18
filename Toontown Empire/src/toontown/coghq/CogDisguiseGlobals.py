@@ -1,8 +1,8 @@
-from src.toontown.suit import SuitDNA
+from toontown.suit import SuitDNA
 import types
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 from direct.showbase import PythonUtil
-from src.otp.otpbase import OTPGlobals
+from otp.otpbase import OTPGlobals
 PartsPerSuit = (17,
  14,
  12,
@@ -458,7 +458,7 @@ def isSuitComplete(parts, dept):
     return 1
 
 def getTotalMerits(toon, index):
-    from src.toontown.battle import SuitBattleGlobals
+    from toontown.battle import SuitBattleGlobals
     cogIndex = toon.cogTypes[index] + SuitDNA.suitsPerDept * index
     cogTypeStr = SuitDNA.suitHeadTypes[cogIndex]
     cogBaseLevel = SuitBattleGlobals.SuitAttributes[cogTypeStr]['level']

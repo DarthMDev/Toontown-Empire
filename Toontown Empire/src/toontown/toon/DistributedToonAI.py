@@ -5,45 +5,45 @@ from direct.distributed.ClockDelta import *
 from direct.distributed.MsgTypes import *
 from direct.distributed.PyDatagram import PyDatagram
 from direct.task import Task
-from src.otp.ai.AIBaseGlobal import *
-from src.otp.ai.MagicWordGlobal import *
-from src.otp.avatar import DistributedAvatarAI, DistributedPlayerAI
-from src.otp.otpbase import OTPGlobals, OTPLocalizer
-from src.toontown.battle import SuitBattleGlobals
-from src.toontown.catalog import CatalogAccessoryItem, CatalogItem, CatalogItemList
-from src.toontown.cogdominium import CogdoUtil
-from src.toontown.chat import ResistanceChat
-from src.toontown.coghq import CogDisguiseGlobals
-from src.toontown.estate import FlowerBasket, FlowerCollection, GardenGlobals
-from src.toontown.fishing import FishCollection, FishTank, FishGlobals
-from src.toontown.golf import GolfGlobals
-from src.toontown.hood import ZoneUtil
-from src.toontown.parties import PartyGlobals
-from src.toontown.parties.InviteInfo import InviteInfoBase
-from src.toontown.parties.PartyGlobals import InviteStatus
-from src.toontown.parties.PartyInfo import PartyInfoAI
-from src.toontown.parties.PartyReplyInfo import PartyReplyInfoBase
-from src.toontown.quest import QuestRewardCounter, Quests
-from src.toontown.racing import RaceGlobals
-from src.toontown.shtiker import CogPageGlobals
-from src.toontown.suit import SuitDNA, SuitInvasionGlobals
-from src.toontown.toon import NPCToons
-from src.toontown.toonbase import TTLocalizer, ToontownBattleGlobals, ToontownGlobals
-from src.toontown.toonbase.ToontownGlobals import *
+from otp.ai.AIBaseGlobal import *
+from otp.ai.MagicWordGlobal import *
+from otp.avatar import DistributedAvatarAI, DistributedPlayerAI
+from otp.otpbase import OTPGlobals, OTPLocalizer
+from toontown.battle import SuitBattleGlobals
+from toontown.catalog import CatalogAccessoryItem, CatalogItem, CatalogItemList
+from toontown.cogdominium import CogdoUtil
+from toontown.chat import ResistanceChat
+from toontown.coghq import CogDisguiseGlobals
+from toontown.estate import FlowerBasket, FlowerCollection, GardenGlobals
+from toontown.fishing import FishCollection, FishTank, FishGlobals
+from toontown.golf import GolfGlobals
+from toontown.hood import ZoneUtil
+from toontown.parties import PartyGlobals
+from toontown.parties.InviteInfo import InviteInfoBase
+from toontown.parties.PartyGlobals import InviteStatus
+from toontown.parties.PartyInfo import PartyInfoAI
+from toontown.parties.PartyReplyInfo import PartyReplyInfoBase
+from toontown.quest import QuestRewardCounter, Quests
+from toontown.racing import RaceGlobals
+from toontown.shtiker import CogPageGlobals
+from toontown.suit import SuitDNA, SuitInvasionGlobals
+from toontown.toon import NPCToons
+from toontown.toonbase import TTLocalizer, ToontownBattleGlobals, ToontownGlobals
+from toontown.toonbase.ToontownGlobals import *
 from NPCToons import npcFriends
 import Experience, InventoryBase, ToonDNA, random, time
 #In-till later this will be enabled
-from src.toontown.magicw import MagicWords
+from toontown.magicw import MagicWords
 
 if simbase.wantPets:
-    from src.toontown.pets import PetLookerAI, PetObserve
+    from toontown.pets import PetLookerAI, PetObserve
 else:
     class PetLookerAI:
         class PetLookerAI:
             pass
 
 if simbase.wantKarts:
-    from src.toontown.racing.KartDNA import *
+    from toontown.racing.KartDNA import *
 
 class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLookerAI.PetLookerAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedToonAI')
@@ -182,14 +182,14 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         if self.isPlayerControlled():
             messenger.send('avatarEntered', [self])
 
-        from src.toontown.toon.DistributedNPCToonBaseAI import DistributedNPCToonBaseAI
+        from toontown.toon.DistributedNPCToonBaseAI import DistributedNPCToonBaseAI
         if not isinstance(self, DistributedNPCToonBaseAI):
             self.sendUpdate('setDefaultShard', [self.air.districtId])
 
     def setLocation(self, parentId, zoneId):
         DistributedPlayerAI.DistributedPlayerAI.setLocation(self, parentId, zoneId)
 
-        from src.toontown.toon.DistributedNPCToonBaseAI import DistributedNPCToonBaseAI
+        from toontown.toon.DistributedNPCToonBaseAI import DistributedNPCToonBaseAI
         if not isinstance(self, DistributedNPCToonBaseAI):
             if 100 <= zoneId < ToontownGlobals.DynamicZonesBegin:
                 hood = ZoneUtil.getHoodId(zoneId)
@@ -2990,7 +2990,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
         def setSC(self, msgId):
             DistributedToonAI.notify.debug('setSC: %s' % msgId)
-            from src.toontown.pets import PetObserve
+            from toontown.pets import PetObserve
             PetObserve.send(self.zoneId, PetObserve.getSCObserve(msgId, self.doId))
             if msgId in [21006]:
                 self.setHatePets(1)
@@ -3009,7 +3009,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
         def setSCCustom(self, msgId):
             DistributedToonAI.notify.debug('setSCCustom: %s' % msgId)
-            from src.toontown.pets import PetObserve
+            from toontown.pets import PetObserve
             PetObserve.send(self.zoneId, PetObserve.getSCObserve(msgId, self.doId))
 
     def setHatePets(self, hate):
@@ -3017,7 +3017,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def takeOutKart(self, zoneId = None):
         if not self.kart:
-            from src.toontown.racing import DistributedVehicleAI
+            from toontown.racing import DistributedVehicleAI
             self.kart = DistributedVehicleAI.DistributedVehicleAI(self.air, self.doId)
             if zoneId:
                 self.kart.generateWithRequired(zoneId)

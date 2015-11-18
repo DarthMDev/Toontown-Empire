@@ -1,20 +1,20 @@
-from src.otp.ai.AIBaseGlobal import *
+from otp.ai.AIBaseGlobal import *
 from panda3d.core import *
 from direct.distributed.ClockDelta import *
-from src.otp.avatar import DistributedAvatarAI
+from otp.avatar import DistributedAvatarAI
 import SuitTimings
 from direct.task import Task
 import SuitPlannerBase
 import SuitBase
 import SuitDialog
 import SuitDNA
-from src.toontown.suit.SuitLegList import *
+from toontown.suit.SuitLegList import *
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.battle import SuitBattleGlobals
-from src.toontown.building import FADoorCodes
+from toontown.battle import SuitBattleGlobals
+from toontown.building import FADoorCodes
 import DistributedSuitBaseAI
-from src.toontown.hood import ZoneUtil
-from src.toontown.toon import NPCToons
+from toontown.hood import ZoneUtil
+from toontown.toon import NPCToons
 import random
 
 class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):

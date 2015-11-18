@@ -1,6 +1,6 @@
 from direct.showbase import PythonUtil
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.hood import ZoneUtil
+from toontown.toonbase import ToontownGlobals
+from toontown.hood import ZoneUtil
 from random import choice
 latencyTolerance = 10.0
 MaxLoadTime = 40.0

@@ -1,14 +1,14 @@
 from direct.distributed.PyDatagram import *
 import urlparse
-from src.otp.distributed.OtpDoGlobals import *
-from src.otp.distributed.DistributedDirectoryAI import DistributedDirectoryAI
-from src.toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
-import src.toontown.minigame.MinigameCreatorAI
-from src.otp.otpbase import BackupManager
+from otp.distributed.OtpDoGlobals import *
+from otp.distributed.DistributedDirectoryAI import DistributedDirectoryAI
+from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
+import toontown.minigame.MinigameCreatorAI
+from otp.otpbase import BackupManager
 
 if config.GetBool('want-rpc-server', False):
-    from src.toontown.rpc.ToontownRPCServer import ToontownRPCServer
-    from src.toontown.rpc.ToontownRPCHandler import ToontownRPCHandler
+    from toontown.rpc.ToontownRPCServer import ToontownRPCServer
+    from toontown.rpc.ToontownRPCHandler import ToontownRPCHandler
 
 class ToontownUberRepository(ToontownInternalRepository):
     def __init__(self, baseChannel, serverId):

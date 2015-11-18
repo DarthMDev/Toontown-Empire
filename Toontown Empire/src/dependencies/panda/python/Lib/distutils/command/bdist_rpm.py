@@ -349,7 +349,7 @@ class bdist_rpm (Command):
         # Note that some of these may not be really built (if the file
         # list is empty)
         nvr_string = "%{name}-%{version}-%{release}"
-        src_rpm = nvr_string + ".src.rpm"
+        src_rpm = nvr_string + ".rpm"
         non_src_rpm = "%{arch}/" + nvr_string + ".%{arch}.rpm"
         q_cmd = r"rpm -q --qf '%s %s\n' --specfile '%s'" % (
             src_rpm, non_src_rpm, spec_path)

@@ -23,13 +23,13 @@ def calcCupListFromHistory(h):
         if tr<=nt:rv[ci]=True
     return rv
 def getCourseName(ci):
-    from src.toontown.toonbase import TTLocalizer
+    from toontown.toonbase import TTLocalizer
     if ci in CourseInfo:
         if not CourseInfo[ci]['name']:CourseInfo[ci]['name']=TTLocalizer.GolfCourseNames[ci]
         return CourseInfo[ci]['name']
     else:return ''
 def getHoleName(hi):
-    from src.toontown.toonbase import TTLocalizer
+    from toontown.toonbase import TTLocalizer
     if hi in HoleInfo:
         if not HoleInfo[hi]['name']:HoleInfo[hi]['name']=TTLocalizer.GolfHoleNames[hi]
         return HoleInfo[hi]['name']

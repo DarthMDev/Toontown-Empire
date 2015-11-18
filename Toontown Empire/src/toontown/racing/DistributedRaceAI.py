@@ -6,10 +6,10 @@ from direct.task import Task
 
 import random
 
-from src.toontown.racing import RaceGlobals
-from src.toontown.racing.DistributedGagAI import DistributedGagAI
-from src.toontown.racing.DistributedVehicleAI import DistributedVehicleAI
-from src.toontown.toonbase import TTLocalizer
+from toontown.racing import RaceGlobals
+from toontown.racing.DistributedGagAI import DistributedGagAI
+from toontown.racing.DistributedVehicleAI import DistributedVehicleAI
+from toontown.toonbase import TTLocalizer
 
 
 class DistributedRaceAI(DistributedObjectAI, FSM):

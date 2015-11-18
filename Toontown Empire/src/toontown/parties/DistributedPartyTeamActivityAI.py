@@ -1,7 +1,7 @@
 from direct.distributed.ClockDelta import globalClockDelta
 
-from src.toontown.parties.DistributedPartyActivityAI import DistributedPartyActivityAI
-from src.toontown.parties import PartyGlobals
+from toontown.parties.DistributedPartyActivityAI import DistributedPartyActivityAI
+from toontown.parties import PartyGlobals
 
 import random
 

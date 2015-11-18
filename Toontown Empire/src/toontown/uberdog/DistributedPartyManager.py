@@ -1,11 +1,11 @@
 from direct.distributed.DistributedObject import DistributedObject
 from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
 
-from src.otp.nametag.NametagConstants import *
-from src.toontown.parties import PartyGlobals
-from src.toontown.toon import ToonDNA
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
+from otp.nametag.NametagConstants import *
+from toontown.parties import PartyGlobals
+from toontown.toon import ToonDNA
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
 
 
 class DistributedPartyManager(DistributedObject):

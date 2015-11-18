@@ -17,8 +17,8 @@
 
 import re
 
-from src.bson.son import RE_TYPE
-from src.bson.py3compat import string_type, text_type
+from bson.son import RE_TYPE
+from bson.py3compat import string_type, text_type
 
 
 def str_flags_to_int(str_flags):

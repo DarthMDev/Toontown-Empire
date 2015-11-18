@@ -6,8 +6,8 @@ from direct.distributed import DistributedObject, DistributedObjectAI
 from direct.directnotify import DirectNotifyGlobal
 from direct.task import Task
 from direct.fsm import FSM
-from src.toontown.pets import PetConstants, PetObserve, PetGoal, PetGoalMgr
-from src.toontown.pets import PetTricks, PetLookerAI
+from toontown.pets import PetConstants, PetObserve, PetGoal, PetGoalMgr
+from toontown.pets import PetTricks, PetLookerAI
 import random, types
 
 class PetBrain(DirectObject.DirectObject):

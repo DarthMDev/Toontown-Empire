@@ -1,9 +1,9 @@
 from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
-from src.toontown.toonbase import ToontownGlobals, ToontownIntervals
-from src.toontown.cogdominium import CogdoBarrelRoomConsts
-from src.toontown.cogdominium import CogdoBarrelRoom
+from toontown.toonbase import ToontownGlobals, ToontownIntervals
+from toontown.cogdominium import CogdoBarrelRoomConsts
+from toontown.cogdominium import CogdoBarrelRoom
 import random
 
 class DistributedCogdoBarrel(DistributedObject.DistributedObject):

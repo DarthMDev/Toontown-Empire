@@ -1,4 +1,4 @@
-// Filename: lmat_ops_src.h
+// Filename: lmat_ops_h
 // Created by:  drose (08Mar00)
 //
 ////////////////////////////////////////////////////////////////////
@@ -74,4 +74,4 @@ generic_read_datagram(FLOATNAME(LMatrix4) &result, DatagramIterator &source);
 
 END_PUBLISH
 
-#include "lmat_ops_src.I"
+#include "lmat_ops_I"

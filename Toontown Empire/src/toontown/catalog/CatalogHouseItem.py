@@ -1,9 +1,9 @@
 import CatalogItem
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 from direct.showbase import PythonUtil
 from direct.gui.DirectGui import *
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.estate import HouseGlobals
+from toontown.toonbase import ToontownGlobals
+from toontown.estate import HouseGlobals
 
 
 class CatalogHouseItem(CatalogItem.CatalogItem):
@@ -16,7 +16,7 @@ class CatalogHouseItem(CatalogItem.CatalogItem):
         return 1
         
     def requestPurchase(self, phone, callback):
-        from src.toontown.toontowngui import TTDialog
+        from toontown.toontowngui import TTDialog
         avatar = base.localAvatar
 
         self.requestPurchaseCleanup()
@@ -30,7 +30,7 @@ class CatalogHouseItem(CatalogItem.CatalogItem):
             del self.dialog
 
     def __handleFullPurchaseDialog(self, phone, callback, buttonValue):
-        from src.toontown.toontowngui import TTDialog
+        from toontown.toontowngui import TTDialog
         self.requestPurchaseCleanup()
         if buttonValue == DGG.DIALOG_OK:
             CatalogItem.CatalogItem.requestPurchase(self, phone, callback)

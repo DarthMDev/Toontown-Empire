@@ -10,14 +10,14 @@ import time
 
 import ToontownGlobals
 import ToontownLoader
-from src.otp.otpbase import OTPBase
-from src.otp.otpbase import OTPGlobals
-from src.otp.nametag.ChatBalloon import ChatBalloon
-from src.otp.nametag import NametagGlobals
-from src.otp.margins.MarginManager import MarginManager
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownBattleGlobals
-from src.toontown.toontowngui import TTDialog
+from otp.otpbase import OTPBase
+from otp.otpbase import OTPGlobals
+from otp.nametag.ChatBalloon import ChatBalloon
+from otp.nametag import NametagGlobals
+from otp.margins.MarginManager import MarginManager
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownBattleGlobals
+from toontown.toontowngui import TTDialog
 import fractions
 
 from direct.directnotify import DirectNotifyGlobal
@@ -255,7 +255,7 @@ class ToonBase(OTPBase.OTPBase):
 
         searchPath = DSearchPath()
         if __debug__:
-            searchPath.appendDirectory(Filename('resources/phase_3/etc'))
+            searchPath.appendDirectory(Filename('../resources/phase_3/etc'))
         searchPath.appendDirectory(Filename('/phase_3/etc'))
 
         for filename in ['toonmono.cur', 'icon.ico']:

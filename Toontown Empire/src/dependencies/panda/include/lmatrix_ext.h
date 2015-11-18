@@ -19,11 +19,11 @@
 #include "extension.h"
 
 #include "fltnames.h"
-#include "lmatrix3_ext_src.h"
-#include "lmatrix4_ext_src.h"
+#include "lmatrix3_ext_h"
+#include "lmatrix4_ext_h"
 
 #include "dblnames.h"
-#include "lmatrix3_ext_src.h"
-#include "lmatrix4_ext_src.h"
+#include "lmatrix3_ext_h"
+#include "lmatrix4_ext_h"
 
 #endif

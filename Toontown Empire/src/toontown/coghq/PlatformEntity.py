@@ -1,6 +1,6 @@
 from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-from src.otp.level import BasicEntities
+from otp.level import BasicEntities
 import MovingPlatform
 
 class PlatformEntity(BasicEntities.NodePathEntity):

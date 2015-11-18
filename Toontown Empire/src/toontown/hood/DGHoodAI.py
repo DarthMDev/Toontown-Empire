@@ -1,10 +1,10 @@
-from src.toontown.hood import HoodAI
-from src.toontown.safezone import ButterflyGlobals
-from src.toontown.safezone import DistributedButterflyAI
-from src.toontown.safezone import DistributedDGFlowerAI
-from src.toontown.safezone import DistributedTrolleyAI
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.ai import DistributedEffectMgrAI
+from toontown.hood import HoodAI
+from toontown.safezone import ButterflyGlobals
+from toontown.safezone import DistributedButterflyAI
+from toontown.safezone import DistributedDGFlowerAI
+from toontown.safezone import DistributedTrolleyAI
+from toontown.toonbase import ToontownGlobals
+from toontown.ai import DistributedEffectMgrAI
 
 class DGHoodAI(HoodAI.HoodAI):
 

@@ -3,10 +3,10 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.showbase.PythonUtil import addListsByValue
-from src.toontown.battle.BattleBase import *
-from src.toontown.coghq import DistributedLevelBattleAI
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase.ToontownBattleGlobals import getStageCreditMultiplier
+from toontown.battle.BattleBase import *
+from toontown.coghq import DistributedLevelBattleAI
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase.ToontownBattleGlobals import getStageCreditMultiplier
 
 
 class DistributedStageBattleAI(DistributedLevelBattleAI.DistributedLevelBattleAI):

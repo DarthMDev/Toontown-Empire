@@ -1,11 +1,11 @@
 from direct.gui.DirectGui import *
 from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-from src.toontown.toonbase.ToontownGlobals import *
-from src.toontown.toonbase import ToontownTimer
+from toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase import ToontownTimer
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 
 class DistributedTarget(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedTarget')

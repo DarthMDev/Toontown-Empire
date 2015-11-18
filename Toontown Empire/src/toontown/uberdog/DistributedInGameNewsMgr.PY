@@ -3,7 +3,7 @@ import datetime
 import os
 from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
 from direct.distributed.DistributedObject import DistributedObject
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 
 class DistributedInGameNewsMgr(DistributedObject):
     notify = directNotify.newCategory('InGameNewsMgr')

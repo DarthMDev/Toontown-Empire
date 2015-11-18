@@ -1,5 +1,5 @@
 from direct.task.Task import Task
-from src.toontown.safezone import Playground
+from toontown.safezone import Playground
 import random
 
 class TTPlayground(Playground.Playground):

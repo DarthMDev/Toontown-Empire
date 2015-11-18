@@ -1,4 +1,4 @@
-from src.toontown.town import Street
+from toontown.town import Street
 
 
 class TTStreet(Street.Street):

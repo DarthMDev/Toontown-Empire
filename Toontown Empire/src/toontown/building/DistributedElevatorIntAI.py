@@ -1,5 +1,5 @@
-from src.otp.ai.AIBase import *
-from src.toontown.toonbase import ToontownGlobals
+from otp.ai.AIBase import *
+from toontown.toonbase import ToontownGlobals
 from direct.distributed.ClockDelta import *
 from ElevatorConstants import *
 import copy
@@ -8,7 +8,7 @@ from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.task import Task
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.battle import BattleBase
+from toontown.battle import BattleBase
 
 class DistributedElevatorIntAI(DistributedElevatorAI.DistributedElevatorAI):
 

@@ -1,7 +1,7 @@
 from panda3d.core import *
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase.ToontownGlobals import *
 
 class GroupManager(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('GroupManager')

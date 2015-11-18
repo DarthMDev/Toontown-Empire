@@ -23,14 +23,14 @@ from pandac.PandaModules import CollisionSphere
 from pandac.PandaModules import CollisionTube
 from pandac.PandaModules import CollisionNode
 from pandac.PandaModules import BitMask32
-from src.otp.otpbase import OTPGlobals
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toontowngui import TTDialog
-from src.toontown.parties import PartyGlobals
-from src.toontown.parties.DistributedPartyActivity import DistributedPartyActivity
-from src.toontown.parties.activityFSMs import TrampolineActivityFSM
-from src.toontown.parties import PartyUtils
+from otp.otpbase import OTPGlobals
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toontowngui import TTDialog
+from toontown.parties import PartyGlobals
+from toontown.parties.DistributedPartyActivity import DistributedPartyActivity
+from toontown.parties.activityFSMs import TrampolineActivityFSM
+from toontown.parties import PartyUtils
 
 class DistributedPartyTrampolineActivity(DistributedPartyActivity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPartyTrampolineActivity')

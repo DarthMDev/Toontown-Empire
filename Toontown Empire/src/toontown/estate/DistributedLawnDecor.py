@@ -6,14 +6,14 @@ import math
 from direct.directnotify import DirectNotifyGlobal
 from pandac.PandaModules import NodePath
 from direct.task import Task
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.distributed import DistributedObject
 from direct.distributed import DistributedNode
 from direct.showbase import PythonUtil
-from src.otp.avatar import ShadowCaster
+from otp.avatar import ShadowCaster
 import random
-from src.otp.otpbase import OTPGlobals
-from src.toontown.estate import GardenGlobals
+from otp.otpbase import OTPGlobals
+from toontown.estate import GardenGlobals
 
 def recurseParent(intoNode, ParentName):
 	# funny fact: cogtown had a func like this

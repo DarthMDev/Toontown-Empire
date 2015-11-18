@@ -1,5 +1,5 @@
 import string
-from src.otp.otpbase import OTPLocalizer
+from otp.otpbase import OTPLocalizer
 from direct.directnotify import DirectNotifyGlobal
 from pandac.PandaModules import NSError
 from pandac.PandaModules import TextEncoder, TextNode

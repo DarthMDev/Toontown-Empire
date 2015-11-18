@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.parties.DistributedPartyActivityAI import DistributedPartyActivityAI
+from toontown.parties.DistributedPartyActivityAI import DistributedPartyActivityAI
 from direct.task import Task
 import PartyGlobals
 

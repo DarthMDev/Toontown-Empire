@@ -2,9 +2,9 @@ from direct.distributed.ClockDelta import *
 from panda3d.core import *
 from direct.showbase.PythonUtil import Functor, sameElements, list2dict, uniqueElements
 from direct.interval.IntervalGlobal import *
-from src.toontown.distributed.ToontownMsgTypes import *
-from src.toontown.toonbase import ToontownGlobals
-from src.otp.otpbase import OTPGlobals
+from toontown.distributed.ToontownMsgTypes import *
+from toontown.toonbase import ToontownGlobals
+from otp.otpbase import OTPGlobals
 from direct.distributed import DistributedObject
 import Level
 import LevelConstants

@@ -1,13 +1,13 @@
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM
-from src.toontown.building import DistributedDoor
-from src.toontown.hood import ZoneUtil
-from src.toontown.building import FADoorCodes
-from src.toontown.building import DoorTypes
-from src.toontown.toonbase import TTLocalizer
+from toontown.building import DistributedDoor
+from toontown.hood import ZoneUtil
+from toontown.building import FADoorCodes
+from toontown.building import DoorTypes
+from toontown.toonbase import TTLocalizer
 
 class DistributedCogHQDoor(DistributedDoor.DistributedDoor):
 

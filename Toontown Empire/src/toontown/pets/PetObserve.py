@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.PythonUtil import list2dict, Enum
-from src.toontown.pets import PetTricks
+from toontown.pets import PetTricks
 import types
 notify = DirectNotifyGlobal.directNotify.newCategory('PetObserve')
 

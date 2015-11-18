@@ -9,15 +9,15 @@ from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.interval.IntervalGlobal import *
-from src.otp.speedchat import SpeedChatGlobals
+from otp.speedchat import SpeedChatGlobals
 from panda3d.core import *
-from src.toontown.dna.DNAParser import *
-from src.toontown.hood import ZoneUtil
-from src.toontown.toon import ToonDNA
-from src.toontown.toon import ToonHead
-from src.toontown.toon.DistributedNPCToonBase import DistributedNPCToonBase
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase.ToonBaseGlobal import *
+from toontown.dna.DNAParser import *
+from toontown.hood import ZoneUtil
+from toontown.toon import ToonDNA
+from toontown.toon import ToonHead
+from toontown.toon.DistributedNPCToonBase import DistributedNPCToonBase
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase.ToonBaseGlobal import *
 
 
 SIGN_LEFT = -4

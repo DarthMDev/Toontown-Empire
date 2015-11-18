@@ -1,10 +1,10 @@
 from direct.fsm import StateData
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 import TTEmote
-from src.otp.avatar import Emote
+from otp.avatar import Emote
 
 class Motion(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('Motion')

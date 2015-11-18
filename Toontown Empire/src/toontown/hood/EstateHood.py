@@ -1,16 +1,16 @@
 from panda3d.core import *
-from src.toontown.toonbase.ToonBaseGlobal import *
-from src.toontown.toonbase.ToontownGlobals import *
-from src.toontown.distributed.ToontownMsgTypes import *
+from toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase.ToontownGlobals import *
+from toontown.distributed.ToontownMsgTypes import *
 from direct.fsm import ClassicFSM, State
-from src.toontown.minigame import Purchase
-from src.otp.avatar import DistributedAvatar
-from src.toontown.hood import SkyUtil
+from toontown.minigame import Purchase
+from otp.avatar import DistributedAvatar
+from toontown.hood import SkyUtil
 from direct.task.Task import Task
-from src.toontown.hood.Hood import Hood
-from src.toontown.estate.EstateLoader import EstateLoader
-from src.toontown.estate import HouseGlobals
-from src.toontown.hood import ZoneUtil
+from toontown.hood.Hood import Hood
+from toontown.estate.EstateLoader import EstateLoader
+from toontown.estate import HouseGlobals
+from toontown.hood import ZoneUtil
 
 
 class EstateHood(Hood):

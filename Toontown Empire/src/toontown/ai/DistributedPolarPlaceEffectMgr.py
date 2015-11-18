@@ -1,8 +1,8 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
 from direct.interval.IntervalGlobal import *
-from src.otp.speedchat import SpeedChatGlobals
-from src.toontown.toonbase import TTLocalizer
+from otp.speedchat import SpeedChatGlobals
+from toontown.toonbase import TTLocalizer
 
 class DistributedPolarPlaceEffectMgr(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPolarPlaceEffectMgr')

@@ -24,15 +24,15 @@ import MovieUtil
 import PlayByPlayText
 import RewardPanel
 from SuitBattleGlobals import *
-from src.toontown.distributed import DelayDelete
-from src.toontown.toon import NPCToons
-from src.toontown.toon import Toon
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase.ToontownBattleGlobals import *
-from src.toontown.toontowngui import TTDialog
-from src.otp.nametag.NametagConstants import *
-from src.otp.nametag.NametagGroup import *
+from toontown.distributed import DelayDelete
+from toontown.toon import NPCToons
+from toontown.toon import Toon
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase.ToontownBattleGlobals import *
+from toontown.toontowngui import TTDialog
+from otp.nametag.NametagConstants import *
+from otp.nametag.NametagGroup import *
 
 
 camPos = Point3(14, 0, 10)

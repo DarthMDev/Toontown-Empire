@@ -3,13 +3,13 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.DirectObject import DirectObject
 from direct.showbase import PythonUtil
 from direct.interval.IntervalGlobal import *
-from src.toontown.minigame import ToonBlitzGlobals
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.suit import Suit
-from src.toontown.suit import SuitDNA
-from src.toontown.battle.BattleProps import *
-from src.toontown.battle import MovieUtil
-from src.toontown.battle import BattleParticles, BattleProps
+from toontown.minigame import ToonBlitzGlobals
+from toontown.toonbase import ToontownGlobals
+from toontown.suit import Suit
+from toontown.suit import SuitDNA
+from toontown.battle.BattleProps import *
+from toontown.battle import MovieUtil
+from toontown.battle import BattleParticles, BattleProps
 from direct.particles import ParticleEffect
 import math
 COLOR_RED = VBase4(1, 0, 0, 0.3)
