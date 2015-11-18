@@ -17,12 +17,8 @@ Official Repo for Toontown Empire, a new Toontown game based on Disney's Toontow
 5. MGRacer48- Game Developer
 6. Craigy- Malv: Game Developer
 7. Spike- Community Manager
-8. Tanner- 3D Modeler
-9. Jacob- 3D Modeler
-10. Trevor- Composor 
-11. King Ned- Server Security
-12. EpicrockersMC- Moderator
-13. 
+8. Trevor- Composor 
+9. EpicrockersMC- Moderator
 
 # Repo:
 
