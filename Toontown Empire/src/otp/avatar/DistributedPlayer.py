@@ -31,6 +31,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
             self.experience = None
             self.friendsList = []
             self._districtWeAreGeneratedOn = None
+            self.DISLname = ''
             self.DISLid = 0
             self.adminAccess = 0
             self.autoRun = 0
@@ -341,6 +342,9 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
 
     def setDISLid(self, id):
         self.DISLid = id
+        
+    def setDISLname(self, name):
+        self.DISLname = name
 
     def setAdminAccess(self, access):
         self.adminAccess = access

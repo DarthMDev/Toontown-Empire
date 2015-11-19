@@ -12,7 +12,7 @@ class DGHood(ToonHood):
     STORAGE_DNA = 'phase_8/dna/storage_DG.pdna'
     SKY_FILE = 'phase_3.5/models/props/TT_sky'
     SPOOKY_SKY_FILE = 'phase_3.5/models/props/BR_sky'
-    TITLE_COLOR = (0.0, 0.9333333333333333, 0.0, 1.0)
+    TITLE_COLOR = (0.8, 0.6, 1.0, 1.0)
 
     HOLIDAY_DNA = {
       ToontownGlobals.CHRISTMAS: ['phase_8/dna/winter_storage_DG.pdna'],

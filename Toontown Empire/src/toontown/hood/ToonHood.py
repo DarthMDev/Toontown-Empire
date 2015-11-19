@@ -9,7 +9,7 @@ from toontown.hood.Hood import Hood
 from toontown.building import SuitInterior
 from toontown.cogdominium import CogdoInterior
 from toontown.toon.Toon import teleportDebug
-from toontown.hood import SkyUtil
+from toontown.safezone import SZUtil
 
 class ToonHood(Hood):
     notify = directNotify.newCategory('ToonHood')
@@ -28,9 +28,8 @@ class ToonHood(Hood):
 
         self.suitInteriorDoneEvent = 'suitInteriorDone'
         self.minigameDoneEvent = 'minigameDone'
-        self.safeZoneLoaderClass = None
-        self.townLoaderClass = None
         self.whiteFogColor = Vec4(0.8, 0.8, 0.8, 1)
+
         self.fsm = ClassicFSM.ClassicFSM('Hood', [State.State('start', self.enterStart, self.exitStart, ['townLoader', 'safeZoneLoader']),
          State.State('townLoader', self.enterTownLoader, self.exitTownLoader, ['quietZone',
           'safeZoneLoader',
@@ -74,10 +73,10 @@ class ToonHood(Hood):
     def loadLoader(self, requestStatus):
         loaderName = requestStatus['loader']
         if loaderName == 'safeZoneLoader':
-            self.loader = self.safeZoneLoaderClass(self, self.fsm.getStateNamed('safeZoneLoader'), self.loaderDoneEvent)
+            self.loader = self.SAFEZONELOADER_CLASS(self, self.fsm.getStateNamed('safeZoneLoader'), self.loaderDoneEvent)
             self.loader.load()
         elif loaderName == 'townLoader':
-            self.loader = self.townLoaderClass(self, self.fsm.getStateNamed('townLoader'), self.loaderDoneEvent)
+            self.loader = self.TOWNLOADER_CLASS(self, self.fsm.getStateNamed('townLoader'), self.loaderDoneEvent)
             self.loader.load(requestStatus['zoneId'])
 
     def enterTownLoader(self, requestStatus):
@@ -209,12 +208,12 @@ class ToonHood(Hood):
         pass
 
     def skyTrack(self, task):
-        return SkyUtil.cloudSkyTrack(task)
+        return SZUtil.cloudSkyTrack(task)
 
     def startSky(self):
         if not self.sky.getTag('sky') == 'Regular':
             self.endSpookySky()
-        SkyUtil.startCloudSky(self)
+        SZUtil.startCloudSky(self)
 
     def startSpookySky(self):
         if hasattr(self, 'sky') and self.sky:
@@ -238,21 +237,23 @@ class ToonHood(Hood):
 
     def setUnderwaterFog(self):
         if base.wantFog:
-            self.fog.setColor(0.245, 0.322, 0.5)
             self.fog.setLinearRange(0.1, 100.0)
             render.setFog(self.fog)
             self.sky.setFog(self.fog)
+            SZUtil.startUnderwaterFog()
 
     def setWhiteFog(self):
         if base.wantFog:
-            self.fog.setColor(0.6, 0.6, 0.6)
-            self.fog.setExpDensity(0.008)
+            self.fog.setColor(self.whiteFogColor)
+            self.fog.setLinearRange(0.0, 400.0)
             render.clearFog()
             render.setFog(self.fog)
             self.sky.clearFog()
             self.sky.setFog(self.fog)
+            SZUtil.stopUnderwaterFog()
 
     def setNoFog(self):
         if base.wantFog:
             render.clearFog()
             self.sky.clearFog()
+            SZUtil.stopUnderwaterFog()

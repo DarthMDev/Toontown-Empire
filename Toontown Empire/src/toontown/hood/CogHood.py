@@ -70,7 +70,7 @@ class CogHood(Hood):
     def loadLoader(self, requestStatus):
         loaderName = requestStatus['loader']
         if loaderName == 'cogHQLoader':
-            self.loader =  self.cogHQLoaderClass(self, self.fsm.getStateNamed('cogHQLoader'), self.loaderDoneEvent)
+            self.loader = self.LOADER_CLASS(self, self.fsm.getStateNamed('cogHQLoader'), self.loaderDoneEvent)
             self.loader.load(requestStatus['zoneId'])
 
     def enterCogHQLoader(self, requestStatus):

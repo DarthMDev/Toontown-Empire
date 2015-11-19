@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 import __builtin__
 
 __builtin__.process = 'client'
@@ -27,6 +26,16 @@ from panda3d.core import loadPrcFile
 
 #Added for when injector code detection is added.
 ######################from toontown.cheatdetection import CheatDector
+import logging
+import sys
+import traceback
+import airbrake
+def log_uncaught_exceptions(ex_cls, ex, tb):
+    logging.critical(''.join(traceback.format_tb(tb)))
+    logging.critical('{0}: {1}'.format(ex_cls, ex))
+
+logging = airbrake.getLogger(api_key="2f8a6574b7e89f628b4d5827eb1da7e9", project_id=117842, environment="development")
+sys.excepthook = log_uncaught_exceptions
  
 if __debug__:
     import sys
@@ -45,10 +54,6 @@ from direct.directnotify.DirectNotifyGlobal import directNotify
 
 notify = directNotify.newCategory('ToontownStart')
 notify.setInfo(True)
-import logging
-import airbrake
-yourlogger = logging.getLogger(__name__)
-yourlogger.addHandler(airbrake.AirbrakeHandler())
 from otp.settings.Settings import Settings
 from otp.otpbase import OTPGlobals
 
@@ -180,6 +185,7 @@ version.cleanup()
 del version
 base.loader = base.loader
 __builtin__.loader = base.loader
+logging.debug('About to run toontown.')
 autoRun = ConfigVariableBool('toontown-auto-run', 1)
 if autoRun:
     try:
@@ -189,3 +195,4 @@ if autoRun:
     except:
         print describeException()
         raise
+        

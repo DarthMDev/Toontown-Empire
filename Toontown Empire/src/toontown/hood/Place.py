@@ -139,7 +139,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         if toAvatar == localAvatar:
             toAvatar.doTeleportResponse(fromAvatar, toAvatar, toAvatar.doId, 1, toAvatar.defaultShard, base.cr.playGame.getPlaceId(), self.getZoneId(), fromAvatar.doId)
         else:
-            self.notify.warning('handleTeleportQuery toAvatar.doId != localAvatar.doId' % (toAvatar.doId), localAvatar.doId)
+            self.notify.warning('handleTeleportQuery toAvatar.doId != localAvatar.doId' % (toAvatar.doId, localAvatar.doId))
 
     def detectedPhoneCollision(self):
         self.fsm.request('phone')
@@ -187,7 +187,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         base.localAvatar.invPage.hideInventoryOnscreen()
         base.localAvatar.questMap.hide()
         base.localAvatar.questMap.ignoreOnscreenHooks()
-        return
 
     def handleWalkDone(self, doneStatus):
         mode = doneStatus['mode']
@@ -209,14 +208,14 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         self.accept('teleportQuery', self.handleTeleportQuery)
         base.localAvatar.setTeleportAvailable(1)
         base.localAvatar.b_setAnimState('SitStart', 1)
-        self.accept(base.Move_Up, self.fsm.request, extraArgs=['walk'])
+        self.accept('arrow_up', self.fsm.request, extraArgs=['walk'])
 
     def exitSit(self):
         self.exitFLM()
         base.localAvatar.laffMeter.stop()
         base.localAvatar.setTeleportAvailable(0)
         self.ignore('teleportQuery')
-        self.ignore(base.Move_Up)
+        self.ignore('arrow_up')
 
     def enterDrive(self):
         self.enterFLM()
@@ -293,7 +292,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         self.ignore('bookDone')
         base.localAvatar.setTeleportAvailable(0)
         self.ignore('teleportQuery')
-        base.localAvatar.obscureMoveFurnitureButton(-1)
+        base.localAvatar.obscureMoveFurnitureButton(0)
         target = base.cr.doFind('DistributedTarget')
         if target:
             target.showGui()
@@ -445,13 +444,13 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
 
     def exitDoorIn(self):
         NametagGlobals.setMasterArrowsOn(1)
-        base.localAvatar.obscureMoveFurnitureButton(-1)
+        base.localAvatar.obscureMoveFurnitureButton(0)
 
     def enterDoorOut(self):
         base.localAvatar.obscureMoveFurnitureButton(1)
 
     def exitDoorOut(self):
-        base.localAvatar.obscureMoveFurnitureButton(-1)
+        base.localAvatar.obscureMoveFurnitureButton(0)
         base.localAvatar.stopQuestMap()
 
     def handleDoorDoneEvent(self, requestStatus):
@@ -495,7 +494,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         self.accept('tunnelOutMovieDone', self.__tunnelOutMovieDone)
         base.localAvatar.tunnelOut(tunnelOrigin)
         base.localAvatar.stopQuestMap()
-        return
 
     def __tunnelOutMovieDone(self):
         self.ignore('tunnelOutMovieDone')
@@ -512,7 +510,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
     def exitTeleportOut(self):
         base.localAvatar.laffMeter.stop()
         base.localAvatar.stopQuestMap()
-        base.localAvatar.obscureMoveFurnitureButton(-1)
+        base.localAvatar.obscureMoveFurnitureButton(0)
 
     def enterDied(self, requestStatus, callback = None):
         if callback == None:
@@ -529,7 +527,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
 
     def exitDied(self):
         base.localAvatar.laffMeter.stop()
-        base.localAvatar.obscureMoveFurnitureButton(-1)
+        base.localAvatar.obscureMoveFurnitureButton(0)
 
     def getEstateZoneAndGoHome(self, requestStatus):
         self.doneStatus = requestStatus
@@ -607,29 +605,25 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         base.localAvatar.obscureMoveFurnitureButton(1)
         avId = requestStatus.get('avId', -1)
         if avId != -1:
-            def doTeleport(avId, teleported):
-                if avId in base.cr.doId2do:
-                    teleportDebug(requestStatus, 'teleport to avatar')
-                    avatar = base.cr.doId2do[avId]
-                    avatar.forceToTruePosition()
-                    base.localAvatar.gotoNode(avatar)
-                    base.localAvatar.b_teleportGreeting(avId)
+            if avId in base.cr.doId2do:
+                teleportDebug(requestStatus, 'teleport to avatar')
+                avatar = base.cr.doId2do[avId]
+                avatar.forceToTruePosition()
+                base.localAvatar.gotoNode(avatar)
+                base.localAvatar.b_teleportGreeting(avId)
+            else:
+                friend = base.cr.identifyAvatar(avId)
+                if friend == None:
+                    teleportDebug(requestStatus, 'friend not here, giving up')
+                    base.localAvatar.setSystemMessage(avId, OTPLocalizer.WhisperTargetLeftVisit % (friend.getName(),))
+                    friend.d_teleportGiveup(base.localAvatar.doId)
                 else:
-                    friend = base.cr.identifyAvatar(avId)
-                    if friend is not None:
-                        # The avatar might be in another zone or not generated yet.
-                        if not teleported:
-                            # Try again one more time.
-                            teleportDebug(requestStatus, 'Retrying teleport...')
-                            taskMgr.doMethodLater(0.2, doTeleport, uniqueName('doTeleport'), extraArgs=[avId, True])
-                            return
-
-                        teleportDebug(requestStatus, 'friend not here, giving up')
-                        base.localAvatar.setSystemMessage(avId, OTPLocalizer.WhisperTargetLeftVisit % (friend.getName(),))
-                        friend.d_teleportGiveup(base.localAvatar.doId)
-
-            taskMgr.doMethodLater(0.3, doTeleport, uniqueName('doTeleport'), extraArgs=[avId, False])
-
+                    def doTeleport(task):
+                        avatar = base.cr.doId2do[friend.getDoId()]
+                        base.localAvatar.gotoNode(avatar)
+                        base.localAvatar.b_teleportGreeting(friend.getDoId())
+                        return task.done
+                    self.acceptOnce('generate-%d' % friend.getDoId(), lambda x: taskMgr.doMethodLater(1, doTeleport, uniqueName('doTeleport')))
         base.transitions.irisIn()
         self.nextState = requestStatus.get('nextState', 'walk')
         base.localAvatar.attachCamera()
@@ -651,7 +645,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         self._tiToken = None
         NametagGlobals.setMasterArrowsOn(1)
         base.localAvatar.laffMeter.stop()
-        base.localAvatar.obscureMoveFurnitureButton(-1)
+        base.localAvatar.obscureMoveFurnitureButton(0)
         base.localAvatar.stopUpdateSmartCamera()
         base.localAvatar.detachCamera()
         base.localAvatar.stopPosHprBroadcast()
@@ -696,7 +690,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         base.localAvatar.setTeleportAvailable(0)
         self.ignore('teleportQuery')
         base.localAvatar.laffMeter.stop()
-        base.localAvatar.obscureMoveFurnitureButton(-1)
+        base.localAvatar.obscureMoveFurnitureButton(0)
 
     def enterPurchase(self):
         base.localAvatar.b_setAnimState('neutral', 1)
@@ -709,7 +703,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         base.localAvatar.setTeleportAvailable(0)
         self.ignore('teleportQuery')
         base.localAvatar.laffMeter.stop()
-        base.localAvatar.obscureMoveFurnitureButton(-1)
+        base.localAvatar.obscureMoveFurnitureButton(0)
 
     def enterFishing(self):
         base.localAvatar.b_setAnimState('neutral', 1)
@@ -740,7 +734,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         base.localAvatar.setTeleportAvailable(0)
         self.ignore('teleportQuery')
         base.localAvatar.laffMeter.stop()
-        base.localAvatar.obscureMoveFurnitureButton(-1)
+        base.localAvatar.obscureMoveFurnitureButton(0)
         base.localAvatar.stopSleepWatch()
 
     def enterPhone(self):
@@ -761,7 +755,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         base.localAvatar.setTeleportAvailable(0)
         self.ignore('teleportQuery')
         base.localAvatar.laffMeter.stop()
-        base.localAvatar.obscureMoveFurnitureButton(-1)
+        base.localAvatar.obscureMoveFurnitureButton(0)
         base.localAvatar.stopSleepWatch()
 
     def enterStopped(self):
@@ -787,7 +781,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         base.localAvatar.setTeleportAvailable(0)
         self.ignore('teleportQuery')
         base.localAvatar.laffMeter.stop()
-        base.localAvatar.obscureMoveFurnitureButton(-1)
+        base.localAvatar.obscureMoveFurnitureButton(0)
         base.localAvatar.stopSleepWatch()
         messenger.send('exitingStoppedState')
 

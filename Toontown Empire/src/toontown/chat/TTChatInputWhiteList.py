@@ -107,7 +107,7 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
         else:
             ChatInputWhiteListFrame.sendChat(self, self.chatEntry.get())
             
-    def sendFailed(self):
+    def sendFailed(self, text, overflow = False):
     	#todo add properly
     	pass 
     	        

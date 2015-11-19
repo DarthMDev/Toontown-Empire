@@ -7,8 +7,18 @@ __builtin__.process = 'ai'
 # Temporary hack patch:
 __builtin__.__dict__.update(__import__('pandac.PandaModules', fromlist=['*']).__dict__)
 from direct.extensions_native import HTTPChannel_extensions
+import logging
+import sys
+import traceback
+import airbrake
+def log_uncaught_exceptions(ex_cls, ex, tb):
+    logging.critical(''.join(traceback.format_tb(tb)))
+    logging.critical('{0}: {1}'.format(ex_cls, ex))
 
-import sys, os
+logging = airbrake.getLogger(api_key="2f8a6574b7e89f628b4d5827eb1da7e9", project_id=117842, environment="development")
+sys.excepthook = log_uncaught_exceptions
+
+import os
 sys.path.append(
     os.path.abspath(
         os.path.join(

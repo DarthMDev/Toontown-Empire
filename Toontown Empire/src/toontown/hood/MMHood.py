@@ -13,7 +13,7 @@ class MMHood(ToonHood):
     STORAGE_DNA = 'phase_6/dna/storage_MM.pdna'
     SKY_FILE = 'phase_6/models/props/MM_sky'
     SPOOKY_SKY_FILE = 'phase_6/models/props/MM_sky'
-    TITLE_COLOR = (1.0, 0.4117647058823529, 0.7058823529411765, 1.0)
+    TITLE_COLOR = (1.0, 0.5, 0.5, 1.0)
 
     HOLIDAY_DNA = {
       ToontownGlobals.CHRISTMAS: ['phase_6/dna/winter_storage_MM.pdna'],

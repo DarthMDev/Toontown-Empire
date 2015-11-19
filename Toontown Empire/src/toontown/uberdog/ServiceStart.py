@@ -2,6 +2,16 @@ import __builtin__
 
 
 __builtin__.process = 'uberdog'
+import logging
+import sys
+import traceback
+import airbrake
+def log_uncaught_exceptions(ex_cls, ex, tb):
+    logging.critical(''.join(traceback.format_tb(tb)))
+    logging.critical('{0}: {1}'.format(ex_cls, ex))
+
+logging = airbrake.getLogger(api_key="2f8a6574b7e89f628b4d5827eb1da7e9", project_id=117842, environment="development")
+sys.excepthook = log_uncaught_exceptions
 
 # Temporary hack patch:
 __builtin__.__dict__.update(__import__('pandac.PandaModules', fromlist=['*']).__dict__)
@@ -62,6 +72,7 @@ simbase.air.connect(host, port)
 
 try:
     run()
+    gc.enable
 except SystemExit:
     raise
 except Exception:

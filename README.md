@@ -25,3 +25,9 @@ Official Repo for Toontown Empire, a new Toontown game based on Disney's Toontow
 We make dev changes to master but before we release if the master branch is stable merge it into the production branch. This is the branch used for hosting the game on the server and the branch used for deploying to the server with a stable game. 
 
 Do not push broken code to the master branch, because it messes up the game and makes it harder for the developers to add features, and fix bugs in the game! When you revert something broken, please post the crash to make life easier for the coders.
+
+# requirements:
+In order to run game you need to install this
+pip install -U airbrake
+if on mac or linux:
+sudo pip install -U airbrake
