@@ -22,7 +22,7 @@ uberdogs:
       id: 4501
       anonymous: false
 
-    - class: tteFriendsManager
+    - class: TTEFriendsManager
       id: 4666
       anonymous: false
 

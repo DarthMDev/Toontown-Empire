@@ -101,10 +101,11 @@ want-cogbuildings #t
 # Optional:
 show-total-population #t
 want-mat-all-tailors #t
-want-talkative-tyler #f #Why isn’t he removed
+want-talkative-tyler #f
 estate-day-night #t
 want-garden-game #f
 want-language-selection #t
+want-mongo #t
 want-toontorial #t
 want-news-tab #t
 want-news-page #t
@@ -116,3 +117,4 @@ want-pstats 0
 # Temporary:
 smooth-lag 0.4
 want-old-fireworks #t
+want-mongo-client #t
