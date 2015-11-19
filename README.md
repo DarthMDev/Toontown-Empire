@@ -30,4 +30,4 @@ Do not push broken code to the master branch, because it messes up the game and 
 In order to run game you need to install this
 pip install -U airbrake
 if on mac or linux:
-sudo pip install -U airbrake
+sudo pip install -U rollbar
