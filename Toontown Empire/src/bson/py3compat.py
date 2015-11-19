@@ -85,9 +85,6 @@ else:
         return d.itervalues()
 
     # "raise x, y, z" raises SyntaxError in Python 3
-    exec("""def reraise(exctype, value, trace=None):
-    raise exctype, str(value), trace
-""")
 
     _unicode = unicode
 
