@@ -217,10 +217,6 @@ def getGenreFromString(string):
 
 
 def getTrackListByType(genre, type):
-    return Rural
-
-
-def getTrackListByType(genre, type):
     genreDict = {Urban: [[RT_Urban_1, RT_Urban_2], [RT_Urban_1_rev, RT_Urban_2_rev]],
      Rural: [[RT_Rural_1, RT_Rural_2], [RT_Rural_1_rev, RT_Rural_2_rev]],
      Speedway: [[RT_Speedway_1, RT_Speedway_2], [RT_Speedway_1_rev, RT_Speedway_2_rev]]}

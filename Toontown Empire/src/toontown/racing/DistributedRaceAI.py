@@ -434,7 +434,6 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
             self.requestDelete()
 
     def requestKart(self):
-        pass
         avId = self.air.getAvatarIdFromSender()
         accId = self.air.getAccountIdFromSender()
         if not avId in self.avatars:

@@ -19,6 +19,7 @@ class QuestionMgr:
                 respFinal = helloResp + '%s' % sender + '!'
                 self.response += helloResp
                 self.confused = 0
+                break
         else:
             if self.confused:
                 self.response += 'Dang, I really don\'t understand you.'

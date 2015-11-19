@@ -2,6 +2,9 @@ import __builtin__
 
 
 __builtin__.process = 'uberdog'
+import sys
+import rollbar
+rollbar.init('833d799472f747c8a6344134dded7b2d', 'production')  # access_token, environment
 
 # Temporary hack patch:
 __builtin__.__dict__.update(__import__('pandac.PandaModules', fromlist=['*']).__dict__)
@@ -18,6 +21,10 @@ sys.path.append(
 )
 
 import argparse
+import gc
+
+# Panda3D 1.10.0 is 63.
+gc.disable()
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--base-channel', help='The base channel that the server may use.')
@@ -62,9 +69,11 @@ simbase.air.connect(host, port)
 
 try:
     run()
+    gc.enable
 except SystemExit:
     raise
 except Exception:
     info = describeException()
+    rollbar.report_exc_info()
     simbase.air.writeServerEvent('uberdog-exception', simbase.air.getAvatarIdFromSender(), simbase.air.getAccountIdFromSender(), info)
     raise

@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 import __builtin__
 
 __builtin__.process = 'client'
@@ -27,6 +26,9 @@ from panda3d.core import loadPrcFile
 
 #Added for when injector code detection is added.
 ######################from toontown.cheatdetection import CheatDector
+import sys
+import rollbar
+rollbar.init('833d799472f747c8a6344134dded7b2d', environment='production')
  
 if __debug__:
     import sys
@@ -45,7 +47,6 @@ from direct.directnotify.DirectNotifyGlobal import directNotify
 
 notify = directNotify.newCategory('ToontownStart')
 notify.setInfo(True)
-
 from otp.settings.Settings import Settings
 from otp.otpbase import OTPGlobals
 
@@ -177,6 +178,7 @@ version.cleanup()
 del version
 base.loader = base.loader
 __builtin__.loader = base.loader
+logging.debug('About to run toontown.')
 autoRun = ConfigVariableBool('toontown-auto-run', 1)
 if autoRun:
     try:
@@ -185,4 +187,6 @@ if autoRun:
         raise
     except:
         print describeException()
+        rollbar.report_exc_info()
         raise
+        

@@ -81,23 +81,11 @@ class Hood(StateData.StateData):
             files.append(self.storageDNAFile)
 
         for key, value in self.holidayStorageDNADict.iteritems():
-
-
             if base.cr.newsManager.isHolidayRunning(key):
-
                 for storageFile in value:
                     files.append(storageFile)
 
         if not base.cr.newsManager.isHolidayRunning(ToontownGlobals.HALLOWEEN) or not self.spookySkyFile:
-
-
-
-
-
-
-
-
-
             self.sky = loader.loadModel(self.skyFile)
             self.sky.setTag('sky', 'Regular')
             self.sky.setScale(1.0)
@@ -170,7 +158,7 @@ class Hood(StateData.StateData):
         loaderName = requestStatus['loader']
         if loaderName == 'safeZoneLoader':
             if not loader.inBulkBlock:
-                loader.beginBulkLoad('hood', TTLocalizer.HeadingToPlayground, safeZoneCountMap[self.id], 1, TTLocalizer.TIP_GENERAL)
+                loader.beginBulkLoad('hood', TTLocalizer.HeadingToPlayground, safeZoneCountMap[self.id], 1, TTLocalizer.TIP_GENERAL, self.id)
             self.loadLoader(requestStatus)
             loader.endBulkLoad('hood')
         elif loaderName == 'townLoader':

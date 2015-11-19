@@ -255,7 +255,7 @@ class DistributedRaceGameAI(DistributedMinigameAI):
                     else:
                         self.avatarChoices[avId] = RaceGameGlobals.ChanceRewards[reward][0][1]
 
-                self.enterProcessChoices(1)
+                self.enterProcessChoices(self)
             rewardIndex += 1
 
         if not recurse:

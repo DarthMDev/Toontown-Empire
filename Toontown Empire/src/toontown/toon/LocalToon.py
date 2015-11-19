@@ -1023,8 +1023,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         strPosCoordText = 'X: %.3f' % pos[0] + ', Y: %.3f' % pos[1] + '\nZ: %.3f' % pos[2] + ', H: %.3f' % hpr[0] + '\nZone: %s' % str(zoneId) + ', Ver: %s, ' % serverVersion + 'District: %s' % districtName
         self.refreshOnscreenButtons()
         return strPosCoordText
-        return
-
+        
     def thinkPos(self):
         pos = self.getPos()
         hpr = self.getHpr()

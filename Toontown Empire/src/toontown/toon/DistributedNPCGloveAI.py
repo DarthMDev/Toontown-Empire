@@ -11,13 +11,10 @@ class DistributedNPCGloveAI(DistributedNPCToonBaseAI):
         if av is None or not hasattr(av, 'dna'):
             return
 
-        if av.dna.gloveColor == color:
+        if av.dna.gloveColor == color and av.dna.headColor == color and av.dna.legColor == color and av.dna.armColor == color :
             self.sendUpdate('doTransformation', [avId, 1])
             return
             
-	    if av.dna.headColor == color and av.dna.legColor == color and av.dna.armColor == color:
-		    self.sendUpdate('doTransformatiion', [avId, 1])
-		    return
 		    
         if av.getTotalMoney() < ToontownGlobals.GloveCost:
             self.sendUpdate('doTransformation', [avId, 2])

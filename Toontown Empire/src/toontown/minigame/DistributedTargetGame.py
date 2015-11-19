@@ -1113,7 +1113,6 @@ class DistributedTargetGame(DistributedMinigame):
         taskMgr.remove(self.UPDATE_ENVIRON_TASK)
 
     def __updateEnvironTask(self, task):
-        return
         dt = globalClock.getDt()
         self.speedForward = self.speedForward - self.speedForward * self.airResistance * dt
         t = globalClock.getFrameTime() - self.__timeBase

@@ -8779,7 +8779,6 @@ Blacklist = [
  "Bullturds",
  "gonads",
  "bitch",
- "butt",
  "fellatio",
  "lmao",
  "s-o-b",
@@ -9426,7 +9425,6 @@ Blacklist = [
  "bugger",
  "bum",
  "bunny fucker",
- "butt",
  "butthole",
  "buttmuch",
  "buttplug",
@@ -9830,3 +9828,8 @@ Blacklist = [
  "xrated",
  "xxx"
 ]
+TeleportButton = 'Teleport'
+TeleportButtonNoMoney = 'Sorry, but you need %s jellybeans to teleport!'
+TeleportButtonConfirm = 'Would you like to spend %s jellybeans to teleport?'
+TeleportButtonTakenOver = 'Sorry, but this shop has been taken over by the Cogs!'
+InventoryLureString = 'Rounds effective'

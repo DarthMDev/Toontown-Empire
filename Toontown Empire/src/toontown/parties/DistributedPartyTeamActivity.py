@@ -242,7 +242,7 @@ class DistributedPartyTeamActivity(DistributedPartyActivity):
     def getTeam(self, toonId):
         for i in xrange(len(PartyGlobals.TeamActivityTeams)):
             if self.toonIds[i].count(toonId) > 0:
-                return i
+                break
         else:
             return None
 

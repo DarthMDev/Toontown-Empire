@@ -855,6 +855,7 @@ class DistributedPhotoGame(DistributedMinigame, PhotoGameBase.PhotoGameBase):
             if pointList[index] == point:
                 found = 1
             else:
+                global index
                 index += 1
                 loop += 1
 

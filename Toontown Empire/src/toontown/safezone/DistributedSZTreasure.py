@@ -33,7 +33,7 @@ class DistributedSZTreasure(DistributedTreasure.DistributedTreasure):
 
     def loadModel(self, modelPath, modelFindString = None):
         self.setHolidayModelPath()
-        DistributedTreasure.DistributedTreasure.loadModel(self, self.modelPath, modelFindString)
+        DistributedTreasure.DistributedTreasure.loadModel(self)
 
     def startValentinesDay(self):
         newModelPath = 'phase_4/models/props/tt_m_ara_ext_heart'

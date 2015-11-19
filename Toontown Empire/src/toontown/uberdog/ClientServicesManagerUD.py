@@ -90,7 +90,7 @@ notify = directNotify.newCategory('ClientServicesManagerUD')
 
 def executeHttpRequestAndLog(url, **extras):
     # SEE ABOVE
-    response = executeHttpRequest(url, extras)
+    response = executeHttpRequest(url, **extras)
 
     if response is None:
         notify.error('A request to ' + url + ' went wrong.')

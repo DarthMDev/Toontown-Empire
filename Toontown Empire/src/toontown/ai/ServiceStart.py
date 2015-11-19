@@ -7,8 +7,11 @@ __builtin__.process = 'ai'
 # Temporary hack patch:
 __builtin__.__dict__.update(__import__('pandac.PandaModules', fromlist=['*']).__dict__)
 from direct.extensions_native import HTTPChannel_extensions
+import sys
+import rollbar
+rollbar.init('833d799472f747c8a6344134dded7b2d', 'production')  # access_token, environment
 
-import sys, os
+import os
 sys.path.append(
     os.path.abspath(
         os.path.join(
@@ -69,5 +72,6 @@ except SystemExit:
     raise
 except Exception:
     info = describeException()
+    rollbar.report_exc_info()
     simbase.air.writeServerEvent('ai-exception', avId=simbase.air.getAvatarIdFromSender(), accId=simbase.air.getAccountIdFromSender(), exception=info)
     raise

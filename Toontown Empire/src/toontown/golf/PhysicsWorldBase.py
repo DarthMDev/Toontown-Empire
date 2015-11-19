@@ -171,7 +171,6 @@ class PhysicsWorldBase:
             self.notify.debug('SET cycle time %s' % ((globalClock.getRealTime() + self.timingCycleOffset) % self.timingCycleLength))
 
     def getSimCycleTime(self):
-        return
         return self.timingSimTime % self.timingCycleLength
 
     def startSim(self):

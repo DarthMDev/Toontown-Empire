@@ -90,7 +90,6 @@ def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
     import DistributedNPCSpecialQuestGiverAI
     import DistributedNPCFlippyInToonHallAI
     import DistributedNPCScientistAI
-    import DistributedSmartNPCAI
     import DistributedNPCGloveAI
     import DistributedNPCLaffRestockAI
     canonicalZoneId, name, dnaType, gender, protected, type = desc
@@ -118,8 +117,6 @@ def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
         npc = DistributedNPCFlippyInToonHallAI.DistributedNPCFlippyInToonHallAI(air, npcId)
     elif type == NPC_SCIENTIST:
         npc = DistributedNPCScientistAI.DistributedNPCScientistAI(air, npcId)
-    elif type == NPC_SMART:
-        npc = DistributedSmartNPCAI.DistributedSmartNPCAI(air, npcId)
     elif type == NPC_GLOVE:
         npc = DistributedNPCGloveAI.DistributedNPCGloveAI(air, npcId)
     elif type == NPC_LAFF_RESTOCK:
@@ -11923,11 +11920,6 @@ for npcId in disabledSosCards:
 npcFriends = dict(HQnpcFriends)
 npcFriends.update(FOnpcFriends)
 
-def getNPCName(npcId):
-    if npcId in NPCToonDict:
-        return NPCToonDict[npcId][1]
-        return NPCToonDict[npcId][1]
-    return None
 
 
 def npcFriendsMinMaxStars(minStars, maxStars):
