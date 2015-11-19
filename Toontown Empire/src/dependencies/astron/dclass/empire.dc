@@ -13,6 +13,7 @@ from otp.friends import FriendManager/AI
 from otp.distributed import DistributedDistrict/AI/UD
 from otp.distributed import DistributedDirectory/AI
 from otp.chat import ChatAgent/UD
+from otp.distributed import CentralLogger/AI/UD
 
 typedef uint8 bool;
 typedef uint32 DoId;
@@ -176,6 +177,11 @@ dclass FriendManager : DistributedObject {
   friendResponse(int8, int32);
   inviteeFriendQuery(int32, string, blob, int32);
   inviteeCancelFriendQuery(int32);
+};
+
+dclass CentralLogger : DistributedObject {
+  sendMessage(string(0-256), string(0-1024), uint32, uint32) clsend;
+  logAIGarbage() airecv;
 };
 
 from toontown.building import DistributedAnimatedProp/AI
