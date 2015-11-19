@@ -9,8 +9,7 @@ set EVENTLOGGER_IP=127.0.0.1:7198
 set BASE_CHANNEL=1000000
 
 echo ===============================
-echo Starting Toontown Empire UberDOG server...
-echo ppython: "dependencies/panda/python/ppython.exe"
+echo ppython: "C:\Panda3D-1.10.0\python\ppython.exe"
 echo Base channel: %BASE_CHANNEL%
 echo Max channels: %MAX_CHANNELS%
 echo State Server: %STATESERVER%
@@ -22,7 +21,7 @@ cd ../../
 
 
 :main
-"/dependencies/panda/python/ppython.exe" ^
+"C:\Panda3D-1.10.0\python\ppython.exe" ^
 	-m toontown.uberdog.ServiceStart ^
 	--base-channel %BASE_CHANNEL% ^
 	--max-channels %MAX_CHANNELS% ^

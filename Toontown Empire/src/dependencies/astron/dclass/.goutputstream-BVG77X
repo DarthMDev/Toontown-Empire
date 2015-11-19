@@ -3208,7 +3208,7 @@ struct Friend
   uint32 petId;
 };
 
-dclass TTEFriendsManager : DistributedObjectGlobal {
+dclass tteFriendsManager : DistributedObjectGlobal {
   removeFriend(uint32) clsend;
 
   requestFriendsList() clsend;
