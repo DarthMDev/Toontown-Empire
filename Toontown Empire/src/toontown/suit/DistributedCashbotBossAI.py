@@ -167,7 +167,6 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
             self.toonsToAttack.append(avId)
 
     def makeTreasure(self, goon):
-        return
         if self.state != 'BattleThree':
             return
         pos = goon.getPos(self)

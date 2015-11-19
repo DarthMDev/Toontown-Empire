@@ -228,7 +228,6 @@ from toontown.suit import DistributedLawbotBossSuit/AI
 from toontown.toon import DistributedToon/AI/UD
 from toontown.toon import DistributedNPCToonBase/AI
 from toontown.toon import DistributedNPCToon/AI
-from toontown.toon import DistributedSmartNPC/AI
 from toontown.toon import DistributedNPCSpecialQuestGiver/AI
 from toontown.toon import DistributedNPCFlippyInToonHall/AI
 from toontown.toon import DistributedNPCScientist/AI
@@ -1765,13 +1764,6 @@ dclass DistributedNPCToon : DistributedNPCToonBase {
   setMovieDone() airecv clsend;
   chooseQuest(uint16) airecv clsend;
   chooseTrack(int8) airecv clsend;
-};
-
-dclass DistributedSmartNPC : DistributedNPCToonBase {
-  greet(uint32, uint32) broadcast ram;
-  talkMessage(uint32, string) airecv clsend;
-  respond(uint32, string, uint32) broadcast ram;
-  dismiss(uint32, uint16) broadcast ram;
 };
 
 dclass DistributedNPCSpecialQuestGiver : DistributedNPCToonBase {

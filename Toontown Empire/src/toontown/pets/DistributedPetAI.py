@@ -190,19 +190,6 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
     def setSafeZone(self, safeZone):
         self.safeZone = safeZone
 
-    def getPetName(self):
-        return self.petName
-
-    def b_setPetName(self, petName):
-        self.d_setPetName(petName)
-        self.setPetName(petName)
-
-    def d_setPetName(self, petName):
-        self.sendUpdate('setPetName', [petName])
-
-    def setPetName(self, petName):
-        self.petName = petName
-        DistributedSmoothNodeAI.DistributedSmoothNodeAI.setName(self, self.petName)
 
     def setTraits(self, traitList):
         self.traitList = traitList

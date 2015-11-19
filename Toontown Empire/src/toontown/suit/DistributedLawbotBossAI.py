@@ -187,8 +187,6 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
             action = random.randrange(1,101)
             if action <= chanceToDoTaunt:
                 self.doTaunt()
-                pass
-        return
         if self.attackCode == ToontownGlobals.BossCogDizzyNow:
             attackCode = ToontownGlobals.BossCogRecoverDizzyAttack
         else:

@@ -608,7 +608,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         desiredNpcFriends = [2001, 2011, 3112, 4119, 1116, 3137, 3135, 2003]
         self.resetNPCFriendsDict()
         for npcId in desiredNpcFriends:
-            self.attemptAddNPCFriend(npcId, amt)
+            self.attemptAddNPCFriend(npcId)
 
     def isTrunkFull(self, extraAccessories = 0):
         numAccessories = (len(self.hatList) + len(self.glassesList) + len(self.backpackList) + len(self.shoesList)) / 3
@@ -2325,7 +2325,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             dislId = self.DISLid
             if simbase.config.GetBool('want-ban-negative-money', False):
                 simbase.air.banManager.ban(self.doId, dislId, commentStr)
-                pass
         self.money = money
 
     def getMoney(self):
@@ -3521,7 +3520,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
          (102, 1)])
 
     def reqUseSpecial(self, special):
-        return  # TODO/gardening
         response = self.tryToUseSpecial(special)
         self.sendUpdate('useSpecialResponse', [response])
 
@@ -5066,26 +5064,6 @@ def track(command, track, value=None):
         return 'Set the experience of the %s track to: %d!' % (track, value)
     return 'Invalid command.'
 
-@magicWord(category=CATEGORY_ADMINISTRATOR, types=[str, str])
-def suit(command, suitName):
-    invoker = spellbook.getInvoker()
-    command = command.lower()
-    if suitName not in SuitDNA.suitHeadTypes:
-        return 'Invalid suit name: ' + suitName
-    suitFullName = SuitBattleGlobals.SuitAttributes[suitName]['name']
-    if command == 'spawn':
-        returnCode = invoker.doSummonSingleCog(SuitDNA.suitHeadTypes.index(suitName))
-        if returnCode[0] == 'success':
-            return 'Successfully spawned: ' + suitFullName
-        return "Couldn't spawn: " + suitFullName
-    elif command == 'building':
-        returnCode = invoker.doBuildingTakeover(SuitDNA.suitHeadTypes.index(suitName))
-        if returnCode[0] == 'success':
-            return 'Successfully spawned a Cog building with: ' + suitFullName
-        return "Couldn't spawn a Cog building with: " + suitFullName
-    else:
-        return 'Invalid command.'
-
 @magicWord(category=CATEGORY_PROGRAMMER)
 def getZone():
     invoker = spellbook.getInvoker()
@@ -5252,6 +5230,7 @@ def shovelSkill(skill):
     """
     av = spellbook.getTarget()
     av.b_setShovelSkill(skill)
+    return 'Shovel Skill set.'
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[int])
 def canSkill(skill):
@@ -5358,12 +5337,6 @@ def gagPouch(value):
     invoker.b_setMaxCarry(value)
     return 'Gag pouch set.'
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
-def shovelSkill(value):
-    invoker = spellbook.getInvoker()
-    invoker.b_setShovelSkill(value)
-    return 'Shovel Skill set.'
-    
 @magicWord(category=CATEGORY_PROGRAMMER, types=[])
 def maxTrees():
     invoker = spellbook.getInvoker()

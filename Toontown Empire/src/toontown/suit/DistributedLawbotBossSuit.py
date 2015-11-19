@@ -164,7 +164,6 @@ class DistributedLawbotBossSuit(DistributedSuitBase.DistributedSuitBase):
          z2))
         self.curTargetPt = Point3(x2, y2, z2)
         self.fsm.request('PreThrowAttack')
-        return
         attackEvidence = self.getEvidence(True)
         nodePath = render
         node = nodePath.attachNewNode('attackEvidence-%s' % self.doId)
@@ -184,7 +183,6 @@ class DistributedLawbotBossSuit(DistributedSuitBase.DistributedSuitBase):
         prosecutionPanPos = render.getRelativePoint(self.boss.prosecutionColNodePath, localPos)
         self.curTargetPt = prosecutionPanPos
         self.fsm.request('PreThrowProsecute')
-        return
         attackEvidence = self.getEvidence(False)
         nodePath = render
         node = nodePath.attachNewNode('prosecuteEvidence-%s' % self.doId)

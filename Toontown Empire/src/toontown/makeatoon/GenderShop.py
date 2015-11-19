@@ -25,8 +25,6 @@ class GenderShop(StateData.StateData):
         self.accept('next', self.__handleForward)
         return None
 
-    def showButtons(self):
-        return None
 
     def exit(self):
         self.ignore('next')

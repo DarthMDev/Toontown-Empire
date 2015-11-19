@@ -366,14 +366,6 @@ class DistributedFactorySuit(DistributedSuitBase.DistributedSuitBase, DelayDelet
         else:
             self.setState('Off')
 
-    def disableBattleDetect(self):
-        if self.battleDetectName:
-            self.ignore('enter' + self.battleDetectName)
-            self.battleDetectName = None
-        if self.collNodePath:
-            self.collNodePath.removeNode()
-            self.collNodePath = None
-        return
 
     def disableBodyCollisions(self):
         self.disableBattleDetect()

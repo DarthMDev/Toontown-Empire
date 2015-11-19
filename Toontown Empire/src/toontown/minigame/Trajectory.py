@@ -72,8 +72,6 @@ class Trajectory:
         tt = t - self.__startTime
         return Vec3(self.__startVel[0], self.__startVel[1], self.__startVel[2] + self.__zAcc * tt)
 
-    def getStartTime(self):
-        return self.__startTime
 
     def checkCollisionWithGround(self, height = 0):
         return self.calcTimeOfImpactOnPlane(height)

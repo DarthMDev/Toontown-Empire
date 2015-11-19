@@ -28,8 +28,9 @@ class ToonHood(Hood):
 
         self.suitInteriorDoneEvent = 'suitInteriorDone'
         self.minigameDoneEvent = 'minigameDone'
+        self.safeZoneLoaderClass = None
+        self.townLoaderClass = None
         self.whiteFogColor = Vec4(0.8, 0.8, 0.8, 1)
-
         self.fsm = ClassicFSM.ClassicFSM('Hood', [State.State('start', self.enterStart, self.exitStart, ['townLoader', 'safeZoneLoader']),
          State.State('townLoader', self.enterTownLoader, self.exitTownLoader, ['quietZone',
           'safeZoneLoader',
@@ -73,10 +74,10 @@ class ToonHood(Hood):
     def loadLoader(self, requestStatus):
         loaderName = requestStatus['loader']
         if loaderName == 'safeZoneLoader':
-            self.loader = self.SAFEZONELOADER_CLASS(self, self.fsm.getStateNamed('safeZoneLoader'), self.loaderDoneEvent)
+            self.loader = self.safeZoneLoaderClass(self, self.fsm.getStateNamed('safeZoneLoader'), self.loaderDoneEvent)
             self.loader.load()
         elif loaderName == 'townLoader':
-            self.loader = self.TOWNLOADER_CLASS(self, self.fsm.getStateNamed('townLoader'), self.loaderDoneEvent)
+            self.loader = self.townLoaderClass(self, self.fsm.getStateNamed('townLoader'), self.loaderDoneEvent)
             self.loader.load(requestStatus['zoneId'])
 
     def enterTownLoader(self, requestStatus):

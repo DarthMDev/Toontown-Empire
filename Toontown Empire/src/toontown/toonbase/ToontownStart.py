@@ -45,7 +45,10 @@ from direct.directnotify.DirectNotifyGlobal import directNotify
 
 notify = directNotify.newCategory('ToontownStart')
 notify.setInfo(True)
-
+import logging
+import airbrake
+yourlogger = logging.getLogger(__name__)
+yourlogger.addHandler(airbrake.AirbrakeHandler())
 from otp.settings.Settings import Settings
 from otp.otpbase import OTPGlobals
 

@@ -73,7 +73,6 @@ class DistributedPartyManagerAI(DistributedObjectAI):
         self.sendUpdateToAvatarId(avId, 'addPartyResponse', [avId, errorCode])
         # We also need to remember to update the field on the DToon indicating parties he's hosting
         self.air.doId2do[avId].sendUpdate('setHostedParties', [[partyStruct]])
-        pass
 
     def markInviteAsReadButNotReplied(self, avId, inviteKey):
         simbase.air.globalPartyMgr.sendInviteAsReadButNotReplied(avId, inviteKey)
