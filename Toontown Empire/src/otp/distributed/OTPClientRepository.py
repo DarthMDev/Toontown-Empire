@@ -202,7 +202,6 @@ class OTPClientRepository(ClientRepositoryBase):
         self.__doId2pendingInterest = {}
 
         self.chatAgent = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_CHAT_MANAGER, 'ChatAgent')
-        self.centralLogger = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_CENTRAL_LOGGER, 'CentralLogger')
         self.csm = None # To be set by subclass.
 
     def hasPlayToken():
