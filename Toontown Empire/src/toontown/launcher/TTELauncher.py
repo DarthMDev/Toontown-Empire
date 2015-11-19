@@ -19,8 +19,8 @@ class LogAndOutput:
         self.log.flush()
         self.orig.flush()
 
-class tteLauncher:
-    notify = DirectNotifyGlobal.directNotify.newCategory('tteLauncher')
+class TTELauncher:
+    notify = DirectNotifyGlobal.directNotify.newCategory('TTELauncher')
 
     def __init__(self):
         self.http = HTTPClient()

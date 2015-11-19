@@ -100,9 +100,9 @@ import time
 import sys
 import random
 import __builtin__
-from toontown.launcher.tteLauncher import tteLauncher
+from toontown.launcher.TTELauncher import TTELauncher
 
-__builtin__.launcher = tteLauncher()
+__builtin__.launcher = TTELauncher()
 
 notify.info('Starting the game...')
 tempLoader = Loader()
@@ -124,7 +124,7 @@ backgroundNodePath.setPos(0.0, 0.0, 0.0)
 backgroundNodePath.setScale(render2d, VBase3(1))
 backgroundNodePath.find('**/fg').hide()
 logo = OnscreenImage(
-    image='phase_3/maps/toontown-logo.png',
+    image='phase_3/maps/toontown-logo.jpg',
     scale=(1 / (4.0/3.0), 1, 1 / (4.0/3.0)),
     pos=backgroundNodePath.find('**/fg').getPos())
 logo.setTransparency(TransparencyAttrib.MAlpha)
