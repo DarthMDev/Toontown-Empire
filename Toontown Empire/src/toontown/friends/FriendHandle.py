@@ -66,8 +66,16 @@ class FriendHandle:
         base.cr.tteFriendsManager.d_teleportGiveup(self.doId)
 
     def isUnderstandable(self):
-        if settings['speedchatPlus']:
-            return 1
-        elif settings['trueFriends'] and base.localAvatar.isTrueFriends(self.doId):
-            return 1
-        return 0
+        if self.commonChatFlags & base.localAvatar.commonChatFlags & ToontownGlobals.CommonChat:
+            understandable = 1
+        elif self.commonChatFlags & ToontownGlobals.SuperChat:
+            understandable = 1
+        elif base.localAvatar.commonChatFlags & ToontownGlobals.SuperChat:
+            understandable = 1
+        elif base.cr.getFriendFlags(self.doId) & ToontownGlobals.FriendChat:
+            understandable = 1
+        elif self.whitelistChatFlags & base.localAvatar.whitelistChatFlags:
+            understandable = 1
+        else:
+            understandable = 0
+        return understandable

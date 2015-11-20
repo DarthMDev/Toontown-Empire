@@ -283,6 +283,9 @@ TPbuttonTextList = 0.05
 TPhaveFun = 0.1
 TPjoinUs = 0.1
 TBSOSPSPenter = 0.1
+BattleHoverCog = 0
+BattleHoverGag = 1
+BattleHoverSos = 2
 TexitButton = 0.8
 #Some languages need to change the word order
 SellbotFactoryPosPart1 = (0, -0.25)

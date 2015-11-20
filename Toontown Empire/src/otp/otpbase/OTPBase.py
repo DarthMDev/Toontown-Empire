@@ -1,5 +1,6 @@
 from direct.showbase.ShowBase import ShowBase
 from otp.ai.MagicWordGlobal import *
+from otp.chat import WhiteList, WhiteListData, SequenceListData
 from pandac.PandaModules import Camera, TPLow, VBase4, ColorWriteAttrib, Filename, getModelPath, NodePath, Vec4
 import OTPGlobals, OTPRender, math
 
@@ -13,6 +14,14 @@ class OTPBase(ShowBase):
         self.wantNametags = self.config.GetBool('want-nametags', 1)
         self.wantDynamicShadows = 1
         self.stereoEnabled = False
+        self.whiteList = None
+        if config.GetBool('want-whitelist', True):
+            self.whiteList = WhiteList.WhiteList()
+            self.whiteList.setWords(WhiteListData.WHITELIST)
+
+            if config.GetBool('want-sequence-list', True):
+                self.whiteList.setSequenceList(SequenceListData.SEQUENCES)
+        
         base.cam.node().setCameraMask(OTPRender.MainCameraBitmask)
         taskMgr.setupTaskChain('net', numThreads=1, frameBudget=0.001, threadPriority=TPLow)
 

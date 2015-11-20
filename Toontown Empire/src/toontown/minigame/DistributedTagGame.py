@@ -4,7 +4,7 @@ from DistributedMinigame import *
 from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from toontown.safezone import Walk, SnowUtil
+from toontown.safezone import Walk, SZUtil
 from toontown.toonbase import ToontownTimer
 from direct.gui import OnscreenText
 import MinigameAvatarScorePanel

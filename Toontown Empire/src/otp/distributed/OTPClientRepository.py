@@ -18,6 +18,8 @@ from otp.otpbase import OTPGlobals, OTPLocalizer
 from otp.otpgui import OTPDialog
 from otp.nametag.NametagConstants import *
 import sys, time, types, random
+import __builtin__
+
 
 class OTPClientRepository(ClientRepositoryBase):
     notify = directNotify.newCategory('OTPClientRepository')
@@ -694,7 +696,7 @@ class OTPClientRepository(ClientRepositoryBase):
     def handleAvatarsList(self, avatars):
         self.avList = avatars
         self.loginFSM.request('chooseAvatar', [self.avList])
-
+        
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def enterChooseAvatar(self, avList):
         pass

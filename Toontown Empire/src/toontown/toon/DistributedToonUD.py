@@ -10,9 +10,6 @@ class DistributedToonUD(DistributedObjectUD):
     def setDNAString(self, todo0):
         pass
 
-    def setGM(self, todo0):
-        pass
-
     def setMaxBankMoney(self, todo0):
         pass
 
@@ -285,6 +282,9 @@ class DistributedToonUD(DistributedObjectUD):
 
     def setFishingRod(self, todo0):
         pass
+    
+    def setMaxFishingRod(self, todo0):
+        pass
 
     def setFishingTrophies(self, todo0):
         pass
@@ -460,7 +460,7 @@ class DistributedToonUD(DistributedObjectUD):
     def forceLogoutWithNotify(self):
         pass
 
-    def setPinkSlips(self, todo0):
+    def setSpecialInventory(self, todo0):
         pass
 
     def setNametagStyle(self, todo0):
@@ -522,6 +522,6 @@ class DistributedToonUD(DistributedObjectUD):
     
     def setWishNameState(self, todo0):
         pass
-
-    def refundParty(self, refund):
+    
+    def setStats(self, todo0):
         pass

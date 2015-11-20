@@ -281,6 +281,11 @@ class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):
             self.movie.append(Func(self.movieDone))
         self.movie.start()
 
+    def setupShadow(self):
+        if DIRT_AS_WATER_INDICATOR:
+            pass
+        else:
+            DistributedPlantBase.DistributedPlantBase.setupShadow(self)
 
     def generateHarvestTrack(self, toon):
         pos = toon.getPos(render)

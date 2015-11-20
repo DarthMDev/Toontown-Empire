@@ -6,10 +6,9 @@ from PhoneGlobals import *
 from toontown.toonbase import ToontownGlobals
 from toontown.catalog import CatalogItem, CatalogInvalidItem, GiftAvatar
 from toontown.catalog.CatalogItemList import CatalogItemList
-
+from toontown.uberdog import TopToonsGlobals
 
 import json
-import time
 
 class LoadGiftAvatar:
 
@@ -165,10 +164,6 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
         if price > av.getTotalMoney() or (item.hasEmblemPrices() and not av.isEnoughEmblemsToBuy(item.getEmblemPrices())):
             return ToontownGlobals.P_NotEnoughMoney
         
-        if item.getDeliveryTime() or gifting:
-            deliveryTime = 0 if config.GetBool('want-instant-delivery', False) else item.getDeliveryTime()
-            item.deliveryDate = int(time.time() / 60. + deliveryTime + .5)
-        
         if gifting:
             return self.requestGiftAvatarOperation(avId, gifting, [context, item, price], self.attemptGiftPurchase)
         else:
@@ -176,17 +171,18 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
             
             if returnCode != ToontownGlobals.P_ItemOnOrder:
                 return returnCode
-            
+
             if item.getDeliveryTime():
                 self.chargeAvatar(av, price, item.getEmblemPrices())
-                av.onOrder.append(item)
-                av.b_setDeliverySchedule(av.onOrder)
+                av.addToDeliverySchedule(item, item.getDeliveryTime())
+                av.addStat(ToontownGlobals.STAT_ITEMS)
             else:
                 returnCode = item.recordPurchase(av, optional)
                 
                 if returnCode == ToontownGlobals.P_ItemAvailable:
                     self.chargeAvatar(av, price, item.getEmblemPrices())
-            
+                    av.addStat(ToontownGlobals.STAT_ITEMS)
+
             return returnCode
 
         return None
@@ -206,17 +202,17 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
             self.sendGiftPurchaseResponse(context, avId, returnCode)
             return
 
-        item.giftTag = avId
         self.chargeAvatar(av, optional[2], item.getEmblemPrices())
-        recipient.onGiftOrder.append(item)
-        
-        dg = self.air.dclassesByName['DistributedToonAI'].aiFormatUpdate('setGiftSchedule', targetId, targetId, self.air.ourChannel, [recipient.getGiftScheduleBlob()])
-        self.air.send(dg)
+        recipient.addToGiftSchedule(avId, targetId, item, item.getDeliveryTime())
+        av.addStat(ToontownGlobals.STAT_ITEMS)
+
         self.sendGiftPurchaseResponse(context, avId, ToontownGlobals.P_ItemOnOrder)
     
     def sendGiftPurchaseResponse(self, context, avId, returnCode):
         if returnCode in (ToontownGlobals.P_ItemOnOrder, ToontownGlobals.P_ItemAvailable):
-			self.sendUpdateToAvatarId(avId, 'requestGiftPurchaseResponse', [context, returnCode])
+            messenger.send('topToonsManager-event', [avId, TopToonsGlobals.CAT_CATALOG | TopToonsGlobals.CAT_GIFTS, 1])
+
+        self.sendUpdateToAvatarId(avId, 'requestGiftPurchaseResponse', [context, returnCode])
 
     def requestPurchaseMessage(self, context, blob, optional):
         av = self.__getCaller()
@@ -226,8 +222,10 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
 
         returnCode = self.attemptPurchase(context, av, blob, optional)
         
-        if returnCode in (ToontownGlobals.P_ItemOnOrder, ToontownGlobals.P_ItemAvailable):    
-			self.sendUpdateToAvatarId(av.doId, 'requestPurchaseResponse', [context, returnCode])
+        if returnCode in (ToontownGlobals.P_ItemOnOrder, ToontownGlobals.P_ItemAvailable):
+            messenger.send('topToonsManager-event', [av.doId, TopToonsGlobals.CAT_CATALOG, 1])
+        
+        self.sendUpdateToAvatarId(av.doId, 'requestPurchaseResponse', [context, returnCode])
         
     def requestGiftPurchaseMessage(self, context, targetId, blob, optional):
         av = self.__getCaller()

@@ -236,14 +236,11 @@ class DistributedPicnicTable(DistributedNode.DistributedNode):
             sound.start()
             base.cr.playGame.getPlace().setState('walk')
             if winString == 'Chinese Checkers':
-                whisper = WhisperPopup(TTLocalizer.ChineseCheckersYouWon, OTPGlobals.getInterfaceFont(), 
-                WhisperPopup.WTNormal)
+                whisper = WhisperPopup(TTLocalizer.ChineseCheckersYouWon, OTPGlobals.getInterfaceFont(), WhisperPopup.WTNormal)
             elif winString == 'Checkers':
-                whisper = WhisperPopup(TTLocalizer.RegularCheckersYouWon, OTPGlobals.getInterfaceFont(),
-                 WhisperPopup.WTNormal)
+                whisper = WhisperPopup(TTLocalizer.RegularCheckersYouWon, OTPGlobals.getInterfaceFont(), WhisperPopup.WTNormal)
             elif winString == 'Find Four':
-                whisper = WhisperPopup('You won a game of Find Four!', OTPGlobals.getInterfaceFont(), 
-                WhisperPopup.WTNormal)
+                whisper = WhisperPopup('You won a game of Find Four!', OTPGlobals.getInterfaceFont(), WhisperPopup.WTNormal)
         elif avId in self.cr.doId2do:
             stateString = self.fsm.getCurrentState().getName()
             if stateString == 'sitting' or stateString == 'observing':

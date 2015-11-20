@@ -118,10 +118,7 @@ class DistributedTreasure(DistributedObject.DistributedObject):
             self.treasureFlyTrack.finish()
             self.treasureFlyTrack = None
         base.playSfx(self.rejectSound, node=self.nodePath)
-        self.treasureFlyTrack = Sequence(LerpColorScaleInterval(self.nodePath, 0.8, colorScale=VBase4(0, 0, 0, 0), 
-        startColorScale=VBase4(1, 1, 1, 1),\
-        blendType='easeIn'), LerpColorScaleInterval(self.nodePath, 0.2, colorScale=VBase4(1, 1, 1, 1),
-         startColorScale=VBase4(0, 0, 0, 0), blendType='easeOut'), name=self.uniqueName('treasureFlyTrack'))
+        self.treasureFlyTrack = Sequence(LerpColorScaleInterval(self.nodePath, 0.8, colorScale=VBase4(0, 0, 0, 0), startColorScale=VBase4(1, 1, 1, 1), blendType='easeIn'), LerpColorScaleInterval(self.nodePath, 0.2, colorScale=VBase4(1, 1, 1, 1), startColorScale=VBase4(0, 0, 0, 0), blendType='easeOut'), name=self.uniqueName('treasureFlyTrack'))
         self.treasureFlyTrack.start()
         return
 

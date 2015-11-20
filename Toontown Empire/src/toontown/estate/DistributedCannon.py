@@ -61,11 +61,11 @@ class DistributedCannon(DistributedObject.DistributedObject):
     HIT_GROUND = 0
     HIT_TOWER = 1
     HIT_WATER = 2
-    FIRE_KEY = base.JUMP
-    UP_KEY = base.Move_Up
-    DOWN_KEY = base.Move_Down
-    LEFT_KEY = base.Move_Left
-    RIGHT_KEY = base.Move_Right
+    FIRE_KEY = 'control'
+    UP_KEY = 'arrow_up'
+    DOWN_KEY = 'arrow_down'
+    LEFT_KEY = 'arrow_left'
+    RIGHT_KEY = 'arrow_right'
     BUMPER_KEY = 'delete'
     BUMPER_KEY2 = 'insert'
     INTRO_TASK_NAME = 'CannonGameIntro'
@@ -154,6 +154,18 @@ class DistributedCannon(DistributedObject.DistributedObject):
             self.hitTrack = None
         DistributedObject.DistributedObject.disable(self)
         return
+
+    def __unmakeGui(self):
+        if not self.madeGui:
+            return
+        self.aimPad.destroy()
+        del self.aimPad
+        del self.fireButton
+        del self.upButton
+        del self.downButton
+        del self.leftButton
+        del self.rightButton
+        self.madeGui = 0
 
     def generateInit(self):
         DistributedObject.DistributedObject.generateInit(self)
@@ -852,7 +864,6 @@ class DistributedCannon(DistributedObject.DistributedObject):
 
     def removeAvFromCannon(self):
         place = base.cr.playGame.getPlace()
-        print 'removeAvFromCannon'
         self.notify.debug('self.inWater = %s' % self.inWater)
         if place:
             if not hasattr(place, 'fsm'):

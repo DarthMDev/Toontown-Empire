@@ -48,7 +48,7 @@ TreasureModels = {
 
 SafeZoneTreasureSpawns = {
     ToontownGlobals.ToontownCentral: (
-        TreasureTT, 5, # TTTreasure heals 5 each...
+        TreasureTT, 3, # TTTreasure heals 3 each...
         [
             (-60.976, -8.866, 1.3),
             (-90.632, -5.828, -0.63),
@@ -76,7 +76,7 @@ SafeZoneTreasureSpawns = {
         5 # Maximum
     ),
     ToontownGlobals.DonaldsDock: (
-        TreasureDD, 10, # DDTreasure heals 10 each...
+        TreasureDD, 6, # DDTreasure heals 6 each...
         [
             (52.9072, -23.4768, -12.308),
             (35.3827, -51.9196, -12.308),
@@ -109,7 +109,7 @@ SafeZoneTreasureSpawns = {
         2 # Maximum
     ),
     ToontownGlobals.DaisyGardens: (
-        TreasureDG, 10, # DGTreasure heals 10 each...
+        TreasureDG, 9, # DGTreasure heals 9 each...
         [
             (-49, 156, 0.0),
             (-59, 50, 0.0),
@@ -136,7 +136,7 @@ SafeZoneTreasureSpawns = {
         2 # Maximum
     ),
     ToontownGlobals.TheBrrrgh: (
-        TreasureBR, 12, # +12 laff
+        TreasureBR, 15, # +15 laff
         [
             (-108, 46, 6.2),
             (-111, 74, 6.2),
@@ -161,7 +161,7 @@ SafeZoneTreasureSpawns = {
         2 # Maximum
     ),
     ToontownGlobals.MinniesMelodyland: (
-        TreasureMM, 10, # +10 laff
+        TreasureMM, 12, # +12 laff
         [
             (118, -39, 3.3),
             (118, 1, 3.3),
@@ -187,7 +187,7 @@ SafeZoneTreasureSpawns = {
         2 # Maximum
     ),
     ToontownGlobals.DonaldsDreamland: (
-        TreasureDL, 12, # +12 laff
+        TreasureDL, 18, # +18 laff
         [
             (86, 69, -17.4),
             (34, -48, -16.4),
@@ -208,10 +208,10 @@ SafeZoneTreasureSpawns = {
             (-34, -88, 0.0),
         ],
         10, # Rate
-        5 #Maximum
+        2 #Maximum
     ),
     ToontownGlobals.OutdoorZone: (
-        TreasureOZ, 5, # +5 laff
+        TreasureOZ, 3, # +3 laff
         [
             (-156.9, -118.9, 0.025),
             (-35.6, 86.0, 1.25),
@@ -233,7 +233,7 @@ SafeZoneTreasureSpawns = {
         5 # Maximum
     ),
     ToontownGlobals.MyEstate: (
-        TreasureE, 5, # +5 laff
+        TreasureE, 2, # +2 laff
         [
             (102.9, 14.17, 0.57),
             (131.3, 45.31, 0.42),
@@ -252,6 +252,6 @@ SafeZoneTreasureSpawns = {
             (-125.6, -64.82, 0.5),
         ],
         10, # Rate
-        5 # Maximum
+        4 # Maximum
     ),
 }

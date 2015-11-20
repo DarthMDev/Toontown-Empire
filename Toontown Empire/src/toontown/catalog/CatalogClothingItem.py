@@ -291,9 +291,7 @@ ClothingTypes = {101: (ABoysShirt, 'bss1', 40),
  1818: (AGirlsSkirt, 'sa_gs20', 5000),
  1819: (AGirlsSkirt, 'sa_gs21', 5000),
  1820: (AShirt, 'sa_ss55', 5000),
- 1821: (AShirt, 'sa_ss56', 5000), #Pinktober
- 1822: (AShirt, 'splat', 5000), # Xentel NPC Shirt
- 1823: (AShorts, 'splat1', 5000)} # Xentel NPC Shorts
+ 1821: (AShirt, 'flannel', 300)}
 
 class CatalogClothingItem(CatalogItem.CatalogItem):
 
@@ -374,7 +372,7 @@ class CatalogClothingItem(CatalogItem.CatalogItem):
             return TTLocalizer.ClothingArticleNames[article]
 
     def recordPurchase(self, avatar, optional):
-        if avatar.isClosetFull():
+        if avatar.isClosetFull(1):
             return ToontownGlobals.P_NoRoomForItem
         str = ClothingTypes[self.clothingType][CTString]
         dna = avatar.getStyle()

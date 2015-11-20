@@ -1,7 +1,6 @@
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from toontown.toonbase import ToontownGlobals
 from toontown.estate import MailboxGlobals
-from toontown.parties.PartyGlobals import InviteStatus
 
 
 class DistributedMailboxAI(DistributedObjectAI):
@@ -45,10 +44,6 @@ class DistributedMailboxAI(DistributedObjectAI):
             return
 
         if len(av.mailboxContents):
-            self.setMovie(MailboxGlobals.MAILBOX_MOVIE_READY, avId)
-            self.user = avId
-            self.busy = True
-        elif av.getNumInvitesToShowInMailbox():
             self.setMovie(MailboxGlobals.MAILBOX_MOVIE_READY, avId)
             self.user = avId
             self.busy = True
@@ -97,9 +92,13 @@ class DistributedMailboxAI(DistributedObjectAI):
             return
 
         item = av.mailboxContents[index]
-        del av.mailboxContents[index]
-        av.b_setMailboxContents(av.mailboxContents)
-        self.sendUpdateToAvatarId(avId, 'acceptItemResponse', [context, item.recordPurchase(av, optional)])
+        returnCode = item.recordPurchase(av, optional)
+        
+        if returnCode == ToontownGlobals.P_ItemAvailable:
+            del av.mailboxContents[index]
+            av.b_setMailboxContents(av.mailboxContents)
+
+        self.sendUpdateToAvatarId(avId, 'acceptItemResponse', [context, returnCode])
 
     def discardItemMessage(self, context, item, index, optional):
         avId = self.air.getAvatarIdFromSender()
@@ -118,44 +117,11 @@ class DistributedMailboxAI(DistributedObjectAI):
         av.b_setMailboxContents(av.mailboxContents)
         self.sendUpdateToAvatarId(avId, 'discardItemResponse', [context, ToontownGlobals.P_ItemAvailable])
 
-    def acceptInviteMessage(self, context, inviteKey):
-        avId = self.air.getAvatarIdFromSender()
-        if avId != self.user:
-            return
+    def acceptInviteMessage(self, todo0, todo1):
+        pass # TODO
 
-        av = self.air.doId2do.get(avId)
-        if not av:
-            return
+    def rejectInviteMessage(self, todo0, todo1):
+        pass # TODO
 
-        invites = av.invites
-        for invite in invites[:]:
-            if invite.inviteKey == inviteKey:
-                invites.remove(invite)
-
-        av.setInvites(invites)
-
-        self.air.partyManager.respondToInvite(avId, 0, context, inviteKey, InviteStatus.Accepted)
-        self.sendUpdateToAvatarId(avId, 'acceptItemResponse', [context, ToontownGlobals.P_ItemAvailable])
-
-    def rejectInviteMessage(self, context, inviteKey):
-        avId = self.air.getAvatarIdFromSender()
-        if avId != self.user:
-            return
-
-        av = self.air.doId2do.get(avId)
-        if not av:
-            return
-
-        self.air.partyManager.respondToInvite(avId, self.doId, context, inviteKey, InviteStatus.Rejected)
-        self.sendUpdateToAvatarId(avId, 'acceptItemResponse', [context, ToontownGlobals.P_ItemAvailable])
-
-    def markInviteReadButNotReplied(self, inviteKey):
-        avId = self.air.getAvatarIdFromSender()
-        if avId != self.user:
-            return
-
-        av = self.air.doId2do.get(avId)
-        if not av:
-            return
-
-        self.air.partyManager.markInviteAsReadButNotReplied(avId, inviteKey)
+    def markInviteReadButNotReplied(self, todo0):
+        pass # TODO

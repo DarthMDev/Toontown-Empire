@@ -12,9 +12,9 @@ from toontown.toonbase import TTLocalizer
 import random
 from direct.showbase import PythonUtil
 from toontown.hood import Place
-from toontown.hood import SkyUtil
 from toontown.pets import PetTutorial
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs, TLNull
+from toontown.safezone import SZUtil
 import HouseGlobals
 
 class Estate(Place.Place):
@@ -62,8 +62,8 @@ class Estate(Place.Place):
           'activity']),
          State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk', 'petTutorial']),
          State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn', 'walk', 'final']),
-         State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk']),
-         State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['final', 'walk']),
+         State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk', 'stopped']),
+         State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['final', 'walk', 'stopped']),
          State.State('final', self.enterFinal, self.exitFinal, ['teleportIn']),
          State.State('quest', self.enterQuest, self.exitQuest, ['walk']),
          State.State('activity', self.enterActivity, self.exitActivity, ['walk', 'stopped']),
@@ -356,10 +356,10 @@ class Estate(Place.Place):
 
     def __setUnderwaterFog(self):
         if base.wantFog:
-            self.fog.setColor(0.245, 0.322, 0.5)
             self.fog.setLinearRange(0.1, 100.0)
             render.setFog(self.fog)
             self.loader.hood.sky.setFog(self.fog)
+            SZUtil.startUnderwaterFog()
 
     def __setWhiteFog(self):
         if base.wantFog:
@@ -367,9 +367,11 @@ class Estate(Place.Place):
             self.fog.setLinearRange(0.0, 400.0)
             render.setFog(self.fog)
             self.loader.hood.sky.setFog(self.fog)
+            SZUtil.stopUnderwaterFog()
 
     def __setFaintFog(self):
         if base.wantFog:
             self.fog.setColor(Vec4(0.8, 0.8, 0.8, 1.0))
             self.fog.setLinearRange(0.0, 700.0)
             render.setFog(self.fog)
+            SZUtil.stopUnderwaterFog()

@@ -4941,7 +4941,7 @@ HatStylesDescriptions = {'hbb1': 'Green Baseball Cap',
  'hhw1': 'Bandana',
  'hhw2': 'Toonosaur Hat',
  'hob1': 'Jamboree Hat',
- 'hbn1': 'Bird Hat by Brianna'}
+ 'hbn1': 'Bird Hat'}
 GlassesStylesDescriptions = {'grd1': 'Round Glasses',
  'gmb1': 'White Mini Blinds',
  'gnr1': 'Purple Narrow Glasses',
@@ -4966,7 +4966,8 @@ GlassesStylesDescriptions = {'grd1': 'Round Glasses',
  'gsr1': 'Square Frame Glasses',
  'ghw1': 'Skull Eyepatch',
  'ghw2': 'Gem Eyepatch',
- 'gag1': 'Alien Eyes by Alexandra'}
+ 'gag1': 'Alien Eyes',
+ 'ghy1': 'Hypno Lure Look'}
 BackpackStylesDescriptions = {'bpb1': 'Blue Backpack',
  'bpb2': 'Orange Backpack',
  'bpb3': 'Purple BackPack',
@@ -7305,6 +7306,12 @@ ResistanceRestockMenu = 'Gag-up'
 ResistanceRestockItem = 'Gag-up %s'
 ResistanceRestockItemAll = 'All'
 ResistanceRestockChat = 'Toons of the World, Gag-up!'
+ResistanceMeritsMenu = 'Merits'
+ResistanceMeritsItem = 'Merit-up %s'
+ResistanceMeritsChat = 'Toons of the World, Merit-up!'
+ResistanceTicketsMenu = 'Tickets'
+ResistanceTicketsItem = '%s Tickets'
+ResistanceTicketsChat = 'Toons of the World, Go Race!'
 ResistanceMoneyMenu = 'Jellybeans'
 ResistanceMoneyItem = '%s Jellybeans'
 ResistanceMoneyChat = 'Toons of the World, Spend Wisely!'
@@ -9833,3 +9840,30 @@ TeleportButtonNoMoney = 'Sorry, but you need %s jellybeans to teleport!'
 TeleportButtonConfirm = 'Would you like to spend %s jellybeans to teleport?'
 TeleportButtonTakenOver = 'Sorry, but this shop has been taken over by the Cogs!'
 InventoryLureString = 'Rounds effective'
+
+BattleCogPopup = '\x01androidGreen\x01Group attacks:\x02\n%s\n\n\x01androidGreen\x01Regular attacks:\x02\n%s'
+BattleCogPopupAttack = '%s %s HP'
+BattleCogPopupAttackDanger = '\x01red\x01' + BattleCogPopupAttack + '\x02'
+BattleCogPopupDanger = '\x01red\x01Dangerous!\x02\n\n'
+BattleCogPopupDangerColor = '\x01red'
+
+SuitPageAttackFormat = 'Levels: %s-%s\n\n' + BattleCogPopup
+SuitPageNoAttacks = 'None'
+
+BattleGagPopup = '%s: %s\nGags left: %s'
+BattleSOSPopup = '\x01azure\x01%s\x02\n%s\n%s%s stars\nSOS left: %s'
+BattleSOSPopupHeal = 'Heals'
+BattleSOSPopupHarm = 'Deals'
+BattleSOSPopupHP = '%s %s HP\n'
+
+DetailPanelSOS = 'SOS Cards'
+DetailPanelSOS = 'SOS Cards'
+
+TeleportLabelOn = 'Accepting teleports.'
+TeleportLabelOff = 'Not accepting teleports.'
+TeleportPanelNoTeleport = '%s needs some time alone right now.'
+
+ClothesGUICount = '%s/%s'
+
+FpsMeterLabelOn = 'The frame rate meter is on.'
+FpsMeterLabelOff = 'The frame rate meter is off.'

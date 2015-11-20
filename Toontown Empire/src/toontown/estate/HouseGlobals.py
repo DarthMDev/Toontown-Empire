@@ -1,6 +1,5 @@
-# Different house types:
-HOUSE_DEFAULT = 0
 NUM_HOUSE_TYPES = 6
+HOUSE_DEFAULT = 0
 HOUSE_CRAFTSMAN = 1
 HOUSE_TEST = 5
 CLEANUP_DELAY = 8
@@ -111,12 +110,11 @@ HALF_DAY_PERIOD = 105
 HALF_NIGHT_PERIOD = 30
 FIREWORKS_MOVIE_CLEAR = 0
 FIREWORKS_MOVIE_GUI = 1
-
 HouseEmblemPrices = (
-    (50, 20), 
-    (200, 75), 
-    (200, 75), 
-    (500, 250), 
-    (350, 150), 
-    (400, 200) 
-) 
+    (50, 20), # bungalo
+    (200, 75), # tiki
+    (200, 75), # tepee
+    (500, 250), # castle
+    (350, 150), # cupcake
+    (400, 200) # cabin
+)

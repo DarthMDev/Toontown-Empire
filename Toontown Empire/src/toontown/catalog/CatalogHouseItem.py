@@ -5,16 +5,14 @@ from direct.gui.DirectGui import *
 from toontown.toonbase import ToontownGlobals
 from toontown.estate import HouseGlobals
 
-
 class CatalogHouseItem(CatalogItem.CatalogItem):
     def makeNewItem(self, houseId):
         self.houseId = houseId
-
         CatalogItem.CatalogItem.makeNewItem(self)
 
     def notOfferedTo(self, avatar):
         return 1
-        
+
     def requestPurchase(self, phone, callback):
         from toontown.toontowngui import TTDialog
         avatar = base.localAvatar
@@ -44,8 +42,8 @@ class CatalogHouseItem(CatalogItem.CatalogItem):
         return TTLocalizer.HouseNames[self.houseId]
 
     def getDeliveryTime(self):
-        return 1
-        
+        return 0
+
     def getEmblemPrices(self):
         return HouseGlobals.HouseEmblemPrices[self.houseId]
 
@@ -54,7 +52,7 @@ class CatalogHouseItem(CatalogItem.CatalogItem):
         model.setBin('unsorted', 0, 1)
         self.hasPicture = True
         return self.makeFrameModel(model)
-        
+
     def decodeDatagram(self, di, versionNumber, store):
         CatalogItem.CatalogItem.decodeDatagram(self, di, versionNumber, store)
         self.houseId = di.getUint8()
@@ -62,12 +60,12 @@ class CatalogHouseItem(CatalogItem.CatalogItem):
     def encodeDatagram(self, dg, store):
         CatalogItem.CatalogItem.encodeDatagram(self, dg, store)
         dg.addUint8(self.houseId)
-        
+
     def recordPurchase(self, av, optional):
         house = simbase.air.doId2do.get(av.getHouseId())
         if house:
             house.b_setHouseType(self.houseId)
         return ToontownGlobals.P_ItemAvailable
-        
+
 def getAllHouses():
     return [CatalogHouseItem(i) for i in xrange(6)]

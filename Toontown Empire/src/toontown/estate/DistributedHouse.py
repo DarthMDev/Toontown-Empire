@@ -114,7 +114,7 @@ class DistributedHouse(DistributedObject.DistributedObject):
         self.randomGenerator.seed(self.doId)
         houseColor = HouseGlobals.stairWood
         color = Vec4(houseColor[0], houseColor[1], houseColor[2], 1)
-        DNADoor.setupDoor(doorNP, door_origin, door_origin, self.dnaStore, str(self.doId), color)
+        setupDoor(doorNP, door_origin, door_origin, self.dnaStore, str(self.colorIndex), color)
         self.__setupNamePlate()
         self.__setupFloorMat()
         self.__setupNametag()
@@ -262,25 +262,6 @@ class DistributedHouse(DistributedObject.DistributedObject):
     def setHouseType(self, index):
         self.notify.debug('setHouseType')
         self.houseType = index
-
-        if self.house_loaded:
-            self.unload()
-            self.clearNametag()
-            if self.namePlate:
-                self.namePlate.removeNode()
-                del self.namePlate
-                self.namePlate = None
-            if self.floorMat:
-                self.floorMat.removeNode()
-                del self.floorMat
-                self.floorMat = None
-            if self.house:
-                self.house.removeNode()
-                del self.house
-            self.house_loaded = 0
-            del self.randomGenerator
-
-            self.load()
 
     def setFavoriteNum(self, index):
         self.notify.debug('setFavoriteNum')

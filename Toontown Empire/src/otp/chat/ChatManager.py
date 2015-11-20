@@ -123,9 +123,8 @@ class ChatManager(DirectObject.DirectObject):
 
     def enterMainMenu(self):
         self.checkObscurred()
-        if base.cr.wantTypedChat():
-            if self.wantBackgroundFocus:
-                self.chatInputNormal.chatEntry['backgroundFocus'] = 1
+        if self.wantBackgroundFocus:
+            self.chatInputNormal.chatEntry['backgroundFocus'] = 1
             self.acceptOnce('enterNormalChat', self.fsm.request, ['normalChat'])
 
     def checkObscurred(self):
