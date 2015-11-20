@@ -1100,8 +1100,8 @@ class DistributedGolfHole(DistributedPhysicsWorld.DistributedPhysicsWorld, FSM, 
         self.perfectIval = Parallel(textTrack, soundTrack, animTrack)
         self.perfectIval.start()
 
-    def __playbackTask(self, task):
-        return self.playBackFrame(task)
+    def __playbackTask(self):
+        return self.playBackFrame()
 
     def toonRayCollisionCallback(self, x, y, z):
         if self.state not in ('Aim', 'WatchAim', 'ChooseTee', 'WatchTee'):
@@ -1238,7 +1238,7 @@ class DistributedGolfHole(DistributedPhysicsWorld.DistributedPhysicsWorld, FSM, 
         self.ballFollow.setPos(ballPos)
 
     def hitBall(self, ball, power, x, y):
-        self.performSwing(self, ball, power, x, y)
+        self.performSwing(ball, power, x, y)
 
     def ballMovie2Client(self, cycleTime, avId, movie, spinMovie, ballInFrame, ballTouchedHoleFrame, ballFirstTouchedHoleFrame, commonObjectData):
         self.notify.debug('received Movie, number of frames %s %s ballInFrame=%d ballTouchedHoleFrame=%d ballFirstTouchedHoleFrame=%d' % (len(movie),
@@ -1626,7 +1626,7 @@ class DistributedGolfHole(DistributedPhysicsWorld.DistributedPhysicsWorld, FSM, 
          diffTime,
          fpsTime,
          self.frame))
-        self.ballMovie2Client(cycleTime, avId, self.recording, self.aVRecording, self.ballInHoleFrame, self.ballTouchedHoleFrame, self.ballFirstTouchedHoleFrame)
+        self.ballMovie2Client(cycleTime, avId, self.recording, self.aVRecording, self.ballInHoleFrame, self.ballTouchedHoleFrame, self.ballFirstTouchedHoleFrame, commonObjectData)
         return
 
     def handleBallHitNonGrass(self, c0, c1):

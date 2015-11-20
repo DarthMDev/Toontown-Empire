@@ -80,8 +80,6 @@ class CatalogGardenItem(CatalogItem.CatalogItem):
     def output(self, store = -1):
         return 'CatalogGardenItem(%s%s)' % (self.gardenIndex, self.formatOptionalData(store))
 
-    def compareTo(self, other):
-        return 0
 
     def getHashContents(self):
         return self.gardenIndex
@@ -123,11 +121,6 @@ class CatalogGardenItem(CatalogItem.CatalogItem):
         else:
             return 0
 
-    def getPurchaseLimit(self):
-        if self.gardenIndex == GardenGlobals.GardenAcceleratorSpecial:
-            return 1
-        else:
-            return 0
 
     def compareTo(self, other):
         if self.gardenIndex != other.gardenIndex:

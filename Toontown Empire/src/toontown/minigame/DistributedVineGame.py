@@ -1543,7 +1543,6 @@ class DistributedVineGame(DistributedMinigame):
             taskMgr.remove(taskName)
 
         for endingTrack in self.endingTracks.values():
-            endingTrack.finish
             del endingTrack
 
         self.endingTracks = {}

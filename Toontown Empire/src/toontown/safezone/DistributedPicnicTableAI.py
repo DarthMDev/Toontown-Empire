@@ -314,8 +314,8 @@ class DistributedPicnicTableAI(DistributedNodeAI):
     def findAvatar(self, avId):
         for i in xrange(len(self.seats)):
             if self.seats[i] == avId:
-                return i
                 continue
+                return i
 
     def countFullSeats(self):
         avCounter = 0

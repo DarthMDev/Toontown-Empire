@@ -823,9 +823,6 @@ class DistributedEstateAI(DistributedObjectAI):
     def d_setSlot5ToonId(self, id):
         self.sendUpdate('setSlot5ToonId', [id])
         
-    def b_setSlot5ToonId(self, id):
-        self.setSlot5ToonId(id)
-        self.d_setSlot5ToonId(id)
         
     def getSlot5ToonId(self):
         return self.toons[5]

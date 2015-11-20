@@ -28,6 +28,6 @@ Do not push broken code to the master branch, because it messes up the game and 
 
 # requirements:
 In order to run game you need to install this
-pip install -U airbrake
+pip install -U airbrake pymongo bson
 if on mac or linux:
-sudo pip install -U rollbar
+sudo pip install -U rollbar pymongo bson

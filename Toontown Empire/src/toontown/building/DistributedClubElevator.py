@@ -363,8 +363,6 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
              'hoodId': hoodId}
             self.cr.playGame.getPlace().elevator.signalDone(doneStatus)
 
-    def getElevatorModel(self):
-        return self.golfKart
 
     def setPosHpr(self, x, y, z, h, p, r):
         self.startingPos = Vec3(x, y, z)
