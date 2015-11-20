@@ -192,8 +192,6 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
 
         if text:
             self.chatEntry.set('')
-            else:
-                self.sendChatBySwitch(text)
             if self.wantHistory:
                 self.addToHistory(text)
         else:

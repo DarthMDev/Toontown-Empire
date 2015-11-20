@@ -173,3 +173,6 @@ class ToontownChatManager(ChatManager.ChatManager):
 
     def messageSent(self):
         pass
+
+    def deactivateChat(self):
+        pass

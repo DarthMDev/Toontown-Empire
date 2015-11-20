@@ -9,7 +9,7 @@ from direct.showbase.PythonUtil import StackTrace
 from direct.showbase.ShowBase import *
 from direct.task import Task
 import math
-from panda3d.core import *
+from pandac.PandaModules import *
 import random
 
 import DistributedBossCog
@@ -21,11 +21,12 @@ from toontown.battle import SuitBattleGlobals
 from toontown.battle.BattleProps import *
 from toontown.building import ElevatorConstants
 from toontown.building import ElevatorUtils
+from toontown.chat.ChatGlobals import *
 from toontown.coghq import CogDisguiseGlobals
 from toontown.distributed import DelayDelete
-from otp.nametag import NametagGroup
-from otp.nametag.NametagConstants import *
-from otp.nametag import NametagGlobals
+from toontown.nametag import NametagGlobals
+from toontown.nametag import NametagGroup
+from toontown.nametag.NametagGlobals import *
 from toontown.toon import Toon
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownBattleGlobals
@@ -275,6 +276,14 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
 
     def __makeRollToBattleTwoMovie(self):
         startPos = Point3(ToontownGlobals.LawbotBossBattleOnePosHpr[0], ToontownGlobals.LawbotBossBattleOnePosHpr[1], ToontownGlobals.LawbotBossBattleOnePosHpr[2])
+        if self.arenaSide:
+            topRampPos = Point3(*ToontownGlobals.LawbotBossTopRampPosB)
+            topRampTurnPos = Point3(*ToontownGlobals.LawbotBossTopRampTurnPosB)
+            p3Pos = Point3(*ToontownGlobals.LawbotBossP3PosB)
+        else:
+            topRampPos = Point3(*ToontownGlobals.LawbotBossTopRampPosA)
+            topRampTurnPos = Point3(*ToontownGlobals.LawbotBossTopRampTurnPosA)
+            p3Pos = Point3(*ToontownGlobals.LawbotBossP3PosA)
         battlePos = Point3(ToontownGlobals.LawbotBossBattleTwoPosHpr[0], ToontownGlobals.LawbotBossBattleTwoPosHpr[1], ToontownGlobals.LawbotBossBattleTwoPosHpr[2])
         battleHpr = VBase3(ToontownGlobals.LawbotBossBattleTwoPosHpr[3], ToontownGlobals.LawbotBossBattleTwoPosHpr[4], ToontownGlobals.LawbotBossBattleTwoPosHpr[5])
         bossTrack = Sequence()
@@ -291,13 +300,9 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         return Sequence(chatTrack, bossTrack, Func(self.getGeomNode().setH, 0), Parallel(self.podium.posInterval(5.0, finalPodiumPos), self.reflectedPodium.posInterval(5.0, finalReflectedPodiumPos), Func(self.stashBoss), self.posInterval(5.0, battlePos), Func(taskMgr.doMethodLater, 0.01, self.unstashBoss, 'unstashBoss')), name=self.uniqueName('BattleTwoMovie'))
 
     def __makeRollToBattleThreeMovie(self):
-        startPos = Point3(ToontownGlobals.LawbotBossBattleTwoPosHpr[0], ToontownGlobals.LawbotBossBattleTwoPosHpr[1], 
-        ToontownGlobals.LawbotBossBattleTwoPosHpr[2])
-        battlePos = Point3(ToontownGlobals.LawbotBossBattleThreePosHpr[0], 
-        ToontownGlobals.LawbotBossBattleThreePosHpr[1], ToontownGlobals.LawbotBossBattleThreePosHpr[2])
-        battleHpr = VBase3(ToontownGlobals.LawbotBossBattleThreePosHpr[3], 
-        ToontownGlobals.LawbotBossBattleThreePosHpr[4],
-        ToontownGlobals.LawbotBossBattleThreePosHpr[5])
+        startPos = Point3(ToontownGlobals.LawbotBossBattleTwoPosHpr[0], ToontownGlobals.LawbotBossBattleTwoPosHpr[1], ToontownGlobals.LawbotBossBattleTwoPosHpr[2])
+        battlePos = Point3(ToontownGlobals.LawbotBossBattleThreePosHpr[0], ToontownGlobals.LawbotBossBattleThreePosHpr[1], ToontownGlobals.LawbotBossBattleThreePosHpr[2])
+        battleHpr = VBase3(ToontownGlobals.LawbotBossBattleThreePosHpr[3], ToontownGlobals.LawbotBossBattleThreePosHpr[4], ToontownGlobals.LawbotBossBattleThreePosHpr[5])
         bossTrack = Sequence()
         myInterval = base.camera.posHprInterval(8, Point3(-22, -100, 35), Point3(-10, -13, 0), startPos=Point3(-22, -90, 35), startHpr=Point3(-10, -13, 0), blendType='easeInOut')
         chatTrack = Sequence(Func(self.setChatAbsolute, TTLocalizer.LawbotBossTrialChat1, CFSpeech), Func(base.camera.reparentTo, localAvatar), Func(base.camera.setPos, localAvatar.cameraPositions[0][0]), Func(base.camera.setHpr, 0, 0, 0), Func(self.releaseToons, 1))
@@ -376,7 +381,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
 
     def __showWaitingMessage(self, task):
         self.notify.debug('----- __showWaitingMessage')
-        self.__showOnscreenMessage(TTLocalizer.WaitingForOtherToons)
+        self.__showOnscreenMessage(TTLocalizer.BuildingWaitingForVictors)
 
     def loadEnvironment(self):
         self.notify.debug('----- loadEnvironment')
@@ -390,11 +395,9 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         elevatorModel = loader.loadModel('phase_11/models/lawbotHQ/LB_Elevator')
         elevatorModel.reparentTo(self.elevatorEntrance)
         self.setupElevator(elevatorModel)
-        self.promotionMusic = base.loadMusic('phase_11/audio/bgm/LB_juryBG.ogg')
-        #self.toonsDiscovered = base.loadMusic('phase_9/audio/bgm/encntr_sting_announce.ogg')
+        self.promotionMusic = base.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
         self.betweenBattleMusic = base.loadMusic('phase_9/audio/bgm/encntr_toon_winning.ogg')
-        self.battleTwoMusic = base.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
-        self.battleThreeMusic = base.loadMusic('phase_11/audio/bgm/LB_juryBG.ogg')
+        self.battleTwoMusic = base.loadMusic('phase_11/audio/bgm/LB_juryBG.ogg')
         floor = self.geom.find('**/MidVaultFloor1')
         if floor.isEmpty():
             floor = self.geom.find('**/CR3_Floor')
@@ -458,11 +461,13 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
 
     def loadPodium(self):
         self.podium = self.geom.find('**/Podium')
+        newZ = self.podium.getZ() - ToontownGlobals.LawbotBossBattleTwoPosHpr[2]
         if not self.debugPositions:
-            self.podium.setZ(ToontownGlobals.LawbotBossBattleOnePosHpr[2])
+            self.podium.setZ(newZ)
         self.reflectedPodium = self.geom.find('**/Podium_Geo1_Refl')
+        reflectedZ = self.reflectedPodium.getZ()
         if not self.debugPositions:
-            self.reflectedPodium.setZ(ToontownGlobals.LawbotBossBattleTwoPosHpr[2])
+            self.reflectedPodium.setZ(reflectedZ)
         if not self.reflectedPodium.isEmpty():
             if self.debugPositions:
                 self.reflectedPodium.show()
@@ -682,12 +687,12 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         DistributedBossCog.DistributedBossCog.enterElevator(self)
         self.witnessToon.removeActive()
         self.reparentTo(render)
-        self.setPosHpr(*ToontownGlobals.LawbotBossBattleTwoPosHpr)
+        self.setPosHpr(*ToontownGlobals.LawbotBossBattleOnePosHpr)
         self.happy = 1
         self.raised = 1
         self.forward = 1
         self.doAnimate()
-        self.__showWitnessToon()
+        self.__hideWitnessToon()
         if not self.mainDoor.isEmpty():
             self.mainDoor.stash()
         if not self.reflectedMainDoor.isEmpty():
@@ -704,10 +709,11 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
     def enterIntroduction(self):
         self.notify.debug('----- enterIntroduction')
         self.reparentTo(render)
-        self.setPosHpr(*ToontownGlobals.LawbotBossBattleTwoPosHpr)
+        self.setPosHpr(*ToontownGlobals.LawbotBossBattleOnePosHpr)
         self.stopAnimate()
+        self.__hideWitnessToon()
         DistributedBossCog.DistributedBossCog.enterIntroduction(self)
-        base.playMusic(self.promotionMusic, looping=1, volume=1.8)
+        base.playMusic(self.promotionMusic, looping=1, volume=0.9)
         if not self.mainDoor.isEmpty():
             self.mainDoor.stash()
         if not self.reflectedMainDoor.isEmpty():
@@ -726,12 +732,13 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
 
     def enterBattleOne(self):
         self.notify.debug('----- LawbotBoss.enterBattleOne ')
-        self.setPosHpr(*ToontownGlobals.LawbotBossBattleOnePosHpr)
         DistributedBossCog.DistributedBossCog.enterBattleOne(self)
         self.reparentTo(render)
+        self.setPosHpr(*ToontownGlobals.LawbotBossBattleOnePosHpr)
         self.clearChat()
         self.loop('Ff_neutral')
         self.notify.debug('self.battleANode = %s' % self.battleANode)
+        self.__hideWitnessToon()
         if self.battleA == None or self.battleB == None:
             pass
         return
@@ -780,6 +787,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.setToonsToNeutral(self.involvedToons)
         self.clearChat()
         self.reparentTo(render)
+        self.__showWitnessToon()
         prepareBattleTwoMovie = self.__makePrepareBattleTwoMovie()
         intervalName = 'prepareBattleTwo'
         seq = Sequence(prepareBattleTwoMovie, name=intervalName)
@@ -833,6 +841,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.clearChat()
         self.witnessToon.clearChat()
         self.releaseToons(finalBattle=1)
+        self.__showWitnessToon()
         if not self.useCannons:
             self.toonsToBattlePosition(self.toonsA, self.battleANode)
             self.toonsToBattlePosition(self.toonsB, self.battleBNode)
@@ -903,6 +912,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.clearChat()
         self.reparentTo(render)
         base.playMusic(self.betweenBattleMusic, looping=1, volume=0.9)
+        self.__showWitnessToon()
         prepareBattleThreeMovie = self.__makePrepareBattleThreeMovie()
         self.acceptOnce('doneChatPage', self.__onToBattleThree)
         intervalName = 'prepareBattleThree'
@@ -952,6 +962,11 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.setPosHpr(*ToontownGlobals.LawbotBossBattleThreePosHpr)
         self.bossMaxDamage = ToontownGlobals.LawbotBossMaxDamage
         base.playMusic(self.battleThreeMusic, looping=1, volume=0.9)
+        self.__showWitnessToon()
+        #diffSettings = ToontownGlobals.LawbotBossDifficultySettings[self.battleDifficulty]
+        #if diffSettings[4]:
+            #localAvatar.chatMgr.chatInputSpeedChat.removeCJMenu()
+            #localAvatar.chatMgr.chatInputSpeedChat.addCJMenu(self.bonusWeight)
 
     def __doneBattleThree(self):
         self.notify.debug('----- __doneBattleThree')
@@ -961,7 +976,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
     def exitBattleThree(self):
         self.notify.debug('----- exitBattleThree')
         DistributedBossCog.DistributedBossCog.exitBattleThree(self)
-        NametagGlobals.setMasterArrowsOn(1)
+        NametagGlobals.setWant2dNametags(True)
         bossDoneEventName = self.uniqueName('DestroyedBoss')
         self.ignore(bossDoneEventName)
         taskMgr.remove(self.uniqueName('StandUp'))
@@ -1122,6 +1137,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.stash()
         self.stopAnimate()
         self.controlToons()
+        self.__showWitnessToon()
         self.witnessToon.reparentTo(render)
         self.witnessToon.setPosHpr(*ToontownGlobals.LawbotBossWitnessEpiloguePosHpr)
         self.witnessToon.loop('Sit')
@@ -1355,28 +1371,29 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             if toon:
                 delayDeletes.append(DelayDelete.DelayDelete(toon, 'LawbotBoss.makeIntroductionMovie'))
 
-        finalPodiumPos = Point3(self.podium.getX(), self.podium.getY(), -ToontownGlobals.LawbotBossBattleTwoPosHpr[2])
-        finalReflectedPodiumPos = Point3(self.reflectedPodium.getX(), self.reflectedPodium.getY(), 0.0)
-        finalBossPos = Point3(self.getX(), self.getY(), ToontownGlobals.LawbotBossBattleOnePosHpr[2])
-
-        track = Track(
-            (0, Parallel(self.podium.posInterval(5, finalPodiumPos), self.reflectedPodium.posInterval(5, finalReflectedPodiumPos), self.posInterval(5, finalBossPos), Func(self.loop, 'Ff_speech'), Func(self.setChatAbsolute, TTLocalizer.LawbotBossTempIntro0, CFSpeech))),
-            (5, Parallel(base.camera.posInterval(6, (-2.8, 5.6, 19.3), blendType='easeInOut'), self.posInterval(16, ToontownGlobals.LawbotBossBattleOnePosHpr[:3]))),
+        track = Parallel()
+        bossAnimTrack = Sequence(
+            ActorInterval(self, 'Ff_speech', startTime=2, duration=10, loop=1),
+            ActorInterval(self, 'Ff_lookRt', duration=3),
+            ActorInterval(self, 'Ff_lookRt', duration=3, startTime=3, endTime=0),
+            ActorInterval(self, 'Ff_neutral', duration=2),
+            ActorInterval(self, 'Ff_speech', duration=7, loop=1))
+        track.append(bossAnimTrack)
+        attackToons = TTLocalizer.BossCogAttackToons
+        dialogTrack = Track(
+            (0, Func(self.setChatAbsolute, TTLocalizer.LawbotBossTempIntro0, CFSpeech)),
             (5.6, Func(self.setChatAbsolute, TTLocalizer.LawbotBossTempIntro1, CFSpeech)),
-            (11, Parallel(Func(self.play, 'Ff_lookRt'), base.camera.posInterval(3, (-2.8, -50.6, 19.3), blendType='easeInOut'))),
-            (11.5, Func(self.setChatAbsolute, TTLocalizer.LawbotBossTempIntro2, CFSpeech)),
-            (13, self.actorInterval('Ff_lookRt', playRate=-1)),
-            (15, Sequence(Func(base.camera.reparentTo, self.witnessToon), Func(base.camera.setPosHpr, 0, 8, 2, 180, 10, 0))),
-            (15.5, Sequence(Func(self.clearChat), Func(self.witnessToon.setChatAbsolute, TTLocalizer.LawbotBossTempIntro3, CFSpeech))),
-            (20, Sequence(Func(self.loop, 'Ff_speech'), Func(self.witnessToon.clearChat), Func(base.camera.reparentTo, render), Func(base.camera.setPosHpr, -2.4, -90.6, 19.5, 0, 0, 0))),
-            (21, Func(self.setChatAbsolute, TTLocalizer.LawbotBossTempIntro4, CFSpeech)),
-            (25, Func(self.setChatAbsolute, TTLocalizer.LawbotBossTempIntro5, CFSpeech)),
-            (29, Sequence(Func(self.loop, 'Ff_neutral'), Func(self.clearChat), self.loseCogSuits(self.toonsA + self.toonsB, render, (-2.798, -70, 10, 180, 0, 0)))),
-            (32, Sequence(self.toonNormalEyes(self.involvedToons), Func(self.loop, 'Ff_neutral'), Func(base.camera.reparentTo, render), Func(base.camera.setPosHpr, -2.4, -96.6, 4.5, 0, 20, 0))),
-            (33, Func(self.setChatAbsolute, TTLocalizer.LawbotBossTempIntro6, CFSpeech)),
-            (39, Sequence(Func(self.setChatAbsolute, TTLocalizer.BossCogAttackToons, CFSpeech), base.camera.posHprInterval(0.5, (-2.7, -90, 0), (0, 39.7, 8.3), blendType='easeInOut'))),
-            (42, Sequence()))
-
+            (12, Func(self.setChatAbsolute, TTLocalizer.LawbotBossTempIntro2, CFSpeech)),
+            (18, Func(self.setChatAbsolute, TTLocalizer.LawbotBossTempIntro3, CFSpeech)),
+            (22, Func(self.setChatAbsolute, TTLocalizer.LawbotBossTempIntro4, CFSpeech)),
+            (24, Sequence(
+                Func(self.clearChat),
+                self.loseCogSuits(self.toonsA + self.toonsB, render, (-2.798, -70, 10, 180, 0, 0)))),
+            (27, Sequence(
+                self.toonNormalEyes(self.involvedToons),
+                Func(self.loop, 'Ff_neutral'),
+                Func(self.setChatAbsolute, attackToons, CFSpeech))))
+        track.append(dialogTrack)
         return Sequence(
             Func(self.stickToonsToFloor),
             track,
@@ -1580,7 +1597,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         npc.setDNAString(dnaNetString)
         npc.setName(TTLocalizer.WitnessToonName)
         npc.setPickable(0)
-        npc.setPlayerType(NametagGroup.CCNonPlayer)
+        npc.setPlayerType(NametagGlobals.CCNonPlayer)
         npc.animFSM.request('Sit')
         self.witnessToon = npc
         self.witnessToon.setPosHpr(*ToontownGlobals.LawbotBossWitnessStandPosHpr)
@@ -1642,11 +1659,19 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
 
     def __talkAboutPromotion(self, speech):
         if self.prevCogSuitLevel < ToontownGlobals.MaxCogSuitLevel:
-            newCogSuitLevel = localAvatar.getCogLevels()[CogDisguiseGlobals.dept2deptIndex(self.style.dept)]
-            if newCogSuitLevel == ToontownGlobals.MaxCogSuitLevel:
-                speech += TTLocalizer.WitnessToonLastPromotion % (ToontownGlobals.MaxCogSuitLevel + 1)
-            if newCogSuitLevel in ToontownGlobals.CogSuitHPLevels:
-                speech += TTLocalizer.WitnessToonHPBoost
+            deptIndex = CogDisguiseGlobals.dept2deptIndex(self.style.dept)
+            cogLevels = base.localAvatar.getCogLevels()
+            newCogSuitLevel = cogLevels[deptIndex]
+            cogTypes = base.localAvatar.getCogTypes()
+            maxCogSuitLevel = (SuitDNA.levelsPerSuit-1) + cogTypes[deptIndex]
+            if self.prevCogSuitLevel != maxCogSuitLevel:
+                speech += TTLocalizer.WitnessToonLevelPromotion
+            if newCogSuitLevel == maxCogSuitLevel:
+                if newCogSuitLevel != ToontownGlobals.MaxCogSuitLevel:
+                    suitIndex = (SuitDNA.suitsPerDept*deptIndex) + cogTypes[deptIndex]
+                    cogTypeStr = SuitDNA.suitHeadTypes[suitIndex]
+                    cogName = SuitBattleGlobals.SuitAttributes[cogTypeStr]['name']
+                    speech += TTLocalizer.WitnessToonSuitPromotion % cogName
         else:
             speech += TTLocalizer.WitnessToonMaxed % (ToontownGlobals.MaxCogSuitLevel + 1)
         return speech
@@ -1797,6 +1822,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
     def setAttackCode(self, attackCode, avId = 0):
         DistributedBossCog.DistributedBossCog.setAttackCode(self, attackCode, avId)
         if attackCode == ToontownGlobals.BossCogAreaAttack:
+            self.saySomething(TTLocalizer.LawbotBossAreaAttackTaunt)
             base.playSfx(self.warningSfx)
 
     def setBattleDifficulty(self, diff):

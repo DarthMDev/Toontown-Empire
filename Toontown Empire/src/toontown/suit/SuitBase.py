@@ -1,9 +1,9 @@
 import SuitDNA
-from toontown.suit.SuitLegList import *
+from SuitLegList import *
 import SuitTimings
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
-from panda3d.core import *
+from pandac.PandaModules import *
 from pandac.PandaModules import Point3
 from toontown.battle import SuitBattleGlobals
 from toontown.toonbase import TTLocalizer
@@ -23,12 +23,14 @@ class SuitBase:
         self.currHP = 10
         self.isSkelecog = 0
         self.isWaiter = 0
+        self.isVirtual = 0
+        self.isRental = 0        
         return
 
     def delete(self):
         if hasattr(self, 'legList'):
             del self.legList
-
+            
     def getCurrHp(self):
         if hasattr(self, 'currHP') and self.currHP:
             return self.currHP
@@ -41,7 +43,7 @@ class SuitBase:
             return self.maxHP
         else:
             self.notify.error('maxHP is None')
-            return 'unknown'
+            return 'unknown'      
 
     def getStyleName(self):
         if hasattr(self, 'dna') and self.dna:
@@ -78,6 +80,12 @@ class SuitBase:
 
     def setWaiter(self, flag):
         self.isWaiter = flag
+        
+    def setVirtual(self, flag):
+        self.isVirtual = flag
+        
+    def setRental(self, flag):
+        self.isRental = flag        
 
     def getActualLevel(self):
         if hasattr(self, 'dna'):

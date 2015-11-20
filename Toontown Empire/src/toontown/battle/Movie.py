@@ -24,6 +24,7 @@ import MovieUtil
 import PlayByPlayText
 import RewardPanel
 from SuitBattleGlobals import *
+from toontown.chat.ChatGlobals import *
 from toontown.distributed import DelayDelete
 from toontown.toon import NPCToons
 from toontown.toon import Toon
@@ -31,8 +32,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase.ToontownBattleGlobals import *
 from toontown.toontowngui import TTDialog
-from otp.nametag.NametagConstants import *
-from otp.nametag.NametagGroup import *
+from toontown.nametag import NametagGlobals
 
 
 camPos = Point3(14, 0, 10)
@@ -53,7 +53,6 @@ class Movie(DirectObject.DirectObject):
         self.hasBeenReset = 0
         self.reset()
         self.rewardHasBeenReset = 0
-        self.tutRewardDialog = None
         self.resetReward()
         return
 
@@ -109,6 +108,7 @@ class Movie(DirectObject.DirectObject):
             self.renderProps.remove(prop)
 
     def restore(self):
+        return
         for toon in self.battle.activeToons:
             toon.loop('neutral')
             origPos, origHpr = self.battle.getActorPosHpr(toon)
@@ -299,14 +299,16 @@ class Movie(DirectObject.DirectObject):
         self.rewardHasBeenReset = 0
         self.rewardPanel = RewardPanel.RewardPanel(name)
         self.rewardCallback = callback
-        self.questList = self.rewardPanel.getQuestIntervalList(base.localAvatar, [0, 1, 1, 0], [base.localAvatar], base.localAvatar.quests[0], [], [base.localAvatar.getDoId()])
+        self.questList = self.rewardPanel.getQuestIntervalList(base.localAvatar, [0,
+         1,
+         1,
+         0], [base.localAvatar], base.localAvatar.quests[0], [], [base.localAvatar.getDoId()])
         camera.setPosHpr(0, 8, base.localAvatar.getHeight() * 0.66, 179, 15, 0)
-        self.rewardPanel.initGagFrame(base.localAvatar, [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0], noSkip=True)
-        self.playTutorialReward_1(None, self.toonRewardDicts[0]['earnedExp'])
+        self.playTutorialReward_1()
 
-    def playTutorialReward_1(self, result, earnedXp, tutTrack=0):
+    def playTutorialReward_1(self):
         self.tutRewardDialog_1 = TTDialog.TTDialog(text=TTLocalizer.MovieTutorialReward1 % TTLocalizer.BattleGlobalTracks[base.localAvatar.getFirstTrackPicked()].capitalize(),
-		command=self.playTutorialReward_2, style=TTDialog.Acknowledge, fadeScreen=None, pos=(0.65, 0, 0.5), scale=0.8)
+         command=self.playTutorialReward_2, style=TTDialog.Acknowledge, fadeScreen=None, pos=(0.65, 0, 0.5), scale=0.8)
         self.tutRewardDialog_1.hide()
         self._deleteTrack()
         self.track = Sequence(name='tutorial-reward-1')
@@ -328,7 +330,7 @@ class Movie(DirectObject.DirectObject):
     def playTutorialReward_2(self, value):
         self.tutRewardDialog_1.cleanup()
         self.tutRewardDialog_2 = TTDialog.TTDialog(text=TTLocalizer.MovieTutorialReward1 % TTLocalizer.BattleGlobalTracks[base.localAvatar.getSecondTrackPicked()].capitalize(),
-		command=self.playTutorialReward_3, style=TTDialog.Acknowledge, fadeScreen=None, pos=(0.65, 0, 0.5), scale=0.8)
+         command=self.playTutorialReward_3, style=TTDialog.Acknowledge, fadeScreen=None, pos=(0.65, 0, 0.5), scale=0.8)
         self.tutRewardDialog_2.hide()
         self._deleteTrack()
         self.track = Sequence(name='tutorial-reward-2')
@@ -338,12 +340,56 @@ class Movie(DirectObject.DirectObject):
         self.track.start()
         return
 
-    def playTutorialReward_3(self, value=None):
+    def playTutorialReward_3(self, value):
+        self.tutRewardDialog_2.cleanup()
+        from toontown.toon import Toon
+        from toontown.toon import ToonDNA
+
+        def doneChat1(page, elapsed = 0):
+            self.track2.start()
+
+        def doneChat2(elapsed):
+            self.track2.pause()
+            self.track3.start()
+
+        def uniqueName(hook):
+            return 'TutorialTom-' + hook
+
+        self.tutorialTom = Toon.Toon()
+        dna = ToonDNA.ToonDNA()
+        dnaList = ('dls', 'ms', 'm', 'm', 7, 0, 7, 7, 2, 6, 2, 6, 2, 16)
+        dna.newToonFromProperties(*dnaList)
+        self.tutorialTom.setDNA(dna)
+        self.tutorialTom.setName(TTLocalizer.NPCToonNames[20000])
+        self.tutorialTom.setPickable(0)
+        self.tutorialTom.setPlayerType(NametagGlobals.CCNonPlayer)
+        self.tutorialTom.uniqueName = uniqueName
+        if base.config.GetString('language', 'english') == 'japanese':
+            self.tomDialogue03 = base.loadSfx('phase_3.5/audio/dial/CC_tom_movie_tutorial_reward01.ogg')
+            self.tomDialogue04 = base.loadSfx('phase_3.5/audio/dial/CC_tom_movie_tutorial_reward02.ogg')
+            self.tomDialogue05 = base.loadSfx('phase_3.5/audio/dial/CC_tom_movie_tutorial_reward03.ogg')
+            self.musicVolume = base.config.GetFloat('tutorial-music-volume', 0.5)
+        else:
+            self.tomDialogue03 = None
+            self.tomDialogue04 = None
+            self.tomDialogue05 = None
+            self.musicVolume = 0.9
+        music = base.cr.playGame.place.loader.battleMusic
+        self.track1 = Sequence(Wait(1.0), Func(self.rewardPanel.initQuestFrame, base.localAvatar, copy.deepcopy(base.localAvatar.quests)), Wait(1.0), Sequence(*self.questList), Wait(1.0), Func(self.rewardPanel.hide), Func(camera.setPosHpr, render, 34, 19.88, 3.48, -90, -2.36, 0), Func(base.localAvatar.animFSM.request, 'neutral'), Func(base.localAvatar.setPosHpr, 40.31, 22.0, -0.47, 150.0, 360.0, 0.0), Wait(0.5), Func(self.tutorialTom.reparentTo, render), Func(self.tutorialTom.show), Func(self.tutorialTom.setPosHpr, 40.29, 17.9, -0.47, 11.31, 0.0, 0.07), Func(self.tutorialTom.animFSM.request, 'TeleportIn'), Wait(1.517), Func(self.tutorialTom.animFSM.request, 'neutral'), Func(self.acceptOnce, self.tutorialTom.uniqueName('doneChatPage'), doneChat1), Func(self.tutorialTom.addActive), Func(music.setVolume, self.musicVolume), Func(self.tutorialTom.setLocalPageChat, TTLocalizer.MovieTutorialReward3, 0, None, [self.tomDialogue03]), name='tutorial-reward-3a')
+        self.track2 = Sequence(Func(self.acceptOnce, self.tutorialTom.uniqueName('doneChatPage'), doneChat2), Func(self.tutorialTom.setLocalPageChat, TTLocalizer.MovieTutorialReward4, 1, None, [self.tomDialogue04]), Func(self.tutorialTom.setPlayRate, 1.5, 'right-hand-start'), Func(self.tutorialTom.play, 'right-hand-start'), Wait(self.tutorialTom.getDuration('right-hand-start') / 1.5), Func(self.tutorialTom.loop, 'right-hand'), name='tutorial-reward-3b')
+        self.track3 = Parallel(Sequence(Func(self.tutorialTom.setPlayRate, -1.8, 'right-hand-start'), Func(self.tutorialTom.play, 'right-hand-start'), Wait(self.tutorialTom.getDuration('right-hand-start') / 1.8), Func(self.tutorialTom.animFSM.request, 'neutral'), name='tutorial-reward-3ca'), Sequence(Wait(0.5), Func(self.tutorialTom.setChatAbsolute, TTLocalizer.MovieTutorialReward5, CFSpeech | CFTimeout, self.tomDialogue05), Wait(1.0), Func(self.tutorialTom.animFSM.request, 'TeleportOut'), Wait(self.tutorialTom.getDuration('teleport')), Wait(1.0), Func(self.playTutorialReward_4, 0), name='tutorial-reward-3cb'), name='tutorial-reward-3c')
+        self.track1.start()
+        #else:
+            #self.playTutorialReward_4(0)
+        return
+
+    def playTutorialReward_4(self, value):
         base.localAvatar.setH(270)
         self.tutorialTom.removeActive()
         self.tutorialTom.delete()
         self.questList = None
         self.rewardCallback()
+        return
 
     def stop(self):
         if self.track:
@@ -384,7 +430,8 @@ class Movie(DirectObject.DirectObject):
             if ival:
                 track.append(ival)
                 camTrack.append(camIval)
-            ival, camIval = MovieHeal.doHeals(self.__findToonAttack(HEAL), self.battle.getInteractivePropTrackBonus() == HEAL)
+            hasHealBonus = self.battle.getInteractivePropTrackBonus() == HEAL
+            ival, camIval = MovieHeal.doHeals(self.__findToonAttack(HEAL), hasHealBonus)
             if ival:
                 track.append(ival)
                 camTrack.append(camIval)

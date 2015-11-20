@@ -155,18 +155,6 @@ class DistributedCannon(DistributedObject.DistributedObject):
         DistributedObject.DistributedObject.disable(self)
         return
 
-    def __unmakeGui(self):
-        if not self.madeGui:
-            return
-        self.aimPad.destroy()
-        del self.aimPad
-        del self.fireButton
-        del self.upButton
-        del self.downButton
-        del self.leftButton
-        del self.rightButton
-        self.madeGui = 0
-
     def generateInit(self):
         DistributedObject.DistributedObject.generateInit(self)
         self.taskNameFireCannon = self.taskName('fireCannon')

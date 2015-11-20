@@ -1,5 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownBattleGlobals
+from toontown.toonbase import ToontownGlobals
 from toontown.suit import SuitDNA
 BattleExperienceAINotify = DirectNotifyGlobal.directNotify.newCategory('BattleExprienceAI')
 
@@ -85,7 +86,7 @@ def getBattleExperience(numToons, activeToons, toonExp, toonSkillPtsGained, toon
     for deathRecord in suitsKilled:
         level = deathRecord['level']
         type = deathRecord['type']
-        if deathRecord['isBoss'] > 0:
+        if deathRecord['isVP'] or deathRecord['isCFO']:
             level = 0
             typeNum = SuitDNA.suitDepts.index(deathRecord['track'])
         else:
@@ -101,8 +102,10 @@ def getBattleExperience(numToons, activeToons, toonExp, toonSkillPtsGained, toon
             flags |= ToontownBattleGlobals.DLF_SKELECOG
         if deathRecord['isForeman']:
             flags |= ToontownBattleGlobals.DLF_FOREMAN
-        if deathRecord['isBoss'] > 0:
-            flags |= ToontownBattleGlobals.DLF_BOSS
+        if deathRecord['isVP']:
+            flags |= ToontownBattleGlobals.DLF_VP
+        if deathRecord['isCFO']:
+            flags |= ToontownBattleGlobals.DLF_CFO
         if deathRecord['isSupervisor']:
             flags |= ToontownBattleGlobals.DLF_SUPERVISOR
         if deathRecord['isVirtual']:
@@ -158,6 +161,11 @@ def assignRewards(activeToons, toonSkillPtsGained, suitsKilled, zoneId, helpfulT
         for i in xrange(len(ToontownBattleGlobals.Tracks)):
             uberIndex = ToontownBattleGlobals.LAST_REGULAR_GAG_LEVEL + 1
             exp = getSkillGained(toonSkillPtsGained, toon.doId, i)
+
+            # Check if the toon has a gag experience buff...
+            if toon.hasBuff(ToontownGlobals.BGagExperience):
+                exp *= ToontownGlobals.BGagExperienceMultiplier
+
             needed = ToontownBattleGlobals.Levels[i][ToontownBattleGlobals.LAST_REGULAR_GAG_LEVEL + 1] + ToontownBattleGlobals.UberSkill
             hasUber = 0
             totalExp = exp + toon.experience.getExp(i)
@@ -175,17 +183,19 @@ def assignRewards(activeToons, toonSkillPtsGained, suitsKilled, zoneId, helpfulT
                     newGagList = toon.experience.getNewGagIndexList(i, exp)
                     toon.experience.addExp(i, amount=exp)
                     toon.inventory.addItemWithList(i, newGagList)
+
         toon.b_setExperience(toon.experience.makeNetString())
         toon.d_setInventory(toon.inventory.makeNetString())
         toon.b_setAnimState('victory', 1)
 
         if simbase.air.config.GetBool('battle-passing-no-credit', True):
+            # Check if the toon was a helpful toon
             if helpfulToons and toon.doId in helpfulToons:
-                simbase.air.questManager.toonKilledCogs(toon, suitsKilled, zoneId)
+
+                # Notify the AI that the toon killed cogs
+                simbase.air.questManager.toonKilledCogs(toon, suitsKilled, zoneId, activeToonList)
                 simbase.air.cogPageManager.toonKilledCogs(toon, suitsKilled, zoneId)
+
+            # Looks like the toon wasnt too helpful...
             else:
                 BattleExperienceAINotify.debug('toon=%d unhelpful not getting killed cog quest credit' % toon.doId)
-        else:
-            simbase.air.questManager.toonKilledCogs(toon, suitsKilled, zoneId)
-            simbase.air.cogPageManager.toonKilledCogs(toon, suitsKilled, zoneId)
-    return

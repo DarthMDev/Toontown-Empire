@@ -178,7 +178,6 @@ version.cleanup()
 del version
 base.loader = base.loader
 __builtin__.loader = base.loader
-logging.debug('About to run toontown.')
 autoRun = ConfigVariableBool('toontown-auto-run', 1)
 if autoRun:
     try:

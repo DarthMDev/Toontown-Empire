@@ -133,7 +133,7 @@ class DistributedBattleBldgAI(DistributedBattleBaseAI.DistributedBattleBaseAI):
                 self.b_setState('BuildingReward')
         elif self.resumeNeedUpdate == 1:
             self.d_setMembers()
-            if len(self.resumeDeadSuits) > 0 and self.resumeLastActiveSuitDied == 0 or len(self.resumeDeadToons) > 0:
+            if len(self.resumeDeadSuits) > 0 or self.resumeLastActiveSuitDied == 0 or len(self.resumeDeadToons) > 0:
                 self.needAdjust = 1
         self.setState('WaitForJoin')
         self.resumeNeedUpdate = 0
@@ -142,10 +142,10 @@ class DistributedBattleBldgAI(DistributedBattleBaseAI.DistributedBattleBaseAI):
         self.resumeLastActiveSuitDied = 0
 
     def enterReservesJoining(self, ts=0):
-        return None
+        pass
 
     def exitReservesJoining(self, ts=0):
-        return None
+        pass
 
     def enterReward(self):
         self.timer.startCallback(FLOOR_REWARD_TIMEOUT, self.serverRewardDone)
@@ -160,6 +160,7 @@ class DistributedBattleBldgAI(DistributedBattleBaseAI.DistributedBattleBaseAI):
 
     def exitBuildingReward(self):
         self.exitResume()
+        pass
 
     def enterResume(self):
         DistributedBattleBaseAI.DistributedBattleBaseAI.enterResume(self)

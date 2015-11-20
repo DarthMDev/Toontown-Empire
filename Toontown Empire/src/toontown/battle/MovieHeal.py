@@ -7,10 +7,11 @@ from BattleBase import *
 import BattleParticles
 from BattleProps import *
 from BattleSounds import *
+import HealJokes
 import MovieCamera
 import MovieNPCSOS
 import MovieUtil
-from otp.nametag.NametagConstants import *
+from toontown.chat.ChatGlobals import *
 from toontown.effects import Splash
 from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer
@@ -179,7 +180,7 @@ def __healJoke(heal, hasInteractivePropHealBonus):
     targets = heal['target']
     ineffective = heal['sidestep']
     level = heal['level']
-    jokeIndex = heal['hpbonus'] % len(TTLocalizer.ToonHealJokes)
+    jokeIndex = heal['hpbonus'] % len(HealJokes.toonHealJokes)
     if npcId != 0:
         track = Sequence(MovieNPCSOS.teleportIn(heal, toon))
     else:
@@ -202,7 +203,7 @@ def __healJoke(heal, hasInteractivePropHealBonus):
     tracks.append(Sequence(Wait(tDoSoundAnimation), ActorInterval(toon, 'sound')))
     soundTrack = __getSoundTrack(level, 2.0, node=toon)
     tracks.append(soundTrack)
-    joke = TTLocalizer.ToonHealJokes[jokeIndex]
+    joke = HealJokes.toonHealJokes[jokeIndex]
     tracks.append(Sequence(Wait(tSpeakSetup), Func(toon.setChatAbsolute, joke[0], CFSpeech | CFTimeout)))
     tracks.append(Sequence(Wait(tSpeakPunchline), Func(toon.setChatAbsolute, joke[1], CFSpeech | CFTimeout)))
     reactTrack = Sequence(Wait(tTargetReact))

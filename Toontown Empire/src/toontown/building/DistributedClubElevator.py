@@ -347,11 +347,6 @@ class DistributedClubElevator(DistributedElevatorFSM.DistributedElevatorFSM):
     def forceDoorsClosed(self):
         pass
 
-    def enterOff(self):
-        self.lastState = self.state
-
-    def exitOff(self):
-        pass
 
     def setLawOfficeInteriorZone(self, zoneId):
         if self.localToonOnBoard:

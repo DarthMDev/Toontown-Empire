@@ -1,4 +1,4 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
 from BattleBase import *
 from BattleProps import *
@@ -290,6 +290,8 @@ def __throwPie(throw, delay, hitCount):
     pies = [pie, pie2]
     hands = toon.getRightHands()
     splatName = 'splat-' + pieName
+    if pieName == 'wedding-cake':
+        splatName = 'splat-birthday-cake'
     splat = globalPropPool.getProp(splatName)
     splatType = globalPropPool.getPropType(splatName)
     toonTrack = Sequence()
@@ -360,6 +362,7 @@ def __throwPie(throw, delay, hitCount):
         suitResponseTrack.append(Wait(delay + tPieHitsSuit))
         suitResponseTrack.append(showDamage)
         suitResponseTrack.append(updateHealthBar)
+        notify.warning('Current HP:'+str(hp))
         suitResponseTrack.append(sival)
         bonusTrack = Sequence(Wait(delay + tPieHitsSuit))
         if kbbonus > 0:
@@ -397,6 +400,8 @@ def __createWeddingCakeFlight(throw, groupHitDict, pie, pies):
     numTargets = len(throw['target'])
     pieName = pieNames[level]
     splatName = 'splat-' + pieName
+    if pieName == 'wedding-cake':
+        splatName = 'splat-birthday-cake'
     splat = globalPropPool.getProp(splatName)
     splats = [splat]
     for i in xrange(numTargets - 1):

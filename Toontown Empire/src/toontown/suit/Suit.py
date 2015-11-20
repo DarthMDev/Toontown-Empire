@@ -1,12 +1,19 @@
-from panda3d.core import *
 from direct.actor import Actor
-from direct.task.Task import Task
 from otp.avatar import Avatar
-from toontown.battle import BattleProps, SuitBattleGlobals
-from otp.nametag.NametagGroup import NametagGroup
-from toontown.toonbase import TTLocalizer, ToontownGlobals
+import SuitDNA
+from toontown.toonbase import ToontownGlobals
+from pandac.PandaModules import *
+from toontown.battle import SuitBattleGlobals
+from toontown.nametag import NametagGlobals
+from direct.task.Task import Task
+from toontown.battle import BattleProps
+from toontown.toonbase import TTLocalizer
+from pandac.PandaModules import VirtualFileMountHTTP, VirtualFileSystem, Filename, DSearchPath
+from direct.showbase import AppRunnerGlobal
+from toontown.nametag import NametagGroup
+import string
+import os
 from toontown.suit import SuitGlobals
-import SuitDNA, string
 
 aSize = 6.06
 bSize = 5.29
@@ -66,12 +73,10 @@ hh = (('pen-squirt', 'fountain-pen', 7),
  ('glower', 'glower', 5),
  ('throw-paper', 'throw-paper', 5),
  ('magic1', 'magic1', 5),
- ('magic3', 'magic3', 5),
  ('roll-o-dex', 'roll-o-dex', 5))
 cr = (('pickpocket', 'pickpocket', 5), ('throw-paper', 'throw-paper', 3.5), ('glower', 'glower', 5))
 tbc = (('cigar-smoke', 'cigar-smoke', 8),
  ('glower', 'glower', 5),
- ('magic1', 'magic1', 5),
  ('song-and-dance', 'song-and-dance', 8),
  ('golf-club-swing', 'golf-club-swing', 5))
 cc = (('speak', 'speak', 5),
@@ -95,13 +100,11 @@ ms = (('effort', 'effort', 5),
 tf = (('phone', 'phone', 5),
  ('smile', 'smile', 5),
  ('throw-object', 'throw-object', 5),
- ('magic3', 'magic3', 5),
  ('glower', 'glower', 5))
 m = (('speak', 'speak', 5),
  ('magic2', 'magic2', 5),
  ('magic1', 'magic1', 5),
- ('golf-club-swing', 'golf-club-swing', 5),
- ('cigar-smoke', 'cigar-smoke', 8))
+ ('golf-club-swing', 'golf-club-swing', 5))
 mh = (('magic1', 'magic1', 5),
  ('smile', 'smile', 5),
  ('golf-club-swing', 'golf-club-swing', 5),
@@ -116,7 +119,7 @@ bc = (('phone', 'phone', 5), ('hold-pencil', 'hold-pencil', 5))
 nc = (('phone', 'phone', 5), ('throw-object', 'throw-object', 5))
 mb = (('magic1', 'magic1', 5), ('throw-paper', 'throw-paper', 3.5))
 ls = (('throw-paper', 'throw-paper', 5), ('throw-object', 'throw-object', 5), ('hold-pencil', 'hold-pencil', 5))
-rb = (('glower', 'glower', 5), ('cigar-smoke', 'cigar-smoke', 8), ('magic1', 'magic1', 5), ('golf-club-swing', 'golf-club-swing', 5))
+rb = (('glower', 'glower', 5), ('magic1', 'magic1', 5), ('golf-club-swing', 'golf-club-swing', 5))
 bf = (('pickpocket', 'pickpocket', 5),
  ('rubber-stamp', 'rubber-stamp', 5),
  ('shredder', 'shredder', 3.5),
@@ -135,7 +138,7 @@ ac = (('throw-object', 'throw-object', 5),
  ('stomp', 'stomp', 5),
  ('phone', 'phone', 5),
  ('throw-paper', 'throw-paper', 5))
-bs = (('magic1', 'magic1', 5), ('cigar-smoke', 'cigar-smoke', 8), ('throw-paper', 'throw-paper', 5), ('finger-wag', 'fingerwag', 5))
+bs = (('magic1', 'magic1', 5), ('throw-paper', 'throw-paper', 5), ('finger-wag', 'fingerwag', 5))
 sd = (('magic2', 'magic2', 5),
  ('quick-jump', 'jump', 6),
  ('stomp', 'stomp', 5),
@@ -185,7 +188,8 @@ def loadModels():
         print 'Preloading suits...'
         for filepath in SuitParts:
             Preloaded[filepath] = loader.loadModel(filepath)
-            Preloaded[filepath].flattenMedium()
+            if filepath != 'phase_3.5/models/char/suitA-mod':
+                Preloaded[filepath].flattenMedium()
 
 def loadTutorialSuit():
     loader.loadModel('phase_3.5/models/char/suitC-mod')
@@ -207,6 +211,21 @@ def loadSuitModelsAndAnims(level, flag = 0):
             filepath = 'phase_' + str(phase) + model + 'heads'
             Preloaded[filepath] = loader.loadModel(filepath)
 
+def cogExists(filePrefix):
+    searchPath = DSearchPath()
+    if AppRunnerGlobal.appRunner:
+        searchPath.appendDirectory(Filename.expandFrom('$TT_3_5_ROOT/phase_3.5'))
+    else:
+        basePath = os.path.expandvars('$TTMODELS') or './ttmodels'
+        searchPath.appendDirectory(Filename.fromOsSpecific(basePath + '/built/phase_3.5'))
+    filePrefix = filePrefix.strip('/')
+    pfile = Filename(filePrefix)
+    found = vfs.resolveFilename(pfile, searchPath)
+    if not found:
+        return False
+    return True
+
+
 def loadSuitAnims(suit, flag = 1):
     if suit in SuitDNA.suitHeadTypes:
         try:
@@ -225,6 +244,7 @@ def loadSuitAnims(suit, flag = 1):
             loader.loadModel(animName)
         else:
             loader.unloadModel(animName)
+
 
 def loadDialog(level):
     global SuitDialogArray
@@ -312,12 +332,12 @@ class Suit(Avatar.Avatar):
     healthGlowColors = (Vec4(0.25, 1, 0.25, 0.5),#Green
      Vec4(0.5, 1, 0.25, .5),#1 Green-Yellow
      Vec4(0.75, 1, 0.25, .5),#2 Yellow-Green
-     Vec4(1, 1, 0.25, 0.5),#Yellow
+     Vec4(1, 1, 0.25, 0.5),#Yellow 
      Vec4(1, 0.866, 0.25, .5),#4 Yellow-Orange
      Vec4(1, 0.6, 0.25, .5),#5 Orange-Yellow
      Vec4(1, 0.5, 0.25, 0.5),#6 Orange
-     Vec4(1, 0.25, 0.25, 0.5),#7 Red-Orange
-     Vec4(1, 0.25, 0.25, 0.5),#8 Red
+     Vec4(1, 0.25, 0.25, 0.5),#7 Red-Orange    
+     Vec4(1, 0.25, 0.25, 0.5),#8 Red     
      Vec4(0.3, 0.3, 0.3, 0))#9 Grey
     medallionColors = {'c': Vec4(0.863, 0.776, 0.769, 1.0),
      's': Vec4(0.843, 0.745, 0.745, 1.0),
@@ -333,8 +353,7 @@ class Suit(Avatar.Avatar):
 
         Avatar.Avatar.__init__(self)
         self.setFont(ToontownGlobals.getSuitFont())
-        self.nametag.setSpeechFont(ToontownGlobals.getSuitFont())
-        self.setPlayerType(NametagGroup.CCSuit)
+        self.setPlayerType(NametagGlobals.CCSuit)
         self.setPickable(1)
         self.leftHand = None
         self.rightHand = None
@@ -401,22 +420,21 @@ class Suit(Avatar.Avatar):
         self.isSkeleton = 0
 
         if dna.name in SuitGlobals.suitProperties:
-            properties = SuitGlobals.suitProperties[dna.name]
-            self.scale = properties[SuitGlobals.SCALE_INDEX]
-            self.handColor = properties[SuitGlobals.HAND_COLOR_INDEX]
+            self.scale = SuitGlobals.suitProperties[dna.name][SuitGlobals.SCALE_INDEX]
+            self.handColor = SuitGlobals.suitProperties[dna.name][SuitGlobals.HAND_COLOR_INDEX]
 
             if dna.name == 'cc':
                 self.headColor = SuitGlobals.ColdCallerHead
 
             self.generateBody()
 
-            if properties[SuitGlobals.HEAD_TEXTURE_INDEX]:
-                self.headTexture = properties[SuitGlobals.HEAD_TEXTURE_INDEX]
+            if SuitGlobals.suitProperties[dna.name][SuitGlobals.HEAD_TEXTURE_INDEX]:
+                self.headTexture = SuitGlobals.suitProperties[dna.name][SuitGlobals.HEAD_TEXTURE_INDEX]
 
-            for head in properties[SuitGlobals.HEADS_INDEX]:
+            for head in SuitGlobals.suitProperties[dna.name][SuitGlobals.HEADS_INDEX]:
                 self.generateHead(head)
 
-            self.setHeight(properties[SuitGlobals.HEIGHT_INDEX])
+            self.setHeight(SuitGlobals.suitProperties[dna.name][SuitGlobals.HEIGHT_INDEX])
 
         self.setName(SuitBattleGlobals.SuitAttributes[dna.name]['name'])
         self.getGeomNode().setScale(self.scale)
@@ -495,7 +513,7 @@ class Suit(Avatar.Avatar):
         modelRoot.find('**/torso').setTexture(torsoTex, 1)
         modelRoot.find('**/arms').setTexture(armTex, 1)
         modelRoot.find('**/legs').setTexture(legTex, 1)
-        modelRoot.find('**/hands').setColorScale(self.handColor)
+        modelRoot.find('**/hands').setColor(self.handColor)
         self.leftHand = self.find('**/joint_Lhold')
         self.rightHand = self.find('**/joint_Rhold')
         self.shadowJoint = self.find('**/joint_shadow')
@@ -534,7 +552,80 @@ class Suit(Avatar.Avatar):
         modelRoot.find('**/arms').setTexture(armTex, 1)
         modelRoot.find('**/legs').setTexture(legTex, 1)
         modelRoot.find('**/hands').setTexture(handTex, 1)
+        
+    def makeVirtual(self, modelRoot = None):
+        if not modelRoot:
+            modelRoot = self
+        self.isVirtual = 1
+        parts = self.findAllMatches('*')           
+        for thingIndex in xrange(0, parts.getNumPaths()):
+            thing = parts[thingIndex]
+            if thing.getName() not in ('joint_attachMeter', 'joint_nameTag', 'def_nameTag', 'nametag3d'):
+                thing.setColorScale(1.0, 0.1, 0.1, 0.95)
+                thing.setAttrib(ColorBlendAttrib.make(ColorBlendAttrib.MAdd))
+                thing.setDepthWrite(False)
+                thing.setBin('fixed', 1)
+        
+    def makeCEVirtual(self, modelRoot = None):
+        if not modelRoot:
+            modelRoot = self
+        self.isVirtual = 1
+        parts = self.findAllMatches('*')           
+        for thingIndex in xrange(0, parts.getNumPaths()):
+            thing = parts[thingIndex]
+            if thing.getName() not in ('joint_attachMeter', 'joint_nameTag', 'def_nameTag', 'nametag3d'):
+                self.notify.warning('Virtualizing %s' % thing.getName())
+                thing.setColorScale(0.25, 0.25, 1.0, 1.0)
+                thing.setAttrib(ColorBlendAttrib.make(ColorBlendAttrib.MAdd))
+                thing.setDepthWrite(False)
+                thing.setBin('fixed', 1)
 
+    def makeStageVirtual(self, modelRoot = None):
+        if not modelRoot:
+            modelRoot = self
+        self.isVirtual = 1
+        parts = self.findAllMatches('*')           
+        for thingIndex in xrange(0, parts.getNumPaths()):
+            thing = parts[thingIndex]
+            if thing.getName() not in ('joint_attachMeter', 'joint_nameTag', 'def_nameTag', 'nametag3d'):
+                self.notify.warning('Virtualizing %s' % thing.getName())
+                thing.setColorScale(1.0, 0.0, 0.0, 1.0)
+                thing.setAttrib(ColorBlendAttrib.make(ColorBlendAttrib.MAdd))
+                thing.setDepthWrite(False)
+                thing.setBin('fixed', 1)   
+
+    def makeRental(self, modelRoot = None):
+        if not modelRoot:
+            modelRoot = self.getGeomNode()
+        dept = self.style.dept
+        type = ''
+        if dept == 'c':
+            type = 'bossbot'
+        elif dept == 'l':
+            type = 'lawbot'
+        elif dept == 'm':
+            type = 'cashbot'
+        else:
+            type = 'sellbot'
+        torsoTex = loader.loadTexture('phase_3.5/maps/tt_t_ene_%sRental_blazer.jpg' % type)
+        torsoTex.setMinfilter(Texture.FTLinearMipmapLinear)
+        torsoTex.setMagfilter(Texture.FTLinear)        
+        legTex = loader.loadTexture('phase_3.5/maps/tt_t_ene_%sRental_leg.jpg' % type)
+        legTex.setMinfilter(Texture.FTLinearMipmapLinear)
+        legTex.setMagfilter(Texture.FTLinear)
+        armTex = loader.loadTexture('phase_3.5/maps/tt_t_ene_%sRental_sleeve.jpg' % type)
+        armTex.setMinfilter(Texture.FTLinearMipmapLinear)
+        armTex.setMagfilter(Texture.FTLinear)        
+        #handTex = loader.loadTexture('phase_3.5/maps/tt_t_ene_%sRental_hand.jpg' % type)
+        #armTex.setMinfilter(Texture.FTLinearMipmapLinear)
+        #armTex.setMagfilter(Texture.FTLinear)
+        self.isRental = 1
+        modelRoot.find('**/torso').setTexture(torsoTex, 1)
+        modelRoot.find('**/arms').setTexture(armTex, 1)
+        modelRoot.find('**/legs').setTexture(legTex, 1)
+        #modelRoot.find('**/hands').setTexture(handTex, 1)
+        self.notify.warning('Finished makeRental')
+        
     def generateHead(self, headType):
         filePrefix, phase = ModelDict[self.style.body]
         filepath = 'phase_' + str(phase) + filePrefix + 'heads'
@@ -578,8 +669,14 @@ class Suit(Avatar.Avatar):
         icons = loader.loadModel('phase_3/models/gui/cog_icons')
         dept = self.style.dept
         chestNull = self.find('**/joint_attachMeter')
-        if dept in SuitDNA.suitDeptModelPaths:
-            self.corpMedallion = icons.find(SuitDNA.suitDeptModelPaths[dept]).copyTo(chestNull)
+        if dept == 'c':
+            self.corpMedallion = icons.find('**/CorpIcon').copyTo(chestNull)
+        elif dept == 's':
+            self.corpMedallion = icons.find('**/SalesIcon').copyTo(chestNull)
+        elif dept == 'l':
+            self.corpMedallion = icons.find('**/LegalIcon').copyTo(chestNull)
+        elif dept == 'm':
+            self.corpMedallion = icons.find('**/MoneyIcon').copyTo(chestNull)
         self.corpMedallion.setPosHprScale(0.02, 0.05, 0.04, 180.0, 0.0, 0.0, 0.51, 0.51, 0.51)
         self.corpMedallion.setColor(self.medallionColors[dept])
         icons.removeNode()
@@ -623,15 +720,15 @@ class Suit(Avatar.Avatar):
         elif health > 0.7:
             condition = 3#Yellow
         elif health > 0.6:
-            condition = 4
+            condition = 4            
         elif health > 0.5:
-            condition = 5
+            condition = 5           
         elif health > 0.3:
             condition = 6#Orange
         elif health > 0.15:
             condition = 7
         elif health > 0.05:
-            condition = 8#Red
+            condition = 8#Red           
         elif health > 0.0:
             condition = 9#Blinking Red
         else:
@@ -652,7 +749,7 @@ class Suit(Avatar.Avatar):
 
     def __blinkRed(self, task):
         if not self.healthBar:
-            return Task.done
+            return Task.done    
         self.healthBar.setColor(self.healthColors[8], 1)
         self.healthBarGlow.setColor(self.healthGlowColors[8], 1)
         if self.healthCondition == 7:

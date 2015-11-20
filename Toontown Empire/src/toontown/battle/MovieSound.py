@@ -83,7 +83,6 @@ def __getSuitTrack(sound, lastSoundThatHit, delay, hitCount, targets, totalDamag
                 breakEffect.setDepthWrite(0)
                 breakEffect.setDepthTest(0)
                 breakEffect.setTwoSided(1)
-                breakEffect.setBin('fixed', 10)
                 soundEffect = globalBattleSoundCache.getSound(hitSoundFiles[0])
             suitTrack.append(Wait(delay + tSuitReact))
             if isUber:

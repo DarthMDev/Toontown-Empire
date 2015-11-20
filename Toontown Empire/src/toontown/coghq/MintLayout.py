@@ -833,6 +833,7 @@ class MintLayout:
                 return result
             else:
                 del chosenBattleRooms[-1:]
+                break
         else:
             return
 

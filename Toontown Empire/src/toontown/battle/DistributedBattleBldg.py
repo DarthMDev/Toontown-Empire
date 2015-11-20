@@ -2,7 +2,7 @@ from direct.actor import Actor
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import State
 from direct.interval.IntervalGlobal import *
-from panda3d.core import *
+from pandac.PandaModules import *
 import random
 
 from BattleBase import *
@@ -10,8 +10,9 @@ import DistributedBattleBase
 import MovieUtil
 import SuitBattleGlobals
 from otp.avatar import Emote
-from otp.nametag.NametagConstants import *
-from otp.nametag import NametagGlobals
+from toontown.chat.ChatGlobals import *
+from toontown.nametag import NametagGlobals
+from toontown.nametag.NametagGlobals import *
 from toontown.suit import Suit
 from toontown.suit import SuitDNA
 from toontown.toon import TTEmote
@@ -133,7 +134,7 @@ class DistributedBattleBldg(DistributedBattleBase.DistributedBattleBase):
         camPos = Point3(0, -6, 4)
         camHpr = Vec3(0, 0, 0)
         camTrack.append(Func(camera.reparentTo, base.localAvatar))
-        camTrack.append(Func(setCamFov, settings['fov']))
+        camTrack.append(Func(setCamFov, ToontownGlobals.DefaultCameraFov))
         camTrack.append(Func(camera.setPosHpr, camPos, camHpr))
         mtrack = Parallel(suitTrack, toonTrack, camTrack)
         done = Func(callback)
@@ -188,14 +189,15 @@ class DistributedBattleBldg(DistributedBattleBase.DistributedBattleBase):
         self.notify.debug('exitReward()')
         self.clearInterval(self.uniqueName('floorReward'))
         self._removeMembersKeep()
-        NametagGlobals.setMasterArrowsOn(1)
+        NametagGlobals.setWant2dNametags(True)
         for toon in self.toons:
             toon.startSmooth()
 
     def enterBuildingReward(self, ts):
         self.delayDeleteMembers()
         if self.hasLocalToon():
-            NametagGlobals.setMasterArrowsOn(0)
+            NametagGlobals.setWant2dNametags(False)
+            pass
         self.movie.playReward(ts, self.uniqueName('building-reward'), self.__handleBuildingRewardDone, noSkip=True)
 
     def __handleBuildingRewardDone(self):
@@ -207,7 +209,7 @@ class DistributedBattleBldg(DistributedBattleBase.DistributedBattleBase):
     def exitBuildingReward(self):
         self.movie.resetReward(finish=1)
         self._removeMembersKeep()
-        NametagGlobals.setMasterArrowsOn(1)
+        NametagGlobals.setWant2dNametags(True)
 
     def enterResume(self, ts=0):
         if self.hasLocalToon():
