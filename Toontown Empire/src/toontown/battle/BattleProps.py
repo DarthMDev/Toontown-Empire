@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.actor import Actor
 from direct.directnotify import DirectNotifyGlobal
 from otp.otpbase import OTPGlobals
@@ -197,7 +197,6 @@ Props = ((5, 'partyBall', 'partyBall'),
   'SZ_splashdown-chan'))
 CreampieColor = VBase4(250.0 / 255.0, 241.0 / 255.0, 24.0 / 255.0, 1.0)
 FruitpieColor = VBase4(55.0 / 255.0, 40.0 / 255.0, 148.0 / 255.0, 1.0)
-FruittartColor = VBase4(155.0 / 255.0, 120.0 / 255.0, 110.0 / 255.0, 1.0)
 BirthdayCakeColor = VBase4(253.0 / 255.0, 119.0 / 255.0, 220.0 / 255.0, 1.0)
 SnowballColor = VBase4(1.0, 1.0, 1.0, 1.0)
 Splats = {'tart': (0.3, FruitpieColor),
@@ -205,7 +204,8 @@ Splats = {'tart': (0.3, FruitpieColor),
  'creampie-slice': (0.5, CreampieColor),
  'fruitpie': (0.7, FruitpieColor),
  'creampie': (0.7, CreampieColor),
- 'birthday-cake': (0.9, BirthdayCakeColor)}
+ 'birthday-cake': (0.9, BirthdayCakeColor),
+ 'wedding-cake': (0.9, BirthdayCakeColor)}
 Variants = ('tart',
  'fruitpie',
  'splat-tart',
@@ -217,6 +217,7 @@ Variants = ('tart',
  'splat-fruitpie',
  'splat-creampie',
  'splat-birthday-cake',
+ 'splat-wedding-cake',
  'splash-from-splat',
  'clip-on-tie',
  'lips',
@@ -303,7 +304,6 @@ class PropPool:
             self.props[name].setScale(0.5)
         elif name == 'fruitpie':
             self.props[name].setScale(0.75)
-            self.props[name].setColor(FruittartColor)
         elif name == 'double-windsor':
             self.props[name].setScale(1.5)
         elif name[:6] == 'splat-':

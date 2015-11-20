@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.toonbase.ToontownBattleGlobals import *
 from direct.task.Timer import *
 import math
@@ -40,7 +40,7 @@ SOUND = SOUND_TRACK
 THROW = THROW_TRACK
 SQUIRT = SQUIRT_TRACK
 DROP = DROP_TRACK
-TOON_ATTACK_TIME = 12.0
+TOON_ATTACK_TIME = 15.0
 SUIT_ATTACK_TIME = 12.0
 TOON_TRAP_DELAY = 0.8
 TOON_SOUND_DELAY = 1.0
@@ -57,10 +57,7 @@ TOON_FIRE_SUIT_DELAY = 1.0
 REWARD_TIMEOUT = 120
 FLOOR_REWARD_TIMEOUT = 4
 BUILDING_REWARD_TIMEOUT = 300
-try:
-    CLIENT_INPUT_TIMEOUT = base.config.GetFloat('battle-input-timeout', TTLocalizer.BBbattleInputTimeout)
-except:
-    CLIENT_INPUT_TIMEOUT = simbase.config.GetFloat('battle-input-timeout', TTLocalizer.BBbattleInputTimeout)
+CLIENT_INPUT_TIMEOUT = config.GetFloat('battle-input-timeout', TTLocalizer.BBbattleInputTimeout)
 
 def levelAffectsGroup(track, level):
     return attackAffectsGroup(track, level)
@@ -165,7 +162,6 @@ SERVER_BUFFER_TIME = 2.0
 SERVER_INPUT_TIMEOUT = CLIENT_INPUT_TIMEOUT + SERVER_BUFFER_TIME
 MAX_JOIN_T = TTLocalizer.BBbattleInputTimeout
 FACEOFF_TAUNT_T = 3.5
-FACEOFF_LOOK_AT_PROP_T = 6
 ELEVATOR_T = 4.0
 BATTLE_SMALL_VALUE = 1e-07
 MAX_EXPECTED_DISTANCE_FROM_BATTLE = 50.0
@@ -230,6 +226,8 @@ class BattleBase:
      posA]
     suitSpeed = 4.8
     toonSpeed = 8.0
+    maxTimeToon = 3.0
+    maxTimeSuit = 4.0
 
     def __init__(self):
         self.pos = Point3(0, 0, 0)
@@ -257,15 +255,15 @@ class BattleBase:
         facing.normalize()
         suitdest = Point3(centerpos - Point3(facing * 6.0))
         dist = Vec3(suitdest - suitpos).length()
-        return dist / BattleBase.suitSpeed
+        return min(dist / BattleBase.suitSpeed, BattleBase.maxTimeSuit)
 
     def calcSuitMoveTime(self, pos0, pos1):
         dist = Vec3(pos0 - pos1).length()
-        return dist / BattleBase.suitSpeed
+        return min(dist / BattleBase.suitSpeed, BattleBase.maxTimeSuit)
 
     def calcToonMoveTime(self, pos0, pos1):
         dist = Vec3(pos0 - pos1).length()
-        return dist / BattleBase.toonSpeed
+        return min(dist / BattleBase.toonSpeed, BattleBase.maxTimeToon)
 
     def buildJoinPointList(self, avPos, destPos, toon = 0):
         minDist = 999999.0

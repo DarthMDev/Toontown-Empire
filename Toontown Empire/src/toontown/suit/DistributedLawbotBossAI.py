@@ -29,6 +29,7 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
     hitCountDamage = 35
     numPies = 10
     maxToonLevels = 77
+    BossName = "CJ"
 
     def __init__(self, air):
         DistributedBossCogAI.DistributedBossCogAI.__init__(self, air, 'l')
@@ -517,6 +518,19 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
         self.notify.debug('battleDifficulty = %d' % self.battleDifficulty)
         self.numToonsAtStart = len(self.involvedToons)
 
+    def getToonDifficulty(self):
+        totalCogSuitTier = 0
+        totalToons = 0
+
+        for toonId in self.involvedToons:
+            toon = simbase.air.doId2do.get(toonId)
+            if toon:
+                totalToons += 1
+                totalCogSuitTier += toon.cogTypes[1]
+
+        averageTier = math.floor(totalCogSuitTier / totalToons) + 1
+        return int(averageTier)
+
     def __saySomething(self, task = None):
         index = None
         avId = 0
@@ -620,11 +634,11 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
          'track': self.dna.dept,
          'isSkelecog': 0,
          'isForeman': 0,
-         'isVP': 1,
-         'isCFO': 0,
+         'isBoss': 1,
          'isSupervisor': 0,
          'isVirtual': 0,
          'activeToons': self.involvedToons[:]})
+        self.addStats()
         self.barrier = self.beginBarrier('Victory', self.involvedToons, 30, self.__doneVictory)
         return
 
@@ -633,8 +647,8 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
         self.b_setState('Reward')
         BattleExperienceAI.assignRewards(self.involvedToons, self.toonSkillPtsGained, self.suitsKilled, ToontownGlobals.dept2cogHQ(self.dept), self.helpfulToons)
         preferredDept = random.randrange(len(SuitDNA.suitDepts))
-        typeWeights = ['single'] * 70 + ['building'] * 27 + ['invasion'] * 3
-        preferredSummonType = random.choice(typeWeights)
+        #typeWeights = ['single'] * 70 + ['building'] * 27 + ['invasion'] * 3
+        preferredSummonType = random.choice(['building', 'invasion', 'cogdo', 'skelinvasion', 'waiterinvasion', 'v2invasion'])
         for toonId in self.involvedToons:
             toon = self.air.doId2do.get(toonId)
             if toon:
@@ -647,22 +661,23 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
         summonType = prefSummonType
         hasSummon = toon.hasParticularCogSummons(prefDeptIndex, cogLevel, prefSummonType)
         self.notify.debug('trying to find another reward')
-        if not toon.hasParticularCogSummons(prefDeptIndex, cogLevel, 'single'):
-            summonType = 'single'
-        elif not toon.hasParticularCogSummons(prefDeptIndex, cogLevel, 'building'):
+        if not toon.hasParticularCogSummons(prefDeptIndex, cogLevel, 'building'):
             summonType = 'building'
         elif not toon.hasParticularCogSummons(prefDeptIndex, cogLevel, 'invasion'):
             summonType = 'invasion'
+        elif not toon.hasParticularCogSummons(prefDeptIndex, cogLevel, 'cogdo'):
+            summonType = 'cogdo'
+        elif not toon.hasParticularCogSummons(prefDeptIndex, cogLevel, 'skelinvasion'):
+            summonType = 'skelinvasion'
+        elif not toon.hasParticularCogSummons(prefDeptIndex, cogLevel, 'waiterinvasion'):
+            summonType = 'waiterinvasion'
+        elif not toon.hasParticularCogSummons(prefDeptIndex, cogLevel, 'v2invasion'):
+            summonType = 'v2invasion'
         else:
             foundOne = False
             for curDeptIndex in xrange(len(SuitDNA.suitDepts)):
                 if not toon.hasParticularCogSummons(curDeptIndex, cogLevel, prefSummonType):
                     deptIndex = curDeptIndex
-                    foundOne = True
-                    break
-                elif not toon.hasParticularCogSummons(curDeptIndex, cogLevel, 'single'):
-                    deptIndex = curDeptIndex
-                    summonType = 'single'
                     foundOne = True
                     break
                 elif not toon.hasParticularCogSummons(curDeptIndex, cogLevel, 'building'):
@@ -675,15 +690,35 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
                     deptIndex = curDeptIndex
                     foundOne = True
                     break
+                elif not toon.hasParticularCogSummons(curDeptIndex, cogLevel, 'cogdo'):
+                    summonType = 'cogdo'
+                    deptIndex = curDeptIndex
+                    foundOne = True
+                    break
+                elif not toon.hasParticularCogSummons(curDeptIndex, cogLevel, 'skelinvasion'):
+                    summonType = 'skelinvasion'
+                    deptIndex = curDeptIndex
+                    foundOne = True
+                    break
+                elif not toon.hasParticularCogSummons(curDeptIndex, cogLevel, 'waiterinvasion'):
+                    summonType = 'waiterinvasion'
+                    deptIndex = curDeptIndex
+                    foundOne = True
+                    break
+                elif not toon.hasParticularCogSummons(curDeptIndex, cogLevel, 'v2invasion'):
+                    summonType = 'v2invasion'
+                    deptIndex = curDeptIndex
+                    foundOne = True
+                    break
 
             possibleCogLevel = range(SuitDNA.suitsPerDept)
             possibleDeptIndex = range(len(SuitDNA.suitDepts))
-            possibleSummonType = ['single', 'building', 'invasion']
-            typeWeights = ['single'] * 70 + ['building'] * 27 + ['invasion'] * 3
+            possibleSummonType = ['building', 'invasion', 'cogdo', 'skelinvasion', 'waiterinvasion', 'v2invasion']
+            #typeWeights = ['single'] * 70 + ['building'] * 27 + ['invasion'] * 3
             if not foundOne:
-                 for i in xrange(5):
+                for i in xrange(5):
                     randomCogLevel = random.choice(possibleCogLevel)
-                    randomSummonType = random.choice(typeWeights)
+                    randomSummonType = random.choice(possibleSummonType)
                     randomDeptIndex = random.choice(possibleDeptIndex)
                     if not toon.hasParticularCogSummons(randomDeptIndex, randomCogLevel, randomSummonType):
                         foundOne = True
@@ -870,7 +905,7 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
         self.b_setBattleDifficulty(self.toonLevels)
 
 
-@magicWord(category=CATEGORY_PROGRAMMER)
+@magicWord(category=CATEGORY_ADMINISTRATOR)
 def skipCJ():
     """
     Skips to the final round of the CJ.
@@ -890,7 +925,7 @@ def skipCJ():
     boss.b_setState('PrepareBattleThree')
 
 
-@magicWord(category=CATEGORY_PROGRAMMER)
+@magicWord(category=CATEGORY_ADMINISTRATOR)
 def killCJ():
     """
     Kills the CJ.

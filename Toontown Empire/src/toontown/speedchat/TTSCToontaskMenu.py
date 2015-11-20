@@ -30,10 +30,7 @@ class TTSCToontaskMenu(SCMenu):
 
         for task in lt.quests:
             taskId, fromNpcId, toNpcId, rewardId, toonProgress = task
-            try:
-               q = Quests.getQuest(taskId, base.localAvatar.doId)
-            except:
-                continue 
+            q = Quests.getQuest(taskId)
             if q is None:
                 continue
             msgs = q.getSCStrings(toNpcId, toonProgress)

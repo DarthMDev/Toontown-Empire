@@ -6,7 +6,7 @@ from toontown.suit import DistributedSuitBaseAI
 import SuitBattleGlobals
 import BattleExperienceAI
 from toontown.toon import NPCToons
-from toontown.pets import PetTricks, DistributedPetProxyAI
+from toontown.pets import PetTricks
 from toontown.hood import ZoneUtil
 from direct.showbase.PythonUtil import lerp
 import sys
@@ -27,13 +27,6 @@ class BattleCalculatorAI:
      40,
      50,
      60]
-    NumRoundsLured = [2,
-     2,
-     3,
-     3,
-     4,
-     4,
-     15]
     TRAP_CONFLICT = -2
     APPLY_HEALTH_ADJUSTMENTS = 1
     TOONS_TAKE_NO_DAMAGE = 0
@@ -98,15 +91,7 @@ class BattleCalculatorAI:
         debug = self.notify.getDebug()
         attack = self.battle.toonAttacks[attackIndex]
         atkTrack, atkLevel = self.__getActualTrackLevel(attack)
-        
-        hasAccuracyBuff = False
-        toon = simbase.air.doId2do.get(attack[TOON_ID_COL])
-        if toon:
-            if toon.hasBuff(BGagAccuracy):
-                if not ZoneUtil.isDynamicZone(toon.zoneId):
-                    if ZoneUtil.getWhereName(toon.zoneId, True) in ('street', 'factoryExterior', 'cogHQExterior'):
-                        hasAccuracyBuff = True
-            
+
         if atkTrack == NPCSOS:
             return (1, 95)
         if atkTrack == FIRE:
@@ -171,8 +156,7 @@ class BattleCalculatorAI:
         else:
             randChoice = random.randint(0, 99)
         propAcc = AvPropAccuracy[atkTrack][atkLevel]
-        if hasAccuracyBuff:
-            propAcc *= BGagAccuracyMultiplier
+        propAcc = min(propAcc * 1.3, 100)
         if atkTrack == LURE:
             treebonus = self.__toonCheckGagBonus(attack[TOON_ID_COL], atkTrack, atkLevel)
             propBonus = self.__checkPropBonus(atkTrack)
@@ -260,10 +244,7 @@ class BattleCalculatorAI:
         return
 
     def __checkPropBonus(self, track):
-        result = False
-        if self.battle.getInteractivePropTrackBonus() == track:
-            result = True
-        return result
+        return self.battle.getInteractivePropTrackBonus() == track
 
     def __targetDefense(self, suit, atkTrack):
         if atkTrack == HEAL:
@@ -444,7 +425,7 @@ class BattleCalculatorAI:
                         if not self.__suitIsLured(targetId, prevRound=1):
                             if not self.__combatantDead(targetId, toon=toonTarget):
                                 validTargetAvail = 1
-                            rounds = self.NumRoundsLured[atkLevel]
+                            rounds = NumRoundsLured[atkLevel]
                             wakeupChance = 100 - atkAcc * 2
                             npcLurer = attack[TOON_TRACK_COL] == NPCSOS
                             currLureId = self.__addLuredSuitInfo(targetId, -1, rounds, wakeupChance, toonId, atkLevel, lureId=currLureId, npc=npcLurer)
@@ -474,7 +455,7 @@ class BattleCalculatorAI:
                     if not self.__suitIsLured(targetId, prevRound=1):
                         if not self.__combatantDead(targetId, toon=toonTarget):
                             validTargetAvail = 1
-                        rounds = self.NumRoundsLured[atkLevel]
+                        rounds = NumRoundsLured[atkLevel]
                         wakeupChance = 100 - atkAcc * 2
                         npcLurer = attack[TOON_TRACK_COL] == NPCSOS
                         currLureId = self.__addLuredSuitInfo(targetId, -1, rounds, wakeupChance, toonId, atkLevel, lureId=currLureId, npc=npcLurer)
@@ -518,18 +499,14 @@ class BattleCalculatorAI:
                 elif atkTrack == FIRE:
                     suit = self.battle.findSuit(targetId)
                     if suit:
-                        costToFire = 1
-                        abilityToFire = toon.getPinkSlips()
-                        numLeft = abilityToFire - costToFire
-                        if numLeft < 0:
-                            numLeft = 0
-                        toon.b_setPinkSlips(numLeft)
-                        if costToFire > abilityToFire:
-                            simbase.air.writeServerEvent('suspicious', toonId, 'Toon attempting to fire a %s cost cog with %s pinkslips' % (costToFire, abilityToFire))
-                            print 'Not enough PinkSlips to fire cog - print a warning here'
+                        slips = toon.getPinkSlips()
+
+                        if slips < 1:
+                            simbase.air.writeServerEvent('suspicious', toonId, 'Toon attempting to fire a cog without any pinkslips')
                         else:
                             suit.skeleRevives = 0
                             attackDamage = suit.getHP()
+                            toon.b_setPinkSlips(slips - 1)
                     else:
                         attackDamage = 0
                     bonus = 0
@@ -1175,9 +1152,7 @@ class BattleCalculatorAI:
             toonId = targetList[currTarget]
             toon = self.battle.getToon(toonId)
             result = 0
-            if toon and toon.immortalMode:
-                result = 1
-            elif self.TOONS_TAKE_NO_DAMAGE:
+            if (toon and toon.immortalMode) or self.TOONS_TAKE_NO_DAMAGE:
                 result = 0
             elif self.__suitAtkHit(attackIndex):
                 atkType = attack[SUIT_ATK_COL]
@@ -1396,10 +1371,6 @@ class BattleCalculatorAI:
             self.__printSuitAtkStats()
         return None
 
-    def __calculateFiredCogs():
-        import pdb
-        pdb.set_trace()
-
     def toonLeftBattle(self, toonId):
         if self.notify.getDebug():
             self.notify.debug('toonLeftBattle()' + str(toonId))
@@ -1559,9 +1530,7 @@ class BattleCalculatorAI:
         return self.__suitIsLured(suitId) and self.currentlyLuredSuits[suitId][0] > 0 and random.randint(0, 99) < self.currentlyLuredSuits[suitId][2]
 
     def itemIsCredit(self, track, level):
-        if track == PETSOS:
-            return 0
-        return level < self.creditLevel
+        return track != PETSOS and level < self.creditLevel
 
     def __getActualTrack(self, toonAttack):
         if toonAttack[TOON_TRACK_COL] == NPCSOS:

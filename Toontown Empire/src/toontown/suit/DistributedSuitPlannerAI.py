@@ -14,16 +14,29 @@ from toontown.building import HQBuildingAI
 from toontown.building import SuitBuildingGlobals
 from toontown.dna.DNAParser import DNASuitPoint
 from toontown.hood import ZoneUtil
-from toontown.suit.SuitLegList import *
+from toontown.suit.SuitInvasionGlobals import IFSkelecog, IFWaiter, IFV2
+from libpandadna import *
 from toontown.toon import NPCToons
 from toontown.toonbase import ToontownBattleGlobals
 from toontown.toonbase import ToontownGlobals
 
 
+ALLOWED_FO_TRACKS = 's'
+if config.GetBool('want-lawbot-cogdo', True):
+    ALLOWED_FO_TRACKS += 'l'
+if config.GetBool('want-cashbot-cogdo', False):
+    ALLOWED_FO_TRACKS += 'c'
+if config.GetBool('want-bossbot-cogdo', False):
+    ALLOWED_FO_TRACKS += 'b'
+if config.GetBool('want-omni-cogdo', False):
+    ALLOWED_FO_TRACKS += 'slcb'
+
+DEFAULT_COGDO_RATIO = .5
+
 class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlannerBase.SuitPlannerBase):
     notify = directNotify.newCategory('DistributedSuitPlannerAI')
     CogdoPopFactor = config.GetFloat('cogdo-pop-factor', 1.5)
-    CogdoRatio = min(1.0, max(0.0, config.GetFloat('cogdo-ratio', 0.25)))
+    CogdoRatio = min(1.0, max(0.0, config.GetFloat('cogdo-ratio', DEFAULT_COGDO_RATIO)))
     MAX_SUIT_TYPES = 6
     POP_UPKEEP_DELAY = 10
     POP_ADJUST_DELAY = 300
@@ -239,7 +252,7 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
     def createNewSuit(self, blockNumbers, streetPoints, toonBlockTakeover=None,
             cogdoTakeover=None, minPathLen=None, maxPathLen=None,
             buildingHeight=None, suitLevel=None, suitType=None, suitTrack=None,
-            suitName=None, skelecog=None, revives=None, waiter=None, virtual=None, rental=None):
+            suitName=None, skelecog=None, revives=None, waiter=None):
         startPoint = None
         blockNumber = None
         if self.notify.getDebug():
@@ -291,18 +304,12 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
                     self.pendingBuildingHeights.append(buildingHeight)
         if suitName is None:
             suitDeptIndex, suitTypeIndex, flags = self.air.suitInvasionManager.getInvadingCog()
-            if flags is None:
-                flags = [0, 0, 0, 0, 0]
-            if flags[0] == 1:
+            if flags & IFSkelecog:
                 skelecog = 1
-            if flags[1] == 1:
-                revives = 1
-            if flags[2] == 1:
+            if flags & IFWaiter:
                 waiter = True
-            if flags[3] == 1:
-                virtual = True
-            if flags[4] == 1:
-                rental = True
+            if flags & IFV2:
+                revives = 1
             if suitDeptIndex is not None:
                 suitTrack = SuitDNA.suitDepts[suitDeptIndex]
             if suitTypeIndex is not None:
@@ -332,10 +339,6 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
             newSuit.b_setSkeleRevives(revives)
         if waiter:
             newSuit.b_setWaiter(1)
-        if virtual:
-            newSuit.b_setVirtual(1)
-        if rental:
-            newSuit.b_setRental(1)
         newSuit.d_setSPDoId(self.doId)
         newSuit.moveToNextLeg(None)
         self.suitList.append(newSuit)
@@ -352,11 +355,9 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
             return False
         numSuitBuildings = len(self.buildingMgr.getSuitBlocks())
         if (random.random() * 100) < SuitBuildingGlobals.buildingChance[self.zoneId]:
-            bmax = SuitBuildingGlobals.buildingMinMax[self.zoneId][1]
-            numNeeded = bmax - numSuitBuildings
+            return SuitBuildingGlobals.buildingMinMax[self.zoneId][1] - numSuitBuildings
         else:
-            numNeeded = self.targetNumSuitBuildings - numSuitBuildings
-        return numNeeded
+            return self.targetNumSuitBuildings - numSuitBuildings
 
     def newSuitShouldAttemptTakeover(self):
         if not self.SUITS_ENTER_BUILDINGS:
@@ -372,8 +373,7 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
             cogdoTakeover=None, minPathLen=None, maxPathLen=None):
         possibles = []
         backup = []
-        if cogdoTakeover is None:
-            cogdoTakeover = False
+
         if toonBlockTakeover is not None:
             suit.attemptingTakeover = 1
             blockNumber = toonBlockTakeover
@@ -386,6 +386,9 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
                 if not NPCToons.isZoneProtected(intZoneId):
                     if blockNumber in self.buildingFrontDoors:
                         possibles.append((blockNumber, self.buildingFrontDoors[blockNumber]))
+            if cogdoTakeover is None:
+                if suit.dna.dept in ALLOWED_FO_TRACKS:
+                    cogdoTakeover = random.random() < self.CogdoRatio
         elif self.buildingMgr:
             for blockNumber in self.buildingMgr.getSuitBlocks():
                 track = self.buildingMgr.getBuildingTrack(blockNumber)
@@ -570,12 +573,12 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
             return
         building.suitTakeOver(suitTrack, difficulty, buildingHeight)
 
-    def cogdoTakeOver(self, blockNumber, difficulty, buildingHeight):
+    def cogdoTakeOver(self, blockNumber, difficulty, buildingHeight, dept):
         if self.pendingBuildingHeights.count(buildingHeight) > 0:
             self.pendingBuildingHeights.remove(buildingHeight)
         building = self.buildingMgr.getBuilding(blockNumber)
-        if building:
-            building.cogdoTakeOver(difficulty, buildingHeight)
+        building.cogdoTakeOver(difficulty, buildingHeight, dept)
+
     def recycleBuilding(self):
         bmin = SuitBuildingGlobals.buildingMinMax[self.zoneId][0]
         current = len(self.buildingMgr.getSuitBlocks())
@@ -606,6 +609,7 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
                     suitType = SuitDNA.getSuitType(suitName)
                     suitTrack = SuitDNA.getSuitDept(suitName)
                 (suitLevel, suitType, suitTrack) = self.pickLevelTypeAndTrack(None, suitType, suitTrack)
+                building.suitTakeOver(suitTrack, suitLevel, None)
 
         # Save the building manager's state:
         self.buildingMgr.save()
@@ -841,8 +845,13 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
         if toon:
             if hasattr(toon, 'doId'):
                 toon.b_setBattleId(toonId)
+
         pos = self.battlePosDict[canonicalZoneId]
+
         interactivePropTrackBonus = -1
+        if config.GetBool('props-buff-battles', True) and canonicalZoneId in self.cellToGagBonusDict:
+            interactivePropTrackBonus = self.cellToGagBonusDict[canonicalZoneId]
+
         self.battleMgr.newBattle(
             zoneId, zoneId, pos, suit, toonId, self.__battleFinished,
             self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_SMAX],

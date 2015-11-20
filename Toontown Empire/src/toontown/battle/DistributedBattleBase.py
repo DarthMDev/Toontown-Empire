@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.toonbase.ToonBaseGlobal import *
 from direct.interval.IntervalGlobal import *
 from BattleBase import *
@@ -20,33 +20,12 @@ from toontown.hood import ZoneUtil
 from toontown.distributed import DelayDelete
 from toontown.toon import TTEmote
 from otp.avatar import Emote
-from toontown.nametag import NametagGlobals
-import MovieCameraScroll
+from otp.nametag.NametagConstants import *
+from otp.nametag import NametagGlobals
 
 
 class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattleBase')
-    spinPos = Point3(0, -48.6, 16.5)
-    spinHpr = Vec3(0, -24, 0)
-
-    toonScrollPos = Point3(-13, 0, 3)
-    toonScrollHpr = Vec3(180, 0, 0)
-
-    suitScrollPos = Point3(-13, -6, 8)    
-    suitScrollHpr = Vec3(0, 0, 0)
-
-    suitForwardYScrollPos = Point3(0, -11, 8)    
-    suitForwardYScrollHpr = Vec3(0, 0, 0)
-
-    suitBackwardYScrollPos = Point3(0, -6, 8)    
-    suitBackwardYScrollHpr = Vec3(0, 0, 0)    
-
-    sideScrollPos = Point3(11, -3, 3)
-    sideScrollHpr = Vec3(80, 10, 0)
-
-    backSuitScrollPos = Point3(-13, 14, 7)
-    backSuitScrollHpr = Vec3(180, -20, 0)
-    
     camPos = ToontownBattleGlobals.BattleCamDefaultPos
     camHpr = ToontownBattleGlobals.BattleCamDefaultHpr
     camFov = ToontownBattleGlobals.BattleCamDefaultFov
@@ -102,7 +81,8 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
         self.adjustFsm = ClassicFSM.ClassicFSM('Adjust', [State.State('Adjusting', self.enterAdjusting, self.exitAdjusting, ['NotAdjusting']), State.State('NotAdjusting', self.enterNotAdjusting, self.exitNotAdjusting, ['Adjusting'])], 'NotAdjusting', 'NotAdjusting')
         self.adjustFsm.enterInitialState()
         self.interactiveProp = None
-        self.lastCameraId = None        
+        self.fireCount = 0
+        return
 
     def uniqueBattleName(self, name):
         DistributedBattleBase.id += 1
@@ -165,7 +145,7 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
         self.fsm.requestFinalState()
         if self.hasLocalToon():
             self.removeLocalToon()
-            base.camLens.setMinFov(ToontownGlobals.DefaultCameraFov/(4./3.))
+            base.camLens.setMinFov(settings['fov']/(4./3.))
         self.localToonFsm.request('WaitForServer')
         self.ignoreAll()
         for suit in self.suits:
@@ -339,11 +319,25 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
     def setBattleCellId(self, battleCellId):
         pass
 
-    def setInteractivePropTrackBonus(self, trackBonus):
-        self.interactivePropTrackBonus = trackBonus
+    def getInteractiveProp(self):
+        if config.GetBool('want-anim-props', True):
+            if self.interactiveProp:
+                return self.interactiveProp
+            elif base.cr.playGame.hood and hasattr(base.cr.playGame.hood, 'loader'):
+                loader = base.cr.playGame.hood.loader
+
+                if hasattr(loader, 'getInteractiveProp'):
+                    self.interactiveProp = base.cr.playGame.hood.loader.getInteractiveProp(self.zoneId)
+
+                    return self.interactiveProp
+            return None
+        else:
+            return None
 
     def getInteractivePropTrackBonus(self):
-        return self.interactivePropTrackBonus
+        prop = self.getInteractiveProp()
+
+        return prop.BattleTrack if prop else -1
 
     def setPosition(self, x, y, z):
         self.notify.debug('setPosition() - %d %d %d' % (x, y, z))
@@ -384,12 +378,17 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
         oldsuits = self.suits
         self.suits = []
         suitGone = 0
+        prop = self.getInteractiveProp()
+
         for s in suits:
             if s in self.cr.doId2do:
                 suit = self.cr.doId2do[s]
                 suit.setState('Battle')
                 self.suits.append(suit)
-                suit.interactivePropTrackBonus = self.interactivePropTrackBonus
+
+                if prop:
+                    suit.interactivePropTrackBonus = prop.BattleTrack
+
                 try:
                     suit.battleTrap
                 except:
@@ -601,7 +600,7 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
             if track == SOS:
                 targetIndex = -1
             elif track == NPCSOS:
-                targetIndex = -1
+                targetIndex = targets[i]
             elif track == PETSOS:
                 targetIndex = -1
             elif track == PASS:
@@ -956,7 +955,6 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
         self.runningToons.append(toon)
         self.toonGone = 1
         self.__stopTimer()
-        self.stopCameraScroll()        
         if self.localToonRunning():
             self.townBattle.setState('Off')
         runMTrack = MovieUtil.getToonTeleportOutInterval(toon)
@@ -1042,7 +1040,7 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
         self.notify.debug('enterLocalToonWaitForInput()')
         camera.setPosHpr(self.camPos, self.camHpr)
         base.camLens.setMinFov(self.camMenuFov/(4./3.))
-        NametagGlobals.setWant2dNametags(False)
+        NametagGlobals.setMasterArrowsOn(0)
         self.townBattle.setState('Attack')
         self.accept(self.localToonBattleEvent, self.__handleLocalToonBattleEvent)
 
@@ -1070,17 +1068,16 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
         return Task.done
 
     def enterWaitForInput(self, ts = 0):
-        self.notify.debug('enterWaitForInput()')
-        if self.interactiveProp:
-            self.interactiveProp.gotoBattleCheer()
+        prop = self.getInteractiveProp()
+
+        if prop:
+            prop.gotoBattleCheer()
         self.choseAttackAlready = 0
         if self.localToonActive():
             self.__enterLocalToonWaitForInput()
             self.startTimer(ts)
         if self.needAdjustTownBattle == 1:
             self.__adjustTownBattle()
-        if base.wantActiveBattleCamera:    
-            self.startCameraScroll()
         return None
 
     def exitWaitForInput(self):
@@ -1090,8 +1087,6 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
             base.camLens.setMinFov(self.camFov/(4./3.))
             self.ignore(self.localToonBattleEvent)
             self.__stopTimer()
-        if base.wantActiveBattleCamera:    
-            self.stopCameraScroll()            
         return None
 
     def __handleLocalToonBattleEvent(self, response):
@@ -1211,8 +1206,7 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
         self.notify.debug('enterPlayMovie()')
         self.delayDeleteMembers()
         if self.hasLocalToon():
-            NametagGlobals.setWant2dNametags(False)
-            pass
+            NametagGlobals.setMasterArrowsOn(0)
         if ToontownBattleGlobals.SkipMovie:
             self.movie.play(ts, self.__handleMovieDone)
             self.movie.finish()
@@ -1268,7 +1262,10 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
         if base.cr.playGame.getPlace() != None:
             base.cr.playGame.getPlace().setState('battle', self.localToonBattleEvent)
             if localAvatar and hasattr(localAvatar, 'inventory') and localAvatar.inventory:
-                localAvatar.inventory.setInteractivePropTrackBonus(self.interactivePropTrackBonus)
+                prop = self.getInteractiveProp()
+
+                if prop:
+                    localAvatar.inventory.setInteractivePropTrackBonus(prop.BattleTrack)
         camera.wrtReparentTo(self)
         base.camLens.setMinFov(self.camFov/(4./3.))
         return
@@ -1289,7 +1286,7 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
         else:
             camera.wrtReparentTo(base.localAvatar)
             messenger.send('localToonLeftBattle')
-        base.camLens.setMinFov(ToontownGlobals.DefaultCameraFov/(4./3.))
+        base.camLens.setMinFov(settings['fov']/(4./3.))
         return
 
     def enterNoLocalToon(self):
@@ -1533,65 +1530,8 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
     def getCollisionName(self):
         return 'enter' + self.lockoutNodePath.getName()
 
-    def startCameraScroll(self):
-        self.notify.debug('startCameraScroll()') 
-        if self.hasLocalToon():
-            taskMgr.add(self.pickCamera, 'CamMgr')
-        
-    def pickCamera(self, task):
-        self.notify.debug('pickCamera()')
-        if MovieCameraScroll.CameraIsRunning == True:
-            return Task.cont
-        rng = random.randint(0, 6)
-        if rng == self.lastCameraId:#Don't repeat the same view.
-            return Task.cont
-        if rng == 0:
-            self.notify.warning('CamMgr chose SpinCam')
-            base.camera.setPosHpr(self.spinPos, self.spinHpr)
-            taskMgr.add(MovieCameraScroll.spinCameraTask, 'CamSpin')
-            self.lastCameraId = rng
-        elif rng == 1:
-            self.notify.warning('CamMgr chose SuitScrollCam')        
-            base.camera.setPosHpr(self.suitScrollPos, self.suitScrollHpr)
-            taskMgr.add(MovieCameraScroll.suitScrollCameraTask, 'CamSuitScroll')
-            self.lastCameraId = rng
-        elif rng == 2:
-            self.notify.warning('CamMgr chose ToonScrollCam')
-            base.camera.setPosHpr(self.toonScrollPos, self.toonScrollHpr)
-            taskMgr.add(MovieCameraScroll.toonScrollCameraTask, 'CamToonScroll')
-            self.lastCameraId = rng
-        elif rng == 3:
-            self.notify.warning('CamMgr chose SideScrollCam')
-            base.camera.setPosHpr(self.sideScrollPos, self.sideScrollHpr)
-            taskMgr.add(MovieCameraScroll.sideScrollCameraTask, 'SideCam')
-            self.lastCameraId = rng
-        elif rng == 4:
-            self.notify.warning('CamMgr chose BackSuitScrollCam')        
-            base.camera.setPosHpr(self.backSuitScrollPos, self.backSuitScrollHpr)
-            taskMgr.add(MovieCameraScroll.suitScrollCameraTask, 'CamSuitBackScroll')
-            self.lastCameraId = rng
-        elif rng == 5:
-            self.notify.warning('CamMgr chose ForwardSuit Y ScrollCam')
-            base.camera.setPosHpr(self.suitForwardYScrollPos, self.suitForwardYScrollHpr)
-            taskMgr.add(MovieCameraScroll.suitForwardYScrollCameraTask, 'CamSuitForwardYScroll')
-            self.lastCameraId = rng
-        else:
-            self.notify.warning('CamMgr chose BackwardSuit Y ScrollCam')
-            base.camera.setPosHpr(self.suitBackwardYScrollPos, self.suitBackwardYScrollHpr)
-            taskMgr.add(MovieCameraScroll.suitBackwardYScrollCameraTask, 'CamSuitBackwardYScroll')    
-            self.lastCameraId = rng
-        return Task.cont
-        
-    def stopCameraScroll(self):
-        self.notify.debug('stopCameraScroll()')
-        if self.hasLocalToon():
-            taskMgr.remove('CamMgr')
-            if MovieCameraScroll.CameraIsRunning == True:
-                taskMgr.remove('CamSpin')
-                taskMgr.remove('CamSuitScroll')
-                taskMgr.remove('CamToonScroll')
-                taskMgr.remove('SideCam')
-                taskMgr.remove('CamSuitBackScroll')
-                taskMgr.remove('CamSuitForwardYScroll')
-                taskMgr.remove('CamSuitBackwardYScroll')
-            MovieCameraScroll.CameraIsRunning = False    
+    def setFireCount(self, amount):
+        self.fireCount = amount
+
+    def getFireCount(self):
+        return self.fireCount

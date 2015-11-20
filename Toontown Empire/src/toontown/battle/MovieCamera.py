@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from BattleBase import *
 from BattleProps import *
@@ -339,25 +339,10 @@ def chooseNPCExitShot(exits, exitsDuration):
 
 
 def chooseSuitShot(attack, attackDuration):
-    duration = attackDuration
-    if duration < 0:
-        notify.warning('duration < 0')
-        duration = 1e-06
-    diedTrack = None
     groupStatus = attack['group']
     target = attack['target']
     if groupStatus == ATK_TGT_SINGLE:
         toon = target['toon']
-        died = attack['target']['died']
-        if died != 0:
-            notify.warning('A toon died')
-            pbpText = attack['playByPlayText']
-            notify.warning('got pbpText')
-            diedText = toon.getName() + ' was defeated!'
-            notify.warning('set diedText')
-            diedTextList = [diedText]
-            notify.warning('playing was defeated pbp')
-            diedTrack = pbpText.getToonsDiedInterval(diedTextList, duration)
     suit = attack['suit']
     name = attack['id']
     battle = attack['battle']
@@ -385,6 +370,8 @@ def chooseSuitShot(attack, attackDuration):
         camTrack.append(defaultCamera(openShotDuration=2.9))
     elif name == CHOMP:
         camTrack.append(defaultCamera(openShotDuration=2.8))
+    elif name == CIGAR_SMOKE:
+        camTrack.append(defaultCamera(openShotDuration=3.0))
     elif name == CLIPON_TIE:
         camTrack.append(defaultCamera(openShotDuration=3.3))
     elif name == CRUNCH:
@@ -448,7 +435,7 @@ def chooseSuitShot(attack, attackDuration):
     elif name == POWER_TRIP:
         camTrack.append(defaultCamera(openShotDuration=1.1))
     elif name == QUAKE:
-        shakeIntensity = 8.15
+        shakeIntensity = 5.15
         quake = 1
         camTrack.append(suitCameraShakeShot(suit, attackDuration, shakeIntensity, quake))
     elif name == RAZZLE_DAZZLE:
@@ -470,7 +457,7 @@ def chooseSuitShot(attack, attackDuration):
     elif name == SCHMOOZE:
         camTrack.append(defaultCamera(openShotDuration=2.8))
     elif name == SHAKE:
-        shakeIntensity = 3.75
+        shakeIntensity = 1.75
         camTrack.append(suitCameraShakeShot(suit, attackDuration, shakeIntensity))
     elif name == SHRED:
         camTrack.append(defaultCamera(openShotDuration=4.1))
@@ -483,7 +470,7 @@ def chooseSuitShot(attack, attackDuration):
     elif name == TEE_OFF:
         camTrack.append(defaultCamera(openShotDuration=4.5))
     elif name == TREMOR:
-        shakeIntensity = 1.25
+        shakeIntensity = 0.25
         camTrack.append(suitCameraShakeShot(suit, attackDuration, shakeIntensity))
     elif name == WATERCOOLER:
         camTrack.append(defaultCamera())
@@ -491,69 +478,15 @@ def chooseSuitShot(attack, attackDuration):
         camTrack.append(defaultCamera(openShotDuration=1.2))
     elif name == WRITE_OFF:
         camTrack.append(defaultCamera())
+    elif name == THROW_BOOK:
+        camTrack.append(defaultCamera(openShotDuration=2.9))
     else:
         notify.warning('unknown attack id in chooseSuitShot: %d using default cam' % name)
         camTrack.append(defaultCamera())
     pbpText = attack['playByPlayText']
     displayName = TTLocalizer.SuitAttackNames[attack['name']]
     pbpTrack = pbpText.getShowInterval(displayName, 3.5)
-    track = Parallel(camTrack, pbpTrack)
-    if diedTrack == None:
-        return track
-    else:
-        pbpTrackDied = Sequence(pbpTrack, diedTrack)
-        notify.warning('set pbpTrackDied')
-        mtrack = Parallel(track, pbpTrackDied)
-        notify.warning('returning mtrack')
-        return mtrack  
-    
-
-
-def chooseSuitCloseShot(attack, openDuration, openName, attackDuration):
-    av = None
-    duration = attackDuration - openDuration
-    if duration < 0:
-        duration = 1e-06
-    groupStatus = attack['group']
-    diedTrack = None
-    if groupStatus == ATK_TGT_SINGLE:
-        av = attack['target']['toon']
-        shotChoices = [avatarCloseUpThreeQuarterRightShot, suitGroupThreeQuarterLeftBehindShot]
-        died = attack['target']['died']
-        if died != 0:
-            pbpText = attack['playByPlayText']
-            diedText = av.getName() + ' was defeated!'
-            diedTextList = [diedText]
-            notify.warning('playing was defeated pbp')
-            diedTrack = pbpText.getToonsDiedInterval(diedTextList, duration)
-    elif groupStatus == ATK_TGT_GROUP:
-        av = None
-        shotChoices = [allGroupLowShot, suitGroupThreeQuarterLeftBehindShot]
-        deadToons = []
-        targetDicts = attack['target']
-        for targetDict in targetDicts:
-            died = targetDict['died']
-            if died != 0:
-                deadToons.append(targetDict['toon'])
-
-        if len(deadToons) > 0:
-            pbpText = attack['playByPlayText']
-            diedTextList = []
-            for toon in deadToons:
-                pbpText = attack['playByPlayText']
-                diedTextList.append(toon.getName() + ' was defeated!')
-
-            diedTrack = pbpText.getToonsDiedInterval(diedTextList, duration)
-    else:
-        notify.error('Bad groupStatus: %s' % groupStatus)
-    track = apply(random.choice(shotChoices), [av, duration])
-    if diedTrack == None:
-        return track
-    else:
-        mtrack = Parallel(track, diedTrack)
-        return mtrack
-    return
-
+    return Parallel(camTrack, pbpTrack)
 
 def makeShot(x, y, z, h, p, r, duration, other = None, name = 'makeShot'):
     if other:
@@ -907,20 +840,6 @@ def randomOverShoulderShot(suit, toon, battle, duration, focus):
     if MovieUtil.shotDirection == 'left':
         x = -x
     return focusShot(x, y, z, duration, toonCentralPoint, splitFocusPoint=suitCentralPoint)
-
-
-def randomCameraSelection(suit, attack, attackDuration, openShotDuration):
-    shotChoices = [avatarCloseUpThrowShot,
-     avatarCloseUpThreeQuarterLeftShot,
-     allGroupLowShot,
-     suitGroupLowLeftShot,
-     avatarBehindHighShot]
-    if openShotDuration > attackDuration:
-        openShotDuration = attackDuration
-    closeShotDuration = attackDuration - openShotDuration
-    openShot = apply(random.choice(shotChoices), [suit, openShotDuration])
-    closeShot = chooseSuitCloseShot(attack, closeShotDuration, openShot.getName(), attackDuration)
-    return Sequence(openShot, closeShot)
 
 
 def randomToonGroupShot(toons, suit, duration, battle):

@@ -19,7 +19,6 @@ class DistributedSuitBaseAI(DistributedAvatarAI.DistributedAvatarAI, SuitBase.Su
         self.dna = SuitDNA.SuitDNA()
         self.virtual = 0
         self.waiter = 0
-        self.rental = 0
         self.skeleRevives = 0
         self.maxSkeleRevives = 0
         self.reviveFlag = 0
@@ -118,7 +117,6 @@ class DistributedSuitBaseAI(DistributedAvatarAI.DistributedAvatarAI, SuitBase.Su
     def useSkeleRevive(self):
         self.skeleRevives -= 1
         self.currHP = self.maxHP
-        self.d_setHP(self.currHP)
         self.reviveFlag = 1
 
     def reviveCheckAndClear(self):
@@ -177,37 +175,14 @@ class DistributedSuitBaseAI(DistributedAvatarAI.DistributedAvatarAI, SuitBase.Su
     def isSupervisor(self):
         return 0
 
-    def setVirtual(self, flag):
-        SuitBase.SuitBase.setVirtual(self, flag)
-        
-    def d_setVirtual(self, flag):
-        self.sendUpdate('setVirtual', [flag])
-        
-    def b_setVirtual(self, flag):
-        self.setVirtual(flag)
-        self.d_setVirtual(flag)
+    def setVirtual(self, virtual):
+        pass
 
     def getVirtual(self):
-        return self.virtual
+        return 0
 
     def isVirtual(self):
         return self.getVirtual()
-        
-    def setRental(self, flag):
-        SuitBase.SuitBase.setRental(self, flag)
-        
-    def d_setRental(self, flag):
-        self.sendUpdate('setRental', [flag])
-        
-    def b_setRental(self, flag):
-        self.setRental(flag)
-        self.d_setRental(flag)
-
-    def getRental(self):
-        return self.rental
-
-    def isRental(self):
-        return self.getRental()
 
     def setWaiter(self, flag):
         SuitBase.SuitBase.setWaiter(self, flag)

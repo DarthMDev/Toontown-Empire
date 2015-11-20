@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from toontown.battle.BattleProps import *
 from GoonGlobals import *
@@ -136,20 +136,8 @@ class DistributedGoon(DistributedCrushableEntity.DistributedCrushableEntity, Goo
         if self.radar:
             self.radar.clearClipPlane()
 
-    if __dev__:
-
-        def refreshPath(self):
-            self.setPath()
-            self.request('Off')
-            self.request('Walk')
-
     def setPath(self):
         self.path = self.level.getEntity(self.parentEntId)
-        if __dev__:
-            if hasattr(self, 'pathChangeEvent'):
-                self.ignore(self.pathChangeEvent)
-            self.pathChangeEvent = self.path.getChangeEvent()
-            self.accept(self.pathChangeEvent, self.refreshPath)
         if self.walkTrack:
             self.walkTrack.pause()
             self.walkTrack = None
@@ -159,7 +147,6 @@ class DistributedGoon(DistributedCrushableEntity.DistributedCrushableEntity, Goo
              self.path.pos[1],
              self.path.pos[2],
              self.path.pathIndex])
-        return
 
     def disable(self):
         self.notify.debug('DistributedGoon %d: disabling' % self.getDoId())
@@ -196,8 +183,8 @@ class DistributedGoon(DistributedCrushableEntity.DistributedCrushableEntity, Goo
             Goon.Goon.delete(self)
 
     def enterOff(self, *args):
-        self.nametag.setNametag2d(None)
-        self.nametag.setNametag3d(None)
+        self.nametag3d.stash()
+        self.nametag.destroy()
         self.hide()
         self.isStunned = 0
         self.isDead = 0
