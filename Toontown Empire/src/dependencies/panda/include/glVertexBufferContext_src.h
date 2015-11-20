@@ -1,4 +1,4 @@
-// Filename: glVertexBufferContext_h
+// Filename: glVertexBufferContext_src.h
 // Created by:  drose (17Mar05)
 //
 ////////////////////////////////////////////////////////////////////
@@ -55,5 +55,5 @@ private:
   static TypeHandle _type_handle;
 };
 
-#include "glVertexBufferContext_I"
+#include "glVertexBufferContext_src.I"
 

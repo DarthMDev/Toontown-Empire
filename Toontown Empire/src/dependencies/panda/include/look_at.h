@@ -24,9 +24,9 @@
 #include "luse.h"
 
 #include "fltnames.h"
-#include "look_at_h"
+#include "look_at_src.h"
 
 #include "dblnames.h"
-#include "look_at_h"
+#include "look_at_src.h"
 
 #endif

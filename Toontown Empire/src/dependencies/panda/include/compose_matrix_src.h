@@ -1,4 +1,4 @@
-// Filename: compose_matrix_h
+// Filename: compose_matrix_src.h
 // Created by:  drose (21Feb99)
 //
 ////////////////////////////////////////////////////////////////////
@@ -180,4 +180,4 @@ new_to_old_hpr(const FLOATNAME(LVecBase3) &new_hpr);
 
 END_PUBLISH
 
-#include "compose_matrix_I"
+#include "compose_matrix_src.I"

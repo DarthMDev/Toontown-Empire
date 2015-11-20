@@ -1,4 +1,4 @@
-// Filename: lvec3_ops_h
+// Filename: lvec3_ops_src.h
 // Created by:  drose (08Mar00)
 //
 ////////////////////////////////////////////////////////////////////
@@ -56,4 +56,4 @@ generic_write_datagram(Datagram &dest, const FLOATNAME(LVecBase3) &value);
 INLINE_LINMATH void
 generic_read_datagram(FLOATNAME(LVecBase3) &result, DatagramIterator &source);
 
-#include "lvec3_ops_I"
+#include "lvec3_ops_src.I"

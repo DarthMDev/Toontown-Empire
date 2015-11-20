@@ -48,10 +48,10 @@ EXPCL_PANDA_LINMATH extern const char * const matrix_component_letters;
 EXPCL_PANDA_LINMATH extern const double matrix_component_defaults[num_matrix_components];
 
 #include "fltnames.h"
-#include "compose_matrix_h"
+#include "compose_matrix_src.h"
 
 #include "dblnames.h"
-#include "compose_matrix_h"
+#include "compose_matrix_src.h"
 
 #endif
 

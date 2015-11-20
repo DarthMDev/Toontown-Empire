@@ -22,9 +22,9 @@
 #include "pnotify.h"
 
 #include "fltnames.h"
-#include "lrotation_h"
+#include "lrotation_src.h"
 
 #include "dblnames.h"
-#include "lrotation_h"
+#include "lrotation_src.h"
 
 #endif /* __LROTATION_H__ */

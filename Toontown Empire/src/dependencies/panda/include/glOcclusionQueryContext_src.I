@@ -1,4 +1,4 @@
-// Filename: glOcclusionQueryContext_I
+// Filename: glOcclusionQueryContext_src.I
 // Created by:  drose (27Mar06)
 //
 ////////////////////////////////////////////////////////////////////

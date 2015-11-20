@@ -1,4 +1,4 @@
-// Filename: glSamplerContext_h
+// Filename: glSamplerContext_src.h
 // Created by:  rdb (11Dec14)
 //
 ////////////////////////////////////////////////////////////////////

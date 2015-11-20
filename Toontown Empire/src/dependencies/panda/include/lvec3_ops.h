@@ -22,12 +22,12 @@
 #include "lvector3.h"
 
 #include "fltnames.h"
-#include "lvec3_ops_h"
+#include "lvec3_ops_src.h"
 
 #include "dblnames.h"
-#include "lvec3_ops_h"
+#include "lvec3_ops_src.h"
 
 #include "intnames.h"
-#include "lvec3_ops_h"
+#include "lvec3_ops_src.h"
 
 #endif

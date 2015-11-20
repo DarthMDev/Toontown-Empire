@@ -1,4 +1,4 @@
-// Filename: glGraphicsStateGuardian_h
+// Filename: glGraphicsStateGuardian_src.h
 // Created by:  drose (02Feb99)
 // Updated by: fperazzi, PandaSE (05May10) (added
 //   get_supports_cg_profile)
@@ -964,4 +964,4 @@ private:
   friend class CLP(TimerQueryContext);
 };
 
-#include "glGraphicsStateGuardian_I"
+#include "glGraphicsStateGuardian_src.I"

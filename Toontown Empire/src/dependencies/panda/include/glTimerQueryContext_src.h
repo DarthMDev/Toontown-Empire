@@ -1,4 +1,4 @@
-// Filename: glTimerQueryContext_h
+// Filename: glTimerQueryContext_src.h
 // Created by:  rdb (22Aug14)
 //
 ////////////////////////////////////////////////////////////////////
@@ -62,7 +62,7 @@ private:
   static TypeHandle _type_handle;
 };
 
-#include "glTimerQueryContext_I"
+#include "glTimerQueryContext_src.I"
 
 #endif  // OPENGLES
 

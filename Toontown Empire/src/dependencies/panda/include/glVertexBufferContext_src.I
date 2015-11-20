@@ -1,4 +1,4 @@
-// Filename: glVertexBufferContext_I
+// Filename: glVertexBufferContext_src.I
 // Created by:  drose (17Mar05)
 //
 ////////////////////////////////////////////////////////////////////

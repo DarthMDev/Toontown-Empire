@@ -1,4 +1,4 @@
-// Filename: glShaderContext_h
+// Filename: glShaderContext_src.h
 // Created by: jyelon (01Sep05)
 //
 ////////////////////////////////////////////////////////////////////
@@ -119,6 +119,6 @@ private:
   static TypeHandle _type_handle;
 };
 
-#include "glShaderContext_I"
+#include "glShaderContext_src.I"
 
 #endif  // OPENGLES_1

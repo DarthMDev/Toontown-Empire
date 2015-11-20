@@ -19,12 +19,12 @@
 #include "extension.h"
 
 #include "fltnames.h"
-#include "lvecBase3_ext_h"
+#include "lvecBase3_ext_src.h"
 
 #include "dblnames.h"
-#include "lvecBase3_ext_h"
+#include "lvecBase3_ext_src.h"
 
 #include "intnames.h"
-#include "lvecBase3_ext_h"
+#include "lvecBase3_ext_src.h"
 
 #endif

@@ -1,4 +1,4 @@
-// Filename: lvector2_ext_h
+// Filename: lvector2_ext_src.h
 // Created by:  rdb (13Sep13)
 //
 ////////////////////////////////////////////////////////////////////
@@ -27,4 +27,4 @@ public:
   INLINE_LINMATH string __repr__() const;
 };
 
-#include "lvector2_ext_I"
+#include "lvector2_ext_src.I"

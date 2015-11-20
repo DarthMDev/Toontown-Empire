@@ -89,7 +89,7 @@ def inner(_it, _timer):
 
 def reindent(src, indent):
     """Helper to reindent a multi-line statement."""
-    return replace("\n", "\n" + " "*indent)
+    return src.replace("\n", "\n" + " "*indent)
 
 def _template_func(setup, func):
     """Create a timer function. Used if the "statement" is a callable."""
@@ -169,7 +169,7 @@ class Timer:
         if self.src is not None:
             linecache.cache[dummy_src_name] = (len(self.src),
                                                None,
-                                               self.split("\n"),
+                                               self.src.split("\n"),
                                                dummy_src_name)
         # else the source is already stored somewhere else
 

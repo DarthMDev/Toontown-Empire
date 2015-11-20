@@ -1,4 +1,4 @@
-// Filename: glImmediateModeSender_I
+// Filename: glImmediateModeSender_src.I
 // Created by:  drose (15Aug05)
 //
 ////////////////////////////////////////////////////////////////////

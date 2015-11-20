@@ -1,4 +1,4 @@
-// Filename: glGeomMunger_h
+// Filename: glGeomMunger_src.h
 // Created by:  drose (10Mar05)
 //
 ////////////////////////////////////////////////////////////////////
@@ -84,5 +84,5 @@ private:
   friend class CLP(GeomContext);
 };
 
-#include "glGeomMunger_I"
+#include "glGeomMunger_src.I"
 

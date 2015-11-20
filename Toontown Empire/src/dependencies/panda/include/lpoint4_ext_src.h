@@ -1,4 +1,4 @@
-// Filename: lpoint4_ext_h
+// Filename: lpoint4_ext_src.h
 // Created by:  rdb (13Sep13)
 //
 ////////////////////////////////////////////////////////////////////
@@ -27,4 +27,4 @@ public:
   INLINE_LINMATH string __repr__() const;
 };
 
-#include "lpoint4_ext_I"
+#include "lpoint4_ext_src.I"

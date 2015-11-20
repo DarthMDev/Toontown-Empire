@@ -128,6 +128,6 @@ typedef char GLchar;
 #define APIENTRY
 #define APIENTRYP *
 
-#include "glstuff_h"
+#include "glstuff_src.h"
 
 #endif  // GLES2GSG_H

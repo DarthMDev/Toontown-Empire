@@ -24,10 +24,10 @@
 #include "lmatrix.h"
 
 #include "fltnames.h"
-#include "lmat_ops_h"
+#include "lmat_ops_src.h"
 
 #include "dblnames.h"
-#include "lmat_ops_h"
+#include "lmat_ops_src.h"
 
 
 #endif

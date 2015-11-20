@@ -44,7 +44,7 @@ echo.
 
 echo ===============================
 echo Starting Toontown Empire...
-echo ppython: "C:\Panda3D-1.10.0\python\ppython.exe"
+echo ppython: "dependencies/panda/python/ppython.exe"
 
 if %INPUT%==2 (
     echo Username: %tteUsername%
@@ -60,11 +60,11 @@ echo ===============================
 cd ../../
 
 if %INPUT%==2 (
-    "C:\Panda3D-1.10.0\python\ppython.exe" -m toontown.toonbase.ToontownStartRemoteDB
+    "dependencies/panda/python/ppython.exe" -m toontown.toonbase.ToontownStartRemoteDB
 ) else if %INPUT%==4 (
-    "C:\Panda3D-1.10.0\python\ppython.exe" -m toontown.toonbase.ToontownStartRemoteDB
+    "dependencies/panda/python/ppython.exe" -m toontown.toonbase.ToontownStartRemoteDB
 ) else (
-    "C:\Panda3D-1.10.0\python\ppython.exe" -m toontown.toonbase.ToontownStart
+    "dependencies/panda/python/ppython.exe" -m toontown.toonbase.ToontownStart
 )
 
 pause

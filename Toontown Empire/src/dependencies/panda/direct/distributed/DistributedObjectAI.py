@@ -303,7 +303,7 @@ class DistributedObjectAI(DistributedObjectBase):
         # setLocation destroys self._zoneData if we move away to
         # a different zone
         if self._zoneData is None:
-            from otp.ai.AIZoneData import AIZoneData
+            from src.otp.ai.AIZoneData import AIZoneData
             self._zoneData = AIZoneData(self.air, self.parentId, self.zoneId)
         return self._zoneData
 
@@ -493,7 +493,7 @@ class DistributedObjectAI(DistributedObjectBase):
         # simultaneously on different lists of avatars, although they
         # should have different names.
 
-        from otp.ai import Barrier
+        from src.otp.ai import Barrier
         context = self.__nextBarrierContext
         # We assume the context number is passed as a uint16.
         self.__nextBarrierContext = (self.__nextBarrierContext + 1) & 0xffff

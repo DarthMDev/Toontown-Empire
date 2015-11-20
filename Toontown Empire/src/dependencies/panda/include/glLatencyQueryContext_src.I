@@ -1,4 +1,4 @@
-// Filename: glLatencyQueryContext_I
+// Filename: glLatencyQueryContext_src.I
 // Created by:  rdb (24Sep14)
 //
 ////////////////////////////////////////////////////////////////////

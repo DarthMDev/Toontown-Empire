@@ -1,4 +1,4 @@
-// Filename: lvecBase2_ext_h
+// Filename: lvecBase2_ext_src.h
 // Created by:  rdb (13Sep13)
 //
 ////////////////////////////////////////////////////////////////////
@@ -31,4 +31,4 @@ public:
   INLINE_LINMATH PyObject *__ipow__(PyObject *self, FLOATTYPE exponent);
 };
 
-#include "lvecBase2_ext_I"
+#include "lvecBase2_ext_src.I"

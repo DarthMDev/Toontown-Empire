@@ -1,4 +1,4 @@
-// Filename: frustum_h
+// Filename: frustum_src.h
 // Created by:  mike (09Jan97)
 //
 ////////////////////////////////////////////////////////////////////
@@ -51,4 +51,4 @@ public:
   FLOATTYPE _fnear, _ffar;
 };
 
-#include "frustum_I"
+#include "frustum_src.I"

@@ -94,7 +94,7 @@ struct _longobject {
 
 PyAPI_FUNC(PyLongObject *) _PyLong_New(Py_ssize_t);
 
-/* Return a copy of  */
+/* Return a copy of src. */
 PyAPI_FUNC(PyObject *) _PyLong_Copy(PyLongObject *src);
 
 #ifdef __cplusplus

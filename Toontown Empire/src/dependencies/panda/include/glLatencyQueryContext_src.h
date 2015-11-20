@@ -1,4 +1,4 @@
-// Filename: glLatencyQueryContext_h
+// Filename: glLatencyQueryContext_src.h
 // Created by:  rdb (24Sep14)
 //
 ////////////////////////////////////////////////////////////////////
@@ -51,7 +51,7 @@ private:
   static TypeHandle _type_handle;
 };
 
-#include "glLatencyQueryContext_I"
+#include "glLatencyQueryContext_src.I"
 
 #endif  // OPENGLES
 

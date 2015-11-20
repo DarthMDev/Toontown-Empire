@@ -21,12 +21,12 @@
 #include "lvector4.h"
 
 #include "fltnames.h"
-#include "lpoint4_h"
+#include "lpoint4_src.h"
 
 #include "dblnames.h"
-#include "lpoint4_h"
+#include "lpoint4_src.h"
 
 #include "intnames.h"
-#include "lpoint4_h"
+#include "lpoint4_src.h"
 
 #endif

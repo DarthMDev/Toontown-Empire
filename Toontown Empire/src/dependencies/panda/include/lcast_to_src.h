@@ -1,4 +1,4 @@
-// Filename: lcast_to_h
+// Filename: lcast_to_src.h
 // Created by:  drose (03Apr01)
 //
 ////////////////////////////////////////////////////////////////////
@@ -113,6 +113,6 @@ lcast_to(FLOATTYPE2 *, const LPoint3i &source);
 INLINE_LINMATH FLOATNAME2(LPoint4)
 lcast_to(FLOATTYPE2 *, const LPoint4i &source);
 
-#include "lcast_to_I"
+#include "lcast_to_src.I"
 
 #endif  // CPPPARSER

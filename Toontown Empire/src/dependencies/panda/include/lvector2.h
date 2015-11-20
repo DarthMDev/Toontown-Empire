@@ -21,12 +21,12 @@
 #include "lvecBase2.h"
 
 #include "fltnames.h"
-#include "lvector2_h"
+#include "lvector2_src.h"
 
 #include "dblnames.h"
-#include "lvector2_h"
+#include "lvector2_src.h"
 
 #include "intnames.h"
-#include "lvector2_h"
+#include "lvector2_src.h"
 
 #endif

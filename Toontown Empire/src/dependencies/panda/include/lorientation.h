@@ -20,9 +20,9 @@
 #include "lquaternion.h"
 
 #include "fltnames.h"
-#include "lorientation_h"
+#include "lorientation_src.h"
 
 #include "dblnames.h"
-#include "lorientation_h"
+#include "lorientation_src.h"
 
 #endif /* __LORIENTATION_H__ */

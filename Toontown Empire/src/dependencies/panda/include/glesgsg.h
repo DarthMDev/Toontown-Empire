@@ -129,6 +129,6 @@
 #define APIENTRY
 #define APIENTRYP *
 
-#include "glstuff_h"
+#include "glstuff_src.h"
 
 #endif  // GLESGSG_H

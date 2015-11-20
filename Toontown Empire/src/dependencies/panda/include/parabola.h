@@ -21,10 +21,10 @@
 #include "indent.h"
 
 #include "fltnames.h"
-#include "parabola_h"
+#include "parabola_src.h"
 
 #include "dblnames.h"
-#include "parabola_h"
+#include "parabola_src.h"
 
 #ifndef STDFLOAT_DOUBLE
 typedef LParabolaf LParabola;

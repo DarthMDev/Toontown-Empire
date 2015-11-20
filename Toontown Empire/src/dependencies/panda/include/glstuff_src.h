@@ -1,4 +1,4 @@
-// Filename: glstuff_h
+// Filename: glstuff_src.h
 // Created by:  drose (09Feb04)
 //
 ////////////////////////////////////////////////////////////////////
@@ -31,18 +31,18 @@
 // This file is not protected from multiple inclusion; it may need to
 // be included multiple times.
 
-#include "glmisc_h"
-#include "glTextureContext_h"
-#include "glSamplerContext_h"
-#include "glVertexBufferContext_h"
-#include "glIndexBufferContext_h"
-#include "glOcclusionQueryContext_h"
-#include "glTimerQueryContext_h"
-#include "glLatencyQueryContext_h"
-#include "glGeomContext_h"
-#include "glGeomMunger_h"
-#include "glShaderContext_h"
-#include "glCgShaderContext_h"
-#include "glImmediateModeSender_h"
-#include "glGraphicsBuffer_h"
-#include "glGraphicsStateGuardian_h"
+#include "glmisc_src.h"
+#include "glTextureContext_src.h"
+#include "glSamplerContext_src.h"
+#include "glVertexBufferContext_src.h"
+#include "glIndexBufferContext_src.h"
+#include "glOcclusionQueryContext_src.h"
+#include "glTimerQueryContext_src.h"
+#include "glLatencyQueryContext_src.h"
+#include "glGeomContext_src.h"
+#include "glGeomMunger_src.h"
+#include "glShaderContext_src.h"
+#include "glCgShaderContext_src.h"
+#include "glImmediateModeSender_src.h"
+#include "glGraphicsBuffer_src.h"
+#include "glGraphicsStateGuardian_src.h"

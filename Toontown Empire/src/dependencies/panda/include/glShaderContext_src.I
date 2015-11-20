@@ -1,4 +1,4 @@
-// Filename: glShaderContext_h
+// Filename: glShaderContext_src.h
 // Created by: jyelon (01Sep05)
 //
 ////////////////////////////////////////////////////////////////////

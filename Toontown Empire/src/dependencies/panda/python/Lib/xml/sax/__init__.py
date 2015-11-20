@@ -45,7 +45,7 @@ def parseString(string, handler, errorHandler=ErrorHandler()):
     parser.setErrorHandler(errorHandler)
 
     inpsrc = InputSource()
-    inpsetByteStream(StringIO(string))
+    inpsrc.setByteStream(StringIO(string))
     parser.parse(inpsrc)
 
 # this is the parser list used by the make_parser function if no

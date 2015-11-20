@@ -1,4 +1,4 @@
-// Filename: lmatrix3_ext_h
+// Filename: lmatrix3_ext_src.h
 // Created by:  rdb (12Sep13)
 //
 ////////////////////////////////////////////////////////////////////
@@ -26,4 +26,4 @@ public:
   INLINE_LINMATH string __repr__() const;
 };
 
-#include "lmatrix3_ext_I"
+#include "lmatrix3_ext_src.I"

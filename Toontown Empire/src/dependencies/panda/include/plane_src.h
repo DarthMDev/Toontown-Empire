@@ -1,4 +1,4 @@
-// Filename: plane_h
+// Filename: plane_src.h
 // Created by:  mike (09Jan97)
 //
 ////////////////////////////////////////////////////////////////////
@@ -65,4 +65,4 @@ PUBLISHED:
 INLINE_MATHUTIL ostream &
 operator << (ostream &out, const FLOATNAME(LPlane) &p);
 
-#include "plane_I"
+#include "plane_src.I"

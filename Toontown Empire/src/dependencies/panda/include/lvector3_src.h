@@ -1,4 +1,4 @@
-// Filename: lvector3_h
+// Filename: lvector3_src.h
 // Created by:  drose (24Sep99)
 //
 ////////////////////////////////////////////////////////////////////
@@ -97,4 +97,4 @@ private:
   static TypeHandle _type_handle;
 };
 
-#include "lvector3_I"
+#include "lvector3_src.I"

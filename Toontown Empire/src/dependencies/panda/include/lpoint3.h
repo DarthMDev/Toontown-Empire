@@ -23,12 +23,12 @@
 #include "lpoint2.h"
 
 #include "fltnames.h"
-#include "lpoint3_h"
+#include "lpoint3_src.h"
 
 #include "dblnames.h"
-#include "lpoint3_h"
+#include "lpoint3_src.h"
 
 #include "intnames.h"
-#include "lpoint3_h"
+#include "lpoint3_src.h"
 
 #endif

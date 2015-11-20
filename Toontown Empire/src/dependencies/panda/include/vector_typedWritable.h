@@ -35,7 +35,7 @@ class TypedWritable;
 #define TYPE TypedWritable *
 #define NAME vector_typedWritable
 
-#include "vector_h"
+#include "vector_src.h"
 
 // Tell GCC that we'll take care of the instantiation explicitly here.
 #ifdef __GNUC__

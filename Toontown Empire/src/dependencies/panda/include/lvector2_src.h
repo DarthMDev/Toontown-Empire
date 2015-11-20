@@ -1,4 +1,4 @@
-// Filename: lvector2_h
+// Filename: lvector2_src.h
 // Created by:  drose (08Mar00)
 //
 ////////////////////////////////////////////////////////////////////
@@ -61,4 +61,4 @@ private:
   static TypeHandle _type_handle;
 };
 
-#include "lvector2_I"
+#include "lvector2_src.I"
