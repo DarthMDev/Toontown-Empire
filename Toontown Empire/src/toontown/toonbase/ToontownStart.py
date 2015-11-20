@@ -27,8 +27,6 @@ from panda3d.core import loadPrcFile
 #Added for when injector code detection is added.
 ######################from toontown.cheatdetection import CheatDector
 import sys
-import rollbar
-rollbar.init('833d799472f747c8a6344134dded7b2d', environment='production')
  
 if __debug__:
     import sys

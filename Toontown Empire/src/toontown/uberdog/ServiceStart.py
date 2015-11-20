@@ -3,8 +3,6 @@ import __builtin__
 
 __builtin__.process = 'uberdog'
 import sys
-import rollbar
-rollbar.init('833d799472f747c8a6344134dded7b2d', 'production')  # access_token, environment
 
 # Temporary hack patch:
 __builtin__.__dict__.update(__import__('pandac.PandaModules', fromlist=['*']).__dict__)
@@ -74,6 +72,5 @@ except SystemExit:
     raise
 except Exception:
     info = describeException()
-    rollbar.report_exc_info()
     simbase.air.writeServerEvent('uberdog-exception', simbase.air.getAvatarIdFromSender(), simbase.air.getAccountIdFromSender(), info)
     raise
