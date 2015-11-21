@@ -4,15 +4,17 @@ from BattleBase import *
 from BattleCalculatorAI import *
 from toontown.toonbase.ToontownBattleGlobals import *
 from SuitBattleGlobals import *
-from panda3d.core import *
+from pandac.PandaModules import *
 import BattleExperienceAI
 from direct.distributed import DistributedObjectAI
 from direct.fsm import ClassicFSM, State
+from direct.fsm import State
 from direct.task import Task
 from direct.directnotify import DirectNotifyGlobal
+from toontown.ai import DatabaseObject
+from toontown.toon import DistributedToonAI
 from toontown.toon import InventoryBase
 from toontown.toonbase import ToontownGlobals
-from toontown.pets import DistributedPetProxyAI
 import random
 from toontown.toon import NPCToons
 from otp.ai.MagicWordGlobal import *
@@ -50,7 +52,7 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
         if self.air.suitInvasionManager.getInvading():
             mult = getInvasionMultiplier()
             self.battleCalc.setSkillCreditMultiplier(mult)
-        if self.air.newsManager.isHolidayRunning(ToontownGlobals.MORE_XP_HOLIDAY):
+        if self.air.holidayManager.isMoreXpHolidayRunning():
             mult = getMoreXpHolidayMultiplier()
             self.battleCalc.setSkillCreditMultiplier(mult)
         self.fsm = None
@@ -697,13 +699,23 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                 toon.d_setInventory(toon.inventory.makeNetString())
                 self.air.cogPageManager.toonEncounteredCogs(toon, self.suitsEncountered, self.getTaskZoneId())
         elif len(self.suits) > 0 and not self.streetBattle:
-            empty = InventoryBase.InventoryBase(None).makeNetString()
-            self.air.dbInterface.updateObject(self.air.dbId, toonId, self.air.dclassesByName['DistributedToonAI'], {'setHp': [0], 'setInventory': [empty]})
+            self.notify.info('toon %d aborted non-street battle; clearing inventory and hp.' % toonId)
+            toon = DistributedToonAI.DistributedToonAI(self.air)
+            toon.doId = toonId
+            empty = InventoryBase.InventoryBase(toon)
+            toon.b_setInventory(empty.makeNetString())
+            toon.b_setHp(0)
+            db = DatabaseObject.DatabaseObject(self.air, toonId)
+            db.storeObject(toon, ['setInventory', 'setHp'])
+            self.notify.info('killing mem leak from temporary DistributedToonAI %d' % toonId)
+            toon.deleteDummy()
+        return
 
     def getToon(self, toonId):
         if toonId in self.air.doId2do:
             return self.air.doId2do[toonId]
-        self.notify.warning('getToon() - toon: %d not in repository!' % toonId)
+        else:
+            self.notify.warning('getToon() - toon: %d not in repository!' % toonId)
         return None
 
     def toonRequestRun(self):
@@ -993,7 +1005,6 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
             self.notify.warning('requestAttack() - no toon: %d' % toonId)
             return
         validResponse = 1
-        self.npcAttacks = {k:v for k, v in self.npcAttacks.iteritems() if v != toonId}
         if track == SOS:
             self.notify.debug('toon: %d calls for help' % toonId)
             self.air.writeServerEvent('friendSOS', toonId, '%s' % av)
@@ -1008,7 +1019,7 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                 npcCollision = 0
                 if av in self.npcAttacks:
                     callingToon = self.npcAttacks[av]
-                    if callingToon != toonId and self.activeToons.count(callingToon) == 1:
+                    if self.activeToons.count(callingToon) == 1:
                         self.toonAttacks[toonId] = getToonAttack(toonId, track=PASS)
                         npcCollision = 1
                 if npcCollision == 0:
@@ -1362,12 +1373,11 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                         pass
                     elif track != SOS:
                         toon = self.getToon(toonId)
-                        if toon != None and not toon.unlimitedGags:
+                        if toon != None:
                             check = toon.inventory.useItem(track, level)
                             if check == -1:
-                                self.air.writeServerEvent('suspicious', toonId, 'Toon generating movie for non-existent gag track %s level %s' % (track, level))
-                                self.notify.warning('generating movie for non-existent gag track %s level %s! avId: %s' % (track, level, toonId))
-                            toon.addStat(ToontownGlobals.STAT_GAGS)
+                                self.air.writeServerEvent('suspicious', toonId, 'Toon generating movie for non-existant gag track %s level %s' % (track, level))
+                                self.notify.warning('generating movie for non-existant gag track %s level %s! avId: %s' % (track, level, toonId))
                             toon.d_setInventory(toon.inventory.makeNetString())
                     hps = attack[TOON_HP_COL]
                     if track == SOS:
@@ -1552,7 +1562,8 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                  'track': suit.dna.dept,
                  'isSkelecog': suit.getSkelecog(),
                  'isForeman': suit.isForeman(),
-                 'isBoss': 0,
+                 'isVP': 0,
+                 'isCFO': 0,
                  'isSupervisor': suit.isSupervisor(),
                  'isVirtual': suit.isVirtual(),
                  'hasRevives': suit.getMaxSkeleRevives(),
@@ -1636,6 +1647,8 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                     toon.inventory.zeroInv(1)
                     deadToons.append(activeToon)
                 self.notify.debug('AFTER ROUND: toon: %d setHp: %d' % (toon.doId, toon.hp))
+                if toon.unlimitedGags:
+                    toon.doRestock(noUber=0)
 
         for deadToon in deadToons:
             self.__removeToon(deadToon)

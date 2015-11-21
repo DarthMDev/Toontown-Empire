@@ -30,7 +30,7 @@ if config.GetBool('want-bossbot-cogdo', False):
     ALLOWED_FO_TRACKS += 'b'
 if config.GetBool('want-omni-cogdo', False):
     ALLOWED_FO_TRACKS += 'slcb'
-
+    
 DEFAULT_COGDO_RATIO = .5
 
 class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlannerBase.SuitPlannerBase):
@@ -575,7 +575,7 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
 
     def cogdoTakeOver(self, blockNumber, difficulty, buildingHeight, dept):
         if self.pendingBuildingHeights.count(buildingHeight) > 0:
-            self.pendingBuildingHeights.remove(buildingHeight)
+            self.pendingBuildingHeights.remove(buildingHeight)        
         building = self.buildingMgr.getBuilding(blockNumber)
         building.cogdoTakeOver(difficulty, buildingHeight, dept)
 
@@ -849,7 +849,8 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
         pos = self.battlePosDict[canonicalZoneId]
 
         interactivePropTrackBonus = -1
-        if config.GetBool('props-buff-battles', True) and canonicalZoneId in self.cellToGagBonusDict:
+
+        if simbase.config.GetBool('props-buff-battles', True) and canonicalZoneId in self.cellToGagBonusDict:
             interactivePropTrackBonus = self.cellToGagBonusDict[canonicalZoneId]
 
         self.battleMgr.newBattle(

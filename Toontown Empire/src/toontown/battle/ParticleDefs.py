@@ -1,5 +1,5 @@
 from direct.particles import Particles, ForceGroup
-from panda3d.core import *
+from pandac.PandaModules import *
 
 ParticleTable = {}
 
@@ -4902,3 +4902,5 @@ def bossCogFrontAttack(self):
     force0.setActive(1)
     f0.addForce(force0)
     self.addForceGroup(f0)
+
+

@@ -3,7 +3,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
 import math
-from panda3d.core import *
+from pandac.PandaModules import *
 import random
 
 import Fanfare
@@ -434,10 +434,10 @@ class RewardPanel(DirectFrame):
     def getTrackIntervalList(self, toon, track, origSkill, earnedSkill, hasUber):
         if hasUber < 0:
             print (toon.doId, 'Reward Panel received an invalid hasUber from an uberList')
-        tickDelay = 0.1
+        tickDelay = 1.0 / 60
         intervalList = []
         intervalList.append(Func(self.showTrackIncLabel, track, earnedSkill))
-        barTime = math.log(earnedSkill + 0.5)
+        barTime = 0.5
         numTicks = int(math.ceil(barTime / tickDelay))
         for i in xrange(numTicks):
             t = (i + 1) / float(numTicks)
@@ -463,9 +463,9 @@ class RewardPanel(DirectFrame):
         uberSkill = ToontownBattleGlobals.UberSkill + ToontownBattleGlobals.Levels[track][ToontownBattleGlobals.LAST_REGULAR_GAG_LEVEL + 1]
         if currentSkill >= uberSkill and not hasUber > 0:
             intervalList += self.getUberGagIntervalList(toon, track, ToontownBattleGlobals.LAST_REGULAR_GAG_LEVEL + 1)
-            intervalList.append(Wait(0.3))
+            intervalList.append(Wait(0.1))
             skillDiff = currentSkill - ToontownBattleGlobals.Levels[track][ToontownBattleGlobals.LAST_REGULAR_GAG_LEVEL + 1]
-            barTime = math.log(skillDiff + 0.5)
+            barTime = math.log(skillDiff + 1)
             numTicks = int(math.ceil(barTime / tickDelay))
             displayedSkillDiff = skillDiff
             if displayedSkillDiff > ToontownBattleGlobals.UberSkill:
@@ -477,18 +477,18 @@ class RewardPanel(DirectFrame):
                 intervalList.append(Func(self.incrementExp, track, newValue, toon))
                 intervalList.append(Wait(tickDelay * 0.5))
 
-            intervalList.append(Wait(0.3))
+            intervalList.append(Wait(0.1))
         return intervalList
 
     def getMeritIntervalList(self, toon, dept, origMerits, earnedMerits):
-        tickDelay = 0.08
+        tickDelay = 1.0 / 60
         intervalList = []
         totalMerits = CogDisguiseGlobals.getTotalMerits(toon, dept)
         neededMerits = 0
         if totalMerits and origMerits != totalMerits:
             neededMerits = totalMerits - origMerits
             intervalList.append(Func(self.showMeritIncLabel, dept, min(neededMerits, earnedMerits)))
-        barTime = math.log(earnedMerits + 1)
+        barTime = 0.5
         numTicks = int(math.ceil(barTime / tickDelay))
         for i in xrange(numTicks):
             t = (i + 1) / float(numTicks)
@@ -497,10 +497,10 @@ class RewardPanel(DirectFrame):
             intervalList.append(Wait(tickDelay))
 
         intervalList.append(Func(self.resetMeritBarColor, dept))
-        intervalList.append(Wait(0.3))
+        intervalList.append(Wait(0.1))
         if toon.cogLevels[dept] < ToontownGlobals.MaxCogSuitLevel:
             if neededMerits and toon.readyForPromotion(dept):
-                intervalList.append(Wait(0.3))
+                intervalList.append(Wait(0.4))
                 intervalList += self.getPromotionIntervalList(toon, dept)
         return intervalList
 
@@ -515,8 +515,14 @@ class RewardPanel(DirectFrame):
         name = SuitDNA.suitDepts[dept]
         self.promotionFrame['text'] = TTLocalizer.RewardPanelPromotion % SuitDNA.suitDeptFullnames[name]
         icons = loader.loadModel('phase_3/models/gui/cog_icons')
-        if dept in SuitDNA.suitDeptModelPaths:
-            self.deptIcon = icons.find(SuitDNA.suitDeptModelPaths[dept]).copyTo(self.promotionFrame)
+        if dept == 0:
+            self.deptIcon = icons.find('**/CorpIcon').copyTo(self.promotionFrame)
+        elif dept == 1:
+            self.deptIcon = icons.find('**/LegalIcon').copyTo(self.promotionFrame)
+        elif dept == 2:
+            self.deptIcon = icons.find('**/MoneyIcon').copyTo(self.promotionFrame)
+        elif dept == 3:
+            self.deptIcon = icons.find('**/SalesIcon').copyTo(self.promotionFrame)
         icons.removeNode()
         self.deptIcon.setPos(0, 0, -0.225)
         self.deptIcon.setScale(0.33)
@@ -544,6 +550,10 @@ class RewardPanel(DirectFrame):
         avId = toon.getDoId()
         tickDelay = 0.2
         intervalList = []
+        toonShortList = []
+        for t in toonList:
+            if t is not None:
+                toonShortList.append(t)
 
         cogList = []
         for i in xrange(0, len(deathList), 4):
@@ -559,11 +569,12 @@ class RewardPanel(DirectFrame):
 
             isSkelecog = flags & ToontownBattleGlobals.DLF_SKELECOG
             isForeman = flags & ToontownBattleGlobals.DLF_FOREMAN
-            isBoss = flags & ToontownBattleGlobals.DLF_BOSS
+            isVP = flags & ToontownBattleGlobals.DLF_VP
+            isCFO = flags & ToontownBattleGlobals.DLF_CFO
             isSupervisor = flags & ToontownBattleGlobals.DLF_SUPERVISOR
             isVirtual = flags & ToontownBattleGlobals.DLF_VIRTUAL
             hasRevives = flags & ToontownBattleGlobals.DLF_REVIVES
-            if isBoss > 0:
+            if isVP or isCFO:
                 cogType = None
                 cogTrack = SuitDNA.suitDepts[cogIndex]
             else:
@@ -574,7 +585,8 @@ class RewardPanel(DirectFrame):
              'track': cogTrack,
              'isSkelecog': isSkelecog,
              'isForeman': isForeman,
-             'isBoss': isBoss,
+             'isVP': isVP,
+             'isCFO': isCFO,
              'isSupervisor': isSupervisor,
              'isVirtual': isVirtual,
              'hasRevives': hasRevives,
@@ -606,8 +618,12 @@ class RewardPanel(DirectFrame):
                         earned = itemList.count(questItem)
                 else:
                     for cogDict in cogList:
-                        num = quest.doesCogCount(avId, cogDict, zoneId)
-
+                        if cogDict['isVP']:
+                            num = quest.doesVPCount(avId, cogDict, zoneId, toonShortList)
+                        elif cogDict['isCFO']:
+                            num = quest.doesCFOCount(avId, cogDict, zoneId, toonShortList)
+                        else:
+                            num = quest.doesCogCount(avId, cogDict, zoneId, toonShortList)
                         if num:
                             if base.config.GetBool('battle-passing-no-credit', True):
                                 if avId in helpfulToonsList:
@@ -621,7 +637,7 @@ class RewardPanel(DirectFrame):
                     if earned > 0:
                         earned = min(earned, quest.getNumQuestItems() - questDesc[4])
                 if earned > 0 or base.localAvatar.tutorialAck == 0 and num == 1:
-                    barTime = math.log(earned + 1)
+                    barTime = 0.5
                     numTicks = int(math.ceil(barTime / tickDelay))
                     for i in xrange(numTicks):
                         t = (i + 1) / float(numTicks)
@@ -683,19 +699,19 @@ class RewardPanel(DirectFrame):
             if meritList[dept]:
                 track += self.getMeritIntervalList(toon, dept, origMeritList[dept], meritList[dept])
 
-        track.append(Wait(1.0))
+        track.append(Wait(0.75))
         itemInterval = self.getItemIntervalList(toon, itemList)
         if itemInterval:
             track.append(Func(self.initItemFrame, toon))
-            track.append(Wait(1.0))
+            track.append(Wait(0.25))
             track += itemInterval
-            track.append(Wait(1.0))
+            track.append(Wait(0.5))
         missedItemInterval = self.getMissedItemIntervalList(toon, missedItemList)
         if missedItemInterval:
             track.append(Func(self.initMissedItemFrame, toon))
-            track.append(Wait(1.0))
+            track.append(Wait(0.25))
             track += missedItemInterval
-            track.append(Wait(1.0))
+            track.append(Wait(0.5))
         self.notify.debug('partList = %s' % partList)
         newPart = 0
         for part in partList:
@@ -707,9 +723,9 @@ class RewardPanel(DirectFrame):
             partList = self.getCogPartIntervalList(toon, partList)
             if partList:
                 track.append(Func(self.initCogPartFrame, toon))
-                track.append(Wait(1.0))
+                track.append(Wait(0.25))
                 track += partList
-                track.append(Wait(1.0))
+                track.append(Wait(0.5))
         questList = self.getQuestIntervalList(toon, deathList, toonList, origQuestsList, itemList, helpfulToonsList)
         if questList:
             avQuests = []
@@ -717,9 +733,9 @@ class RewardPanel(DirectFrame):
                 avQuests.append(origQuestsList[i:i + 5])
 
             track.append(Func(self.initQuestFrame, toon, copy.deepcopy(avQuests)))
-            track.append(Wait(1.0))
+            track.append(Wait(0.25))
             track += questList
-            track.append(Wait(2.0))
+            track.append(Wait(0.5))
         track.append(Wait(0.25))
         if trackEnded:
             track.append(Func(self.vanishFrames))

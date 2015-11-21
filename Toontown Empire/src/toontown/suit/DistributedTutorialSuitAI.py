@@ -1,5 +1,5 @@
 from direct.directnotify.DirectNotifyGlobal import *
-from panda3d.core import *
+from pandac.PandaModules import *
 
 from toontown.suit import SuitDNA
 from toontown.suit import SuitDialog

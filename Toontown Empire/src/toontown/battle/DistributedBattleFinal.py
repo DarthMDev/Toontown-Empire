@@ -2,7 +2,7 @@ from direct.actor import Actor
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import State
 from direct.interval.IntervalGlobal import *
-from panda3d.core import *
+from pandac.PandaModules import *
 import random
 
 from BattleBase import *
@@ -10,10 +10,11 @@ import DistributedBattleBase
 import MovieUtil
 import SuitBattleGlobals
 from toontown.distributed import DelayDelete
-from otp.nametag.NametagConstants import *
 from otp.nametag import NametagGlobals
 from toontown.suit import Suit
-from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals, TTLocalizer
+from toontown.toonbase import ToontownBattleGlobals
+from toontown.toonbase import ToontownGlobals
+
 
 class DistributedBattleFinal(DistributedBattleBase.DistributedBattleBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattleFinal')
@@ -91,12 +92,6 @@ class DistributedBattleFinal(DistributedBattleBase.DistributedBattleBase):
     def showSuitsJoining(self, suits, ts, name, callback):
         if self.bossCog == None:
             return
-        
-        bossDept = self.bossCog.dna.dept
-        
-        if bossDept in TTLocalizer.SendCogBossTaunts:
-            self.bossCog.setChatAbsolute(random.choice(TTLocalizer.SendCogBossTaunts[bossDept]), CFSpeech | CFTimeout)
-
         if self.battleSide:
             openDoor = Func(self.bossCog.doorB.request, 'open')
             closeDoor = Func(self.bossCog.doorB.request, 'close')
@@ -162,7 +157,7 @@ class DistributedBattleFinal(DistributedBattleBase.DistributedBattleBase):
         self.notify.debug('exitReward()')
         self.clearInterval(self.uniqueName('floorReward'), finish=1)
         self._removeMembersKeep()
-        NametagGlobals.setMasterArrowsOn(1)
+        NametagGlobals.setWant2dNametags(True)
         for toon in self.toons:
             toon.startSmooth()
 

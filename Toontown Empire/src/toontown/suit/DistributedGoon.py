@@ -1,4 +1,4 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
 from toontown.battle.BattleProps import *
 from GoonGlobals import *
@@ -183,8 +183,8 @@ class DistributedGoon(DistributedCrushableEntity.DistributedCrushableEntity, Goo
             Goon.Goon.delete(self)
 
     def enterOff(self, *args):
-        self.nametag3d.stash()
-        self.nametag.destroy()
+        self.nametag.setNametag2d(None)
+        self.nametag.setNametag3d(None)
         self.hide()
         self.isStunned = 0
         self.isDead = 0
