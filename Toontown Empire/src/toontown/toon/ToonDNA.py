@@ -294,8 +294,8 @@ Shirts = ['phase_3/maps/desat_shirt_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_saveBuilding4.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_saveBuilding05.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_anniversary.jpg',
- 'phase_4/maps/PinkToberShirt.jpg',	#150 - PinkTober Shirt
- 'phase_4/maps/SplatterShirt.jpg'] # 151 - Xentel NPC shirt
+ 'phase_4/maps/PinkToberShirt.jpg',	#148 - PinkTober Shirt
+ 'phase_4/maps/SplatterShirt.jpg'] # 149 - Xentel NPC shirt
 BoyShirts = [(0, 0),
  (1, 1),
  (2, 2),
@@ -478,8 +478,8 @@ Sleeves = ['phase_3/maps/desat_sleeve_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_saveBuilding4.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_saveBuilding05.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_anniversary.jpg',
- 'phase_4/maps/Pinktober_sleeve.jpg', 					#138 - Pinktober
- 'phase_4/maps/SplatterShirtSleeve.jpg'] # 139 - Xentel NPC design
+ 'phase_4/maps/Pinktober_sleeve.jpg', 					#135 - Pinktober
+ 'phase_4/maps/SplatterShirtSleeve.jpg'] # 136 - Xentel NPC design
 BoyShorts = ['phase_3/maps/desat_shorts_1.jpg',
  'phase_3/maps/desat_shorts_2.jpg',
  'phase_3/maps/desat_shorts_4.jpg',
@@ -536,8 +536,8 @@ BoyShorts = ['phase_3/maps/desat_shorts_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_golf04.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_golf05.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_racing04.jpg',
- 'phase_4/maps/tt_t_chr_avt_shorts_racing05.jpg',	#58
- 'phase_4/maps/SplatterShorts.jpg']	# 59  Xentel NPC shorts
+ 'phase_4/maps/tt_t_chr_avt_shorts_racing05.jpg',	#56
+ 'phase_4/maps/SplatterShorts.jpg']	# 57  Xentel NPC shorts
 SHORTS = 0
 SKIRT = 1
 GirlBottoms = [('phase_3/maps/desat_skirt_1.jpg', SKIRT),
