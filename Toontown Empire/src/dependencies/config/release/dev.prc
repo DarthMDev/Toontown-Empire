@@ -5,7 +5,7 @@ distribution dev
 model-path ../resources/
 
 # Server:
-server-version tte-dev
+server-version TTE-Version-1.0
 min-access-level 0
 accountdb-type developer
 shard-low-pop 50
