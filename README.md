@@ -28,6 +28,8 @@ Do not push broken code to the master branch, because it messes up the game and 
 
 # Requirements:
 In order to run game you need to install this
+
 pip install -U airbrake pymongo bson raven
+
 if on mac or linux:
 sudo pip install -U rollbar pymongo bson  raven 
