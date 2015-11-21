@@ -8352,6 +8352,7 @@ HolidayNamesInCalendar = {1: ('Summer Fireworks', 'Celebrate Summer with a firew
  99: ('Jellybean Week', 'Celebrate Jellybean Week with double Jellybean rewards!'),
  101: ("Top Toons New Year's Day Marathon", "Chances to win every hour! See the What's New Blog for details!"),
  105: ('Toons go GREEN!', 'Toons make a green scene at Green Bean Jeans on Oak Street in Daisy Gardens!'),
+ 125: ('None'),
  128: ("April Toons' Week", "Celebrate April Toons' Week - a holiday built by Toons for Toons!"),
  129: ('Caroling', 'Sing for your Snowman Head! See the Blog for details!'),
  130: ('Summer Fireworks', 'Celebrate Summer with a fireworks show every hour in each playground!'),
