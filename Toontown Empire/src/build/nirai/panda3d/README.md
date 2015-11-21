@@ -25,7 +25,7 @@ need Microsoft Visual Studio to build Panda3D, though - the relevant compilers
 are included as part of the Windows 7.1 SDK.
 
 You will also need to have the third-party dependency libraries available for
-the build scripts to use.  These are available from Nirai organization.
+the build scripts to use.  These are available from the [thirdparty repository](https://github.com/nirai-compiler/thirdparty).
 After acquiring these dependencies, you may simply build Panda3D from the
 command prompt using the following command:
 
@@ -44,4 +44,17 @@ TBA
 Mac OS X
 --------
 
-TBA
+We build using g++. You may need to use [homebrew](http://brew.sh/) to
+obtain this.
+
+You also need to have the Mac OS X third-party dependencies available for 
+the build scripts to use, which are available from the [thirdparty repository](https://github.com/nirai-compiler/thirdparty).
+After acquiring these dependencies, you may simply build Panda3D from the terminal 
+using the following command:
+
+```bash
+./compile.sh
+./postbuild.sh
+```
+
+_postbuild_ cleans up _built_ dir.
