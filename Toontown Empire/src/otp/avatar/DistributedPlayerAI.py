@@ -110,7 +110,7 @@ class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.Pl
 
         self.friendsList.append(friendId)
 
-@magicWord(category=CATEGORY_ADMINISTRATOR, types=[str])
+@magicWord(category=CATEGORY_SYSTEM_ADMINISTRATOR, types=[str])
 def system(message):
     """
     Broadcast a <message> to the game server.
@@ -122,7 +122,7 @@ def system(message):
                                10, 1000000, [message])
     simbase.air.send(dg)
 
-@magicWord(category=CATEGORY_ADMINISTRATOR, types=[int])
+@magicWord(category=CATEGORY_SYSTEM_ADMINISTRATOR, types=[int])
 def maintenance(minutes):
     """
     Initiate the maintenance message sequence. It will last for the specified
