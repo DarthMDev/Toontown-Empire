@@ -27,6 +27,9 @@ from panda3d.core import loadPrcFile
 #Added for when injector code detection is added.
 ######################from toontown.cheatdetection import CheatDector
 import sys
+from raven import Client
+
+client = Client('https://de8d64947718460f8e68f21d56468e94:a90d6d06e8ef4343a542a15d203046c9@app.getsentry.com/59258')
  
 if __debug__:
     import sys
@@ -181,5 +184,6 @@ if autoRun:
     except:
         print describeException()
         rollbar.report_exc_info()
+        client.captureException()
         raise
         
