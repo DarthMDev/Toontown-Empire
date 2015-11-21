@@ -28,7 +28,8 @@ from panda3d.core import loadPrcFile
 ######################from toontown.cheatdetection import CheatDector
 import sys
 from raven import Client
-
+import rollbar
+rollbar.init('833d799472f747c8a6344134dded7b2d', 'production')  # access_token, environment
 client = Client('https://de8d64947718460f8e68f21d56468e94:a90d6d06e8ef4343a542a15d203046c9@app.getsentry.com/59258')
  
 if __debug__:

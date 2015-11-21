@@ -20,6 +20,8 @@ sys.path.append(
 
 import argparse
 import gc
+import rollbar
+rollbar.init('833d799472f747c8a6344134dded7b2d', 'production')  # access_token, environment
 
 # Panda3D 1.10.0 is 63.
 gc.disable()
@@ -36,8 +38,8 @@ args = parser.parse_args()
 for prc in args.config:
     loadPrcFile(prc)
 
-if os.path.isfile('dependencies/config/local.prc'):
-    loadPrcFile('dependencies/config/local.prc')
+if os.path.isfile('dependencies/config/dev.prc'):
+    loadPrcFile('dependencies/config/dev.prc')
 
 localconfig = ''
 if args.base_channel:
@@ -72,5 +74,6 @@ except SystemExit:
     raise
 except Exception:
     info = describeException()
+    rollbar.report_exc_info()
     simbase.air.writeServerEvent('uberdog-exception', simbase.air.getAvatarIdFromSender(), simbase.air.getAccountIdFromSender(), info)
     raise
