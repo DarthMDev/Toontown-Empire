@@ -10,9 +10,9 @@ from niraitools import *
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--compile-cxx', '-c', action='store_true',
-                    help='Compile the CXX codes and generate stride.exe into built.')
+                    help='Compile the CXX codes and generate empire.exe into built.')
 parser.add_argument('--make-nri', '-n', action='store_true',
-                    help='Generate stride NRI.')
+                    help='Generate empire NRI.')
 parser.add_argument('--make-mfs', '-m', action='store_true',
                     help='Make multifiles')
 args = parser.parse_args()
@@ -43,8 +43,8 @@ def niraicall_obfuscate(code):
 
 niraimarshal.niraicall_obfuscate = niraicall_obfuscate
 
-class StridePackager(NiraiPackager):
-    HEADER = 'TTSTRIDE'
+class empirePackager(NiraiPackager):
+    HEADER = 'TTEMPIRE'
     BASEDIR = '..' + os.sep
 
     def __init__(self, outfile, configPath=None):
@@ -75,7 +75,7 @@ class StridePackager(NiraiPackager):
             config = self.get_file_contents(self.globalConfigPath)
         else:
             config = self.get_file_contents('../dependencies/config/general.prc')
-            config += '\n\n' + self.get_file_contents('../dependencies/config/release/qa.prc')
+            config += '\n\n' + self.get_file_contents('../dependencies/config/release/test.prc')
 
         config_iv = self.generate_key(16)
         config_key = self.generate_key(16)
@@ -83,7 +83,7 @@ class StridePackager(NiraiPackager):
         niraidata = 'CONFIG = %r' % config
         
         # DC
-        niraidata += '\nDC = %r' % self.get_file_contents('../dependencies/astron/dclass/stride.dc', True)
+        niraidata += '\nDC = %r' % self.get_file_contents('../dependencies/astron/dclass/empire.dc', True)
         self.add_module('niraidata', niraidata, compile=True)
 
     def process_modules(self):
@@ -107,16 +107,16 @@ class StridePackager(NiraiPackager):
 
 # Compile the engine
 if args.compile_cxx:
-    compiler = NiraiCompiler('stride.exe', libs=set(glob.glob('libpandadna/libpandadna.dir/Release/*.obj')))
+    compiler = NiraiCompiler('empire.exe', libs=set(glob.glob('libpandadna/libpandadna.dir/Release/*.obj')))
 
     compiler.add_nirai_files()
-    compiler.add_source('src/stride.cxx')
+    compiler.add_source('src/empire.cxx')
 
     compiler.run()
 
 # Compile the game data
 if args.make_nri:
-    pkg = StridePackager('built/TTSData.bin')
+    pkg = empirePackager('built/TTEData.bin')
 
     pkg.add_source_dir('otp')
     pkg.add_source_dir('toontown')

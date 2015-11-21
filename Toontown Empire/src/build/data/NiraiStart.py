@@ -53,7 +53,7 @@ for mf in mfs:
         break
 
 # Packs
-pack = os.environ.get('TT_STRIDE_CONTENT_PACK')
+pack = os.environ.get('TT_EMPIRE_CONTENT_PACK')
 import glob
 if pack and pack != 'default':
     print 'Loading content pack', pack
