@@ -1417,28 +1417,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def getFishingRod(self):
         return self.fishingRod
 
-    def b_setMaxFishingRod(self, rodId):
-        if (not 0 <= rodId <= 4) or rodId <= self.maxFishingRod:
-            return
-
-        self.d_setMaxFishingRod(rodId)
-        self.setMaxFishingRod(rodId)
-
-    def d_setMaxFishingRod(self, rodId):
-        self.sendUpdate('setMaxFishingRod', [rodId])
-
-    def setMaxFishingRod(self, rodId):
-        self.maxFishingRod = rodId
-
-    def getMaxFishingRod(self):
-        return self.maxFishingRod
-    
-    def requestFishingRod(self, rodId):
-        if not 0 <= rodId <= self.maxFishingRod:
-            return
-        
-        self.b_setFishingRod(rodId)
-
     def b_setFishingTrophies(self, trophyList):
         self.setFishingTrophies(trophyList)
         self.d_setFishingTrophies(trophyList)
@@ -1822,7 +1800,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def setTeleportOverride(self, flag):
         self.teleportOverride = flag
-        self.b_setHoodsVisited([1000,2000,3000,4000,5000,6000,8000,9000,10000,11000,12000,13000])
+        self.b_setHoodsVisited([1000,2000,3000,4000,5000,6000,7000,8000,9000,10000,11000,12000,13000])
 
     def b_setScavengerHunt(self, scavengerHuntArray):
         self.setScavengerHunt(scavengerHuntArray)

@@ -91,7 +91,7 @@ class CatalogPoleItem(CatalogItem.CatalogItem):
 
 
 def nextAvailablePole(avatar, duplicateItems):
-    rodId = avatar.getMaxFishingRod() + 1
+    rodId = avatar.getFishingRod() + 1
     if rodId > FishGlobals.MaxRodId:
         return None
     item = CatalogPoleItem(rodId)
