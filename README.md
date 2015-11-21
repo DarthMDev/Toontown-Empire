@@ -11,7 +11,7 @@ Official Repo for Toontown Empire, a new Toontown game based on Disney's Toontow
 # Staff Positions:
 
 1. Dynamite- Leader and Game Developer
-2. Dubito: Server Administrator and Launcher Developer
+2. Dubito: Leader, Server Administrator and Launcher Developer
 3. Josh Zimmer- Leader and Game Developer
 4. Xikyl- Texture and Graphic Artist
 5. MGRacer48- Game Developer
