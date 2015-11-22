@@ -56,7 +56,7 @@ notify.info('Reading %s...' % preferencesFilename)
 
 __builtin__.settings = Settings(preferencesFilename)
 if 'res' not in settings:
-    settings['res'] = (1280, 720)
+    settings['res'] = (800, 800)
 if 'fullscreen' not in settings:
     settings['fullscreen'] = False
 if 'musicVol' not in settings:
@@ -98,19 +98,19 @@ from toontown.launcher.TTELauncher import TTELauncher
 
 __builtin__.launcher = TTELauncher()
 
-notify.info('Starting the game...')
+notify.info('Starting Toontown Empire')
 tempLoader = Loader()
 backgroundNode = tempLoader.loadSync(Filename('phase_3/models/gui/loading-background'))
 from direct.gui import DirectGuiGlobals
 from direct.gui.DirectGui import *
-notify.info('Setting the default font...')
+notify.info('Default Font')
 import ToontownGlobals
 DirectGuiGlobals.setDefaultFontFunc(ToontownGlobals.getInterfaceFont)
 import ToonBase
 ToonBase.ToonBase()
 from panda3d.core import *
 if base.win is None:
-    notify.error('Unable to open window; aborting.')
+    notify.error('Unable to open window; ')
 ConfigVariableDouble('decompressor-step-time').setValue(0.01)
 ConfigVariableDouble('extractor-step-time').setValue(0.01)
 backgroundNodePath = aspect2d.attachNewNode(backgroundNode, 0)
@@ -135,7 +135,7 @@ if base.musicManagerIsValid:
     if music:
         music.setLoop(1)
         music.play()
-    notify.info('Loading the default GUI sounds...')
+    notify.info('GUI Sounds')
     DirectGuiGlobals.setDefaultRolloverSound(base.loadSfx('phase_3/audio/sfx/GUI_rollover.ogg'))
     DirectGuiGlobals.setDefaultClickSound(base.loadSfx('phase_3/audio/sfx/GUI_create_toon_fwd.ogg'))
 else:
