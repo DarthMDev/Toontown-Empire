@@ -3085,7 +3085,7 @@ class Toon(Avatar.Avatar, ToonHead):
         if self.gmIcon:
             return
 
-        icons = loader.loadModel('phase_3/models/props/gm_icons')
+        icons = loader.loadModel('phase_3/models/props/staff_icons')
         self.gmIcon = icons.find('**/access_level_%s' % access)
         np = NodePath(self.nametag.getNameIcon())
 
