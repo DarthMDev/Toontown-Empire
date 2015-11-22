@@ -7,7 +7,7 @@ from direct.fsm import State
 from direct.interval.IntervalGlobal import *
 from direct.task import Task
 import math
-from panda3d.core import *
+from pandac.PandaModules import *
 import random
 
 import DistributedSuitBase
@@ -20,10 +20,11 @@ from otp.avatar import DistributedAvatar
 from otp.otpbase import OTPLocalizer
 from toontown.battle import BattleProps
 from toontown.battle import DistributedBattle
+from toontown.chat.ChatGlobals import *
 from toontown.distributed.DelayDeletable import DelayDeletable
-from otp.nametag.NametagConstants import *
 from otp.nametag import NametagGlobals
-from toontown.libpandadna.SuitLegList import *
+from otp.nametag.NametagGlobals import *
+from libpandadna import *
 from toontown.toonbase import ToontownGlobals
 
 
@@ -55,7 +56,7 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
         self.pathState = 0
         self.path = None
         self.localPathState = 0
-        self.currentLeg = -1
+        self.currentLeg = 0
         self.pathStartTime = 0.0
         self.legList = None
         self.initState = None
@@ -219,7 +220,7 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
         self.maxPathLen = maxPathLen
         self.path = None
         self.pathLength = 0
-        self.currentLeg = -1
+        self.currentLeg = 0
         self.legList = None
         if self.maxPathLen == 0 or not self.verifySuitPlanner() or start not in self.sp.pointIndexes or end not in self.sp.pointIndexes:
             return
@@ -327,7 +328,7 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
             return Task.done
         now = globalClock.getFrameTime()
         elapsed = now - self.pathStartTime
-        nextLeg = self.legList.getLegIndexAtTime(elapsed, 0)
+        nextLeg = self.legList.getLegIndexAtTime(elapsed, self.currentLeg)
         numLegs = self.legList.getNumLegs()
         if self.currentLeg != nextLeg:
             self.currentLeg = nextLeg
@@ -348,7 +349,7 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
     def stopPathNow(self):
         name = self.taskName('move')
         taskMgr.remove(name)
-        self.currentLeg = -1
+        self.currentLeg = 0
 
     def calculateHeading(self, a, b):
         xdelta = b[0] - a[0]
@@ -631,11 +632,11 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
             base.playSfx(dialogue, node=self)
         elif chatFlags & CFSpeech != 0:
             if self.nametag.getNumChatPages() > 0:
-                self.playDialogueForString(self.nametag.getChat())
+                self.playDialogueForString(self.nametag.getChatText())
                 if self.soundChatBubble != None:
                     base.playSfx(self.soundChatBubble, node=self)
-            elif self.nametag.getChatStomp() > 0:
-                self.playDialogueForString(self.nametag.getStompText(), self.nametag.getStompDelay())
+            elif self.nametag.getStompChatText():
+                self.playDialogueForString(self.nametag.getStompChatText(), self.nametag.CHAT_STOMP_DELAY)
 
     def playDialogueForString(self, chatString, delay = 0.0):
         if len(chatString) == 0:
