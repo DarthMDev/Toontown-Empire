@@ -1,8 +1,9 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.actor import Actor
 from direct.task.Task import Task
 from otp.avatar import Avatar
 from toontown.battle import BattleProps, SuitBattleGlobals
+from otp.nametag import NametagGlobals
 from otp.nametag.NametagGroup import NametagGroup
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.suit import SuitGlobals
@@ -348,7 +349,8 @@ class Suit(Avatar.Avatar):
 
         Avatar.Avatar.__init__(self)
         self.setFont(ToontownGlobals.getSuitFont())
-        self.setPlayerType(NametagGlobals.CCSuit)
+        self.nametag.setSpeechFont(ToontownGlobals.getSuitFont())
+        self.setPlayerType(NametagGroup.CCSuit)
         self.setPickable(1)
         self.leftHand = None
         self.rightHand = None

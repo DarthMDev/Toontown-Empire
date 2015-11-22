@@ -4,7 +4,7 @@ from BattleBase import *
 from BattleCalculatorAI import *
 from toontown.toonbase.ToontownBattleGlobals import *
 from SuitBattleGlobals import *
-from pandac.PandaModules import *
+from panda3d.core import *
 import BattleExperienceAI
 from direct.distributed import DistributedObjectAI
 from direct.fsm import ClassicFSM, State
@@ -18,6 +18,7 @@ from toontown.toonbase import ToontownGlobals
 import random
 from toontown.toon import NPCToons
 from otp.ai.MagicWordGlobal import *
+from toontown.pets import DistributedPetProxyAI
 
 class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattleBaseAI')
@@ -52,7 +53,7 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
         if self.air.suitInvasionManager.getInvading():
             mult = getInvasionMultiplier()
             self.battleCalc.setSkillCreditMultiplier(mult)
-        if self.air.holidayManager.isMoreXpHolidayRunning():
+        if self.air.newsManager.isHolidayRunning(ToontownGlobals.MORE_XP_HOLIDAY):
             mult = getMoreXpHolidayMultiplier()
             self.battleCalc.setSkillCreditMultiplier(mult)
         self.fsm = None

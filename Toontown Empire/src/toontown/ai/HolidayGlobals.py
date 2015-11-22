@@ -107,7 +107,6 @@ Holidays = {
         'startMessage': TTLocalizer.ValentinesDayStart,
         'ongoingMessage': TTLocalizer.ValentinesDayStart,
         'endMessage': TTLocalizer.ValentinesDayEnd
-        #todo add my birthday 6/29 - mgracer48
     }
 }
 

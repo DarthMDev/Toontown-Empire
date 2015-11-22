@@ -1,10 +1,9 @@
 from direct.interval.IntervalGlobal import *
-from panda3d.core import *
-import random, copy
+from pandac.PandaModules import *
+import random
 
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownBattleGlobals
-from toontown.suit import SuitDNA
 
 
 if process == 'client':
@@ -20,10 +19,7 @@ EFFECT_RADIUS = 30
 RESISTANCE_TOONUP = 0
 RESISTANCE_RESTOCK = 1
 RESISTANCE_MONEY = 2
-RESISTANCE_TICKETS = 3
-RESISTANCE_MERITS = 4
-resistanceMenu = [RESISTANCE_TOONUP, RESISTANCE_RESTOCK, RESISTANCE_MONEY, RESISTANCE_TICKETS, RESISTANCE_MERITS]
-randomResistanceMenu = [RESISTANCE_TOONUP, RESISTANCE_RESTOCK, RESISTANCE_MONEY, RESISTANCE_TICKETS]
+resistanceMenu = [RESISTANCE_TOONUP, RESISTANCE_RESTOCK, RESISTANCE_MONEY]
 resistanceDict = {
     RESISTANCE_TOONUP: {
         'menuName': TTLocalizer.ResistanceToonupMenu,
@@ -36,8 +32,8 @@ resistanceDict = {
         'menuName': TTLocalizer.ResistanceMoneyMenu,
         'itemText': TTLocalizer.ResistanceMoneyItem,
         'chatText': TTLocalizer.ResistanceMoneyChat,
-        'values': [100, 200, 350, 600, 1200, 2400],
-        'items': [0, 1, 2, 3, 4, 5]
+        'values': [100, 200, 350, 1000],
+        'items': [0, 1, 2, 3]
     },
     RESISTANCE_RESTOCK: {
         'menuName': TTLocalizer.ResistanceRestockMenu,
@@ -64,21 +60,6 @@ resistanceDict = {
             TTLocalizer.MovieNPCSOSAll
         ],
         'items': [0, 1, 2, 3, 4, 5, 6, 7]
-    },
-    RESISTANCE_MERITS: {
-        'menuName': TTLocalizer.ResistanceMeritsMenu,
-        'itemText': TTLocalizer.ResistanceMeritsItem,
-        'chatText': TTLocalizer.ResistanceMeritsChat,
-        'values': range(len(SuitDNA.suitDepts)) + [-1],
-        'extra': TTLocalizer.RewardPanelMeritBarLabels + [TTLocalizer.MovieNPCSOSAll],
-        'items': range(len(SuitDNA.suitDepts) + 1)
-    },
-    RESISTANCE_TICKETS: {
-        'menuName': TTLocalizer.ResistanceTicketsMenu,
-        'itemText': TTLocalizer.ResistanceTicketsItem,
-        'chatText': TTLocalizer.ResistanceTicketsChat,
-        'values': [200, 400, 600, 800, 1200],
-        'items': [0, 1, 2, 3, 4]
     }
 }
 
@@ -117,14 +98,13 @@ def getMenuName(textId):
 
 def getItemText(textId):
     menuIndex, itemIndex = decodeId(textId)
-    resistance = resistanceDict[menuIndex]
-    value = resistance['values'][itemIndex]
-    text = resistance['itemText']
+    value = resistanceDict[menuIndex]['values'][itemIndex]
+    text = resistanceDict[menuIndex]['itemText']
     if menuIndex is RESISTANCE_TOONUP:
         if value is -1:
             value = TTLocalizer.ResistanceToonupItemMax
-    elif 'extra' in resistance:
-        value = resistance['extra'][itemIndex]
+    elif menuIndex is RESISTANCE_RESTOCK:
+        value = resistanceDict[menuIndex]['extra'][itemIndex]
     return text % str(value)
 
 
@@ -139,7 +119,7 @@ def getItemValue(textId):
 
 
 def getRandomId():
-    menuIndex = random.choice(randomResistanceMenu)
+    menuIndex = random.choice(resistanceMenu)
     itemIndex = random.choice(getItems(menuIndex))
     return encodeId(menuIndex, itemIndex)
 
@@ -197,37 +177,6 @@ def doEffect(textId, speakingToon, nearbyToons):
             p = effect.getParticlesNamed(name)
             p.renderer.setFromNode(icon)
         fadeColor = VBase4(0, 0, 1, 1)
-    elif menuIndex == RESISTANCE_MERITS:
-        effect = BattleParticles.loadParticleFile('resistanceEffectSprite.ptf')
-        cogModel = loader.loadModel('phase_3/models/gui/cog_icons')
-        cogModel.setScale(0.75)
-        cogModel.flattenLight()
-
-        if itemValue != -1:
-            iconDict = {'particles-1': cogModel.find(SuitDNA.suitDeptModelPaths[itemValue])}
-        else:
-            iconDict = {}
-
-            for i in xrange(len(SuitDNA.suitDepts)):
-                iconDict['particles-%s' % (i + 1)] = cogModel.find(SuitDNA.suitDeptModelPaths[i])
-
-        for name, icon in iconDict.items():
-            p = effect.getParticlesNamed(name)
-            p.renderer.setFromNode(icon)
-
-        fadeColor = VBase4(0.7, 0.7, 0.7, 1.0)
-        cogModel.removeNode()
-    elif menuIndex == RESISTANCE_TICKETS:
-        effect = BattleParticles.loadParticleFile('resistanceEffectSprite.ptf')
-        model = loader.loadModel('phase_6/models/karting/tickets')
-        model.flattenLight()
-        iconDict = {'particles-1': model}
-
-        for name, icon in iconDict.items():
-            p = effect.getParticlesNamed(name)
-            p.renderer.setFromNode(icon)
-
-        fadeColor = VBase4(1, 1, 0, 1)
     else:
         return
     recolorToons = Parallel()

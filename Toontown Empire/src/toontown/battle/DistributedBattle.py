@@ -138,7 +138,7 @@ class DistributedBattle(DistributedBattleBase.DistributedBattleBase):
             soundTrack = Wait(delay + faceoffTime)
         mtrack = Parallel(suitTrack, toonTrack, soundTrack)
         if self.hasLocalToon():
-            NametagGlobals.setWant2dNametags(False)
+            NametagGlobals.setMasterArrowsOn(0)
             mtrack = Parallel(mtrack, camTrack)
         done = Func(callback)
         track = Sequence(mtrack, done, name=name)

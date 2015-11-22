@@ -249,7 +249,7 @@ class TownLoader(StateData.StateData):
             self.zoneDict[zoneId] = groupNode
             visibles = []
             for i in xrange(visGroup.getNumVisibles()):
-                visibles.append(int(visGroup.getVisible(i)))
+                visibles.append(int(visGroup.getVisibleName(i)))
             visibles.append(ZoneUtil.getBranchZone(zoneId))
             self.zoneVisDict[zoneId] = visibles
             fadeDuration = 0.5
@@ -263,7 +263,6 @@ class TownLoader(StateData.StateData):
                 visName = dnaStore.getVisibleName(i, j)
                 groupName = base.cr.hoodMgr.extractGroupName(visName)
                 nextZoneId = int(groupName)
-                nextZoneId = ZoneUtil.getTrueZoneId(nextZoneId, self.zoneId)
                 visNode = self.zoneDict[nextZoneId]
                 self.nodeDict[zoneId].append(visNode)
 
