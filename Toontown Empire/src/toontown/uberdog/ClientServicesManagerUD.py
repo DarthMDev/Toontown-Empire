@@ -21,13 +21,10 @@ import urllib2, time, urllib
 def rejectConfig(issue, securityIssue=True, retarded=True):
     print
     print
-    print 'Lemme get this straight....'
-    print 'You are trying to use remote account database type...'
     print 'However,', issue + '!!!!'
     if securityIssue:
-        print 'Do you want this server to get hacked?'
+        print 'Security Issue loading...'
     if retarded:
-        print '"Either down\'s or autism"\n  - JohnnyDaPirate, 2015'
     print 'Go fix that!'
     exit()
 
