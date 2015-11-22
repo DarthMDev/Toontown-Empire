@@ -107,7 +107,7 @@ class empirePackager(NiraiPackager):
 
 # Compile the engine
 if args.compile_cxx:
-    compiler = NiraiCompiler('empire.exe', libs=set(glob.glob('libpandadna/libpandadna.dir/Release/*.obj')))
+    compiler = NiraiCompiler('empire.exe'
 
     compiler.add_nirai_files()
     compiler.add_source('src/empire.cxx')
