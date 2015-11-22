@@ -26,7 +26,7 @@ def iterateBossbotCountryClubs(func):
     from toontown.toonbase import ToontownGlobals
     for countryClubId in [ToontownGlobals.BossbotCountryClubIntA, ToontownGlobals.BossbotCountryClubIntB, ToontownGlobals.BossbotCountryClubIntC]:
         for floorNum in xrange(ToontownGlobals.CountryClubNumFloors[countryClubId]):
-            func(CountryClubLayout(countryClubId, floorNum, layoutIndex))
+            func(CountryClubLayout(countryClubId, floorNum))
 
 
 def printCountryClubInfo():

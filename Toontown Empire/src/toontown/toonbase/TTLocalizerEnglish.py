@@ -9945,3 +9945,4 @@ CatalogAcceptLimitError = "You already have as many of these as you can handle. 
 CatalogAcceptFitError = "This won't fit you!"
 CatalogAcceptInvalidError = 'This item has gone out of style!'
 CatalogAcceptClosetError = 'You already have a bigger closet!'
+ChairAskToUse = 'Would you like to sit on this chair?'

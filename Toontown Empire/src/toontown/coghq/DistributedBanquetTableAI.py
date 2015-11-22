@@ -29,14 +29,7 @@ class DistributedBanquetTableAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM
                 level = dinerLevel
             else:
                 level = random.choice(dinerLevel)
-
-            dept = random.choice(['s', 'm', 'l', 'c'])
-
-            if level == 11 and dept == 'm':
-                # TODO: Add sit animation for suit B cogs.
-                dept = random.choice(['s', 'l', 'c'])
-
-            self.dinerInfo[i] = (hungryDuration, eatingDuration, level, dept)
+            self.dinerInfo[i] = (hungryDuration, eatingDuration, level)
 
         self.transitionTasks = {}
         self.numFoodEaten = {}
@@ -67,14 +60,12 @@ class DistributedBanquetTableAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM
         hungryDurations = []
         eatingDurations = []
         dinerLevels = []
-        dinerSuitDept = []
         for i in xrange(self.numDiners):
             hungryDurations.append(self.dinerInfo[i][0])
             eatingDurations.append(self.dinerInfo[i][1])
             dinerLevels.append(self.dinerInfo[i][2])
-            dinerSuitDept.append(self.dinerInfo[i][3])
 
-        return (hungryDurations, eatingDurations, dinerLevels, dinerSuitDept)
+        return (hungryDurations, eatingDurations, dinerLevels)
 
     def d_setDinerStatus(self, chairIndex, newStatus):
         self.sendUpdate('setDinerStatus', [chairIndex, newStatus])
@@ -116,10 +107,6 @@ class DistributedBanquetTableAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM
         self.b_setState('Off')
 
     def foodServed(self, chairIndex):
-
-        if self.dinerStatus[chairIndex] == self.ANGRY:
-            self.boss.decrementDinersAngered()
-
         self.b_setDinerStatus(chairIndex, self.EATING)
         eatingDur = self.dinerInfo[chairIndex][1]
         if chairIndex in self.transitionTasks:
@@ -135,7 +122,6 @@ class DistributedBanquetTableAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM
         if self.numFoodEaten[chairIndex] >= ToontownGlobals.BossbotNumFoodToExplode:
             self.b_setDinerStatus(chairIndex, self.DEAD)
             self.boss.incrementDinersExploded()
-            self.boss.alertDiners()
         else:
             self.b_setDinerStatus(chairIndex, self.HUNGRY)
             taskName = self.uniqueName('transition-%d' % chairIndex)
@@ -154,7 +140,6 @@ class DistributedBanquetTableAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM
         self.numFoodEaten[chairIndex] = 0
         if chairIndex in self.transitionTasks:
             self.removeTask(self.transitionTasks[chairIndex])
-        self.boss.incrementDinersAngered()
 
     def goInactive(self):
         self.b_setState('Inactive')
@@ -169,7 +154,7 @@ class DistributedBanquetTableAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM
         notDeadList = []
         for i in xrange(self.numDiners):
             if self.dinerStatus[i] != self.DEAD:
-                notDeadList.append((self.index, i, self.dinerInfo[i][2], self.dinerInfo[i][3]))
+                notDeadList.append((self.index, i, self.dinerInfo[i][2]))
 
         return notDeadList
 

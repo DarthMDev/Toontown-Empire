@@ -19,7 +19,6 @@ class DistributedFoodBelt(DistributedObject.DistributedObject, FSM.FSM, FoodBelt
      'phase_6/models/golf/picnic_sandwich.bam',
      'phase_6/models/golf/picnic_chocolate_cake.bam']
     ToonupScales = [5,
-     15,
      5,
      5,
      4]

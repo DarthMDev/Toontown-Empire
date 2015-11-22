@@ -12,6 +12,7 @@ from otp.level import LevelSpec
 from otp.level import LevelConstants
 from toontown.toonbase import TTLocalizer
 from toontown.coghq import FactoryCameraViews
+from direct.controls.ControlManager import CollisionHandlerRayStart
 from otp.nametag.NametagConstants import *
 from otp.ai.MagicWordGlobal import *
 
@@ -37,12 +38,14 @@ class DistributedFactory(DistributedLevel.DistributedLevel, FactoryBase.FactoryB
         self.factoryViews = FactoryCameraViews.FactoryCameraViews(self)
         base.localAvatar.chatMgr.chatInputSpeedChat.addFactoryMenu()
         self.accept('SOSPanelEnter', self.handleSOSPanel)
+        base.factory = self
 
     def delete(self):
         DistributedLevel.DistributedLevel.delete(self)
         base.localAvatar.chatMgr.chatInputSpeedChat.removeFactoryMenu()
         self.factoryViews.delete()
         del self.factoryViews
+        del base.factory
         self.ignore('SOSPanelEnter')
 
     def setFactoryId(self, id):
@@ -77,7 +80,7 @@ class DistributedFactory(DistributedLevel.DistributedLevel, FactoryBase.FactoryB
 
         self.acceptOnce(firstSetZoneDoneEvent, handleFirstSetZoneDone)
         modelCount = len(levelSpec.getAllEntIds())
-        loader.beginBulkLoad('factory', TTLocalizer.HeadingToFactoryTitle % TTLocalizer.FactoryNames[self.factoryId], modelCount, 1, TTLocalizer.TIP_COGHQ)
+        loader.beginBulkLoad('factory', TTLocalizer.HeadingToFactoryTitle % TTLocalizer.FactoryNames[self.factoryId], modelCount, 1, TTLocalizer.TIP_COGHQ, self.factoryId)
         DistributedLevel.DistributedLevel.privGotSpec(self, levelSpec)
         loader.endBulkLoad('factory')
 
@@ -163,10 +166,7 @@ def factoryWarp(zoneNum):
     """
     Warp to a specific factory zone.
     """
-    factory = [base.cr.doFind('DistributedFactory'), base.cr.doFind('DistributedMegaCorp')]
-    for f in factory:
-        if (not f) or (not isinstance(f, DistributedFactory)):
-            return 'You must be in a factory.'
-        factory = f
-    factory.warpToZone(zoneNum)
+    if not hasattr(base, 'factory'):
+        return 'You must be in a factory!'
+    base.factory.warpToZone(zoneNum)
     return 'Warped to zone: %d' % zoneNum

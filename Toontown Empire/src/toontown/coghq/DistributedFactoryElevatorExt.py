@@ -31,7 +31,7 @@ class DistributedFactoryElevatorExt(DistributedElevatorExt.DistributedElevatorEx
         elif self.entranceId == 1:
             self.elevatorModel.setPosHpr(-162.25, 26.43, 0.0, 269.0, 0.0, 0.0)
         elif self.entranceId == 2 and base.config.GetBool('want-megacorp', True):
-            self.elevatorModel.setPosHpr(-21.181, -74.6196, 0.0, 2.0, 0.0, 0.0)
+            self.elevatorModel.setPosHpr(64.793, -2.34, 0.0, -900.0, 0.0, 0.0)
         else:
             self.notify.error('Invalid entranceId: %s' % entranceId)
 

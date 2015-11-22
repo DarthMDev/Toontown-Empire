@@ -638,9 +638,9 @@ class DistributedLaserField(BattleBlocker.BattleBlocker):
         self.__testTile()
 
     def getField(self):
-        fieldData = []
         fieldData.append(self.game.gridNumX)
         fieldData.append(self.game.gridNumY)
+        fieldData = []
         for column in xrange(0, self.game.gridNumX):
             for row in xrange(0, self.game.gridNumY):
                 fieldData.append(self.game.gridData[column][row])
