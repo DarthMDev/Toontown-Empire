@@ -25,7 +25,7 @@
 //               device, including keyboard buttons and mouse buttons
 //               (but see KeyboardButton and MouseButton).
 ////////////////////////////////////////////////////////////////////
-class EXPCL_PANDA_PUTIL ButtonHandle FINAL {
+class EXPCL_PANDA_PUTIL ButtonHandle {
 PUBLISHED:
   INLINE ButtonHandle();
   INLINE ButtonHandle(int index);

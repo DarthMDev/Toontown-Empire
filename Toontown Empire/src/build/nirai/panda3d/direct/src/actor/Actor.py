@@ -23,8 +23,6 @@ class Actor(DirectObject, NodePath):
                                        LoaderOptions.LFConvertAnim)
 
     validateSubparts = ConfigVariableBool('validate-subparts', True)
-    mergeLODBundles = ConfigVariableBool('merge-lod-bundles', True)
-    allowAsyncBind = ConfigVariableBool('allow-async-bind', True)
     
     class PartDef:
 
@@ -172,10 +170,10 @@ class Actor(DirectObject, NodePath):
         # ['common']; when it is false, __animControlDict has one key
         # per each LOD name.
         
-        if mergeLODBundles is None:
+        if mergeLODBundles == None:
             # If this isn't specified, it comes from the Config.prc
             # file.
-            self.mergeLODBundles = Actor.mergeLODBundles.getValue()
+            self.mergeLODBundles = base.config.GetBool('merge-lod-bundles', True)
         else:
             self.mergeLODBundles = mergeLODBundles
 
@@ -183,8 +181,8 @@ class Actor(DirectObject, NodePath):
         # asynchronous animation binding.  This requires that you have
         # run "egg-optchar -preload" on your animation and models to
         # generate the appropriate AnimPreloadTable.
-        if allowAsyncBind is None:
-            self.allowAsyncBind = Actor.allowAsyncBind.getValue()
+        if allowAsyncBind == None:
+            self.allowAsyncBind = base.config.GetBool('allow-async-bind', True)
         else:
             self.allowAsyncBind = allowAsyncBind
 

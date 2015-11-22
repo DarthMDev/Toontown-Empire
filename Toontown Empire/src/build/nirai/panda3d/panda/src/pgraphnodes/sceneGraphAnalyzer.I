@@ -128,10 +128,11 @@ get_num_geom_vertex_formats() const {
 //       Access: Published
 //  Description: 
 ////////////////////////////////////////////////////////////////////
-size_t SceneGraphAnalyzer::
+int SceneGraphAnalyzer::
 get_vertex_data_size() const {
   return _vertex_data_size;
 }
+
 
 ////////////////////////////////////////////////////////////////////
 //     Function: SceneGraphAnalyzer::get_num_vertices

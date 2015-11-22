@@ -66,15 +66,11 @@ PUBLISHED:
   BLOCKING string get_fixed_string(size_t size);
 
   BLOCKING void skip_bytes(size_t size);
-  BLOCKING size_t extract_bytes(unsigned char *into, size_t size);
-  EXTENSION(BLOCKING PyObject *extract_bytes(size_t size));
-
-  EXTENSION(BLOCKING PyObject *readline());
-  EXTENSION(BLOCKING PyObject *readlines());
-
-public:
   BLOCKING string extract_bytes(size_t size);
+  BLOCKING size_t extract_bytes(unsigned char *into, size_t size);
+
   BLOCKING string readline();
+  EXTENSION(BLOCKING PyObject *readlines());
 
 private:
   istream *_in;

@@ -297,7 +297,8 @@ output(ostream &out) const {
 ////////////////////////////////////////////////////////////////////
 int TexGenAttrib::
 compare_to_impl(const RenderAttrib *other) const {
-  const TexGenAttrib *ta = (const TexGenAttrib *)other;
+  const TexGenAttrib *ta;
+  DCAST_INTO_R(ta, other, 0);
 
   Stages::const_iterator ai, bi;
   ai = _stages.begin();
@@ -382,7 +383,8 @@ get_hash_impl() const {
 ////////////////////////////////////////////////////////////////////
 CPT(RenderAttrib) TexGenAttrib::
 compose_impl(const RenderAttrib *other) const {
-  const TexGenAttrib *ta = (const TexGenAttrib *)other;
+  const TexGenAttrib *ta;
+  DCAST_INTO_R(ta, other, 0);
 
   // The composition is the union of the two attribs.  In the case
   // when a stage is in both attribs, we compose the stages.
@@ -439,7 +441,8 @@ compose_impl(const RenderAttrib *other) const {
 ////////////////////////////////////////////////////////////////////
 CPT(RenderAttrib) TexGenAttrib::
 invert_compose_impl(const RenderAttrib *other) const {
-  const TexGenAttrib *ta = (const TexGenAttrib *)other;
+  const TexGenAttrib *ta;
+  DCAST_INTO_R(ta, other, 0);
 
   // The inverse composition works a lot like the composition, except
   // we invert the ai stages.

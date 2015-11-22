@@ -58,7 +58,33 @@ has_cull_callback() const {
 ////////////////////////////////////////////////////////////////////
 INLINE CPT(RenderState) RenderState::
 make_empty() {
+  // The empty state is asked for so often, we make it a special case
+  // and store a pointer forever once we find it the first time.
+  if (_empty_state == (RenderState *)NULL) {
+    RenderState *state = new RenderState;
+    _empty_state = return_unique(state);
+  }
+
   return _empty_state;
+}
+
+////////////////////////////////////////////////////////////////////
+//     Function: RenderState::make_full_default
+//       Access: Published, Static
+//  Description: Returns a RenderState with all possible attributes
+//               set to their default value.
+////////////////////////////////////////////////////////////////////
+INLINE CPT(RenderState) RenderState::
+make_full_default() {
+  // The empty state is asked for so often, we make it a special case
+  // and store a pointer forever once we find it the first time.
+  if (_full_default_state == (RenderState *)NULL) {
+    RenderState *state = new RenderState;
+    state->fill_default();
+    _full_default_state = return_unique(state);
+  }
+
+  return _full_default_state;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -118,7 +144,7 @@ get_attrib(TypeHandle type) const {
 //               index, or NULL if there is no such RenderAttrib in
 //               the state.
 ////////////////////////////////////////////////////////////////////
-ALWAYS_INLINE const RenderAttrib *RenderState::
+INLINE const RenderAttrib *RenderState::
 get_attrib(int slot) const {
   return _attributes[slot]._attrib;
 }
@@ -135,8 +161,7 @@ get_attrib_def(int slot) const {
   if (_attributes[slot]._attrib != (RenderAttrib *)NULL) {
     return _attributes[slot]._attrib;
   }
-  RenderAttribRegistry *reg = RenderAttribRegistry::quick_get_global_ptr();
-  return reg->get_slot_default(slot);
+  return make_full_default()->get_attrib(slot);
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -255,7 +280,7 @@ node_unref() const {
 //               has been cached.  This number is not useful for any
 //               practical reason other than performance analysis.
 ////////////////////////////////////////////////////////////////////
-INLINE size_t RenderState::
+INLINE int RenderState::
 get_composition_cache_num_entries() const {
   LightReMutexHolder holder(*_states_lock);
   return _composition_cache.get_num_entries();
@@ -270,7 +295,7 @@ get_composition_cache_num_entries() const {
 //               records cache entries for the invert_compose()
 //               operation.  See get_composition_cache_num_entries().
 ////////////////////////////////////////////////////////////////////
-INLINE size_t RenderState::
+INLINE int RenderState::
 get_invert_composition_cache_num_entries() const {
   LightReMutexHolder holder(*_states_lock);
   return _invert_composition_cache.get_num_entries();
@@ -288,7 +313,7 @@ get_invert_composition_cache_num_entries() const {
 //               This has no practical value other than for examining
 //               the cache for performance analysis.
 ////////////////////////////////////////////////////////////////////
-INLINE size_t RenderState::
+INLINE int RenderState::
 get_composition_cache_size() const {
   LightReMutexHolder holder(*_states_lock);
   return _composition_cache.get_size();
@@ -306,7 +331,7 @@ get_composition_cache_size() const {
 //               the cache for performance analysis.
 ////////////////////////////////////////////////////////////////////
 INLINE const RenderState *RenderState::
-get_composition_cache_source(size_t n) const {
+get_composition_cache_source(int n) const {
   LightReMutexHolder holder(*_states_lock);
   if (!_composition_cache.has_element(n)) {
     return NULL;
@@ -329,7 +354,7 @@ get_composition_cache_source(size_t n) const {
 //               the cache for performance analysis.
 ////////////////////////////////////////////////////////////////////
 INLINE const RenderState *RenderState::
-get_composition_cache_result(size_t n) const {
+get_composition_cache_result(int n) const {
   LightReMutexHolder holder(*_states_lock);
   if (!_composition_cache.has_element(n)) {
     return NULL;
@@ -349,7 +374,7 @@ get_composition_cache_result(size_t n) const {
 //               This has no practical value other than for examining
 //               the cache for performance analysis.
 ////////////////////////////////////////////////////////////////////
-INLINE size_t RenderState::
+INLINE int RenderState::
 get_invert_composition_cache_size() const {
   LightReMutexHolder holder(*_states_lock);
   return _invert_composition_cache.get_size();
@@ -367,7 +392,7 @@ get_invert_composition_cache_size() const {
 //               the cache for performance analysis.
 ////////////////////////////////////////////////////////////////////
 INLINE const RenderState *RenderState::
-get_invert_composition_cache_source(size_t n) const {
+get_invert_composition_cache_source(int n) const {
   LightReMutexHolder holder(*_states_lock);
   if (!_invert_composition_cache.has_element(n)) {
     return NULL;
@@ -391,7 +416,7 @@ get_invert_composition_cache_source(size_t n) const {
 //               the cache for performance analysis.
 ////////////////////////////////////////////////////////////////////
 INLINE const RenderState *RenderState::
-get_invert_composition_cache_result(size_t n) const {
+get_invert_composition_cache_result(int n) const {
   LightReMutexHolder holder(*_states_lock);
   if (!_invert_composition_cache.has_element(n)) {
     return NULL;

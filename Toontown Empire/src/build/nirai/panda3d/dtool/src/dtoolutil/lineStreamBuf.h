@@ -40,7 +40,7 @@ protected:
   virtual int sync();
 
 private:
-  INLINE void write_chars(const char *start, size_t length);
+  INLINE void write_chars(const char *start, int length);
 
   string _data;
   bool _has_newline;

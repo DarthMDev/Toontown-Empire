@@ -1,7 +1,7 @@
 __all__ = ['register', 'sharedPackages',
            'reloadSharedPackage', 'reloadSharedPackages']
 
-from panda3d._core import Filename, VirtualFileSystem, VirtualFileMountSystem, OFileStream, copyStream
+from panda3d.core import Filename, VirtualFileSystem, VirtualFileMountSystem, OFileStream, copyStream
 import sys
 import marshal
 import imp
@@ -25,6 +25,12 @@ sharedPackages = {}
 
 vfs = VirtualFileSystem.getGlobalPtr()
 
+# Possible file types.
+FTPythonSource = 0
+FTPythonCompiled = 1
+FTExtensionModule = 2
+FTFrozenModule = 3
+
 compiledExtensions = [ 'pyc', 'pyo' ]
 if not __debug__:
     # In optimized mode, we prefer loading .pyo files over .pyc files.
@@ -38,10 +44,7 @@ class VFSImporter:
     (among other places). """
 
     def __init__(self, path):
-        if isinstance(path, Filename):
-            self.dir_path = Filename(path)
-        else:
-            self.dir_path = Filename.fromOsSpecific(path)
+        self.dir_path = Filename.fromOsSpecific(path)
 
     def find_module(self, fullname, path = None):
         if path is None:
@@ -57,8 +60,7 @@ class VFSImporter:
         filename.setExtension('py')
         vfile = vfs.getFile(filename, True)
         if vfile:
-            return VFSLoader(dir_path, vfile, filename,
-                             desc=('.py', 'U', imp.PY_SOURCE))
+            return VFSLoader(dir_path, vfile, filename, FTPythonSource)
 
         # If there's no .py file, but there's a .pyc file, load that
         # anyway.
@@ -67,32 +69,33 @@ class VFSImporter:
             filename.setExtension(ext)
             vfile = vfs.getFile(filename, True)
             if vfile:
-                return VFSLoader(dir_path, vfile, filename,
-                                 desc=('.'+ext, 'rb', imp.PY_COMPILED))
+                return VFSLoader(dir_path, vfile, filename, FTPythonCompiled)
 
         # Look for a C/C++ extension module.
         for desc in imp.get_suffixes():
             if desc[2] != imp.C_EXTENSION:
                 continue
 
-            filename = Filename(path + desc[0])
+            filename = Filename(path)
+            filename.setExtension(desc[0][1:])
             vfile = vfs.getFile(filename, True)
             if vfile:
-                return VFSLoader(dir_path, vfile, filename, desc=desc)
+                return VFSLoader(dir_path, vfile, filename, FTExtensionModule,
+                                 desc = desc)
 
         # Finally, consider a package, i.e. a directory containing
         # __init__.py.
         filename = Filename(path, '__init__.py')
         vfile = vfs.getFile(filename, True)
         if vfile:
-            return VFSLoader(dir_path, vfile, filename, packagePath=path,
-                             desc=('.py', 'U', imp.PY_SOURCE))
+            return VFSLoader(dir_path, vfile, filename, FTPythonSource,
+                             packagePath = path)
         for ext in compiledExtensions:
             filename = Filename(path, '__init__.' + ext)
             vfile = vfs.getFile(filename, True)
             if vfile:
-                return VFSLoader(dir_path, vfile, filename, packagePath=path,
-                                 desc=('.'+ext, 'rb', imp.PY_COMPILED))
+                return VFSLoader(dir_path, vfile, filename, FTPythonCompiled,
+                                 packagePath = path)
 
         #print >>sys.stderr, "not found."
         return None
@@ -101,20 +104,22 @@ class VFSLoader:
     """ The second part of VFSImporter, this is created for a
     particular .py file or directory. """
 
-    def __init__(self, dir_path, vfile, filename, desc, packagePath=None):
+    def __init__(self, dir_path, vfile, filename, fileType,
+                 desc = None, packagePath = None):
         self.dir_path = dir_path
         self.timestamp = None
         if vfile:
             self.timestamp = vfile.getTimestamp()
         self.filename = filename
+        self.fileType = fileType
         self.desc = desc
         self.packagePath = packagePath
 
     def load_module(self, fullname, loadingShared = False):
         #print >>sys.stderr, "load_module(%s), dir_path = %s, filename = %s" % (fullname, self.dir_path, self.filename)
-        if self.desc[2] == imp.PY_FROZEN:
+        if self.fileType == FTFrozenModule:
             return self._import_frozen_module(fullname)
-        if self.desc[2] == imp.C_EXTENSION:
+        if self.fileType == FTExtensionModule:
             return self._import_extension_module(fullname)
 
         # Check if this is a child of a shared package.
@@ -132,7 +137,7 @@ class VFSLoader:
 
         code = self._read_code()
         if not code:
-            raise ImportError('No Python code in %s' % (fullname))
+            raise ImportError, 'No Python code in %s' % (fullname)
 
         mod = sys.modules.setdefault(fullname, imp.new_module(fullname))
         mod.__file__ = self.filename.toOsSpecific()
@@ -148,7 +153,7 @@ class VFSLoader:
         path = Filename(self.dir_path, Filename.fromOsSpecific(path))
         vfile = vfs.getFile(path)
         if not vfile:
-            raise IOError("Could not find '%s'" % (path))
+            raise IOError
         return vfile.readFile(True)
 
     def is_package(self, fullname):
@@ -167,8 +172,8 @@ class VFSLoader:
         """ Returns the Python source for this file, if it is
         available, or None if it is not.  May raise IOError. """
 
-        if self.desc[2] == imp.PY_COMPILED or \
-           self.desc[2] == imp.C_EXTENSION:
+        if self.fileType == FTPythonCompiled or \
+           self.fileType == FTExtensionModule:
             return None
 
         filename = Filename(self.filename)
@@ -176,7 +181,7 @@ class VFSLoader:
         filename.setText()
         vfile = vfs.getFile(filename)
         if not vfile:
-            raise IOError("Could not find '%s'" % (filename))
+            raise IOError
         return vfile.readFile(True)
 
     def _import_extension_module(self, fullname):
@@ -226,10 +231,6 @@ class VFSLoader:
         #print >>sys.stderr, "importing frozen %s" % (fullname)
         module = imp.load_module(fullname, None, fullname,
                                  ('', '', imp.PY_FROZEN))
-
-        # Workaround for bug in Python 2.
-        if getattr(module, '__path__', None) == fullname:
-            module.__path__ = []
         return module
 
     def _read_code(self):
@@ -238,14 +239,14 @@ class VFSLoader:
         ValueError, SyntaxError, or a number of other errors generated
         by the low-level system. """
 
-        if self.desc[2] == imp.PY_COMPILED:
+        if self.fileType == FTPythonCompiled:
             # It's a pyc file; just read it directly.
             pycVfile = vfs.getFile(self.filename, False)
             if pycVfile:
                 return self._loadPyc(pycVfile, None)
-            raise IOError('Could not read %s' % (self.filename))
+            raise IOError, 'Could not read %s' % (self.filename)
 
-        elif self.desc[2] == imp.C_EXTENSION:
+        elif self.fileType == FTExtensionModule:
             return None
 
         # It's a .py file (or an __init__.py file; same thing).  Read
@@ -281,21 +282,16 @@ class VFSLoader:
 
         code = None
         data = vfile.readFile(True)
-        if data[:4] != imp.get_magic():
-            raise ValueError("Bad magic number in %s" % (vfile))
-
-        if sys.version_info >= (3, 0):
-            t = int.from_bytes(data[4:8], 'little')
-            data = data[12:]
-        else:
+        if data[:4] == imp.get_magic():
             t = ord(data[4]) + (ord(data[5]) << 8) + \
                (ord(data[6]) << 16) + (ord(data[7]) << 24)
-            data = data[8:]
-
-        if not timestamp or t == timestamp:
-            return marshal.loads(data)
+            if not timestamp or t == timestamp:
+                code = marshal.loads(data[8:])
+            else:
+                raise ValueError, 'Timestamp wrong on %s' % (vfile)
         else:
-            raise ValueError("Timestamp wrong on %s" % (vfile))
+            raise ValueError, 'Bad magic number in %s' % (vfile)
+        return code
 
 
     def _compile(self, filename, source):
@@ -315,16 +311,15 @@ class VFSLoader:
         except IOError:
             pass
         else:
-            f.write(imp.get_magic())
-            if sys.version_info >= (3, 0):
-                f.write((self.timestamp & 0xffffffff).to_bytes(4, 'little'))
-                f.write(b'\0\0\0\0')
-            else:
-                f.write(chr(self.timestamp & 0xff) +
-                        chr((self.timestamp >> 8) & 0xff) +
-                        chr((self.timestamp >> 16) & 0xff) +
-                        chr((self.timestamp >> 24) & 0xff))
+            f.write('\0\0\0\0')
+            f.write(chr(self.timestamp & 0xff) +
+                    chr((self.timestamp >> 8) & 0xff) +
+                    chr((self.timestamp >> 16) & 0xff) +
+                    chr((self.timestamp >> 24) & 0xff))
             f.write(marshal.dumps(code))
+            f.flush()
+            f.seek(0, 0)
+            f.write(imp.get_magic())
             f.close()
 
         return code
@@ -394,7 +389,7 @@ class VFSSharedImporter:
         """ Returns the directory name that the indicated
         conventionally-loaded module must have been loaded from. """
 
-        if not getattr(mod, '__file__', None):
+        if not hasattr(mod, __file__) or mod.__file__ is None:
             return None
 
         fullname = mod.__name__
@@ -439,9 +434,6 @@ class VFSSharedLoader:
         if self.reload:
             mod = sys.modules[fullname]
             path = mod.__path__ or []
-            if path == fullname:
-                # Work around Python bug setting __path__ of frozen modules.
-                path = []
             vfs_shared_path = getattr(mod, '_vfs_shared_path', [])
 
         for loader in self.loaders:
@@ -459,12 +451,11 @@ class VFSSharedLoader:
 
         if mod is None:
             # If all of them failed to load, raise ImportError.
-            raise ImportError(message)
+            raise ImportError, message
 
         # If at least one of them loaded successfully, return the
         # union of loaded modules.
         mod.__path__ = path
-        mod.__package__ = fullname
 
         # Also set this special symbol, which records that this is a
         # shared package, and also lists the paths we have already
@@ -525,9 +516,7 @@ def reloadSharedPackages():
 
     #print >> sys.stderr, "reloadSharedPackages, path = %s, sharedPackages = %s" % (sys.path, sharedPackages.keys())
 
-    # Sort the list, just to make sure parent packages are reloaded
-    # before child packages are.
-    for fullname in sorted(sharedPackages.keys()):
+    for fullname in sharedPackages.keys():
         mod = sys.modules.get(fullname, None)
         if not mod:
             continue

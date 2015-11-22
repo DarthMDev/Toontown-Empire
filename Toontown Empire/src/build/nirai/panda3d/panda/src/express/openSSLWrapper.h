@@ -24,10 +24,7 @@
 #include <winsock2.h>  // must be included prior to including OpenSSL.
 #endif
 
-#ifndef OPENSSL_NO_KRB5
 #define OPENSSL_NO_KRB5
-#endif
-
 #include "openssl/ssl.h"
 #include "openssl/rand.h"
 #include "openssl/err.h"

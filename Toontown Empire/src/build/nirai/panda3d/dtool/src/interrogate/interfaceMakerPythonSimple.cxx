@@ -123,8 +123,6 @@ write_module(ostream &out,ostream *out_h, InterrogateModuleDef *def) {
 
       << "#ifdef _WIN32\n"
       << "extern \"C\" __declspec(dllexport) INIT_FUNC();\n"
-      << "#elif __GNUC__ >= 4\n"
-      << "extern \"C\" __attribute__((visibility(\"default\"))) INIT_FUNC();\n"
       << "#else\n"
       << "extern \"C\" INIT_FUNC();\n"
       << "#endif\n\n"
@@ -360,8 +358,8 @@ void InterfaceMakerPythonSimple::write_function_instance(ostream &out, Interface
       pexpr_string = param_name;
 
     } else if (TypeManager::is_pointer(type)) {
-      out << "Py_ssize_t " << param_name;
-      format_specifiers += "n";
+      out << "int " << param_name;
+      format_specifiers += "i";
       parameter_list += ", &" + param_name;
 
     } else {

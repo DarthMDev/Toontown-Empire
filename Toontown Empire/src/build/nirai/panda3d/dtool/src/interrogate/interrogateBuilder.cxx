@@ -264,9 +264,6 @@ build() {
        ci != _forcetype.end();
        ++ci) {
     CPPType *type = parser.parse_type(*ci);
-    if (type == NULL) {
-      cerr << "Failure to parse forcetype " << *ci << "\n";
-    }
     assert(type != (CPPType *)NULL);
     get_type(type, true);
   }
@@ -1347,14 +1344,14 @@ scan_manifest(CPPManifest *manifest) {
     return;
   }
 
-  if (manifest->_loc.file.is_c_file()) {
+  if (manifest->_file.is_c_file()) {
     // This #define appears in a .C file.  We can only export
     // manifests defined in a .h file.
     return;
   }
 
-  if (manifest->_loc.file._source != CPPFile::S_local ||
-      in_ignorefile(manifest->_loc.file._filename_as_referenced)) {
+  if (manifest->_file._source != CPPFile::S_local ||
+      in_ignorefile(manifest->_file._filename_as_referenced)) {
     // The manifest is defined in some other package or in an
     // ignorable file.
     return;
@@ -1437,9 +1434,8 @@ scan_element(CPPInstance *element, CPPStructType *struct_type,
     return 0;
   }
 
-  if (struct_type == NULL &&
-      (element->_file._source != CPPFile::S_local ||
-       in_ignorefile(element->_file._filename_as_referenced))) {
+  if (element->_file._source != CPPFile::S_local ||
+      in_ignorefile(element->_file._filename_as_referenced)) {
     // The element is defined in some other package or in an
     // ignorable file.
     return 0;

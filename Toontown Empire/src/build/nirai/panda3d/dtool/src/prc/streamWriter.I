@@ -16,13 +16,10 @@
 ////////////////////////////////////////////////////////////////////
 //     Function: StreamWriter::Constructor
 //       Access: Public
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE StreamWriter::
-StreamWriter(ostream &out) :
-#ifdef HAVE_PYTHON
-  softspace(0),
-#endif
+StreamWriter(ostream &out) : 
   _out(&out),
   _owns_stream(false)
 {
@@ -31,13 +28,10 @@ StreamWriter(ostream &out) :
 ////////////////////////////////////////////////////////////////////
 //     Function: StreamWriter::Constructor
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE StreamWriter::
-StreamWriter(ostream *out, bool owns_stream) :
-#ifdef HAVE_PYTHON
-  softspace(0),
-#endif
+StreamWriter(ostream *out, bool owns_stream) : 
   _out(out),
   _owns_stream(owns_stream)
 {
@@ -51,9 +45,6 @@ StreamWriter(ostream *out, bool owns_stream) :
 ////////////////////////////////////////////////////////////////////
 INLINE StreamWriter::
 StreamWriter(const StreamWriter &copy) :
-#ifdef HAVE_PYTHON
-  softspace(0),
-#endif
   _out(copy._out),
   _owns_stream(false)
 {
@@ -335,7 +326,7 @@ add_string(const string &str) {
   nassertv(str.length() <= (PN_uint16)0xffff);
 
   // Strings always are preceded by their length
-  add_uint16((PN_uint16)str.length());
+  add_uint16(str.length());
 
   // Add the string
   append_data(str);
@@ -350,7 +341,7 @@ add_string(const string &str) {
 INLINE void StreamWriter::
 add_string32(const string &str) {
   // Strings always are preceded by their length
-  add_uint32((PN_uint32)str.length());
+  add_uint32(str.length());
 
   // Add the string
   append_data(str);
@@ -395,7 +386,7 @@ add_fixed_string(const string &str, size_t size) {
 
 ////////////////////////////////////////////////////////////////////
 //     Function: StreamWriter::append_data
-//       Access: Public
+//       Access: Published
 //  Description: Appends some more raw data to the end of the
 //               streamWriter.
 ////////////////////////////////////////////////////////////////////
@@ -406,7 +397,7 @@ append_data(const void *data, size_t size) {
 
 ////////////////////////////////////////////////////////////////////
 //     Function: StreamWriter::append_data
-//       Access: Public
+//       Access: Published
 //  Description: Appends some more raw data to the end of the
 //               streamWriter.
 ////////////////////////////////////////////////////////////////////

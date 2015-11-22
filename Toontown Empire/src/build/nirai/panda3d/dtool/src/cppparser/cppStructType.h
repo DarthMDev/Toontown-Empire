@@ -49,7 +49,6 @@ public:
   virtual bool is_incomplete() const;
   virtual bool is_trivial() const;
 
-  CPPFunctionGroup *get_constructor() const;
   CPPInstance *get_destructor() const;
 
   virtual CPPDeclaration *

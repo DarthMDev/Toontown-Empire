@@ -20,7 +20,6 @@
 #include "cppDeclaration.h"
 #include "cppNameComponent.h"
 #include "cppFile.h"
-#include "cppBisonDefs.h"
 
 #include <string>
 #include <vector>
@@ -38,8 +37,6 @@ class CPPIdentifier {
 public:
   CPPIdentifier(const string &name, const CPPFile &file = CPPFile());
   CPPIdentifier(const CPPNameComponent &name, const CPPFile &file = CPPFile());
-  CPPIdentifier(const string &name, const cppyyltype &loc);
-  CPPIdentifier(const CPPNameComponent &name, const cppyyltype &loc);
   void add_name(const string &name);
   void add_name(const CPPNameComponent &name);
 
@@ -94,7 +91,7 @@ public:
   typedef vector<CPPNameComponent> Names;
   Names _names;
   CPPScope *_native_scope;
-  cppyyltype _loc;
+  CPPFile _file;
 };
 
 inline ostream &operator << (ostream &out, const CPPIdentifier &identifier) {

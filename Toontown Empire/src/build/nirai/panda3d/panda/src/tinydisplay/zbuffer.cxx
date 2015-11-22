@@ -358,7 +358,7 @@ memset_l(void *adr, int val, int count) {
 void
 memset_RGB24(void *adr,int r, int v, int b,long count) {
   long i, n;
-  long v1,v2,v3,*pt=(long *)(adr);
+  register long v1,v2,v3,*pt=(long *)(adr);
   unsigned char *p,R=(unsigned char)r,V=(unsigned char)v,B=(unsigned char)b;
 
   p=(unsigned char *)adr;

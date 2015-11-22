@@ -23,10 +23,7 @@
 // communications.
 
 #ifdef HAVE_OPENSSL
-
-#ifndef OPENSSL_NO_KRB5
 #define OPENSSL_NO_KRB5
-#endif
 
 #include "httpClient.h"
 #include "httpEnum.h"

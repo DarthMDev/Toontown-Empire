@@ -538,7 +538,7 @@ create_shader_attrib(const string &txt) {
       if (_shadows && _dlights[i]->_shadow_caster) {
         PT(Texture) tex = update_shadow_buffer(_dlights_np[i]);
         if (tex == NULL) {
-          pgraphnodes_cat.error() << "Failed to create shadow buffer for DirectionalLight '" << _dlights[i]->get_name() << "'!\n";
+          pgraph_cat.error() << "Failed to create shadow buffer for DirectionalLight '" << _dlights[i]->get_name() << "'!\n";
         }
         shattr = DCAST(ShaderAttrib, shattr)->set_shader_input(InternalName::make("dlighttex", i), tex);
       } else {
@@ -553,7 +553,7 @@ create_shader_attrib(const string &txt) {
       if (_shadows && _slights[i]->_shadow_caster) {
         PT(Texture) tex = update_shadow_buffer(_slights_np[i]);
         if (tex == NULL) {
-          pgraphnodes_cat.error() << "Failed to create shadow buffer for Spotlight '" << _slights[i]->get_name() << "'!\n";
+          pgraph_cat.error() << "Failed to create shadow buffer for Spotlight '" << _slights[i]->get_name() << "'!\n";
         }
         shattr = DCAST(ShaderAttrib, shattr)->set_shader_input(InternalName::make("slighttex", i), tex);
       } else {
@@ -635,10 +635,9 @@ synthesize_shader(const RenderState *rs, const GeomVertexAnimationSpec &anim) {
   analyze_renderstate(rs);
   reset_register_allocator();
 
-  if (pgraphnodes_cat.is_debug()) {
-    pgraphnodes_cat.debug()
-      << "Generating shader for render state " << rs << ":\n";
-    rs->write(pgraphnodes_cat.debug(false), 2);
+  if (pgraph_cat.is_debug()) {
+    pgraph_cat.debug()
+      << "Generating shader for render state " << *rs << "\n";
   }
 
   // These variables will hold the results of register allocation.
@@ -1000,7 +999,7 @@ synthesize_shader(const RenderState *rs, const GeomVertexAnimationSpec &anim) {
           text << "\t texcoord" << i << ".w = 1.0f;\n";
           break;
         default:
-          pgraphnodes_cat.error() << "Unsupported TexGenAttrib mode\n";
+          pgraph_cat.error() << "Unsupported TexGenAttrib mode\n";
           text << "\t float4 texcoord" << i << " = float4(0, 0, 0, 0);\n";
       }
     } else {
@@ -1573,10 +1572,10 @@ combine_mode_as_string(CPT(TextureStage) stage, TextureStage::CombineMode c_mode
       text << combine_source_as_string(stage, 1, alpha, alpha, texindex);
       break;
     case TextureStage::CM_dot3_rgb:
-      pgraphnodes_cat.error() << "TextureStage::CombineMode DOT3_RGB not yet supported in per-pixel mode.\n";
+      pgraph_cat.error() << "TextureStage::CombineMode DOT3_RGB not yet supported in per-pixel mode.\n";
       break;
     case TextureStage::CM_dot3_rgba:
-      pgraphnodes_cat.error() << "TextureStage::CombineMode DOT3_RGBA not yet supported in per-pixel mode.\n";
+      pgraph_cat.error() << "TextureStage::CombineMode DOT3_RGBA not yet supported in per-pixel mode.\n";
       break;
     case TextureStage::CM_replace:
     default: // Not sure if this is correct as default value.
@@ -1696,7 +1695,7 @@ texture_type_as_string(Texture::TextureType ttype) {
       return "2DARRAY";
       break;
     default:
-      pgraphnodes_cat.error() << "Unsupported texture type!\n";
+      pgraph_cat.error() << "Unsupported texture type!\n";
       return "2D";
   }
 }

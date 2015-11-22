@@ -581,7 +581,6 @@ operator != (const FLOATNAME(LVecBase3) &other) const {
   return !operator == (other);
 }
 
-#ifndef FLOATTYPE_IS_INT
 ////////////////////////////////////////////////////////////////////
 //     Function: get_standardized_rotation
 //       Access: file
@@ -629,7 +628,6 @@ get_standardized_hpr() const {
       get_standardized_rotation(_v(1)),
       get_standardized_rotation(_v(2)));
 }
-#endif  // !FLOATTYPE_IS_INT
 
 ////////////////////////////////////////////////////////////////////
 //     Function: LVecBase3::compare_to

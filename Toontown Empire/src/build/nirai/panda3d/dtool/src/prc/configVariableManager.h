@@ -45,11 +45,11 @@ PUBLISHED:
                                              int flags = 0);
 
 
-  INLINE size_t get_num_variables() const;
-  INLINE ConfigVariableCore *get_variable(size_t n) const;
+  INLINE int get_num_variables() const;
+  INLINE ConfigVariableCore *get_variable(int n) const;
   MAKE_SEQ(get_variables, get_num_variables, get_variable);
-  string get_variable_name(size_t n) const;
-  bool is_variable_used(size_t n) const;
+  string get_variable_name(int n) const;
+  bool is_variable_used(int n) const;
 
   void output(ostream &out) const;
   void write(ostream &out) const;

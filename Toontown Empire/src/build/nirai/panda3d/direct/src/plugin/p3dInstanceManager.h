@@ -59,8 +59,7 @@ public:
                   bool trusted_environment,
                   bool console_environment,
                   const string &root_dir = "",
-                  const string &host_dir = "",
-                  const string &start_dir = "");
+                  const string &host_dir = "");
 
   inline bool is_initialized() const;
   inline void reconsider_runtime_environment();
@@ -70,7 +69,6 @@ public:
   inline int get_api_version() const;
   inline const string &get_host_url() const;
   inline const string &get_root_dir() const;
-  inline const string &get_start_dir() const;
   inline const string &get_platform() const;
   inline const string &get_temp_directory() const;
   inline const string &get_log_directory() const;
@@ -175,7 +173,6 @@ private:
   string _host_url;
   string _root_dir;
   string _host_dir;
-  string _start_dir;
   string _certs_dir;
   P3D_verify_contents _verify_contents;
   string _platform;

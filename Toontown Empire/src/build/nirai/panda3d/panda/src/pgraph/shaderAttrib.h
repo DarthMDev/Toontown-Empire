@@ -49,7 +49,6 @@ PUBLISHED:
     F_disable_alpha_write = 0,  // Suppress writes to color buffer alpha channel.
     F_subsume_alpha_test  = 1,  // Shader promises to subsume the alpha test using TEXKILL
     F_hardware_skinning   = 2,  // Shader needs pre-animated vertices
-    F_shader_point_size   = 3,  // Shader provides point size, not RenderModeAttrib
   };
 
   INLINE bool               has_shader() const;
@@ -157,7 +156,7 @@ public:
     RenderAttrib::init_type();
     register_type(_type_handle, "ShaderAttrib",
                   RenderAttrib::get_class_type());
-    _attrib_slot = register_slot(_type_handle, 10, new ShaderAttrib);
+    _attrib_slot = register_slot(_type_handle, 10, make_default);
   }
   virtual TypeHandle get_type() const {
     return get_class_type();

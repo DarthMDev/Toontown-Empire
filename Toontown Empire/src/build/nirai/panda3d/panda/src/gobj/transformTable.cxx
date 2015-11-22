@@ -71,9 +71,9 @@ TransformTable::
 //               unregistered tables.
 ////////////////////////////////////////////////////////////////////
 void TransformTable::
-set_transform(size_t n, const VertexTransform *transform) {
+set_transform(int n, const VertexTransform *transform) {
   nassertv(!_is_registered);
-  nassertv(n < _transforms.size());
+  nassertv(n >= 0 && n < (int)_transforms.size());
   _transforms[n] = transform;
 }
 
@@ -84,9 +84,9 @@ set_transform(size_t n, const VertexTransform *transform) {
 //               unregistered tables.
 ////////////////////////////////////////////////////////////////////
 void TransformTable::
-remove_transform(size_t n) {
+remove_transform(int n) {
   nassertv(!_is_registered);
-  nassertv(n < _transforms.size());
+  nassertv(n >= 0 && n < (int)_transforms.size());
   _transforms.erase(_transforms.begin() + n);
 }
 
@@ -101,10 +101,10 @@ remove_transform(size_t n) {
 //               the transform is already present in the table, it
 //               will be added twice.
 ////////////////////////////////////////////////////////////////////
-size_t TransformTable::
+int TransformTable::
 add_transform(const VertexTransform *transform) {
   nassertr(!_is_registered, -1);
-  size_t new_index = _transforms.size();
+  int new_index = (int)_transforms.size();
   _transforms.push_back(transform);
   return new_index;
 }

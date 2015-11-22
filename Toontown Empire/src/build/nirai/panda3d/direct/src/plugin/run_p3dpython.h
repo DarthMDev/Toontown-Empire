@@ -26,14 +26,14 @@
 #define EXPCL_P3DPYTHON
 #endif
 
-typedef int
+typedef bool 
 run_p3dpython_func(const char *program_name, const char *archive_file,
-                   FHandle input_handle, FHandle output_handle,
+                   FHandle input_handle, FHandle output_handle, 
                    const char *log_pathname, bool interactive_console);
 
-extern "C" EXPCL_P3DPYTHON int
+extern "C" EXPCL_P3DPYTHON bool
 run_p3dpython(const char *program_name, const char *archive_file,
-              FHandle input_handle, FHandle output_handle,
+              FHandle input_handle, FHandle output_handle, 
               const char *log_pathname, bool interactive_console);
 
 #endif

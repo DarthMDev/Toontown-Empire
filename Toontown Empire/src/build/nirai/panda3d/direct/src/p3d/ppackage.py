@@ -123,10 +123,6 @@ Options:
      as such.  This only applies to .p3d packages, not to other types
      of packages!
 
-  -v
-     Emit a warning for any file not recognized by the dir() command
-     (indicating there may be a need for addExtensions(...)).
-     
   -h
      Display this help
 """
@@ -139,12 +135,12 @@ from direct.p3d import Packager
 from panda3d.core import *
 
 def usage(code, msg = ''):
-    sys.stderr.write(usageText % {
+    print >> sys.stderr, usageText % {
         'version' : PandaSystem.getPackageVersionString(),
         'host' : PandaSystem.getPackageHostUrl(),
         'prog' : os.path.split(sys.argv[0])[1]
-        })
-    sys.stderr.write(msg + '\n')
+        }
+    print >> sys.stderr, msg
     sys.exit(code)
 
 installDir = None
@@ -155,13 +151,12 @@ allowPythonDev = False
 universalBinaries = False
 systemRoot = None
 ignoreSetHost = False
-verbosePrint = False
 p3dSuffix = ''
 platforms = []
 
 try:
-    opts, args = getopt.getopt(sys.argv[1:], 'i:ps:S:DuP:R:Ha:hv')
-except getopt.error as msg:
+    opts, args = getopt.getopt(sys.argv[1:], 'i:ps:S:DuP:R:Ha:h')
+except getopt.error, msg:
     usage(1, msg)
 
 for opt, arg in opts:
@@ -193,13 +188,10 @@ for opt, arg in opts:
     elif opt == '-a':
         p3dSuffix = arg
 
-    elif opt == '-v':
-        verbosePrint = True
-        
     elif opt == '-h':
         usage(0)
     else:
-        print('illegal option: ' + arg)
+        print 'illegal option: ' + arg
         sys.exit(1)
 
 if not args:
@@ -220,7 +212,7 @@ else:
 
 if universalBinaries:
     if platforms:
-        print('\nYou may not specify both -u and -P.\n')
+        print '\nYou may not specify both -u and -P.\n'
         sys.exit(1)
     if PandaSystem.getPlatform().startswith('osx_'):
         platforms = ['osx_i386', 'osx_amd64']
@@ -238,7 +230,6 @@ for platform in platforms:
     packager.allowPythonDev = allowPythonDev
     packager.systemRoot = systemRoot
     packager.ignoreSetHost = ignoreSetHost
-    packager.verbosePrint = verbosePrint
     packager.p3dSuffix = p3dSuffix
 
     try:
@@ -251,7 +242,7 @@ for platform in platforms:
     except Packager.PackagerError:
         # Just print the error message and exit gracefully.
         inst = sys.exc_info()[1]
-        print(inst.args[0])
+        print inst.args[0]
         sys.exit(1)
 
 # An explicit call to exit() is required to exit the program, when

@@ -84,7 +84,6 @@
   #include <GL/gl.h>
 #endif
 
-#undef __glext_h_
 #undef GL_GLEXT_VERSION
 #include "panda_glext.h"
 

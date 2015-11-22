@@ -18,8 +18,6 @@
 #include "mutexHolder.h"
 #include "lightMutexHolder.h"
 
-template class QueuedReturn<Datagram>;
-
 ////////////////////////////////////////////////////////////////////
 //     Function: DatagramGeneratorNet::Constructor
 //       Access: Published

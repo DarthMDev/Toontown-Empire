@@ -128,8 +128,8 @@ output(ostream &out) const {
 ////////////////////////////////////////////////////////////////////
 int RenderModeAttrib::
 compare_to_impl(const RenderAttrib *other) const {
-  const RenderModeAttrib *ta = (const RenderModeAttrib *)other;
-
+  const RenderModeAttrib *ta;
+  DCAST_INTO_R(ta, other, 0);
   if (_mode != ta->_mode) {
     return (int)_mode - (int)ta->_mode;
   }
@@ -186,7 +186,8 @@ get_hash_impl() const {
 ////////////////////////////////////////////////////////////////////
 CPT(RenderAttrib) RenderModeAttrib::
 compose_impl(const RenderAttrib *other) const {
-  const RenderModeAttrib *ta = (const RenderModeAttrib *)other;
+  const RenderModeAttrib *ta;
+  DCAST_INTO_R(ta, other, 0);
 
   // The special mode M_unchanged means to keep the current mode.
   Mode mode = ta->get_mode();

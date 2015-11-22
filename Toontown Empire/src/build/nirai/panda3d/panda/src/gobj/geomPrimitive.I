@@ -107,8 +107,8 @@ is_composite() const {
 ////////////////////////////////////////////////////////////////////
 INLINE bool GeomPrimitive::
 is_indexed() const {
-  CDReader cdata(_cycler);
-  return (!cdata->_vertices.is_null());
+  GeomPrimitivePipelineReader reader(this, Thread::get_current_thread());
+  return reader.is_indexed();
 }
 
 ////////////////////////////////////////////////////////////////////

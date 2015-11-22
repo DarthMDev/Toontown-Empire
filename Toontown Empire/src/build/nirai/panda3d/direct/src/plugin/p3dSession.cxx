@@ -100,8 +100,6 @@ void P3DSession::
 shutdown() {
   set_failed();
 
-  int exit_code = 0;
-
   if (_p3dpython_started) {
     // Tell the process we're going away.
     TiXmlDocument doc;
@@ -141,14 +139,7 @@ shutdown() {
         nout << "Force-killing python process.\n";
         TerminateProcess(_p3dpython_handle, 2);
       }
-
-      DWORD dw_exit_code = 0;
-      if (!GetExitCodeProcess(_p3dpython_handle, &dw_exit_code)) {
-        nout << "GetExitCodeProcess failed, error: " << GetLastError() << "\n";
-      } else {
-        exit_code = (int)dw_exit_code;
-      }
-
+      
       CloseHandle(_p3dpython_handle);
       _p3dpython_handle = INVALID_HANDLE_VALUE;
 
@@ -188,23 +179,18 @@ shutdown() {
         result = waitpid(_p3dpython_pid, &status, WNOHANG);
       }
       _p3dpython_pid = -1;
-
+      
       nout << "Python process has successfully stopped.\n";
       if (WIFEXITED(status)) {
-        exit_code = WEXITSTATUS(status);
-        nout << "  exited normally, status = " << exit_code << "\n";
-
+        nout << "  exited normally, status = "
+             << WEXITSTATUS(status) << "\n";
       } else if (WIFSIGNALED(status)) {
-        nout << "  signalled by " << WTERMSIG(status) << ", core = "
+        nout << "  signalled by " << WTERMSIG(status) << ", core = " 
              << WCOREDUMP(status) << "\n";
-
-        // This seems to be a popular shell convention.
-        exit_code = 128 + WTERMSIG(status);
-
       } else if (WIFSTOPPED(status)) {
         nout << "  stopped by " << WSTOPSIG(status) << "\n";
       }
-
+      
 #endif  // _WIN32
     }
 
@@ -225,11 +211,6 @@ shutdown() {
 
   // Close the pipe now.
   _pipe_read.close();
-
-  // If we had an exit status, pass it on to the runtime process.
-  if (exit_code != 0) {
-    _exit(exit_code);
-  }
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -736,7 +717,7 @@ start_p3dpython(P3DInstance *inst) {
     _keep_user_env = true;
   }
   if (!_keep_user_env) {
-    _start_dir = inst_mgr->get_start_dir() + inst->get_start_dir_suffix();
+    _start_dir = inst_mgr->get_root_dir() + "/start" + inst->get_start_dir_suffix();
     mkdir_complete(_start_dir, nout);
   }
   replace_slashes(_start_dir);
@@ -891,13 +872,11 @@ start_p3dpython(P3DInstance *inst) {
     // These are the enviroment variables we forward from the current
     // environment, if they are set.
     const char *keep[] = {
-      "HOME", "USER",
+      "HOME", "USER", 
 #ifdef _WIN32
       "SYSTEMROOT", "USERPROFILE", "COMSPEC",
       "SYSTEMDRIVE", "ALLUSERSPROFILE", "APPDATA", "COMMONPROGRAMFILES",
       "PROGRAMFILES", "WINDIR", "PROGRAMDATA", "USERDOMAIN",
-#else
-      "LANGUAGE", "LC_ALL", "LC_MESSAGES", "LANG",
 #endif
 #ifdef HAVE_X11
       "DISPLAY", "XAUTHORITY",
@@ -949,11 +928,7 @@ start_p3dpython(P3DInstance *inst) {
         const char *varc = var.c_str();
         bool found = false;
         for (int i = 0; dont_keep[i] != NULL && !found; ++i) {
-#ifdef _WIN32
-          found = (_stricmp(dont_keep[i], varc) == 0);
-#else
           found = (strcmp(dont_keep[i], varc) == 0);
-#endif
         }
         if (!found) {
           // This variable is OK, keep it.
@@ -1729,24 +1704,15 @@ posix_create_process() {
   // its process.  Report an error condition.
   nout << "Python process stopped immediately.\n";
   if (WIFEXITED(status)) {
-    int code = WEXITSTATUS(status);
-
-    nout << "  exited normally, status = " << code << "\n";
-    if (code != 0) {
-      _exit(code);
-    }
-
+    nout << "  exited normally, status = "
+         << WEXITSTATUS(status) << "\n";
   } else if (WIFSIGNALED(status)) {
-    nout << "  signalled by " << WTERMSIG(status) << ", core = "
+    nout << "  signalled by " << WTERMSIG(status) << ", core = " 
          << WCOREDUMP(status) << "\n";
-
-    // This seems to be a popular shell convention.
-    _exit(128 + WTERMSIG(status));
-
   } else if (WIFSTOPPED(status)) {
     nout << "  stopped by " << WSTOPSIG(status) << "\n";
   }
-
+  
   return -1;
 }
 #endif  // _WIN32
@@ -1828,12 +1794,10 @@ p3dpython_thread_run() {
     return;
   }
 
-  int status = run_p3dpython(libp3dpython.c_str(), _mf_filename.c_str(),
-                             _input_handle, _output_handle, _log_pathname.c_str(),
-                             _interactive_console);
-  if (status != 0) {
+  if (!run_p3dpython(libp3dpython.c_str(), _mf_filename.c_str(),
+                     _input_handle, _output_handle, _log_pathname.c_str(),
+                     _interactive_console)) {
     nout << "Failure on startup.\n";
-    _exit(status);
   }
 }
 

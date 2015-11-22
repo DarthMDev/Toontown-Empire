@@ -17,8 +17,10 @@ static void* __ = load_openal();
 // P3D Python modules initers.
 #ifdef WIN32
 #define _P3D_INIT(MODULE) extern "C" __declspec(dllexport) void init##MODULE ();
+
 #else
 #define _P3D_INIT(MODULE) extern "C" void init##MODULE ();
+
 #endif
 
 _P3D_INIT(_core)
@@ -30,11 +32,7 @@ _P3D_INIT(physics)
 _P3D_INIT(interrogatedb)
 
 // P3D CXX fwd decls.
-#ifdef WIN32
 void init_libwgldisplay();
-#elif __APPLE__
-void init_libcocoadisplay();
-#endif
 void init_libmovies();
 void init_libpnmimagetypes();
 
@@ -71,11 +69,7 @@ static void start_nirai()
     init_core();
 
     // Setup the display.
-#ifdef WIN32
     init_libwgldisplay();
-#elif __APPLE__
-    init_libcocoadisplay();
-#endif
 
     // Setup audio.
     init_libmovies();
@@ -90,7 +84,7 @@ static void start_nirai()
     initfx();
     initode();
     initphysics();
-
+    
     // Remove our hacked panda3d root from sys.modules
     // so it can be reloaded with a proper __init__.py
     // but all panda3d.xxx submodules are still accessible.
@@ -114,21 +108,20 @@ static void setup_python()
     // Clear sys.path.
     PyObject* sysmodule = PyImport_ImportModule("sys");
     Py_INCREF(sysmodule);
-
+    
     PyObject* pathlist = PyObject_GetAttrString(sysmodule, "path");
     Py_DECREF(pathlist);
-
+    
     PyObject* newpathlist = PyList_New(1);
     Py_INCREF(newpathlist);
     PyList_SET_ITEM(newpathlist, 0, Py_BuildValue("s", "."));
     PyObject_SetAttrString(sysmodule, "path", newpathlist);
-
+    
     Py_DECREF(sysmodule);
 }
 
 int main(int argc, char* argv[])
 {
-
     if (niraicall_onPreStart(argc, argv))
         return 1;
 
@@ -146,7 +139,7 @@ int main(int argc, char* argv[])
 
     if (niraicall_onLoadGameData())
         return 2;
-
+    
     // Until panda3d directory stops mixing .py and .pyd files, we need to explicitly do this:
     // N.B. No error checking, these modules are guaranteed to exist.
     PyObject* panda3d_mod = PyImport_ImportModule("panda3d");

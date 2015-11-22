@@ -26,9 +26,7 @@
 CPPNamespace::
 CPPNamespace(CPPIdentifier *ident, CPPScope *scope, const CPPFile &file) :
   CPPDeclaration(file),
-  _ident(ident),
-  _scope(scope),
-  _is_inline(false)
+  _ident(ident), _scope(scope)
 {
 }
 
@@ -88,9 +86,6 @@ get_scope() const {
 ////////////////////////////////////////////////////////////////////
 void CPPNamespace::
 output(ostream &out, int indent_level, CPPScope *scope, bool complete) const {
-  if (_is_inline) {
-    out << "inline ";
-  }
   if (!complete && _ident != NULL) {
     // If we have a name, use it.
     out << "namespace " << _ident->get_local_name(scope);

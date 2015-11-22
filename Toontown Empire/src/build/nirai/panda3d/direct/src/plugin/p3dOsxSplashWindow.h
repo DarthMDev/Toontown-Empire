@@ -83,8 +83,6 @@ private:
   OsxImageData _button_rollover_image;
   OsxImageData _button_click_image;
 
-  CFDictionaryRef _font_attribs;
-
   string _install_label;
   double _install_progress;
   bool _progress_known;

@@ -55,8 +55,6 @@ place(PNMImage &dest_image, int xp, int yp, const LColor &fg) {
     return;
   }
 
-  LColorf fgf = LCAST(float, fg);
-
   int left = xp + _left;
   int top = yp - _top;
   int right = left + _image.get_x_size();
@@ -72,11 +70,11 @@ place(PNMImage &dest_image, int xp, int yp, const LColor &fg) {
     for (int x = cleft; x < cright; x++) {
       double gval = get_value(x - left, y - top);
       if (gval == 1.0) {
-        dest_image.set_xel_a(x, y, fgf);
+        dest_image.set_xel_a(x, y, fg);
 
       } else if (gval > 0.0) {
         LColorf bg = dest_image.get_xel_a(x, y);
-        dest_image.set_xel_a(x, y, fgf * gval + bg * (1.0 - gval));
+        dest_image.set_xel_a(x, y, fg * gval + bg * (1.0 - gval));
       }
     }
   }
@@ -97,9 +95,6 @@ place(PNMImage &dest_image, int xp, int yp, const LColor &fg,
     return;
   }
 
-  LColorf fgf = LCAST(float, fg);
-  LColorf interiorf = LCAST(float, interior);
-
   int left = xp + _left;
   int top = yp - _top;
   int right = left + _image.get_x_size();
@@ -115,22 +110,22 @@ place(PNMImage &dest_image, int xp, int yp, const LColor &fg,
     for (int x = cleft; x < cright; x++) {
       double gval = get_value(x - left, y - top);
       if (gval == 1.0) {
-        dest_image.set_xel_a(x, y, fgf);
+        dest_image.set_xel_a(x, y, fg);
 
       } else if (gval > 0.0) {
         bool is_interior = get_interior_flag(x - left, y - top);
         LColorf bg;
         if (is_interior) {
-          bg = interiorf;
+          bg = interior;
         } else {
           bg = dest_image.get_xel_a(x, y);
         }
 
-        dest_image.set_xel_a(x, y, fgf * gval + bg * (1.0 - gval));
+        dest_image.set_xel_a(x, y, fg * gval + bg * (1.0 - gval));
       } else { // gval == 0.0
         bool is_interior = get_interior_flag(x - left, y - top);
         if (is_interior) {
-          dest_image.set_xel_a(x, y, interiorf);
+          dest_image.set_xel_a(x, y, interior);
         }
       }
     }

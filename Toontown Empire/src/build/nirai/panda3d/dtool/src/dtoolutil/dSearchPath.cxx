@@ -72,7 +72,7 @@ clear() {
 //       Access: Published
 //  Description: Returns the number of files on the result list.
 ////////////////////////////////////////////////////////////////////
-size_t DSearchPath::Results::
+int DSearchPath::Results::
 get_num_files() const {
   return _files.size();
 }
@@ -83,8 +83,8 @@ get_num_files() const {
 //  Description: Returns the nth file on the result list.
 ////////////////////////////////////////////////////////////////////
 const Filename &DSearchPath::Results::
-get_file(size_t n) const {
-  assert(n < _files.size());
+get_file(int n) const {
+  assert(n >= 0 && n < (int)_files.size());
   return _files[n];
 }
 
@@ -299,7 +299,7 @@ is_empty() const {
 //       Access: Published
 //  Description: Returns the number of directories on the search list.
 ////////////////////////////////////////////////////////////////////
-size_t DSearchPath::
+int DSearchPath::
 get_num_directories() const {
   return _directories.size();
 }
@@ -310,8 +310,8 @@ get_num_directories() const {
 //  Description: Returns the nth directory on the search list.
 ////////////////////////////////////////////////////////////////////
 const Filename &DSearchPath::
-get_directory(size_t n) const {
-  assert(n < _directories.size());
+get_directory(int n) const {
+  assert(n >= 0 && n < (int)_directories.size());
   return _directories[n];
 }
 
@@ -368,10 +368,10 @@ find_file(const Filename &filename) const {
 //               the results list first; otherwise, the newly-found
 //               files will be appended to the list.
 ////////////////////////////////////////////////////////////////////
-size_t DSearchPath::
+int DSearchPath::
 find_all_files(const Filename &filename,
                DSearchPath::Results &results) const {
-  size_t num_added = 0;
+  int num_added = 0;
 
   if (filename.is_local()) {
     if (_directories.empty()) {
@@ -446,3 +446,5 @@ write(ostream &out, int indent_level) const {
     out << (*di) << "\n";
   }
 }
+
+

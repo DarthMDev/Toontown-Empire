@@ -317,8 +317,8 @@ getbit (istream * const file) {
 
 static void
 pbm_readpbmrow( istream *file, bit *bitrow, int cols, int format ) {
-  int col, bitshift;
-  bit* bP;
+  register int col, bitshift;
+  register bit* bP;
 
   switch ( format )
     {
@@ -328,7 +328,7 @@ pbm_readpbmrow( istream *file, bit *bitrow, int cols, int format ) {
       break;
 
     case RPBM_FORMAT: {
-      unsigned char item;
+      register unsigned char item;
       bitshift = -1;  item = 0;  /* item's value is meaningless here */
       for ( col = 0, bP = bitrow; col < cols; ++col, ++bP )
         {
@@ -486,12 +486,12 @@ ppm_readppmrow(istream*  const fileP,
 
 static void
 pnm_readpnmrow( istream* file, xel* xelrow, int cols, xelval maxval, int format ) {
-  int col;
-  xel* xP;
+  register int col;
+  register xel* xP;
   gray* grayrow;
-  gray* gP;
+  register gray* gP;
   bit* bitrow;
-  bit* bP;
+  register bit* bP;
 
   switch ( PNM_FORMAT_TYPE(format) )
     {
@@ -815,8 +815,8 @@ pgm_writepgmrow(ostream* const fileP,
 
 static void
 ppm_writeppmrowraw(ostream *file, pixel *pixelrow, int cols, pixval maxval ) {
-  int col;
-  pixval val;
+  register int col;
+  register pixval val;
 
   for ( col = 0; col < cols; ++col )
     {
@@ -843,9 +843,9 @@ ppm_writeppmrowraw(ostream *file, pixel *pixelrow, int cols, pixval maxval ) {
 
 static void
 ppm_writeppmrowplain(ostream *file, pixel *pixelrow, int cols, pixval maxval ) {
-  int col, charcount;
-  pixel* pP;
-  pixval val;
+  register int col, charcount;
+  register pixel* pP;
+  register pixval val;
 
   charcount = 0;
   for ( col = 0, pP = pixelrow; col < cols; ++col, ++pP )

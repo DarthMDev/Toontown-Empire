@@ -26,7 +26,6 @@
 #include "pvector.h"
 #include "pset.h"
 #include "pmap.h"
-#include "rescaleNormalAttrib.h"
 
 class CullTraverser;
 class GraphicsStateGuardianBase;
@@ -75,12 +74,10 @@ private:
   void apply_flash_color(CPT(RenderState) &state, const LColor &flash_color);
 #endif
 
-  static const RenderState *get_rescale_normal_state(RescaleNormalAttrib::Mode mode);
-  static const RenderState *get_alpha_state();
-  static const RenderState *get_binary_state();
-  static const RenderState *get_dual_transparent_state();
-  static const RenderState *get_dual_opaque_state();
-  static const RenderState *get_wireframe_filled_state();
+  static CPT(RenderState) get_alpha_state();
+  static CPT(RenderState) get_binary_state();
+  static CPT(RenderState) get_dual_transparent_state();
+  static CPT(RenderState) get_dual_opaque_state();
   static CPT(RenderState) get_wireframe_overlay_state(const RenderModeAttrib *rmode);
 
   GraphicsStateGuardianBase *_gsg;

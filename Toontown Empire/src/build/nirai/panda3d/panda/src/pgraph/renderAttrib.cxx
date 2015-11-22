@@ -38,6 +38,8 @@ RenderAttrib() {
     init_attribs();
   }
   _saved_entry = -1;
+
+  _always_reissue = false;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -433,14 +435,13 @@ return_unique(RenderAttrib *attrib) {
     return attrib;
   }
 
+  // Save the attrib in a local PointerTo so that it will be freed at
+  // the end of this function if no one else uses it.
+  CPT(RenderAttrib) pt_attrib = attrib;
+
   int si = _attribs->find(attrib);
   if (si != -1) {
     // There's an equivalent attrib already in the set.  Return it.
-    // If this is a newly created RenderAttrib, though, be sure to
-    // delete it.
-    if (attrib->get_ref_count() == 0) {
-      delete attrib;
-    }
     return _attribs->get_key(si);
   }
 
@@ -455,7 +456,7 @@ return_unique(RenderAttrib *attrib) {
 
   // Save the index and return the input attrib.
   attrib->_saved_entry = si;
-  return attrib;
+  return pt_attrib;
 }
 
 ////////////////////////////////////////////////////////////////////

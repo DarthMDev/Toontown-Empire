@@ -849,8 +849,6 @@ xform(const FLOATNAME(LVecBase4) &v) const {
   return v_res;
 }
 
-#undef VECTOR4_MATRIX4_PRODUCT
-
 ////////////////////////////////////////////////////////////////////
 //     Function: LMatrix4::xform_point
 //       Access: Public
@@ -1069,8 +1067,6 @@ multiply(const FLOATNAME(LMatrix4) &other1, const FLOATNAME(LMatrix4) &other2) {
   MATRIX4_PRODUCT((*this),other1,other2);
 #endif  // HAVE_EIGEN
 }
-
-#undef MATRIX4_PRODUCT
 
 ////////////////////////////////////////////////////////////////////
 //     Function: LMatrix4::matrix * scalar

@@ -39,18 +39,6 @@ CPPToken(int token, int line_number, int col_number,
 }
 
 ////////////////////////////////////////////////////////////////////
-//     Function: CPPToken::Constructor
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-CPPToken::
-CPPToken(int token, const YYLTYPE &loc, const string &str, const YYSTYPE &val) :
-  _token(token), _lloc(loc), _lval(val)
-{
-  _lval.str = str;
-}
-
-////////////////////////////////////////////////////////////////////
 //     Function: CPPToken::Copy Constructor
 //       Access: Public
 //  Description:
@@ -119,12 +107,8 @@ output(ostream &out) const {
     out << "CHAR_TOK " << _lval.u.integer << " = " << _lval.str;
     break;
 
-  case SIMPLE_STRING:
-    out << "SIMPLE_STRING " << _lval.str;
-    break;
-
-  case STRING_LITERAL:
-    out << "STRING_LITERAL " << *_lval.u.expr;
+  case STRING:
+    out << "STRING " << _lval.str;
     break;
 
   case SIMPLE_IDENTIFIER:

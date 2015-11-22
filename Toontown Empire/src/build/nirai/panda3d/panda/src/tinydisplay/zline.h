@@ -1,17 +1,17 @@
 {
     int n, dx, dy, sx, pp_inc_1, pp_inc_2;
-    int a;
-    PIXEL *pp;
+    register int a;
+    register PIXEL *pp;
 #if defined(INTERP_RGB)
-    unsigned int r, g, b;
+    register unsigned int r, g, b;
 #endif
 #ifdef INTERP_RGB
-    unsigned int rinc, ginc, binc;
+    register unsigned int rinc, ginc, binc;
 #endif
 #ifdef INTERP_Z
-    ZPOINT *pz;
+    register ZPOINT *pz;
     int zinc;
-    int z, zz;
+    register int z, zz;
 #endif
 
     if (p1->y > p2->y || (p1->y == p2->y && p1->x > p2->x)) {

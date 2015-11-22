@@ -52,5 +52,15 @@ uses_custom_vertex_arrays() {
   return true;
 }
 
+////////////////////////////////////////////////////////////////////
+//     Function: GLCgShaderContext::uses_custom_texture_bindings
+//       Access: Public
+//  Description: Always true, for now.
+////////////////////////////////////////////////////////////////////
+INLINE bool CLP(CgShaderContext)::
+uses_custom_texture_bindings() {
+  return true;
+}
+
 #endif  // OPENGLES_1
 

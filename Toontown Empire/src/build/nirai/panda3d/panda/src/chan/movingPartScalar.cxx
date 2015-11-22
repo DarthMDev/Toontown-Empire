@@ -26,8 +26,6 @@
 #pragma implementation
 #endif
 
-template class MovingPart<ACScalarSwitchType>;
-
 TypeHandle MovingPartScalar::_type_handle;
 
 ////////////////////////////////////////////////////////////////////

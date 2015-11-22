@@ -19,8 +19,6 @@ import Pmw, os,Placer
 
 from panda3d.core import *
 from panda3d.physics import *
-from panda3d.direct import getParticlePath
-
 
 class ParticlePanel(AppShell):
     # Override class variables

@@ -513,7 +513,7 @@ get_remaining_bytes() const {
   nassertr(_current_index <= _datagram->get_length(), "");
 
   const char *ptr = (const char *)_datagram->get_data();
-  size_t remaining_size = _datagram->get_length() - _current_index;
+  int remaining_size = _datagram->get_length() - _current_index;
   return string(ptr + _current_index, remaining_size);
 }
 
@@ -522,7 +522,7 @@ get_remaining_bytes() const {
 //       Access: Public
 //  Description: Return the bytes left in the datagram.
 ////////////////////////////////////////////////////////////////////
-INLINE size_t DatagramIterator::
+INLINE int DatagramIterator::
 get_remaining_size() const {
   return _datagram->get_length() - _current_index;
 }

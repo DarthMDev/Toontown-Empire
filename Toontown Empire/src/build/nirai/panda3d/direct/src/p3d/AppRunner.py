@@ -13,9 +13,22 @@ __all__ = ["AppRunner", "dummyAppRunner", "ArgumentError"]
 
 import sys
 import os
-import __builtin__ as builtins
+import __builtin__
 
-from direct.showbase import VFSImporter
+if 'VFSImporter' in sys.modules:
+    # If we've already got a VFSImporter module defined at the
+    # toplevel, we must have come in here by way of the
+    # p3dPythonRun.cxx program, which starts out by importing a frozen
+    # VFSImporter.  Let's make sure we don't have two VFSImporter
+    # modules.
+    import VFSImporter
+    import direct.showbase
+    direct.showbase.VFSImporter = VFSImporter
+    sys.modules['direct.showbase.VFSImporter'] = VFSImporter
+else:
+    # Otherwise, we can import the VFSImporter normally.
+    from direct.showbase import VFSImporter
+
 from direct.showbase.DirectObject import DirectObject
 from panda3d.core import VirtualFileSystem, Filename, Multifile, loadPrcFileData, unloadPrcFile, getModelPath, WindowProperties, ExecutionEnvironment, PandaSystem, Notify, StreamWriter, ConfigVariableString, ConfigPageManager
 from panda3d.direct import init_app_for_gui
@@ -459,7 +472,7 @@ class AppRunner(DirectObject):
             file.unlink()
             return False
 
-        if not fileSpec.fullVerify(pathname = localPathname, notify = self.notify):
+        if not fileSpec.fullVerify(pathname = localPathname):
             # No good after download.
             self.notify.info("%s is still no good after downloading." % (url))
             return False
@@ -557,14 +570,14 @@ class AppRunner(DirectObject):
             for packageData in hostData.packages:
                 totalSize += packageData.totalSize
         self.notify.info("Total Panda3D disk space used: %s MB" % (
-            (totalSize + 524288) // 1048576))
+            (totalSize + 524288) / 1048576))
 
         if self.verifyContents == self.P3DVCNever:
             # We're not allowed to delete anything anyway.
             return
 
         self.notify.info("Configured max usage is: %s MB" % (
-            (self.maxDiskUsage + 524288) // 1048576))
+            (self.maxDiskUsage + 524288) / 1048576))
         if totalSize <= self.maxDiskUsage:
             # Still within budget; no need to clean up anything.
             return
@@ -622,13 +635,13 @@ class AppRunner(DirectObject):
         try:
             taskMgr.run()
 
-        except SystemExit as err:
+        except SystemExit:
             # Presumably the window has already been shut down here, but shut
             # it down again for good measure.
-            if hasattr(builtins, "base"):
+            if hasattr(__builtin__, "base"):
                 base.destroy()
 
-            self.notify.info("Normal exit with status %s." % repr(err.code))
+            self.notify.info("Normal exit.")
             raise
 
         except:
@@ -684,10 +697,9 @@ class AppRunner(DirectObject):
             # Replace the builtin open and file symbols so user code will get
             # our versions by default, which can open and read files out of
             # the multifile.
-            builtins.open = file.open
-            if sys.version_info < (3, 0):
-                builtins.file = file.open
-                builtins.execfile = file.execfile
+            __builtin__.file = file.file
+            __builtin__.open = file.open
+            __builtin__.execfile = file.execfile
             os.listdir = file.listdir
             os.walk = file.walk
             os.path.join = file.join

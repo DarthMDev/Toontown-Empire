@@ -19,6 +19,7 @@
 
 #include "cppDeclaration.h"
 #include "cppType.h"
+#include "cppIdentifier.h"
 #include "cppTemplateParameterList.h"
 
 class CPPInstanceIdentifier;
@@ -46,20 +47,19 @@ public:
     SC_pure_virtual = 0x0080,
     SC_volatile     = 0x0100,
     SC_mutable      = 0x0200,
-    SC_constexpr    = 0x0400,
 
     // This bit is only set by CPPStructType::check_virtual().
-    SC_inherited_virtual = 0x0800,
+    SC_inherited_virtual = 0x0400,
 
     // This is a special "storage class" for methods tagged with the
     // BLOCKING macro (i.e. the special __blocking keyword).  These
     // are methods that might block and therefore need to release
     // Python threads for their duration.
-    SC_blocking     = 0x1000,
+    SC_blocking     = 0x0800,
 
     // And this is for methods tagged with __extension, which declares
     // extension methods defined separately from the source code.
-    SC_extension    = 0x2000,
+    SC_extension    = 0x1000,
   };
 
   CPPInstance(CPPType *type, const string &name, int storage_class = 0);
@@ -78,8 +78,6 @@ public:
   bool operator < (const CPPInstance &other) const;
 
   void set_initializer(CPPExpression *initializer);
-  void set_alignment(int align);
-  void set_alignment(CPPExpression *const_expr);
 
   bool is_scoped() const;
   CPPScope *get_scope(CPPScope *current_scope, CPPScope *global_scope,
@@ -114,7 +112,6 @@ public:
   CPPExpression *_initializer;
 
   int _storage_class;
-  CPPExpression *_alignment;
 
 private:
   typedef map<const CPPTemplateParameterList *, CPPInstance *, CPPTPLCompare> Instantiations;

@@ -16,7 +16,7 @@
 ////////////////////////////////////////////////////////////////////
 //     Function: StringStream::Constructor
 //       Access: Published
-//  Description:
+//  Description: 
 ////////////////////////////////////////////////////////////////////
 INLINE StringStream::
 StringStream() : iostream(&_buf) {
@@ -63,7 +63,7 @@ get_data_size() {
 INLINE string StringStream::
 get_data() {
   flush();
-  const vector_uchar &data = _buf.get_data();
+  const pvector<unsigned char> &data = _buf.get_data();
   if (!data.empty()) {
     return string((char *)&data[0], data.size());
   }
@@ -80,7 +80,9 @@ INLINE void StringStream::
 set_data(const string &data) {
   _buf.clear();
   if (!data.empty()) {
-    set_data((const unsigned char *)data.data(), data.size());
+    pvector<unsigned char> pv;
+    pv.insert(pv.end(), (const unsigned char *)&data[0], (const unsigned char *)&data[0] + data.size());
+    _buf.swap_data(pv);
   }
 }
 
@@ -91,7 +93,7 @@ set_data(const string &data) {
 //               internal buffer.
 ////////////////////////////////////////////////////////////////////
 INLINE void StringStream::
-swap_data(vector_uchar &data) {
+swap_data(pvector<unsigned char> &data) {
   flush();
   _buf.swap_data(data);
 }

@@ -153,8 +153,6 @@ private:
   static TypeHandle _type_handle;
 };
 
-#include "paramValue.I"
-
 EXPORT_TEMPLATE_CLASS(EXPCL_PANDA_PUTIL, EXPTP_PANDA_PUTIL, ParamValue<std::string>);
 EXPORT_TEMPLATE_CLASS(EXPCL_PANDA_PUTIL, EXPTP_PANDA_PUTIL, ParamValue<std::wstring>);
 
@@ -212,6 +210,8 @@ typedef ParamVecBase4f ParamVecBase4;
 typedef ParamMatrix3f ParamMatrix3;
 typedef ParamMatrix4f ParamMatrix4;
 #endif
+
+#include "paramValue.I"
 
 // Tell GCC that we'll take care of the instantiation explicitly here.
 #ifdef __GNUC__

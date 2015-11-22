@@ -72,9 +72,8 @@ PUBLISHED:
   INLINE ostream &error(bool prefix = true) const;
   INLINE ostream &fatal(bool prefix = true) const;
 
-  size_t get_num_children() const;
-  NotifyCategory *get_child(size_t i) const;
-  MAKE_SEQ(get_children, get_num_children, get_child);
+  int get_num_children() const;
+  NotifyCategory *get_child(int i) const;
 
   static void set_server_delta(long delta);
 

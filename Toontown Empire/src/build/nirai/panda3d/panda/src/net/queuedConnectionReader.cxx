@@ -17,8 +17,6 @@
 #include "trueClock.h"
 #include "lightMutexHolder.h"
 
-template class QueuedReturn<NetDatagram>;
-
 ////////////////////////////////////////////////////////////////////
 //     Function: QueuedConnectionReader::Constructor
 //       Access: Published

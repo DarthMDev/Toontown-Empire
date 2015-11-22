@@ -507,7 +507,8 @@ cull_callback(CullTraverser *trav, const CullTraverserData &data) const {
 ////////////////////////////////////////////////////////////////////
 int TextureAttrib::
 compare_to_impl(const RenderAttrib *other) const {
-  const TextureAttrib *ta = (const TextureAttrib *)other;
+  const TextureAttrib *ta;
+  DCAST_INTO_R(ta, other, 0);
 
   if (_off_all_stages != ta->_off_all_stages) {
     return (int)_off_all_stages - (int)ta->_off_all_stages;
@@ -663,7 +664,8 @@ get_hash_impl() const {
 ////////////////////////////////////////////////////////////////////
 CPT(RenderAttrib) TextureAttrib::
 compose_impl(const RenderAttrib *other) const {
-  const TextureAttrib *ta = (const TextureAttrib *)other;
+  const TextureAttrib *ta;
+  DCAST_INTO_R(ta, other, 0);
 
   if (ta->_off_all_stages) {
     // If the other type turns off all stages, it doesn't matter what

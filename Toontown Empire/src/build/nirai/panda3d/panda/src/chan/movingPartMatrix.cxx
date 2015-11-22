@@ -28,8 +28,6 @@
 #pragma implementation
 #endif
 
-template class MovingPart<ACMatrixSwitchType>;
-
 TypeHandle MovingPartMatrix::_type_handle;
 
 ////////////////////////////////////////////////////////////////////

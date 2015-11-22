@@ -101,7 +101,7 @@ length() const {
 //  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE char ConfigVariableFilename::
-operator [] (size_t n) const {
+operator [] (int n) const {
   return get_ref_value()[n];
 }
 
@@ -254,7 +254,7 @@ get_default_value() const {
 //  Description: Returns the variable's nth value.
 ////////////////////////////////////////////////////////////////////
 INLINE Filename ConfigVariableFilename::
-get_word(size_t n) const {
+get_word(int n) const {
   return Filename::expand_from(get_string_word(n));
 }
 
@@ -265,7 +265,7 @@ get_word(size_t n) const {
 //               local copy of the variable's overall value.
 ////////////////////////////////////////////////////////////////////
 INLINE void ConfigVariableFilename::
-set_word(size_t n, const Filename &value) {
+set_word(int n, const Filename &value) {
   set_string_word(n, value);
 }
 

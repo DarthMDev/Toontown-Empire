@@ -76,7 +76,7 @@ get_max_rate() const {
 INLINE int PStatClient::
 get_num_collectors() const {
   ReMutexHolder holder(_lock);
-  return (int)_num_collectors;
+  return _num_collectors;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -100,7 +100,7 @@ get_collector_def(int index) const {
 INLINE int PStatClient::
 get_num_threads() const {
   ReMutexHolder holder(_lock);
-  return (int)_num_threads;
+  return _num_threads;
 }
 
 ////////////////////////////////////////////////////////////////////

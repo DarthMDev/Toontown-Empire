@@ -84,7 +84,8 @@ output(ostream &out) const {
 ////////////////////////////////////////////////////////////////////
 int ShadeModelAttrib::
 compare_to_impl(const RenderAttrib *other) const {
-  const ShadeModelAttrib *ta = (const ShadeModelAttrib *)other;
+  const ShadeModelAttrib *ta;
+  DCAST_INTO_R(ta, other, 0);
   return (int)_mode - (int)ta->_mode;
 }
 
@@ -124,7 +125,8 @@ get_hash_impl() const {
 ////////////////////////////////////////////////////////////////////
 CPT(RenderAttrib) ShadeModelAttrib::
 compose_impl(const RenderAttrib *other) const {
-  const ShadeModelAttrib *ta = (const ShadeModelAttrib *)other;
+  const ShadeModelAttrib *ta;
+  DCAST_INTO_R(ta, other, 0);
 
   Mode mode = ta->get_mode();
   return make(mode);

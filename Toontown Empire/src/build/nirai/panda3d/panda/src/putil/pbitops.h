@@ -18,7 +18,7 @@
 #include "pandabase.h"
 #include "numeric_types.h"
 
-#if defined(_MSC_VER) && !defined(CPPPARSER)
+#ifdef _MSC_VER
 #include <intrin.h>
 #endif
 

@@ -127,7 +127,8 @@ INLINE ostream &operator << (ostream &out, NotifyCategoryProxy<GetCategory> &pro
 
 #ifdef CPPPARSER
 #define NotifyCategoryDecl(basename, expcl, exptp)
-#else
+#elif defined(WIN32_VC)
+// MSVC's rules for extern template classes differ slightly.
 #define NotifyCategoryDecl(basename, expcl, exptp) \
   class expcl NotifyCategoryGetCategory_ ## basename { \
   public: \
@@ -135,6 +136,15 @@ INLINE ostream &operator << (ostream &out, NotifyCategoryProxy<GetCategory> &pro
     static NotifyCategory *get_category(); \
   }; \
   EXPORT_TEMPLATE_CLASS(expcl, exptp, NotifyCategoryProxy<NotifyCategoryGetCategory_ ## basename>); \
+  extern expcl NotifyCategoryProxy<NotifyCategoryGetCategory_ ## basename> basename ## _cat;
+#else
+#define NotifyCategoryDecl(basename, expcl, exptp) \
+  class expcl NotifyCategoryGetCategory_ ## basename { \
+  public: \
+    NotifyCategoryGetCategory_ ## basename(); \
+    static NotifyCategory *get_category(); \
+  }; \
+  EXPORT_TEMPLATE_CLASS(expcl, extern, NotifyCategoryProxy<NotifyCategoryGetCategory_ ## basename>); \
   extern expcl NotifyCategoryProxy<NotifyCategoryGetCategory_ ## basename> basename ## _cat;
 #endif
 

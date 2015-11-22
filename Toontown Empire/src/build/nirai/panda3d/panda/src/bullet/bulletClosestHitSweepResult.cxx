@@ -67,11 +67,11 @@ get_hit_fraction() const {
 //       Access: Published
 //  Description:
 ////////////////////////////////////////////////////////////////////
-PandaNode *BulletClosestHitSweepResult::
+const PandaNode *BulletClosestHitSweepResult::
 get_node() const {
 
   const btCollisionObject *objectPtr = m_hitCollisionObject;
-  return (objectPtr) ? (PandaNode *)objectPtr->getUserPointer() : NULL;
+  return (objectPtr) ? (const PandaNode *)objectPtr->getUserPointer() : NULL;
 }
 
 ////////////////////////////////////////////////////////////////////

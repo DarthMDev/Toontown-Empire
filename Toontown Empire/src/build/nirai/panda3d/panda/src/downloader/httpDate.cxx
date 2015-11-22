@@ -223,17 +223,14 @@ HTTPDate(const string &format) {
   if (_time != (time_t)-1) {
     // Unfortunately, mktime() assumes local time; convert this back
     // to GMT.
-#if defined(IS_FREEBSD)
+#ifdef IS_FREEBSD
     time_t now = time(NULL);
     struct tm *tp = localtime(&now);
     _time -= tp->tm_gmtoff;
-#elif defined(_WIN32)
-    extern long int _timezone;
-    _time -= _timezone;
-#else
+#else /* IS_FREEBSD */
     extern long int timezone;
     _time -= timezone;
-#endif
+#endif /* IS_FREEBSD */
   }
 #endif  // __GNUC__
 }

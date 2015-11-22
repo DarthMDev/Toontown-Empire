@@ -134,7 +134,7 @@ get_cache_ref_count() const {
 #ifdef _DEBUG
   test_ref_count_integrity();
 #endif
-  return (int)AtomicAdjust::get(_cache_ref_count);
+  return AtomicAdjust::get(_cache_ref_count);
 }
 
 ////////////////////////////////////////////////////////////////////

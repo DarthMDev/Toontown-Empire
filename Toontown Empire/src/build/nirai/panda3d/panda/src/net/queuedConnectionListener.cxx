@@ -15,8 +15,6 @@
 #include "queuedConnectionListener.h"
 #include "config_net.h"
 
-template class QueuedReturn<ConnectionListenerData>;
-
 ////////////////////////////////////////////////////////////////////
 //     Function: QueuedConnectionListener::Constructor
 //       Access: Public

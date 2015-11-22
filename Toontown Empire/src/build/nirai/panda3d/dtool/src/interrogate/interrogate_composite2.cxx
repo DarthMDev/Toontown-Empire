@@ -14,6 +14,5 @@
 #include "parameterRemapReferenceToPointer.cxx"
 #include "parameterRemapThis.cxx"
 #include "parameterRemapToString.cxx"
-#include "parameterRemapHandleToInt.cxx"
 #include "parameterRemapUnchanged.cxx"
 

@@ -21,7 +21,7 @@
 //               or the iostream buffer.
 ////////////////////////////////////////////////////////////////////
 INLINE void StringStreamBuf::
-swap_data(vector_uchar &data) {
+swap_data(pvector<unsigned char> &data) {
   _data.swap(data);
 }
 
@@ -31,7 +31,7 @@ swap_data(vector_uchar &data) {
 //  Description: Returns a reference to the contents of the internal
 //               buffer, without any of the iostream buffer.
 ////////////////////////////////////////////////////////////////////
-INLINE const vector_uchar &StringStreamBuf::
+INLINE const pvector<unsigned char> &StringStreamBuf::
 get_data() const {
   return _data;
 }

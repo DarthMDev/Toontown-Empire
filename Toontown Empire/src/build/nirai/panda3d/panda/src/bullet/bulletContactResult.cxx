@@ -63,7 +63,7 @@ BulletContactResult() : btCollisionWorld::ContactResultCallback() {
 #if BT_BULLET_VERSION >= 281
 ////////////////////////////////////////////////////////////////////
 //     Function: BulletContactResult::use_filter
-//       Access: Protected
+//       Access: Published
 //  Description: 
 ////////////////////////////////////////////////////////////////////
 void BulletContactResult::

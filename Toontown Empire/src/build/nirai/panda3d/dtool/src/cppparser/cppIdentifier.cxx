@@ -28,39 +28,7 @@
 //  Description:
 ////////////////////////////////////////////////////////////////////
 CPPIdentifier::
-CPPIdentifier(const string &name, const CPPFile &file) {
-  _names.push_back(CPPNameComponent(name));
-  _native_scope = (CPPScope *)NULL;
-  _loc.first_line = 0;
-  _loc.first_column = 0;
-  _loc.last_line = 0;
-  _loc.last_column = 0;
-  _loc.file = file;
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: CPPIdentifier::Constructor
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-CPPIdentifier::
-CPPIdentifier(const CPPNameComponent &name, const CPPFile &file) {
-  _names.push_back(name);
-  _native_scope = (CPPScope *)NULL;
-  _loc.first_line = 0;
-  _loc.first_column = 0;
-  _loc.last_line = 0;
-  _loc.last_column = 0;
-  _loc.file = file;
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: CPPIdentifier::Constructor
-//       Access: Public
-//  Description:
-////////////////////////////////////////////////////////////////////
-CPPIdentifier::
-CPPIdentifier(const string &name, const cppyyltype &loc) : _loc(loc) {
+CPPIdentifier(const string &name, const CPPFile &file) : _file(file) {
   _names.push_back(CPPNameComponent(name));
   _native_scope = (CPPScope *)NULL;
 }
@@ -71,7 +39,7 @@ CPPIdentifier(const string &name, const cppyyltype &loc) : _loc(loc) {
 //  Description:
 ////////////////////////////////////////////////////////////////////
 CPPIdentifier::
-CPPIdentifier(const CPPNameComponent &name, const cppyyltype &loc) : _loc(loc) {
+CPPIdentifier(const CPPNameComponent &name, const CPPFile &file) : _file(file) {
   _names.push_back(name);
   _native_scope = (CPPScope *)NULL;
 }
@@ -187,12 +155,6 @@ get_local_name(CPPScope *scope) const {
     // last name.
     CPPScope *my_scope = get_scope(scope, NULL);
 
-    // Strip off template scopes, since they don't add anything
-    // particularly meaningful to the local name.
-    while (my_scope != NULL && my_scope->as_template_scope() != NULL) {
-      my_scope = my_scope->get_parent_scope();
-    }
-
     if (my_scope == NULL) {
       result = get_fully_scoped_name();
     } else if (my_scope == scope) {
@@ -294,8 +256,7 @@ get_scope(CPPScope *current_scope, CPPScope *global_scope,
       if (error_sink != NULL) {
         error_sink->error("Symbol " + _names[i].get_name() +
                           " is not a known scope in " +
-                          scope->get_fully_scoped_name(),
-                          _loc);
+                          scope->get_fully_scoped_name());
       }
       return (CPPScope *)NULL;
     }
@@ -341,8 +302,7 @@ get_scope(CPPScope *current_scope, CPPScope *global_scope,
       if (error_sink != NULL) {
         error_sink->error("Symbol " + _names[i].get_name() +
                           " is not a known scope in " +
-                          scope->get_fully_scoped_name(),
-                          _loc);
+                          scope->get_fully_scoped_name());
       }
       return (CPPScope *)NULL;
     }
@@ -469,12 +429,7 @@ find_symbol(CPPScope *current_scope, CPPScope *global_scope,
 
   CPPDeclaration *sym;
   if (!_names.back().has_templ()) {
-    if (_names.size() > 1 && scope->get_simple_name() == get_simple_name()) {
-      // An identifier like Class::Class always refers to the class constructor.
-      sym = scope->get_struct_type()->get_constructor();
-    } else {
-      sym = scope->find_symbol(get_simple_name());
-    }
+    sym = scope->find_symbol(get_simple_name());
 
   } else {
     sym = scope->find_template(get_simple_name());
@@ -510,12 +465,7 @@ find_symbol(CPPScope *current_scope, CPPScope *global_scope,
 
   CPPDeclaration *sym;
   if (!_names.back().has_templ()) {
-    if (_names.size() > 1 && scope->get_simple_name() == get_simple_name()) {
-      // An identifier like Class::Class always refers to the class constructor.
-      sym = scope->get_struct_type()->get_constructor();
-    } else {
-      sym = scope->find_symbol(get_simple_name());
-    }
+    sym = scope->find_symbol(get_simple_name());
 
   } else {
     sym = scope->find_template(get_simple_name());

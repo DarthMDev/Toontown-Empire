@@ -18,7 +18,3 @@
 #ifdef __GNUC__
 #pragma implementation
 #endif
-
-template class BitMask<PN_uint16, 16>;
-template class BitMask<PN_uint32, 32>;
-template class BitMask<PN_uint64, 64>;

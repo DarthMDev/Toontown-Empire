@@ -19,5 +19,3 @@
 #pragma implementation
 #endif
 
-template class DoubleBitMask<BitMaskNative>;
-template class DoubleBitMask<DoubleBitMaskNative>;

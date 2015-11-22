@@ -74,8 +74,8 @@ output(ostream &out) const {
 ////////////////////////////////////////////////////////////////////
 int DepthTestAttrib::
 compare_to_impl(const RenderAttrib *other) const {
-  const DepthTestAttrib *ta = (const DepthTestAttrib *)other;
-
+  const DepthTestAttrib *ta;
+  DCAST_INTO_R(ta, other, 0);
   return (int)_mode - (int)ta->_mode;
 }
 

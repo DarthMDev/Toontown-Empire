@@ -91,7 +91,8 @@ output(ostream &out) const {
 ////////////////////////////////////////////////////////////////////
 int FogAttrib::
 compare_to_impl(const RenderAttrib *other) const {
-  const FogAttrib *ta = (const FogAttrib *)other;
+  const FogAttrib *ta;
+  DCAST_INTO_R(ta, other, 0);
 
   // Comparing pointers by subtraction is problematic.  Instead of
   // doing this, we'll just depend on the built-in != and < operators

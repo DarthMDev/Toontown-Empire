@@ -150,16 +150,8 @@ output(ostream &out, int, CPPScope *, bool) const {
     out << "void";
     break;
 
-  case T_nullptr:
-    out << "decltype(nullptr)";
-    break;
-
   case T_parameter:
     out << "parameter";
-    break;
-
-  case T_auto:
-    out << "auto";
     break;
 
   default:

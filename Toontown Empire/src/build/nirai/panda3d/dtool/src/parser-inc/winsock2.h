@@ -2,9 +2,7 @@
 #define _WINSOCK2API_
 #define _WINSOCKAPI_   /* Prevent inclusion of winsock.h in windows.h */
 
-#include <wtypes.h>
-
-typedef unsigned long SOCKET;
+typedef int SOCKET;
 
 struct sockaddr_in;
 

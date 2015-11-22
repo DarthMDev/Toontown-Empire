@@ -51,7 +51,7 @@ input_hex(istream &in) {
 
   while (!in.eof() && !in.fail() && isxdigit(ch)) {
     if (i < 32) {
-      buffer[i] = (char)ch;
+      buffer[i] = ch;
     }
     i++;
     ch = in.get();
@@ -63,7 +63,7 @@ input_hex(istream &in) {
   }
 
   if (!in.eof()) {
-    in.putback((char)ch);
+    in.putback(ch);
   } else {
     in.clear();
   }

@@ -147,7 +147,8 @@ output(ostream &out) const {
 ////////////////////////////////////////////////////////////////////
 int AudioVolumeAttrib::
 compare_to_impl(const RenderAttrib *other) const {
-  const AudioVolumeAttrib *ta = (const AudioVolumeAttrib *)other;
+  const AudioVolumeAttrib *ta;
+  DCAST_INTO_R(ta, other, 0);
 
   if (_off != ta->_off) {
     return (int)_off - (int)ta->_off;
@@ -197,7 +198,8 @@ get_hash_impl() const {
 ////////////////////////////////////////////////////////////////////
 CPT(RenderAttrib) AudioVolumeAttrib::
 compose_impl(const RenderAttrib *other) const {
-  const AudioVolumeAttrib *ta = (const AudioVolumeAttrib *)other;
+  const AudioVolumeAttrib *ta;
+  DCAST_INTO_R(ta, other, 0);
 
   if (ta->is_off()) {
     return ta;
@@ -221,8 +223,8 @@ invert_compose_impl(const RenderAttrib *other) const {
   if (is_off()) {
     return other;
   }
-  const AudioVolumeAttrib *ta = (const AudioVolumeAttrib *)other;
-
+  const AudioVolumeAttrib *ta;
+  DCAST_INTO_R(ta, other, 0);
   PN_stdfloat new_volume = _volume == 0.0f ? 1.0f : ta->_volume / _volume;
 
   AudioVolumeAttrib *attrib = new AudioVolumeAttrib(false, new_volume);

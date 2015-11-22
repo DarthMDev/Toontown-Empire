@@ -235,7 +235,7 @@ class Notifier:
         Prints the string to output followed by a newline.
         """
         if self.streamWriter:
-            self.streamWriter.write(string + '\n')
+            self.streamWriter.appendData(string + '\n')
         else:
             print >> sys.stderr, string
 

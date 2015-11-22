@@ -31,17 +31,13 @@ class EXPCL_PANDA_TFORM MouseWatcherGroup : public MouseWatcherBase,
 public:
   INLINE MouseWatcherGroup() {};
 
-PUBLISHED:
+public:
   static TypeHandle get_class_type() {
+    ReferenceCount::init_type();
     return _type_handle;
   }
-
-public:
   static void init_type() {
-    MouseWatcherBase::init_type();
-    ReferenceCount::init_type();
     register_type(_type_handle, "MouseWatcherGroup",
-                  MouseWatcherBase::get_class_type(),
                   ReferenceCount::get_class_type());
   }
 

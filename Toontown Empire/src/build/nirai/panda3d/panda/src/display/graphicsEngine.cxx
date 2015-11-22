@@ -41,6 +41,7 @@
 #include "bamCache.h"
 #include "cullableObject.h"
 #include "geomVertexArrayData.h"
+#include "omniBoundingVolume.h"
 #include "vertexDataSaveFile.h"
 #include "vertexDataBook.h"
 #include "vertexDataPage.h"
@@ -629,7 +630,8 @@ remove_all_windows() {
   // a hack, since it's not really related to removing windows, this
   // would nevertheless be a fine time to ensure the model cache (if
   // any) has been flushed to disk.
-  BamCache::flush_global_index();
+  BamCache *cache = BamCache::get_global_ptr();
+  cache->flush_index();
 
   // And, hey, let's stop the vertex paging threads, if any.
   VertexDataPage::stop_threads();
@@ -714,7 +716,8 @@ render_frame() {
 
   // Since this gets called every frame, we should take advantage of
   // the opportunity to flush the cache if necessary.
-  BamCache::consider_flush_global_index();
+  BamCache *cache = BamCache::get_global_ptr();
+  cache->consider_flush_index();
 
   // Anything that happens outside of GraphicsEngine::render_frame()
   // is deemed to be App.
@@ -1245,12 +1248,12 @@ do_cull(CullHandler *cull_handler, SceneSetup *scene_setup,
     // from the lens.
     PT(BoundingVolume) bv = scene_setup->get_cull_bounds();
 
-    if (bv != (BoundingVolume *)NULL && !bv->is_infinite() &&
-        bv->as_geometric_bounding_volume() != NULL) {
+    if (bv != (BoundingVolume *)NULL &&
+        bv->is_of_type(GeometricBoundingVolume::get_class_type()) &&
+        !bv->is_of_type(OmniBoundingVolume::get_class_type())) {
       // Transform it into the appropriate coordinate space.
       PT(GeometricBoundingVolume) local_frustum;
-      local_frustum = bv->make_copy()->as_geometric_bounding_volume();
-      nassertv(!local_frustum.is_null());
+      local_frustum = DCAST(GeometricBoundingVolume, bv->make_copy());
 
       NodePath scene_parent = scene_setup->get_scene_root().get_parent(current_thread);
       CPT(TransformState) cull_center_transform =
@@ -1577,7 +1580,7 @@ cull_to_bins(GraphicsOutput *win, DisplayRegion *dr, Thread *current_thread) {
   }
 
   // Save the results for next frame.
-  dr->set_cull_result(MOVE(cull_result), MOVE(scene_setup), current_thread);
+  dr->set_cull_result(cull_result, scene_setup, current_thread);
 }
 
 ////////////////////////////////////////////////////////////////////

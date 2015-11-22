@@ -696,7 +696,8 @@ write(ostream &out, int indent_level) const {
 ////////////////////////////////////////////////////////////////////
 int LightAttrib::
 compare_to_impl(const RenderAttrib *other) const {
-  const LightAttrib *ta = (const LightAttrib *)other;
+  const LightAttrib *ta;
+  DCAST_INTO_R(ta, other, 0);
 
   if (_off_all_lights != ta->_off_all_lights) {
     return (int)_off_all_lights - (int)ta->_off_all_lights;
@@ -802,7 +803,8 @@ get_hash_impl() const {
 ////////////////////////////////////////////////////////////////////
 CPT(RenderAttrib) LightAttrib::
 compose_impl(const RenderAttrib *other) const {
-  const LightAttrib *ta = (const LightAttrib *)other;
+  const LightAttrib *ta;
+  DCAST_INTO_R(ta, other, 0);
 
   if (ta->_off_all_lights) {
     // If the other type turns off all lights, it doesn't matter what

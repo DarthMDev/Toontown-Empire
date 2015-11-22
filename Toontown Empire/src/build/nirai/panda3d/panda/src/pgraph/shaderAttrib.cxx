@@ -542,7 +542,8 @@ get_shader() const {
 ////////////////////////////////////////////////////////////////////
 int ShaderAttrib::
 compare_to_impl(const RenderAttrib *other) const {
-  const ShaderAttrib *that = (const ShaderAttrib *)other;
+  const ShaderAttrib *that;
+  DCAST_INTO_R(that, other, 0);
 
   if (this->_shader != that->_shader) {
     return (this->_shader < that->_shader) ? -1 : 1;
@@ -642,8 +643,8 @@ get_hash_impl() const {
 CPT(RenderAttrib) ShaderAttrib::
 compose_impl(const RenderAttrib *other) const {
   ShaderAttrib *attr = new ShaderAttrib(*this);
-  const ShaderAttrib *over = (const ShaderAttrib *)other;
-
+  const ShaderAttrib *over;
+  DCAST_INTO_R(over, other, 0);
   // Update the shader portion.
   if (over->_has_shader) {
     if ((attr->_has_shader == false) ||

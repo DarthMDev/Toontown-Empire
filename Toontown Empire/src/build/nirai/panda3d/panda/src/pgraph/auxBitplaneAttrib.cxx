@@ -88,8 +88,8 @@ output(ostream &out) const {
 ////////////////////////////////////////////////////////////////////
 int AuxBitplaneAttrib::
 compare_to_impl(const RenderAttrib *other) const {
-  const AuxBitplaneAttrib *ta = (const AuxBitplaneAttrib *)other;
-
+  const AuxBitplaneAttrib *ta;
+  DCAST_INTO_R(ta, other, 0);
   int compare_result = _outputs - ta->_outputs;
   if (compare_result != 0) {
     return compare_result;

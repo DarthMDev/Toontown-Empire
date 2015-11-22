@@ -84,7 +84,7 @@ int LineStreamBuf::
 sync() {
   streamsize n = pptr() - pbase();
   write_chars(pbase(), n);
-  pbump(-(int)n);  // Reset pptr().
+  pbump(-n);  // Reset pptr().
   return 0;  // EOF to indicate write full.
 }
 
@@ -104,7 +104,7 @@ overflow(int ch) {
 
   if (ch != EOF) {
     // Write one more character.
-    char c = (char)ch;
+    char c = ch;
     write_chars(&c, 1);
   }
 

@@ -89,7 +89,8 @@ output(ostream &out) const {
 ////////////////////////////////////////////////////////////////////
 int ColorWriteAttrib::
 compare_to_impl(const RenderAttrib *other) const {
-  const ColorWriteAttrib *ta = (const ColorWriteAttrib *)other;
+  const ColorWriteAttrib *ta;
+  DCAST_INTO_R(ta, other, 0);
   return (int)_channels - (int)ta->_channels;
 }
 

@@ -332,19 +332,9 @@ length() const {
 //  Description:
 ////////////////////////////////////////////////////////////////////
 INLINE char Filename::
-operator [] (size_t n) const {
-  assert(n < _filename.length());
+operator [] (int n) const {
+  assert(n >= 0 && n < (int)_filename.length());
   return _filename[n];
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: Filename::substr
-//       Access: Published
-//  Description:
-////////////////////////////////////////////////////////////////////
-INLINE string Filename::
-substr(size_t begin) const {
-  return _filename.substr(begin);
 }
 
 ////////////////////////////////////////////////////////////////////

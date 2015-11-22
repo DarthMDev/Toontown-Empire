@@ -36,7 +36,7 @@
 // regular volatile keyword.
 #define TVOLATILE volatile
 
-#if !defined(HAVE_THREADS) || defined(CPPPARSER)
+#if !defined(HAVE_THREADS)
 
 // With threading disabled, use the do-nothing implementation.
 #define THREAD_DUMMY_IMPL 1

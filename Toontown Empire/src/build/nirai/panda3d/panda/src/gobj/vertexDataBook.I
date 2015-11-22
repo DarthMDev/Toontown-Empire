@@ -30,7 +30,7 @@ alloc(size_t size) {
 //       Access: Published
 //  Description: Returns the number of pages created for the book.
 ////////////////////////////////////////////////////////////////////
-INLINE size_t VertexDataBook::
+INLINE int VertexDataBook::
 get_num_pages() const {
   return _pages.size();
 }

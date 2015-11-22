@@ -19,10 +19,8 @@
 #include "threadDummyImpl.h"
 #include "thread.h"
 
-#ifdef _WIN32
-#ifndef WIN32_LEAN_AND_MEAN
+#ifdef WIN32
 #define WIN32_LEAN_AND_MEAN 1
-#endif
 #include <windows.h>
 #endif
 

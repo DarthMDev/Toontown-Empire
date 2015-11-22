@@ -92,7 +92,8 @@ output(ostream &out) const {
 ////////////////////////////////////////////////////////////////////
 int MaterialAttrib::
 compare_to_impl(const RenderAttrib *other) const {
-  const MaterialAttrib *ta = (const MaterialAttrib *)other;
+  const MaterialAttrib *ta;
+  DCAST_INTO_R(ta, other, 0);
 
   // Comparing pointers by subtraction is problematic.  Instead of
   // doing this, we'll just depend on the built-in != and < operators

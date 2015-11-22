@@ -113,7 +113,8 @@ output(ostream &out) const {
 ////////////////////////////////////////////////////////////////////
 int ColorBlendAttrib::
 compare_to_impl(const RenderAttrib *other) const {
-  const ColorBlendAttrib *ta = (const ColorBlendAttrib *)other;
+  const ColorBlendAttrib *ta;
+  DCAST_INTO_R(ta, other, 0);
 
   if (_mode != ta->_mode) {
     return (int)_mode - (int)ta->_mode;

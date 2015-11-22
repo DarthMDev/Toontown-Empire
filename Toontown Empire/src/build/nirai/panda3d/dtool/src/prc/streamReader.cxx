@@ -68,7 +68,7 @@ get_z_string() {
   string result;
   int ch = _in->get();
   while (!_in->eof() && !_in->fail() && ch != '\0') {
-    result += (char)ch;
+    result += ch;
     ch = _in->get();
   }
 
@@ -116,25 +116,6 @@ skip_bytes(size_t size) {
 //     Function: StreamReader::extract_bytes
 //       Access: Published
 //  Description: Extracts the indicated number of bytes in the
-//               stream into the given character buffer.  Assumes
-//               that the buffer is big enough to hold the requested
-//               number of bytes.  Returns the number of bytes
-//               that were successfully written.
-////////////////////////////////////////////////////////////////////
-size_t StreamReader::
-extract_bytes(unsigned char *into, size_t size) {
-  if (_in->eof() || _in->fail()) {
-    return 0;
-  }
-
-  _in->read((char *)into, size);
-  return _in->gcount();
-}
-
-////////////////////////////////////////////////////////////////////
-//     Function: StreamReader::extract_bytes
-//       Access: Public
-//  Description: Extracts the indicated number of bytes in the
 //               stream and returns them as a string.  Returns empty
 //               string at end-of-file.
 ////////////////////////////////////////////////////////////////////
@@ -151,8 +132,27 @@ extract_bytes(size_t size) {
 }
 
 ////////////////////////////////////////////////////////////////////
+//     Function: StreamReader::extract_bytes
+//       Access: Published
+//  Description: Extracts the indicated number of bytes in the
+//               stream into the given character buffer.  Assumes
+//               that the buffer is big enough to hold the requested
+//               number of bytes.  Returns the number of bytes
+//               that were successfully written.
+////////////////////////////////////////////////////////////////////
+size_t StreamReader::
+extract_bytes(unsigned char *into, size_t size) {
+  if (_in->eof() || _in->fail()) {
+    return 0;
+  }
+
+  _in->read((char *)into, size);
+  return _in->gcount();
+}
+
+////////////////////////////////////////////////////////////////////
 //     Function: StreamReader::readline
-//       Access: Public
+//       Access: Published
 //  Description: Assumes the stream represents a text file, and
 //               extracts one line up to and including the trailing
 //               newline character.  Returns empty string when the end
@@ -167,7 +167,7 @@ readline() {
   string line;
   int ch = _in->get();
   while (!_in->eof() && !_in->fail()) {
-    line += (char)ch;
+    line += ch;
     if (ch == '\n') {
       // Here's the newline character.
       return line;
@@ -177,3 +177,4 @@ readline() {
 
   return line;
 }
+
