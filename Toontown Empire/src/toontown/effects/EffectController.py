@@ -73,7 +73,7 @@ class EffectController:
     def startLoop(self, lod = None):
         if lod != None:
             try:
-                self.createTrack(lod)
+                self.createTrack()
             except TypeError, e:
                 raise TypeError('Error loading %s effect.' % self.__class__.__name__)
 

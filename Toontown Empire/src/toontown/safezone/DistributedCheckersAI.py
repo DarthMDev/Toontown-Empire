@@ -558,51 +558,6 @@ class DistributedCheckersAI(DistributedNodeAI):
 
             return False
 
-
-
-    def existsLegalJumpsFrom(self, index, peice):
-        if peice == 'king':
-            for x in xrange(4):
-                if self.board.squareList[index].getAdjacent()[x] != None and self.board.squareList[index].getJumps()[x] != None:
-                    adj = self.board.squareList[self.board.squareList[index].getAdjacent()[x]]
-                    jump = self.board.squareList[self.board.squareList[index].getJumps()[x]]
-                    if adj.getState() == 0:
-                        pass
-                    elif adj.getState() == self.playerNum or adj.getState() == self.playerNum + 2:
-                        pass
-                    elif jump.getState() == 0:
-                        return True
-
-                adj.getState() == self.playerNum + 2
-
-            return False
-        elif peice == 'normal':
-            if self.playerNum == 1:
-                moveForward = [
-                    1,
-                    2]
-            elif self.playerNum == 2:
-                moveForward = [
-                    0,
-                    3]
-
-            for x in moveForward:
-                if self.board.squareList[index].getAdjacent()[x] != None and self.board.squareList[index].getJumps()[x] != None:
-                    adj = self.board.squareList[self.board.squareList[index].getAdjacent()[x]]
-                    jump = self.board.squareList[self.board.squareList[index].getJumps()[x]]
-                    if adj.getState() == 0:
-                        pass
-                    elif adj.getState() == self.playerNum or adj.getState() == self.playerNum + 2:
-                        pass
-                    elif jump.getState() == 0:
-                        return True
-
-                adj.getState() == self.playerNum + 2
-
-            return False
-
-
-
     def checkLegalMove(self, firstSquare, secondSquare, peice):
         if self.playerNum == 1:
             moveForward = [

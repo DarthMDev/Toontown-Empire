@@ -358,28 +358,6 @@ class DistributedCannon(DistributedObject.DistributedObject):
         self.madeGui = 1
         return
 
-    def __unmakeGui(self):
-        self.notify.debug('__unmakeGui')
-        if not self.madeGui:
-            return
-        self.__disableAimInterface()
-        self.upButton.unbind(DGG.B1PRESS)
-        self.upButton.unbind(DGG.B1RELEASE)
-        self.downButton.unbind(DGG.B1PRESS)
-        self.downButton.unbind(DGG.B1RELEASE)
-        self.leftButton.unbind(DGG.B1PRESS)
-        self.leftButton.unbind(DGG.B1RELEASE)
-        self.rightButton.unbind(DGG.B1PRESS)
-        self.rightButton.unbind(DGG.B1RELEASE)
-        self.aimPad.destroy()
-        del self.aimPad
-        del self.fireButton
-        del self.upButton
-        del self.downButton
-        del self.leftButton
-        del self.rightButton
-        self.madeGui = 0
-
     def unload(self):
         self.ignoreCode()
         del self.codeFSM
