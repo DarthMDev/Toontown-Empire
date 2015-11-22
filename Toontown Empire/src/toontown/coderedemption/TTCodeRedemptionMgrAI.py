@@ -43,33 +43,31 @@ only include the comma if there are multiple arguments.
 class TTCodeRedemptionMgrAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("TTCodeRedemptionMgrAI")
     codes = {
-        'weed': {
+        'Pinktober': {
             'items': [
                 CatalogClothingItem.CatalogClothingItem(1821, 0)
             ],
-            'month': 4,
-            'day': 20
         },
-        'gardening': {
-            'items': [
-                CatalogGardenStarterItem.CatalogGardenStarterItem()
-            ]
-        },
+     #   'gardening': {
+     #       'items': [
+     #           CatalogGardenStarterItem.CatalogGardenStarterItem()
+     #      ]
+      #  },
         'sillymeter': {
             'items': [
                 CatalogClothingItem.CatalogClothingItem(1753, 0)
             ]
-        },
-        'toonstatue': {
-            'items': [
-                CatalogToonStatueItem.CatalogToonStatueItem(105, endPoseIndex=108)
-            ]
-        },
-        'donaldstatue': {
-            'items': [
-                CatalogGardenItem.CatalogGardenItem(100, 1)
-            ]
         }
+     #   'toonstatue': {
+     #       'items': [
+     #          CatalogToonStatueItem.CatalogToonStatueItem(105, endPoseIndex=108)
+     #       ]
+     #   },
+     #   'donaldstatue': {
+     #       'items': [
+     #           CatalogGardenItem.CatalogGardenItem(100, 1)
+     #       ]
+     #   }
     }
 
     def announceGenerate(self):

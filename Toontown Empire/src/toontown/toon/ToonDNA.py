@@ -146,7 +146,9 @@ toonTorsoTypes = ['ss',
  'm',
  'l']
 toonLegTypes = ['s', 'm', 'l']
-Shirts = ['phase_3/maps/desat_shirt_1.jpg',
+
+Shirts = [
+ 'phase_3/maps/desat_shirt_1.jpg',
  'phase_3/maps/desat_shirt_2.jpg',
  'phase_3/maps/desat_shirt_3.jpg',
  'phase_3/maps/desat_shirt_4.jpg',
@@ -265,6 +267,9 @@ Shirts = ['phase_3/maps/desat_shirt_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_greentoon1.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_getConnectedMoverShaker.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_racingGrandPrix.jpg',
+ 'phase_4/maps/tt_t_chr_avt_shirt_sellbotIcon.jpg',
+ 'phase_4/maps/tt_t_chr_avt_shirt_sellbotVPIcon.jpg',
+ 'phase_4/maps/tt_t_chr_avt_shirt_sellbotCrusher.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_bee.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_pirate.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_supertoon.jpg',
@@ -294,8 +299,11 @@ Shirts = ['phase_3/maps/desat_shirt_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_saveBuilding4.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_saveBuilding05.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_anniversary.jpg',
- 'phase_4/maps/PinkToberShirt.jpg',	#148 - PinkTober Shirt
- 'phase_4/maps/SplatterShirt.jpg'] # 149 - Xentel NPC shirt
+ 'phase_4/maps/PinkToberShirt.jpg',	#150 - PinkTober Shirt
+ 'phase_4/maps/SplatterShirt.jpg', # 151 - Xentel NPC shirt
+ 'phase_4/maps/SherlockHolmes_Shirt.png' # 152 - Sherlock Holmes Shirt
+]
+
 BoyShirts = [(0, 0),
  (1, 1),
  (2, 2),
@@ -449,6 +457,9 @@ Sleeves = ['phase_3/maps/desat_sleeve_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_greentoon1.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_getConnectedMoverShaker.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_racingGrandPrix.jpg',
+ 'phase_4/maps/tt_t_chr_avt_shirtSleeve_sellbotIcon.jpg',
+ 'phase_4/maps/tt_t_chr_avt_shirtSleeve_sellbotVPIcon.jpg',
+ 'phase_4/maps/tt_t_chr_avt_shirtSleeve_sellbotCrusher.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_bee.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_pirate.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_supertoon.jpg',
@@ -478,8 +489,10 @@ Sleeves = ['phase_3/maps/desat_sleeve_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_saveBuilding4.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_saveBuilding05.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_anniversary.jpg',
- 'phase_4/maps/Pinktober_sleeve.jpg', 					#135 - Pinktober
- 'phase_4/maps/SplatterShirtSleeve.jpg'] # 136 - Xentel NPC design
+ 'phase_4/maps/Pinktober_sleeve.jpg', 					#137 - Pinktober
+ 'phase_4/maps/SplatterShirtSleeve.jpg', # 138 - Xentel NPC design
+ 'phase_4/maps/SherlockHolmes_Sleeve.png'] # 139 - San's Shirt (Sherlock Holmes)
+ 
 BoyShorts = ['phase_3/maps/desat_shorts_1.jpg',
  'phase_3/maps/desat_shorts_2.jpg',
  'phase_3/maps/desat_shorts_4.jpg',
@@ -526,6 +539,7 @@ BoyShorts = ['phase_3/maps/desat_shorts_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_halloweenTurtle.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_greentoon1.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_racingGrandPrix.jpg',
+ 'phase_4/maps/tt_t_chr_avt_shorts_sellbotCrusher.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_bee.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_pirate.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_supertoon.jpg',
@@ -536,10 +550,12 @@ BoyShorts = ['phase_3/maps/desat_shorts_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_golf04.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_golf05.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_racing04.jpg',
- 'phase_4/maps/tt_t_chr_avt_shorts_racing05.jpg',	#56
+ 'phase_4/maps/tt_t_chr_avt_shorts_racing05.jpg',
  'phase_4/maps/SplatterShorts.jpg']	# 57  Xentel NPC shorts
+ 
 SHORTS = 0
 SKIRT = 1
+
 GirlBottoms = [('phase_3/maps/desat_skirt_1.jpg', SKIRT),
  ('phase_3/maps/desat_skirt_2.jpg', SKIRT),
  ('phase_3/maps/desat_skirt_3.jpg', SKIRT),
@@ -590,6 +606,7 @@ GirlBottoms = [('phase_3/maps/desat_skirt_1.jpg', SKIRT),
  ('phase_4/maps/tt_t_chr_avt_shorts_halloweenTurtle.jpg', SHORTS),
  ('phase_4/maps/tt_t_chr_avt_skirt_greentoon1.jpg', SKIRT),
  ('phase_4/maps/tt_t_chr_avt_skirt_racingGrandPrix.jpg', SKIRT),
+ ('phase_4/maps/tt_t_chr_avt_shorts_sellbotCrusher.jpg', SHORTS),
  ('phase_4/maps/tt_t_chr_avt_shorts_bee.jpg', SHORTS),
  ('phase_4/maps/tt_t_chr_avt_shorts_pirate.jpg', SHORTS),
  ('phase_4/maps/tt_t_chr_avt_skirt_pirate.jpg', SKIRT),
@@ -602,6 +619,7 @@ GirlBottoms = [('phase_3/maps/desat_skirt_1.jpg', SKIRT),
  ('phase_4/maps/tt_t_chr_avt_skirt_golf04.jpg', SKIRT),
  ('phase_4/maps/tt_t_chr_avt_skirt_racing04.jpg', SKIRT),
  ('phase_4/maps/tt_t_chr_avt_skirt_racing05.jpg', SKIRT)]
+ 
 ClothesColors = [VBase4(0.933594, 0.265625, 0.28125, 1.0),
  VBase4(0.863281, 0.40625, 0.417969, 1.0),
  VBase4(0.710938, 0.234375, 0.4375, 1.0),
@@ -1185,9 +1203,9 @@ ShirtStyles = {'bss1': [0, 0, [(0, 0),
  'sa_ss52': [147, 134, [(27, 27)]],
  'sa_ss53': [148, 135, [(27, 27)]],
  'sa_ss54': [149, 136, [(27, 27)]],
- 'sa_ss55': [150, 137, [(27, 27)]],
- 'sa_ss56': [151, 138, [(27, 27)]],	#PinkTober Code
- 'splat': [152, 139, [(27, 27)]], # Xentel NPC Shirt Code
+ 'pinktober': [150, 137, [(27, 27)]], # Pinktober Shirt
+ 'splat': [151, 138, [(27, 27)]], # Xentel Shirt (Splatter Shirt)
+ 'san_1': [152, 139, [(27, 27)]], # San's Shirt (Sherlock Holmes)
  'sc_1': [97, 86, [(27, 27)]],
  'sc_2': [98, 86, [(27, 27)]],
  'sc_3': [99, 86, [(27, 27)]],
@@ -1206,8 +1224,8 @@ ShirtStyles = {'bss1': [0, 0, [(0, 0),
  'jb_1': [112, 99, [(27, 27)]],
  'jb_2': [113, 100, [(27, 27)]],
  'ugcms': [117, 104, [(27, 27)]],
- 'lb_1': [119, 106, [(27, 27)]],
- 'weed': [148, 135, [(27, 27)]]}
+ 'lb_1': [119, 106, [(27, 27)]]}
+ 
 BottomStyles = {'bbs1': [0, [0,
            1,
            2,
@@ -1551,7 +1569,6 @@ BottomStyles = {'bbs1': [0, [0,
            25,
            26,
            27]],
- 'splat1': [59, [27]], # Xentel NPC Shorts
  'c_gsk1': [10, [27]],
  'c_gsk2': [11, [27]],
  'c_gsk3': [12, [27]],
@@ -1594,8 +1611,7 @@ BottomStyles = {'bbs1': [0, [0,
  'sa_bs17': [53, [27]],
  'sa_bs18': [54, [27]],
  'sa_bs19': [55, [27]],
- 'sa_bs20': [56, [27]],
- 'sa_bs21': [57, [27]],
+ 'splat1': [56, [27]],
  'sa_gs1': [29, [27]],
  'sa_gs2': [30, [27]],
  'sa_gs3': [31, [27]],
@@ -1634,8 +1650,8 @@ BottomStyles = {'bbs1': [0, [0,
  'hw_gs5': [54, [27]],
  'hw_gs6': [55, [27]],
  'hw_gs7': [56, [27]],
- 'hw_gsk1': [53, [27]],
- 'nig2': [57, [27]]}
+ 'hw_gsk1': [53, [27]]}
+ 
 MAKE_A_TOON = 1
 TAMMY_TAILOR = 2004
 LONGJOHN_LEROY = 1007
