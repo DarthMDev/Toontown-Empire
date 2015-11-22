@@ -8,10 +8,17 @@ from toontown.toon import InventoryBase
 from toontown.battle import DistributedBattleFinalAI
 from toontown.building import SuitPlannerInteriorAI
 from toontown.battle import BattleBase
-from pandac.PandaModules import *
+from panda3d.core import *
 import SuitDNA
 import random
 AllBossCogs = []
+
+BOSS_TO_STAT = {
+ 's': ToontownGlobals.STAT_VP,
+ 'm': ToontownGlobals.STAT_CFO,
+ 'l': ToontownGlobals.STAT_CJ,
+ 'c': ToontownGlobals.STAT_CEO
+}
 
 class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBossCogAI')
@@ -44,8 +51,8 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
         self.attackCode = None
         self.attackAvId = 0
         self.hitCount = 0
+        self.keyReward = config.GetBool('get-key-reward-always', False) or random.random() <= 0.15
         AllBossCogs.append(self)
-        return
 
     def delete(self):
         self.ignoreAll()
@@ -145,6 +152,10 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
 
     def d_setBattleExperience(self):
         self.sendUpdate('setBattleExperience', self.getBattleExperience())
+        for toonId in self.involvedToons:
+            toon = simbase.air.doId2do.get(toonId)
+            if toon:
+                self.air.topToonsMgr.toonKilledBoss(toon, self.BossName)
 
     def getBattleExperience(self):
         result = BattleExperienceAI.getBattleExperience(8, self.involvedToons, self.toonExp, self.toonSkillPtsGained, self.toonOrigQuests, self.toonItems, self.toonOrigMerits, self.toonMerits, self.toonParts, self.suitsKilled, self.helpfulToons)
@@ -178,6 +189,9 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
 
     def getState(self):
         return self.state
+    
+    def getKeyReward(self):
+        return self.keyReward
 
     def formatReward(self):
         return 'unspecified'
@@ -223,8 +237,7 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
         self.resetBattles()
         self.arenaSide = None
         self.makeBattleOneBattles()
-        self.barrier = self.beginBarrier('Introduction', self.involvedToons, 45, self.doneIntroduction)
-        return
+        self.barrier = self.beginBarrier('Introduction', self.involvedToons, 50, self.doneIntroduction)
 
     def doneIntroduction(self, avIds):
         self.b_setState('BattleOne')
@@ -256,7 +269,7 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
         pass
 
     def enterEpilogue(self):
-        pass
+        self.giveKeyReward()
 
     def exitEpilogue(self):
         pass
@@ -548,7 +561,7 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
             damage *= self.getDamageMultiplier()
             self.damageToon(toon, damage)
             currState = self.getCurrentOrNextState()
-            if attackCode == ToontownGlobals.BossCogElectricFence and (currState == 'RollToBattleTwo' or currState == 'BattleThree'):
+            if attackCode == ToontownGlobals.BossCogElectricFence and (currState == 'RollToBattleTwo' or currState == 'BattleThree') and self.attackCode not in (ToontownGlobals.BossCogDizzy, ToontownGlobals.BossCogDizzyNow):
                 if bpy < 0 and abs(bpx / bpy) > 0.5:
                     if bpx < 0:
                         self.b_setAttackCode(ToontownGlobals.BossCogSwatRight)
@@ -584,8 +597,9 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
             delayTime = ToontownGlobals.BossCogAttackTimes.get(attackCode)
             if delayTime == None:
                 return
+        if self.dept == 'm' and attackCode == ToontownGlobals.BossCogAreaAttack:
+            delayTime += 5.0
         self.waitForNextAttack(delayTime)
-        return
 
     def d_setAttackCode(self, attackCode, avId = 0):
         self.sendUpdate('setAttackCode', [attackCode, avId])
@@ -603,3 +617,22 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
 
     def doNextAttack(self, task):
         self.b_setAttackCode(ToontownGlobals.BossCogNoAttack)
+    
+    def giveKeyReward(self):
+        if not self.keyReward:
+            return
+        
+        for toonId in self.involvedToons:
+            toon = self.air.doId2do.get(toonId)
+
+            if toon:
+                toon.addCrateKeys(1)
+    
+    def addStats(self):
+        stat = BOSS_TO_STAT[self.dept]
+
+        for toonId in self.involvedToons:
+            toon = self.air.doId2do.get(toonId)
+            
+            if toon:
+                toon.addStat(stat)

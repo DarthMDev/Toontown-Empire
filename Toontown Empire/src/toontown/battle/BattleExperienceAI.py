@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownBattleGlobals
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals
 from toontown.suit import SuitDNA
 BattleExperienceAINotify = DirectNotifyGlobal.directNotify.newCategory('BattleExprienceAI')
 
@@ -85,7 +85,7 @@ def getBattleExperience(numToons, activeToons, toonExp, toonSkillPtsGained, toon
     for deathRecord in suitsKilled:
         level = deathRecord['level']
         type = deathRecord['type']
-        if deathRecord['isVP'] or deathRecord['isCFO']:
+        if deathRecord['isBoss'] > 0:
             level = 0
             typeNum = SuitDNA.suitDepts.index(deathRecord['track'])
         else:
@@ -101,10 +101,8 @@ def getBattleExperience(numToons, activeToons, toonExp, toonSkillPtsGained, toon
             flags |= ToontownBattleGlobals.DLF_SKELECOG
         if deathRecord['isForeman']:
             flags |= ToontownBattleGlobals.DLF_FOREMAN
-        if deathRecord['isVP']:
-            flags |= ToontownBattleGlobals.DLF_VP
-        if deathRecord['isCFO']:
-            flags |= ToontownBattleGlobals.DLF_CFO
+        if deathRecord['isBoss'] > 0:
+            flags |= ToontownBattleGlobals.DLF_BOSS
         if deathRecord['isSupervisor']:
             flags |= ToontownBattleGlobals.DLF_SUPERVISOR
         if deathRecord['isVirtual']:
@@ -183,11 +181,17 @@ def assignRewards(activeToons, toonSkillPtsGained, suitsKilled, zoneId, helpfulT
 
         if simbase.air.config.GetBool('battle-passing-no-credit', True):
             if helpfulToons and toon.doId in helpfulToons:
-                simbase.air.questManager.toonKilledCogs(toon, suitsKilled, zoneId, activeToonList)
+                simbase.air.questManager.toonKilledCogs(toon, suitsKilled, zoneId)
                 simbase.air.cogPageManager.toonKilledCogs(toon, suitsKilled, zoneId)
+                addStats(toon, suitsKilled)
             else:
                 BattleExperienceAINotify.debug('toon=%d unhelpful not getting killed cog quest credit' % toon.doId)
         else:
-            simbase.air.questManager.toonKilledCogs(toon, suitsKilled, zoneId, activeToonList)
+            simbase.air.questManager.toonKilledCogs(toon, suitsKilled, zoneId)
             simbase.air.cogPageManager.toonKilledCogs(toon, suitsKilled, zoneId)
-    return
+            addStats(toon, suitsKilled)
+    
+def addStats(toon, suitsKilled):
+    toon.addStat(ToontownGlobals.STAT_COGS, len(suitsKilled))
+    toon.addStat(ToontownGlobals.STAT_V2, len([suit for suit in suitsKilled if 'hasRevives' in suit and suit['hasRevives']]))
+    toon.addStat(ToontownGlobals.STAT_SKELE, len([suit for suit in suitsKilled if 'isSkelecog' in suit and suit['isSkelecog']]))

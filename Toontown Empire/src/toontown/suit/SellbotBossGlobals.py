@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 
 try:
     from toontown.coghq.DistributedHealBarrelAI import DistributedHealBarrelAI
@@ -15,7 +15,8 @@ AttackMult = 1.0
 AttackMultNerfed = 0.5
 HitCountDamage = 35
 HitCountDamageNerfed = 50
-BarrelDefs = {8000: {'type': DistributedHealBarrelAI,
+BarrelDefs = {
+ 8000: {'type': DistributedHealBarrelAI,
         'pos': Point3(15, 23, 0),
         'hpr': Vec3(-45, 0, 0),
         'rewardPerGrab': 50,
@@ -43,7 +44,8 @@ BarrelDefs = {8000: {'type': DistributedHealBarrelAI,
         'gagLevelMax': 0,
         'gagTrack': 5,
         'rewardPerGrab': 10,
-        'rewardPerGrabMax': 0}}
+        'rewardPerGrabMax': 0}
+}
 
 def setBarrelAttr(barrel, entId):
     for defAttr, defValue in BarrelDefs[entId].iteritems():
