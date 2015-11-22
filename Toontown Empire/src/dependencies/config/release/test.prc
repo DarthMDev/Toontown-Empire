@@ -7,14 +7,14 @@ client-agents 8
 shard-low-pop 100
 shard-mid-pop 150
 
-model-path resources/
+model-path ../resources/
 
 # Core features:
 want-housing #t
-want-pets #f
+want-pets #t
 want-parties #t
 want-cogdominiums #t
-want-lawbot-cogdo #f
+want-lawbot-cogdo #t
 boarding-group-merges #t
 
 # Optional:
