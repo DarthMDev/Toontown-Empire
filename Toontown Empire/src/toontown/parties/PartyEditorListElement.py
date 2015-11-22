@@ -72,11 +72,11 @@ class PartyEditorListElement(DirectButton):
         self.bind(DirectGuiGlobals.B1RELEASE, self.released)
         self.partyEditorGridElements = []
         if self.isDecoration:
-            for i in xrange(PartyGlobals.DecorationInformationDict[self.id]['limitPerParty']):
+            for i in range(PartyGlobals.DecorationInformationDict[self.id]['limitPerParty']):
                 self.partyEditorGridElements.append(PartyEditorGridElement(self.partyEditor, self.id, self.isDecoration, self.checkSoldOutAndAffordability))
 
         else:
-            for i in xrange(PartyGlobals.ActivityInformationDict[self.id]['limitPerParty']):
+            for i in range(PartyGlobals.ActivityInformationDict[self.id]['limitPerParty']):
                 self.partyEditorGridElements.append(PartyEditorGridElement(self.partyEditor, self.id, self.isDecoration, self.checkSoldOutAndAffordability))
 
         self.activeGridElementIndex = -1
@@ -113,9 +113,7 @@ class PartyEditorListElement(DirectButton):
             self.partyEditor.partyPlanner.elementDescriptionNode.setText(TTLocalizer.PartyActivityNameDict[self.id]['description'])
             self.partyEditor.partyPlanner.elementPriceNode.setText('%d %s' % (PartyGlobals.ActivityInformationDict[self.id]['cost'], TTLocalizer.PartyPlannerBeans))
             self.partyEditor.partyPlanner.elementTitleLabel['text'] = self.name
-
         self.checkSoldOutAndAffordability()
-
 
     def checkSoldOutAndAffordability(self):
         if self.partyEditor.currentElement != self:
@@ -126,29 +124,19 @@ class PartyEditorListElement(DirectButton):
             infoDict = PartyGlobals.DecorationInformationDict
         else:
             infoDict = PartyGlobals.ActivityInformationDict
-
-
-
         if infoDict[self.id]['cost'] > self.partyEditor.partyPlanner.totalMoney - self.partyEditor.partyPlanner.totalCost:
             self.setTooExpensive(True)
             tooExpensive = True
         else:
             self.setTooExpensive(False)
             tooExpensive = False
-        for i in xrange(len(self.partyEditorGridElements)):
+        for i in range(len(self.partyEditorGridElements)):
             if not self.partyEditorGridElements[i].overValidSquare:
                 if not tooExpensive:
                     self.setSoldOut(False)
                 return
 
         self.setSoldOut(True)
-        return
-
-
-
-
-
-
 
     def setTooExpensive(self, value):
         self.partyEditor.partyPlanner.elementBuyButton['text'] = TTLocalizer.PartyPlannerBuy
@@ -176,20 +164,19 @@ class PartyEditorListElement(DirectButton):
     def clicked(self, mouseEvent):
         PartyEditorListElement.notify.debug("Element %s's icon was clicked" % self.name)
         self.partyEditor.listElementClicked()
-        for i in xrange(len(self.partyEditorGridElements)):
+        for i in range(len(self.partyEditorGridElements)):
             if not self.partyEditorGridElements[i].overValidSquare:
                 self.partyEditorGridElements[i].attach(mouseEvent)
                 self.activeGridElementIndex = i
                 return
 
     def buyButtonClicked(self, desiredXY = None):
-        for i in xrange(len(self.partyEditorGridElements)):
+        for i in range(len(self.partyEditorGridElements)):
             if not self.partyEditorGridElements[i].overValidSquare:
                 if self.partyEditorGridElements[i].placeInPartyGrounds(desiredXY):
                     self.activeGridElementIndex = i
                     return True
                 else:
-
                     self.checkSoldOutAndAffordability()
                     return False
 

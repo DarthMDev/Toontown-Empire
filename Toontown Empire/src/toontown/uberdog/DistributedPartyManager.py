@@ -165,7 +165,7 @@ class DistributedPartyManager(DistributedObject):
             base.cr.playGame.getPlace().handleBookClose()
             return
         hoodId = ToontownGlobals.PartyHood
-        if shardId == base.localAvatar.defaultShard or shardId == (base.localAvatar.defaultShard - 1):
+        if shardId == base.localAvatar.defaultShard:
             shardId = None
         base.cr.playGame.getPlace().requestLeave({'loader': 'safeZoneLoader',
          'where': 'party',

@@ -3,7 +3,7 @@ import random
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
-from pandac.PandaModules import *
+from panda3d.core import *
 from pandac.PandaModules import NodePath
 from toontown.toonbase.ToontownGlobals import *
 from toontown.safezone import SafeZoneLoader
@@ -80,7 +80,6 @@ class PartyLoader(SafeZoneLoader.SafeZoneLoader):
 
     def loadClouds(self):
         self.loadCloudPlatforms()
-        self.startCloudPlatforms()
         if base.cloudPlatformsEnabled and 0:
             self.setCloudSwitch(1)
         if self.cloudSwitch:
@@ -183,6 +182,7 @@ class PartyLoader(SafeZoneLoader.SafeZoneLoader):
         return
 
     def startCloudPlatforms(self):
+        return
         if len(self.clouds):
             self.cloudTrack = self.__cloudTrack()
             self.cloudTrack.loop()

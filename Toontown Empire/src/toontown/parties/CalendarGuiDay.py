@@ -1,13 +1,11 @@
-import datetime
-import time
-from pandac.PandaModules import TextNode, Vec3, Vec4, PlaneNode, Plane, Point3
+from pandac.PandaModules import TextNode, PlaneNode, Plane
 from direct.gui.DirectGui import DirectFrame, DirectLabel, DirectButton, DirectScrolledList, DGG
-from direct.directnotify import DirectNotifyGlobal
 from direct.gui import DirectGuiGlobals
 from toontown.ai import HolidayGlobals
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.parties.PartyInfo import PartyInfo
 from toontown.parties import PartyGlobals
+import datetime
 
 def myStrftime(myTime):
     result = ''
@@ -17,9 +15,7 @@ def myStrftime(myTime):
     result += myTime.strftime(':%M %p')
     return result
 
-
 class CalendarGuiDay(DirectFrame):
-    notify = directNotify.newCategory('CalendarGuiDay')
     ScrollListTextSize = 0.03
 
     def __init__(self, parent, myDate, startDate, dayClickCallback = None, onlyFutureDaysClickable = False):
@@ -29,26 +25,10 @@ class CalendarGuiDay(DirectFrame):
         self.dayClickCallback = dayClickCallback
         self.onlyFutureDaysClickable = onlyFutureDaysClickable
         DirectFrame.__init__(self, parent=parent)
-        self.timedEvents = []
-        self.partiesInvitedToToday = []
-        self.hostedPartiesToday = []
-        self.yearlyHolidaysToday = []
-        self.showMarkers = base.config.GetBool('show-calendar-markers', 0)
         self.filter = ToontownGlobals.CalendarFilterShowAll
         self.load()
         self.createGuiObjects()
         self.update()
-
-    def createDummyLocators(self):
-        self.dayButtonLocator = self.attachNewNode('dayButtonLocator')
-        self.dayButtonLocator.setX(0.1)
-        self.dayButtonLocator.setZ(-0.05)
-        self.numberLocator = self.attachNewNode('numberLocator')
-        self.numberLocator.setX(0.09)
-        self.scrollLocator = self.attachNewNode('scrollLocator')
-        self.selectedLocator = self.attachNewNode('selectedLocator')
-        self.selectedLocator.setX(0.11)
-        self.selectedLocator.setZ(-0.06)
 
     def load(self):
         dayAsset = loader.loadModel('phase_4/models/parties/tt_m_gui_sbk_calendar_box')
@@ -64,21 +44,11 @@ class CalendarGuiDay(DirectFrame):
         self.defaultBox = self.find('**/boxBlank')
         self.scrollBottomRightLocator = self.find('**/loc_bottomRightList')
         self.scrollDownLocator = self.find('**/loc_scrollDown')
-        self.attachMarker(self.scrollDownLocator)
         self.scrollUpLocator = self.find('**/loc_scrollUp')
-        self.attachMarker(self.scrollUpLocator)
-
-    def attachMarker(self, parent, scale = 0.005, color = (1, 0, 0)):
-        if self.showMarkers:
-            marker = loader.loadModel('phase_3/models/misc/sphere')
-            marker.reparentTo(parent)
-            marker.setScale(scale)
-            marker.setColor(*color)
 
     def createGuiObjects(self):
         self.dayButton = DirectButton(parent=self.dayButtonLocator, image=self.selectedFrame, relief=None, command=self.__clickedOnDay, pressEffect=1, rolloverSound=None, clickSound=None)
-        self.numberWidget = DirectLabel(parent=self.numberLocator, relief=None, text=str(self.myDate.day), text_scale=0.04, text_align=TextNode.ACenter, text_font=ToontownGlobals.getInterfaceFont(), text_fg=Vec4(110 / 255.0, 126 / 255.0, 255 / 255.0, 1))
-        self.attachMarker(self.numberLocator)
+        self.numberWidget = DirectLabel(parent=self.numberLocator, relief=None, text=str(self.myDate.day), text_scale=0.04, text_align=TextNode.ACenter, text_font=ToontownGlobals.getInterfaceFont(), text_fg=(110 / 255.0, 126 / 255.0, 255 / 255.0, 1))
         self.listXorigin = 0
         self.listFrameSizeX = self.scrollBottomRightLocator.getX() - self.scrollLocator.getX()
         self.scrollHeight = self.scrollLocator.getZ() - self.scrollBottomRightLocator.getZ()
@@ -115,7 +85,6 @@ class CalendarGuiDay(DirectFrame):
         clipper.setPlane(Plane((-1, 0, 0), (0.23, 0, 0)))
         clipNP = self.scrollList.component('itemFrame').attachNewNode(clipper)
         self.scrollList.component('itemFrame').setClipPlane(clipNP)
-        return
 
     def scrollButtonPressed(self):
         self.__clickedOnDay()
@@ -140,23 +109,20 @@ class CalendarGuiDay(DirectFrame):
         else:
             self.defaultBox.show()
             self.todayBox.hide()
-        return
 
     def destroy(self):
         if self.dayClickCallback is not None:
             self.numberWidget.destroy()
         self.dayClickCallback = None
-        self.notify.debug('desroying %s' % self.myDate)
         try:
             for item in self.scrollList['items']:
                 if hasattr(item, 'description') and item.description and hasattr(item.description, 'destroy'):
-                    self.notify.debug('desroying description of item %s' % item)
                     item.unbind(DGG.ENTER)
                     item.unbind(DGG.EXIT)
                     item.description.destroy()
 
         except e:
-            self.notify.debug('pass %s' % self.myDate)
+            pass
 
         self.scrollList.removeAndDestroyAllItems()
         self.scrollList.destroy()
@@ -178,7 +144,6 @@ class CalendarGuiDay(DirectFrame):
             self.scrollList.decButton.show()
 
     def collectTimedEvents(self):
-
         if self.filter == ToontownGlobals.CalendarFilterShowAll or self.filter == ToontownGlobals.CalendarFilterShowOnlyParties:
             for party in localAvatar.partiesInvitedTo:
                 if party.startTime.date() == self.myDate.date():
@@ -198,15 +163,18 @@ class CalendarGuiDay(DirectFrame):
                 elif 'startMonth' in holiday or 'startDay' in holiday:
                     startDate = HolidayGlobals.getStartDate(holiday, self.myDate)
                     endDate = HolidayGlobals.getEndDate(holiday, self.myDate)
+
                     if self.isDateMatch(self.myDate, startDate):
                         if self.isDateMatch(startDate, endDate):
                             description = '%s. %s' % (title, description)
                         else:
                             description = '%s. %s %s %s' % (title, description, TTLocalizer.CalendarEndsAt, endDate.strftime('%b %d'))
+
                         self.addTitleAndDescToScrollList(title, description)
                     elif self.isDateMatch(self.myDate, endDate):
                         title = '%s %s' % (TTLocalizer.CalendarEndOf, title)
                         description = '%s. %s %s' % (title, TTLocalizer.CalendarStartedOn, startDate.strftime('%b %d'))
+
                         self.addTitleAndDescToScrollList(title, description)
 
     def isDateMatch(self, date1, date2):
@@ -228,7 +196,6 @@ class CalendarGuiDay(DirectFrame):
         newItem.bind(DGG.ENTER, self.enteredTextItem, extraArgs=[newItem, desc, descUnderItemZAdjust])
         newItem.bind(DGG.EXIT, self.exitedTextItem, extraArgs=[newItem])
         self.scrollList.addItem(newItem)
-        return
 
     def exitedTextItem(self, newItem, mousepos):
         newItem.description.hide()
@@ -272,7 +239,6 @@ class CalendarGuiDay(DirectFrame):
         newItem.description.hide()
         newItem.bind(DGG.ENTER, self.enteredTextItem, extraArgs=[newItem, newItem.description, descUnderItemZAdjust])
         newItem.bind(DGG.EXIT, self.exitedTextItem, extraArgs=[newItem])
-        return
 
     def __clickedOnScrollItem(self):
         self.__clickedOnDay()
@@ -287,7 +253,6 @@ class CalendarGuiDay(DirectFrame):
             return
         if self.dayClickCallback:
             self.dayClickCallback(self)
-        self.notify.debug('we got clicked on %s' % self.myDate.date())
         messenger.send('clickedOnDay', [self.myDate.date()])
 
     def updateSelected(self, selected):
@@ -322,7 +287,6 @@ class CalendarGuiDay(DirectFrame):
             self.scrollList.removeAndDestroyAllItems()
             self.update()
 
-
 class MiniInviteVisual(DirectFrame):
 
     def __init__(self, parent, partyInfo):
@@ -342,7 +306,6 @@ class MiniInviteVisual(DirectFrame):
         self.whosePartyLabel = DirectLabel(parent=self, relief=None, pos=(0.07, 0.0, -0.04), text=' ', text_scale=0.04, text_wordwrap=8, textMayChange=True)
         self.whenTextLabel = DirectLabel(parent=self, relief=None, text=' ', pos=(0.07, 0.0, -0.13), text_scale=0.04, textMayChange=True)
         self.partyStatusLabel = DirectLabel(parent=self, relief=None, text=' ', pos=(0.07, 0.0, -0.175), text_scale=0.04, textMayChange=True)
-        return
 
     def show(self):
         self.reparentTo(self.parent)

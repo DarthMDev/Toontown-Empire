@@ -1,4 +1,3 @@
-
 from panda3d.core import *
 from toontown.toonbase.ToonBaseGlobal import *
 from toontown.toonbase.ToontownGlobals import *
@@ -13,7 +12,6 @@ import random
 from direct.showbase import PythonUtil
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs, TLNull
 from toontown.hood import Place
-from toontown.hood import SkyUtil
 from toontown.parties import PartyPlanner
 from toontown.parties.DistributedParty import DistributedParty
 
@@ -66,7 +64,6 @@ class Party(Place.Place):
         self.accept('partyStateChanged', self.setPartyState)
         return
 
-
     def delete(self):
         self.unload()
 
@@ -84,7 +81,6 @@ class Party(Place.Place):
             self.ignore(self.partyPlannerDoneEvent)
             self.partyPlanner.close()
             del self.partyPlanner
-        self.__removePartyHat()
         self.fog = None
         self.ignoreAll()
         self.parentFSMState.removeChild(self.fsm)
@@ -131,9 +127,6 @@ class Party(Place.Place):
 
     def __setZoneId(self, zoneId):
         self.zoneId = zoneId
-
-
-
 
     def enterInit(self):
         pass
@@ -201,20 +194,7 @@ class Party(Place.Place):
     def __setPartyHat(self, doId = None):
         if hasattr(base, 'distributedParty'):
             if base.distributedParty.partyInfo.hostId in base.cr.doId2do:
-                if hasattr(host, 'gmIcon') and host.gmIcon:
-                    host.removeGMIcon()
-                    host.setGMPartyIcon()
-                else:
-                    np = NodePath(host.nametag.getIcon())
-                    base.distributedParty.partyHat.reparentTo(np)
-
-    def __removePartyHat(self):
-        if hasattr(base, 'distributedParty'):
-            if base.distributedParty.partyInfo.hostId in base.cr.doId2do:
-                host = base.cr.doId2do[base.distributedParty.partyInfo.hostId]
-                if hasattr(host, 'gmIcon') and host.gmIcon:
-                    host.removeGMIcon()
-                    host.setGMIcon()
+                base.cr.doId2do[base.distributedParty.partyInfo.hostId].setPartyHat()
 
     def enterTeleportOut(self, requestStatus):
         Place.Place.enterTeleportOut(self, requestStatus, self.__teleportOutDone)

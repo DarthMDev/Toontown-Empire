@@ -43,7 +43,6 @@ from toontown.hood import SellbotHQAI
 from toontown.hood import TTHoodAI
 from toontown.hood import ZoneUtil
 from toontown.racing.LeaderboardMgrAI import LeaderboardMgrAI
-from toontown.parties.ToontownTimeManagerAI import ToontownTimeManagerAI
 from toontown.pets.PetManagerAI import PetManagerAI
 from toontown.safezone.SafeZoneManagerAI import SafeZoneManagerAI
 from toontown.suit.SuitInvasionManagerAI import SuitInvasionManagerAI
@@ -96,7 +95,6 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.cogSuitMessageSent = False
 
     def createManagers(self):
-        self.toontownTimeManager = ToontownTimeManagerAI()    
         self.timeManager = TimeManagerAI(self)
         self.timeManager.generateWithRequired(2)
         self.magicWordManager = MagicWordManagerAI(self)

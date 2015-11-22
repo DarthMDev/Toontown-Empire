@@ -35,7 +35,7 @@ class DistributedPartyJukeboxActivityBaseAI(DistributedPartyActivityAI):
         else:
             self.queue.append(song)
             self.owners.append(avId)
-        for toon in self.toonsPlaying.keys():
+        for toon in self.toonsPlaying:
             self.sendUpdateToAvatarId(toon, 'setSongInQueue', [song])
         if not self.playing:
             #stop default party music...
@@ -74,16 +74,7 @@ class DistributedPartyJukeboxActivityBaseAI(DistributedPartyActivityAI):
             return
         self.currentToon = avId
         taskMgr.doMethodLater(PartyGlobals.JUKEBOX_TIMEOUT, self.__removeToon, 'removeToon%d', extraArgs=[])
-        self.toonsPlaying[avId] = True
-        self.updateToonsPlaying()
-        self.acceptOnce(self.air.getAvatarExitEvent(avId), self.handleUnexpectedExit, extraArgs=[avId])
-
-    def handleUnexpectedExit(self, avId):
-        if avId != self.currentToon:
-            return
-        taskMgr.remove('removeToon%d' % self.doId)
-        self.currentToon = 0
-        del self.toonsPlaying[avId]
+        self.toonsPlaying.append(avId)
         self.updateToonsPlaying()
 
     def toonExitRequest(self):
@@ -95,13 +86,13 @@ class DistributedPartyJukeboxActivityBaseAI(DistributedPartyActivityAI):
             return
         taskMgr.remove('removeToon%d' % self.doId)
         self.currentToon = 0
-        del self.toonsPlaying[avId]
+        self.toonsPlaying.remove(avId)
         self.updateToonsPlaying()
 
     def __removeToon(self):
         if not self.currentToon:
             return
-        del self.toonsPlaying[self.currentToon]
+        self.toonsPlaying.remove(self.currentToon)
         self.updateToonsPlaying()
         self.currentToon = 0
 
@@ -135,5 +126,5 @@ class DistributedPartyJukeboxActivityBaseAI(DistributedPartyActivityAI):
         self.owners.insert(0, host)
         self.queue.insert(0, song)
 
-        for toon in self.toonsPlaying.keys():
+        for toon in self.toonsPlaying:
             self.sendUpdateToAvatarId(toon, 'moveHostSongToTop', [])

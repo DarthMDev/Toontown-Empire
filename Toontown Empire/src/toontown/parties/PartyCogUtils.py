@@ -120,7 +120,7 @@ class StrafingControl:
 
     def enable(self):
         self.player._aimMode = False
-        base.camera.wrtReparentTo(self.player.locator)
+        camera.wrtReparentTo(self.player.locator)
         self.player.cameraManager.setEnabled(True)
         activityView = self.player.activity.view
         pos = activityView.teamCamPosLocators[self.player.team].getPos(render)
