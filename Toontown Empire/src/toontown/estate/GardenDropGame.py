@@ -141,7 +141,7 @@ class GardenDropGame:
         else:
             return 0
 
-        returnTrue
+        return True
 
     def getValidGrid(self, x, z):
         if x < 0 or x >= GardenGameGlobals.gridDimX:

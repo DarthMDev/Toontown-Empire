@@ -3084,8 +3084,10 @@ class Toon(Avatar.Avatar, ToonHead):
     def setGMIcon(self, access):
         if self.gmIcon:
             return
-
-        icons = loader.loadModel('phase_3/models/props/staff_icons')
+		if wantChristmas = True:
+			icons = loader.loadModel('phase_3/models/props/staff_icons_christmas
+		else:	
+        	icons = loader.loadModel('phase_3/models/props/staff_icons')
         self.gmIcon = icons.find('**/access_level_%s' % access)
         np = NodePath(self.nametag.getNameIcon())
 
