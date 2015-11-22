@@ -25,7 +25,7 @@ def rejectConfig(issue, securityIssue=True, retarded=True):
     if securityIssue:
         print 'Security Issue loading...'
     if retarded:
-    print 'Go fix that!'
+        print 'Go fix that!'
     exit()
 
 def entropy(string):
