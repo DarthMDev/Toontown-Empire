@@ -11,6 +11,7 @@ from toontown.battle import BattleExperienceAI
 from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
+from toontown.quest import Quests
 from otp.ai.MagicWordGlobal import *
 
 
@@ -19,6 +20,7 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
     limitHitCount = 6
     hitCountDamage = 35
     numPies = ToontownGlobals.FullPies
+    BossName = "VP"
 
     def __init__(self, air):
         DistributedBossCogAI.DistributedBossCogAI.__init__(self, air, 's')
@@ -28,7 +30,6 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         self.bossMaxDamage = ToontownGlobals.SellbotBossMaxDamage
         self.recoverRate = 0
         self.recoverStartTime = 0
-        self.punishedToons = []
 
     def delete(self):
         return DistributedBossCogAI.DistributedBossCogAI.delete(self)
@@ -195,13 +196,6 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
             return self.invokeSuitPlanner(10, 1)
 
     def removeToon(self, avId):
-        av = self.air.doId2do.get(avId)
-        if not av is None:
-            if av.getHp() <= 0:
-                if avId not in self.punishedToons:
-                    self.air.cogSuitMgr.removeParts(av, self.deptIndex)
-                    self.punishedToons.append(avId)
-
         toon = simbase.air.doId2do.get(avId)
         if toon:
             toon.b_setNumPies(0)
@@ -333,11 +327,11 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
          'track': self.dna.dept,
          'isSkelecog': 0,
          'isForeman': 0,
-         'isVP': 1,
-         'isCFO': 0,
+         'isBoss': 1,
          'isSupervisor': 0,
          'isVirtual': 0,
          'activeToons': self.involvedToons[:]})
+        self.addStats()
         self.barrier = self.beginBarrier('Victory', self.involvedToons, 10, self.__doneVictory)
         return
 
@@ -348,7 +342,7 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         for toonId in self.involvedToons:
             toon = self.air.doId2do.get(toonId)
             if toon:
-                if not toon.attemptAddNPCFriend(self.cagedToonNpcId):
+                if not toon.attemptAddNPCFriend(self.cagedToonNpcId, Quests.InVP):
                     self.notify.info('%s.unable to add NPCFriend %s to %s.' % (self.doId, self.cagedToonNpcId, toonId))
                 toon.b_promote(self.deptIndex)
 
@@ -401,18 +395,32 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
     def enterReward(self):
         DistributedBossCogAI.DistributedBossCogAI.enterReward(self)
 
+def getVP(invoker):
+    for do in simbase.air.doId2do.values():
+        if isinstance(do, DistributedSellbotBossAI):
+            if invoker.doId in do.involvedToons:
+                return do
+
+@magicWord(category=CATEGORY_ADMINISTRATOR)
+def secondVP():
+    """
+    Skips to the second round of the VP.
+    """
+    invoker = spellbook.getInvoker()
+    boss = getVP(invoker)
+    if not boss:
+        return "You aren't in a VP!"
+    boss.exitIntroduction()
+    boss.b_setState('RollToBattleTwo')
+    return 'Skipping to the second round...'
+                
 @magicWord(category=CATEGORY_ADMINISTRATOR)
 def skipVP():
     """
     Skips to the final round of the VP.
     """
     invoker = spellbook.getInvoker()
-    boss = None
-    for do in simbase.air.doId2do.values():
-        if isinstance(do, DistributedSellbotBossAI):
-            if invoker.doId in do.involvedToons:
-                boss = do
-                break
+    boss = getVP(invoker)
     if not boss:
         return "You aren't in a VP!"
     if boss.state in ('PrepareBattleThree', 'BattleThree'):
@@ -427,12 +435,7 @@ def killVP():
     Kills the VP.
     """
     invoker = spellbook.getInvoker()
-    boss = None
-    for do in simbase.air.doId2do.values():
-        if isinstance(do, DistributedSellbotBossAI):
-            if invoker.doId in do.involvedToons:
-                boss = do
-                break
+    boss = getVP(invoker)
     if not boss:
         return "You aren't in a VP!"
     boss.b_setState('Victory')

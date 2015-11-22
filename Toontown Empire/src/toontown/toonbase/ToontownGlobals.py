@@ -1726,5 +1726,9 @@ CRATE_CLOTHING = 6
 CRATE_ACCESSORIES = 7
 TOONUP_PULSE_ZONES = [ToontownCentral, DonaldsDock, DaisyGardens, MinniesMelodyland, TheBrrrgh, DonaldsDreamland]
 TOONUP_FREQUENCY = 30
-
-
+CHAIR_START = 0
+CHAIR_STOP = 1
+CHAIR_NONE = 0
+CHAIR_EXIT = 1
+CHAIR_UNEXPECTED_EXIT = 2
+P_TooFast = -28
