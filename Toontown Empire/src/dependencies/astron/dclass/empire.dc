@@ -786,7 +786,6 @@ dclass DistributedTrolley : DistributedObject {
   requestExit() airecv clsend;
   setMinigameZone(uint32, uint16);
 };
-
 dclass DistributedSuitPlanner : DistributedObject {
   setZoneId(uint32) required broadcast ram;
   suitListQuery() airecv clsend;
@@ -841,6 +840,7 @@ dclass DistributedBossCog : DistributedNode {
   setToonIds(uint32[], uint32[], uint32[]) broadcast ram;
   setBattleIds(uint8, uint32, uint32) broadcast ram;
   setArenaSide(uint8) broadcast ram;
+  setKeyReward(bool) required broadcast ram;
   avatarEnter() airecv clsend;
   avatarExit() airecv clsend;
   avatarNearEnter() airecv clsend;
@@ -850,7 +850,6 @@ dclass DistributedBossCog : DistributedNode {
   zapToon(int16/10, int16/10, int16/10, int16/10, int16/10, int16/10, int8/100, int8/100, uint8, int16) airecv clsend;
   showZapToon(uint32, int16/10, int16/10, int16/10, int16/10, int16/10, int16/10, uint8, int16) broadcast;
   setAttackCode(uint8, uint32) broadcast;
-  setAttackSpeed(uint16/100) broadcast ram;
 };
 
 dclass DistributedSellbotBoss : DistributedBossCog {
@@ -991,6 +990,7 @@ dclass DistributedBattleTutorial : DistributedBattle {
 };
 
 dclass DistributedLevelBattle : DistributedBattle {
+  announceCrateReward() broadcast;
 };
 
 dclass DistributedBattleFactory : DistributedLevelBattle {
