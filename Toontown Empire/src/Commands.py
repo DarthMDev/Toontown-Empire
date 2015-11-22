@@ -5,7 +5,7 @@ GENERAL COMMANDS:
 ~skipTut = Skips Tutorial
 ~hp -1 = Loses All Your Laff
 ~sos 99 trap cat = 99 Trap Cat SOS
-~togGM = Shows/Hides Your Badge
+~setGM = Shows/Hides Your Badge
 ~fishingRod 0 = Twig Rod
 ~fishingRod 1 = Bamboo Rod
 ~fishingRod 2 = Hardwood Rod
@@ -15,7 +15,6 @@ GENERAL COMMANDS:
 ~quests clear = Clear Toontasks
 ~run = Run Faster
 ~sos 99 (SOS NPC) = 99 SOS Of Your Selected NPC
-~setHP (number) = Selected Laff Number
 ~fires (number up to 255) = Amount Of Pink Slips You Want
 ~unites (number up to 32767) = Amount of Unites You want
 ~givePies 0 -1 = Unlimited Cupcakes
@@ -34,7 +33,9 @@ GENERAL COMMANDS:
 ~collisionsOff = Turns Collisions Off
 ~kick = Kicks Selected Toon
 ~ban = Bans Selected Toon
-~emblems # # = Reward from lawbot field offices
+~emblems = Reward from lawbot field offices
+~badName = Turns slected turn to the default name of the toon color
+~name = Changes selected toon name
 (More Added Soon)
  
 BACKPACKS:
