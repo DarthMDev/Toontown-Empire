@@ -35,33 +35,39 @@ class DistributedPartyTeamActivityAI(DistributedPartyActivityAI):
         self.setState('WaitForEnough')
 
     def toonJoinRequest(self, team):
-        avId = self.air.getAvatarIdFromSender()
-        if avId not in self.air.doId2do:
-            self.notify.warning('Unknown avatar %s tried to join!' % avId)
+        av = self._getCaller()
+        if not av:
+            return
+            
+        if not self.fsm.state in ('WaitForEnough', 'WaitToStart'):
+            self.sendUpdateToAvatarId(av.doId, 'joinTeamRequestDenied', [PartyGlobals.DenialReasons.Default])
+            return
+            
+        if len(self.toonIds[team]) >= self.getPlayersPerTeam()[1]:
+            self.sendUpdateToAvatarId(av.doId, 'joinTeamRequestDenied', [PartyGlobals.DenialReasons.Full])
+            return
+            
+        if av.doId in self.toonsPlaying:
+            self.air.writeServerEvent('suspicious', av.doId, 'tried to join party team activity again!')
+            self.sendUpdateToAvatarId(av.doId, 'joinTeamRequestDenied', [PartyGlobals.DenialReasons.Default])
             return
 
-        if not self.isValidTeam(team):
-            self.notify.warning('Avatar %s tried to join an invalid team!' % avId)
+        # idgaf if they exit unexpectedly in this case
+        self.toonIds[team].append(av.doId)
+        DistributedPartyActivityAI.toonJoinRequest(self)
+        self.__update()
 
-        if avId in self.toonsPlaying:
-            self.notify.warning('Avatar %s tried to join twice!' % avId)
-            return
-
-        if self.isTeamFull(self.teamDict[team]):
-            self.joinRequestDenied(avId, PartyGlobals.DenialReasons.Full)
-            return
-
-        self.teamDict[team].append(avId)
-        self.toonsPlaying[avId] = False
-
+    def __update(self):
         self.updateToonsPlaying()
-
-        self.acceptOnce(self.air.getAvatarExitEvent(avId), self.handleUnexpectedExit, extraArgs=[avId, team])
-
-        if self.areEnoughPlayers():
-            self.setState('WaitToStart')
-            self.startCountdown()
-
+        
+        if self.fsm.state == 'WaitForEnough':
+            if self.__areTeamsCorrect():
+                self.b_setState('WaitToStart')
+        
+        elif self.fsm.state == 'WaitToStart':
+            if not self.__areTeamsCorrect():
+                self.b_setState('WaitForEnough')
+        
     def handleUnexpectedExit(self, avId, team):
         DistributedPartyActivityAI.handleUnexpectedExit(self, avId)
         if avId in self.teamDict[team]:
