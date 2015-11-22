@@ -552,7 +552,6 @@ struct datetime {
   uint8 minutes;
   uint8 seconds;
 };
-
 dclass ToontownDistrict : DistributedDistrict {
   setParentingRules(string, string) broadcast ram;
 };
@@ -1302,7 +1301,6 @@ dclass DistributedHouseInterior : DistributedObject {
 dclass DistributedGarden : DistributedObject {
   sendNewProp(uint8 prop, int16/10 x, int16/10 y, int16/10 z) broadcast;
 };
-
 dclass DistributedParty : DistributedObject {
   setPartyClockInfo(uint8, uint8, uint8) required broadcast;
   setInviteeIds(uint32[]) required broadcast;
@@ -1328,7 +1326,7 @@ dclass DistributedPartyActivity : DistributedObject {
   exitRequestDenied(uint8);
   setToonsPlaying(uint32 []) broadcast ram;
   setState(string, int16) broadcast ram;
-  showJellybeanReward(uint8, uint32, string);
+  showJellybeanReward(uint32, uint32, string);
 };
 
 dclass DistributedPartyTeamActivity : DistributedPartyActivity {
@@ -1338,7 +1336,7 @@ dclass DistributedPartyTeamActivity : DistributedPartyActivity {
   setPlayersPerTeam(uint8, uint8) broadcast required;
   setDuration(uint8) broadcast required;
   setCanSwitchTeams(bool) broadcast required;
-  setState(string, int16, uint32 []) broadcast ram;
+  setState(string, int16, uint32) broadcast ram;
   setToonsPlaying(uint32 [0-8], uint32 [0-8]) required broadcast ram;
   setAdvantage(uint16/100);
   switchTeamRequestDenied(uint8);
@@ -1368,7 +1366,6 @@ dclass DistributedPartyCogActivity : DistributedPartyTeamActivity {
   pieHitsCog(uint32, int32, int8(0-2), int32/100, int32/100, int32/100, int32, bool) clsend broadcast airecv;
   setCogDistances(int8/100 [3]) broadcast ram;
   setHighScore(string, uint16) broadcast ram;
-  awardBeans() clsend airecv;
 };
 
 dclass DistributedPartyWinterCogActivity : DistributedPartyCogActivity {
@@ -3103,11 +3100,13 @@ dclass DistributedPartyManager : DistributedObject {
   respondToInviteResponse(uint32, uint16, uint64, int8, uint8) airecv;
 
   changePrivateRequest(uint64, int8) airecv clsend;
+  changePrivateRequestAiToUd(uint32, uint64, int8);
   changePrivateResponseUdToAi(uint32, uint64, int8, int8) airecv;
   changePrivateResponse(uint64, int8, int8);
 
   changePartyStatusRequest(uint64, int8) airecv clsend;
-  changePartyStatusResponseUdToAi(uint32, uint64, int8, int8, int16) airecv;
+  changePartyStatusRequestAiToUd(uint32, uint64, int8);
+  changePartyStatusResponseUdToAi(uint32, uint64, int8, int8) airecv;
   changePartyStatusResponse(uint64, int8, int8, uint16);
 
   partyInfoOfHostRequestAiToUd(uint32, uint32);
@@ -3154,8 +3153,6 @@ dclass DistributedPartyManager : DistributedObject {
 
 dclass GlobalPartyManager : DistributedObjectGlobal {
   partyManagerAIHello(uint32 channel);
-  heartbeat(uint32 channel);
-  heartbeatResponse() airecv;
   queryParty(uint32 hostId);
   addParty(DoId avId, uint64 partyId, string start, string end, int8 isPrivate,
            int8 inviteTheme, activity [], decoration [], DoIdList inviteeIds);
@@ -3165,13 +3162,6 @@ dclass GlobalPartyManager : DistributedObjectGlobal {
   requestPartySlot(uint64 partyId, uint32 avId, uint32 gateId);
   partyDone(uint64 partyId);
   allocIds(uint16 count);
-
-  changePrivateRequest(uint32 hostId, uint64 partyId, int8 isPrivate);
-  changePartyStatusRequest(uint32 hostId, uint64 partyId, int8 partyStatus);
-
-  markInviteAsReadButNotReplied(uint32 avId, uint64 inviteKey);
-  respondToInvite(uint32 fromId, uint32 todo0, uint16 context, uint64 inviteKey, uint8 inviteStatus);
-
 };
 
 struct PotentialToon {
