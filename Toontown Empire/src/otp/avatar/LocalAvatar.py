@@ -33,13 +33,6 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
     __enableMarkerPlacement = base.config.GetBool('place-markers', 0)
 
     def __init__(self, cr, chatMgr, talkAssistant = None, passMessagesThrough = False):
-        try:
-            self.LocalAvatar_initialized
-            return
-        except:
-            pass
-
-        self.LocalAvatar_initialized = 1
         DistributedAvatar.DistributedAvatar.__init__(self, cr)
         DistributedSmoothNode.DistributedSmoothNode.__init__(self, cr)
         self.cTrav = CollisionTraverser('base.cTrav')
@@ -120,12 +113,6 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         messenger.send('openFriendsList')
 
     def delete(self):
-        try:
-            self.LocalAvatar_deleted
-            return
-        except:
-            self.LocalAvatar_deleted = 1
-
         self.ignoreAll()
         self.stopJumpLandTask()
         taskMgr.remove('shadowReach')

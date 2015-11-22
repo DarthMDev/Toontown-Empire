@@ -18,12 +18,6 @@ class DistributedAvatar(DistributedActor, Avatar):
     ManagesNametagAmbientLightChanged = True
 
     def __init__(self, cr):
-        try:
-            self.DistributedAvatar_initialized
-            return
-        except:
-            self.DistributedAvatar_initialized = 1
-
         Avatar.__init__(self)
         DistributedActor.__init__(self, cr)
         self.hpText = None
@@ -66,12 +60,6 @@ class DistributedAvatar(DistributedActor, Avatar):
         self.accept('nameTagShowName', self.__nameTagShowName)
 
     def announceGenerate(self):
-        try:
-            self.DistributedAvatar_announced
-            return
-        except:
-            self.DistributedAvatar_announced = 1
-
         if not self.isLocal():
             self.initializeBodyCollisions('distAvatarCollNode-' + str(self.doId))
         DistributedActor.announceGenerate(self)

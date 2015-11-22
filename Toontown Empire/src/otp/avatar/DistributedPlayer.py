@@ -84,7 +84,6 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         return None
 
     def isGeneratedOnDistrict(self, districtId = None):
-        return True # fix for the task button
         if districtId is None:
             return self._districtWeAreGeneratedOn is not None
         else:

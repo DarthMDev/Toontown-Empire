@@ -13,5 +13,5 @@ class PlayerBase:
         self.gmState = state
 
     def isGM(self):
-        return self.gmState
         return []
+        return self.gmState

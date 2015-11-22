@@ -118,3 +118,4 @@ want-pstats 0
 smooth-lag 0.4
 want-old-fireworks #t
 want-mongo-client #t
+want-christmasicons #t

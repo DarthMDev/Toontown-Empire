@@ -306,12 +306,6 @@ class Suit(Avatar.Avatar):
      'm': Vec4(0.749, 0.769, 0.749, 1.0)}
 
     def __init__(self):
-        try:
-            self.Suit_initialized
-            return
-        except:
-            self.Suit_initialized = 1
-
         Avatar.Avatar.__init__(self)
         self.setFont(ToontownGlobals.getSuitFont())
         self.nametag.setSpeechFont(ToontownGlobals.getSuitFont())

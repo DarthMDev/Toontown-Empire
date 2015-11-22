@@ -242,7 +242,6 @@ class EstateLoader(SafeZoneLoader.SafeZoneLoader):
             self.notify.debug("can't find house: %d" % houseId)
 
     def startCloudPlatforms(self):
-        return
         if len(self.clouds):
             self.cloudTrack = self.__cloudTrack()
             self.cloudTrack.loop()

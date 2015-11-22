@@ -69,12 +69,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     chatGarbler = ToonChatGarbler.ToonChatGarbler()
 
     def __init__(self, cr, bFake = False):
-        try:
-            self.DistributedToon_initialized
-            return
-        except:
-            self.DistributedToon_initialized = 1
-
         DistributedPlayer.DistributedPlayer.__init__(self, cr)
         Toon.Toon.__init__(self)
         DistributedSmoothNode.DistributedSmoothNode.__init__(self, cr)
@@ -2259,7 +2253,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def announcePartyStarted(self, partyId):
         DistributedToon.partyNotify.debug('announcePartyStarted')
-        return
         for partyReplyInfo in self.partyReplyInfoBases:
             if partyReplyInfo.partyId == partyId:
                 for singleReply in partyReplyInfo.replies:

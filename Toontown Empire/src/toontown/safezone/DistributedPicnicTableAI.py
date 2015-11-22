@@ -109,7 +109,6 @@ class DistributedPicnicTableAI(DistributedNodeAI):
             if xx != None:
                 isEmpty = False
                 break
-                continue
 
         if isEmpty == True or self.hasPicked == False:
             self.sendUpdateToAvatarId(avId, 'allowPick', [])

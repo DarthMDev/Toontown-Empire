@@ -148,7 +148,6 @@ class DistributedFindFourAI(DistributedNodeAI):
 
         if self.playersSitting > 2 and self.fsm.getCurrentState().getName() == 'waitingToBegin':
             pass
-        1
         self.timerEnd = 0
         if self.timerEnd != 0:
             self.sendUpdate('setTimer', [
