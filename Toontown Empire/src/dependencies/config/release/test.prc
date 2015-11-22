@@ -23,3 +23,4 @@ cogdo-ratio 0.4
 
 # Staff events:
 cfo-staff-event #f
+accountdb-type local
