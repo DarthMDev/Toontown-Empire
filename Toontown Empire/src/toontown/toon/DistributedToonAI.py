@@ -4202,33 +4202,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     
     def hasEPP(self, dept):
         return dept in self.epp
-    
-    def b_setStats(self, stats):
-        self.d_setStats(stats)
-        self.setStats(stats)
-
-    def d_setStats(self, stats):
-        self.sendUpdate('setStats', [stats])
-
-    def setStats(self, stats):
-        self.stats = stats
-    
-    def getStats(self):
-        return self.stats
-    
-    def getStat(self, index):
-        return self.stats[index]
-    
-    def addStat(self, index, amount=1):
-        if amount <= 0:
-            return
-
-        self.stats[index] += amount
-        self.d_setStats(self.stats)
-    
-    def wipeStats(self):
-        self.stats = [0] * 22
-        self.d_setStats(self.stats)
 
 @magicWord(category=CATEGORY_PROGRAMMER, types=[str, int, int])
 def cheesyEffect(value, hood=0, expire=0):

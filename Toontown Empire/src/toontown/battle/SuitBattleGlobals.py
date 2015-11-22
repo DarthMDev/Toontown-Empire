@@ -796,7 +796,23 @@ SuitAttributes = {'f': {'name': TTLocalizer.SuitFlunky,
                  45,
                  50,
                  55),
-         'attacks': (('FloodTheMarket',
+         'attacks': (('CigarSmoke',
+                      (10,
+                       12,
+                       15,
+                       18,
+                       20),
+                      (55,
+                       65,
+                       75,
+                       85,
+                       95),
+                      (20,
+                       20,
+                       20,
+                       20,
+                       20)),
+                     ('FloodTheMarket',
                       (14,
                        16,
                        18,
@@ -1492,6 +1508,22 @@ SuitAttributes = {'f': {'name': TTLocalizer.SuitFlunky,
                      20,
                      20,
                      20)),
+                   ('CigarSmoke',
+                    (10,
+                     12,
+                     15,
+                     18,
+                     20),
+                    (55,
+                     65,
+                     75,
+                     85,
+                     95),
+                    (15,
+                     15,
+                     15,
+                     15,
+                     15)),
                    ('TeeOff',
                     (8,
                      9,
@@ -2199,7 +2231,22 @@ SuitAttributes = {'f': {'name': TTLocalizer.SuitFlunky,
                       33,
                       33,
                       33)),
-                     ('TeeOff',
+                    ('CigarSmoke',
+                     (10,
+                      12,
+                      15,
+                      18,
+                      20),
+                     (55,
+                      65,
+                      75,
+                      85,
+                      95),
+                     (33,
+                      33,
+                      33,
+                      33,
+                      33)), ('TeeOff',
                      (10,
                       12,
                       14,
@@ -2653,8 +2700,22 @@ SuitAttributes = {'f': {'name': TTLocalizer.SuitFlunky,
                       25,
                       25,
                       25,
-                      25)), 
-                     ('FingerWag',
+                      25)), ('CigarSmoke',
+                     (10,
+                      12,
+                      15,
+                      18,
+                      20),
+                     (55,
+                      65,
+                      75,
+                      85,
+                      95),
+                     (15,
+                      15,
+                      15,
+                      15,
+                      15)), ('FingerWag',
                      (5,
                       6,
                       7,
@@ -2943,6 +3004,7 @@ SuitAttacks = {'Audit': ('phone', ATK_TGT_SINGLE),
  'Calculate': ('phone', ATK_TGT_SINGLE),
  'Canned': ('throw-paper', ATK_TGT_SINGLE),
  'Chomp': ('throw-paper', ATK_TGT_SINGLE),
+ 'CigarSmoke': ('cigar-smoke', ATK_TGT_SINGLE),
  'ClipOnTie': ('throw-paper', ATK_TGT_SINGLE),
  'Crunch': ('throw-object', ATK_TGT_SINGLE),
  'Demotion': ('magic1', ATK_TGT_SINGLE),
@@ -3009,6 +3071,7 @@ BUZZ_WORD = SuitAttacks.keys().index('BuzzWord')
 CALCULATE = SuitAttacks.keys().index('Calculate')
 CANNED = SuitAttacks.keys().index('Canned')
 CHOMP = SuitAttacks.keys().index('Chomp')
+CIGAR_SMOKE = SuitAttacks.keys().index('CigarSmoke')
 CLIPON_TIE = SuitAttacks.keys().index('ClipOnTie')
 CRUNCH = SuitAttacks.keys().index('Crunch')
 DEMOTION = SuitAttacks.keys().index('Demotion')
@@ -3107,18 +3170,3 @@ def getAttackTaunt(attackName, index = None):
 
 
 SuitAttackTaunts = TTLocalizer.SuitAttackTaunts
-DisabledAttacks = ('Gavel', 'SongAndDance', 'SandTrap', 'FloodTheMarket', 'FiveOClockShadow')
-
-def getAttacksByType(attributes):
-    groupAttacks = []
-    singleAttacks = []
-
-    for attack in sorted(attributes['attacks'], key=lambda x: x[0]):
-        if attack[0] in DisabledAttacks:
-            continue
-        if SuitAttacks[attack[0]][1] == ATK_TGT_GROUP:
-            groupAttacks.append(attack)
-        else:
-            singleAttacks.append(attack)
-    
-    return groupAttacks, singleAttacks

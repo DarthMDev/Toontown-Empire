@@ -1,4 +1,4 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 from toontown.toonbase.ToonBaseGlobal import *
 from direct.interval.IntervalGlobal import *
 from BattleBase import *
@@ -20,7 +20,6 @@ from toontown.hood import ZoneUtil
 from toontown.distributed import DelayDelete
 from toontown.toon import TTEmote
 from otp.avatar import Emote
-from otp.nametag.NametagConstants import *
 from otp.nametag import NametagGlobals
 
 
@@ -145,7 +144,7 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
         self.fsm.requestFinalState()
         if self.hasLocalToon():
             self.removeLocalToon()
-            base.camLens.setMinFov(settings['fov']/(4./3.))
+            base.camLens.setMinFov(ToontownGlobals.DefaultCameraFov/(4./3.))
         self.localToonFsm.request('WaitForServer')
         self.ignoreAll()
         for suit in self.suits:
@@ -319,25 +318,11 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
     def setBattleCellId(self, battleCellId):
         pass
 
-    def getInteractiveProp(self):
-        if config.GetBool('want-anim-props', True):
-            if self.interactiveProp:
-                return self.interactiveProp
-            elif base.cr.playGame.hood and hasattr(base.cr.playGame.hood, 'loader'):
-                loader = base.cr.playGame.hood.loader
-
-                if hasattr(loader, 'getInteractiveProp'):
-                    self.interactiveProp = base.cr.playGame.hood.loader.getInteractiveProp(self.zoneId)
-
-                    return self.interactiveProp
-            return None
-        else:
-            return None
+    def setInteractivePropTrackBonus(self, trackBonus):
+        self.interactivePropTrackBonus = trackBonus
 
     def getInteractivePropTrackBonus(self):
-        prop = self.getInteractiveProp()
-
-        return prop.BattleTrack if prop else -1
+        return self.interactivePropTrackBonus
 
     def setPosition(self, x, y, z):
         self.notify.debug('setPosition() - %d %d %d' % (x, y, z))
@@ -378,17 +363,12 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
         oldsuits = self.suits
         self.suits = []
         suitGone = 0
-        prop = self.getInteractiveProp()
-
         for s in suits:
             if s in self.cr.doId2do:
                 suit = self.cr.doId2do[s]
                 suit.setState('Battle')
                 self.suits.append(suit)
-
-                if prop:
-                    suit.interactivePropTrackBonus = prop.BattleTrack
-
+                suit.interactivePropTrackBonus = self.interactivePropTrackBonus
                 try:
                     suit.battleTrap
                 except:
@@ -600,7 +580,7 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
             if track == SOS:
                 targetIndex = -1
             elif track == NPCSOS:
-                targetIndex = targets[i]
+                targetIndex = -1
             elif track == PETSOS:
                 targetIndex = -1
             elif track == PASS:
@@ -1040,7 +1020,7 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
         self.notify.debug('enterLocalToonWaitForInput()')
         camera.setPosHpr(self.camPos, self.camHpr)
         base.camLens.setMinFov(self.camMenuFov/(4./3.))
-        NametagGlobals.setMasterArrowsOn(0)
+        NametagGlobals.setWant2dNametags(False)
         self.townBattle.setState('Attack')
         self.accept(self.localToonBattleEvent, self.__handleLocalToonBattleEvent)
 
@@ -1068,10 +1048,9 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
         return Task.done
 
     def enterWaitForInput(self, ts = 0):
-        prop = self.getInteractiveProp()
-
-        if prop:
-            prop.gotoBattleCheer()
+        self.notify.debug('enterWaitForInput()')
+        if self.interactiveProp:
+            self.interactiveProp.gotoBattleCheer()
         self.choseAttackAlready = 0
         if self.localToonActive():
             self.__enterLocalToonWaitForInput()
@@ -1206,7 +1185,8 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
         self.notify.debug('enterPlayMovie()')
         self.delayDeleteMembers()
         if self.hasLocalToon():
-            NametagGlobals.setMasterArrowsOn(0)
+            NametagGlobals.setWant2dNametags(False)
+            pass
         if ToontownBattleGlobals.SkipMovie:
             self.movie.play(ts, self.__handleMovieDone)
             self.movie.finish()
@@ -1262,10 +1242,7 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
         if base.cr.playGame.getPlace() != None:
             base.cr.playGame.getPlace().setState('battle', self.localToonBattleEvent)
             if localAvatar and hasattr(localAvatar, 'inventory') and localAvatar.inventory:
-                prop = self.getInteractiveProp()
-
-                if prop:
-                    localAvatar.inventory.setInteractivePropTrackBonus(prop.BattleTrack)
+                localAvatar.inventory.setInteractivePropTrackBonus(self.interactivePropTrackBonus)
         camera.wrtReparentTo(self)
         base.camLens.setMinFov(self.camFov/(4./3.))
         return
@@ -1286,7 +1263,7 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
         else:
             camera.wrtReparentTo(base.localAvatar)
             messenger.send('localToonLeftBattle')
-        base.camLens.setMinFov(settings['fov']/(4./3.))
+        base.camLens.setMinFov(ToontownGlobals.DefaultCameraFov/(4./3.))
         return
 
     def enterNoLocalToon(self):

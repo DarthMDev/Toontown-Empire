@@ -184,9 +184,6 @@ dclass CentralLogger : DistributedObject {
   logAIGarbage() airecv;
 };
 
-from toontown.estate import DistributedRewardCrate/AI
-from toontown.estate import DistributedChair/AI
-from toontown.estate import DistributedTV/AI
 from toontown.building import DistributedAnimatedProp/AI
 from toontown.building import DistributedTrophyMgr/AI
 from toontown.building import DistributedBuilding/AI
@@ -2096,22 +2093,6 @@ dclass DistributedPhone : DistributedFurnitureItem {
   purchaseItemComplete();
   requestGiftAvatar(uint32) airecv clsend;
   setGiftAvatar(blob);
-};
-dclass DistributedRewardCrate : DistributedFurnitureItem {
-  requestKeyUsage() airecv clsend;
-  useKeyResponse(uint8, uint32);
-};
-
-dclass DistributedChair : DistributedFurnitureItem {
-  setAvId(uint32) broadcast ram;
-  requestSit(uint8) airecv clsend;
-  setStatus(uint8) broadcast ram;
-};
-
-dclass DistributedTV : DistributedFurnitureItem {
-  setVideo(string(0-255), uint32) required broadcast ram;
-  requestVideo(string(0-255)) airecv clsend;
-  requestVideoResponse(uint8);
 };
 
 dclass DistributedFireworkShow : DistributedObject {

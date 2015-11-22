@@ -5,10 +5,11 @@ import random
 import BattleParticles
 from BattleProps import *
 from BattleSounds import *
+import HealJokes
 import MovieCamera
 import MovieUtil
-from otp.nametag.NametagConstants import *
-from otp.nametag import NametagGlobals
+from toontown.chat.ChatGlobals import *
+from otp.nametag.NametagGlobals import *
 from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownBattleGlobals

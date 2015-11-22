@@ -24,6 +24,7 @@ import MovieUtil
 import PlayByPlayText
 import RewardPanel
 from SuitBattleGlobals import *
+from toontown.chat.ChatGlobals import *
 from toontown.distributed import DelayDelete
 from toontown.toon import NPCToons
 from toontown.toon import Toon
@@ -31,8 +32,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase.ToontownBattleGlobals import *
 from toontown.toontowngui import TTDialog
-from otp.nametag.NametagConstants import *
-from otp.nametag.NametagGroup import *
+from otp.nametag import NametagGlobals
 
 
 camPos = Point3(14, 0, 10)
@@ -311,9 +311,9 @@ class Movie(DirectObject.DirectObject):
         elif tutTrack >= len(earnedXp):
             self.playTutorialReward_2()
             return
-
+        
         xp = earnedXp[tutTrack]
-
+        
         if xp > 0:
             self.tutRewardDialog = TTDialog.TTDialog(text=TTLocalizer.MovieTutorialReward1 % (xp, TTLocalizer.BattleGlobalTracks[tutTrack].capitalize()), command=self.playTutorialReward_1, extraArgs=[earnedXp, tutTrack + 1], style=TTDialog.Acknowledge, fadeScreen=None, pos=(0.65, 0, 0.5), scale=0.8)
             sequence = Sequence()
@@ -321,7 +321,7 @@ class Movie(DirectObject.DirectObject):
             sequence.start()
         else:
             self.playTutorialReward_1(None, earnedXp, tutTrack + 1)
-
+    
     def playTutorialReward_2(self, value=None):
         from toontown.toon import Toon
         from toontown.toon import ToonDNA
@@ -338,11 +338,11 @@ class Movie(DirectObject.DirectObject):
 
         self.tutorialTom = Toon.Toon()
         dna = ToonDNA.ToonDNA()
-        dna.newToonFromProperties(*('dls', 'ms', 'm', 'm', 7, 0, 7, 7, 2, 6, 2, 6, 2, 16))
+        dna.newToonFromProperties(*('dls', 'ms', 'm', 'm', 7, 0, 7, 7, 2, 6, 2, 6, 2, 16, 0))
         self.tutorialTom.setDNA(dna)
         self.tutorialTom.setName(TTLocalizer.NPCToonNames[20000])
         self.tutorialTom.setPickable(0)
-        self.tutorialTom.setPlayerType(NametagGroup.CCNonPlayer)
+        self.tutorialTom.setPlayerType(NametagGlobals.CCNonPlayer)
         self.tutorialTom.uniqueName = uniqueName
         self.musicVolume = 0.9
         music = base.cr.playGame.place.loader.battleMusic
@@ -400,7 +400,8 @@ class Movie(DirectObject.DirectObject):
             if ival:
                 track.append(ival)
                 camTrack.append(camIval)
-            ival, camIval = MovieHeal.doHeals(self.__findToonAttack(HEAL), self.battle.getInteractivePropTrackBonus() == HEAL)
+            hasHealBonus = self.battle.getInteractivePropTrackBonus() == HEAL
+            ival, camIval = MovieHeal.doHeals(self.__findToonAttack(HEAL), hasHealBonus)
             if ival:
                 track.append(ival)
                 camTrack.append(camIval)

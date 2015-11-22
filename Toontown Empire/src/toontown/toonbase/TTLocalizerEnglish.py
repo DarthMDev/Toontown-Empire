@@ -8352,12 +8352,7 @@ HolidayNamesInCalendar = {1: ('Summer Fireworks', 'Celebrate Summer with a firew
  99: ('Jellybean Week', 'Celebrate Jellybean Week with double Jellybean rewards!'),
  101: ("Top Toons New Year's Day Marathon", "Chances to win every hour! See the What's New Blog for details!"),
  105: ('Toons go GREEN!', 'Toons make a green scene at Green Bean Jeans on Oak Street in Daisy Gardens!'),
- 125: ('None'),
- 128: ("April Toons' Week", "Celebrate April Toons' Week - a holiday built by Toons for Toons!"),
- 129: ('Caroling', 'Sing for your Snowman Head! See the Blog for details!'),
- 130: ('Summer Fireworks', 'Celebrate Summer with a fireworks show every hour in each playground!'),
- 131: ('New Year Fireworks', 'Happy New Year! Enjoy a fireworks show every hour in each playground!'), 
- 132: ("ValenToon's Day", "Celebrate ValenToon's Day from Feb 09 to Feb 16!"), }
+ 128: ("April Toons' Week", "Celebrate April Toons' Week - a holiday built by Toons for Toons!") }
 UnknownHoliday = 'Unknown Holiday %d'
 HolidayFormat = '%b %d '
 HourFormat = '12'
@@ -9872,76 +9867,3 @@ ClothesGUICount = '%s/%s'
 
 FpsMeterLabelOn = 'The frame rate meter is on.'
 FpsMeterLabelOff = 'The frame rate meter is off.'
-
-CatalogGiftChoose = 'Choose a friend!'
-CatalogCurrency = 'beans'
-CatalogHangUp = 'Hang Up'
-CatalogNew = 'NEW'
-CatalogBackorder = 'BACKORDER'
-CatalogSpecial = 'SPECIAL'
-CatalogEmblem = 'EMBLEM'
-CatalogPagePrefix = 'Page'
-CatalogGreeting = "Hello! Thanks for calling Clarabelle's Cattlelog. Can I help you?"
-CatalogGoodbyeList = ['Bye now!',
- 'Call back soon!',
- 'Thanks for calling!',
- 'Ok, bye now!',
- 'Bye!']
-CatalogHelpText1 = 'Turn the page to see items for sale.'
-CatalogSeriesLabel = 'Series %s'
-CatalogGiftError = 'Error'
-CatalogGiftFor = 'Buy Gift for:'
-CatalogGiftTo = 'To: %s'
-CatalogGiftToggleOn = 'Stop Gifting'
-CatalogGiftToggleOff = 'Buy Gifts'
-CatalogGiftUpdating = 'Updating...'
-CatalogGiftChoose = 'Choose a friend!'
-CatalogPurchaseItemAvailable = 'Congratulations on your new purchase!  You can start using it right away.'
-CatalogPurchaseGiftItemAvailable = 'Excellent!  %s can start using your gift right away.'
-CatalogPurchaseItemOnOrder = 'Congratulations! Your purchase will be delivered to your mailbox soon.'
-CatalogPurchaseGiftItemOnOrder = 'Excellent! Your gift to %s will be delivered to their mailbox.'
-CatalogAnythingElse = 'Anything else I can get you today?'
-CatalogPurchaseClosetFull = 'Your closet is full.  You may purchase this item anyway, but if you do you will need to delete something from your closet to make room for it when it arrives.\n\nDo you still want to purchase this item?'
-CatalogPurchaseTrunkFull = 'Your trunk is full. If you purchase this item, you\xe2\x80\x99ll need to delete another item from your trunk to make more room.\n\nDo you still want to purchase this item?'
-CatalogAcceptClosetFull = 'Your closet is full.  You must go inside and delete something from your closet to make room for this item before you can take it out of your mailbox.'
-CatalogAcceptTrunkFull = 'Your trunk is full.  You must delete something from your trunk before you can take this item out of your mailbox.'
-CatalogAcceptShirt = 'You are now wearing your new hat.  The hat you were wearing before has been moved to your trunk.'
-CatalogAcceptShorts = 'You are now wearing your new shorts.  What you were wearing before has been moved to your closet.'
-CatalogAcceptSkirt = 'You are now wearing your new skirt.  What you were wearing before has been moved to your closet.'
-CatalogAcceptHat = 'You are now wearing your new hat.  The hat you were wearing before has been moved to your trunk.'
-CatalogAcceptGlasses = 'You are now wearing your new glasses.  The glasses you were wearing before have been moved to your trunk.'
-CatalogAcceptBackpack = 'You are now wearing your new backpack.  The backpack you were wearing before has been moved to your trunk.'
-CatalogAcceptShoes = 'You are now wearing your new shoes.  The shoes you were wearing before have been moved to your trunk.'
-CatalogAcceptPole = "You're now ready to go catch some bigger fish with your new pole!"
-CatalogAcceptPoleUnneeded = 'You already have a better pole than this one!'
-CatalogAcceptTank = "You're now ready to catch more fish!"
-CatalogAcceptTankUnneeded = 'You already have a bigger tank than this one!'
-CatalogAcceptChat = 'You now have a new SpeedChat!'
-CatalogAcceptEmote = 'You now have a new Emotion!'
-CatalogAcceptBeans = 'You received some jelly beans!'
-CatalogAcceptRATBeans = 'Your Toon recruit reward has arrived!'
-CatalogAcceptPartyRefund = "Your party was never started. Here's your refund!"
-CatalogAcceptNametag = 'Your new name tag has arrived!'
-CatalogAcceptGarden = 'Your garden supplies have arrived!'
-CatalogAcceptPet = 'You now have a new Pet Trick!'
-CatalogPurchaseHouseFull = 'Your house is full.  You may purchase this item anyway, but if you do you will need to delete something from your house to make room for it when it arrives.\n\nDo you still want to purchase this item?'
-CatalogAcceptHouseFull = 'Your house is full. You can not accept this item until you free up some room. Would you like to discard this item now?'
-CatalogAcceptInAttic = 'Your new item is now in your attic.  You can put it in your house by going inside and clicking on the "Move Furniture" button.'
-CatalogAcceptInAtticP = 'Your new items are now in your attic.  You can put them in your house by going inside and clicking on the "Move Furniture" button.'
-CatalogPurchaseMailboxFull = "Your mailbox is full!  You can't purchase this item until you take some items out of your mailbox to make room."
-CatalogPurchaseGiftMailboxFull = "%s's mailbox is full!  You can't purchase this item."
-CatalogPurchaseOnOrderListFull = "You have too many items currently on order.  You can't order any more items until some of the ones you have already ordered arrive."
-CatalogPurchaseGiftOnOrderListFull = '%s has too many items currently on order.'
-CatalogPurchaseGeneralError = 'The item could not be purchased because of some internal game error: error code %s.'
-CatalogPurchaseGiftGeneralError = 'The item could not be gifted to %(friend)s because of some internal game error: error code %(error)s.'
-CatalogPurchaseGiftNotAGift = 'This item could not be sent to %s because it would be an unfair advantage.'
-CatalogPurchaseGiftWillNotFit = "This item could not be sent to %s because it doesn't fit them."
-CatalogPurchaseGiftLimitReached = "This item could not be sent to %s because they already have it."
-CatalogPurchaseGiftNotEnoughMoney = "This item could not be sent to %s because you can't afford it."
-CatalogPurchaseGiftTooFast = "This item could not be sent to %s because you are sending gifts too fast."
-CatalogAcceptGeneralError = 'The item could not be removed from your mailbox because of some internal game error: error code %s.'
-CatalogAcceptRoomError = "You don't have any place to put this. You'll have to get rid of something."
-CatalogAcceptLimitError = "You already have as many of these as you can handle. You'll have to get rid of something."
-CatalogAcceptFitError = "This won't fit you!"
-CatalogAcceptInvalidError = 'This item has gone out of style!'
-CatalogAcceptClosetError = 'You already have a bigger closet!'

@@ -13,7 +13,7 @@ from toontown.catalog import CatalogWallpaperItem
 from toontown.catalog import CatalogFlooringItem
 from toontown.catalog import CatalogMouldingItem
 from toontown.catalog import CatalogWainscotingItem
-from toontown.dna.DNAParser import DNADoor
+from toontown.dna.DNAParser import *
 WindowPlugNames = ['**/windowcut_%s*' % x for x in ('b', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i')]
 RoomNames = ['**/group%s' % x for x in ( 4, 3, 2, 1)]
 WallNames = ('ceiling*', 'wall_side_middle*', 'wall_front_middle*', 'windowcut_*')
@@ -65,7 +65,7 @@ class DistributedHouseInterior(DistributedObject.DistributedObject):
         doorNP = door.copyTo(door_origin)
         houseColor = HouseGlobals.atticWood
         color = Vec4(houseColor[0], houseColor[1], houseColor[2], 1)
-        DNADoor.setupDoor(doorNP, door_origin, door_origin, dnaStore, str(self.houseId), color)
+        setupDoor(doorNP, door_origin, door_origin, dnaStore, str(self.houseId), color)
         doorFrame = doorNP.find('door_*_flat')
         doorFrame.setColor(color)
         self.interior.flattenMedium()
@@ -82,8 +82,9 @@ class DistributedHouseInterior(DistributedObject.DistributedObject):
                 plug.flattenLight()
                 self.windowSlots.append((plug, viewBase))
 
-        self.windowSlots[2][1].setPosHpr(16.0, -12.0, 5.51, -90, 0, 0)
-        self.windowSlots[4][1].setPosHpr(-12.0, 26.0, 5.51, 0, 0, 0)
+        self.windowSlots[2][1].setPosHpr(-21.28, -37.15, 16.25, -90.4, 0, 0)
+        self.windowSlots[6][1].setPosHpr(-12.0, 26.0, 5.51, 0, 0, 0)
+        self.windowSlots[4][1].setPosHpr(16.0, -12.0, 5.51, -90, 0, 0)	
         self.__colorWalls()
         self.__setupWindows()
         messenger.send('houseInteriorLoaded-%d' % self.zoneId)

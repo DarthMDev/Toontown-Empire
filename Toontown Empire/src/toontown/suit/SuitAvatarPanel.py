@@ -1,5 +1,6 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.gui.DirectGui import *
+from pandac.PandaModules import *
 from direct.showbase import DirectObject
 from otp.avatar import Avatar
 from direct.distributed import DistributedObject
