@@ -8,7 +8,6 @@
 
 [![Code Climate](https://codeclimate.com/repos/5652491769a715224c00577d/badges/252d987e79c436e3b098/gpa.svg)](https://codeclimate.com/repos/5652491769a715224c00577d/feed)
 
-[![Build Status](https://scrutinizer-ci.com/g/mgracer48/toontown-empire/badges/build.png?b=master&s=2e4943ef9efda80c6dc66f40ceaaa79a95bba0e3)](https://scrutinizer-ci.com/g/mgracer48/toontown-empire/build-status/master)
 Official Repo for Toontown Empire, a new Toontown game based on Disney's Toontown Online.
 
 # Staff Positions:
