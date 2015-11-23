@@ -3085,7 +3085,7 @@ class Toon(Avatar.Avatar, ToonHead):
         if self.gmIcon:
             return
         #todo change the bam file for staff_icons_christmas to link to phase_3/maps/staff_icons_christmas.png    
-        if config.getbool('want-christmasicons', False): # Everything is correct just need to add this to config
+        if config.GetBool('want-christmasicons', False): # Everything is correct just need to add this to config
 			icons = loader.loadModel('phase_3/models/props/staff_icons_christmas')
         else:	
 		#todo change the bam file for staff_icons to link to phase_3/maps/staff_icons.jpg
@@ -3178,7 +3178,7 @@ def partyHat(create=True):
         if isinstance(av, Toon):
             av.setPartyHat() if create else av.removePartyHat()
 
-@magicWord(category=CATEGORY_TRIAL, types=[int], access=100) 
+@magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[int], access=100) 
 def setGM(gmId):        
     if not 0 <= gmId <= 5:
         return 'Args: 0=off, 1=trial, 2=staff, 3=lead_staff, 4=developer, 5=leader'

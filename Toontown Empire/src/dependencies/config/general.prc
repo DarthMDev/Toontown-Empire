@@ -103,9 +103,9 @@ show-total-population #t
 want-mat-all-tailors #t
 want-talkative-tyler #f
 estate-day-night #t
-want-garden-game #f
-want-language-selection #t
-# want-mongo #t
+want-garden-game #t
+want-language-selection #f
+want-mongo #t
 want-toontorial #t
 want-news-tab #t
 want-news-page #t

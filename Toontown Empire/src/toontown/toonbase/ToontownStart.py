@@ -56,7 +56,7 @@ notify.info('Reading %s...' % preferencesFilename)
 
 __builtin__.settings = Settings(preferencesFilename)
 if 'res' not in settings:
-    settings['res'] = (800, 800)
+    settings['res'] = (800, 600)
 if 'fullscreen' not in settings:
     settings['fullscreen'] = False
 if 'musicVol' not in settings:
