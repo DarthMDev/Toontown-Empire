@@ -332,7 +332,7 @@ class DistributedPartyCatchActivity(DistributedPartyActivity, DistributedPartyCa
     def getNumPlayers(self):
         return len(self.toonIds)
 
-    def defineConstants(self, forceNumPlayers = None):
+    def defineConstants(self, forceNumPlayers= None):
         DistributedPartyCatchActivity.notify.debug('defineConstants')
         self.ShowObjSpheres = 0
         self.ShowToonSpheres = 0

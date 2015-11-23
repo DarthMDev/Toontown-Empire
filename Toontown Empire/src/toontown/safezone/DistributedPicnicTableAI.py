@@ -315,7 +315,6 @@ class DistributedPicnicTableAI(DistributedNodeAI):
         for i in xrange(len(self.seats)):
             if self.seats[i] == avId:
                 return i
-                continue
 
     def countFullSeats(self):
         avCounter = 0

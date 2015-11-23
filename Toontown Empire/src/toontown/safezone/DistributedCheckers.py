@@ -125,7 +125,7 @@ class DistributedCheckers(DistributedNode.DistributedNode):
         if self.fsm.getCurrentState().getName() == 'waitingToBegin':
             self.exitButtonPushed()
         if task != None:
-            task.done
+            return task.done
         return
 
     def setTableDoId(self, doId):

@@ -51,7 +51,7 @@ class LoadHouseFSM(FSM):
     def enterCreateHouse(self):
         style = ToonDNA.ToonDNA()
         style.makeFromNetString(self.toon['setDNAString'][0])
-        
+
         self.mgr.air.dbInterface.createObject(
             self.mgr.air.dbId,
             self.mgr.air.dclassesByName['DistributedHouseAI'],
@@ -220,7 +220,7 @@ class LoadEstateFSM(FSM):
     def enterStoreEstate(self):
         # store the estate in account
         # congrats however wrote this for forgetting it!
-        
+
         self.mgr.air.dbInterface.updateObject(
             self.mgr.air.dbId,
             self.accountId,
@@ -228,11 +228,11 @@ class LoadEstateFSM(FSM):
             {'ESTATE_ID': self.estateId},
             {'ESTATE_ID': 0},
             self.__handleStoreEstate)
-            
+
     def __handleStoreEstate(self, fields):
         if fields:
             self.notify.warning("Failed to associate Estate %d with account %d, loading anyway." % (self.estateId, self.accountId))
-            
+
         self.demand('LoadEstate')
 
     def enterLoadEstate(self):
@@ -240,7 +240,7 @@ class LoadEstateFSM(FSM):
         fields = {}
         for i, toon in enumerate(self.toonIds):
             fields['setSlot%dToonId' % i] = (toon,)
-            
+
         self.mgr.air.sendActivate(self.estateId, self.mgr.air.districtId, self.zoneId,
                                   self.mgr.air.dclassesByName['DistributedEstateAI'], fields)
 
@@ -473,14 +473,15 @@ class EstateManagerAI(DistributedObjectAI):
 
     def _unmapFromEstate(self, toon):
         estate = self.toon2estate.get(toon)
-        if not estate: return
+        if not estate:
+             return
         del self.toon2estate[toon]
 
         try:
             self.estate2toons[estate].remove(toon)
         except (KeyError, ValueError):
             pass
-        
+
         if hasattr(toon, 'exitEstate'):
             toon.exitEstate()
 
@@ -489,10 +490,10 @@ class EstateManagerAI(DistributedObjectAI):
 
     def getOwnerFromZone(self, zoneId):
         return self.zoneId2owner.get(zoneId, 0)
-    
+
     def getEstateZones(self, ownerId):
         estate = self._lookupEstate(self.air.doId2do.get(ownerId))
         if estate:
             return [estate.zoneId]
-            
+
         return []

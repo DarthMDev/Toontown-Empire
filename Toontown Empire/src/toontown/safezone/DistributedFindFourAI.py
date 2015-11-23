@@ -244,7 +244,6 @@ class DistributedFindFourAI(DistributedNodeAI):
                 self.playersTurn = self.playersGamePos.index(x)
                 self.d_sendTurn(self.playersTurn + 1)
                 break
-                continue
 
         self.setTurnCountdownTime()
         self.sendUpdate('setTurnTimer', [

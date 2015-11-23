@@ -107,7 +107,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.tutorialManager.generateWithRequired(2)
         self.friendManager = FriendManagerAI(self)
         self.friendManager.generateWithRequired(2)
-        self.questManager = QuestManagerAI(self)       
+        self.questManager = QuestManagerAI(self)
         self.banManager = BanManagerAI.BanManagerAI(self)
         self.suitInvasionManager = SuitInvasionManagerAI(self)
         self.blackCatMgr = DistributedBlackCatMgrAI(self)

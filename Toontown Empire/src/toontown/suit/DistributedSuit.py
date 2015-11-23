@@ -38,12 +38,6 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
     ENABLE_EXPANDED_NAME = 0
 
     def __init__(self, cr):
-        try:
-            self.DistributedSuit_initialized
-            return
-        except:
-            self.DistributedSuit_initialized = 1
-
         DistributedSuitBase.DistributedSuitBase.__init__(self, cr)
         self.spDoId = None
         self.pathEndpointStart = 0

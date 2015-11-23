@@ -616,7 +616,6 @@ class DistributedChineseCheckersAI(DistributedNodeAI):
             y = self.checkLegalMove(self.board.getSquare(moveList[x]), self.board.getSquare(moveList[x + 1]))
             if y == False:
                 return False
-                continue
 
         return True
 

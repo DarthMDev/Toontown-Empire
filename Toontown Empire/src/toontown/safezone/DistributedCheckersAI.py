@@ -357,7 +357,6 @@ class DistributedCheckersAI(DistributedNodeAI):
                 y = self.checkLegalJump(self.board.getSquare(moveList[x]), self.board.getSquare(moveList[x + 1]), moveType)
                 if y == False:
                     return False
-                    continue
 
             return True
 

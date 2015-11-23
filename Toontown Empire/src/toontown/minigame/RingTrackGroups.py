@@ -39,7 +39,7 @@ def __scramble(tracks, tOffsets, rng):
     return (newTracks, newTOffsets)
 
 
-def angleToXY(angle, radius = 1.0):
+def angleToXY(angle, radius= 1.0):
     return [radius * math.sin(angle), radius * math.cos(angle)]
 
 

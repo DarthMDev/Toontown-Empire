@@ -234,7 +234,7 @@ class PartyCogActivityLocalPlayer(PartyCogActivityPlayer):
     def _update(self):
         self.control.update()
 
-    def getLookat(self, whosLooking, refNode = None):
+    def getLookat(self, whosLooking, refNode= None):
         if refNode is None:
             refNode = render
         dist = 5.0

@@ -421,7 +421,7 @@ class DistributedPet(DistributedSmoothNode.DistributedSmoothNode, Pet.Pet, PetBa
         self.clearMovieAvatar()
         return Task.done
 
-    def resetAvatarAndPet(self, task = None):
+    def resetAvatarAndPet(self, task= None):
         if self.isLocalToon:
             base.localAvatar.enableSmartCameraViews()
             base.localAvatar.setH(base.localAvatar, 30)

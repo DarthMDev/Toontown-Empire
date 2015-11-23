@@ -709,7 +709,7 @@ class DistributedCogThiefGame(DistributedMinigame):
         proj = ProjectileInterval(None, startPos=Point3(0, 0, 0), endPos=Point3(0, dist, 0), duration=time)
         relVel = proj.startVel
 
-        def getVelocity(toon = toon, relVel = relVel):
+        def getVelocity(toon= toon, relVel= relVel):
             return render.getRelativeVector(toon, relVel) * 0.6
 
         toss = Track((0, Sequence(Func(toon.setPosHpr, x, y, z, h, p, r), Func(pie.reparentTo, toon.rightHand), Func(pie.setPosHpr, 0, 0, 0, 0, 0, 0), Parallel(ActorInterval(toon, 'throw', startFrame=48, partName='torso'), animPie), Func(toon.loop, 'neutral'))), (16.0 / 24.0, Func(pie.detachNode)))

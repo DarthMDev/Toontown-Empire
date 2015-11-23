@@ -42,12 +42,18 @@ if os.path.isfile('dependencies/config/dev.prc'):
     loadPrcFile('dependencies/config/dev.prc')
 
 localconfig = ''
-if args.base_channel: localconfig += 'air-base-channel %s\n' % args.base_channel
-if args.max_channels: localconfig += 'air-channel-allocation %s\n' % args.max_channels
-if args.stateserver: localconfig += 'air-stateserver %s\n' % args.stateserver
-if args.district_name: localconfig += 'district-name %s\n' % args.district_name
-if args.astron_ip: localconfig += 'air-connect %s\n' % args.astron_ip
-if args.eventlogger_ip: localconfig += 'eventlog-host %s\n' % args.eventlogger_ip
+if args.base_channel:
+     localconfig += 'air-base-channel %s\n' % args.base_channel
+if args.max_channels:
+     localconfig += 'air-channel-allocation %s\n' % args.max_channels
+if args.stateserver:
+     localconfig += 'air-stateserver %s\n' % args.stateserver
+if args.district_name:
+     localconfig += 'district-name %s\n' % args.district_name
+if args.astron_ip:
+     localconfig += 'air-connect %s\n' % args.astron_ip
+if args.eventlogger_ip:
+     localconfig += 'eventlog-host %s\n' % args.eventlogger_ip
 loadPrcFileData('Command-line', localconfig)
 
 from otp.ai.AIBaseGlobal import *

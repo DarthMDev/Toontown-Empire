@@ -190,7 +190,7 @@ def assignRewards(activeToons, toonSkillPtsGained, suitsKilled, zoneId, helpfulT
             simbase.air.questManager.toonKilledCogs(toon, suitsKilled, zoneId)
             simbase.air.cogPageManager.toonKilledCogs(toon, suitsKilled, zoneId)
             addStats(toon, suitsKilled)
-    
+
 def addStats(toon, suitsKilled):
     toon.addStat(ToontownGlobals.STAT_COGS, len(suitsKilled))
     toon.addStat(ToontownGlobals.STAT_V2, len([suit for suit in suitsKilled if 'hasRevives' in suit and suit['hasRevives']]))

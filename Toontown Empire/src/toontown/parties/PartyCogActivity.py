@@ -518,10 +518,10 @@ class PartyCogActivity(DirectObject):
         proj = ProjectileInterval(None, startPos=Point3(0, 0, 0), endPos=Point3(0, dist, 0), duration=time)
         relVel = proj.startVel
 
-        def getVelocity(toon = toon, relVel = relVel):
+        def getVelocity(toon= toon, relVel= relVel):
             return render.getRelativeVector(toon, relVel) * 0.6
 
-        def __safeSetAnimState(toon = toon, state = 'Happy'):
+        def __safeSetAnimState(toon= toon, state= 'Happy'):
             if toon and hasattr(toon, 'animFSM'):
                 toon.setAnimState('Happy')
             else:
