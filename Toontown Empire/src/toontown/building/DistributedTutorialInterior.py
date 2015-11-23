@@ -3,7 +3,7 @@ from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
 from toontown.toonbase import ToontownGlobals
-from toontown.dna.DNAParser import *
+from toontown.dna.DNAParser import DNADoor
 import ToonInterior
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
@@ -112,7 +112,7 @@ class DistributedTutorialInterior(DistributedObject.DistributedObject):
         door_origin.setScale(0.8, 0.8, 0.8)
         door_origin.setPos(door_origin, 0, -0.025, 0)
         color = self.randomGenerator.choice(self.colors['TI_door'])
-        setupDoor(doorNP, self.interior, door_origin, self.dnaStore, str(self.block), color)
+        DNADoor.setupDoor(doorNP, self.interior, door_origin, self.dnaStore, str(self.block), color)
         doorFrame = doorNP.find('door_*_flat')
         doorFrame.wrtReparentTo(self.interior)
         doorFrame.setColor(color)
