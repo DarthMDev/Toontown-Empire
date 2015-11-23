@@ -56,8 +56,8 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
         'sillymeter': {
             'items': [
                 CatalogClothingItem.CatalogClothingItem(1753, 0)
-            ]
-        }
+     #       ]
+     #   }
      #   'toonstatue': {
      #       'items': [
      #          CatalogToonStatueItem.CatalogToonStatueItem(105, endPoseIndex=108)
@@ -66,8 +66,8 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
      #   'donaldstatue': {
      #       'items': [
      #           CatalogGardenItem.CatalogGardenItem(100, 1)
-     #       ]
-     #   }
+            ]
+        }
     }
 
     def announceGenerate(self):
