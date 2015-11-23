@@ -1,6 +1,6 @@
 #!/bin/sh
 cd ..
-
+cd ..
 # Get the user input:
 read -p "Username: " tteUsername
 
