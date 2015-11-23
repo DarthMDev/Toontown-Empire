@@ -87,7 +87,8 @@ class ClickablePopup(PandaNode, DirectObject):
         else:
             state = self.CS_NORMAL
 
-        if self.__clickState == state: return
+        if self.__clickState == state:
+             return
         oldState = self.__clickState
         self.__clickState = state
 

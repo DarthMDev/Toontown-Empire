@@ -305,10 +305,12 @@ class PhotoAlbumPage(ShtikerPage.ShtikerPage):
         try:
             self.chosePhoto(self.getPhotos()[self.photoIndex])
             self.photoIndex -= 1
-        except:self.photoIndex = 0
+        except:
+            self.photoIndex = 0
 
     def nextPhoto(self):
         try:
             self.chosePhoto(self.getPhotos()[self.photoIndex])
             self.photoIndex += 1
-        except:self.photoIndex = 0
+        except:
+            self.photoIndex = 0

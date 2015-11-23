@@ -47,9 +47,6 @@ class CountryClubManagerAI(DirectObject.DirectObject):
                     layout = CountryClubLayout.CountryClubLayout(countryClubId, i)
                     if roomId in layout.getRoomIds():
                         floor = i
-                else:
-                    roomName = CountryClubRoomSpecs.BossbotCountryClubRoomId2RoomName[roomId]
-                    CountryClubManagerAI.notify.warning('room %s (%s) not found in any floor of countryClub %s' % (roomId, roomName, countryClubId))
         countryClubZone = self.air.allocateZone()
         if layoutIndex is None:
             layoutIndex = random.choice(CountryClubId2Layouts[countryClubId])

@@ -13,7 +13,8 @@ class MarginPopup:
 
     def setVisible(self, visibility):
         visibility = bool(visibility)
-        if self.__visible == visibility: return
+        if self.__visible == visibility:
+             return
 
         self.__visible = visibility
 

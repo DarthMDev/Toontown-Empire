@@ -561,7 +561,7 @@ class GardenDropGame:
         self.frame.destroy()
         del self.frame
 
-        if (GardenGameGlobals.acceptErrorDialog and GardenGameGlobals.acceptErrorDialog.cleanup()):
+        if GardenGameGlobals.acceptErrorDialog and GardenGameGlobals.acceptErrorDialog.cleanup():
             GardenGameGlobals.acceptErrorDialog = 1
 
     def unloadHelp(self):

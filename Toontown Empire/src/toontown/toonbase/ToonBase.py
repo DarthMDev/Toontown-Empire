@@ -74,7 +74,7 @@ class ToonBase(OTPBase.OTPBase):
             # Store our result
             settings['res'] = res
 
-            
+
             # Reload the graphics pipe:
             properties = WindowProperties()
 
@@ -229,24 +229,24 @@ class ToonBase(OTPBase.OTPBase):
         self.wantCogInterface = settings.get('cogInterface', True)
 
 	self.wantWASD = settings.get('want-WASD', False)
-        
+
         self.Move_Up = 'arrow_up'
-        self.Move_Left = 'arrow_left'       
+        self.Move_Left = 'arrow_left'
         self.Move_Down = 'arrow_down'
         self.Move_Right = 'arrow_right'
         self.JUMP = 'control'
-        
+
         if self.wantWASD:
             self.Move_Up = 'w'
-            self.Move_Left = 'a'            
+            self.Move_Left = 'a'
             self.Move_Down = 's'
             self.Move_Right = 'd'
             self.JUMP = 'shift'
-			
+
 	def openMainWindow(self, *args, **kw):
 	   result = OTPBase.OTPBase.openMainWindow(self, *args, **kw)
         self.setCursorAndIcon()
-        return 
+        return
 
     def setCursorAndIcon(self):
         tempdir = tempfile.mkdtemp()
@@ -283,8 +283,10 @@ class ToonBase(OTPBase.OTPBase):
     def disableShowbaseMouse(self):
         self.useDrive()
         self.disableMouse()
-        if self.mouseInterface: self.mouseInterface.detachNode()
-        if self.mouse2cam: self.mouse2cam.detachNode()
+        if self.mouseInterface:
+             self.mouseInterface.detachNode()
+        if self.mouse2cam:
+             self.mouse2cam.detachNode()
 
     def __walking(self, pressed):
         self.walking = pressed
