@@ -243,7 +243,7 @@ class OptionsPage(ShtikerPage.ShtikerPage):
             self.optionsTab['state'] = DGG.NORMAL
             self.optionsTabPage.exit()
             self.extraOptionsTab['state'] = DGG.NORMAL
-            self.extraOptionsTabPage.exit()            
+            self.extraOptionsTabPage.exit()
             self.codesTab['state'] = DGG.DISABLED
             self.codesTabPage.enter()
         elif mode == PageMode.Extra:
@@ -253,7 +253,7 @@ class OptionsPage(ShtikerPage.ShtikerPage):
             self.codesTab['state'] = DGG.NORMAL
             self.codesTabPage.exit()
             self.extraOptionsTab['state'] = DGG.DISABLED
-            self.extraOptionsTabPage.enter()            
+            self.extraOptionsTabPage.enter()
 
 class OptionsTabPage(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('OptionsTabPage')
@@ -703,7 +703,7 @@ class CodesTabPage(DirectFrame):
             self.resultPanel['text'] = TTLocalizer.CdrResultNotReady
         elif result == 6:
             self.resultPanel['image'] = self.resultPanelErrorGui
-            self.resultPanel['text'] = TTLocalizer.CdrResultNotEligible          
+            self.resultPanel['text'] = TTLocalizer.CdrResultNotEligible
         if result == 0:
             self.successSfx.play()
         else:
@@ -736,10 +736,10 @@ class ExtraOptionsTabPage(DirectFrame):
 
     def destroy(self):
         self.parent = None
-        
+
         if self.dialog:
             self.dialog.destroy()
-        
+
         del self.dialog
         DirectFrame.destroy(self)
 
@@ -756,10 +756,10 @@ class ExtraOptionsTabPage(DirectFrame):
         button_textpos = (0, -0.02)
         options_text_scale = 0.052
         disabled_arrow_color = Vec4(0.6, 0.6, 0.6, 1.0)
-        self.speed_chat_scale = 0.055    
+        self.speed_chat_scale = 0.055
         self.cogLevel_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord), command=self.__doToggleCogLevelGui)
         self.cogLevel_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight))
-#        self.bugReportButton = DirectButton(parent=self, relief=None, text=TTLocalizer.BugReportButton, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text_pos=(0, -0.01), text_fg=(0, 0, 0, 1), 
+#        self.bugReportButton = DirectButton(parent=self, relief=None, text=TTLocalizer.BugReportButton, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text_pos=(0, -0.01), text_fg=(0, 0, 0, 1),
 #        command=self.showReportNotice, pos=(0.0, 0.0, -0.6), text_scale=(0.045))
         self.WASD_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - textRowHeight))
         self.WASD_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight), command=self.__doToggleWASD)
@@ -789,25 +789,25 @@ class ExtraOptionsTabPage(DirectFrame):
 
     def __doToggleCogLevelGui(self):
         messenger.send('wakeup')
-        settings['cogLevel'] = not settings['cogLevel']
+        settings['cogInterface'] = not settings['cogInterface']
         self.settingsChanged = 1
         self.__setCogLevelGuiButton()
 
     def __setCogLevelGuiButton(self):
-        self.cogLevel_label['text'] = TTLocalizer.CogLevelLabelOn if settings['cogLevel'] else TTLocalizer.CogLevelLabelOff
-        self.cogLevel_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff if settings['cogLevel'] else TTLocalizer.OptionsPageToggleOn
+        self.cogLevel_label['text'] = TTLocalizer.CogLevelLabelOn if settings['cogInterface'] else TTLocalizer.CogLevelLabelOff
+        self.cogLevel_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff if settings['cogInterface'] else TTLocalizer.OptionsPageToggleOn
 
-# THIS CAN MAYBE BE USED IN THE FUTURE FOR NOW IT IS DISABLE - DYANMITE
 
-#    def showReportNotice(self):
-#        self.dialog = TTDialog.TTDialog(style=TTDialog.YesNo, text=TTLocalizer.BugReportNotice, command=self.confirmBugReport)
-#        self.dialog.show()
 
-#    def confirmBugReport(self, value):
-#        if value > 0:
-#            webbrowser.open(ToontownGlobals.BugReportSite, new=2, autoraise=True)
+    def showReportNotice(self):
+        self.dialog = TTDialog.TTDialog(style=TTDialog.YesNo, text=TTLocalizer.BugReportNotice, command=self.confirmBugReport)
+        self.dialog.show()
 
-#        self.dialog.destroy()
+    def confirmBugReport(self, value):
+        if value > 0:
+            webbrowser.open(ToontownGlobals.BugReportSite, new=2, autoraise=True)
+
+        self.dialog.destroy()
 
 
 
@@ -825,7 +825,7 @@ class ExtraOptionsTabPage(DirectFrame):
             settings['want-WASD'] = False
             base.localAvatar.controlManager.reload()
             base.localAvatar.chatMgr.reloadWASD()
-            base.localAvatar.setSystemMessage(0, 'WASD controls disabled.')            
+            base.localAvatar.setSystemMessage(0, 'WASD controls disabled.')
         else:
             base.wantWASD = True
             base.Move_Up = 'w'
@@ -837,14 +837,14 @@ class ExtraOptionsTabPage(DirectFrame):
             settings['want-WASD'] = True
 
             base.localAvatar.controlManager.reload()
-            base.localAvatar.chatMgr.reloadWASD()            
+            base.localAvatar.chatMgr.reloadWASD()
             base.localAvatar.setSystemMessage(0, 'WASD controls enabled.')
 
         self.settingsChanged = 1
         self.__setWASDButton()
 
     def __setWASDButton(self):
-        self.WASD_Label['text'] = 'WASD Support:'        
+        self.WASD_Label['text'] = 'WASD Support:'
         if base.wantWASD:
 
             self.WASD_toggleButton['text'] = 'On'
