@@ -4,6 +4,12 @@ from otp.nametag import NametagGlobals
 from otp.nametag.NametagConstants import *
 
 class WhisperPopup(MarginPopup, ClickablePopup):
+    WTNormal = WTNormal
+    WTQuickTalker = WTQuickTalker
+    WTSystem = WTSystem
+    WTBattleSOS = WTBattleSOS
+    WTEmote = WTEmote
+    WTToontownBoardingGroup = WTToontownBoardingGroup
     WORDWRAP = 7.5
     SCALE_2D = 0.25
 
