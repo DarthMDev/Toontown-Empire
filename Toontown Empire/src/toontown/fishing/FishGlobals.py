@@ -773,7 +773,7 @@ def getTotalNumFish():
     return __totalNumFish
 
 
-def testRarity(rodId = 0, numIter = 100000):
+def testRarity(rodId = 0, rNumGen = None, numIter = 100000):
     d = {1: 0,
      2: 0,
      3: 0,
@@ -785,7 +785,7 @@ def testRarity(rodId = 0, numIter = 100000):
      9: 0,
      10: 0}
     for i in xrange(numIter):
-        v = __rollRarityDice(rodId)
+        v = __rollRarityDice(rodId, rNumGen)
         d[v] += 1
 
     for rarity, count in d.items():

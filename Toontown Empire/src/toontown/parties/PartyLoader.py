@@ -182,7 +182,6 @@ class PartyLoader(SafeZoneLoader.SafeZoneLoader):
         return
 
     def startCloudPlatforms(self):
-        return
         if len(self.clouds):
             self.cloudTrack = self.__cloudTrack()
             self.cloudTrack.loop()

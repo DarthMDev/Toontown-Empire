@@ -123,16 +123,6 @@ class CatalogGardenItem(CatalogItem.CatalogItem):
         else:
             return 0
 
-    def getPurchaseLimit(self):
-        if self.gardenIndex == GardenGlobals.GardenAcceleratorSpecial:
-            return 1
-        else:
-            return 0
-
-    def compareTo(self, other):
-        if self.gardenIndex != other.gardenIndex:
-            return self.gardenIndex - other.gardenIndex
-        return self.gardenIndex - other.gardenIndex
 
     def reachedPurchaseLimit(self, avatar):
         if avatar.onOrder.count(self) != 0:

@@ -33,7 +33,7 @@ while True:
         res = client.ping(generate_token(700), 12345)
         if res != 12345:
             print "Is the server accessable?\n"
-            exit
+            exit()
 
         # How many times a day is this script going to be called?
         ChecksPerDay = 60.0*24.0    # Once a minute

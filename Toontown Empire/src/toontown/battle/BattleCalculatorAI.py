@@ -958,7 +958,7 @@ class BattleCalculatorAI:
             self.notify.warning('__allTargetsDead: suit ver. not implemented!')
         return allTargetsDead
 
-    def __clearLuredSuitsByAttack(self, toonId, kbBonusReq = 0, targetId = -1):
+    def __clearLuredSuitsByAttack(self, toonId, kbBonusReq = 0, targetId = -1, t):
         if self.notify.getDebug():
             self.notify.debug('__clearLuredSuitsByAttack')
         if targetId != -1 and self.__suitIsLured(t.getDoId()):

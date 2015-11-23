@@ -237,7 +237,7 @@ class CogdoFlyingLevelFactory:
             self.loadAndBuildLevel(safezoneId)
         return self._level
 
-    def createLevelFog(self):
+    def createLevelFog(self, safezoneId = 2000):
         if self._level is None:
-            self.loadAndBuildLevel()
+            self.loadAndBuildLevel(safezoneId)
         return CogdoFlyingLevelFog(self._level)

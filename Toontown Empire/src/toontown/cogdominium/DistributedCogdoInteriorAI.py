@@ -478,9 +478,6 @@ class DistributedCogdoInteriorAI(DistributedObjectAI, FSM.FSM):
             savedBy])
         self.d_setState('Reward')
 
-    def removeToon(self, toonId):
-        if self.toons.count(toonId):
-            self.toons.remove(toonId)
 
     def d_setToons(self):
         self.sendUpdate('setToons', self.getToons())
