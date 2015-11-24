@@ -11,6 +11,10 @@ class ToontownLoadingScreen:
     def __init__(self):
         self.__expectedCount = 0
         self.__count = 0
+        self.textures = [(loader.loadTexture('phase_3.5/maps/loading/toon.jpg'), ToontownGlobals.getInterfaceFont(), (0, 0, 0.5, 1)),
+         (loader.loadTexture('phase_3.5/maps/loading/cog.jpg'), ToontownGlobals.getSuitFont(), (1.0, 1.0, 1.0, 1)),
+         (loader.loadTexture('phase_3.5/maps/loading/default.jpg'), ToontownGlobals.getInterfaceFont(), (0, 0, 0.5, 1))
+        ]
         self.gui = loader.loadModel('phase_3/models/gui/progress-background.bam')
         self.title = DirectLabel(guiId='ToontownLoadingScreenTitle', parent=self.gui, relief=None, pos=(base.a2dRight/5, 0, 0.235), text='', textMayChange=1, text_scale=0.08, text_fg=(0, 0, 0.5, 1), text_align=TextNode.ALeft, text_font=ToontownGlobals.getInterfaceFont())
         self.tip = DirectLabel(guiId='ToontownLoadingScreenTip', parent=self.gui, relief=None, pos=(0, 0, 0.045), text='', textMayChange=1, text_scale=0.05, text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), text_align=TextNode.ACenter)
@@ -33,7 +37,8 @@ class ToontownLoadingScreen:
     def getTip(self, tipCategory):
         return TTLocalizer.TipTitle + ' ' + random.choice(TTLocalizer.TipDict.get(tipCategory))
 
-    def begin(self, range, label, gui, tipCategory):
+    def begin(self, range, label, gui, tipCategory, zoneId):
+        info = self.textures[ZoneUtil.isCogHQZone(zoneId) if zoneId else 2]
         self.waitBar['range'] = range
         self.title['text'] = label
         self.__count = 0
