@@ -259,6 +259,7 @@ class ChatManager(DirectObject.DirectObject):
         if base.wantWASD:
             base.localAvatar.disableAvatarControls()
             result = self.chatInputNormal.activateByData()
+        return result
 
     def exitNormalChat(self):
         if base.wantWASD:
