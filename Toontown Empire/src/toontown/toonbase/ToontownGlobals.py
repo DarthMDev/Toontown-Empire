@@ -1689,6 +1689,7 @@ BGagAccuracy = 1
 BGagAccuracyMultiplier = 1.3
 
 BugReportSite = 'https://bugs.launchpad.net/toontown-empire/+filebug'
+NPCCollisionDelay = 0.1
 CostPerLaffRestock = 15
 FISHSALE_NONE = 0
 FISHSALE_COMPLETE = 1

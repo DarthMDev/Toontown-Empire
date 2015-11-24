@@ -54,8 +54,6 @@ class ToonHood(Hood):
 
         # Until we cleanup Hood, we will need to define some variables
         self.id = self.ID
-        self.SAFEZONELOADER_CLASS = None
-        self.TOWNLOADER_CLASS = None
         self.storageDNAFile = self.STORAGE_DNA
         self.holidayStorageDNADict = self.HOLIDAY_DNA
         self.skyFile = self.SKY_FILE
@@ -69,8 +67,6 @@ class ToonHood(Hood):
 
     def unload(self):
         self.parentFSM.getStateNamed(self.__class__.__name__).removeChild(self.fsm)
-        del self.SAFEZONELOADER_CLASS
-        del self.TOWNLOADER_CLASS
 
         Hood.unload(self)
 
