@@ -1,4 +1,4 @@
-importToontownControlManager
+import ToontownControlManager
 from direct.controls.GhostWalker import GhostWalker
 from direct.controls.GravityWalker import GravityWalker
 from direct.controls.ObserverWalker import ObserverWalker
