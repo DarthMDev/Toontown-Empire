@@ -28,12 +28,10 @@ We make dev changes to master, but before we release: if the master branch is st
 
 Do not push broken code to the master branch, because it messes up the game and makes it harder for the developers to add features, and fix bugs in the game! When you revert something broken, please post the crash to make life easier for the coders.
 
-Breech of this will result in your access being revoked.
-
 # Compilation Branch Rules and Regulations:
 
 Do not edit, append or sync the "Compilation" branch, this branch is setup to cater for a automated compiler I'm developing.
-Anyone who breaks this rule will be removed from the team with no second chance. This means don't touch the branch, no matter what, since you like to break the game with codacy, mgracer48!
+Anyone who breaks this rule will be removed from the team with no second chance.
 
 Pushing to this branch will automatically compile the game into a .EXE on Dubito's Compilation Server. Then, it will instantly be available on the website. (www.toontownepire.com/dubito/compilations/<version>-<buildtype>.EXE)
 Access is restriceted by a admin password.
