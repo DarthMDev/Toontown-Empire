@@ -162,13 +162,13 @@ Cog = 'Cog'
 Cogs = 'Cogs'
 ACog = 'a Cog'
 TheCogs = 'The Cogs'
-ASkeleton = 'a Skelecog'
-Skeleton = 'Skelecog'
-SkeletonP = 'Skelecogs'
+ASkeleton = 'a Skeleton'
+Skeleton = 'Skeleton'
+SkeletonP = 'Skeletons'
 Av2Cog = 'a Version 2.0 Cog'
 v2Cog = 'Version 2.0 Cog'
 v2CogP = 'Version 2.0 Cogs'
-ASkeleton = 'a Skelecog'
+ASkeleton = 'a Skeleton'
 Foreman = 'Factory Foreman'
 ForemanP = 'Factory Foremen'
 AForeman = 'a Factory Foreman'
@@ -202,10 +202,12 @@ QuestsDefaultGreeting = ('Hello, _avName_!',
  'Welcome, _avName_!',
  'Howdy, _avName_!',
  'How are you, _avName_?',
+ 'How are you doing, _avName_?',
  'Greetings _avName_!')
 QuestsDefaultIncomplete = ("How's that task coming, _avName_?",
  'Looks like you still have more work to do on that task!',
  'Keep up the good work, _avName_!',
+ 'Keep Working on that task, I believe in you!',
  'Keep trying to finish that task.  I know you can do it!',
  'Keep trying to complete that task, we are counting on you!',
  'Keep working on that ToonTask!')
