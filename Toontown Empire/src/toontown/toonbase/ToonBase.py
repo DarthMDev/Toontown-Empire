@@ -228,7 +228,7 @@ class ToonBase(OTPBase.OTPBase):
         self.filters = CommonFilters(self.win, self.cam)
         self.wantCogInterface = settings.get('cogInterface', True)
 
-	self.wantWASD = settings.get('want-WASD', False)
+    self.wantWASD = settings.get('want-WASD', False)
 
         self.Move_Up = 'arrow_up'
         self.Move_Left = 'arrow_left'
@@ -243,8 +243,8 @@ class ToonBase(OTPBase.OTPBase):
             self.Move_Right = 'd'
             self.JUMP = 'shift'
 
-	def openMainWindow(self, *args, **kw):
-	   result = OTPBase.OTPBase.openMainWindow(self, *args, **kw)
+    def openMainWindow(self, *args, **kw):
+       result = OTPBase.OTPBase.openMainWindow(self, *args, **kw)
         self.setCursorAndIcon()
         return
 

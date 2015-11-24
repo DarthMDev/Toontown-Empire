@@ -202,10 +202,12 @@ QuestsDefaultGreeting = ('Hello, _avName_!',
  'Welcome, _avName_!',
  'Howdy, _avName_!',
  'How are you, _avName_?',
+ 'How are you doing, _avName_?',
  'Greetings _avName_!')
 QuestsDefaultIncomplete = ("How's that task coming, _avName_?",
  'Looks like you still have more work to do on that task!',
  'Keep up the good work, _avName_!',
+ 'Keep Working on that task, I believe in you!',
  'Keep trying to finish that task.  I know you can do it!',
  'Keep trying to complete that task, we are counting on you!',
  'Keep working on that ToonTask!')
