@@ -43,3 +43,4 @@ Access is restriceted by a admin password.
 # Planned Features:
 
 - Laff over head in boss battles like TTR
+- add back rollbar
