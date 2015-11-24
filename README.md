@@ -35,10 +35,11 @@ Anyone who breaks this rule will be removed from the team with no second chance.
 
 Pushing to this branch will automatically compile the game into a .EXE on Dubito's Compilation Server. Then, it will instantly be available on the website. (www.toontownepire.com/dubito/compilations/<version>-<buildtype>.EXE)
 Access is restriceted by a admin password.
-#plan to fix glitches:
+
+#Plan to Fix:
 
 - DA Office disable automatic joining of virtual skelecog cog battles
 
-# Planned features:
+# Planned Features:
 
 - Laff over head in boss battles like TTR
