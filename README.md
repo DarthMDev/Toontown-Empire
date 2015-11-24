@@ -4,9 +4,9 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/a71bcbed1f8c4cd59d7f1fa131c7114d)](https://www.codacy.com)
 
-[![Code Issues](https://www.quantifiedcode.com/api/v1/project/ace720abeb544fbcb8dc1c9aff3a6241/badge.svg)](https://www.quantifiedcode.com/app/project/ace720abeb544fbcb8dc1c9aff3a6241)
-
 [![Code Climate](https://codeclimate.com/repos/56537cbdd3ce080060006b7e/badges/f615018aaf1017330cea/gpa.svg)](https://codeclimate.com/repos/56537cbdd3ce080060006b7e/feed)
+
+[![Issue Count](https://codeclimate.com/repos/56537cbdd3ce080060006b7e/badges/f615018aaf1017330cea/issue_count.svg)](https://codeclimate.com/repos/56537cbdd3ce080060006b7e/feed)
 
 Official Repo for Toontown Empire, a new Toontown game based on Disney's Toontown Online.
 
@@ -36,3 +36,10 @@ Anyone who breaks this rule will be removed from the team with no second chance.
 Pushing to this branch will automatically compile the game into a .EXE on Dubito's Compilation Server. Then, it will instantly be available on the website. (www.toontownepire.com/dubito/compilations/<version>-<buildtype>.EXE)
 Access is restriceted by a admin password.
 
+#Plan to Fix:
+
+- DA Office disable automatic joining of virtual skelecog cog battles
+
+# Planned Features:
+
+- Laff over head in boss battles like TTR
