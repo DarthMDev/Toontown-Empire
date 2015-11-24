@@ -33,7 +33,7 @@ Breech of this will result in your access being revoked.
 # Compilation Branch Rules and Regulations:
 
 Do not edit, append or sync the "Compilation" branch, this branch is setup to cater for a automated compiler I'm developing.
-Anyone who breaks this rule will be removed from the team with no second chance.
+Anyone who breaks this rule will be removed from the team with no second chance. This means don't touch the branch, no matter what, since you like breaking the game mgracer48!
 
 Pushing to this branch will automatically compile the game into a .EXE on Dubito's Compilation Server. Then, it will instantly be available on the website. (www.toontownepire.com/dubito/compilations/<version>-<buildtype>.EXE)
 Access is restriceted by a admin password.
