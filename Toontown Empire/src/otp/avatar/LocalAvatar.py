@@ -1,4 +1,4 @@
-from direct.controls import ControlManager
+import ToontownControlManager
 from direct.controls.GhostWalker import GhostWalker
 from direct.controls.GravityWalker import GravityWalker
 from direct.controls.ObserverWalker import ObserverWalker
@@ -39,7 +39,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         base.pushCTrav(self.cTrav)
         self.cTrav.setRespectPrevTransform(1)
         self.avatarControlsEnabled = 0
-        self.controlManager = ControlManager.ControlManager(True, passMessagesThrough)
+        self.controlManager = ToontownControlManager.ToontownControlManager(True, passMessagesThrough)
         self.initializeCollisions()
         self.initializeSmartCamera()
         self.cameraPositions = []
@@ -904,24 +904,24 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         return self.animMultiplier
 
     def enableRun(self):
-        self.accept('arrow_up', self.startRunWatch)
-        self.accept('arrow_up-up', self.stopRunWatch)
-        self.accept('control-arrow_up', self.startRunWatch)
-        self.accept('control-arrow_up-up', self.stopRunWatch)
-        self.accept('alt-arrow_up', self.startRunWatch)
-        self.accept('alt-arrow_up-up', self.stopRunWatch)
-        self.accept('shift-arrow_up', self.startRunWatch)
-        self.accept('shift-arrow_up-up', self.stopRunWatch)
+        self.accept(base.Move_Up, self.startRunWatch)
+        self.accept(base.Move_Up + '-up', self.stopRunWatch)
+        self.accept('control-'+ base.Move_Up, self.startRunWatch)
+        self.accept('control-'+ base.Move_Up + '-up', self.stopRunWatch)
+        self.accept('alt-'+ base.Move_Up, self.startRunWatch)
+        self.accept('alt-'+ base.Move_Up + '-up', self.stopRunWatch)
+        self.accept('shift-' + base.Move_Up, self.startRunWatch)
+        self.accept('shift-' + base.Move_Up + '-up', self.stopRunWatch)
 
     def disableRun(self):
-        self.ignore('arrow_up')
-        self.ignore('arrow_up-up')
-        self.ignore('control-arrow_up')
-        self.ignore('control-arrow_up-up')
-        self.ignore('alt-arrow_up')
-        self.ignore('alt-arrow_up-up')
-        self.ignore('shift-arrow_up')
-        self.ignore('shift-arrow_up-up')
+        self.ignore(base.Move_Up)
+        self.ignore(base.Move_Up + '-up')
+        self.ignore('control-'+ base.Move_Up)
+        self.ignore('control-' + base.Move_Up + '-up')
+        self.ignore('alt-' + base.Move_Up)
+        self.ignore('alt-' + base.Move_Up + '-up')
+        self.ignore('shift-' + base.Move_Up)
+        self.ignore('shift-' + base.Move_Up + '-up')
 
     def startRunWatch(self):
 
@@ -1145,9 +1145,9 @@ def gravity(value):
     if value < 0:
         return 'Invalid gravity value!'
     if value == 0:
-        base.localAvatar.controlManager.currentControls.setGravity(ToontownGlobals.GravityValue * 2.0)
+        base.localAvatar.ToontownControlManager.currentControls.setGravity(ToontownGlobals.GravityValue * 2.0)
     else:
-        base.localAvatar.controlManager.currentControls.setGravity(value)
+        base.localAvatar.ToontownControlManager.currentControls.setGravity(value)
 
 @magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[float, float, float])
 def xyz(x, y, z):
