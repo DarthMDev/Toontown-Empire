@@ -43,7 +43,6 @@ class CogHood(Hood):
         self.storageDNAFile = None
         self.skyFile = self.SKY_FILE
         self.titleColor = self.TITLE_COLOR
-        self.LOADER_CLASS = None
 
     def load(self):
         Hood.load(self)
@@ -65,7 +64,7 @@ class CogHood(Hood):
 
     def unload(self):
         self.parentFSM.getStateNamed(self.__class__.__name__).removeChild(self.fsm)
-        del self.LOADER_CLASS
+
         Hood.unload(self)
 
     def loadLoader(self, requestStatus):
