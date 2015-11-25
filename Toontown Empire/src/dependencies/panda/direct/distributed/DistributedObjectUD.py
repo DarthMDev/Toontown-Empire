@@ -425,7 +425,7 @@ class DistributedObjectUD(DistributedObjectBase):
         # simultaneously on different lists of avatars, although they
         # should have different names.
 
-        from src.otp.ai import Barrier
+        from otp.ai import Barrier
         context = self.__nextBarrierContext
         # We assume the context number is passed as a uint16.
         self.__nextBarrierContext = (self.__nextBarrierContext + 1) & 0xffff

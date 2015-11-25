@@ -76,7 +76,7 @@ class GravityWalker(DirectObject.DirectObject):
             return
         from pandac.PandaModules import *
         from direct.interval.IntervalGlobal import *
-        from src.toontown.coghq import MovingPlatform
+        from toontown.coghq import MovingPlatform
 
         if hasattr(self, "platform"):
             # Remove the prior instantiation:
