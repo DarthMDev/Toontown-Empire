@@ -1,7 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from panda3d.core import *
 
 from toontown.battle import BattlePlace
 from toontown.building import Elevator

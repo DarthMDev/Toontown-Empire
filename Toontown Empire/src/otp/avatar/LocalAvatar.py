@@ -6,22 +6,22 @@ from direct.controls.SwimWalker import SwimWalker
 from direct.controls.TwoDWalker import TwoDWalker
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedSmoothNode
-from direct.gui.DirectGui import *
-from direct.interval.IntervalGlobal import *
 from direct.showbase.InputStateGlobal import inputState
-from direct.showbase.PythonUtil import *
 from direct.task import Task
 import math
-from panda3d.core import *
+from toontown.margins.WhisperPopup import WhisperPopup
 import random
 import webbrowser
 import numbers
 import DistributedAvatar
-from otp.ai.MagicWordGlobal import *
+from otp.ai.MagicWordGlobal import CATEGORY_ADMINISTRATOR
+from otp.ai.MagicWordGlobal import CATEGORY_COMMUNITY_MANAGER
+from direct.interval.LerpInterval import LerpFunctionInterval
+from otp.ai.MagicWordGlobal import magicWord
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPLocalizer
-from otp.nametag.NametagConstants import *
-from otp.margins.WhisperPopup import *
+from toontown.chat.ChatGlobals import WTNormal
+from toontown.chat.ChatGlobals import WTSystem
 from toontown.toonbase import ToontownGlobals
 
 
@@ -32,7 +32,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
     sleepTimeout = base.config.GetInt('sleep-timeout', 120)
     __enableMarkerPlacement = base.config.GetBool('place-markers', 0)
 
-    def __init__(self, cr, chatMgr, talkAssistant = None, passMessagesThrough = False):
+    def __init__(self, cr, chatMgr, talkAssistant=None, passMessagesThrough=False):
         DistributedAvatar.DistributedAvatar.__init__(self, cr)
         DistributedSmoothNode.DistributedSmoothNode.__init__(self, cr)
         self.cTrav = CollisionTraverser('base.cTrav')
@@ -69,7 +69,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.accept('avatarMoving', self.clearPageUpDown)
         self.showNametag2d()
         self.setPickable(0)
-    
+
     def setPreventCameraDisable(self, prevent):
         self.preventCameraDisable = prevent
 
@@ -146,7 +146,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
     def wantLegacyLifter(self):
         return False
 
-    def setupControls(self, avatarRadius = 1.4, floorOffset = OTPGlobals.FloorOffset, reach = 4.0, wallBitmask = OTPGlobals.WallBitmask, floorBitmask = OTPGlobals.FloorBitmask, ghostBitmask = OTPGlobals.GhostBitmask):
+    def setupControls(self, avatarRadius=1.4, floorOffset=OTPGlobals.FloorOffset, reach = 4.0, wallBitmask=OTPGlobals.WallBitmask, floorBitmask=OTPGlobals.FloorBitmask, ghostBitmask=OTPGlobals.GhostBitmask):
         walkControls = GravityWalker(legacyLifter=self.wantLegacyLifter())
         walkControls.setWallBitMask(wallBitmask)
         walkControls.setFloorBitMask(floorBitmask)
@@ -458,7 +458,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
             if self.cameraIndex < 0:
                 self.cameraIndex = len(self.cameraPositions) - 1
         self.setCameraPositionByIndex(self.cameraIndex)
-    
+
     def setCameraPosition(self, index):
         self.cameraIndex = index
         self.setCameraPositionByIndex(index)
@@ -1162,3 +1162,6 @@ def hpr(h, p, r):
     Modifies the rotation of the invoker.
     """
     base.localAvatar.setHpr(h, p, r)
+
+    def canChat():
+        return 0

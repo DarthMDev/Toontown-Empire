@@ -1,6 +1,6 @@
 import collections
 
-from rollbar.lib import python_major_version, binary_type, string_types, integer_types, traverse
+from toontown.rollbar.lib import python_major_version, binary_type, string_types, integer_types, traverse
 
 _ALLOWED_CIRCULAR_REFERENCE_TYPES = [binary_type, bool, type(None)]
 

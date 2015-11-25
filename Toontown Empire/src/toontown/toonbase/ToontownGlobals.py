@@ -1,7 +1,8 @@
 import TTLocalizer
 from otp.otpbase.OTPGlobals import *
 from direct.showbase.PythonUtil import Enum, invertDict
-from pandac.PandaModules import BitMask32, Vec4
+from panda3d.core import BitMask32
+from panda3d.core import  Vec4
 from toontown.estate import HouseGlobals
 MapHotkeyOn = 'alt'
 MapHotkeyOff = 'alt-up'

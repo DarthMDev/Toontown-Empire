@@ -1,26 +1,36 @@
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.distributed import DistributedSmoothNode
 from direct.distributed.ClientRepositoryBase import ClientRepositoryBase
-from direct.distributed.MsgTypes import *
 from direct.distributed.PyDatagram import PyDatagram
-from direct.distributed.PyDatagramIterator import PyDatagramIterator
 from direct.fsm.ClassicFSM import ClassicFSM
 from direct.fsm.State import State
-from direct.gui.DirectGui import *
+#from direct.gui.DirectGui import *
 from direct.task import Task
-from panda3d.core import *
+#from panda3d.core import *
 from otp.avatar import Avatar, DistributedAvatar
+from otp.distributed.OtpDoGlobals import OTP_ZONE_ID_MANAGEMENT
+from otp.distributed.OtpDoGlobals import OTP_ZONE_ID_DISTRICTS
 from otp.avatar.DistributedPlayer import DistributedPlayer
 from otp.distributed import OtpDoGlobals
-from otp.distributed.OtpDoGlobals import *
 from otp.distributed.TelemetryLimiter import TelemetryLimiter
 from otp.otpbase import OTPGlobals, OTPLocalizer
 from otp.otpgui import OTPDialog
-from otp.nametag.NametagConstants import *
+#from otp.nametag.NametagConstants import *
 import sys, time, types, random
 import __builtin__
-
-
+from direct.distributed.MsgTypes import CLIENT_OBJECT_LEAVING_OWNER
+from direct.distributed.MsgTypes import CLIENT_DONE_INTEREST_RESP
+from direct.distributed.MsgTypes import CLIENT_DISCONNECT
+from direct.distributed.MsgTypes import CLIENT_HELLO
+from direct.distributed.MsgTypes import CLIENT_HELLO_RESP
+from direct.distributed.MsgTypes import CLIENT_OBJECT_SET_FIELD
+from direct.distributed.MsgTypes import CLIENT_OBJECT_LEAVING
+from direct.distributed.MsgTypes import CLIENT_OBJECT_LOCATION
+from direct.distributed.MsgTypes import CLIENT_EJECT
+from direct.distributed.MsgTypes import CLIENT_ENTER_OBJECT_REQUIRED
+from direct.distributed.MsgTypes import CLIENT_HEARTBEAT
+from direct.distributed.MsgTypes import CLIENT_ENTER_OBJECT_REQUIRED_OTHER_OWNER
+from direct.distributed.MsgTypes import CLIENT_ENTER_OBJECT_REQUIRED_OTHER
 class OTPClientRepository(ClientRepositoryBase):
     notify = directNotify.newCategory('OTPClientRepository')
     avatarLimit = 6
@@ -39,8 +49,12 @@ class OTPClientRepository(ClientRepositoryBase):
 
         self._proactiveLeakChecks = config.GetBool('crash-on-proactive-leak-detect', 1)
         self.activeDistrictMap = {}
+        self.productName = config.GetString('product-name', 'DisneyOnline-US')
         self.telemetryLimiter = TelemetryLimiter()
         self.serverVersion = serverVersion
+        self.secretChatAllowed = config.GetBool('allow-secret-chat', 0)
+        self.openChatAllowed = config.GetBool('allow-open-chat', 0)
+
         self.waitingForDatabase = None
         self.loginFSM = ClassicFSM('loginFSM', [
             State('loginOff',
@@ -696,7 +710,7 @@ class OTPClientRepository(ClientRepositoryBase):
     def handleAvatarsList(self, avatars):
         self.avList = avatars
         self.loginFSM.request('chooseAvatar', [self.avList])
-        
+
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def enterChooseAvatar(self, avList):
         pass
@@ -1411,3 +1425,21 @@ class OTPClientRepository(ClientRepositoryBase):
 
     def addTaggedInterest(self, parentId, zoneId, mainTag, desc, otherTags = [], event = None):
         return self.addInterest(parentId, zoneId, desc, event)
+
+    def allowAnyTypedChat(self):
+        if self.allowSecretChat() or self.allowWhiteListChat() or self.allowOpenChat():
+            return True
+        else:
+            return False
+
+    def allowOpenChat(self):
+        return self.openChatAllowed
+
+    def allowSecretChat(self):
+        return self.secretChatAllowed or self.productName == 'Terra-DMC' and self.isBlue() and self.secretChatAllowed
+
+    def allowWhiteListChat(self):
+        if hasattr(self, 'whiteListChatEnabled') and self.whiteListChatEnabled:
+            return True
+        else:
+            return False

@@ -1,30 +1,39 @@
 from direct.actor import Actor
 from direct.directnotify import DirectNotifyGlobal
-from direct.interval.IntervalGlobal import *
 from direct.task.Task import Task
-from panda3d.core import *
 import random
 import types
 import math
+from toontown.chat.ChatGlobals import CFThought
 import AccessoryGlobals
 import Motion
 import TTEmote
+from direct.interval.FunctionInterval import Wait
 import ToonDNA
+from direct.interval.LerpInterval import LerpHprInterval
+from direct.interval.FunctionInterval import Func
+from direct.interval.MetaInterval import Parallel
+from direct.interval.ActorInterval import ActorInterval
+from toontown.toon.ToonHead import HeadDict
 import LaffMeter
-from ToonHead import *
-from otp.ai.MagicWordGlobal import *
+from otp.ai.MagicWordGlobal import magicWord
+from otp.ai.MagicWordGlobal import CATEGORY_PROGRAMMER
+from otp.ai.MagicWordGlobal import CATEGORY_COMMUNITY_MANAGER
+from otp.ai.MagicWordGlobal import spellbook
 from otp.avatar import Avatar
+from direct.fsm.State import State
+from direct.interval.MetaInterval import Sequence
 from otp.avatar import Emote
+from toontown.toon.ToonHead import ToonHead
+from direct.fsm.ClassicFSM import ClassicFSM
 from otp.avatar.Avatar import teleportNotify
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPLocalizer
 from toontown.battle import SuitBattleGlobals
-from otp.nametag.NametagConstants import *
 from toontown.distributed import DelayDelete
 from toontown.effects import DustCloud
 from toontown.effects import Wake
 from toontown.hood import ZoneUtil
-from otp.nametag.NametagGroup import *
 from toontown.suit import SuitDNA
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
@@ -205,6 +214,20 @@ def loadBasicAnims():
 def unloadBasicAnims():
     loadPhaseAnims(0)
 
+def b_setGM(self, gmType):
+    if (gmType < CATEGORY_USER.defaultAccess) and (gmType != 0):
+        gmType = self.getGMType()
+    self.sendUpdate('setGM', [gmType])
+    self.setGM(gmType)
+
+def setGM(self, gmType):
+    if (gmType < CATEGORY_USER.defaultAccess) and (gmType != 0):
+        gmType = self.getGMType()
+    self._isGM = gmType != 0
+    self._gmType = None
+    if self._isGM:
+        self._gmType = gmType
+
 def loadTutorialBattleAnims():
     loadPhaseAnims('phase_3.5')
 
@@ -358,13 +381,13 @@ def loadDialog():
     for file in mouseDialogueFiles:
         MouseDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
 
-    duckDialogueFiles = ('AV_duck_short', 'AV_duck_med', 'AV_duck_long', 
+    duckDialogueFiles = ('AV_duck_short', 'AV_duck_med', 'AV_duck_long',
     'AV_duck_question', 'AV_duck_exclaim', 'AV_duck_howl')
     global DuckDialogueArray
     for file in duckDialogueFiles:
         DuckDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
 
-    monkeyDialogueFiles = ('AV_monkey_short', 'AV_monkey_med', 'AV_monkey_long', 
+    monkeyDialogueFiles = ('AV_monkey_short', 'AV_monkey_med', 'AV_monkey_long',
     'AV_monkey_question', 'AV_monkey_exclaim', 'AV_monkey_howl')
     global MonkeyDialogueArray
     for file in monkeyDialogueFiles:
@@ -3084,12 +3107,12 @@ class Toon(Avatar.Avatar, ToonHead):
     def setGMIcon(self, access):
         if self.gmIcon:
             return
-        #todo change the bam file for staff_icons_christmas to link to phase_3/maps/staff_icons_christmas.png    
+        #todo change the bam file for staff_icons_christmas to link to phase_3/maps/staff_icons_christmas.png
         if config.GetBool('want-christmasicons', False): # Everything is correct just need to add this to config
 			icons = loader.loadModel('phase_3/models/props/staff_icons_christmas')
-        else:	
+        else:
 		#todo change the bam file for staff_icons to link to phase_3/maps/staff_icons.jpg
-        	icons = loader.loadModel('phase_3/models/props/staff_icons') 
+        	icons = loader.loadModel('phase_3/models/props/staff_icons')
         self.gmIcon = icons.find('**/access_level_%s' % access)
         np = NodePath(self.nametag.getNameIcon())
 
@@ -3098,12 +3121,12 @@ class Toon(Avatar.Avatar, ToonHead):
 
         self.gmIcon.flattenStrong()
         self.gmIcon.reparentTo(np)
-        self.gmIcon.setScale(1.6) 
+        self.gmIcon.setScale(1.6)
         self.gmIconInterval = LerpHprInterval(self.gmIcon, 3.0, Point3(0, 0, 0), Point3(-360, 0, 0))
         self.gmIconInterval.loop()
         self.setHeadPositions()
 
-    def removeGMIcon(self): 
+    def removeGMIcon(self):
         if not self.gmIcon:
             return
 
@@ -3178,11 +3201,11 @@ def partyHat(create=True):
         if isinstance(av, Toon):
             av.setPartyHat() if create else av.removePartyHat()
 
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[int], access=100) 
-def setGM(gmId):        
+@magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[int], access=100)
+def setGM(gmId):
     if not 0 <= gmId <= 5:
         return 'Args: 0=off, 1=trial, 2=staff, 3=lead_staff, 4=developer, 5=leader'
-        
+
     if spellbook.getInvokerAccess() < 100 and (gmId > 0):
         return 'Only staff on trial members can set GM higher than 0!'
     elif spellbook.getInvokerAccess() < 200 and (gmId > 1):
@@ -3190,16 +3213,16 @@ def setGM(gmId):
     elif spellbook.getInvokerAccess() < 300 and (gmId > 2):
         return 'Only lead staff members can set GM higher than 2!'
     elif spellbook.getInvokerAccess() < 500 and (gmId > 3):
-    	return 'Only developers can set gm higher than 3!'  
+    	return 'Only developers can set gm higher than 3!'
     elif spellbook.getInvokerAccess() < 500 and (gmId > 4):
         return 'Only leaders can set GM higher than 4!'
-        
+
     elif spellbook.getInvokerAccess() < 500 and (gmId > 5):
         return 'Only leaders can set GM to 5!'
-        
+
     if spellbook.getTarget().isGM() and gmId != 0:
         spellbook.getTarget().b_setGM(0)
-        
+
     spellbook.getTarget().b_setGM(gmId)
-    
+
     return 'You have set %s to GM type %s' % (spellbook.getTarget().getName(), gmId)
