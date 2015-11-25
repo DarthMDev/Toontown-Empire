@@ -123,11 +123,11 @@ class ChatManager(DirectObject.DirectObject):
 
     def enterMainMenu(self):
         self.checkObscurred()
-        if self.localAvatar.canChat():
+        if self.localAvatar.canChat() or self.cr.wantMagicWords:
             if self.wantBackgroundFocus:
                 self.chatInputNormal.chatEntry['backgroundFocus'] = 1
             self.acceptOnce('enterNormalChat', self.fsm.request, ['normalChat'])
-        if not self.wantBackgroundFocus:
+            if not self.wantBackgroundFocus:
                 self.accept('t', messenger.send, ['enterNormalChat'])
 
     def checkObscurred(self):
@@ -257,8 +257,8 @@ class ChatManager(DirectObject.DirectObject):
 
     def enterNormalChat(self):
         if base.wantWASD:
-            base.localAvatar.disableAvatarControls()
-            result = self.chatInputNormal.activateByData()
+            base.localAvatar.controlManager.disableWASD()
+        result = self.chatInputNormal.activateByData()
         return result
 
     def exitNormalChat(self):

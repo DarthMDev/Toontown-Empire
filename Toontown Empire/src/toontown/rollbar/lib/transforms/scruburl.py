@@ -1,7 +1,7 @@
 import re
 
-from rollbar.lib import iteritems, map, urlsplit, urlencode, urlunsplit, parse_qs, string_types, binary_type
-from rollbar.lib.transforms.scrub import ScrubTransform
+from toontown.rollbar.lib import iteritems, map, urlsplit, urlencode, urlunsplit, parse_qs, string_types, binary_type
+from toontown.rollbar.lib.transforms.scrub import ScrubTransform
 
 
 _starts_with_auth_re = re.compile(r'^[a-zA-Z0-9-_]*(:[^@/]+)?@')

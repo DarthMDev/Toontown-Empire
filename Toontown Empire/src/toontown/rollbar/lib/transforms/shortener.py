@@ -2,8 +2,8 @@ from array import array
 import collections
 import math
 
-from rollbar.lib import integer_types, iteritems, key_in, reprlib, string_types, text
-from rollbar.lib.transforms import Transform
+from toontown.rollbar.lib import integer_types, iteritems, key_in, reprlib, string_types, text
+from toontown.rollbar.lib.transforms import Transform
 
 
 _type_name_mapping = {

@@ -1,12 +1,16 @@
-from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedSmoothNodeAI
-from direct.distributed.ClockDelta import *
-from direct.distributed.MsgTypes import *
+from direct.distributed.ClockDelta import globalClockDelta
 from direct.distributed.PyDatagram import PyDatagram
 from direct.task import Task
-from otp.ai.AIBaseGlobal import *
-from otp.ai.MagicWordGlobal import *
+from otp.ai.MagicWordGlobal import magicWord
+from otp.ai.MagicWordGlobal import CATEGORY_CREATIVE
+from otp.ai.MagicWordGlobal import CATEGORY_USER
+from otp.ai.MagicWordGlobal import CATEGORY_MODERATOR
+from otp.ai.MagicWordGlobal import CATEGORY_PROGRAMMER
+from otp.ai.MagicWordGlobal import CATEGORY_ADMINISTRATOR
+from otp.ai.MagicWordGlobal import CATEGORY_COMMUNITY_MANAGER
+from otp.ai.MagicWordGlobal import CATEGORY_SYSTEM_ADMINISTRATOR
 from otp.avatar import DistributedAvatarAI, DistributedPlayerAI
 from otp.otpbase import OTPGlobals, OTPLocalizer
 from toontown.battle import SuitBattleGlobals
@@ -29,11 +33,10 @@ from toontown.shtiker import CogPageGlobals
 from toontown.suit import SuitDNA, SuitInvasionGlobals
 from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer, ToontownBattleGlobals, ToontownGlobals
-from toontown.toonbase.ToontownGlobals import *
 from NPCToons import npcFriends
 import Experience, InventoryBase, ToonDNA, random, time
 from toontown.uberdog import TopToonsGlobals
-
+from otp.ai.MagicWordGlobal import spellbook
 if simbase.wantPets:
     from toontown.pets import PetLookerAI, PetObserve
 else:
@@ -42,7 +45,9 @@ else:
             pass
 
 if simbase.wantKarts:
-    from toontown.racing.KartDNA import *
+    from toontown.racing.KartDNA import KartDNA
+    from toontown.racing.KartDNA import getNumFields
+
 
 class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLookerAI.PetLookerAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedToonAI')
@@ -5118,3 +5123,17 @@ def maxGarden():
     av.b_setWateringCan(3)
     av.b_setShovelSkill(639)
     av.b_setWateringCanSkill(999)
+
+    def b_setGM(self, gmType):
+        if (gmType < CATEGORY_USER.defaultAccess) and (gmType != 0):
+            gmType = self.getGMType()
+        self.sendUpdate('setGM', [gmType])
+        self.setGM(gmType)
+
+    def setGM(self, gmType):
+        if (gmType < CATEGORY_USER.defaultAccess) and (gmType != 0):
+            gmType = self.getGMType()
+        self._isGM = gmType != 0
+        self._gmType = None
+        if self._isGM:
+            self._gmType = gmType

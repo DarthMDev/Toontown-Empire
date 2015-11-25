@@ -1,18 +1,16 @@
-from panda3d.core import *
-from direct.distributed.ClockDelta import *
+from direct.distributed.ClockDelta import globalClockDelta
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from direct.gui.DirectLabel import *
-from direct.gui.DirectButton import *
+from direct.gui.DirectLabel import DirectLabel
+from direct.gui.DirectButton import DirectButton
 from direct.showbase import BulletinBoardWatcher
 from direct.interval.IntervalGlobal import *
 from otp.otpbase import OTPGlobals
-from direct.interval.IntervalGlobal import *
 from RaceGag import RaceGag
 from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.toon import ToonHeadFrame
 from toontown.racing.KartDNA import InvalidEntry, getAccessory, getDefaultColor
-from pandac.PandaModules import CardMaker, OrthographicLens, LineSegs
+from panda3d.core import CardMaker, OrthographicLens, LineSegs
 from direct.distributed import DistributedSmoothNode
 from math import fmod
 from math import sqrt
@@ -22,13 +20,15 @@ from direct.task.Task import Task
 from toontown.hood import SkyUtil
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from toontown.battle.BattleProps import *
+#from toontown.battle.BattleProps import
 from toontown.minigame import MinigameRulesPanel
 from toontown.racing import Piejectile
 from toontown.racing import EffectManager
 from toontown.racing import PiejectileManager
-from toontown.dna.DNAParser import *
-from otp.ai.MagicWordGlobal import *
+from toontown.dna.DNAParser import DNAStorage
+from toontown.dna.DNAParser import DNABulkLoader
+from otp.ai.MagicWordGlobal import magicWord
+from otp.ai.MagicWordGlobal import CATEGORY_PROGRAMMER
 
 class DistributedRace(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedRace')
@@ -1085,7 +1085,7 @@ class DistributedRace(DistributedObject.DistributedObject):
 
     def leaveRace(self):
         self.fsm.request('leave')
-    
+
     def finishRace(self):
         self.sendUpdate('heresMyT', [localAvatar.doId, self.lapCount, self.currLapT, globalClockDelta.localToNetworkTime(globalClock.getFrameTime())])
         self.fsm.request('finished')

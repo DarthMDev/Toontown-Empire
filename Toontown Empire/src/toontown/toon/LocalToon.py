@@ -1,13 +1,14 @@
 from direct.directnotify import DirectNotifyGlobal
-from direct.distributed.ClockDelta import *
+#from direct.distributed.ClockDelta import *
 from direct.gui import DirectGuiGlobals
-from direct.gui.DirectGui import *
-from direct.interval.IntervalGlobal import *
-from direct.showbase import PythonUtil
-from direct.showbase.PythonUtil import *
+from direct.gui.DirectGui import DirectLabel
+from direct.gui.DirectGui import DirectButton
 from direct.task import Task
+from toontown.toontowngui import TTDialog
+from direct.interval.MetaInterval import Sequence
+from direct.interval.MetaInterval import Parallel
 import math
-from panda3d.core import *
+#from panda3d.core import *
 import random
 import re
 import time
@@ -19,12 +20,13 @@ from otp.avatar import LocalAvatar
 from otp.avatar import PositionExaminer
 from otp.otpbase import OTPGlobals
 from toontown.battle import Fanfare
-from toontown.battle.BattleSounds import *
+#from toontown.battle.BattleSounds import *
 from toontown.catalog import CatalogNotifyDialog
 from toontown.chat import TTTalkAssistant
 from toontown.chat import ToontownChatManager
-from otp.nametag.NametagConstants import *
-from otp.margins.WhisperPopup import *
+#from otp.nametag.NametagConstants import *
+from toontown.battle.BattleSounds import globalBattleSoundCache
+#from otp.margins.WhisperPopup import *
 from toontown.estate import GardenGlobals
 from toontown.parties import PartyGlobals
 from toontown.quest import QuestMap
@@ -40,6 +42,7 @@ from toontown.shtiker import InventoryPage
 from toontown.shtiker import KartPage
 from toontown.shtiker import MapPage
 from toontown.shtiker import NPCFriendPage
+from direct.interval.IntervalGlobal import LerpPosHprInterval
 from toontown.shtiker import OptionsPage
 from toontown.shtiker import QuestPage
 from toontown.shtiker import ShardPage
@@ -48,10 +51,11 @@ from toontown.shtiker import SuitPage
 from toontown.shtiker import TrackPage
 from toontown.toon import ElevatorNotifier
 from toontown.toon import ToonDNA
+from direct.showbase.PythonUtil import fitDestAngle2Src
 from toontown.toon.DistributedNPCToonBase import DistributedNPCToonBase
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
-from toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase.ToontownGlobals import GlitchKillerZones
 from toontown.friends.FriendHandle import FriendHandle
 
 WantNewsPage = config.GetBool('want-news-page', ToontownGlobals.DefaultWantNewsPageSetting)
@@ -92,7 +96,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
                 self.bFriendsList = DirectButton(image=(friendsButtonNormal, friendsButtonPressed, friendsButtonRollover), relief=None, pos=(-0.139, 0, -0.127), parent=base.a2dTopRight, scale=newScale, text=('', TTLocalizer.FriendsListLabel, TTLocalizer.FriendsListLabel), text_scale=0.09, text_fg=Vec4(1, 1, 1, 1), text_shadow=Vec4(0, 0, 0, 1), text_pos=(0, -0.18), text_font=ToontownGlobals.getInterfaceFont(), command=self.sendFriendsListEvent)
             else:
                 self.bFriendsList = DirectButton(image=(friendsButtonNormal, friendsButtonPressed, friendsButtonRollover), relief=None, pos=(-0.141, 0, -0.125), parent=base.a2dTopRight, scale=newScale, text=('', TTLocalizer.FriendsListLabel, TTLocalizer.FriendsListLabel), text_scale=0.09, text_fg=Vec4(1, 1, 1, 1), text_shadow=Vec4(0, 0, 0, 1), text_pos=(0, -0.18), text_font=ToontownGlobals.getInterfaceFont(), command=self.sendFriendsListEvent)
-            
+
             self.bFriendsList.hide()
             self.friendsListButtonActive = 0
             self.friendsListButtonObscured = 0
@@ -158,7 +162,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.createSystemMsgAckGui()
             if not hasattr(base.cr, 'lastLoggedIn'):
                 base.cr.lastLoggedIn = self.cr.toontownTimeManager.convertStrToToontownTime('')
-            self.setLastTimeReadNews(base.cr.lastLoggedIn)            
+            self.setLastTimeReadNews(base.cr.lastLoggedIn)
             self.acceptingNewFriends = True
             self.acceptingNonFriendWhispers = True
             self.acceptingTeleport = True
@@ -312,7 +316,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
 
     def initInterface(self):
         self.newsButtonMgr = NewsPageButtonManager.NewsPageButtonManager()
-        self.newsButtonMgr.request('Hidden')    
+        self.newsButtonMgr.request('Hidden')
         self.book = ShtikerBook.ShtikerBook('bookDone')
         self.book.load()
         self.book.hideButton()
@@ -355,7 +359,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.book.addPage(self.photoPage, pageName=TTLocalizer.PhotoPageTitle)
         self.addEventsPage()
         if WantNewsPage:
-            self.addNewsPage()        
+            self.addNewsPage()
         self.book.setPage(self.mapPage, enterPage=False)
         self.laffMeter = LaffMeter.LaffMeter(self.style, self.hp, self.maxHp)
         self.laffMeter.setAvatar(self)
@@ -440,6 +444,20 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
 
     def isLocal(self):
         return 1
+
+    def canChat(self):
+        if not self.cr.allowAnyTypedChat():
+            return 0
+        if self.commonChatFlags & (ToontownGlobals.CommonChat | ToontownGlobals.SuperChat):
+            return 1
+        if base.cr.whiteListChatEnabled:
+            return 1
+        for friendId, flags in self.friendsList:
+            if flags & ToontownGlobals.FriendChat:
+                return 1
+
+        return 0
+
 
     def startChat(self):
         if self.tutorialAck:
@@ -788,7 +806,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             else:
                 self.__pieButton['text'] = str(self.numPies)
             self.__pieButtonCount = self.numPies
-    
+
     def displayWhisper(self, fromId, chatString, whisperType):
         LocalAvatar.LocalAvatar.displayWhisper(self, fromId, chatString, whisperType)
 
@@ -815,7 +833,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
     def hideFurnitureGui(self):
         if self.__furnitureGui:
             self.__furnitureGui.hide()
-            
+
     def clarabelleNewsPageCollision(self, show = True):
         if self.__clarabelleButton == None:
             return
@@ -1624,7 +1642,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.eventsPage.load()
         self.book.addPage(self.eventsPage, pageName=TTLocalizer.EventsPageName)
         return
-        
+
     def addNewsPage(self):
         self.newsPage = NewsPage.NewsPage()
         self.newsPage.load()
@@ -1673,7 +1691,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             base.localAvatar.setSystemMessage(0, TTLocalizer.SleepAutoReply % av.getName(), WTToontownBoardingGroup)
         elif av:
             self.notify.warning('setSleepAutoReply from non-toon %s' % fromId)
-            
+
     def setLastTimeReadNews(self, newTime):
         self.lastTimeReadNews = newTime
 
@@ -1695,7 +1713,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
 
         else:
             self.sendUpdate('logSuspiciousEvent', ['cheatCogdoMazeGame'])
-            
+
     def isReadingNews(self):
         result = False
         if base.cr and base.cr.playGame and base.cr.playGame.getPlace() and hasattr(base.cr.playGame.getPlace(), 'fsm') and base.cr.playGame.getPlace().fsm:

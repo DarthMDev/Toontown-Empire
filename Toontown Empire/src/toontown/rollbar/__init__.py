@@ -24,7 +24,7 @@ import requests
 
 import six
 
-from rollbar.lib import dict_merge, map, parse_qs, text, urljoin, urlparse, iteritems
+from toontown.rollbar.lib import dict_merge, map, parse_qs, text, urljoin, urlparse, iteritems
 
 
 log = logging.getLogger(__name__)
@@ -302,11 +302,11 @@ _initialized = False
 blacklisted_local_types = []
 
 
-from rollbar.lib import transforms
-from rollbar.lib.transforms.scrub import ScrubTransform
-from rollbar.lib.transforms.scruburl import ScrubUrlTransform
-from rollbar.lib.transforms.serializable import SerializableTransform
-from rollbar.lib.transforms.shortener import ShortenerTransform
+from toontown.rollbar.lib import transforms
+from toontown.rollbar.lib.transforms.scrub import ScrubTransform
+from toontown.rollbar.lib.transforms.scruburl import ScrubUrlTransform
+from toontown.rollbar.lib.transforms.serializable import SerializableTransform
+from toontown.rollbar.lib.transforms.shortener import ShortenerTransform
 
 
 ## public api

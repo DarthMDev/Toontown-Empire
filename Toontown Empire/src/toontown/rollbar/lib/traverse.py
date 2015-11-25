@@ -1,6 +1,6 @@
 import collections
 
-from rollbar.lib import binary_type, iteritems, string_types, circular_reference_label
+from toontown.rollbar.lib import binary_type, iteritems, string_types, circular_reference_label
 
 
 CIRCULAR = -1

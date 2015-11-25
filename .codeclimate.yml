@@ -1,6 +1,11 @@
-languages:
-   Python: true
-
+engines:
+  radon:
+    enabled: true
+  pep8:
+    enabled: true
+    checks:
+      E401:
+        enabled: false
 exclude_paths:
 - "Toontown Empire/src/build/**/*"
 - "Toontown Empire/src/dependencies/**/*"       

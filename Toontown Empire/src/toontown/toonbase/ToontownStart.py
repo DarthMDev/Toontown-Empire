@@ -2,7 +2,8 @@ import __builtin__
 
 __builtin__.process = 'client'
 
-import sys, os
+import sys
+import os
 sys.path.append(
     os.path.abspath(
         os.path.join(
@@ -13,23 +14,18 @@ sys.path.append(
 )
 
 # Temporary hack patch:
-import pandac.PandaModules
 __builtin__.__dict__.update(__import__('pandac.PandaModules', fromlist=['*']).__dict__)
-from direct.extensions_native import HTTPChannel_extensions
-from direct.extensions_native import Mat3_extensions
-from direct.extensions_native import VBase3_extensions
-from direct.extensions_native import VBase4_extensions
-from direct.extensions_native import NodePath_extensions
 
 
 from panda3d.core import loadPrcFile
+from toontown import rollbar
+from direct.gui.OnscreenImage import OnscreenImage
+rollbar.init('833d799472f747c8a6344134dded7b2d', environment='production')
 
 #Added for when injector code detection is added.
 ######################from toontown.cheatdetection import CheatDector
- 
+
 if __debug__:
-    import sys
-    from direct.stdpy import threading
 
     loadPrcFile('dependencies/config/general.prc')
     loadPrcFile('dependencies/config/release/dev.prc')
@@ -37,7 +33,6 @@ if __debug__:
     if os.path.isfile('dependencies/config/local.prc'):
         loadPrcFile('dependencies/config/local.prc')
 
-    defaultText = ""
 
 
 from direct.directnotify.DirectNotifyGlobal import directNotify
@@ -89,11 +84,6 @@ loadPrcFileData('Settings: fullscreen', 'fullscreen %s' % settings['fullscreen']
 loadPrcFileData('Settings: musicVol', 'audio-master-music-volume %s' % settings['musicVol'])
 loadPrcFileData('Settings: sfxVol', 'audio-master-sfx-volume %s' % settings['sfxVol'])
 loadPrcFileData('Settings: loadDisplay', 'load-display %s' % settings['loadDisplay'])
-
-import time
-import sys
-import random
-import __builtin__
 from toontown.launcher.TTELauncher import TTELauncher
 
 __builtin__.launcher = TTELauncher()
@@ -102,13 +92,12 @@ notify.info('Starting Toontown Empire')
 tempLoader = Loader()
 backgroundNode = tempLoader.loadSync(Filename('phase_3/models/gui/loading-background'))
 from direct.gui import DirectGuiGlobals
-from direct.gui.DirectGui import *
 notify.info('Default Font')
 import ToontownGlobals
 DirectGuiGlobals.setDefaultFontFunc(ToontownGlobals.getInterfaceFont)
 import ToonBase
 ToonBase.ToonBase()
-from panda3d.core import *
+#from panda3d.core import
 if base.win is None:
     notify.error('Unable to open window; ')
 ConfigVariableDouble('decompressor-step-time').setValue(0.01)
@@ -141,16 +130,16 @@ if base.musicManagerIsValid:
 else:
     music = None
 import ToontownLoader
-from direct.gui.DirectGui import *
+from direct.gui.DirectGui import OnscreenText
 serverVersion = base.config.GetString('server-version', 'no_version_set')
-version = OnscreenText(serverVersion, pos=(-1.3, -0.975), scale=0.06, fg=Vec4(0, 0, 1, 0.6), align=TextNode.ALeft)
-version.setPos(0.03,0.03)
+version = OnscreenText(serverVersion, pos=(-1.3, -0.975), scale=0.06, fg=Vec4(0, 0, 1, 0.6),
+ align=TextNode.ALeft)
+version.setPos(0.03, 0.03)
 version.reparentTo(base.a2dBottomLeft)
 from toontown.suit import Suit
 Suit.loadModels()
 loader.beginBulkLoad('init', TTLocalizer.LoaderLabel, 138, 0, 0)
-from ToonBaseGlobal import *
-from direct.showbase.MessengerGlobal import *
+from ToonBaseGlobal import ToonBase
 from toontown.distributed import ToontownClientRepository
 cr = ToontownClientRepository.ToontownClientRepository(serverVersion)
 cr.music = music
@@ -159,7 +148,7 @@ base.initNametagGlobals()
 base.cr = cr
 loader.endBulkLoad('init')
 from otp.friends import FriendManager
-from otp.distributed.OtpDoGlobals import *
+from otp.distributed.OtpDoGlobals import OTP_DO_ID_FRIEND_MANAGER
 cr.generateGlobalObject(OTP_DO_ID_FRIEND_MANAGER, 'FriendManager')
 base.startShow(cr)
 backgroundNodePath.reparentTo(hidden)
@@ -181,4 +170,3 @@ if autoRun:
         print describeException()
         rollbar.report_exc_info()
         raise
-        

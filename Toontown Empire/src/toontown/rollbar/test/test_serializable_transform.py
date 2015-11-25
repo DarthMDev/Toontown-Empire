@@ -3,10 +3,10 @@ import base64
 import copy
 import math
 
-from rollbar.lib import transforms, python_major_version
-from rollbar.lib.transforms.serializable import SerializableTransform
+from toontown.rollbar.lib import transforms, python_major_version
+from toontown.rollbar.lib.transforms.serializable import SerializableTransform
 
-from rollbar.test import BaseTest, SNOWMAN, SNOWMAN_UNICODE
+from toontown.rollbar.test import BaseTest, SNOWMAN, SNOWMAN_UNICODE
 
 if python_major_version() >= 3:
     SNOWMAN = SNOWMAN_UNICODE

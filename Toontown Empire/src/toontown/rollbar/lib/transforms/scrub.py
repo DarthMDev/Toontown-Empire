@@ -1,8 +1,8 @@
 import os
 import random
 
-from rollbar.lib import build_key_matcher, text
-from rollbar.lib.transforms import Transform
+from toontown.rollbar.lib import build_key_matcher, text
+from toontown.rollbar.lib.transforms import Transform
 
 
 class ScrubTransform(Transform):

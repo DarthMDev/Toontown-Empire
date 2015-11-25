@@ -1,6 +1,6 @@
 import atexit
 import os
-from panda3d.core import *
+#from panda3d.core import
 import random
 import shutil
 from sys import platform
@@ -23,7 +23,7 @@ import fractions
 from direct.directnotify import DirectNotifyGlobal
 from direct.filter.CommonFilters import CommonFilters
 from direct.gui import DirectGuiGlobals
-from direct.gui.DirectGui import *
+#from direct.gui.DirectGui import
 
 class ToonBase(OTPBase.OTPBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonBase')
@@ -58,7 +58,8 @@ class ToonBase(OTPBase.OTPBase):
 
                     while ratios:
                         ratio = ratios.pop()
-                        if (float(ratio[0])/float(ratio[1])) < (float(self.nativeRatio[0])/float(self.nativeRatio[1])):
+                        if (float(ratio[0])/float(ratio[1])) < (float(self.nativeRatio[0]
+                        )/float(self.nativeRatio[1])):
                             resolutions = ToontownGlobals.CommonDisplayResolutions[ratio]
 
                             if resolutions[0][0] >= (self.nativeWidth - 125):
@@ -228,7 +229,7 @@ class ToonBase(OTPBase.OTPBase):
         self.filters = CommonFilters(self.win, self.cam)
         self.wantCogInterface = settings.get('cogInterface', True)
 
-    self.wantWASD = settings.get('want-WASD', False)
+        self.wantWASD = settings.get('want-WASD', False)
 
         self.Move_Up = 'arrow_up'
         self.Move_Left = 'arrow_left'
@@ -244,7 +245,7 @@ class ToonBase(OTPBase.OTPBase):
             self.JUMP = 'shift'
 
     def openMainWindow(self, *args, **kw):
-       result = OTPBase.OTPBase.openMainWindow(self, *args, **kw)
+        result = OTPBase.OTPBase.openMainWindow(self, *args, **kw)
         self.setCursorAndIcon()
         return
 
@@ -284,9 +285,9 @@ class ToonBase(OTPBase.OTPBase):
         self.useDrive()
         self.disableMouse()
         if self.mouseInterface:
-             self.mouseInterface.detachNode()
+            self.mouseInterface.detachNode()
         if self.mouse2cam:
-             self.mouse2cam.detachNode()
+            self.mouse2cam.detachNode()
 
     def __walking(self, pressed):
         self.walking = pressed
@@ -538,7 +539,7 @@ class ToonBase(OTPBase.OTPBase):
         self.cr.sendDisconnect()
         sys.exit()
 
-    def playMusic(self, music, looping = 0, interrupt = 1, volume = None, time = 0.0):
+    def playMusic(self, music, looping=0, interrupt=1, volume=None, time=0.0):
         OTPBase.OTPBase.playMusic(self, music, looping, interrupt, volume, time)
 
     # OS X Specific Actions

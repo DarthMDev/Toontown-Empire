@@ -1,10 +1,10 @@
 import base64
 
-from rollbar.lib import binary_type, string_types
-from rollbar.lib import circular_reference_label, undecodable_object_label, unencodable_object_label
-from rollbar.lib import iteritems, python_major_version, text
+from toontown.rollbar.lib import binary_type, string_types
+from toontown.rollbar.lib import circular_reference_label, undecodable_object_label, unencodable_object_label
+from toontown.rollbar.lib import iteritems, python_major_version, text
 
-from rollbar.lib.transforms import Transform
+from toontown.rollbar.lib.transforms import Transform
 
 
 class SerializableTransform(Transform):
