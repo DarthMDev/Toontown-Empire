@@ -4,9 +4,9 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/a71bcbed1f8c4cd59d7f1fa131c7114d)](https://www.codacy.com)
 
-[![Code Climate](https://codeclimate.com/repos/56537cbdd3ce080060006b7e/badges/f615018aaf1017330cea/gpa.svg)](https://codeclimate.com/repos/56537cbdd3ce080060006b7e/feed)
+[![Code Climate](https://codeclimate.com/repos/5656339fcec7e713e7002995/badges/4b18f7e5b180023fbf40/gpa.svg)](https://codeclimate.com/repos/5656339fcec7e713e7002995/feed)
 
-[![Issue Count](https://codeclimate.com/repos/56537cbdd3ce080060006b7e/badges/f615018aaf1017330cea/issue_count.svg)](https://codeclimate.com/repos/56537cbdd3ce080060006b7e/feed)
+[![Issue Count](https://codeclimate.com/repos/5656339fcec7e713e7002995/badges/4b18f7e5b180023fbf40/issue_count.svg)](https://codeclimate.com/repos/5656339fcec7e713e7002995/feed)
 
 Official Repo for Toontown Empire, a new Toontown game based on Disney's Toontown Online.
 
