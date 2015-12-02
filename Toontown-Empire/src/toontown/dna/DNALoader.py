@@ -191,23 +191,23 @@ class DNALoader:
 
     def loadDNAFileBase(self, dnaStorage, file):
         self.dnaStorage = dnaStorage
-        dnaFile = open(file, 'rb')
-        dnaData = dnaFile.read()
-        dg = PyDatagram(dnaData)
-        dgi = PyDatagramIterator(dg)
-        dnaFile.close()
-        header = dgi.extractBytes(5)
-        if header != 'PDNA\n':
-            raise DNAError.DNAError('Invalid header: %s' % (header))
-        compressed = dgi.getBool()
-        dgi.skipBytes(1)
-        if compressed:
-            data = dgi.getRemainingBytes()
-            data = zlib.decompress(data)
-            dg = PyDatagram(data)
+        with open(file, 'rb') as dnaFile:
+            dnaData = dnaFile.read()
+            dg = PyDatagram(dnaData)
             dgi = PyDatagramIterator(dg)
-        self.handleStorageData(dgi)
-        self.handleCompData(dgi)
+            dnaFile.close()
+            header = dgi.extractBytes(5)
+            if header != 'PDNA\n':
+                raise DNAError.DNAError('Invalid header: %s' % (header))
+            compressed = dgi.getBool()
+            dgi.skipBytes(1)
+            if compressed:
+                data = dgi.getRemainingBytes()
+                data = zlib.decompress(data)
+                dg = PyDatagram(data)
+                dgi = PyDatagramIterator(dg)
+            self.handleStorageData(dgi)
+            self.handleCompData(dgi)
 
     def loadDNAFile(self, dnaStorage, file):
         self.loadDNAFileBase(dnaStorage, file)

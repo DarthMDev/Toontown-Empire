@@ -3169,7 +3169,7 @@ def getNextQuest(id, currentNpc, av):
 def filterQuests(entireQuestPool, currentNpc, av):
     if notify.getDebug():
         notify.debug('filterQuests: entireQuestPool: %s' % entireQuestPool)
-    validQuestPool = dict([ (questId, 1) for questId in entireQuestPool ])
+    validQuestPool = {questId: 1 for questId in entireQuestPool}
     if isLoopingFinalTier(av.getRewardTier()):
         history = map(lambda questDesc: questDesc[0], av.quests)
     else:
