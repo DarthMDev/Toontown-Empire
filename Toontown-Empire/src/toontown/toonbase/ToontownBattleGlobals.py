@@ -53,7 +53,7 @@ Levels = [
  [0, 20, 100, 500, 2000, 6000, 10000]
 ]
 regMaxSkill = 10000
-UberSkill = 500
+UberSkill = 800
 MaxSkill = UberSkill + regMaxSkill
 
 
@@ -100,7 +100,7 @@ AvPropStringsPlural = TTLocalizer.BattleGlobalAvPropStringsPlural
 AvPropAccuracy = (
  (70, 70, 70, 70, 70, 70, 100),
  (0, 0, 0, 0, 0, 0, 0),
- (50, 50, 60, 60, 70, 70, 90),
+ (60, 50, 70, 60, 80, 70, 90),
  (95, 95, 95, 95, 95, 95, 95),
  (75, 75, 75, 75, 75, 75, 75),
  (95, 95, 95, 95, 95, 95, 95),
@@ -112,19 +112,19 @@ AvPropDamage = (
  ( # Toon-up
   ((8, 10), (Levels[0][0], Levels[0][1])),
   ((15, 18), (Levels[0][1], Levels[0][2])),
-  ((25, 30), (Levels[0][2], Levels[0][3])),
-  ((40, 45), (Levels[0][3], Levels[0][4])),
-  ((60, 70), (Levels[0][4], Levels[0][5])),
-  ((90, 120), (Levels[0][5], Levels[0][6])),
-  ((210, 210), (Levels[0][6], MaxSkill))
+  ((15, 20), (Levels[0][2], Levels[0][3])),
+  ((31, 36), (Levels[0][3], Levels[0][4])),
+  ((40, 50), (Levels[0][4], Levels[0][5])),
+  ((60, 90), (Levels[0][5], Levels[0][6])),
+  ((360, 360), (Levels[0][6], MaxSkill))
  ),
  ( # Trap
   ((10, 12), (Levels[1][0], Levels[1][1])),
-  ((18, 20), (Levels[1][1], Levels[1][2])),
-  ((30, 35), (Levels[1][2], Levels[1][3])),
-  ((45, 50), (Levels[1][3], Levels[1][4])),
-  ((60, 70), (Levels[1][4], Levels[1][5])),
-  ((90, 180), (Levels[1][5], Levels[1][6])),
+  ((17, 20), (Levels[1][1], Levels[1][2])),
+  ((20, 35), (Levels[1][2], Levels[1][3])),
+  ((42, 47), (Levels[1][3], Levels[1][4])),
+  ((56, 76), (Levels[1][4], Levels[1][5])),
+  ((92, 110), (Levels[1][5], Levels[1][6])),
   ((195, 195), (Levels[1][6], MaxSkill))
  ),
  ( # Lure
@@ -155,22 +155,22 @@ AvPropDamage = (
   ((120, 120), (Levels[4][6], MaxSkill))
  ),
  ( # Squirt
-  ((3, 4), (Levels[5][0], Levels[5][1])),
+  ((4, 5), (Levels[5][0], Levels[5][1])),
   ((6, 8), (Levels[5][1], Levels[5][2])),
-  ((10, 12), (Levels[5][2], Levels[5][3])),
+  ((11, 13), (Levels[5][2], Levels[5][3])),
   ((18, 21), (Levels[5][3], Levels[5][4])),
-  ((27, 30), (Levels[5][4], Levels[5][5])),
+  ((29, 32), (Levels[5][4], Levels[5][5])),
   ((36, 80), (Levels[5][5], Levels[5][6])),
   ((105, 105), (Levels[5][6], MaxSkill))
  ),
  ( # Drop
   ((10, 10), (Levels[6][0], Levels[6][1])),
-  ((18, 18), (Levels[6][1], Levels[6][2])),
-  ((30, 30), (Levels[6][2], Levels[6][3])),
-  ((45, 45), (Levels[6][3], Levels[6][4])),
-  ((60, 60), (Levels[6][4], Levels[6][5])),
-  ((80, 170), (Levels[6][5], Levels[6][6])),
-  ((195, 195), (Levels[6][6], MaxSkill))
+  ((17, 17), (Levels[6][1], Levels[6][2])),
+  ((35, 35), (Levels[6][2], Levels[6][3])),
+  ((47, 47), (Levels[6][3], Levels[6][4])),
+  ((76, 76), (Levels[6][4], Levels[6][5])),
+  ((95, 160), (Levels[6][5], Levels[6][6])),
+  ((168, 168), (Levels[6][6], MaxSkill))
  )
 )
 ATK_SINGLE_TARGET = 0
