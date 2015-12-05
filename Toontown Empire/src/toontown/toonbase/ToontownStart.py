@@ -13,8 +13,8 @@ sys.path.append(
 )
 
 # Temporary hack patch:
-import pandac.PandaModules
-__builtin__.__dict__.update(__import__('pandac.PandaModules', fromlist=['*']).__dict__)
+import panda3d.core
+__builtin__.__dict__.update(__import__('panda3d.core', fromlist=['*']).__dict__)
 from direct.extensions_native import HTTPChannel_extensions
 from direct.extensions_native import Mat3_extensions
 from direct.extensions_native import VBase3_extensions

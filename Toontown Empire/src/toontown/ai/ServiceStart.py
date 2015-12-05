@@ -5,7 +5,7 @@ __builtin__.process = 'ai'
 
 
 # Temporary hack patch:
-__builtin__.__dict__.update(__import__('pandac.PandaModules', fromlist=['*']).__dict__)
+__builtin__.__dict__.update(__import__('panda3d.core', fromlist=['*']).__dict__)
 from direct.extensions_native import HTTPChannel_extensions
 import sys
 

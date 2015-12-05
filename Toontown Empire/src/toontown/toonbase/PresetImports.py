@@ -3,7 +3,7 @@
 #TODO: Add pre-set codes, Add more pre-set Imports. 
 '''
 from direct.distributed.PyDatagram import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from otp.ai.MagicWordManagerAI import MagicWordManagerAI
 from otp.distributed.OtpDoGlobals import *
 from otp.friends.FriendManagerAI import FriendManagerAI
