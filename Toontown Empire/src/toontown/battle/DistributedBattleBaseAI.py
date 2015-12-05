@@ -1828,8 +1828,7 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
         self.serialNum += 1
         return num
 
-
-@magicWord(category=CATEGORY_MODERATOR)
+@magicWord(category=CATEGORY_STAFF)
 def skipMovie():
     invoker = spellbook.getInvoker()
     battleId = invoker.getBattleId()

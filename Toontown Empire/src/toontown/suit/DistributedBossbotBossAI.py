@@ -3,7 +3,7 @@ from direct.distributed.ClockDelta import globalClockDelta
 from direct.fsm import FSM
 from direct.interval.IntervalGlobal import LerpPosInterval
 import math
-from pandac.PandaModules import Point3
+from panda3d.core import Point3
 import random
 
 from otp.ai.MagicWordGlobal import *
@@ -920,7 +920,7 @@ def getCEO(toon):
     
     return None
 
-@magicWord(category=CATEGORY_ADMINISTRATOR)
+@magicWord(category=CATEGORY_LEADER)
 def skipCEOBanquet():
     """
     Skips to the banquet stage of the CEO.
@@ -933,7 +933,7 @@ def skipCEOBanquet():
     boss.exitIntroduction()
     boss.b_setState('PrepareBattleTwo')
 
-@magicWord(category=CATEGORY_ADMINISTRATOR)
+@magicWord(category=CATEGORY_LEADER)
 def skipCEO():
     """
     Skips to the third round of the CEO.
@@ -946,7 +946,7 @@ def skipCEO():
     boss.exitIntroduction()
     boss.b_setState('PrepareBattleThree')
 
-@magicWord(category=CATEGORY_ADMINISTRATOR)
+@magicWord(category=CATEGORY_LEADER)
 def skipCEOFinal():
     """
     Skips to the final round of the CEO.
@@ -959,7 +959,7 @@ def skipCEOFinal():
     boss.exitIntroduction()
     boss.b_setState('PrepareBattleFour')
 
-@magicWord(category=CATEGORY_ADMINISTRATOR)
+@magicWord(category=CATEGORY_LEADER)
 def killCEO():
     """
     Kills the CEO.

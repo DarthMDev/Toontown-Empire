@@ -2,7 +2,7 @@
 distribution test
 
 # Server:
-server-version TTE-Version-1.0
+server-version TTE-Alpha-1.0.0
 client-agents 8
 shard-low-pop 100
 shard-mid-pop 150

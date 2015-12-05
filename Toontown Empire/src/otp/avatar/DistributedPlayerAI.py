@@ -110,7 +110,7 @@ class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.Pl
 
         self.friendsList.append(friendId)
 
-@magicWord(category=CATEGORY_SYSTEM_ADMINISTRATOR, types=[str])
+@magicWord(category=CATEGORY_LEADER, types=[str])
 def system(message):
     """
     Broadcast a <message> to the game server.
@@ -122,7 +122,7 @@ def system(message):
                                10, 1000000, [message])
     simbase.air.send(dg)
 
-@magicWord(category=CATEGORY_SYSTEM_ADMINISTRATOR, types=[int])
+@magicWord(category=CATEGORY_LEADER, types=[int])
 def maintenance(minutes):
     """
     Initiate the maintenance message sequence. It will last for the specified
@@ -158,36 +158,27 @@ def maintenance(minutes):
 
     countdown(minutes)
 
-@magicWord(category=CATEGORY_SYSTEM_ADMINISTRATOR, types=[str, str, int])
+@magicWord(category=CATEGORY_LEAD_STAFF, types=[str, str, int])
 def accessLevel(accessLevel, storage='PERSISTENT', showGM=1):
     """
     Modify the target's access level.
     """
     accessName2Id = {
-        'user': CATEGORY_USER.defaultAccess,
-        'u': CATEGORY_USER.defaultAccess,
-        'communitymanager': CATEGORY_COMMUNITY_MANAGER.defaultAccess,
-        'community': CATEGORY_COMMUNITY_MANAGER.defaultAccess,
-        'co': CATEGORY_COMMUNITY_MANAGER.defaultAccess,
-        'moderator': CATEGORY_MODERATOR.defaultAccess,
-        'mod': CATEGORY_MODERATOR.defaultAccess,
-        'm': CATEGORY_MODERATOR.defaultAccess,
-        'creative': CATEGORY_CREATIVE.defaultAccess,
-        'creativity': CATEGORY_CREATIVE.defaultAccess,
-        'cr': CATEGORY_CREATIVE.defaultAccess,
-        'programmer': CATEGORY_PROGRAMMER.defaultAccess,
-        'coder': CATEGORY_PROGRAMMER.defaultAccess,
-        'p': CATEGORY_PROGRAMMER.defaultAccess,
-        'administrator': CATEGORY_ADMINISTRATOR.defaultAccess,
-        'admin': CATEGORY_ADMINISTRATOR.defaultAccess,
-        'a': CATEGORY_ADMINISTRATOR.defaultAccess,
-        'systemadministrator': CATEGORY_SYSTEM_ADMINISTRATOR.defaultAccess,
-        'systemadmin': CATEGORY_SYSTEM_ADMINISTRATOR.defaultAccess,
-        'sysadministrator': CATEGORY_SYSTEM_ADMINISTRATOR.defaultAccess,
-        'sysadmin': CATEGORY_SYSTEM_ADMINISTRATOR.defaultAccess,
-        'system': CATEGORY_SYSTEM_ADMINISTRATOR.defaultAccess,
-        'sys': CATEGORY_SYSTEM_ADMINISTRATOR.defaultAccess,
-        's': CATEGORY_SYSTEM_ADMINISTRATOR.defaultAccess
+        'trial': CATEGORY_TRIAL.defaultAccess,
+        'Trial': CATEGORY_TRIAL.defaultAccess,
+        't': CATEGORY_TRIAL.defaultAccess,
+        'staff': CATEGORY_STAFF.defaultAccess,
+        'Staff': CATEGORY_STAFF.defaultAccess,
+        's': CATEGORY_STAFF.defaultAccess,
+        'lead-staff': CATEGORY_LEAD_STAFF.defaultAccess,
+        'leadstaff': CATEGORY_LEAD_STAFF.defaultAccess,
+        'ls': CATEGORY_LEAD_STAFF.defaultAccess,
+        'developer': CATEGORY_DEVELOPER.defaultAccess,
+        'dev': CATEGORY_DEVELOPER.defaultAccess,
+        'd': CATEGORY_DEVELOPER.defaultAccess,
+        'leader': CATEGORY_LEADER.defaultAccess,
+        'founder': CATEGORY_LEADER.defaultAccess,
+        'l': CATEGORY_LEADER.defaultAccess
     }
     try:
         accessLevel = int(accessLevel)
@@ -221,34 +212,3 @@ def accessLevel(accessLevel, storage='PERSISTENT', showGM=1):
     else:
         target.d_setSystemMessage(0, '%s set your access level to %d temporarily!' % (invoker.getName(), accessLevel))
         return "%s's access level has been set to %d temporarily." % (target.getName(), accessLevel)
-
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER)
-def disableGM():
-    """
-    Temporarily disable GM features.
-    """
-    target = spellbook.getTarget()
-
-    if hasattr(target, 'oldAccess'):
-        return 'GM features are already disabled!\nTo enable, use ~enableGM.'
-
-    if not target.isAdmin():
-        return 'Target is not an admin!'
-
-    target.oldAccess = target.adminAccess
-    target.d_setAdminAccess(100)
-    return 'GM features are disabled!'
-
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER)
-def enableGM():
-    """
-    Enable GM features.
-    """
-    target = spellbook.getTarget()
-
-    if not hasattr(target, 'oldAccess'):
-        return 'GM features are not disabled!'
-
-    target.d_setAdminAccess(target.oldAccess)
-    del target.oldAccess
-    return 'GM features are enabled!'

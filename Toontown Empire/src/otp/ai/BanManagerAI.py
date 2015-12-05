@@ -116,7 +116,7 @@ class BanManagerAI(DirectObject):
         self.banFSMs[avId] = None
 
 
-@magicWord(category=CATEGORY_MODERATOR, types=[str])
+@magicWord(category=CATEGORY_TRIAL, types=[str])
 def kick(reason='No reason specified'):
     """
     Kick the target from the game server.
@@ -134,7 +134,7 @@ def kick(reason='No reason specified'):
     return "Kicked %s from the game server!" % target.getName()
 
 
-@magicWord(category=CATEGORY_MODERATOR, types=[str, str])
+@magicWord(category=CATEGORY_STAFF, types=[str, str])
 def ban(duration=0, reason='No reason specified'):
     """
     Ban the target from the game server.

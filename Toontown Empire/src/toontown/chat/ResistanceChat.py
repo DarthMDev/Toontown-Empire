@@ -20,10 +20,7 @@ EFFECT_RADIUS = 30
 RESISTANCE_TOONUP = 0
 RESISTANCE_RESTOCK = 1
 RESISTANCE_MONEY = 2
-RESISTANCE_TICKETS = 3
-RESISTANCE_MERITS = 4
-resistanceMenu = [RESISTANCE_TOONUP, RESISTANCE_RESTOCK, RESISTANCE_MONEY, RESISTANCE_TICKETS, RESISTANCE_MERITS]
-randomResistanceMenu = [RESISTANCE_TOONUP, RESISTANCE_RESTOCK, RESISTANCE_MONEY, RESISTANCE_TICKETS]
+resistanceMenu = [RESISTANCE_TOONUP, RESISTANCE_RESTOCK, RESISTANCE_MONEY]
 resistanceDict = {
     RESISTANCE_TOONUP: {
         'menuName': TTLocalizer.ResistanceToonupMenu,
@@ -36,8 +33,8 @@ resistanceDict = {
         'menuName': TTLocalizer.ResistanceMoneyMenu,
         'itemText': TTLocalizer.ResistanceMoneyItem,
         'chatText': TTLocalizer.ResistanceMoneyChat,
-        'values': [100, 200, 350, 600, 1200, 2400],
-        'items': [0, 1, 2, 3, 4, 5]
+        'values': [100, 200, 350, 1000],
+        'items': [0, 1, 2, 3]
     },
     RESISTANCE_RESTOCK: {
         'menuName': TTLocalizer.ResistanceRestockMenu,
@@ -64,21 +61,6 @@ resistanceDict = {
             TTLocalizer.MovieNPCSOSAll
         ],
         'items': [0, 1, 2, 3, 4, 5, 6, 7]
-    },
-    RESISTANCE_MERITS: {
-        'menuName': TTLocalizer.ResistanceMeritsMenu,
-        'itemText': TTLocalizer.ResistanceMeritsItem,
-        'chatText': TTLocalizer.ResistanceMeritsChat,
-        'values': range(len(SuitDNA.suitDepts)) + [-1],
-        'extra': TTLocalizer.RewardPanelMeritBarLabels + [TTLocalizer.MovieNPCSOSAll],
-        'items': range(len(SuitDNA.suitDepts) + 1)
-    },
-    RESISTANCE_TICKETS: {
-        'menuName': TTLocalizer.ResistanceTicketsMenu,
-        'itemText': TTLocalizer.ResistanceTicketsItem,
-        'chatText': TTLocalizer.ResistanceTicketsChat,
-        'values': [200, 400, 600, 800, 1200],
-        'items': [0, 1, 2, 3, 4]
     }
 }
 

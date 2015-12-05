@@ -552,7 +552,7 @@ class Avatar(Actor, ShadowCaster):
 
         return sequence
 
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[])
+@magicWord(category=CATEGORY_TRIAL, types=[])
 def target():
     """
     Returns the current Spellbook target.

@@ -482,7 +482,7 @@ class DistributedFurnitureManagerAI(DistributedObjectAI):
                 return window
         return None
 
-@magicWord(category=CATEGORY_PROGRAMMER)
+@magicWord(category=CATEGORY_LEADER)
 def fillAttic():
     """
     Move everything to the attic.
@@ -504,7 +504,7 @@ def fillAttic():
     
     return "The target is not in his estate!"
 
-@magicWord(category=CATEGORY_PROGRAMMER)
+@magicWord(category=CATEGORY_LEADER)
 def emptyHouse():
     """
     Delete everything in the house.

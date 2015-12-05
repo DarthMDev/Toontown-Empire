@@ -4,7 +4,7 @@ from direct.gui.DirectCheckBox import DirectCheckBox
 from direct.gui import DirectGuiGlobals
 from toontown.friends.FriendsListPanel import determineFriendName
 from toontown.toonbase import ToontownGlobals
-from pandac.PandaModules import Vec3, Vec4, PlaneNode, Plane, Point3, TextNode, VBase4, NodePath
+from panda3d.core import Vec3, Vec4, PlaneNode, Plane, Point3, TextNode, VBase4, NodePath
 
 class ScrolledFriendList(DirectScrolledList):
 

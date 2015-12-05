@@ -1,27 +1,27 @@
+from DistributedNPCToonBaseAI import DistributedNPCToonBaseAI
+from ToonDNA import ToonDNA
 from toontown.toonbase import ToontownGlobals
-import DistributedNPCToonBaseAI, GloveNPCGlobals, ToonDNA
 
-class DistributedNPCGloveAI(DistributedNPCToonBaseAI.DistributedNPCToonBaseAI):
+class DistributedNPCGloveAI(DistributedNPCToonBaseAI):
 
-    def changeGlove(self, color):
+    def requestTransformation(self, color):
         avId = self.air.getAvatarIdFromSender()
         av = self.air.doId2do.get(avId)
 
         if av is None or not hasattr(av, 'dna'):
             return
-        elif len(ToonDNA.allColorsList) <= color:
-            self.sendUpdate('changeGloveResult', [avId, GloveNPCGlobals.INVALID_COLOR])
+
+        if av.dna.gloveColor == color:
+            self.sendUpdate('doTransformation', [avId, 1])
             return
-        elif av.dna.gloveColor == color:
-            self.sendUpdate('changeGloveResult', [avId, GloveNPCGlobals.SAME_COLOR])
-            return
-        elif av.getTotalMoney() < ToontownGlobals.GloveCost:
-            self.sendUpdate('changeGloveResult', [avId, GloveNPCGlobals.NOT_ENOUGH_MONEY])
+
+        if av.getTotalMoney() < ToontownGlobals.GloveCost:
+            self.sendUpdate('doTransformation', [avId, 2])
             return
 
         av.takeMoney(ToontownGlobals.GloveCost)
-        newDNA = ToonDNA.ToonDNA()
+        newDNA = ToonDNA()
         newDNA.makeFromNetString(av.getDNAString())
-        newDNA.gloveColor = ToonDNA.allColorsList[color]
+        newDNA.gloveColor = color
         taskMgr.doMethodLater(1.0, lambda task: av.b_setDNAString(newDNA.makeNetString()), 'transform-%d' % avId)
-        self.sendUpdate('changeGloveResult', [avId, GloveNPCGlobals.CHANGE_SUCCESSFUL])
+        self.sendUpdate('doTransformation', [avId, 3])

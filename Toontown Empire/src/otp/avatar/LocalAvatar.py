@@ -1112,8 +1112,10 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
     def d_setParent(self, parentToken):
         DistributedSmoothNode.DistributedSmoothNode.d_setParent(self, parentToken)
 
+    def canChat():
+        return 0
 
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER)
+@magicWord(category=CATEGORY_STAFF)
 def run():
     """
     Toggles debugging run speed.
@@ -1121,7 +1123,7 @@ def run():
     inputState.set('debugRunning', inputState.isSet('debugRunning') != True)
     return 'Toggled debug run speed.'
 
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER)
+@magicWord(category=CATEGORY_STAFF)
 def collisionsOff():
     """
     Turns collisions off.
@@ -1129,7 +1131,7 @@ def collisionsOff():
     base.localAvatar.collisionsOff()
     return 'Collisions are disabled.'
 
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER)
+@magicWord(category=CATEGORY_STAFF)
 def collisionsOn():
     """
     Turns collisions on.
@@ -1137,7 +1139,7 @@ def collisionsOn():
     base.localAvatar.collisionsOn()
     return 'Collisions are enabled.'
 
-@magicWord(category=CATEGORY_ADMINISTRATOR, types=[int])
+@magicWord(category=CATEGORY_LEADER, types=[int])
 def gravity(value):
     """
     Modifies the invoker's gravity. For default, use 0.
@@ -1149,14 +1151,14 @@ def gravity(value):
     else:
         base.localAvatar.controlManager.currentControls.setGravity(value)
 
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[float, float, float])
+@magicWord(category=CATEGORY_LEADER, types=[float, float, float])
 def xyz(x, y, z):
     """
     Modifies the position of the invoker.
     """
     base.localAvatar.setPos(x, y, z)
 
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[float, float, float])
+@magicWord(category=CATEGORY_LEADER, types=[float, float, float])
 def hpr(h, p, r):
     """
     Modifies the rotation of the invoker.

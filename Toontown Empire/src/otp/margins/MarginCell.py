@@ -6,6 +6,7 @@ class MarginCell(NodePath):
 
         self.manager = manager
 
+        self.active = False
         self.content = None
         self.available = False
 
@@ -13,6 +14,15 @@ class MarginCell(NodePath):
         self.debugMode = False
 
         self.setDebug(config.GetBool('want-cell-debug', False))
+
+    def setActive(self, active):
+        if not active:
+            self.setContent(None)
+
+        self.active = active
+
+    def getActive(self):
+        return self.active
 
     def setAvailable(self, available):
         if not available and self.hasContent():

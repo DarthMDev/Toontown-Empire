@@ -14,14 +14,16 @@ class ChatAgentUD(DistributedObjectGlobalUD):
     wantWhitelist = config.GetBool('want-whitelist', True)
    
     chatMode2channel = {
-            1 : OtpDoGlobals.OTP_MOD_CHANNEL,
-            2 : OtpDoGlobals.OTP_ADMIN_CHANNEL,
-            3 : OtpDoGlobals.OTP_SYSADMIN_CHANNEL,
+            1 : OtpDoGlobals.OTP_STAFF_CHANNEL,
+            2 : OtpDoGlobals.OTP_LEAD_STAFF_CHANNEL,
+            3 : OtpDoGlobals.OTP_DEVELOPER_CHANNEL,
+            4 : OtpDoGlobals.OTP_LEADER_CHANNEL,            
     }
     chatMode2prefix = {
-            1 : "[MOD] ",
-            2 : "[ADMIN] ",
-            3 : "[SYSADMIN] ",
+            1 : "[STAFF] ",
+            2 : "[LEADSTAFF] ",
+            3 : "[DEVELOPER] ",
+            4 : "[LEADER] ",
     }
    
     def announceGenerate(self):
@@ -67,7 +69,6 @@ class ChatAgentUD(DistributedObjectGlobalUD):
                                OtpDoGlobals.OTP_DO_ID_CLIENT_SERVICES_MANAGER,
                                sender, 1000000, [msg])
                     self.air.send(dg)
-                    #self.air.banManager.ban(sender, 2, 'language')
                    
                 self.air.writeServerEvent('chat-offense', accountId, word=word, num=self.offenses[sender], msg=msg)
                 if self.offenses[sender] >= 3:

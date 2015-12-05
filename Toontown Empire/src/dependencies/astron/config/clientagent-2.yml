@@ -33,7 +33,7 @@ messagedirector:
 roles:
     - type: clientagent
       bind: 0.0.0.0:7399
-      version: "empire-dev"
+      version: "TTE-Alpha-1.0.0"
       client:
         relocate: true
         add_interest: enabled

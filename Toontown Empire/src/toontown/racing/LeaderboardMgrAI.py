@@ -41,7 +41,7 @@ class LeaderboardMgrAI:
                 self.database[race] = [time.time(), [(name, timestamp)]]
                 self.saveDatabase()
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[str, int, int, str, int])
+@magicWord(category=CATEGORY_STAFF, types=[str, int, int, str, int])
 def leaderboard(command, raceId=0, type=0, name='', time=0):
     command = command.lower()
     race = '%s, %s' % (raceId, type)
