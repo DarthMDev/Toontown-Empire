@@ -67,6 +67,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedToon')
     partyNotify = DirectNotifyGlobal.directNotify.newCategory('DistributedToon_Party')
     chatGarbler = ToonChatGarbler.ToonChatGarbler()
+    gmNameTag = None
 
     def __init__(self, cr, bFake = False):
         DistributedPlayer.DistributedPlayer.__init__(self, cr)
@@ -74,6 +75,12 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         DistributedSmoothNode.DistributedSmoothNode.__init__(self, cr)
         self.bFake = bFake
         self.kart = None
+        self._isGM = False
+        self._gmType = None
+        self.gmState = 0
+        self.gmNameTagEnabled = 0
+        self.gmNameTagColor = 'whiteGM'
+        self.gmNameTagString = ''
         self.trophyScore = 0
         self.trophyStar = None
         self.trophyStarSpeed = 0
@@ -202,6 +209,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             self.tunnelTrack.finish()
             self.tunnelTrack = None
         self.setTrophyScore(0)
+        self.removeGMIcon()
         if self.doId in self.cr.toons:
             del self.cr.toons[self.doId]
         DistributedPlayer.DistributedPlayer.disable(self)
@@ -236,12 +244,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def setDNAString(self, dnaString):
         Toon.Toon.setDNAString(self, dnaString)
-
-    def setAdminAccess(self, access):
-        DistributedPlayer.DistributedPlayer.setAdminAccess(self, access)
-        self.removeGMIcon()
-        if self.isAdmin():
-            self.setGMIcon(access)
 
     def setDNA(self, dna):
         oldHat = self.getHat()
@@ -2426,8 +2428,79 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     
     def wipeStats(self):
         self.sendUpdate('wipeStats')
+        
+    def _handleGMName(self):
+        name = self.name
+        self.setDisplayName(name)
+        if self._isGM:
+            self.setNametagStyle(0)
+            self.setGMIcon(self._gmType)
+            self.gmToonLockStyle = True
+        else:
+            self.gmToonLockStyle = False
+            self.removeGMIcon()
+            self.setNametagStyle(0)
 
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER)
+    def setGM(self, type):
+        wasGM = self._isGM
+        self._isGM = type != 0
+        self._gmType = None
+        if self._isGM:
+            self._gmType = type - 1
+        if self._isGM != wasGM:
+            self._handleGMName()
+        return
+
+    def setGMIcon(self, gmType = None):
+        if hasattr(self, 'gmIcon') and self.gmIcon:
+            return
+        
+        modelName = 'phase_3.5/models/gui/tt_m_gui_gm_accesslvl_%s.bam'
+        al = (103, 502, 504, 508, 701)
+        
+        access = self._gmType
+        if access >= len(al):
+            return
+        
+        self.gmIcon = loader.loadModel(modelName % al[access])
+        self.gmIcon.setScale(5.25)
+        np = NodePath(self.nametag.getNameIcon())
+        self.gmIcon.reparentTo(np)
+        self.setTrophyScore(self.trophyScore)
+        self.gmIcon.setZ(-2.5)
+        self.gmIcon.setY(0.0)
+        self.gmIcon.setColor(Vec4(1.0, 1.0, 1.0, 1.0))
+        self.gmIcon.setTransparency(1)
+        self.gmIconInterval = LerpHprInterval(self.gmIcon, 3.0, Point3(0, 0, 0), Point3(-360, 0, 0))
+        self.gmIconInterval.loop()
+        
+        self.gmIcon.find('**/gmPartyHat').removeNode()
+
+    def setGMPartyIcon(self):
+        gmType = self._gmType
+        iconInfo = ('phase_3.5/models/gui/tt_m_gui_gm_toonResistance_fist', 'phase_3.5/models/gui/tt_m_gui_gm_toontroop_whistle', 'phase_3.5/models/gui/tt_m_gui_gm_toonResistance_fist', 'phase_3.5/models/gui/tt_m_gui_gm_toontroop_getConnected')
+        if gmType > len(iconInfo) - 1:
+            return
+        self.gmIcon = loader.loadModel(iconInfo[gmType])
+        self.gmIcon.reparentTo(NodePath(self.nametag.getNameIcon()))
+        self.gmIcon.setScale(3.25)
+        self.setTrophyScore(self.trophyScore)
+        self.gmIcon.setZ(1.0)
+        self.gmIcon.setY(0.0)
+        self.gmIcon.setColor(Vec4(1.0, 1.0, 1.0, 1.0))
+        self.gmIcon.setTransparency(1)
+        self.gmIconInterval = LerpHprInterval(self.gmIcon, 3.0, Point3(0, 0, 0), Point3(-360, 0, 0))
+        self.gmIconInterval.loop()
+
+    def removeGMIcon(self):
+        if hasattr(self, 'gmIconInterval') and self.gmIconInterval:
+            self.gmIconInterval.finish()
+            del self.gmIconInterval
+        if hasattr(self, 'gmIcon') and self.gmIcon:
+            self.gmIcon.detachNode()
+            del self.gmIcon
+
+@magicWord(category=CATEGORY_STAFF)
 def globalTeleport():
     """
     Activates the global teleport cheat.
@@ -2437,7 +2510,7 @@ def globalTeleport():
     invoker.setTeleportAccess(list(ToontownGlobals.HoodsForTeleportAll))
     return 'Global teleport has been activated.'
 
-@magicWord(category=CATEGORY_ADMINISTRATOR, types=[int])
+@magicWord(category=CATEGORY_LEADER, types=[int])
 def zone(zoneId):
     """
     Changes the invoker's zone ID.
@@ -2445,26 +2518,14 @@ def zone(zoneId):
     base.cr.sendSetZoneMsg(zoneId, [zoneId])
     return 'You have been moved to zone %d.' % zoneId
 
-@magicWord(category=CATEGORY_ADMINISTRATOR)
+@magicWord(category=CATEGORY_LEADER)
 def blackCat():
     """
     Ask the black cat manager to turn you into a cat.
     """
     base.cr.blackCatMgr.requestBlackCatTransformation()
 
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER)
-def toggleGM():
-    invoker = spellbook.getInvoker()
-    if invoker.gmIcon:
-        invoker.setWantAdminTag(False)
-        invoker.removeGMIcon()
-        invoker.setNametagName()#setName(invoker.getName())
-    else:
-        invoker.setWantAdminTag(True)
-        invoker.setGMIcon(invoker.getAdminAccess())
-        invoker.setNametagName()#setName(invoker.getName())
-
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[str])
+@magicWord(category=CATEGORY_STAFF, types=[str])
 def showParticle(name):
     """
     Shows a particle.

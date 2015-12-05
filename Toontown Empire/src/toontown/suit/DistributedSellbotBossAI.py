@@ -391,9 +391,23 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         if self.hitCount < self.limitHitCount or self.bossDamage < self.hitCountDamage:
             return
         self.b_setAttackCode(ToontownGlobals.BossCogRecoverDizzyAttack)
-
+      
+    def enterReward(self):
+        newCogSuitLevel = localAvatar.getCogLevels()[CogDisguiseGlobals.dept2deptIndex(self.style.dept)]
+        if newCogSuitLevel == ToontownGlobals.MaxCogSuitLevel:
+            if av.getStyle().getGender() == 'm':
+                CatalogClothingItem(1765, 0) #storm sellbot shirt
+                CatalogClothingItem(1766, 0) # storm sellbot shorts
+            elif av.getStyle().getGender() == 'f':
+                CatalogClothingItem(1765, 0) #storm sellbot shirt
+                CatalogClothingItem(1767, 0) #storm sellbot skirt
+        DistributedBossCogAI.DistributedBossCogAI.enterReward(self)      
+        
+# Old code (works) just in case the new code doesn't work.       
+'''
     def enterReward(self):
         DistributedBossCogAI.DistributedBossCogAI.enterReward(self)
+'''
 
 def getVP(invoker):
     for do in simbase.air.doId2do.values():
@@ -401,7 +415,7 @@ def getVP(invoker):
             if invoker.doId in do.involvedToons:
                 return do
 
-@magicWord(category=CATEGORY_ADMINISTRATOR)
+@magicWord(category=CATEGORY_LEADER)
 def secondVP():
     """
     Skips to the second round of the VP.
@@ -414,7 +428,7 @@ def secondVP():
     boss.b_setState('RollToBattleTwo')
     return 'Skipping to the second round...'
                 
-@magicWord(category=CATEGORY_ADMINISTRATOR)
+@magicWord(category=CATEGORY_LEADER)
 def skipVP():
     """
     Skips to the final round of the VP.
@@ -429,7 +443,7 @@ def skipVP():
     boss.b_setState('PrepareBattleThree')
     return 'Skipping the first round...'
 
-@magicWord(category=CATEGORY_ADMINISTRATOR)
+@magicWord(category=CATEGORY_LEADER)
 def killVP():
     """
     Kills the VP.

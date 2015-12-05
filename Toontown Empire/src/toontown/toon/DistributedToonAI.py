@@ -1,12 +1,15 @@
-from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedSmoothNodeAI
-from direct.distributed.ClockDelta import *
-from direct.distributed.MsgTypes import *
+from direct.distributed.ClockDelta import globalClockDelta
 from direct.distributed.PyDatagram import PyDatagram
 from direct.task import Task
-from otp.ai.AIBaseGlobal import *
-from otp.ai.MagicWordGlobal import *
+from otp.ai.MagicWordGlobal import magicWord
+from otp.ai.MagicWordGlobal import CATEGORY_TRIAL
+from otp.ai.MagicWordGlobal import CATEGORY_STAFF
+from otp.ai.MagicWordGlobal import CATEGORY_LEAD_STAFF
+from direct.showbase.PythonUtil import union
+from otp.ai.MagicWordGlobal import CATEGORY_DEVELOPER
+from otp.ai.MagicWordGlobal import CATEGORY_LEADER
 from otp.avatar import DistributedAvatarAI, DistributedPlayerAI
 from otp.otpbase import OTPGlobals, OTPLocalizer
 from toontown.battle import SuitBattleGlobals
@@ -29,11 +32,10 @@ from toontown.shtiker import CogPageGlobals
 from toontown.suit import SuitDNA, SuitInvasionGlobals
 from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer, ToontownBattleGlobals, ToontownGlobals
-from toontown.toonbase.ToontownGlobals import *
 from NPCToons import npcFriends
 import Experience, InventoryBase, ToonDNA, random, time
 from toontown.uberdog import TopToonsGlobals
-
+from otp.ai.MagicWordGlobal import spellbook
 if simbase.wantPets:
     from toontown.pets import PetLookerAI, PetObserve
 else:
@@ -42,7 +44,9 @@ else:
             pass
 
 if simbase.wantKarts:
-    from toontown.racing.KartDNA import *
+    from toontown.racing.KartDNA import KartDNA
+    from toontown.racing.KartDNA import getNumFields
+
 
 class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLookerAI.PetLookerAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedToonAI')
@@ -110,6 +114,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.unlimitedGags = 0
         self.numPies = 0
         self.pieType = 0
+        self._isGM = False
+        self._gmType = None
         self.hpOwnedByBattle = 0
         if simbase.wantPets:
             self.petTrickPhrases = []
@@ -1271,10 +1277,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
                 merits[dept] = 0
 
             else:
-                # If we have EPP, check if the merit count is too much (i.e. enough to promote again)
                 if oldMerits >= CogDisguiseGlobals.getTotalMerits(self, dept):
-                    # We have more merits than needed (i.e. promoting to another cog or earning laff)
-                    # Therefore:
                     merits[dept] = 0
 
                 else:
@@ -1416,6 +1419,13 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getFishingRod(self):
         return self.fishingRod
+
+    def b_setMaxFishingRod(self, rodId):
+        if (not 0 <= rodId <= 4) or rodId <= self.maxFishingRod:
+            return
+
+        self.d_setMaxFishingRod(rodId)
+        self.setMaxFishingRod(rodId)
 
     def b_setFishingTrophies(self, trophyList):
         self.setFishingTrophies(trophyList)
@@ -4030,6 +4040,104 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
          zoneId])
         self.air.send(dg)
 
+    def b_setGM(self, type):
+        self.sendUpdate('setGM', [type])
+        self.setGM(type)
+
+    def setGM(self, type):
+        wasGM = self._isGM
+        formerType = self._gmType
+        self._isGM = type != 0
+        self._gmType = None
+        if self._isGM:
+            self._gmType = type - 1
+            MaxGMType = 5
+            if self._gmType > MaxGMType:
+                self.notify.warning('toon %s has invalid GM type: %s' % (self.doId, self._gmType))
+                self._gmType = MaxGMType
+        return
+
+    def isGM(self):
+        return self._isGM
+
+    def _updateGMName(self, formerType = None):
+        if formerType is None:
+            formerType = self._gmType
+        name = self.name
+        if formerType is not None:
+            gmPrefix = TTLocalizer.GM_NAMES[formerType] + ' '
+            if self._nameIsPrefixed(gmPrefix):
+                name = self.name[len(gmPrefix):]
+        if self._isGM:
+            gmPrefix = TTLocalizer.GM_NAMES[self._gmType] + ' '
+            newName = gmPrefix + name
+        else:
+            newName = name
+        if self.name != newName:
+            self.b_setName(newName)
+        return
+
+    def _handleGMName(self):
+        name = self.name
+        self.setDisplayName(name)
+        if self._isGM:
+            self.setNametagStyle(0)
+            self.setGMIcon(self._gmType)
+            self.gmToonLockStyle = True
+        else:
+            self.gmToonLockStyle = False
+            self.removeGMIcon()
+            self.setNametagStyle(0)
+
+    def setGMIcon(self, gmType = None):
+        if hasattr(self, 'gmIcon') and self.gmIcon:
+            return
+
+        modelName = 'phase_3.5/models/gui/tt_m_gui_gm_accesslvl_%s.bam'
+        al = (103, 502, 504, 508, 701)
+
+        access = self._gmType
+        if access >= len(al):
+            return
+
+        self.gmIcon = loader.loadModel(modelName % al[access])
+        self.gmIcon.setScale(5.25)
+        np = NodePath(self.nametag.getNameIcon())
+        self.gmIcon.reparentTo(np)
+        self.setTrophyScore(self.trophyScore)
+        self.gmIcon.setZ(-2.5)
+        self.gmIcon.setY(0.0)
+        self.gmIcon.setColor(Vec4(1.0, 1.0, 1.0, 1.0))
+        self.gmIcon.setTransparency(1)
+        self.gmIconInterval = LerpHprInterval(self.gmIcon, 3.0, Point3(0, 0, 0), Point3(-360, 0, 0))
+        self.gmIconInterval.loop()
+
+        self.gmIcon.find('**/gmPartyHat').removeNode()
+
+    def setGMPartyIcon(self):
+        gmType = self._gmType
+        iconInfo = ('phase_3.5/models/gui/tt_m_gui_gm_toonResistance_fist', 'phase_3.5/models/gui/tt_m_gui_gm_toontroop_whistle', 'phase_3.5/models/gui/tt_m_gui_gm_toonResistance_fist', 'phase_3.5/models/gui/tt_m_gui_gm_toontroop_getConnected')
+        if gmType > len(iconInfo) - 1:
+            return
+        self.gmIcon = loader.loadModel(iconInfo[gmType])
+        self.gmIcon.reparentTo(NodePath(self.nametag.getNameIcon()))
+        self.gmIcon.setScale(3.25)
+        self.setTrophyScore(self.trophyScore)
+        self.gmIcon.setZ(1.0)
+        self.gmIcon.setY(0.0)
+        self.gmIcon.setColor(Vec4(1.0, 1.0, 1.0, 1.0))
+        self.gmIcon.setTransparency(1)
+        self.gmIconInterval = LerpHprInterval(self.gmIcon, 3.0, Point3(0, 0, 0), Point3(-360, 0, 0))
+        self.gmIconInterval.loop()
+
+    def removeGMIcon(self):
+        if hasattr(self, 'gmIconInterval') and self.gmIconInterval:
+            self.gmIconInterval.finish()
+            del self.gmIconInterval
+        if hasattr(self, 'gmIcon') and self.gmIcon:
+            self.gmIcon.detachNode()
+            del self.gmIcon
+
     @staticmethod
     def staticGetLogicalZoneChangeAllEvent():
         return 'DOLogicalChangeZone-all'
@@ -4228,7 +4336,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.stats = [0] * 22
         self.d_setStats(self.stats)
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[str, int, int])
+@magicWord(category=CATEGORY_STAFF, types=[str, int, int])
 def cheesyEffect(value, hood=0, expire=0):
     """
     Modify the target's cheesy effect.
@@ -4249,7 +4357,7 @@ def cheesyEffect(value, hood=0, expire=0):
     target.b_setCheesyEffect(value, hood, expire)
     return 'Set %s\'s cheesy effect to: %d' % (target.getName(), value)
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+@magicWord(category=CATEGORY_STAFF, types=[int])
 def hp(hp):
     """
     Modify the target's current HP.
@@ -4261,7 +4369,7 @@ def hp(hp):
     target.b_setHp(hp)
     return 'Set your HP to: %d' % hp
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+@magicWord(category=CATEGORY_STAFF, types=[int])
 def maxHp(maxHp):
     """
     Modify the invoker's max HP.
@@ -4274,7 +4382,7 @@ def maxHp(maxHp):
     invoker.toonUp(maxHp - invoker.getHp())
     return 'Set your max HP to: %d' % maxHp
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[str])
+@magicWord(category=CATEGORY_LEADER, types=[str])
 def textColor(color):
     """
     Modify the target's text color.
@@ -4282,7 +4390,7 @@ def textColor(color):
     spellbook.getTarget().b_setTextColor(color)
     return 'Set your color to: %s' % color
 
-@magicWord(category=CATEGORY_MODERATOR, types=[str])
+@magicWord(category=CATEGORY_STAFF, types=[str])
 def allSummons():
     """
     Max the target's summons
@@ -4295,7 +4403,7 @@ def allSummons():
     target.b_setCogSummonsEarned(allSummons)
     return 'Lots of summons!'
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[str])
+@magicWord(category=CATEGORY_STAFF, types=[str])
 def maxToon(missingTrack=None):
     """
     Max the target's stats for end-level gameplay.
@@ -4387,7 +4495,7 @@ def maxToon(missingTrack=None):
 
     return 'Maxed your Toon!'
 
-@magicWord(category=CATEGORY_PROGRAMMER)
+@magicWord(category=CATEGORY_STAFF)
 def unlocks():
     """
     Unlocks the target's teleport access, emotions, and pet trick phrases.
@@ -4417,7 +4525,7 @@ def unlocks():
 
     return 'Unlocked teleport access, emotions, and pet trick phrases!'
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int, str])
+@magicWord(category=CATEGORY_STAFF, types=[int, str])
 def sos(count, name):
     """
     Modifies the target's specified SOS card count.
@@ -4439,7 +4547,7 @@ def sos(count, name):
     target.d_setNPCFriendsDict(target.NPCFriendsDict)
     return "%s was given %d %s SOS cards." % (target.getName(), count, name)
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+@magicWord(category=CATEGORY_STAFF, types=[int])
 def unites(value=32767):
     """
     Restock all resistance messages.
@@ -4449,7 +4557,7 @@ def unites(value=32767):
     target.restockAllResistanceMessages(value)
     return 'Restocked %d unites for %s!' % (value, target.getName())
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+@magicWord(category=CATEGORY_STAFF, types=[int])
 def fires(count):
     """
     Modifies the target's pink slip count.
@@ -4460,7 +4568,7 @@ def fires(count):
     target.b_setPinkSlips(count)
     return '%s was given %d fires.' % (target.getName(), count)
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+@magicWord(category=CATEGORY_LEADER, types=[int])
 def crateKeys(count):
     """
     Modifies the invoker's crate key count.
@@ -4471,7 +4579,7 @@ def crateKeys(count):
     target.b_setCrateKeys(count)
     return 'You were given %d crate keys.' % count
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+@magicWord(category=CATEGORY_STAFF, types=[int])
 def maxMoney(maxMoney):
     """
     Modifies the target's max money value.
@@ -4482,7 +4590,7 @@ def maxMoney(maxMoney):
     spellbook.getTarget().b_setMaxMoney(maxMoney)
     return "Set {0}'s max money value to {1}!".format(target.getName(), maxMoney)
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+@magicWord(category=CATEGORY_STAFF, types=[int])
 def maxBankMoney(maxBankMoney):
     """
     Modifies the target's max bank money value.
@@ -4494,7 +4602,7 @@ def maxBankMoney(maxBankMoney):
     spellbook.getTarget().b_setMaxBankMoney(maxBankMoney)
     return "Set {0}'s max bank money value to {1}!".format(target.getName(), maxBankMoney)
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+@magicWord(category=CATEGORY_STAFF, types=[int])
 def money(money):
     """
     Modifies the target's current money value.
@@ -4506,7 +4614,7 @@ def money(money):
     target.b_setMoney(money)
     return "Set %s's money value to %d!" % (target.getName(), money)
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+@magicWord(category=CATEGORY_STAFF, types=[int])
 def bank(money):
     """
     Modifies the target's current bank money value.
@@ -4519,7 +4627,7 @@ def bank(money):
     target.b_setBankMoney(money)
     return "Set %s's bank money value to %d!" % (target.getName(), money)
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+@magicWord(category=CATEGORY_STAFF, types=[int])
 def fishingRod(rod):
     """
     Modify the target's fishing rod value.
@@ -4531,7 +4639,7 @@ def fishingRod(rod):
     target.b_setMaxFishingRod(rod)
     return "Set %s's fishing rod to %d!" % (target.getName(), rod)
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+@magicWord(category=CATEGORY_STAFF, types=[int])
 def maxFishTank(maxFishTank):
     """
     Modify the target's max fish tank value.
@@ -4542,7 +4650,7 @@ def maxFishTank(maxFishTank):
     target.b_setMaxFishTank(maxFishTank)
     return "Set %s's max fish tank value to %d!" % (target.getName(), maxFishTank)
 
-@magicWord(category=CATEGORY_ADMINISTRATOR, types=[str])
+@magicWord(category=CATEGORY_STAFF, types=[str])
 def name(name=''):
     """
     Modify the target's name.
@@ -4555,7 +4663,7 @@ def name(name=''):
     else:
         return "%s's name is now empty!" % _name
 
-@magicWord(category=CATEGORY_SYSTEM_ADMINISTRATOR, types=[int])
+@magicWord(category=CATEGORY_STAFF, types=[int])
 def squish(laff):
     """
     Squish a toon.
@@ -4563,7 +4671,7 @@ def squish(laff):
     target = spellbook.getTarget()
     target.squish(laff)
 
-@magicWord(category=CATEGORY_CREATIVE, types=[int, int])
+@magicWord(category=CATEGORY_STAFF, types=[int, int])
 def hat(hatIndex, hatTex=0):
     """
     Modify the target's hat.
@@ -4576,7 +4684,7 @@ def hat(hatIndex, hatTex=0):
     target.b_setHat(hatIndex, hatTex, 0)
     return "Set %s's hat to %d, %d!" % (target.getName(), hatIndex, hatTex)
 
-@magicWord(category=CATEGORY_CREATIVE, types=[int, int])
+@magicWord(category=CATEGORY_STAFF, types=[int, int])
 def glasses(glassesIndex, glassesTex=0):
     """
     Modify the target's glasses.
@@ -4589,7 +4697,7 @@ def glasses(glassesIndex, glassesTex=0):
     target.b_setGlasses(glassesIndex, glassesTex, 0)
     return "Set %s's glasses to %d, %d!" % (target.getName(), glassesIndex, glassesTex)
 
-@magicWord(category=CATEGORY_CREATIVE, types=[int, int])
+@magicWord(category=CATEGORY_STAFF, types=[int, int])
 def backpack(backpackIndex, backpackTex=0):
     """
     Modify the target's backpack.
@@ -4602,7 +4710,7 @@ def backpack(backpackIndex, backpackTex=0):
     target.b_setBackpack(backpackIndex, backpackTex, 0)
     return "Set %s's backpack to %d, %d!" % (target.getName(), backpackIndex, backpackTex)
 
-@magicWord(category=CATEGORY_CREATIVE, types=[int, int])
+@magicWord(category=CATEGORY_STAFF, types=[int, int])
 def shoes(shoesIndex, shoesTex=0):
     """
     Modify the target's shoes.
@@ -4615,7 +4723,7 @@ def shoes(shoesIndex, shoesTex=0):
     target.b_setShoes(shoesIndex, shoesTex, 0)
     return "Set %s's shoes to %d, %d!" % (target.getName(), shoesIndex, shoesTex)
 
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER)
+@magicWord(category=CATEGORY_TRIAL)
 def ghost():
     """
     Toggles invisibility on the invoker. Anyone with an access level below the
@@ -4629,7 +4737,7 @@ def ghost():
         invoker.b_setGhostMode(0)
         return 'Ghost mode is disabled.'
 
-@magicWord(category=CATEGORY_MODERATOR)
+@magicWord(category=CATEGORY_STAFF)
 def badName():
     """
     Revoke the target's name.
@@ -4642,7 +4750,7 @@ def badName():
     target.sendUpdate('setWishNameState', ['REJECTED'])
     return "Revoked %s's name!" % _name
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+@magicWord(category=CATEGORY_STAFF, types=[int])
 def tickets(tickets):
     """
     Set the invoker's racing tickets value.
@@ -4653,7 +4761,7 @@ def tickets(tickets):
     invoker.b_setTickets(tickets)
     return 'Set your tickets to: %d' % tickets
 
-@magicWord(category=CATEGORY_ADMINISTRATOR, types=[int])
+@magicWord(category=CATEGORY_STAFF, types=[int])
 def cogIndex(index):
     """
     Modifies the invoker's Cog index.
@@ -4664,7 +4772,7 @@ def cogIndex(index):
     invoker.b_setCogIndex(index)
     return 'Set your Cog index to %d!' % index
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[str, int, int])
+@magicWord(category=CATEGORY_STAFF, types=[str, int, int])
 def inventory(a, b=None, c=None):
     target = spellbook.getTarget()
     inventory = target.inventory
@@ -4713,7 +4821,7 @@ def inventory(a, b=None, c=None):
         target.b_setInventory(inventory.makeNetString())
         return 'Restored %d Gags to: %d, %d' % (c, targetTrack, maxLevelIndex)
 
-@magicWord(category=CATEGORY_CREATIVE, types=[str, str])
+@magicWord(category=CATEGORY_STAFF, types=[str, str])
 def dna(part, value):
     """Modify a DNA part on the target."""
     target = spellbook.getTarget()
@@ -4868,7 +4976,7 @@ def dna(part, value):
         return NPCToons.getRandomDNA(time.time(), value)
     return 'Invalid part: ' + part
 
-@magicWord(category=CATEGORY_ADMINISTRATOR, types=[int])
+@magicWord(category=CATEGORY_LEADER, types=[int])
 def trophyScore(value):
     """
     Modifies the target's trophy score.
@@ -4879,7 +4987,7 @@ def trophyScore(value):
     simbase.air.trophyMgr.updateTrophyScore(target.doId, value)
     return "%s's trophy score has been set to: %d" % (target.getName(), value)
 
-@magicWord(category=CATEGORY_ADMINISTRATOR, types=[int, int])
+@magicWord(category=CATEGORY_STAFF, types=[int, int])
 def givePies(pieType, numPies=0):
     """
     Give the target (numPies) of (pieType) pies.
@@ -4898,7 +5006,7 @@ def givePies(pieType, numPies=0):
     else:
         target.b_setNumPies(ToontownGlobals.FullPies)
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int, int])
+@magicWord(category=CATEGORY_STAFF, types=[int, int])
 def trackBonus(trackIndex, level):
     """
     Modify the invoker's track bonus level.
@@ -4913,7 +5021,7 @@ def trackBonus(trackIndex, level):
     invoker.b_setTrackBonusLevel(trackBonusLevel)
     return 'Your track bonus level has been set to %s!' % level
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[str, str, int])
+@magicWord(category=CATEGORY_STAFF, types=[str, str, int])
 def track(command, track, value=None):
     try:
         index = ('toonup', 'trap', 'lure', 'sound', 'throw',
@@ -4945,7 +5053,7 @@ def track(command, track, value=None):
         return 'Set the experience of the %s track to: %d!' % (track, value)
     return 'Invalid command.'
 
-@magicWord(category=CATEGORY_ADMINISTRATOR, types=[str, str])
+@magicWord(category=CATEGORY_STAFF, types=[str, str])
 def suit(command, suitName = 'f'):
     invoker = spellbook.getInvoker()
     command = command.lower()
@@ -4970,13 +5078,13 @@ def suit(command, suitName = 'f'):
     else:
         return 'Invalid command.'
 
-@magicWord(category=CATEGORY_PROGRAMMER)
+@magicWord(category=CATEGORY_DEVELOPER)
 def getZone():
     invoker = spellbook.getInvoker()
     zone = invoker.zoneId
     return 'ZoneID: %s' % (zone)
 
-@magicWord(category=CATEGORY_MODERATOR, types=[int])
+@magicWord(category=CATEGORY_STAFF, types=[int])
 def nametagStyle(nametagStyle):
     if nametagStyle >= len(TTLocalizer.NametagFontNames):
         return 'Invalid nametag style.'
@@ -4985,7 +5093,7 @@ def nametagStyle(nametagStyle):
     target.addNametagStyle(nametagStyle)
     return 'Nametag style set to: %s.' % TTLocalizer.NametagFontNames[nametagStyle]
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[str, int, int])
+@magicWord(category=CATEGORY_DEVELOPER, types=[str, int, int])
 def disguise(command, suitIndex, value):
     invoker = spellbook.getInvoker()
 
@@ -5014,14 +5122,14 @@ def disguise(command, suitIndex, value):
     else:
         return 'Unknow command: %s' % command
 
-@magicWord(category=CATEGORY_PROGRAMMER)
+@magicWord(category=CATEGORY_LEADER)
 def unlimitedGags():
     """ Restock avatar's gags at the start of each round. """
     av = spellbook.getTarget() if spellbook.getInvokerAccess() >= 500 else spellbook.getInvoker()
     av.setUnlimitedGags(not av.unlimitedGags)
     return 'Toggled unlimited gags %s for %s' % ('ON' if av.unlimitedGags else 'OFF', av.getName())
 
-@magicWord(category=CATEGORY_PROGRAMMER)
+@magicWord(category=CATEGORY_STAFF)
 def maxCogPage():
     """ Max the target's discovered cogs. """
     target = spellbook.getTarget()
@@ -5033,14 +5141,14 @@ def maxCogPage():
     target.b_setBuildingRadar([1, 1, 1, 1])
     return 'Maxed %s\'s discovered cogs!' % (target.getName())
 
-@magicWord(category=CATEGORY_PROGRAMMER)
+@magicWord(category=CATEGORY_LEADER)
 def immortal():
     """ Make target (if 500+) or self (if 499-) immortal. """
     av = spellbook.getTarget() if spellbook.getInvokerAccess() >= 500 else spellbook.getInvoker()
     av.setImmortalMode(not av.immortalMode)
     return 'Toggled immortal mode %s for %s' % ('ON' if av.immortalMode else 'OFF', av.getName())
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[str, int])
+@magicWord(category=CATEGORY_LEADER, types=[str, int])
 def summoncogdo(track="s", difficulty=5):
     tracks = CogdoUtil.getAllowedTracks()
 
@@ -5055,16 +5163,16 @@ def summoncogdo(track="s", difficulty=5):
     building.cogdoTakeOver(difficulty, 2, track)
     return 'Successfully spawned cogdo with track %s and difficulty %d' % (track, difficulty)
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int, int])
+@magicWord(category=CATEGORY_STAFF, types=[int, int])
 def emblems(silver=10, gold=10):
     spellbook.getTarget().addEmblems((gold, silver))
     return 'Restocked with Gold: %s Silver: %d' % (gold, silver)
 
-@magicWord(category=CATEGORY_PROGRAMMER)
+@magicWord(category=CATEGORY_STAFF)
 def catalog():
     simbase.air.catalogManager.deliverCatalogFor(spellbook.getTarget())
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[str])
+@magicWord(category=CATEGORY_STAFF, types=[str])
 def remCode(code):
     av = spellbook.getTarget()
     if av.isCodeRedeemed(code):
@@ -5073,7 +5181,7 @@ def remCode(code):
     else:
         return "Player hasn't redeemed this code!"
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+@magicWord(category=CATEGORY_STAFF, types=[int])
 def shovelSkill(skill):
     """
     Update shovel skill.
@@ -5081,7 +5189,7 @@ def shovelSkill(skill):
     av = spellbook.getTarget()
     av.b_setShovelSkill(skill)
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+@magicWord(category=CATEGORY_STAFF, types=[int])
 def canSkill(skill):
     """
     Update watering can skill.
@@ -5089,7 +5197,7 @@ def canSkill(skill):
     av = spellbook.getTarget()
     av.b_setWateringCanSkill(skill)
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int, str])
+@magicWord(category=CATEGORY_DEVELOPER, types=[int, str])
 def epp(dept, command="add"):
     av = spellbook.getTarget()
     if command == "add":
@@ -5107,14 +5215,41 @@ def epp(dept, command="add"):
     else:
         return "Unknown command!"
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+@magicWord(category=CATEGORY_LEAD_STAFF, types=[int])
 def promote(dept):
     spellbook.getTarget().b_promote(dept)
 
-@magicWord(category=CATEGORY_PROGRAMMER)
+@magicWord(category=CATEGORY_STAFF)
 def maxGarden():
     av = spellbook.getInvoker()
     av.b_setShovel(3)
     av.b_setWateringCan(3)
     av.b_setShovelSkill(639)
     av.b_setWateringCanSkill(999)
+
+@magicWord(category=CATEGORY_TRIAL, types=[int], access=103)
+def badge(gmId):
+    if not 0 <= gmId <= 5:
+        return 'Staff-Icons: 0=off, 1=Trial, 2=Staff, 3=Lead-Staff, 4=Developers, 5=Leaders'
+
+    if (spellbook.getInvokerAccess() < 103) and (gmId > 1):
+        return 'This badge is for trial-staff only!'
+
+    elif (spellbook.getInvokerAccess() < 502) and (gmId > 2):
+        return 'This badge is for staff only!'
+
+    elif (spellbook.getInvokerAccess() < 504) and (gmId > 3):
+        return 'This badge is for lead-staff only!'
+
+    elif (spellbook.getInvokerAccess() < 508) and (gmId > 4):
+        return 'This badge is for developers only!'
+
+    elif (spellbook.getInvokerAccess() < 701) and (gmId > 5):
+        return 'Your Not A Leader, Only Leaders can have this special badge!'
+
+    if spellbook.getTarget().isGM() and gmId != 0:
+        spellbook.getTarget().b_setGM(0)
+
+    spellbook.getTarget().b_setGM(gmId)
+
+    return 'You have set %s to GM type %s' % (spellbook.getTarget().getName(), gmId)

@@ -21,6 +21,21 @@ from toontown.toonbase import ToontownGlobals
 from datetime import datetime, timedelta
 import time
 
+'''
+        # Here is an example of giving clothing to specific genders.
+        if code == "GenderExample" or code == "GenderExample2":
+            # The following code will check to see if the gender is a male.
+            # If it is, then they will be given shirt 2002.
+            if av.getStyle().getGender() == 'm':
+                shirt = CatalogClothingItem(2002, 0)
+                shorts = CatalogClothingItem(2002, 0)
+            # If it sees the gender isn't male, it will give shirt 2003.
+            else:
+                shirt = CatalogClothingItem(2003, 0)
+                shorts = CatalogClothingItem(2003, 0)
+            return [shirt, shorts]
+        '''
+
 """
 Code example:
 
@@ -40,6 +55,12 @@ If you for some reason are not familiar with arrays or lists, you
 only include the comma if there are multiple arguments.
 """
 
+# Example code for multiple code options to redeem a code
+
+'''
+        if code == "Code1" or code == "Code2" or code == "Code-3:
+'''
+
 class TTCodeRedemptionMgrAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("TTCodeRedemptionMgrAI")
     codes = {
@@ -48,24 +69,29 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
                 CatalogClothingItem.CatalogClothingItem(1821, 0)
             ],
         },
-     #   'gardening': {
-     #       'items': [
-     #           CatalogGardenStarterItem.CatalogGardenStarterItem()
-     #      ]
-      #  },
+# Kept for a code example for gardening
+'''
+        'gardening': {
+            'items': [
+                CatalogGardenStarterItem.CatalogGardenStarterItem()
+           ]
+        },
+'''
         'sillymeter': {
             'items': [
                 CatalogClothingItem.CatalogClothingItem(1753, 0)
-     #       ]
-     #   }
-     #   'toonstatue': {
-     #       'items': [
-     #          CatalogToonStatueItem.CatalogToonStatueItem(105, endPoseIndex=108)
-     #       ]
-     #   },
-     #   'donaldstatue': {
-     #       'items': [
-     #           CatalogGardenItem.CatalogGardenItem(100, 1)
+# Kept for Code example
+
+#            ]
+#        }
+#        'toonstatue': {
+#            'items': [
+#               CatalogToonStatueItem.CatalogToonStatueItem(105, endPoseIndex=108)
+#            ]
+#        },
+#        'donaldstatue': {
+#            'items': [
+ #               CatalogGardenItem.CatalogGardenItem(100, 1)
             ]
         }
     }
@@ -116,8 +142,7 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
             if item in av.onOrder:
                 continue
 
-            item.deliveryDate = int(time.time() / 60) + 0.01
-            av.onOrder.append(item)
+            av.addToDeliverySchedule(item)
 
         av.b_setDeliverySchedule(av.onOrder)
         self.sendUpdateToAvatarId(avId, 'redeemCodeResult', [0])

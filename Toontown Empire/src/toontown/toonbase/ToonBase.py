@@ -18,6 +18,7 @@ from otp.margins.MarginManager import MarginManager
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownBattleGlobals
 from toontown.toontowngui import TTDialog
+from DisplayOptions import DisplayOptions
 import fractions
 
 from direct.directnotify import DirectNotifyGlobal
@@ -25,10 +26,12 @@ from direct.filter.CommonFilters import CommonFilters
 from direct.gui import DirectGuiGlobals
 from direct.gui.DirectGui import *
 
+
 class ToonBase(OTPBase.OTPBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonBase')
 
     def __init__(self):
+        self.display = DisplayOptions()
         OTPBase.OTPBase.__init__(self)
 
         # Get the native display info:
@@ -227,6 +230,7 @@ class ToonBase(OTPBase.OTPBase):
 
         self.filters = CommonFilters(self.win, self.cam)
         self.wantCogInterface = settings.get('cogInterface', True)
+        self.wantantialiasing = settings.get('antialiasing', 0)
 
 	self.wantWASD = settings.get('want-WASD', False)
 
@@ -434,8 +438,15 @@ class ToonBase(OTPBase.OTPBase):
         for cell in cell_list:
             self.marginManager.setCellAvailable(cell, available)
 
+    def setCellsActive(self, cells, active):
+        for cell in cells:
+            cell.setActive(active)
+        self.marginManager.reorganize()
+
     def startShow(self, cr):
         self.cr = cr
+        if self.display.antialias:
+            render.setAntialias(AntialiasAttrib.MAuto)
         base.graphicsEngine.renderFrame()
         # Get the base port.
         serverPort = base.config.GetInt('server-port', 7199)

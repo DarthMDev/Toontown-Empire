@@ -564,7 +564,6 @@ class Toon(Avatar.Avatar, ToonHead):
             self.motion = None
 
             self.removeHeadMeter()
-            self.removeGMIcon()
             self.removePartyHat()
             Avatar.Avatar.delete(self)
             ToonHead.delete(self)
@@ -3081,38 +3080,6 @@ class Toon(Avatar.Avatar, ToonHead):
         self.headMeter = None
         self.setHeadPositions()
 
-    def setGMIcon(self, access):
-        if self.gmIcon:
-            return
-        #todo change the bam file for staff_icons_christmas to link to phase_3/maps/staff_icons_christmas.png    
-        if config.GetBool('want-christmasicons', False): # Everything is correct just need to add this to config
-			icons = loader.loadModel('phase_3/models/props/staff_icons_christmas')
-        else:	
-		#todo change the bam file for staff_icons to link to phase_3/maps/staff_icons.jpg
-        	icons = loader.loadModel('phase_3/models/props/staff_icons') 
-        self.gmIcon = icons.find('**/access_level_%s' % access)
-        np = NodePath(self.nametag.getNameIcon())
-
-        if np.isEmpty() or not self.gmIcon:
-            return
-
-        self.gmIcon.flattenStrong()
-        self.gmIcon.reparentTo(np)
-        self.gmIcon.setScale(1.6) 
-        self.gmIconInterval = LerpHprInterval(self.gmIcon, 3.0, Point3(0, 0, 0), Point3(-360, 0, 0))
-        self.gmIconInterval.loop()
-        self.setHeadPositions()
-
-    def removeGMIcon(self): 
-        if not self.gmIcon:
-            return
-
-        self.gmIconInterval.finish()
-        self.gmIcon.detachNode()
-        del self.gmIconInterval
-        self.gmIcon = None
-        self.setHeadPositions()
-
     def setPartyHat(self):
         if self.partyHat:
             return
@@ -3160,7 +3127,7 @@ class Toon(Avatar.Avatar, ToonHead):
 loadModels()
 compileGlobalAnimList()
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+@magicWord(category=CATEGORY_STAFF, types=[int])
 def headMeter(create=True):
     """
     Create or remove the head meter.
@@ -3169,7 +3136,7 @@ def headMeter(create=True):
         if isinstance(av, Toon):
             av.createHeadMeter() if create else av.removeHeadMeter()
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+@magicWord(category=CATEGORY_STAFF, types=[int])
 def partyHat(create=True):
     """
     Create or remove the party hat.
@@ -3177,29 +3144,3 @@ def partyHat(create=True):
     for av in base.cr.doId2do.values():
         if isinstance(av, Toon):
             av.setPartyHat() if create else av.removePartyHat()
-
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[int], access=100) 
-def setGM(gmId):        
-    if not 0 <= gmId <= 5:
-        return 'Args: 0=off, 1=trial, 2=staff, 3=lead_staff, 4=developer, 5=leader'
-        
-    if spellbook.getInvokerAccess() < 100 and (gmId > 0):
-        return 'Only staff on trial members can set GM higher than 0!'
-    elif spellbook.getInvokerAccess() < 200 and (gmId > 1):
-        return 'Only  staff members can set GM higher than 1!'
-    elif spellbook.getInvokerAccess() < 300 and (gmId > 2):
-        return 'Only lead staff members can set GM higher than 2!'
-    elif spellbook.getInvokerAccess() < 500 and (gmId > 3):
-    	return 'Only developers can set gm higher than 3!'  
-    elif spellbook.getInvokerAccess() < 500 and (gmId > 4):
-        return 'Only leaders can set GM higher than 4!'
-        
-    elif spellbook.getInvokerAccess() < 500 and (gmId > 5):
-        return 'Only leaders can set GM to 5!'
-        
-    if spellbook.getTarget().isGM() and gmId != 0:
-        spellbook.getTarget().b_setGM(0)
-        
-    spellbook.getTarget().b_setGM(gmId)
-    
-    return 'You have set %s to GM type %s' % (spellbook.getTarget().getName(), gmId)

@@ -530,7 +530,7 @@ class QuestManagerAI:
         # Update the avatar's quests
         av.b_setQuests(questList)
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[str, int, int])
+@magicWord(category=CATEGORY_STAFF, types=[str, int, int])
 def quests(command, arg0=0, arg1=0):
     invoker = spellbook.getInvoker()
     currQuests = invoker.getQuests()

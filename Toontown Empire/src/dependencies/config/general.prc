@@ -64,6 +64,7 @@ want-goofy-speedway #t
 want-outdoor-zone #t
 want-golf-zone #t
 want-photo-game #f 
+
 # Safe zone settings:
 want-treasure-planners #t
 want-suit-planners #t
@@ -118,4 +119,3 @@ want-pstats 0
 smooth-lag 0.4
 want-old-fireworks #t
 want-mongo-client #t
-want-christmasicons #t

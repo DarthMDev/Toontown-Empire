@@ -416,7 +416,7 @@ class DistributedToonHallInterior(DistributedToonInterior):
     def delete(self):
         DistributedToonInterior.delete(self)
 
-@magicWord(category=CATEGORY_CREATIVE, types=[int])
+@magicWord(category=CATEGORY_LEADER, types=[int])
 def sillyPhase(phase):
     """
     Set the silly meter phase.

@@ -42,7 +42,7 @@ class MagicWordManagerAI(DistributedObjectAI):
                                   targetId, target.getAdminAccess(),
                                   word, response)
 
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[str])
+@magicWord(category=CATEGORY_TRIAL, types=[str])
 def help(wordName=None):
     if not wordName:
         return "What were you interested getting help for?"
@@ -57,7 +57,7 @@ def help(wordName=None):
         return 'I have no clue what %s is referring to' % (wordName)
     return word.doc
 
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[])
+@magicWord(category=CATEGORY_STAFF, types=[])
 def words():
     accessLevel = spellbook.getInvoker().getAdminAccess()
     wordString = None

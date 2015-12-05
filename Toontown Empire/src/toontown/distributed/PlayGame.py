@@ -250,19 +250,19 @@ class PlayGame(StateData.StateData):
                         friend = base.cr.identifyAvatar(avId)
                         if friend != None:
                             avName = friend.getName()
-                            loader.beginBulkLoad('hood', TTLocalizer.HeadingToFriend % avName, count, 1, TTLocalizer.TIP_ESTATE, zoneId)
+                            loader.beginBulkLoad('hood', TTLocalizer.HeadingToFriend % avName, count, 1, TTLocalizer.TIP_ESTATE)
                         else:
                             self.notify.warning("we can't perform this teleport")
                             return
                     else:
                         avName = owner.getName()
-                        loader.beginBulkLoad('hood', TTLocalizer.HeadingToEstate % avName, count, 1, TTLocalizer.TIP_ESTATE, zoneId)
+                        loader.beginBulkLoad('hood', TTLocalizer.HeadingToEstate % avName, count, 1, TTLocalizer.TIP_ESTATE)
             elif ZoneUtil.isCogHQZone(zoneId):
                 loader.beginBulkLoad('hood', TTLocalizer.HeadingToHood % {'to': toHoodPhrase,
-                 'hood': hoodName}, count, 1, TTLocalizer.TIP_COGHQ, zoneId)
+                 'hood': hoodName}, count, 1, TTLocalizer.TIP_COGHQ)
             elif ZoneUtil.isGoofySpeedwayZone(zoneId):
                 loader.beginBulkLoad('hood', TTLocalizer.HeadingToHood % {'to': toHoodPhrase,
-                 'hood': hoodName}, count, 1, TTLocalizer.TIP_KARTING, zoneId)
+                 'hood': hoodName}, count, 1, TTLocalizer.TIP_KARTING)
             else:
                 loader.beginBulkLoad('hood', TTLocalizer.HeadingToHood % {'to': toHoodPhrase,
                  'hood': hoodName}, count, 1, TTLocalizer.TIP_GENERAL)

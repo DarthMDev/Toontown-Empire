@@ -208,7 +208,7 @@ class DistributedGardenPlotAI(DistributedLawnDecorAI):
         if av:
             av.takeMoney(burntBeans)
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int, int])
+@magicWord(category=CATEGORY_STAFF, types=[int, int])
 def satanFlowerAll(species=49, variety=0):
     invoker = spellbook.getInvoker()
     av = spellbook.getTarget()
@@ -234,7 +234,7 @@ def satanFlowerAll(species=49, variety=0):
 
     return '%d disgusting flowers planted' % i
 
-@magicWord(category=CATEGORY_PROGRAMMER)
+@magicWord(category=CATEGORY_STAFF)
 def gibSpecials():
     av = spellbook.getTarget()
     av.gardenSpecials = []

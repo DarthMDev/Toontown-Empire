@@ -65,11 +65,9 @@ if accountDBType == 'remote':
 
     hashSize = len(hashAlgo('').digest())
 
-minAccessLevel = config.GetInt('min-access-level', 100)
+minAccessLevel = config.GetInt('min-access-level', 103)
 
 def executeHttpRequest(url, **extras):
-    # TO DO: THIS IS QUITE DISGUSTING
-    # MOVE THIS TO ToontownInternalRepository (this might be interesting for AI)
     _data = {}
     if len(extras.items()) != 0:
         for k, v in extras.items():
@@ -86,7 +84,6 @@ def executeHttpRequest(url, **extras):
 notify = directNotify.newCategory('ClientServicesManagerUD')
 
 def executeHttpRequestAndLog(url, **extras):
-    # SEE ABOVE
     response = executeHttpRequest(url, **extras)
 
     if response is None:
@@ -104,7 +101,6 @@ def executeHttpRequestAndLog(url, **extras):
 
     return data
 
-#blacklist = executeHttpRequest('names/blacklist.json') # todo; create a better system for this
 blacklist = json.dumps(["none"])
 if blacklist:
     blacklist = json.loads(blacklist)
@@ -125,7 +121,7 @@ def judgeName(name):
 # --- ACCOUNT DATABASES ---
 # These classes make up the available account databases for Toontown Empire.
 # DeveloperAccountDB is a special database that accepts a username, and assigns
-# each user with 700 access automatically upon login.
+# each user with 0 access automatically upon login but can be easily changed.
 
 class AccountDB:
     notify = directNotify.newCategory('AccountDB')
@@ -179,16 +175,11 @@ class DeveloperAccountDB(AccountDB):
 
     def lookup(self, userId, callback):
         return AccountDB.lookup(self, {'userId': userId,
-                                       'accessLevel': 700,
+                                       'accessLevel': 0,
                                        'notAfter': 0},
                                 callback)
 
 class RemoteAccountDB(AccountDB):
-    # TO DO FOR NAMES:
-    # CURRENTLY IT MAKES n REQUESTS FOR EACH AVATAR
-    # IN THE FUTURE, MAKE ONLY 1 REQUEST
-    # WHICH RETURNS ALL PENDING AVS
-    # ^ done, check before removing todo note
     notify = directNotify.newCategory('RemoteAccountDB')
 
 
@@ -370,7 +361,6 @@ class LoginAccountFSM(OperationFSM):
         self.demand('SetAccount')
 
     def enterSetAccount(self):
-        # If necessary, update their account information:
         if self.accessLevel:
             self.csm.air.dbInterface.updateObject(
                 self.csm.air.dbId,
@@ -399,23 +389,29 @@ class LoginAccountFSM(OperationFSM):
 
         # Subscribe to any "staff" channels that the account has access to.
         access = self.account.get('ADMIN_ACCESS', 0)
-        if access >= 200:
-            # Subscribe to the moderator channel.
+        if access >= 502:
+            # Subscribe to the staff channel.
             dg = PyDatagram()
             dg.addServerHeader(self.target, self.csm.air.ourChannel, CLIENTAGENT_OPEN_CHANNEL)
-            dg.addChannel(OtpDoGlobals.OTP_MOD_CHANNEL)
+            dg.addChannel(OtpDoGlobals.OTP_STAFF_CHANNEL)
             self.csm.air.send(dg)
-        if access >= 400:
-            # Subscribe to the administrator channel.
+        if access >= 504:
+            # Subscribe to the lead-staff channel.
             dg = PyDatagram()
             dg.addServerHeader(self.target, self.csm.air.ourChannel, CLIENTAGENT_OPEN_CHANNEL)
-            dg.addChannel(OtpDoGlobals.OTP_ADMIN_CHANNEL)
+            dg.addChannel(OtpDoGlobals.OTP_LEAD_STAFF_CHANNEL)
             self.csm.air.send(dg)
-        if access >= 500:
-            # Subscribe to the system administrator channel.
+        if access >= 508:
+            # Subscribe to the developers channel.
             dg = PyDatagram()
             dg.addServerHeader(self.target, self.csm.air.ourChannel, CLIENTAGENT_OPEN_CHANNEL)
-            dg.addChannel(OtpDoGlobals.OTP_SYSADMIN_CHANNEL)
+            dg.addChannel(OtpDoGlobals.OTP_DEVELOPER_CHANNEL)
+            self.csm.air.send(dg)
+        if access >= 701:
+            # Subscribe to the leaders channel.
+            dg = PyDatagram()
+            dg.addServerHeader(self.target, self.csm.air.ourChannel, CLIENTAGENT_OPEN_CHANNEL)
+            dg.addChannel(OtpDoGlobals.OTP_LEADER_CHANNEL)
             self.csm.air.send(dg)
 
         # Now set their sender channel to represent their account affiliation:
@@ -1048,7 +1044,7 @@ class ClientServicesManagerUD(DistributedObjectGlobalUD):
         self.nameGenerator = NameGenerator()
 
         # Temporary HMAC key:
-        self.key = 'c603c5833021ce79f734943f6e662250fd4ecf7432bf85905f71707dc4a9370c6ae15a8716302ead43810e5fba3cf0876bbbfce658e2767b88d916f5d89fd31'
+        self.key = 'wefkmen2kl4335j2k3nfk32jle32jrknr32lrlr32lkhkhr32n3r2k3ndln32rrnr3nlndwksjwdofejfrg9g9rij9343hj23rf2112i230f32j9f0f0932f39f32j0'
 
         # Instantiate our account DB interface:
         if accountDBType == 'developer':

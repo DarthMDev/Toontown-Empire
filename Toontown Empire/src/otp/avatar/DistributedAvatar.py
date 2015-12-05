@@ -242,7 +242,7 @@ class DistributedAvatar(DistributedActor, Avatar):
     def getDialogueArray(self):
         return None
 
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER)
+@magicWord(category=CATEGORY_LEADER)
 def warp():
     """
     warp the target to the invoker's current position, and rotation.
@@ -253,7 +253,7 @@ def warp():
         return "You can't warp yourself!"
     target.setPosHpr(invoker.getPos(), invoker.getHpr())
 
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[str])
+@magicWord(category=CATEGORY_LEADER, types=[str])
 def loop(anim):
     """
     animate the target using animation [anim] on the entire actor.
@@ -261,7 +261,7 @@ def loop(anim):
     target = spellbook.getTarget()
     target.loop(anim)
 
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[str, int, str])
+@magicWord(category=CATEGORY_LEADER, types=[str, int, str])
 def pose(anim, frame, part=None):
     """
     freeze the target on frame [frame] of animation [anim] on the entire actor,
@@ -270,7 +270,7 @@ def pose(anim, frame, part=None):
     target = spellbook.getTarget()
     target.pose(anim, frame, partName=part)
 
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[str, int, int, str])
+@magicWord(category=CATEGORY_LEADER, types=[str, int, int, str])
 def pingpong(anim, start=None, end=None, part=None):
     """
     animate the target by bouncing back and forth between the start and end, or
@@ -280,7 +280,7 @@ def pingpong(anim, start=None, end=None, part=None):
     target = spellbook.getTarget()
     target.pingpong(anim, partName=part, fromFrame=start, toFrame=end)
 
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[str])
+@magicWord(category=CATEGORY_LEADER, types=[str])
 def rightHand(prop=None):
     """
     parents the optional <prop> to the target's right hand node.
@@ -296,7 +296,7 @@ def rightHand(prop=None):
         requestedProp = globalPropPool.getProp(prop)
         requestedProp.reparentTo(rightHand)
 
-@magicWord(category=CATEGORY_COMMUNITY_MANAGER, types=[str])
+@magicWord(category=CATEGORY_LEADER, types=[str])
 def leftHand(prop=None):
     """
     parents the optional <prop> to the target's left hand node.
@@ -312,14 +312,14 @@ def leftHand(prop=None):
         requestedProp = globalPropPool.getProp(prop)
         requestedProp.reparentTo(leftHand)
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[])
+@magicWord(category=CATEGORY_LEADER, types=[])
 def getPos():
     """
     Return your target's position.
     """
     return spellbook.getTarget().getPos()
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+@magicWord(category=CATEGORY_LEADER, types=[int])
 def setFov(fov=OTPGlobals.DefaultCameraFov):
     """
     Set your field of view in-game.
@@ -332,7 +332,7 @@ def setFov(fov=OTPGlobals.DefaultCameraFov):
     else:
         return 'Set FOV to %s.' % fov
 		
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+@magicWord(category=CATEGORY_STAFF, types=[int])
 def ToonUp(Laff):
   '''
   Set's Target's Laff
@@ -349,7 +349,7 @@ def ToonUp(Laff):
   else:
    avatar.setHp(Laff)
    
-#Disabled Intill Bullshit Indent Error can be Fixed!
+#Disabled because of Indent Error can be Fixed!
 '''
 magicWord(category=CATEGORY_PROGRAMMER, types=[int])
 def setPos(Pos):

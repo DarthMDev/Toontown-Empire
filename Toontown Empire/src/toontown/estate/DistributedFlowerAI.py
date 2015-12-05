@@ -101,7 +101,7 @@ class DistributedFlowerAI(DistributedPlantBaseAI, FlowerBase):
         else:
             taskMgr.doMethodLater(7, _remove,  self.uniqueName('do-remove'))
  
-@magicWord(category=CATEGORY_PROGRAMMER)
+@magicWord(category=CATEGORY_STAFF)
 def satanGrowFlowers():
     av = spellbook.getTarget()
     estate = av.air.estateManager._lookupEstate(av)
@@ -123,7 +123,7 @@ def satanGrowFlowers():
             
     return '%d disgusting flowers and trees grown' % i
     
-@magicWord(category=CATEGORY_PROGRAMMER)
+@magicWord(category=CATEGORY_STAFF)
 def satanPickAll():
     av = spellbook.getTarget()
     estate = av.air.estateManager._lookupEstate(av)
