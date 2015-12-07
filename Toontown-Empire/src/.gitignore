@@ -61,3 +61,4 @@ src/dependencies/MongoDB/GardeningDatabase/mongod.lock
 src/dependencies/MongoDB/GardeningDatabase/
 src/user/preferences.json
 *.mp
+settings.son
