@@ -7027,7 +7027,7 @@ EstateTeleportFailedNotFriends = "Sorry, %s is in a toon's estate that you are n
 EstateTargetGameStart = 'The Toon-up Target game has started!'
 EstateTargetGameInst = "The more you hit the red target, the more you'll get Tooned up."
 EstateTargetGameEnd = 'The Toon-up Target game is now over...'
-EstatePlaneReturn = "I'm back!!!"
+EstatePlaneReturn = "Frgh Fudfnhg"
 EstatePlaneHoliday = 'Happy Halloween!!!'
 AvatarsHouse = '%s\n House'
 BankGuiCancel = lCancel
@@ -8563,13 +8563,12 @@ SillySurgeTerms = {1: 'Amusing Ascent!',
  3: 'Ridiculous Rise!',
  4: 'Giggle Growth!',
  5: 'Funny Fueling!',
- 6: 'Batty Boost!',
- 7: 'Crazy Climb!',
- 8: 'Jolly Jump!',
- 9: 'Loony Lift!',
- 10: 'Hilarity Hike!',
- 11: 'Insanity Increase!',
- 12: 'Cracked-Uptick!'}
+ 6: 'Crazy Climb!',
+ 7: 'Jolly Jump!',
+ 8: 'Loony Lift!',
+ 9: 'Hilarity Hike!',
+ 10: 'Insanity Increase!',
+ 11: 'Cracked-Uptick!'}
 InteractivePropTrackBonusTerms = {0: 'Super Toon-Up!',
  1: '',
  2: '',

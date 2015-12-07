@@ -21,21 +21,6 @@ from toontown.toonbase import ToontownGlobals
 from datetime import datetime, timedelta
 import time
 
-'''
-        # Here is an example of giving clothing to specific genders.
-        if code == "GenderExample" or code == "GenderExample2":
-            # The following code will check to see if the gender is a male.
-            # If it is, then they will be given shirt 2002.
-            if av.getStyle().getGender() == 'm':
-                shirt = CatalogClothingItem(2002, 0)
-                shorts = CatalogClothingItem(2002, 0)
-            # If it sees the gender isn't male, it will give shirt 2003.
-            else:
-                shirt = CatalogClothingItem(2003, 0)
-                shorts = CatalogClothingItem(2003, 0)
-            return [shirt, shorts]
-        '''
-
 """
 Code example:
 
@@ -53,45 +38,47 @@ Expiration date, month, day and year are optional fields.
 
 If you for some reason are not familiar with arrays or lists, you
 only include the comma if there are multiple arguments.
+
+# Code example for Gardening
+        'gardening': {
+            'items': [
+                CatalogGardenStarterItem.CatalogGardenStarterItem()
+            ]
+        },
+        'toonstatue': {
+            'items': [
+                CatalogToonStatueItem.CatalogToonStatueItem(105, endPoseIndex=108)
+            ]
+        },
+        'donaldstatue': {
+            'items': [
+                CatalogGardenItem.CatalogGardenItem(100, 1)
+            ]
+        }
+
+        # Here is an example of giving clothing to specific genders.
+        if code == "GenderExample":
+            # The following code will check to see if the gender is a male.
+            # If it is, then they will be given shirt 2002.
+            if av.getStyle().getGender() == 'm':
+                shirt = CatalogClothingItem(2002, 0)
+            # If it sees the gender isn't male, it will give shirt 2003.
+            else:
+                shirt = CatalogClothingItem(2003, 0)
+            return [shirt]
 """
-
-# Example code for multiple code options to redeem a code
-
-'''
-        if code == "Code1" or code == "Code2" or code == "Code-3:
-'''
 
 class TTCodeRedemptionMgrAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("TTCodeRedemptionMgrAI")
     codes = {
-        'Pinktober': {
+        'pinktober': {
             'items': [
-                CatalogClothingItem.CatalogClothingItem(1821, 0)
-            ],
+                CatalogClothingItem.CatalogClothingItem(1822, 0)
+            ]
         },
-# Kept for a code example for gardening
-'''
-        'gardening': {
-            'items': [
-                CatalogGardenStarterItem.CatalogGardenStarterItem()
-           ]
-        },
-'''
         'sillymeter': {
             'items': [
                 CatalogClothingItem.CatalogClothingItem(1753, 0)
-# Kept for Code example
-
-#            ]
-#        }
-#        'toonstatue': {
-#            'items': [
-#               CatalogToonStatueItem.CatalogToonStatueItem(105, endPoseIndex=108)
-#            ]
-#        },
-#        'donaldstatue': {
-#            'items': [
- #               CatalogGardenItem.CatalogGardenItem(100, 1)
             ]
         }
     }

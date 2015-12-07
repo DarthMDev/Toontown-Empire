@@ -954,19 +954,10 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.addStat(ToontownGlobals.STAT_SAD)
 
     def b_setMaxHp(self, maxHp):
-        if self.maxHp == maxHp:
-            return
-
-        if (maxHp > ToontownGlobals.MaxHpLimit):
-            self.air.writeServerEvent('suspicious', self.doId, 'Toon tried to go over the HP limit.')
-            self.d_setMaxHp(ToontownGlobals.MaxHpLimit)
-            self.setMaxHp(ToontownGlobals.MaxHpLimit)
-        else:
-            self.d_setMaxHp(maxHp)
-            self.setMaxHp(maxHp)
-
-    def d_setMaxHp(self, maxHp):
-        self.sendUpdate('setMaxHp', [maxHp])
+        if maxHp > ToontownGlobals.MaxHpLimit:
+            self.air.writeServerEvent('suspicious', avId=self.doId, issue='Toon tried to go over 137 laff.')
+        maxHp = min(maxHp, ToontownGlobals.MaxHpLimit)
+        DistributedAvatarAI.DistributedAvatarAI.b_setMaxHp(self, maxHp)
 
     def b_setTutorialAck(self, tutorialAck):
         self.d_setTutorialAck(tutorialAck)
@@ -2265,7 +2256,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def b_setMaxMoney(self, maxMoney):
         self.d_setMaxMoney(maxMoney)
         self.setMaxMoney(maxMoney)
-
         if self.getMoney() > maxMoney:
             self.b_setBankMoney(self.bankMoney + (self.getMoney() - maxMoney))
             self.b_setMoney(maxMoney)
@@ -2279,25 +2269,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def getMaxMoney(self):
         return self.maxMoney
 
-    def b_setMaxBankMoney(self, maxBankMoney):
-        self.d_setMaxBankMoney(maxBankMoney)
-        self.setMaxBankMoney(maxBankMoney)
-
-        if self.getBankMoney() > maxBankMoney:
-            self.b_setBankMoney(maxBankMoney)
-
-    def d_setMaxBankMoney(self, maxBankMoney):
-        self.sendUpdate('setMaxBankMoney', [maxBankMoney])
-
-    def setMaxBankMoney(self, maxBankMoney):
-        self.maxBankMoney = maxBankMoney
-
-    def getMaxBankMoney(self):
-        return self.maxBankMoney
-
     def addMoney(self, deltaMoney):
-        if deltaMoney > 0:
-            messenger.send('topToonsManager-event', [self.doId, TopToonsGlobals.CAT_JELLYBEAN, deltaMoney])
         money = deltaMoney + self.money
         pocketMoney = min(money, self.maxMoney)
         self.b_setMoney(pocketMoney)
@@ -2305,7 +2277,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         if overflowMoney > 0:
             bankMoney = self.bankMoney + overflowMoney
             self.b_setBankMoney(bankMoney)
-        self.addStat(ToontownGlobals.STAT_BEANS_EARNT, deltaMoney)
 
     def takeMoney(self, deltaMoney, bUseBank = True):
         totalMoney = self.money
@@ -3716,11 +3687,11 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def b_setPinkSlips(self, pinkSlips):
         self.specialInventory[0] = pinkSlips
         self.b_setSpecialInventory(self.specialInventory)
-
+    
     def b_setCrateKeys(self, crateKeys):
         self.specialInventory[1] = crateKeys
         self.b_setSpecialInventory(self.specialInventory)
-
+    
     def b_setSpecialInventory(self, specialInventory):
         self.d_setSpecialInventory(specialInventory)
         self.setSpecialInventory(specialInventory)
@@ -3733,7 +3704,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getPinkSlips(self):
         return self.specialInventory[0]
-
+    
     def getCrateKeys(self):
         return self.specialInventory[1]
 
@@ -3747,7 +3718,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             amount = 0
         pinkSlips = max(self.getPinkSlips() - amount, 0)
         self.b_setPinkSlips(pinkSlips)
-
+    
     def addCrateKeys(self, amountToAdd):
         self.b_setCrateKeys(min(self.getCrateKeys() + amountToAdd, 255))
 
@@ -4285,56 +4256,19 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getTFRequest(self):
         return self.tfRequest
+        
+    def b_setExperience(self, experience):
+        self.d_setExperience(experience)
+        self.setExperience(experience)
 
-    def setEPP(self, epp):
-        self.epp = epp
+    def d_setExperience(self, experience):
+        self.sendUpdate('setExperience', [experience])
 
-    def d_setEPP(self, epp):
-        self.sendUpdate("setEPP", [epp])
+    def setExperience(self, experience):
+        self.experience = Experience.Experience(experience, self)
 
-    def b_setEPP(self, epp):
-        self.setEPP(epp)
-        self.d_setEPP(epp)
-
-    def addEPP(self, dept):
-        self.epp.append(dept)
-        self.d_setEPP(self.epp)
-
-    def removeEPP(self, dept):
-        if dept in self.epp:
-            self.epp.remove(dept)
-
-        self.d_setEPP(self.epp)
-
-    def hasEPP(self, dept):
-        return dept in self.epp
-
-    def b_setStats(self, stats):
-        self.d_setStats(stats)
-        self.setStats(stats)
-
-    def d_setStats(self, stats):
-        self.sendUpdate('setStats', [stats])
-
-    def setStats(self, stats):
-        self.stats = stats
-
-    def getStats(self):
-        return self.stats
-
-    def getStat(self, index):
-        return self.stats[index]
-
-    def addStat(self, index, amount=1):
-        if amount <= 0:
-            return
-
-        self.stats[index] += amount
-        self.d_setStats(self.stats)
-
-    def wipeStats(self):
-        self.stats = [0] * 22
-        self.d_setStats(self.stats)
+    def getExperience(self):
+        return self.experience.makeNetString()
 
 @magicWord(category=CATEGORY_STAFF, types=[str, int, int])
 def cheesyEffect(value, hood=0, expire=0):
@@ -4356,6 +4290,156 @@ def cheesyEffect(value, hood=0, expire=0):
     target = spellbook.getTarget()
     target.b_setCheesyEffect(value, hood, expire)
     return 'Set %s\'s cheesy effect to: %d' % (target.getName(), value)
+
+    def b_setTrackAccess(self, trackArray):
+        self.setTrackAccess(trackArray)
+        self.d_setTrackAccess(trackArray)
+
+    def d_setTrackAccess(self, trackArray):
+        self.sendUpdate('setTrackAccess', [trackArray])
+
+    def setTrackAccess(self, trackArray):
+        self.trackArray = trackArray
+
+    def getTrackAccess(self):
+        return self.trackArray
+
+    def addTrackAccess(self, track):
+        self.trackArray[track] = 1
+        self.b_setTrackAccess(self.trackArray)
+
+    def removeTrackAccess(self, track):
+        self.trackArray[track] = 0
+        self.b_setTrackAccess(self.trackArray)
+
+    def hasTrackAccess(self, track):
+        if self.trackArray and track < len(self.trackArray):
+            return self.trackArray[track]
+        else:
+            return 0
+
+    def fixTrackAccess(self):
+        fixed = 0
+        healExp, trapExp, lureExp, soundExp, throwExp, squirtExp, dropExp = self.experience.experience
+        numTracks = reduce(lambda a, b: a + b, self.trackArray)
+        if self.rewardTier in [0,
+         1,
+         2,
+         3]:
+            if numTracks != 2:
+                self.notify.warning('bad num tracks in tier: %s, %s' % (self.rewardTier, self.trackArray))
+                self.b_setTrackAccess([0, 0, 0, 0, 1, 1, 0])
+                fixed = 1
+        elif self.rewardTier in [4, 5, 6]:
+            if numTracks != 3:
+                self.notify.warning('bad num tracks in tier: %s, %s' % (self.rewardTier, self.trackArray))
+                if self.trackArray[ToontownBattleGlobals.SOUND_TRACK] and not self.trackArray[ToontownBattleGlobals.HEAL_TRACK]:
+                    self.b_setTrackAccess([0, 0, 0, 1, 1, 1, 0])
+                elif self.trackArray[ToontownBattleGlobals.HEAL_TRACK] and not self.trackArray[ToontownBattleGlobals.SOUND_TRACK]:
+                    self.b_setTrackAccess([1, 0, 0, 0, 1, 1, 0])
+                elif soundExp >= healExp:
+                    self.b_setTrackAccess([0, 0, 0, 1, 1, 1, 0])
+                else:
+                    self.b_setTrackAccess([1, 0, 0, 0, 1, 1, 0])
+                fixed = 1
+        elif self.rewardTier in [7, 8, 9, 10]:
+            if numTracks != 4:
+                self.notify.warning('bad num tracks in tier: %s, %s' % (self.rewardTier, self.trackArray))
+                if self.trackArray[ToontownBattleGlobals.SOUND_TRACK] and not self.trackArray[ToontownBattleGlobals.HEAL_TRACK]:
+                    if dropExp >= lureExp:
+                        self.b_setTrackAccess([0, 0, 0, 1, 1, 1, 1])
+                    else:
+                        self.b_setTrackAccess([0, 0, 1, 1, 1, 1, 0])
+                elif self.trackArray[ToontownBattleGlobals.HEAL_TRACK] and not self.trackArray[ToontownBattleGlobals.SOUND_TRACK]:
+                    if dropExp >= lureExp:
+                        self.b_setTrackAccess([1, 0, 0, 0, 1, 1, 1])
+                    else:
+                        self.b_setTrackAccess([1, 0, 1, 0, 1, 1, 0])
+                elif soundExp >= healExp:
+                    if dropExp >= lureExp:
+                        self.b_setTrackAccess([0, 0, 0, 1, 1, 1, 1])
+                    else:
+                        self.b_setTrackAccess([0, 0, 1, 1, 1, 1, 0])
+                elif dropExp >= lureExp:
+                    self.b_setTrackAccess([1, 0, 0, 0, 1, 1, 1])
+                else:
+                    self.b_setTrackAccess([1, 0, 1, 0, 1, 1, 0])
+                fixed = 1
+        elif self.rewardTier in [11, 12, 13]:
+            if numTracks != 5:
+                self.notify.warning('bad num tracks in tier: %s, %s' % (self.rewardTier, self.trackArray))
+                if self.trackArray[ToontownBattleGlobals.SOUND_TRACK] and not self.trackArray[ToontownBattleGlobals.HEAL_TRACK]:
+                    if self.trackArray[ToontownBattleGlobals.DROP_TRACK] and not self.trackArray[ToontownBattleGlobals.LURE_TRACK]:
+                        if healExp >= trapExp:
+                            self.b_setTrackAccess([1, 0, 0, 1, 1, 1, 1])
+                        else:
+                            self.b_setTrackAccess([0, 1, 0, 1, 1, 1, 1])
+                    elif healExp >= trapExp:
+                        self.b_setTrackAccess([1, 0, 1, 1, 1, 1, 0])
+                    else:
+                        self.b_setTrackAccess([0, 1, 1, 1, 1, 1, 0])
+                elif self.trackArray[ToontownBattleGlobals.HEAL_TRACK] and not self.trackArray[ToontownBattleGlobals.SOUND_TRACK]:
+                    if self.trackArray[ToontownBattleGlobals.DROP_TRACK] and not self.trackArray[ToontownBattleGlobals.LURE_TRACK]:
+                        if soundExp >= trapExp:
+                            self.b_setTrackAccess([1, 0, 0, 1, 1, 1, 1])
+                        else:
+                            self.b_setTrackAccess([1, 1, 0, 0, 1, 1, 1])
+                    elif soundExp >= trapExp:
+                        self.b_setTrackAccess([1, 0, 1, 1, 1, 1, 0])
+                    else:
+                        self.b_setTrackAccess([1, 1, 1, 0, 1, 1, 0])
+                fixed = 1
+        elif numTracks != 6:
+            self.notify.warning('bad num tracks in tier: %s, %s' % (self.rewardTier, self.trackArray))
+            sortedExp = [healExp,
+             trapExp,
+             lureExp,
+             soundExp,
+             dropExp]
+            sortedExp.sort()
+            if trapExp == sortedExp[0]:
+                self.b_setTrackAccess([1, 0, 1, 1, 1, 1, 1])
+            elif lureExp == sortedExp[0]:
+                self.b_setTrackAccess([1, 1, 0, 1, 1, 1, 1])
+            elif dropExp == sortedExp[0]:
+                self.b_setTrackAccess([1, 1, 1, 1, 1, 1, 0])
+            elif soundExp == sortedExp[0]:
+                self.b_setTrackAccess([1, 1, 1, 0, 1, 1, 1])
+            elif healExp == sortedExp[0]:
+                self.b_setTrackAccess([0, 1, 1, 1, 1, 1, 1])
+            else:
+                self.notify.warning('invalid exp?!: %s, %s' % (sortedExp, self.trackArray))
+                self.b_setTrackAccess([1, 0, 1, 1, 1, 1, 1])
+            fixed = 1
+        if fixed:
+            self.inventory.zeroInv()
+            self.inventory.maxOutInv()
+            self.d_setInventory(self.inventory.makeNetString())
+            self.notify.info('fixed tracks: %s' % self.trackArray)
+        return fixed
+
+    def b_setTrackProgress(self, trackId, progress):
+        self.setTrackProgress(trackId, progress)
+        self.d_setTrackProgress(trackId, progress)
+
+    def d_setTrackProgress(self, trackId, progress):
+        self.sendUpdate('setTrackProgress', [trackId, progress])
+
+    def setTrackProgress(self, trackId, progress):
+        self.trackProgressId = trackId
+        self.trackProgress = progress
+
+    def addTrackProgress(self, trackId, progressIndex):
+        if self.trackProgressId != trackId:
+            self.notify.warning('tried to update progress on a track toon is not training')
+        newProgress = self.trackProgress | 1 << progressIndex - 1
+        self.b_setTrackProgress(self.trackProgressId, newProgress)
+
+    def clearTrackProgress(self):
+        self.b_setTrackProgress(-1, 0)
+
+    def getTrackProgress(self):
+        return [self.trackProgressId, self.trackProgress]
 
 @magicWord(category=CATEGORY_STAFF, types=[int])
 def hp(hp):
@@ -4403,97 +4487,104 @@ def allSummons():
     target.b_setCogSummonsEarned(allSummons)
     return 'Lots of summons!'
 
+    def setEPP(self, epp):
+        self.epp = epp
+    
+    def d_setEPP(self, epp):
+        self.sendUpdate("setEPP", [epp])
+    
+    def b_setEPP(self, epp):
+        self.setEPP(epp)
+        self.d_setEPP(epp)
+    
+    def addEPP(self, dept):
+        self.epp.append(dept)
+        self.d_setEPP(self.epp)
+    
+    def removeEPP(self, dept):
+        if dept in self.epp:
+            self.epp.remove(dept)
+        
+        self.d_setEPP(self.epp)
+    
+    def hasEPP(self, dept):
+        return dept in self.epp
+    
+    def b_setStats(self, stats):
+        self.d_setStats(stats)
+        self.setStats(stats)
+
+    def d_setStats(self, stats):
+        self.sendUpdate('setStats', [stats])
+
+    def setStats(self, stats):
+        self.stats = stats
+    
+    def getStats(self):
+        return self.stats
+    
+    def getStat(self, index):
+        return self.stats[index]
+    
+    def addStat(self, index, amount=1):
+        if amount <= 0:
+            return
+
+        self.stats[index] += amount
+        self.d_setStats(self.stats)
+    
+    def wipeStats(self):
+        self.stats = [0] * 22
+        self.d_setStats(self.stats)
+
 @magicWord(category=CATEGORY_STAFF, types=[str])
-def maxToon(missingTrack=None):
-    """
-    Max the target's stats for end-level gameplay.
-    """
-    target = spellbook.getTarget()
+def maxToon(hasConfirmed='UNCONFIRMED'):
+    """Max out the toons stats, for end-level gameplay. Should only be (and is restricted to) casting on Administrators only."""
+    toon = spellbook.getInvoker()
 
-    # First, unlock the target's Gag tracks:
-    gagTracks = [1, 1, 1, 1, 1, 1, 1]
-    if missingTrack is not None:
-        try:
-            index = ('toonup', 'trap', 'lure', 'sound', 'throw',
-                     'squirt', 'drop').index(missingTrack)
-        except:
-            return 'Missing Gag track is invalid!'
-        if index in (4, 5):
-            return 'You are required to have Throw and Squirt.'
-        gagTracks[index] = 0
-    target.b_setTrackAccess(gagTracks)
-    target.b_setMaxCarry(80)
+    if hasConfirmed != 'CONFIRM':
+        return 'Are you sure you want to max out %s? This process is irreversible. Use "~maxToon CONFIRM" to confirm.' % toon.getName()
 
-    # Next, max out their experience for the tracks they have:
-    experience = Experience.Experience(target.getExperience(), target)
-    for i, track in enumerate(target.getTrackAccess()):
-        if track:
-            experience.experience[i] = (
-                Experience.MaxSkill - Experience.UberSkill)
-    target.b_setExperience(experience.makeNetString())
+    # Max out gag tracks (all 7 tracks)
+    toon.b_setTrackAccess([1] * 7)
+    toon.b_setMaxCarry(MaxCarryLimit + 15) # Compensate for the extra gag track.
+    toon.experience.maxOutExp() # Completely max out the toons experience.
+    toon.b_setExperience(toon.experience.makeNetString())
 
-    # Max out their Laff:
-    target.b_setMaxHp(ToontownGlobals.MaxHpLimit)
-    target.toonUp(target.getMaxHp() - target.hp)
+    # Restock all gags.
+    toon.inventory.zeroInv()
+    toon.inventory.maxOutInv(filterUberGags=0, filterPaidGags=0)
+    toon.b_setInventory(toon.inventory.makeNetString())
 
-    # Unlock all of the emotes:
-    emotes = list(target.getEmoteAccess())
-    for emoteId in OTPLocalizer.EmoteFuncDict.values():
-        if emoteId >= len(emotes):
-            continue
-        # The following emotions are ignored because they are unable to be
-        # obtained:
-        if emoteId in (17, 18, 19):
-            continue
-        emotes[emoteId] = 1
-    target.b_setEmoteAccess(emotes)
+    # Max out laff
+    toon.b_setMaxHp(ToontownGlobals.MaxHpLimit)
+    toon.toonUp(toon.getMaxHp() - toon.getHp())
 
-    # Max out their Cog suits:
-    target.b_setCogParts(
-        [
-            CogDisguiseGlobals.PartsPerSuitBitmasks[0],  # Bossbot
-            CogDisguiseGlobals.PartsPerSuitBitmasks[1],  # Lawbot
-            CogDisguiseGlobals.PartsPerSuitBitmasks[2],  # Cashbot
-            CogDisguiseGlobals.PartsPerSuitBitmasks[3]   # Sellbot
-        ]
-    )
-    target.b_setCogLevels([49] * 4)
-    target.b_setCogTypes([7, 7, 7, 7])
+    # Max out cog suits (ORDER: Bossbot, Lawbot, Cashbot, Sellbot)
+    toon.b_setCogParts([
+        CogDisguiseGlobals.PartsPerSuitBitmasks[0], # Bossbot
+        CogDisguiseGlobals.PartsPerSuitBitmasks[1], # Lawbot
+        CogDisguiseGlobals.PartsPerSuitBitmasks[2], # Cashbot
+        CogDisguiseGlobals.PartsPerSuitBitmasks[3]  # Sellbot
+    ])
+    toon.b_setCogLevels([ToontownGlobals.MaxCogSuitLevel] * 4)
+    toon.b_setCogTypes([SuitDNA.suitsPerDept-1] * 4)
 
-    # Max their Cog gallery:
-    deptCount = len(SuitDNA.suitDepts)
-    target.b_setCogCount(list(CogPageGlobals.COG_QUOTAS[1]) * deptCount)
-    cogStatus = [CogPageGlobals.COG_COMPLETE2] * SuitDNA.suitsPerDept
-    target.b_setCogStatus(cogStatus * deptCount)
-    target.b_setCogRadar([1, 1, 1, 1])
-    target.b_setBuildingRadar([1, 1, 1, 1])
+    # High racing tickets
+    toon.b_setTickets(99999)
 
-    # Max out their racing tickets:
-    target.b_setTickets(99999)
+    # Teleport access everywhere (Including CogHQ, excluding Funny Farm.)
+    toon.b_setHoodsVisited(ToontownGlobals.Hoods)
+    toon.b_setTeleportAccess(ToontownGlobals.HoodsForTeleportAll)
 
-    # Give them teleport access everywhere (including Cog HQs):
-    hoods = list(ToontownGlobals.HoodsForTeleportAll)
-    target.b_setHoodsVisited(hoods)
-    target.b_setTeleportAccess(hoods)
+    # General end game settings
+    toon.b_setQuestCarryLimit(ToontownGlobals.MaxQuestCarryLimit)
+    toon.b_setRewardHistory(Quests.ELDER_TIER, [])
+    toon.b_setMaxMoney(250)
+    toon.b_setMoney(toon.getMaxMoney())
+    toon.b_setBankMoney(ToontownGlobals.DefaultMaxBankMoney)
 
-    # Max their quest carry limit:
-    target.b_setQuestCarryLimit(4)
-
-    # Complete their quests:
-    target.b_setQuests([])
-    target.b_setRewardHistory(Quests.ELDER_TIER, [])
-
-    # Max their money:
-    target.b_setMaxMoney(250)
-    target.b_setMaxBankMoney(30000)
-    target.b_setMoney(target.getMaxMoney())
-    target.b_setBankMoney(target.getMaxBankMoney())
-
-    # Finally, unlock all of their pet phrases:
-    if simbase.wantPets:
-        target.b_setPetTrickPhrases(range(7))
-
-    return 'Maxed your Toon!'
+    return 'By the power invested in me, I, Dynamite106tt/FordTheWriter, max your toon.'
 
 @magicWord(category=CATEGORY_STAFF)
 def unlocks():
@@ -5253,3 +5344,23 @@ def badge(gmId):
     spellbook.getTarget().b_setGM(gmId)
 
     return 'You have set %s to GM type %s' % (spellbook.getTarget().getName(), gmId)
+
+@magicWord(category=CATEGORY_STAFF, types=[int, int, int, int, int, int, int])
+def tracks(toonup, trap, lure, sound, throw, squirt, drop):
+    """ Set access for each of the 7 gag tracks. """
+    spellbook.getTarget().b_setTrackAccess([toonup, trap, lure, sound, throw, squirt, drop])
+    return "Set track access accordingly."
+
+@magicWord(category=CATEGORY_STAFF, types=[str, int])
+def exp(track, amt):
+    """ Set your experience to the amount specified for a single track. """
+    trackIndex = TTLocalizer.BattleGlobalTracks.index(track)
+    av = spellbook.getTarget()
+    av.experience.setExp(trackIndex, amt)
+    av.b_setExperience(av.experience.makeNetString())
+    return "Set %s exp to %d successfully." % (track, amt)
+
+@magicWord(category=CATEGORY_STAFF, types=[int, int, int, int, int, int, int])
+def setTrackAccess(toonup, trap, lure, sound, throw, squirt, drop):
+    """Set target's gag track access."""
+    spellbook.getTarget().b_setTrackAccess([toonup, trap, lure, sound, throw, squirt, drop])
