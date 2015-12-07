@@ -1,9 +1,16 @@
-from pandac.PandaModules import Vec4, BitMask32, Quat, Point3, NodePath
-from pandac.PandaModules import OdePlaneGeom, OdeBody, OdeSphereGeom, OdeMass, OdeUtil, OdeBoxGeom
+from panda3d.core import Vec4
+from panda3d.core import BitMask32
+from panda3d.core import Quat
+from panda3d.core import NodePath
+from panda3d.ode import OdePlaneGeom
+from panda3d.ode import OdeBody
+from panda3d.ode import OdeSphereGeom
+from panda3d.ode import OdeMass
+from panda3d.ode import OdeUtil
+from panda3d.ode import OdeBoxGeom
 from direct.directnotify import DirectNotifyGlobal
 from toontown.minigame import DistributedMinigamePhysicsWorld
 from toontown.minigame import IceGameGlobals
-from toontown.golf import BuildGeometry
 MetersToFeet = 3.2808399
 FeetToMeters = 1.0 / MetersToFeet
 

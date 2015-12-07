@@ -1,5 +1,23 @@
-from pandac.PandaModules import Point3, ForceNode, LinearVectorForce, CollisionHandlerEvent, CollisionNode, CollisionSphere, Camera, PerspectiveLens, Vec4, Point2, ActorNode, Vec3, BitMask32
-from direct.interval.IntervalGlobal import Sequence, Parallel, Func, Wait, LerpPosInterval, ActorInterval, LerpScaleInterval, ProjectileInterval, SoundInterval
+from panda3d.core import Point3
+from panda3d.core import CollisionHandlerEvent
+from panda3d.core import CollisionNode, CollisionSphere
+from panda3d.core import PerspectiveLens
+from panda3d.core import Vec4
+from panda3d.core import Point2
+from panda3d.physics import ActorNode
+from panda3d.core import Vec3
+from panda3d.core import BitMask32
+from panda3d.physics import ForceNode
+from panda3d.physics import LinearVectorForce
+from direct.interval.IntervalGlobal import Sequence
+from direct.interval.IntervalGlobal import Parallel
+from direct.interval.IntervalGlobal import Func
+from direct.interval.IntervalGlobal import Wait
+from direct.interval.IntervalGlobal import LerpPosInterval
+from direct.interval.IntervalGlobal import ActorInterval
+from direct.interval.IntervalGlobal import LerpScaleInterval
+from direct.interval.IntervalGlobal import ProjectileInterval
+from direct.interval.IntervalGlobal import SoundInterval
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectFrame import DirectFrame
 from direct.gui.DirectGui import DGG

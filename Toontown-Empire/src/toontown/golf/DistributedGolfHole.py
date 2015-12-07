@@ -1,7 +1,22 @@
 import math
 import random
 import time
-from pandac.PandaModules import TextNode, BitMask32, Point3, Vec3, Vec4, deg2Rad, Mat3, NodePath, VBase4, OdeTriMeshData, OdeTriMeshGeom, OdeRayGeom, CollisionTraverser, CollisionSegment, CollisionNode, CollisionHandlerQueue
+from panda3d.core import TextNode
+from panda3d.core import BitMask32
+from panda3d.core import Point3
+from panda3d.core import Vec3
+from panda3d.core import Vec4
+from panda3d.core import deg2Rad
+from panda3d.core import Mat3
+from panda3d.core import NodePath
+from panda3d.core import VBase4
+from panda3d.ode import OdeTriMeshData
+from panda3d.ode import OdeTriMeshGeom
+from panda3d.ode import OdeRayGeom
+from panda3d.core import CollisionTraverser
+from panda3d.core import CollisionSegment
+from panda3d.core import CollisionNode
+from panda3d.core import CollisionHandlerQueue
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from otp.otpbase import OTPGlobals
