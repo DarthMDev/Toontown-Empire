@@ -550,7 +550,7 @@ class NameShop(StateData.StateData):
     def __handleChastised(self):
         self.chastiseDialog.cleanup()
 
-    def __createAvatar(self, skipTutorial = False, *args):
+    def __createAvatar(self, skipTutorial=True, *args):
         self.notify.debug('__createAvatar')
         if self.fsm.getCurrentState().getName() == 'TypeAName':
             self.__typedAName()
@@ -884,7 +884,7 @@ class NameShop(StateData.StateData):
                 self.notify.debug("name typed accepted but didn't fill any return fields")
                 self.rejectName(TTLocalizer.NameError)
 
-    def serverCreateAvatar(self, skipTutorial = False):
+    def serverCreateAvatar(self, skipTutorial=True):
         self.notify.debug('serverCreateAvatar')
         style = self.toon.getStyle()
         self.newDNA = style.makeNetString()
@@ -955,7 +955,7 @@ class NameShop(StateData.StateData):
             self.notify.debug('enterTutorial')
             if base.config.GetBool('want-qa-regression', 0):
                 self.notify.info('QA-REGRESSION: ENTERTUTORIAL: Enter Tutorial')
-            self.__createAvatar()
+            self.__handleSkipTutorial()
         else:
             self.notify.debug('skipTutorial')
             if base.config.GetBool('want-qa-regression', 0):
