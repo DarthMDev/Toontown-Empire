@@ -2,5 +2,5 @@ languages:
    Python: true
 
 exclude_paths:
-- "Toontown-Empire/src/build/**/*"
-- "Toontown-Empire/src/dependencies/**/*"       
+- "Toontown Empire/src/build/**/*"
+- "Toontown Empire/src/dependencies/**/*"       

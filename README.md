@@ -1,6 +1,6 @@
 # Toontown Empire
 
-[![Build Status](https://magnum.travis-ci.com/mgracer48/toontown-empire.svg?token=nwGfbyDzkuRBAHQGp16L&branch=develop)](https://magnum.travis-ci.com/mgracer48/toontown-empire)
+[![Build Status](https://magnum.travis-ci.com/mgracer48/toontown-empire.svg?token=nwGfbyDzkuRBAHQGp16L&branch=master)](https://magnum.travis-ci.com/mgracer48/toontown-empire)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/a71bcbed1f8c4cd59d7f1fa131c7114d)](https://www.codacy.com)
 
@@ -24,9 +24,9 @@ Official Repo for Toontown Empire, a new Toontown game based on Disney's Toontow
 
 # Repo Rules and Regulations:
 
-We make dev changes to develop, but before we release: if the develop branch is stable, merge it into the production branch. This is the branch used for hosting the game on the server and the branch used for deploying to the server with a stable game.
+We make dev changes to master, but before we release: if the master branch is stable, merge it into the production branch. This is the branch used for hosting the game on the server and the branch used for deploying to the server with a stable game.
 
-Do not push broken code to the develop branch, because it messes up the game and makes it harder for the developers to add features, and fix bugs in the game! When you revert something broken, please post the crash to make life easier for the coders.
+Do not push broken code to the master branch, because it messes up the game and makes it harder for the developers to add features, and fix bugs in the game! When you revert something broken, please post the crash to make life easier for the coders.
 
 # Compilation Branch Rules and Regulations:
 

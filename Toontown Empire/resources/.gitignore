@@ -1,0 +1,20 @@
+# Python / Compiled / Optimized
+*.py[cod]
+dna
+
+# C extensions
+*.so
+
+*.db
+
+# Unit test / coverage reports
+.coverage
+.tox
+nosetests.xml
+
+# Eclipse IDE
+.project
+.pydevproject
+
+# Misc
+Thumbs.db
