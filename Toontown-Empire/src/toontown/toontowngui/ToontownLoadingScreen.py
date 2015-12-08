@@ -19,6 +19,14 @@ class ToontownLoadingScreen:
          1.06,
          -0.03,
          0.03), pos=(0, 0, -0.85), text='')
+        logoScale = 0.5625
+        self.logo = OnscreenImage(
+            image='phase_3/maps/toontown-logo.jpg',
+            scale=(logoScale * 2.0, 1, logoScale))
+        self.logo.reparentTo(hidden)
+        self.logo.setTransparency(TransparencyAttrib.MAlpha)
+        scale = self.logo.getScale()
+        self.logo.setPos(0, 0, -scale[2])
         return
 
     def destroy(self):
@@ -27,6 +35,7 @@ class ToontownLoadingScreen:
         self.waitBar.destroy()
         self.banner.removeNode()
         self.gui.removeNode()
+        self.logo.removeNode()
 
     def getTip(self, tipCategory):
         return TTLocalizer.TipTitle + '\n' + random.choice(TTLocalizer.TipDict.get(tipCategory))
@@ -41,10 +50,13 @@ class ToontownLoadingScreen:
             self.waitBar.reparentTo(self.gui)
             self.title.reparentTo(self.gui)
             self.gui.reparentTo(aspect2dp, NO_FADE_SORT_INDEX)
+            self.logo.reparentTo(base.a2dpTopCenter, LOADING_SCREEN_SORT_INDEX)
         else:
             self.waitBar.reparentTo(aspect2dp, NO_FADE_SORT_INDEX)
+            self.logo.reparentTo(base.a2dpTopCenter, LOADING_SCREEN_SORT_INDEX)
             self.title.reparentTo(aspect2dp, NO_FADE_SORT_INDEX)
             self.gui.reparentTo(hidden)
+            self.logo.reparentTo(hidden)
         self.waitBar.update(self.__count)
 
     def end(self):
@@ -52,6 +64,7 @@ class ToontownLoadingScreen:
         self.waitBar.reparentTo(self.gui)
         self.title.reparentTo(self.gui)
         self.gui.reparentTo(hidden)
+        self.logo.reparentTo(hidden)
         return (self.__expectedCount, self.__count)
 
     def abort(self):
