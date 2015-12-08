@@ -22,24 +22,31 @@ fireworkShowTypes = [ToontownGlobals.SUMMER_FIREWORKS,
 
 class FireworkShow(NodePath):
 
+    @staticmethod
     def r():
         return random.randint(8, 12) / 10.0
 
+    @staticmethod
     def rV():
         return Vec3(random.randint(-60, 60), random.randint(10, 30), random.randint(125, 150))
 
+    @staticmethod
     def rP():
         return Point3(0, 0, 0)
 
+    @staticmethod
     def rS():
         return 1.0 + random.random() / 2.0
 
+    @staticmethod
     def rC():
         return random.choice(colors)
 
+    @staticmethod
     def rT():
         return random.randint(12, 20) / 10.0
 
+    @staticmethod
     def rD():
         return random.randint(1, 20) / 10.0
 

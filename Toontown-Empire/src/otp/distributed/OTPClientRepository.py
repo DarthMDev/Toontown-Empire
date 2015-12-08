@@ -207,7 +207,7 @@ class OTPClientRepository(ClientRepositoryBase):
         self.centralLogger = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_CENTRAL_LOGGER, 'CentralLogger')
         self.csm = None # To be set by subclass.
 
-    def hasPlayToken():
+    def hasPlayToken(self):
         return self.playToken != None
 
     def readDCFile(self, dcFileNames=None):
@@ -696,7 +696,7 @@ class OTPClientRepository(ClientRepositoryBase):
     def handleAvatarsList(self, avatars):
         self.avList = avatars
         self.loginFSM.request('chooseAvatar', [self.avList])
-        
+
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def enterChooseAvatar(self, avList):
         pass
