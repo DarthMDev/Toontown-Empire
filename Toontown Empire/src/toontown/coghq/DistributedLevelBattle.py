@@ -2,16 +2,15 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.interval.IntervalGlobal import *
-from pandac.PandaModules import *
+from panda3d.core import *
 import random
 
 from otp.avatar import Emote
 from toontown.battle import DistributedBattle
 from toontown.battle import SuitBattleGlobals
 from toontown.battle.BattleBase import *
-from toontown.chat.ChatGlobals import *
+from otp.nametag.NametagConstants import *
 from otp.nametag import NametagGlobals
-from otp.nametag.NametagGlobals import *
 from toontown.suit import SuitDNA
 from toontown.toon import TTEmote
 from toontown.toonbase import ToontownGlobals
@@ -90,6 +89,15 @@ class DistributedLevelBattle(DistributedBattle.DistributedBattle):
 
     def onWaitingForJoin(self):
         self.lockLevelViz()
+    
+    def announceCrateReward(self):
+        track = Sequence()
+
+        for i, message in enumerate(TTLocalizer.CrateRewardMessages):
+            track.append(Func(base.localAvatar.setSystemMessage, 0, message))
+            track.append(Wait(1.5))
+
+        track.start()
 
     def __faceOff(self, ts, name, callback):
         if len(self.suits) == 0:
@@ -179,7 +187,7 @@ class DistributedLevelBattle(DistributedBattle.DistributedBattle):
             camTrack.append(Func(camera.lookAt, suit))
         mtrack = Parallel(suitTrack, toonTrack)
         if self.hasLocalToon():
-            NametagGlobals.setWant2dNametags(False)
+            NametagGlobals.setMasterArrowsOn(0)
             mtrack = Parallel(mtrack, camTrack)
         done = Func(callback)
         track = Sequence(mtrack, done, name=name)
@@ -229,6 +237,6 @@ class DistributedLevelBattle(DistributedBattle.DistributedBattle):
         self.notify.info('exitReward()')
         self.clearInterval(self.uniqueName('floorReward'))
         self._removeMembersKeep()
-        NametagGlobals.setWant2dNametags(True)
+        NametagGlobals.setMasterArrowsOn(1)
         for toon in self.toons:
             toon.startSmooth()

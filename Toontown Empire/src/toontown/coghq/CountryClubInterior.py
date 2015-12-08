@@ -3,9 +3,8 @@ from toontown.battle import BattlePlace
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.showbase import BulletinBoardWatcher
-from pandac.PandaModules import *
+from panda3d.core import *
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
-from otp.nametag import NametagGlobals
 from toontown.toon import Toon
 from toontown.toonbase import ToontownGlobals
 from toontown.hood import ZoneUtil
@@ -87,7 +86,7 @@ class CountryClubInterior(BattlePlace.BattlePlace):
         self._telemLimiter = TLGatherAllAvs('CountryClubInterior', RotationLimitToH)
 
         def commence(self = self):
-            NametagGlobals.setWant2dNametags(True)
+            NametagGlobals.setMasterArrowsOn(1)
             self.fsm.request(requestStatus['how'], [requestStatus])
             base.playMusic(self.music, looping=1, volume=0.8)
             base.transitions.irisIn()
@@ -107,7 +106,7 @@ class CountryClubInterior(BattlePlace.BattlePlace):
         self.acceptOnce('localToonConfrontedCountryClubBoss', handleConfrontedBoss)
 
     def exit(self):
-        NametagGlobals.setWant2dNametags(False)
+        NametagGlobals.setMasterArrowsOn(0)
         bboard.remove(DistributedCountryClub.DistributedCountryClub.ReadyPost)
         self._telemLimiter.destroy()
         del self._telemLimiter

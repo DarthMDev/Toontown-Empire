@@ -301,6 +301,7 @@ from toontown.estate import DistributedBank/AI
 from toontown.estate import DistributedCloset/AI
 from toontown.estate import DistributedTrunk/AI
 from toontown.estate import DistributedPhone/AI
+from toontown.estate import DistributedRewardCrate/AI
 from toontown.estate import DistributedChair/AI
 from toontown.estate import DistributedTV/AI
 from toontown.effects import DistributedFireworkShow/AI

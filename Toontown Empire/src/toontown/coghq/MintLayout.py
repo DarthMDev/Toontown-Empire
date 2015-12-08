@@ -833,9 +833,6 @@ class MintLayout:
                 return result
             else:
                 del chosenBattleRooms[-1:]
-        else:
-            return
-
         return
 
     def __str__(self):

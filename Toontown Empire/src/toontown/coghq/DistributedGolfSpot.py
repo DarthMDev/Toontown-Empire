@@ -670,9 +670,6 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
             self.flyBallHandler.addInPattern('flyBallHit-%d' % self.index)
         return self.__flyBallBubble
 
-    def __flyBallHit(self, entry):
-        print entry
-
     def flyBallFinishedFlying(self, sequence):
         if sequence in self.flyBallTracks:
             del self.flyBallTracks[sequence]
@@ -715,7 +712,7 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
          throwerId))
         if flyBallCode == ToontownGlobals.PieCodeBossCog and self.avId == localAvatar.doId and self.lastHitSequenceNum != self.__flyBallSequenceNum:
             self.lastHitSequenceNum = self.__flyBallSequenceNum
-            self.boss.d_ballHitBoss(2)
+            self.boss.d_ballHitBoss(10)
         elif flyBallCode == ToontownGlobals.PieCodeToon and self.avId == localAvatar.doId and self.lastHitSequenceNum != self.__flyBallSequenceNum:
             self.lastHitSequenceNum = self.__flyBallSequenceNum
             avatarDoId = entry.getIntoNodePath().getNetTag('avatarDoId')

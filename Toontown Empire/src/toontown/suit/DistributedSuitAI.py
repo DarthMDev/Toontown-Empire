@@ -216,6 +216,7 @@ class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
         self.setPathPosition(0, self.pathStartTime)
         self.pathState = 1
         self.currentLeg = 0
+        self.zoneId = self.legList.getZoneId(0)
         self.legType = self.legList.getType(0)
         if self.notify.getDebug():
             self.notify.debug('creating suit in zone %s' % self.zoneId)

@@ -62,9 +62,11 @@ class DistributedGridAI(DistributedEntityAI.DistributedEntityAI):
                     return 1
                 else:
                     row += 2
+                    break
             else:
                 row = 0
                 col += 2
+                break
 
         else:
             self.notify.debug('requestObjPos: row/col out of range %s/%s' % (row, col))

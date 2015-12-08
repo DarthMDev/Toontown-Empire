@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.toonbase.ToontownGlobals import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
@@ -75,7 +75,7 @@ class DistributedLawOfficeFloor(DistributedLevel.DistributedLevel, LawOfficeBase
 
         self.acceptOnce(firstSetZoneDoneEvent, handleFirstSetZoneDone)
         modelCount = len(levelSpec.getAllEntIds())
-        loader.beginBulkLoad('factory', TTLocalizer.HeadingToFactoryTitle % TTLocalizer.FactoryNames[self.lawOfficeId], modelCount, 1, TTLocalizer.TIP_COGHQ, LawbotOfficeInt)
+        loader.beginBulkLoad('factory', TTLocalizer.HeadingToFactoryTitle % TTLocalizer.FactoryNames[self.lawOfficeId], modelCount, 1, TTLocalizer.TIP_COGHQ)
         DistributedLevel.DistributedLevel.privGotSpec(self, levelSpec)
         loader.endBulkLoad('factory')
         messenger.send('LawOffice_Spec_Loaded')
@@ -85,7 +85,7 @@ class DistributedLawOfficeFloor(DistributedLevel.DistributedLevel, LawOfficeBase
             h = base.localAvatar.getH(self.getZoneNode(self.lastToonZone))
             print 'factory pos: %s, h: %s, zone %s' % (repr(pos), h, self.lastToonZone)
             posStr = 'X: %.3f' % pos[0] + '\nY: %.3f' % pos[1] + '\nZ: %.3f' % pos[2] + '\nH: %.3f' % h + '\nZone: %s' % str(self.lastToonZone)
-            base.localAvatar.setChat(posStr, CFThought, 0)
+            base.localAvatar.setChatAbsolute(posStr, CFThought)
 
         self.accept('f2', printPos)
         base.localAvatar.setCameraCollisionsCanMove(1)

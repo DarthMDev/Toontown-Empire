@@ -12,6 +12,7 @@ from DistributedPhoneAI import DistributedPhoneAI
 from DistributedClosetAI import DistributedClosetAI
 from DistributedTrunkAI import DistributedTrunkAI
 from DistributedBankAI import DistributedBankAI
+from DistributedRewardCrateAI import DistributedRewardCrateAI
 from DistributedChairAI import DistributedChairAI
 from DistributedTVAI import DistributedTVAI
 from otp.ai.MagicWordGlobal import *

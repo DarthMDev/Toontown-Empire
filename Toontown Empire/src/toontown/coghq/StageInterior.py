@@ -3,7 +3,7 @@ from toontown.battle import BattlePlace
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.showbase import BulletinBoardWatcher
-from pandac.PandaModules import *
+from panda3d.core import *
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
 from toontown.toon import Toon
 from toontown.toonbase import ToontownGlobals
@@ -82,7 +82,7 @@ class StageInterior(BattlePlace.BattlePlace):
         base.cr.forbidCheesyEffects(1)
 
         def commence(self = self):
-            NametagGlobals.setWant2dNametags(True)
+            NametagGlobals.setMasterArrowsOn(1)
             self.fsm.request(requestStatus['how'], [requestStatus])
             base.playMusic(self.music, looping=1, volume=0.8)
             base.transitions.irisIn()
@@ -102,7 +102,7 @@ class StageInterior(BattlePlace.BattlePlace):
         self.acceptOnce('localToonConfrontedStageBoss', handleConfrontedBoss)
 
     def exit(self):
-        NametagGlobals.setWant2dNametags(False)
+        NametagGlobals.setMasterArrowsOn(0)
         self._telemLimiter.destroy()
         del self._telemLimiter
         bboard.remove(DistributedStage.DistributedStage.ReadyPost)

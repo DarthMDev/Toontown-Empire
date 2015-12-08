@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
@@ -366,14 +366,6 @@ class DistributedFactorySuit(DistributedSuitBase.DistributedSuitBase, DelayDelet
         else:
             self.setState('Off')
 
-    def disableBattleDetect(self):
-        if self.battleDetectName:
-            self.ignore('enter' + self.battleDetectName)
-            self.battleDetectName = None
-        if self.collNodePath:
-            self.collNodePath.removeNode()
-            self.collNodePath = None
-        return
 
     def disableBodyCollisions(self):
         self.disableBattleDetect()

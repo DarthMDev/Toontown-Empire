@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from toontown.battle.BattleBase import *
 from toontown.coghq import DistributedLevelBattle
@@ -29,7 +29,7 @@ class DistributedStageBattle(DistributedLevelBattle.DistributedLevelBattle):
         self.disableCollision()
         self.delayDeleteMembers()
         if self.hasLocalToon():
-            NametagGlobals.setWant2dNametags(False)
+            NametagGlobals.setMasterArrowsOn(0)
             if self.bossBattle:
                 messenger.send('localToonConfrontedStageBoss')
         self.movie.playReward(ts, self.uniqueName('building-reward'), self.__handleStageRewardDone, noSkip=True)
@@ -45,4 +45,4 @@ class DistributedStageBattle(DistributedLevelBattle.DistributedLevelBattle):
         self.notify.debug('exitStageReward()')
         self.movie.resetReward(finish=1)
         self._removeMembersKeep()
-        NametagGlobals.setWant2dNametags(True)
+        NametagGlobals.setMasterArrowsOn(1)

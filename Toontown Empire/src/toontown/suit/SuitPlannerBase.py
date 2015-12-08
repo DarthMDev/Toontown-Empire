@@ -544,19 +544,34 @@ class SuitPlannerBase:
         for i in xrange(self.dnaStore.getNumDNAVisGroupsAI()):
             vg = self.dnaStore.getDNAVisGroupAI(i)
             zoneId = int(self.extractGroupName(vg.getName()))
-            
-            if vg.getNumBattleCells() >= 1:
+
+            if vg.getNumBattleCells() == 1:
                 battleCell = vg.getBattleCell(0)
-                self.battlePosDict[zoneId] = battleCell.getPos()
-            
-            for i in xrange(vg.getNumChildren()):
-                childDnaGroup = vg.at(i)
-                
-                if isinstance(childDnaGroup, DNAInteractiveProp) and not zoneId in self.cellToGagBonusDict:
-                    propType = HoodUtil.calcPropType(childDnaGroup.getName())
-                            
-                    if propType in ToontownBattleGlobals.PropTypeToTrackBonus:
-                        self.cellToGagBonusDict[zoneId] = ToontownBattleGlobals.PropTypeToTrackBonus[propType]
+                self.battlePosDict[zoneId] = vg.getBattleCell(0).getPos()
+            elif vg.getNumBattleCells() > 1:
+                self.notify.warning('multiple battle cells for zone: %d' % zoneId)
+                self.battlePosDict[zoneId] = vg.getBattleCell(0).getPos()
+
+            if True:
+                for i in xrange(vg.getNumChildren()):
+                    childDnaGroup = vg.at(i)
+
+                    if isinstance(childDnaGroup, DNAInteractiveProp):
+                        self.notify.debug('got interactive prop %s' % childDnaGroup)
+                        battleCellId = childDnaGroup.getCellId()
+
+                        if battleCellId == -1:
+                            self.notify.warning('interactive prop %s  at %s not associated with a a battle' % (childDnaGroup, zoneId))
+
+                        elif battleCellId == 0:
+                            if zoneId in self.cellToGagBonusDict:
+                                self.notify.error('FIXME battle cell at zone %s has two props %s %s linked to it' % (zoneId, self.cellToGagBonusDict[zoneId], childDnaGroup))
+                            else:
+                                name = childDnaGroup.getName()
+                                propType = HoodUtil.calcPropType(name)
+                                if propType in ToontownBattleGlobals.PropTypeToTrackBonus:
+                                    trackBonus = ToontownBattleGlobals.PropTypeToTrackBonus[propType]
+                                    self.cellToGagBonusDict[zoneId] = trackBonus
 
         self.dnaStore.resetDNAGroups()
         self.dnaStore.resetDNAVisGroups()

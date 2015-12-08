@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.toonbase.ToontownGlobals import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
@@ -63,5 +63,5 @@ class DistributedLawOffice(DistributedObject, LawOfficeBase.LawOfficeBase):
 
     def startSignal(self):
         base.camera.setScale(base.localAvatar.getScale())
-        localAvatar.setCameraFov(DefaultCameraFov)
+        localAvatar.setCameraFov(settings['fov'])
         base.camera.clearMat()
