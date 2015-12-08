@@ -1686,9 +1686,7 @@ class CatalogGenerator:
                 series,
                 week,
                 maybeWeek)
-                out.write(line + '\n')
-
-                out.close()
+            out.write(line + '\n')
 
     def __formatColor(self, color):
         if color == None:
