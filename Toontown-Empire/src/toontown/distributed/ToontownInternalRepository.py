@@ -14,7 +14,7 @@ class ToontownInternalRepository(AstronInternalRepository):
         AstronInternalRepository.__init__(
             self, baseChannel, serverId=serverId, dcFileNames=dcFileNames,
             dcSuffix=dcSuffix, connectMethod=connectMethod, threadedNet=threadedNet)
-    
+
 
     def handleConnected(self):
         self.__messenger = ToontownNetMessengerAI(self)
@@ -27,21 +27,21 @@ class ToontownInternalRepository(AstronInternalRepository):
             self.dbConn = None
             self.dbGlobalCursor = None
             self.dbCursor = None
-    
+
     def sendNetEvent(self, message, sentArgs=[]):
         self.__messenger.send(message, sentArgs)
-        
+
     def addExitEvent(self, message):
         dg = self.__messenger.prepare(message)
         self.addPostRemove(dg)
-        
+
     def handleDatagram(self, di):
         msgType = self.getMsgType()
-        
+
         if msgType == self.__messenger.msgType:
             self.__messenger.handle(msgType, di)
             return
-        
+
         AstronInternalRepository.handleDatagram(self, di)
     def getAvatarIdFromSender(self):
         return int(self.getMsgSender() & 0xFFFFFFFF)
@@ -58,10 +58,10 @@ class ToontownInternalRepository(AstronInternalRepository):
     def readerPollOnce(self):
         try:
             return AstronInternalRepository.readerPollOnce(self)
-            
-        except SystemExit, KeyboardInterrupt:
+
+        except (SystemExit, KeyboardInterrupt):
             raise
-            
+
         except Exception as e:
             if self.getAvatarIdFromSender() > 100000000:
                 dg = PyDatagram()
@@ -69,10 +69,10 @@ class ToontownInternalRepository(AstronInternalRepository):
                 dg.addUint16(166)
                 dg.addString('You were disconnected to prevent a district reset.')
                 self.send(dg)
-                
+
             self.writeServerEvent('INTERNAL-EXCEPTION', self.getAvatarIdFromSender(), self.getAccountIdFromSender(), repr(e), traceback.format_exc())
             self.notify.warning('INTERNAL-EXCEPTION: %s (%s)' % (repr(e), self.getAvatarIdFromSender()))
             print traceback.format_exc()
             sys.exc_clear()
-            
+
         return 1

@@ -69,7 +69,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.accept('avatarMoving', self.clearPageUpDown)
         self.showNametag2d()
         self.setPickable(0)
-    
+
     def setPreventCameraDisable(self, prevent):
         self.preventCameraDisable = prevent
 
@@ -458,7 +458,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
             if self.cameraIndex < 0:
                 self.cameraIndex = len(self.cameraPositions) - 1
         self.setCameraPositionByIndex(self.cameraIndex)
-    
+
     def setCameraPosition(self, index):
         self.cameraIndex = index
         self.setCameraPositionByIndex(index)
@@ -1112,6 +1112,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
     def d_setParent(self, parentToken):
         DistributedSmoothNode.DistributedSmoothNode.d_setParent(self, parentToken)
 
+    @staticmethod
     def canChat():
         return 0
 
