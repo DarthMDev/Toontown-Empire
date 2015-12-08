@@ -3,7 +3,7 @@ from direct.distributed.ClockDelta import globalClockDelta
 from direct.fsm import FSM
 from direct.interval.IntervalGlobal import LerpPosInterval
 import math
-from panda3d.core import Point3
+from pandac.PandaModules import Point3
 import random
 
 from otp.ai.MagicWordGlobal import *
@@ -28,7 +28,6 @@ class DistributedBossbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
      2,
      3,
      4]
-    BossName = "CEO"
 
     def __init__(self, air):
         DistributedBossCogAI.DistributedBossCogAI.__init__(self, air, 'c')
@@ -576,11 +575,11 @@ class DistributedBossbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
          'track': self.dna.dept,
          'isSkelecog': 0,
          'isForeman': 0,
-         'isBoss': 1,
+         'isVP': 1,
+         'isCFO': 0,
          'isSupervisor': 0,
          'isVirtual': 0,
          'activeToons': self.involvedToons[:]})
-        self.addStats()
         self.barrier = self.beginBarrier('Victory', self.involvedToons, 30, self.__doneVictory)
         return
 
@@ -912,33 +911,18 @@ class DistributedBossbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         return self.moveAttackAllowed
 
 
-def getCEO(toon):
-    for object in simbase.air.doId2do.values():
-        if isinstance(object, DistributedBossbotBossAI):
-            if toon.doId in object.involvedToons:
-                return object
-    
-    return None
-
-@magicWord(category=CATEGORY_LEADER)
-def skipCEOBanquet():
-    """
-    Skips to the banquet stage of the CEO.
-    """
-    boss = getCEO(spellbook.getInvoker())
-    if not boss:
-        return "You aren't in a CEO!"
-    if boss.state in ('PrepareBattleTwo', 'BattleTwo'):
-        return "You can't skip this round."
-    boss.exitIntroduction()
-    boss.b_setState('PrepareBattleTwo')
-
 @magicWord(category=CATEGORY_LEADER)
 def skipCEO():
     """
-    Skips to the third round of the CEO.
+    Skips to the final round of the CEO.
     """
-    boss = getCEO(spellbook.getInvoker())
+    invoker = spellbook.getInvoker()
+    boss = None
+    for do in simbase.air.doId2do.values():
+        if isinstance(do, DistributedBossbotBossAI):
+            if invoker.doId in do.involvedToons:
+                boss = do
+                break
     if not boss:
         return "You aren't in a CEO!"
     if boss.state in ('PrepareBattleThree', 'BattleThree'):
@@ -946,25 +930,19 @@ def skipCEO():
     boss.exitIntroduction()
     boss.b_setState('PrepareBattleThree')
 
-@magicWord(category=CATEGORY_LEADER)
-def skipCEOFinal():
-    """
-    Skips to the final round of the CEO.
-    """
-    boss = getCEO(spellbook.getInvoker())
-    if not boss:
-        return "You aren't in a CEO!"
-    if boss.state in ('PrepareBattleFour', 'BattleFour'):
-        return "You can't skip this round."
-    boss.exitIntroduction()
-    boss.b_setState('PrepareBattleFour')
 
 @magicWord(category=CATEGORY_LEADER)
 def killCEO():
     """
     Kills the CEO.
     """
-    boss = getCEO(spellbook.getInvoker())
+    invoker = spellbook.getInvoker()
+    boss = None
+    for do in simbase.air.doId2do.values():
+        if isinstance(do, DistributedBossbotBossAI):
+            if invoker.doId in do.involvedToons:
+                boss = do
+                break
     if not boss:
         return "You aren't in a CEO!"
     boss.b_setState('Victory')

@@ -9,8 +9,8 @@ from toontown.toonbase import ToontownGlobals
 
 
 class DistributedLawOfficeElevatorExtAI(DistributedElevatorExtAI.DistributedElevatorExtAI):
-    def __init__(self, air, bldg, lawOfficeId, entranceId):
-        DistributedElevatorExtAI.DistributedElevatorExtAI.__init__(self, air, bldg)
+    def __init__(self, air, bldg, lawOfficeId, entranceId, antiShuffle = 0, minLaff = 0):
+        DistributedElevatorExtAI.DistributedElevatorExtAI.__init__(self, air, bldg, antiShuffle = antiShuffle, minLaff = minLaff)
         self.lawOfficeId = lawOfficeId
         self.entranceId = entranceId
 

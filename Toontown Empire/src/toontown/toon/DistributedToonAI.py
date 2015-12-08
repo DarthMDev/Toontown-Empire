@@ -32,6 +32,7 @@ from toontown.shtiker import CogPageGlobals
 from toontown.suit import SuitDNA, SuitInvasionGlobals
 from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer, ToontownBattleGlobals, ToontownGlobals
+from toontown.toonbase.ToontownGlobals import *
 from NPCToons import npcFriends
 import Experience, InventoryBase, ToonDNA, random, time
 from toontown.uberdog import TopToonsGlobals
@@ -2268,6 +2269,22 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getMaxMoney(self):
         return self.maxMoney
+        
+    def b_setMaxBankMoney(self, maxBankMoney):
+        self.d_setMaxBankMoney(maxBankMoney)
+        self.setMaxBankMoney(maxBankMoney)
+
+        if self.getBankMoney() > maxBankMoney:
+            self.b_setBankMoney(maxBankMoney)
+
+    def d_setMaxBankMoney(self, maxBankMoney):
+        self.sendUpdate('setMaxBankMoney', [maxBankMoney])
+
+    def setMaxBankMoney(self, maxBankMoney):
+        self.maxBankMoney = maxBankMoney
+
+    def getMaxBankMoney(self):
+        return self.maxBankMoney
 
     def addMoney(self, deltaMoney):
         money = deltaMoney + self.money
@@ -2413,7 +2430,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def startToonUp(self, healFrequency):
         self.stopToonUp()
-        self.nextToonup = (healFrequency, self.indexOf(ToontownGlobals.TOONUP_PULSE_ZONES, ZoneUtil.getCanonicalHoodId(self.zoneId), 0) + 1)
+        self.healFrequency = healFrequency
         self.__waitForNextToonUp()
 
     def indexOf(self, list, element, default):
@@ -2423,10 +2440,10 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             return default
 
     def __waitForNextToonUp(self):
-        taskMgr.doMethodLater(self.nextToonup[0], self.toonUpTask, self.uniqueName('safeZoneToonUp'))
+        taskMgr.doMethodLater(self.healFrequency, self.toonUpTask, self.uniqueName('safeZoneToonUp'))
 
     def toonUpTask(self, task):
-        self.toonUp(self.nextToonup[1])
+        self.toonUp(1)
         self.__waitForNextToonUp()
         return Task.done
 
@@ -4538,51 +4555,97 @@ def allSummons():
         self.d_setStats(self.stats)
 
 @magicWord(category=CATEGORY_STAFF, types=[str])
-def maxToon(hasConfirmed='UNCONFIRMED'):
-    """Max out the toons stats, for end-level gameplay. Should only be (and is restricted to) casting on Administrators only."""
-    toon = spellbook.getInvoker()
+def maxToon(missingTrack=None, hasConfirmed='UNCONFIRMED'):
+    """
+    Max the target's stats for end-level gameplay.
+    """
+    target = spellbook.getTarget()
 
     if hasConfirmed != 'CONFIRM':
         return 'Are you sure you want to max out %s? This process is irreversible. Use "~maxToon CONFIRM" to confirm.' % toon.getName()
 
-    # Max out gag tracks (all 7 tracks)
-    toon.b_setTrackAccess([1] * 7)
-    toon.b_setMaxCarry(MaxCarryLimit + 15) # Compensate for the extra gag track.
-    toon.experience.maxOutExp() # Completely max out the toons experience.
-    toon.b_setExperience(toon.experience.makeNetString())
+    # First, unlock the target's Gag tracks:
+    gagTracks = [1, 1, 1, 1, 1, 1, 1]
+    if missingTrack is not None:
+        try:
+            index = ('toonup', 'trap', 'lure', 'sound', 'throw',
+                     'squirt', 'drop').index(missingTrack)
+        except:
+            return 'Missing Gag track is invalid!'
+        if index in (4, 5):
+            return 'You are required to have Throw and Squirt.'
+        gagTracks[index] = 0
+    target.b_setTrackAccess(gagTracks)
+    target.b_setMaxCarry(80)
 
-    # Restock all gags.
-    toon.inventory.zeroInv()
-    toon.inventory.maxOutInv(filterUberGags=0, filterPaidGags=0)
-    toon.b_setInventory(toon.inventory.makeNetString())
+    # Next, max out their experience for the tracks they have:
+    experience = Experience.Experience(target.getExperience(), target)
+    for i, track in enumerate(target.getTrackAccess()):
+        if track:
+            experience.experience[i] = (
+                Experience.MaxSkill - Experience.UberSkill)
+    target.b_setExperience(experience.makeNetString())
 
-    # Max out laff
-    toon.b_setMaxHp(ToontownGlobals.MaxHpLimit)
-    toon.toonUp(toon.getMaxHp() - toon.getHp())
+    # Max out their Laff:
+    target.b_setMaxHp(ToontownGlobals.MaxHpLimit)
+    target.toonUp(target.getMaxHp() - target.hp)
 
-    # Max out cog suits (ORDER: Bossbot, Lawbot, Cashbot, Sellbot)
-    toon.b_setCogParts([
-        CogDisguiseGlobals.PartsPerSuitBitmasks[0], # Bossbot
-        CogDisguiseGlobals.PartsPerSuitBitmasks[1], # Lawbot
-        CogDisguiseGlobals.PartsPerSuitBitmasks[2], # Cashbot
-        CogDisguiseGlobals.PartsPerSuitBitmasks[3]  # Sellbot
-    ])
-    toon.b_setCogLevels([ToontownGlobals.MaxCogSuitLevel] * 4)
-    toon.b_setCogTypes([SuitDNA.suitsPerDept-1] * 4)
+    # Unlock all of the emotes:
+    emotes = list(target.getEmoteAccess())
+    for emoteId in OTPLocalizer.EmoteFuncDict.values():
+        if emoteId >= len(emotes):
+            continue
+        # The following emotions are ignored because they are unable to be
+        # obtained:
+        if emoteId in (17, 18, 19):
+            continue
+        emotes[emoteId] = 1
+    target.b_setEmoteAccess(emotes)
 
-    # High racing tickets
-    toon.b_setTickets(99999)
+    # Max out their Cog suits:
+    target.b_setCogParts(
+        [
+            CogDisguiseGlobals.PartsPerSuitBitmasks[0],  # Bossbot
+            CogDisguiseGlobals.PartsPerSuitBitmasks[1],  # Lawbot
+            CogDisguiseGlobals.PartsPerSuitBitmasks[2],  # Cashbot
+            CogDisguiseGlobals.PartsPerSuitBitmasks[3]   # Sellbot
+        ]
+    )
+    target.b_setCogLevels([49] * 4)
+    target.b_setCogTypes([7, 7, 7, 7])
 
-    # Teleport access everywhere (Including CogHQ, excluding Funny Farm.)
-    toon.b_setHoodsVisited(ToontownGlobals.Hoods)
-    toon.b_setTeleportAccess(ToontownGlobals.HoodsForTeleportAll)
+    # Max their Cog gallery:
+    deptCount = len(SuitDNA.suitDepts)
+    target.b_setCogCount(list(CogPageGlobals.COG_QUOTAS[1]) * deptCount)
+    cogStatus = [CogPageGlobals.COG_COMPLETE2] * SuitDNA.suitsPerDept
+    target.b_setCogStatus(cogStatus * deptCount)
+    target.b_setCogRadar([1, 1, 1, 1])
+    target.b_setBuildingRadar([1, 1, 1, 1])
 
-    # General end game settings
-    toon.b_setQuestCarryLimit(ToontownGlobals.MaxQuestCarryLimit)
-    toon.b_setRewardHistory(Quests.ELDER_TIER, [])
-    toon.b_setMaxMoney(250)
-    toon.b_setMoney(toon.getMaxMoney())
-    toon.b_setBankMoney(ToontownGlobals.DefaultMaxBankMoney)
+    # Max out their racing tickets:
+    target.b_setTickets(99999)
+
+    # Give them teleport access everywhere (including Cog HQs):
+    hoods = list(ToontownGlobals.HoodsForTeleportAll)
+    target.b_setHoodsVisited(hoods)
+    target.b_setTeleportAccess(hoods)
+
+    # Max their quest carry limit:
+    target.b_setQuestCarryLimit(4)
+
+    # Complete their quests:
+    target.b_setQuests([])
+    target.b_setRewardHistory(Quests.ELDER_TIER, [])
+
+    # Max their money:
+    target.b_setMaxMoney(250)
+    target.b_setMaxBankMoney(30000)
+    target.b_setMoney(target.getMaxMoney())
+    target.b_setBankMoney(target.getMaxBankMoney())
+
+    # Finally, unlock all of their pet phrases:
+    if simbase.wantPets:
+        target.b_setPetTrickPhrases(range(7))
 
     return 'By the power invested in me, I, Dynamite106tt/FordTheWriter, max your toon.'
 
@@ -5288,7 +5351,7 @@ def canSkill(skill):
     av = spellbook.getTarget()
     av.b_setWateringCanSkill(skill)
 
-@magicWord(category=CATEGORY_DEVELOPER, types=[int, str])
+@magicWord(category=CATEGORY_LEADER, types=[int, str])
 def epp(dept, command="add"):
     av = spellbook.getTarget()
     if command == "add":
@@ -5321,7 +5384,7 @@ def maxGarden():
 @magicWord(category=CATEGORY_TRIAL, types=[int], access=103)
 def badge(gmId):
     if not 0 <= gmId <= 5:
-        return 'Staff-Icons: 0=off, 1=Trial, 2=Staff, 3=Lead-Staff, 4=Developers, 5=Leaders'
+        return 'Staff-Badges: 0=off, 1=Trial, 2=Staff, 3=Lead-Staff, 4=Developers, 5=Leaders'
 
     if (spellbook.getInvokerAccess() < 103) and (gmId > 1):
         return 'This badge is for trial-staff only!'
@@ -5359,8 +5422,3 @@ def exp(track, amt):
     av.experience.setExp(trackIndex, amt)
     av.b_setExperience(av.experience.makeNetString())
     return "Set %s exp to %d successfully." % (track, amt)
-
-@magicWord(category=CATEGORY_STAFF, types=[int, int, int, int, int, int, int])
-def setTrackAccess(toonup, trap, lure, sound, throw, squirt, drop):
-    """Set target's gag track access."""
-    spellbook.getTarget().b_setTrackAccess([toonup, trap, lure, sound, throw, squirt, drop])

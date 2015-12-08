@@ -81,7 +81,7 @@ class DistributedLawOfficeElevatorExt(DistributedElevatorExt.DistributedElevator
     def setLawOfficeInteriorZoneForce(self, zoneId):
         place = self.cr.playGame.getPlace()
         if place:
-            place.fsm.request('elevator', [self])
+            place.fsm.request('elevator', [self, 1])
             hoodId = self.cr.playGame.hood.hoodId
             doneStatus = {'loader': 'cogHQLoader',
              'where': 'stageInterior',

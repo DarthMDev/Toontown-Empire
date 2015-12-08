@@ -29,12 +29,11 @@ class DistributedCountryClubBattleAI(DistributedLevelBattleAI.DistributedLevelBa
         amount = ToontownGlobals.CountryClubCogBuckRewards[self.level.countryClubId]
         index = ToontownGlobals.cogHQZoneId2deptIndex(self.level.countryClubId)
         extraMerits[index] = amount
-        self.handleCrateReward(toons)
         for toon in toons:
             recovered, notRecovered = self.air.questManager.recoverItems(toon, self.suitsKilled, self.getTaskZoneId())
             self.toonItems[toon.doId][0].extend(recovered)
             self.toonItems[toon.doId][1].extend(notRecovered)
-            meritArray = self.air.promotionMgr.recoverMerits(toon, self.suitsKilled, self.getTaskZoneId(), getCountryClubCreditMultiplier(self.getTaskZoneId()) * 2.0, extraMerits=extraMerits, addInvasion=False)
+            meritArray = self.air.promotionMgr.recoverMerits(toon, self.suitsKilled, self.getTaskZoneId(), getCountryClubCreditMultiplier(self.getTaskZoneId()), extraMerits=extraMerits)
             if toon.doId in self.helpfulToons:
                 self.toonMerits[toon.doId] = addListsByValue(self.toonMerits[toon.doId], meritArray)
             else:

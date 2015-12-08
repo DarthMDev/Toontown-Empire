@@ -1,10 +1,11 @@
 import random
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.directnotify.DirectNotifyGlobal import *
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 import random
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
+from otp.avatar import AvatarDNA
 notify = directNotify.newCategory('SuitDNA')
 suitHeadTypes = ['f',
  'p',
@@ -86,19 +87,6 @@ suitDeptFullnamesP = {'c': TTLocalizer.BossbotP,
  'l': TTLocalizer.LawbotP,
  'm': TTLocalizer.CashbotP,
  's': TTLocalizer.SellbotP}
-suitDeptFilenames = {'c': 'boss',
- 'l': 'law',
- 'm': 'cash',
- 's': 'sell'
-}
-suitDeptModelPaths = {'c': '**/CorpIcon',
- 0: '**/CorpIcon',
- 'l': '**/LegalIcon',
- 1: '**/LegalIcon',
- 'm': '**/MoneyIcon',
- 2: '**/MoneyIcon',
- 's': '**/SalesIcon',
- 3: '**/SalesIcon'}
 corpPolyColor = VBase4(0.95, 0.75, 0.75, 1.0)
 legalPolyColor = VBase4(0.75, 0.75, 0.95, 1.0)
 moneyPolyColor = VBase4(0.65, 0.95, 0.85, 1.0)
@@ -175,7 +163,7 @@ def getSuitsInDept(dept):
     end = start + suitsPerDept
     return suitHeadTypes[start:end]
 
-class SuitDNA:
+class SuitDNA(AvatarDNA.AvatarDNA):
 
     def __init__(self, str = None, type = None, dna = None, r = None, b = None, g = None):
         if str != None:

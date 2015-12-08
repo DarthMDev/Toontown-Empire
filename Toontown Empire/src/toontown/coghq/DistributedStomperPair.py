@@ -1,4 +1,4 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
 import math
 import StomperGlobals

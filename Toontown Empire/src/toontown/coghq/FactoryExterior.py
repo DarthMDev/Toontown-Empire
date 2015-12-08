@@ -3,7 +3,7 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
 from otp.nametag import NametagGlobals
-from panda3d.core import *
+from pandac.PandaModules import *
 from toontown.battle import BattlePlace
 from toontown.building import Elevator
 from toontown.dna.DNAParser import loadDNAFileAI, DNAStorage
@@ -43,8 +43,8 @@ class FactoryExterior(BattlePlace.BattlePlace):
          State.State('battle', self.enterBattle, self.exitBattle, ['walk', 'teleportOut', 'died']),
          State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk']),
          State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn', 'final', 'WaitForBattle']),
-         State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk', 'stopped']),
-         State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['walk', 'stopped']),
+         State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk']),
+         State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['walk']),
          State.State('died', self.enterDied, self.exitDied, ['quietZone']),
          State.State('tunnelIn', self.enterTunnelIn, self.exitTunnelIn, ['walk']),
          State.State('tunnelOut', self.enterTunnelOut, self.exitTunnelOut, ['final']),
@@ -75,6 +75,7 @@ class FactoryExterior(BattlePlace.BattlePlace):
                 groupFullName = dnaStore.getDNAVisGroupName(i)
                 visGroup = dnaStore.getDNAVisGroupAI(i)
                 visZoneId = int(base.cr.hoodMgr.extractGroupName(groupFullName))
+                visZoneId = ZoneUtil.getTrueZoneId(visZoneId, self.zoneId)
                 visibles = []
                 for i in xrange(visGroup.getNumVisibles()):
                     visibles.append(int(visGroup.getVisible(i)))
@@ -93,8 +94,8 @@ class FactoryExterior(BattlePlace.BattlePlace):
         self._telemLimiter = TLGatherAllAvs('FactoryExterior', RotationLimitToH)
         self.accept('doorDoneEvent', self.handleDoorDoneEvent)
         self.accept('DistributedDoor_doorTrigger', self.handleDoorTrigger)
-        NametagGlobals.setMasterArrowsOn(1)
-        self.tunnelOriginList = base.cr.hoodMgr.addLinkTunnelHooks(self, self.nodeList)
+        NametagGlobals.setWant2dNametags(True)
+        self.tunnelOriginList = base.cr.hoodMgr.addLinkTunnelHooks(self, self.nodeList, self.zoneId)
         how = requestStatus['how']
         self.fsm.request(how, [requestStatus])
 

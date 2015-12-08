@@ -1,4 +1,4 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
 from toontown.coghq import DistributedCashbotBossCraneAI
@@ -17,7 +17,6 @@ import math
 class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCashbotBossAI')
     maxGoons = 8
-    BossName = "CFO"
 
     def __init__(self, air):
         DistributedBossCogAI.DistributedBossCogAI.__init__(self, air, 'm')
@@ -143,18 +142,10 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         return
 
     def doNextAttack(self, task):
-        if random.random() <= 0.2:
-            self.b_setAttackCode(ToontownGlobals.BossCogAreaAttack)
-            taskMgr.doMethodLater(7.36, self.__reviveGoons, self.uniqueName('reviveGoons'))
-        else:
-            self.__doDirectedAttack()
-            if self.heldObject == None and not self.waitingForHelmet:
-                self.waitForNextHelmet()
-    
-    def __reviveGoons(self, task):
-        for goon in self.goons:
-            if goon.state == 'Stunned':
-                goon.request('Recovery')
+        self.__doDirectedAttack()
+        if self.heldObject == None and not self.waitingForHelmet:
+            self.waitForNextHelmet()
+        return
 
     def __doDirectedAttack(self):
         if self.toonsToAttack:
@@ -175,6 +166,7 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
             self.toonsToAttack.append(avId)
 
     def makeTreasure(self, goon):
+        return
         if self.state != 'BattleThree':
             return
         pos = goon.getPos(self)
@@ -292,7 +284,6 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
     def stopGoons(self):
         taskName = self.uniqueName('NextGoon')
         taskMgr.remove(taskName)
-        taskMgr.remove(self.uniqueName('reviveGoons'))
 
     def doNextGoon(self, task):
         if self.attackCode != ToontownGlobals.BossCogDizzy:
@@ -395,6 +386,21 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
             if toon:
                 toon.doResistanceEffect(self.rewardId)
 
+            if simbase.config.GetBool('cfo-staff-event', False):
+
+                withStaff = False
+                for avId in self.involvedToons:
+                    av = self.air.doId2do.get(avId)
+                    if av:
+                        if av.adminAccess > 100:
+                            withStaff = True
+
+                if withStaff:
+                    participants = simbase.backups.load('cfo-staff-event', ('participants',), default={'doIds': []})
+                    if avId not in participants['doIds']:
+                        participants['doIds'].append(toon.doId)
+                    simbase.backups.save('cfo-staff-event', ('participants',), participants)
+
     def enterOff(self):
         DistributedBossCogAI.DistributedBossCogAI.enterOff(self)
         self.rewardedToons = []
@@ -467,11 +473,11 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
          'track': self.dna.dept,
          'isSkelecog': 0,
          'isForeman': 0,
-         'isBoss': 1,
+         'isVP': 0,
+         'isCFO': 1,
          'isSupervisor': 0,
          'isVirtual': 0,
          'activeToons': self.involvedToons[:]})
-        self.addStats()
         self.barrier = self.beginBarrier('Victory', self.involvedToons, 30, self.__doneVictory)
         return
 
@@ -548,4 +554,4 @@ def killCFO():
     if not boss:
         return "You aren't in a CFO"
     boss.b_setState('Victory')
-    return 'Killed CFO.'
+    return 'Killed CFO.'    

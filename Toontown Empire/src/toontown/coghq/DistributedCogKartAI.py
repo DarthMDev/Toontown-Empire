@@ -8,9 +8,9 @@ from toontown.toonbase import ToontownGlobals
 class DistributedCogKartAI(DistributedElevatorExtAI.DistributedElevatorExtAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCogKartAI')
 
-    def __init__(self, air, index, x, y, z, h, p, r, bldg):
+    def __init__(self, air, index, x, y, z, h, p, r, bldg, minLaff):
         self.posHpr = (x, y, z, h, p, r)
-        DistributedElevatorExtAI.DistributedElevatorExtAI.__init__(self, air, bldg)
+        DistributedElevatorExtAI.DistributedElevatorExtAI.__init__(self, air, bldg, minLaff = minLaff)
         self.type = ElevatorConstants.ELEVATOR_COUNTRY_CLUB
         self.courseIndex = index
         if self.courseIndex == 0:

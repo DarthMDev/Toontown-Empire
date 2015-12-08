@@ -1,4 +1,4 @@
-import time, random
+import time
 
 from toontown.battle import SuitBattleGlobals
 from toontown.suit import SuitDNA
@@ -45,11 +45,15 @@ class SuitInvasionManagerAI:
             # This invasion is no-op.
             return False
 
+        if flags and ((suitDeptIndex is not None) or (suitTypeIndex is not None)):
+            # For invasion flags to be present, it must be a generic invasion.
+            return False
+
         if (suitDeptIndex is None) and (suitTypeIndex is not None):
             # It's impossible to determine the invading Cog.
             return False
 
-        if flags not in (0, IFV2, IFSkelecog, IFWaiter):
+        if flags not in (0, IFV3, IFV2, IFSkelecog, IFWaiter):
             # The provided flag combination is not possible.
             return False
 
@@ -74,7 +78,7 @@ class SuitInvasionManagerAI:
 
         # How many suits do we want?
         if type == INVASION_TYPE_NORMAL:
-            self.total = random.randint(1000, 3000)
+            self.total = 1000
         elif type == INVASION_TYPE_MEGA:
             self.total = 5000
         elif type == INVASION_TYPE_BRUTAL:
@@ -95,12 +99,12 @@ class SuitInvasionManagerAI:
         if type == INVASION_TYPE_NORMAL:
             timeout = config.GetInt('invasion-timeout', 1800)
             taskMgr.doMethodLater(timeout, self.stopInvasion, 'invasionTimeout')
-
+            
         # If this is a mega invasion, and the players take to long to defeat
         # all of the cogs, we want the invasion to take a bit longer to timeout:
         if type == INVASION_TYPE_MEGA:
             timeout = config.GetInt('invasion-timeout', 3200)
-
+            
         # If this is a brutal invasion, the players will have a very long time to
         # Defeat the cogs before the invasion times out:
         if type == INVASION_TYPE_BRUTAL:

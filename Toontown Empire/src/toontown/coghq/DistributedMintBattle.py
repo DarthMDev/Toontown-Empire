@@ -1,4 +1,4 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
 from toontown.battle.BattleBase import *
 from toontown.coghq import DistributedLevelBattle
@@ -29,7 +29,7 @@ class DistributedMintBattle(DistributedLevelBattle.DistributedLevelBattle):
         self.disableCollision()
         self.delayDeleteMembers()
         if self.hasLocalToon():
-            NametagGlobals.setMasterArrowsOn(0)
+            NametagGlobals.setWant2dNametags(False)
             if self.bossBattle:
                 messenger.send('localToonConfrontedMintBoss')
         self.movie.playReward(ts, self.uniqueName('building-reward'), self.__handleMintRewardDone, noSkip=True)
@@ -45,4 +45,4 @@ class DistributedMintBattle(DistributedLevelBattle.DistributedLevelBattle):
         self.notify.debug('exitMintReward()')
         self.movie.resetReward(finish=1)
         self._removeMembersKeep()
-        NametagGlobals.setMasterArrowsOn(1)
+        NametagGlobals.setWant2dNametags(True)

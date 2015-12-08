@@ -1,4 +1,4 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.distributed.ClockDelta import *
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
@@ -301,6 +301,6 @@ class DistributedStage(DistributedObject.DistributedObject):
             self.titleText.setText('')
 
     def elevatorAlert(self, avId):
-        if base.localAvatar.doId != avId and avId in base.cr.doId2do:
+        if base.localAvatar.doId != avId:
             name = base.cr.doId2do[avId].getName()
-            self.showInfoText(TTLocalizer.StageToonEnterElevator % name)
+            self.showInfoText(TTLocalizer.stageToonEnterElevator % name)

@@ -1,4 +1,4 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 from toontown.toonbase import ToontownGlobals
 from otp.otpbase import OTPGlobals
 import DistributedCashbotBossObjectAI

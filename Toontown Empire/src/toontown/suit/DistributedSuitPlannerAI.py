@@ -30,7 +30,7 @@ if config.GetBool('want-bossbot-cogdo', False):
     ALLOWED_FO_TRACKS += 'b'
 if config.GetBool('want-omni-cogdo', False):
     ALLOWED_FO_TRACKS += 'slcb'
-
+    
 DEFAULT_COGDO_RATIO = .5
 
 class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlannerBase.SuitPlannerBase):
@@ -355,9 +355,9 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
             return False
         numSuitBuildings = len(self.buildingMgr.getSuitBlocks())
         if (random.random() * 100) < SuitBuildingGlobals.buildingChance[self.zoneId]:
-            return SuitBuildingGlobals.buildingMinMax[self.zoneId][1] - numSuitBuildings
+            bmax = SuitBuildingGlobals.buildingMinMax[self.zoneId][1]
         else:
-            return self.targetNumSuitBuildings - numSuitBuildings
+            numNeeded = self.targetNumSuitBuildings - numSuitBuildings
 
     def newSuitShouldAttemptTakeover(self):
         if not self.SUITS_ENTER_BUILDINGS:
@@ -849,7 +849,8 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
         pos = self.battlePosDict[canonicalZoneId]
 
         interactivePropTrackBonus = -1
-        if config.GetBool('props-buff-battles', True) and canonicalZoneId in self.cellToGagBonusDict:
+
+        if simbase.config.GetBool('props-buff-battles', True) and canonicalZoneId in self.cellToGagBonusDict:
             interactivePropTrackBonus = self.cellToGagBonusDict[canonicalZoneId]
 
         self.battleMgr.newBattle(

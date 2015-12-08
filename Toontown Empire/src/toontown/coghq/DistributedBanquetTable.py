@@ -192,8 +192,8 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
         level -= 4
         diner.dna.newSuitRandom(level=level, dept='c')
         diner.setDNA(diner.dna)
-        diner.nametag3d.stash()
-        diner.nametag.destroy()
+        diner.nametag.setNametag2d(None)
+        diner.nametag.setNametag3d(None)
         if self.useNewAnimations:
             diner.loop('sit', fromFrame=i)
         else:
@@ -374,7 +374,7 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
         deathSuit = diner.getLoseActor()
         ival = Sequence(Func(self.notify.debug, 'before actorinterval sit-lose'), ActorInterval(diner, 'sit-lose'), Func(self.notify.debug, 'before deathSuit.setHpr'), Func(deathSuit.setHpr, diner.getHpr()), Func(self.notify.debug, 'before diner.hide'), Func(diner.hide), Func(self.notify.debug, 'before deathSuit.reparentTo'), Func(deathSuit.reparentTo, self.chairLocators[chairIndex]), Func(self.notify.debug, 'befor ActorInterval lose'), ActorInterval(deathSuit, 'lose', duration=MovieUtil.SUIT_LOSE_DURATION), Func(self.notify.debug, 'before remove deathsuit'), Func(removeDeathSuit, diner, deathSuit, name='remove-death-suit-%d-%d' % (chairIndex, self.index)), Func(self.notify.debug, 'diner.stash'), Func(diner.stash))
         spinningSound = base.loadSfx('phase_3.5/audio/sfx/Cog_Death.ogg')
-        deathSound = base.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart_%s.ogg' % random.randint(1, 6))
+        deathSound = base.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart.ogg')
         deathSoundTrack = Sequence(Wait(0.8), SoundInterval(spinningSound, duration=1.2, startTime=1.5, volume=0.2, node=deathSuit), SoundInterval(spinningSound, duration=3.0, startTime=0.6, volume=0.8, node=deathSuit), SoundInterval(deathSound, volume=0.32, node=deathSuit))
         intervalName = 'dinerDie-%d-%d' % (self.index, chairIndex)
         deathIval = Parallel(ival, deathSoundTrack)
@@ -403,19 +403,19 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
         self.activeIntervals = {}
 
     def clearInterval(self, name, finish = 1):
-        if name in self.activeIntervals:
+        if self.activeIntervals.has_key(name):
             ival = self.activeIntervals[name]
             if finish:
                 ival.finish()
             else:
                 ival.pause()
-            if name in self.activeIntervals:
+            if self.activeIntervals.has_key(name):
                 del self.activeIntervals[name]
         else:
             self.notify.debug('interval: %s already cleared' % name)
 
     def finishInterval(self, name):
-        if name in self.activeIntervals:
+        if self.activeIntervals.has_key(name):
             interval = self.activeIntervals[name]
             interval.finish()
 

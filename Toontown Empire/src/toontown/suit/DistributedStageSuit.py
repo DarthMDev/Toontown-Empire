@@ -5,7 +5,7 @@ from direct.actor import Actor
 from otp.avatar import Avatar
 import SuitDNA
 from toontown.toonbase import ToontownGlobals
-from panda3d.core import *
+from pandac.PandaModules import *
 from toontown.battle import SuitBattleGlobals
 from direct.task import Task
 from toontown.battle import BattleProps

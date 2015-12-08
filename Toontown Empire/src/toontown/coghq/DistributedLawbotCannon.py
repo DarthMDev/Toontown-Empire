@@ -9,7 +9,7 @@ from toontown.estate import DistributedCannon
 from toontown.estate import CannonGlobals
 from otp.nametag import NametagGlobals
 from direct.gui.DirectGui import *
-from panda3d.core import *
+from pandac.PandaModules import *
 from toontown.toon import NPCToons
 from toontown.toon import ToonHead
 from toontown.toonbase import TTLocalizer
@@ -253,7 +253,7 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
     def __makeGui(self):
         if self.madeGui:
             return
-        NametagGlobals.setMasterArrowsOn(0)
+        NametagGlobals.setWant2dNametags(False)
         guiModel = 'phase_4/models/gui/cannon_game_gui'
         cannonGui = loader.loadModel(guiModel)
         self.aimPad = DirectFrame(image=cannonGui.find('**/CannonFire_PAD'), relief=None, pos=(0.7, 0, -0.553333), scale=0.8)
@@ -297,7 +297,7 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
         if self.flashingLabel:
             self.flashingLabel.finish()
             self.flashingLabel = None
-        NametagGlobals.setMasterArrowsOn(1)
+        NametagGlobals.setWant2dNametags(True)
         self.__disableAimInterface()
         self.upButton.unbind(DGG.B1PRESS)
         self.upButton.unbind(DGG.B1RELEASE)
@@ -495,6 +495,15 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
 
     def __broadcastLocalCannonPosition(self):
         self.sendUpdate('setCannonPosition', [self.cannonPosition[0], self.cannonPosition[1]])
+
+    def __updateCannonPosition(self, avId):
+        self.cannon.setHpr(self.cannonPosition[0], 0.0, 0.0)
+        self.barrel.setHpr(0.0, self.cannonPosition[1], 0.0)
+        maxP = 90
+        newP = self.barrel.getP()
+        yScale = 1 - 0.5 * float(newP) / maxP
+        shadow = self.cannon.find('**/square_drop_shadow')
+        shadow.setScale(1, yScale, 1)
 
     def __createToonModels(self):
         self.model_Created = 1
