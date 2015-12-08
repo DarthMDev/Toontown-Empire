@@ -1,3 +1,4 @@
+"""
 1000: (-1,
      lnames[1000], must be the same as the start!
      ('dss', head type
@@ -17,4 +18,5 @@
      'm', gender gender
      1,
      NPC_REGULAR) LEAVE!
- 
+
+"""
