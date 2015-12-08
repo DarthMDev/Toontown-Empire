@@ -1,3 +1,4 @@
+"""
 NEW MAGIC WORDS: 
 ~locate <id> = Locates Toon
 
@@ -1080,3 +1081,4 @@ COG INVASIONS:
 ~suit invasion 3 7 0 0 = Mr. Hollywood Invasion
 ~suit invasion 3 7 0 1 = Mr. Hollywood v2.0 Invasion
 ~suit invasion 3 7 1 0 = Mr. Hollywood Skelecog Invasion
+"""
