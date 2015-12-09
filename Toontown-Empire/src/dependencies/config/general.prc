@@ -63,7 +63,6 @@ want-donalds-dreamland #t
 want-goofy-speedway #t
 want-outdoor-zone #t
 want-golf-zone #t
-want-photo-game #f 
 
 # Safe zone settings:
 want-treasure-planners #t
@@ -72,7 +71,7 @@ want-butterflies #t
 
 # Trolley minigames:
 want-minigames #t
-want-pairing-game #f
+want-pairing-game #t
 want-photo-game #f
 
 # Picnic table board games:
@@ -107,7 +106,7 @@ estate-day-night #t
 want-garden-game #t
 want-language-selection #f
 want-mongo #t
-want-toontorial #t
+want-toontorial #f
 want-news-tab #t
 want-news-page #t
 
