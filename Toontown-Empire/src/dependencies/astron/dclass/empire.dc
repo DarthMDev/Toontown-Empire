@@ -657,6 +657,7 @@ dclass DistributedToon : DistributedPlayer {
   setCogParts(uint32[] = [0 * 4]) required broadcast ownrecv db;
   setCogMerits(uint16[] = [0 * 4]) required broadcast ownrecv db;
   setCogIndex(int8) broadcast ram;
+  setHealthDisplay(uint8 mode) broadcast ownrecv ram;
   setDisguisePageFlag(int8) ownrecv;
   setSosPageFlag(int8) ownrecv;
   setHouseId(uint32 = 0) required ownrecv db;
