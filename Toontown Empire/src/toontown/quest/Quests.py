@@ -1,3 +1,4 @@
+from pandac.PandaModules import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase import PythonUtil
 from toontown.toonbase import ToontownBattleGlobals
@@ -7,6 +8,7 @@ from toontown.battle import SuitBattleGlobals
 from toontown.coghq import CogDisguiseGlobals
 from toontown.toon import NPCToons
 from toontown.hood import ZoneUtil
+from toontown.toon import ToonDNA
 from otp.otpbase import OTPGlobals
 import random
 import copy
@@ -49,6 +51,7 @@ AnyLawbotSuitPart = 6
 AnyBossbotSuitPart = 7
 ToonTailor = 999
 ToonHQ = 1000
+TutorialTom= 20000
 InVP = 0
 InFO = 1
 WithCheat = 2
@@ -72,11 +75,13 @@ DG_TIER = 7
 MM_TIER = 8
 BR_TIER = 11
 DL_TIER = 14
-LAWBOT_HQ_TIER = 18
+FG_TIER = 18
+LAWBOT_HQ_TIER = 20
 BOSSBOT_HQ_TIER = 32
 PRE_ELDER_TIER = 49
 ELDER_TIER = 50
-LOOPING_FINAL_TIER = ELDER_TIER
+EXTREME_TIER = 60
+LOOPING_FINAL_TIER = EXTREME_TIER
 VISIT_QUEST_ID = 1000
 TROLLEY_QUEST_ID = 110
 FIRST_COG_QUEST_ID = 145
@@ -289,6 +294,7 @@ class Quest:
         elif holderType == 'track':
             self.check(holder in self._cogTracks, 'invalid recovery item holder: %s for holderType: %s' % (holder, holderType))
 
+
     def checkTrackChoice(self, option):
         self.check(option >= ToontownBattleGlobals.MIN_TRACK_INDEX and option <= ToontownBattleGlobals.MAX_TRACK_INDEX, 'invalid track option: %s' % option)
 
@@ -303,7 +309,7 @@ class Quest:
 
     filterFunc = staticmethod(filterFunc)
 
-    def __init__(self, id, quest):
+    def __init__(self, id, avId, quest):
         self.id = id
         self.quest = quest
 
@@ -366,8 +372,8 @@ class Quest:
 
 
 class LocationBasedQuest(Quest):
-    def __init__(self, id, quest):
-        Quest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        Quest.__init__(self, id, avId, quest)
         self.checkLocation(self.quest[0])
 
     def getLocation(self):
@@ -414,8 +420,8 @@ class LocationBasedQuest(Quest):
          'location': self.getLocationName()}
 
 class CogQuest(LocationBasedQuest):
-    def __init__(self, id, quest):
-        LocationBasedQuest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        LocationBasedQuest.__init__(self, id, avId, quest)
         if self.__class__ == CogQuest:
             self.checkNumCogs(self.quest[1])
             self.checkCogType(self.quest[2])
@@ -504,8 +510,8 @@ class CogTrackQuest(CogQuest):
      TTLocalizer.CashbotP,
      TTLocalizer.SellbotP]
 
-    def __init__(self, id, quest):
-        CogQuest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        CogQuest.__init__(self, id, avId, quest)
         if self.__class__ == CogTrackQuest:
             self.checkNumCogs(self.quest[1])
             self.checkCogTrack(self.quest[2])
@@ -559,8 +565,8 @@ class CogTrackQuest(CogQuest):
 
 
 class CogLevelQuest(CogQuest):
-    def __init__(self, id, quest):
-        CogQuest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        CogQuest.__init__(self, id, avId, quest)
         self.checkNumCogs(self.quest[1])
         self.checkCogLevel(self.quest[2])
 
@@ -631,8 +637,8 @@ class SkelecogQBase:
 
 
 class SkelecogQuest(CogQuest, SkelecogQBase):
-    def __init__(self, id, quest):
-        CogQuest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        CogQuest.__init__(self, id, avId, quest)
         self.checkNumSkelecogs(self.quest[1])
 
     def getCogType(self):
@@ -644,6 +650,7 @@ class SkelecogQuest(CogQuest, SkelecogQBase):
     def doesCogCount(self, avId, cogDict, zoneId):
         return SkelecogQBase.doesCogCount(self, avId, cogDict, zoneId)
 
+
 class SkelecogTrackQuest(CogTrackQuest, SkelecogQBase):
     trackNamesS = [TTLocalizer.BossbotSkelS,
      TTLocalizer.LawbotSkelS,
@@ -654,8 +661,8 @@ class SkelecogTrackQuest(CogTrackQuest, SkelecogQBase):
      TTLocalizer.CashbotSkelP,
      TTLocalizer.SellbotSkelP]
 
-    def __init__(self, id, quest):
-        CogTrackQuest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        CogTrackQuest.__init__(self, id, avId, quest)
         self.checkNumSkelecogs(self.quest[1])
         self.checkSkelecogTrack(self.quest[2])
 
@@ -667,8 +674,8 @@ class SkelecogTrackQuest(CogTrackQuest, SkelecogQBase):
 
 
 class SkelecogLevelQuest(CogLevelQuest, SkelecogQBase):
-    def __init__(self, id, quest):
-        CogLevelQuest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        CogLevelQuest.__init__(self, id, avId, quest)
         self.checkNumSkelecogs(self.quest[1])
         self.checkSkelecogLevel(self.quest[2])
 
@@ -695,8 +702,8 @@ class SkeleReviveQBase:
 
 
 class SkeleReviveQuest(CogQuest, SkeleReviveQBase):
-    def __init__(self, id, quest):
-        CogQuest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        CogQuest.__init__(self, id, avId, quest)
         self.checkNumSkeleRevives(self.quest[1])
 
     def getCogType(self):
@@ -710,8 +717,8 @@ class SkeleReviveQuest(CogQuest, SkeleReviveQBase):
 
 
 class ForemanQuest(CogQuest):
-    def __init__(self, id, quest):
-        CogQuest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        CogQuest.__init__(self, id, avId, quest)
         self.checkNumForemen(self.quest[1])
 
     def getCogType(self):
@@ -727,6 +734,7 @@ class ForemanQuest(CogQuest):
     def doesCogCount(self, avId, cogDict, zoneId):
         return bool(CogQuest.doesCogCount(self, avId, cogDict, zoneId) and cogDict['isForeman'])
 
+            
 BOSS_NAMES = {
  Anywhere: [TTLocalizer.ACogBoss, TTLocalizer.CogBosses, 'phase_3.5/maps/boss_icon.jpg', 'blue'],
  ToontownGlobals.SellbotHQ: [TTLocalizer.ACogVP, TTLocalizer.CogVPs, 'phase_3.5/maps/vp_icon.jpg', 'red'],
@@ -752,8 +760,8 @@ class TexturedQuest:
         return [None, None]
 
 class BossQuest(CogQuest, TexturedQuest):
-    def __init__(self, id, quest):
-        CogQuest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        CogQuest.__init__(self, id, avId, quest)
         self.checkNumBosses(self.quest[1])
 
     def getFrame(self):
@@ -771,8 +779,8 @@ class BossQuest(CogQuest, TexturedQuest):
         return cogDict['isBoss'] > 0 and self.isLocationMatch(zoneId)
 
 class SupervisorQuest(CogQuest):
-    def __init__(self, id, quest):
-        CogQuest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        CogQuest.__init__(self, id, avId, quest)
         self.checkNumSupervisors(self.quest[1])
 
     def getCogType(self):
@@ -789,8 +797,8 @@ class SupervisorQuest(CogQuest):
         return bool(CogQuest.doesCogCount(self, avId, cogDict, zoneId) and cogDict['isSupervisor'])
 
 class RescueQuest(LocationBasedQuest):
-    def __init__(self, id, quest):
-        Quest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        Quest.__init__(self, id, avId, quest)
         self.checkNumCogs(self.quest[1])
 
     def getNumToons(self):
@@ -859,8 +867,8 @@ class BuildingQuest(CogQuest, TexturedQuest):
      TTLocalizer.Cashbot,
      TTLocalizer.Sellbot]
 
-    def __init__(self, id, quest):
-        CogQuest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        CogQuest.__init__(self, id, avId, quest)
         self.checkNumBuildings(self.quest[1])
         self.checkBuildingTrack(self.quest[2])
         self.checkBuildingFloors(self.quest[3])
@@ -979,8 +987,8 @@ class FactoryQuest(LocationBasedQuest):
      FT_Arm: TTLocalizer.FactoryTypeArm,
      FT_Torso: TTLocalizer.FactoryTypeTorso}
 
-    def __init__(self, id, quest):
-        LocationBasedQuest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        LocationBasedQuest.__init__(self, id, avId, quest)
         self.checkNumFactories(self.quest[1])
 
     def getNumQuestItems(self):
@@ -1052,8 +1060,8 @@ class FactoryQuest(LocationBasedQuest):
         return self.isLocationMatch(location)
 
 class MintQuest(LocationBasedQuest):
-    def __init__(self, id, quest):
-        LocationBasedQuest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        LocationBasedQuest.__init__(self, id, avId, quest)
         self.checkNumMints(self.quest[1])
 
     def getNumQuestItems(self):
@@ -1106,8 +1114,8 @@ class MintQuest(LocationBasedQuest):
         return self.isLocationMatch(location)
 
 class CogPartQuest(LocationBasedQuest):
-    def __init__(self, id, quest):
-        LocationBasedQuest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        LocationBasedQuest.__init__(self, id, avId, quest)
         self.checkNumCogParts(self.quest[1])
 
     def getNumQuestItems(self):
@@ -1161,14 +1169,38 @@ class CogPartQuest(LocationBasedQuest):
         return self.isLocationMatch(location)
 
 class DeliverGagQuest(Quest):
-    def __init__(self, id, quest):
-        Quest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        Quest.__init__(self, id, avId, quest)
         self.checkNumGags(self.quest[0])
-        self.checkGagTrack(self.quest[1])
-        self.checkGagItem(self.quest[2])
+        self.avId = avId
+        try:
+            resp = base.cr
+        except:
+            resp = simbase.air
+        if self.avId is not None and self.avId in resp.doId2do:
+            self.av = resp.doId2do.get(self.avId)
+        else:
+            self.av = base.localAvatar
+        if self.av.getFirstTrackPicked() == self.av.getSecondTrackPicked():
+            if id == 2906:
+                self.gagTrack = 5
+            elif id == 3210:
+                self.gagTrack = 5
+            else:
+                self.gagTrack = 4
+        elif self.quest[1] == 1:
+            self.gagTrack = (self.av.getFirstTrackPicked())
+        elif self.quest[1] == 2:
+            self.gagTrack = (self.av.getSecondTrackPicked())
+        else:
+            self.gagTrack = (random.choice(self.av.getFirstTrackPicked(), self.av.getSecondTrackPicked()))
+        self.checkGagItem(self.quest[2])    
+
+    def getGagTrack(self):
+        return (self.gagTrack, self.quest[2])
 
     def getGagType(self):
-        return (self.quest[1], self.quest[2])
+        return (self.gagTrack, self.quest[2])
 
     def getNumQuestItems(self):
         return self.getNumGags()
@@ -1241,8 +1273,8 @@ class DeliverGagQuest(Quest):
         return takenGags
 
 class DeliverItemQuest(Quest):
-    def __init__(self, id, quest):
-        Quest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        Quest.__init__(self, id, avId, quest)
         self.checkDeliveryItem(self.quest[0])
 
     def getItem(self):
@@ -1285,8 +1317,8 @@ class DeliverItemQuest(Quest):
 
 
 class VisitQuest(Quest):
-    def __init__(self, id, quest):
-        Quest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        Quest.__init__(self, id, avId, quest)
 
     def getCompletionStatus(self, av, questDesc, npc = None):
         questId, fromNpcId, toNpcId, rewardId, toonProgress = questDesc
@@ -1322,7 +1354,7 @@ class VisitQuest(Quest):
 
 class RecoverItemQuest(LocationBasedQuest):
     def __init__(self, id, quest):
-        LocationBasedQuest.__init__(self, id, quest)
+        LocationBasedQuest.__init__(self, id, avId, quest)
         self.checkNumItems(self.quest[1])
         self.checkRecoveryItem(self.quest[2])
         self.checkPercentChance(self.quest[3])
@@ -1500,13 +1532,23 @@ class RecoverItemQuest(LocationBasedQuest):
 
 
 class TrackChoiceQuest(Quest):
-    def __init__(self, id, quest):
-        Quest.__init__(self, id, quest)
-        self.checkTrackChoice(self.quest[0])
-        self.checkTrackChoice(self.quest[1])
+    def __init__(self, id, avId, quest):
+        self.avId = avId
+        try:
+            resp = base.cr
+        except:
+            resp = simbase.air
+        if self.avId is not None and self.avId in resp.doId2do:
+            self.av = resp.doId2do.get(self.avId)
+        else:
+            self.av = base.localAvatar
+        self.tracks = avatarGetRemainingTrackIds(self.av)   
+        for track in self.tracks:
+            self.checkTrackChoice(track)
+        Quest.__init__(self, id, avId, self.tracks)  
 
     def getChoices(self):
-        return (self.quest[0], self.quest[1])
+        return self.tracks
 
     def getCompletionStatus(self, av, questDesc, npc = None):
         questId, fromNpcId, toNpcId, rewardId, toonProgress = questDesc
@@ -1522,21 +1564,26 @@ class TrackChoiceQuest(Quest):
             return NotChosenString
 
     def getObjectiveStrings(self):
-        trackA, trackB = self.getChoices()
-        trackAName = ToontownBattleGlobals.Tracks[trackA].capitalize()
-        trackBName = ToontownBattleGlobals.Tracks[trackB].capitalize()
-        return [trackAName, trackBName]
+        trackNames = []
+        for track in self.tracks:
+            trackNames.append(ToontownBattleGlobals.Tracks[track].capitalize())   
+        return trackNames
 
     def getString(self):
-        return TTLocalizer.QuestsTrackChoiceQuestString % {'trackA': self.getObjectiveStrings()[0],
-         'trackB': self.getObjectiveStrings()[1]}
+        trackNames = []
+        for track in self.tracks:
+            trackNames.append(self.getTrackName(track)+', ')
+        trackNames[-1] = self.getTrackName(self.tracks[-1])
+        return "".join(trackNames)
+        
+    def getTrackName(self, trackId):
+        return ToontownBattleGlobals.Tracks[trackId].capitalize()
 
     def getSCStrings(self, toNpcId, progress):
-        trackA, trackB = self.getChoices()
-        trackAName = ToontownBattleGlobals.Tracks[trackA].capitalize()
-        trackBName = ToontownBattleGlobals.Tracks[trackB].capitalize()
-        return [TTLocalizer.QuestsTrackChoiceQuestSCString % {'trackA': trackAName,
-          'trackB': trackBName}, TTLocalizer.QuestsTrackChoiceQuestMaybeSCString % trackAName, TTLocalizer.QuestsTrackChoiceQuestMaybeSCString % trackBName] + getVisitSCStrings(toNpcId)
+        trackNames = self.getObjectiveStrings()
+        SCStrings = [TTLocalizer.QuestsTrackChoiceQuestSCString % self.getString()]
+        SCStrings.extend([TTLocalizer.QuestsTrackChoiceQuestMaybeSCString % self.getTrackName(track) for track in self.tracks])
+        return SCStrings + getVisitSCStrings(toNpcId)
 
     def getHeadlineString(self):
         return TTLocalizer.QuestsTrackChoiceQuestHeadline
@@ -1551,8 +1598,8 @@ class FriendQuest(Quest):
 
     filterFunc = staticmethod(filterFunc)
 
-    def __init__(self, id, quest):
-        Quest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        Quest.__init__(self, id, avId, quest)
 
     def getCompletionStatus(self, av, questDesc, npc = None):
         questId, fromNpcId, toNpcId, rewardId, toonProgress = questDesc
@@ -1579,9 +1626,12 @@ class FriendQuest(Quest):
     def getObjectiveStrings(self):
         return [TTLocalizer.QuestsFriendQuestString]
 
+    def doesFriendCount(self, av, otherAv):
+        return 1
+
 class TrolleyQuest(Quest):
-    def __init__(self, id, quest):
-        Quest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        Quest.__init__(self, id, avId, quest)
 
     def getCompletionStatus(self, av, questDesc, npc = None):
         questId, fromNpcId, toNpcId, rewardId, toonProgress = questDesc
@@ -1610,8 +1660,8 @@ class TrolleyQuest(Quest):
 
 
 class MailboxQuest(Quest):
-    def __init__(self, id, quest):
-        Quest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        Quest.__init__(self, id, avId, quest)
 
     def getCompletionStatus(self, av, questDesc, npc = None):
         questId, fromNpcId, toNpcId, rewardId, toonProgress = questDesc
@@ -1640,8 +1690,8 @@ class MailboxQuest(Quest):
 
 
 class PhoneQuest(Quest):
-    def __init__(self, id, quest):
-        Quest.__init__(self, id, quest)
+    def __init__(self, id, avId, quest):
+        Quest.__init__(self, id, avId, quest)
 
     def getCompletionStatus(self, av, questDesc, npc = None):
         questId, fromNpcId, toNpcId, rewardId, toonProgress = questDesc
@@ -1720,7 +1770,6 @@ QuestDict = {
     161: (TT_TIER, OBSOLETE, (CogTrackQuest, ToontownGlobals.ToontownCentral, 3, 'l'), Same, ToonHQ, NA, 175, TTLocalizer.QuestDialogDict[161]),
     162: (TT_TIER, OBSOLETE, (CogTrackQuest, ToontownGlobals.ToontownCentral, 3, 's'), Same, ToonHQ, NA, 175, TTLocalizer.QuestDialogDict[162]),
     163: (TT_TIER, OBSOLETE, (CogTrackQuest, ToontownGlobals.ToontownCentral, 3, 'm'), Same, ToonHQ, NA, 175, TTLocalizer.QuestDialogDict[163]),
-    175: (TT_TIER, Cont, (PhoneQuest,), Same, ToonHQ, 100, NA, TTLocalizer.QuestDialogDict[175]),
     164: (TT_TIER + 1, Start, (VisitQuest,), Any, 2001, NA, 165, TTLocalizer.QuestDialogDict[164]),
     165: (TT_TIER + 1, Start, (CogQuest, Anywhere, 4, Any), 2001, Same, NA, (166, 167, 168, 169), TTLocalizer.QuestDialogDict[165]),
     166: (TT_TIER + 1, Cont, (CogTrackQuest, Anywhere, 4, 'c'), Same, Same, NA, 170, TTLocalizer.QuestDialogDict[166]),
@@ -1730,11 +1779,16 @@ QuestDict = {
     170: (TT_TIER + 1, Cont, (VisitQuest,), Same, 2005, NA, 400, TTLocalizer.QuestDialogDict[170]),
     171: (TT_TIER + 1, Cont, (VisitQuest,), Same, 2311, NA, 400, TTLocalizer.QuestDialogDict[171]),
     172: (TT_TIER + 1, Cont, (VisitQuest,), Same, 2119, NA, 400, TTLocalizer.QuestDialogDict[172]),
-    400: (TT_TIER + 1, Cont, (TrackChoiceQuest, ToontownBattleGlobals.SOUND_TRACK, ToontownBattleGlobals.HEAL_TRACK), Same, Same, 400, NA, TTLocalizer.QuestDialogDict[400]),
-    1001: (TT_TIER + 2, Start, (CogQuest, ToontownGlobals.ToontownCentral, 3, Any), Any, ToonHQ, Any, NA, DefaultDialog),
-    1002: (TT_TIER + 2, Start, (CogQuest, ToontownGlobals.ToontownCentral, 4, Any), Any, ToonHQ, Any, NA, DefaultDialog),
-    1003: (TT_TIER + 2, Start, (CogQuest, ToontownGlobals.ToontownCentral, 5, Any), Any, ToonHQ, Any, NA, DefaultDialog),
-    1004: (TT_TIER + 2, Start, (CogQuest, ToontownGlobals.ToontownCentral, 6, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    175: (TT_TIER, Cont, (PhoneQuest,), Same, ToonHQ, 100, NA, TTLocalizer.QuestDialogDict[175]),    
+    400: (TT_TIER + 1, Cont, (TrackChoiceQuest,), Same, Same, 400, NA, TTLocalizer.QuestDialogDict[400]),
+    500: (TT_TIER + 2, Start, (CogQuest, ToontownGlobals.ToontownCentral, 3, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    600: (TT_TIER + 2, Start, (CogQuest, ToontownGlobals.ToontownCentral, 4, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    700: (TT_TIER + 2, Start, (CogQuest, ToontownGlobals.ToontownCentral, 5, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    800: (TT_TIER + 2, Start, (CogQuest, ToontownGlobals.ToontownCentral, 6, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    1001: (TT_TIER + 2, Start, (CogQuest, ToontownGlobals.ToontownCentral, 7, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    1002: (TT_TIER + 2, Start, (CogQuest, ToontownGlobals.ToontownCentral, 8, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    1003: (TT_TIER + 2, Start, (CogQuest, ToontownGlobals.ToontownCentral, 10, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    1004: (TT_TIER + 2, Start, (CogQuest, ToontownGlobals.ToontownCentral, 12, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     1005: (TT_TIER + 2, Start, (CogQuest, Anywhere, 2, 'f'), Any, ToonHQ, Any, NA, DefaultDialog),
     1006: (TT_TIER + 2, Start, (CogQuest, Anywhere, 2, 'p'), Any, ToonHQ, Any, NA, DefaultDialog),
     1007: (TT_TIER + 2, Start, (CogQuest, Anywhere, 2, 'bf'), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -1836,7 +1890,7 @@ QuestDict = {
     1210: (TT_TIER + 3, Start, (CogQuest, Anywhere, 4, 'pp'), Any, ToonHQ, Any, NA, DefaultDialog),
     1211: (TT_TIER + 3, Start, (CogQuest, Anywhere, 4, 'cc'), Any, ToonHQ, Any, NA, DefaultDialog),
     1212: (TT_TIER + 3, Start, (CogQuest, Anywhere, 4, 'tm'), Any, ToonHQ, Any, NA, DefaultDialog),
-    401: (DD_TIER, Start, (TrackChoiceQuest, ToontownBattleGlobals.DROP_TRACK, ToontownBattleGlobals.LURE_TRACK), Any, ToonHQ, 400, NA, TTLocalizer.QuestDialogDict[401]),
+    401: (DD_TIER, Start, (TrackChoiceQuest,), Any, ToonHQ, 400, NA, TTLocalizer.QuestDialogDict[401]),
     2001: (DD_TIER, Start, (CogQuest, Anywhere, 3, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     2002: (DD_TIER, Start, (CogQuest, Anywhere, 4, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     2003: (DD_TIER, Start, (CogQuest, Anywhere, 5, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -1856,6 +1910,106 @@ QuestDict = {
     2817: (DD_TIER, Start, (CogLevelQuest, Anywhere, 5, 6), Any, ToonHQ, Any, NA, DefaultDialog),
     2818: (DD_TIER, Start, (CogLevelQuest, Anywhere, 6, 6), Any, ToonHQ, Any, NA, DefaultDialog),
     2819: (DD_TIER, Start, (CogLevelQuest, Anywhere, 7, 6), Any, ToonHQ, Any, NA, DefaultDialog),
+    2020: (DD_TIER, Start, (CogQuest, Anywhere, 10, Any), Any, ToonHQ, NA, 2021, DefaultDialog),
+    2021: (DD_TIER, Cont, (DeliverItemQuest, 1000), Any, 1007, 1000, NA, DefaultDialog),
+    2101: (DD_TIER + 1, Start, (CogQuest, ToontownGlobals.DonaldsDock, 3, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    2102: (DD_TIER + 1, Start, (CogQuest, ToontownGlobals.DonaldsDock, 4, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    2103: (DD_TIER + 1, Start, (CogQuest, ToontownGlobals.DonaldsDock, 5, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    2104: (DD_TIER + 1, Start, (CogQuest, Anywhere, 6, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    2105: (DD_TIER + 1, Start, (CogQuest, Anywhere, 7, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    2106: (DD_TIER + 1, Start, (CogQuest, Anywhere, 8, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    2107: (DD_TIER + 1, Start, (CogQuest, Anywhere, 6, 'f'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2108: (DD_TIER + 1, Start, (CogQuest, Anywhere, 4, 'p'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2109: (DD_TIER + 1, Start, (CogQuest, Anywhere, 4, 'ym'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2110: (DD_TIER + 1, Start, (CogQuest, Anywhere, 3, 'mm'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2111: (DD_TIER + 1, Start, (CogQuest, Anywhere, 2, 'ds'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2112: (DD_TIER + 1, Start, (CogQuest, Anywhere, 1, 'hh'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2113: (DD_TIER + 1, Start, (CogQuest, Anywhere, 6, 'cc'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2114: (DD_TIER + 1, Start, (CogQuest, Anywhere, 4, 'tm'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2115: (DD_TIER + 1, Start, (CogQuest, Anywhere, 4, 'nd'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2116: (DD_TIER + 1, Start, (CogQuest, Anywhere, 3, 'gh'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2117: (DD_TIER + 1, Start, (CogQuest, Anywhere, 2, 'ms'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2118: (DD_TIER + 1, Start, (CogQuest, Anywhere, 1, 'tf'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2119: (DD_TIER + 1, Start, (CogQuest, Anywhere, 6, 'sc'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2120: (DD_TIER + 1, Start, (CogQuest, Anywhere, 4, 'pp'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2121: (DD_TIER + 1, Start, (CogQuest, Anywhere, 4, 'tw'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2122: (DD_TIER + 1, Start, (CogQuest, Anywhere, 3, 'bc'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2123: (DD_TIER + 1, Start, (CogQuest, Anywhere, 2, 'nc'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2124: (DD_TIER + 1, Start, (CogQuest, Anywhere, 1, 'mb'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2125: (DD_TIER + 1, Start, (CogQuest, Anywhere, 6, 'bf'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2126: (DD_TIER + 1, Start, (CogQuest, Anywhere, 4, 'b'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2127: (DD_TIER + 1, Start, (CogQuest, Anywhere, 4, 'dt'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2128: (DD_TIER + 1, Start, (CogQuest, Anywhere, 3, 'ac'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2129: (DD_TIER + 1, Start, (CogQuest, Anywhere, 2, 'bs'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2130: (DD_TIER + 1, Start, (CogQuest, Anywhere, 1, 'sd'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2131: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.DonaldsDock, 2, 3), Any, ToonHQ, Any, NA, DefaultDialog),
+    2132: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.DonaldsDock, 3, 3), Any, ToonHQ, Any, NA, DefaultDialog),
+    2133: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.DonaldsDock, 2, 4), Any, ToonHQ, Any, NA, DefaultDialog),
+    2134: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.DonaldsDock, 4, 4), Any, ToonHQ, Any, NA, DefaultDialog),
+    2135: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.DonaldsDock, 4, 5), Any, ToonHQ, Any, NA, DefaultDialog),
+    2136: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.DonaldsDock, 5, 5), Any, ToonHQ, Any, NA, DefaultDialog),
+    2137: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.DonaldsDock, 4, 6), Any, ToonHQ, Any, NA, DefaultDialog),
+    2138: (DD_TIER + 1, Start, (CogLevelQuest, ToontownGlobals.DonaldsDock, 6, 6), Any, ToonHQ, Any, NA, DefaultDialog),
+    2139: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.DonaldsDock, 3, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2140: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.DonaldsDock, 3, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2141: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.DonaldsDock, 3, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2142: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.DonaldsDock, 3, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2143: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.DonaldsDock, 5, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2144: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.DonaldsDock, 5, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2145: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.DonaldsDock, 5, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2146: (DD_TIER + 1, Start, (CogTrackQuest, ToontownGlobals.DonaldsDock, 5, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2147: (DD_TIER + 1, Start, (CogTrackQuest, Anywhere, 7, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2148: (DD_TIER + 1, Start, (CogTrackQuest, Anywhere, 7, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2149: (DD_TIER + 1, Start, (CogTrackQuest, Anywhere, 7, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2150: (DD_TIER + 1, Start, (CogTrackQuest, Anywhere, 7, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
+    2151: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 1, Any, 1, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    2152: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 1, Any, 2, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    2153: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 2, Any, 1, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    2154: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 2, Any, 2, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    2155: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 1, 'm', 1, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    2156: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 1, 's', 1, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    2157: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 1, 'c', 1, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    2158: (DD_TIER + 1, Start, (BuildingQuest, Anywhere, 1, 'l', 1, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    2159: (DD_TIER + 1, Start, (DeliverGagQuest, 2, 1, 1), Any, Any, Any, NA, DefaultDialog),
+    2160: (DD_TIER + 1, Start, (DeliverGagQuest, 1, 2, 1), Any, Any, Any, NA, DefaultDialog),
+    2161: (DD_TIER + 1, Start, (DeliverGagQuest, 1, 2, 2), Any, Any, Any, NA, DefaultDialog),
+    2162: (DD_TIER + 1, Start, (DeliverGagQuest, 2, 1, 2), Any, Any, Any, NA, DefaultDialog),
+    2201: (DD_TIER + 1, Start, (VisitQuest,), Any, 1101, NA, 2202, TTLocalizer.QuestDialogDict[2201]),
+    2202: (DD_TIER + 1, Start, (RecoverItemQuest, Anywhere, 1, 2001, Medium, 'pp'), 1101, Same, 101, NA, TTLocalizer.QuestDialogDict[2202]),
+    2203: (DD_TIER + 1, Start, (VisitQuest,), Any, 1102, NA, 2204, TTLocalizer.QuestDialogDict[2203]),
+    2204: (DD_TIER + 1, Start, (DeliverItemQuest, 2002), 1102, 1104, NA, 2205, TTLocalizer.QuestDialogDict[2204]),
+    2205: (DD_TIER + 1, Cont, (RecoverItemQuest, Anywhere, 1, 2003, Medium, 'f'), Same, Same, NA, 2206, TTLocalizer.QuestDialogDict[2205]),
+    2206: (DD_TIER + 1, Cont, (DeliverItemQuest, 2004), Same, 1102, 201, NA, TTLocalizer.QuestDialogDict[2206]),
+    2207: (DD_TIER + 1, Start, (VisitQuest,), Any, 1201, NA, 2208, TTLocalizer.QuestDialogDict[2207]),
+    2208: (DD_TIER + 1, Start, (RecoverItemQuest, Anywhere, 1, 2005, Easy, 'bs'), 1201, Same, 701, NA, TTLocalizer.QuestDialogDict[2208]),
+    2209: (DD_TIER + 1, Start, (VisitQuest,), Any, 1302, NA, 2210, TTLocalizer.QuestDialogDict[2209]),
+    2210: (DD_TIER + 1, Start, (VisitQuest,), 1302, 1301, NA, 2211, TTLocalizer.QuestDialogDict[2210]),
+    2211: (DD_TIER + 1, Cont, (CogQuest, ToontownGlobals.DonaldsDock, 5, 'mm'), Same, Same, NA, 2212, TTLocalizer.QuestDialogDict[2211]),
+    2212: (DD_TIER + 1, Cont, (DeliverItemQuest, 2006), Same, 1302, NA, 2213, TTLocalizer.QuestDialogDict[2212]),
+    2213: (DD_TIER + 1, Cont, (VisitQuest,), Same, 1202, NA, 2214, TTLocalizer.QuestDialogDict[2213]),
+    2214: (DD_TIER + 1, Cont, (RecoverItemQuest, ToontownGlobals.DonaldsDock, 3, 2007, Hard, Any), Same, Same, NA, 2215, TTLocalizer.QuestDialogDict[2214]),
+    2215: (DD_TIER + 1, Cont, (DeliverItemQuest, 2008), Same, 1302, 301, NA, TTLocalizer.QuestDialogDict[2215]),
+    2500: (DD_TIER + 1, Start, (CogQuest, ToontownGlobals.DonaldsDock, 15, Any), Any, ToonHQ, NA, 2501, DefaultDialog),
+    2501: (DD_TIER + 1, Cont, (DeliverItemQuest, 1000), Any, 1007, 1000, NA, DefaultDialog),
+    2801: (DD_TIER + 2, Start, (CogQuest, Anywhere, 3, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    2802: (DD_TIER + 2, Start, (CogQuest, Anywhere, 4, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    2803: (DD_TIER + 2, Start, (CogQuest, Anywhere, 5, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    2804: (DD_TIER + 2, Start, (CogQuest, Anywhere, 6, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    2805: (DD_TIER + 2, Start, (CogQuest, Anywhere, 7, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    2806: (DD_TIER + 2, Start, (CogQuest, Anywhere, 8, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    2807: (DD_TIER + 2, Start, (CogQuest, Anywhere, 9, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    2808: (DD_TIER + 2, Start, (CogQuest, Anywhere, 10, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    2809: (DD_TIER + 2, Start, (CogQuest, Anywhere, 12, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    2810: (DD_TIER + 2, Start, (CogLevelQuest, Anywhere, 2, 3), Any, ToonHQ, Any, NA, DefaultDialog),
+    2811: (DD_TIER + 2, Start, (CogLevelQuest, Anywhere, 3, 3), Any, ToonHQ, Any, NA, DefaultDialog),
+    2812: (DD_TIER + 2, Start, (CogLevelQuest, Anywhere, 2, 4), Any, ToonHQ, Any, NA, DefaultDialog),
+    2813: (DD_TIER + 2, Start, (CogLevelQuest, Anywhere, 4, 4), Any, ToonHQ, Any, NA, DefaultDialog),
+    2814: (DD_TIER + 2, Start, (CogLevelQuest, Anywhere, 4, 5), Any, ToonHQ, Any, NA, DefaultDialog),
+    2815: (DD_TIER + 2, Start, (CogLevelQuest, Anywhere, 5, 5), Any, ToonHQ, Any, NA, DefaultDialog),
+    2816: (DD_TIER + 2, Start, (CogLevelQuest, Anywhere, 4, 6), Any, ToonHQ, Any, NA, DefaultDialog),
+    2817: (DD_TIER + 2, Start, (CogLevelQuest, Anywhere, 5, 6), Any, ToonHQ, Any, NA, DefaultDialog),
+    2818: (DD_TIER + 2, Start, (CogLevelQuest, Anywhere, 6, 6), Any, ToonHQ, Any, NA, DefaultDialog),
+    2819: (DD_TIER + 2, Start, (CogLevelQuest, Anywhere, 7, 6), Any, ToonHQ, Any, NA, DefaultDialog),
     2820: (DD_TIER + 2, Start, (CogQuest, Anywhere, 20, Any), Any, ToonHQ, NA, 2821, DefaultDialog),
     2821: (DD_TIER + 2, Cont, (DeliverItemQuest, 1000), Any, 1007, 1000, NA, DefaultDialog),
     901: (DD_TIER + 2, Start, (VisitQuest,), Any, 1203, NA, 2902, TTLocalizer.QuestDialogDict[901]),
@@ -1863,7 +2017,7 @@ QuestDict = {
     2903: (DD_TIER + 2, Cont, (DeliverItemQuest, 2009), Same, 1106, NA, 2904, TTLocalizer.QuestDialogDict[2903]),
     2904: (DD_TIER + 2, Cont, (DeliverItemQuest, 2010), Same, 1203, NA, 2905, TTLocalizer.QuestDialogDict[2904]),
     2905: (DD_TIER + 2, Cont, (VisitQuest, 2009), Same, 1105, NA, 2906, TTLocalizer.QuestDialogDict[2905]),
-    2906: (DD_TIER + 2, Cont, (DeliverGagQuest, 3, ToontownBattleGlobals.SQUIRT_TRACK, 2), Same, Same, NA, 2907, TTLocalizer.QuestDialogDict[2906]),
+    2906: (DD_TIER + 2, Cont, (DeliverGagQuest, 3, 2, 2), Same, Same, NA, 2907, TTLocalizer.QuestDialogDict[2906]),
     2907: (DD_TIER + 2, Cont, (DeliverItemQuest, 2011), Same, 1203, NA, (2910, 2915, 2920), TTLocalizer.QuestDialogDict[2907]),
     2910: (DD_TIER + 2, Cont, (VisitQuest,), Same, 1107, NA, 2911, TTLocalizer.QuestDialog_2910),
     2911: (DD_TIER + 2, Cont, (CogTrackQuest, ToontownGlobals.DonaldsDock, 4, 'm'), Same, Same, NA, 2925, TTLocalizer.QuestDialogDict[2911]),
@@ -1941,7 +2095,7 @@ QuestDict = {
     3208: (DG_TIER, OBSOLETE, (CogQuest, ToontownGlobals.DaisyGardens, 10, 'cc'), Any, ToonHQ, NA, 3209, TTLocalizer.QuestDialogDict[3208]),
     3209: (DG_TIER, OBSOLETE, (CogQuest, ToontownGlobals.DaisyGardens, 10, 'tm'), Same, Same, 202, NA, TTLocalizer.QuestDialogDict[3209]),
     3247: (DG_TIER, OBSOLETE, (CogQuest, ToontownGlobals.DaisyGardens, 20, 'b'), Any, ToonHQ, 202, NA, TTLocalizer.QuestDialogDict[3247]),
-    3210: (DG_TIER, Start, (DeliverGagQuest, 10, ToontownBattleGlobals.SQUIRT_TRACK, 0), Any, 5207, NA, 3211, TTLocalizer.QuestDialogDict[3210]),
+    3210: (DG_TIER, Start, (DeliverGagQuest, 10, 2, 2), Any, 5207, NA, 3211, TTLocalizer.QuestDialogDict[3210]),
     3211: (DG_TIER, Cont, (CogQuest, 5200, 20, Any), Same, Same, 100, NA, TTLocalizer.QuestDialogDict[3211]),
     3212: (DG_TIER, OBSOLETE, (VisitQuest,), Any, 5208, NA, 3213, TTLocalizer.QuestDialogDict[3212]),
     3213: (DG_TIER, OBSOLETE, (RecoverItemQuest, ToontownGlobals.DaisyGardens, 1, 5005, VeryHard, Any), 5208, Same, NA, 3214, TTLocalizer.QuestDialogDict[3213]),
@@ -1996,8 +2150,7 @@ QuestDict = {
     3501: (DG_TIER, Cont, (DeliverItemQuest, 1000), Any, 5007, 1000, NA, DefaultDialog),
     3502: (DG_TIER, Start, (RescueQuest, InVP, 1), Any, ToonHQ, Any, NA, DefaultDialog),
     3503: (DG_TIER, Start, (RescueQuest, InFO, 2), Any, ToonHQ, Any, NA, DefaultDialog),
-    4001: (MM_TIER, Start, (TrackChoiceQuest, ToontownBattleGlobals.TRAP_TRACK, ToontownBattleGlobals.HEAL_TRACK), Any, ToonHQ, 400, NA, TTLocalizer.QuestDialogDict[4001]),
-    4002: (MM_TIER, Start, (TrackChoiceQuest, ToontownBattleGlobals.TRAP_TRACK, ToontownBattleGlobals.SOUND_TRACK), Any, ToonHQ, 400, NA, TTLocalizer.QuestDialogDict[4002]),
+    4001: (MM_TIER, Start, (TrackChoiceQuest,), Any, ToonHQ, 400, NA, TTLocalizer.QuestDialogDict[4001]),
     4010: (MM_TIER, Start, (CogQuest, Anywhere, 16, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     4011: (MM_TIER, Start, (CogQuest, Anywhere, 18, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     4012: (MM_TIER, Start, (CogQuest, Anywhere, 20, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -2105,7 +2258,7 @@ QuestDict = {
     4205: (MM_TIER + 1, Cont, (DeliverItemQuest, 4002), Same, 4101, NA, 4206, TTLocalizer.QuestDialogDict[4205]),
     4206: (MM_TIER + 1, Cont, (VisitQuest,), Same, 4102, NA, 4207, TTLocalizer.QuestDialogDict[4206]),
     4207: (MM_TIER + 1, Cont, (VisitQuest,), Same, 4108, NA, 4208, TTLocalizer.QuestDialogDict[4207]),
-    4208: (MM_TIER + 1, Cont, (DeliverGagQuest, 1, ToontownBattleGlobals.THROW_TRACK, 4), Same, Same, NA, 4209, TTLocalizer.QuestDialogDict[4208]),
+    4208: (MM_TIER + 1, Cont, (DeliverGagQuest, 1, 1, 4), Same, Same, NA, 4209, TTLocalizer.QuestDialogDict[4208]),
     4209: (MM_TIER + 1, Cont, (DeliverItemQuest, 4003), Same, 4102, NA, 4210, TTLocalizer.QuestDialogDict[4209]),
     4210: (MM_TIER + 1, Cont, (DeliverItemQuest, 4004), Same, 4101, 203, NA, TTLocalizer.QuestDialogDict[4210]),
     4211: (MM_TIER + 1, Start, (VisitQuest,), ToonHQ, 4103, NA, 4212, TTLocalizer.QuestDialogDict[4211]),
@@ -2171,18 +2324,10 @@ QuestDict = {
     5247: (BR_TIER, Start, (VisitQuest,), Any, 3112, NA, 5248, TTLocalizer.QuestDialogDict[5247]),
     5248: (BR_TIER, Start, (CogLevelQuest, Anywhere, 10, 8), 3112, Same, NA, 5249, TTLocalizer.QuestDialogDict[5248]),
     5249: (BR_TIER, Cont, (RecoverItemQuest, Anywhere, 3, 3018, VeryHard, AnyFish), Same, Same, NA, (5250, 5258, 5259, 5260), TTLocalizer.QuestDialogDict[5249]),
-    5250: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'l', 4, 0), Same, Same, NA, (5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008), TTLocalizer.QuestDialogDict[5250]),
-    5258: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'c', 4, 0), Same, Same, NA, (5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008), TTLocalizer.QuestDialogDict[5258]),
-    5259: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'm', 4, 0), Same, Same, NA, (5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008), TTLocalizer.QuestDialogDict[5259]),
-    5260: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 's', 4, 0), Same, Same, NA, (5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008), TTLocalizer.QuestDialogDict[5260]),
-    5001: (BR_TIER, Cont, (TrackChoiceQuest, ToontownBattleGlobals.SOUND_TRACK, ToontownBattleGlobals.DROP_TRACK), Same, Same, 400, NA, TTLocalizer.TheBrrrghTrackQuestDict),
-    5002: (BR_TIER, Cont, (TrackChoiceQuest, ToontownBattleGlobals.SOUND_TRACK, ToontownBattleGlobals.LURE_TRACK), Same, Same, 400, NA, TTLocalizer.TheBrrrghTrackQuestDict),
-    5003: (BR_TIER, Cont, (TrackChoiceQuest, ToontownBattleGlobals.HEAL_TRACK, ToontownBattleGlobals.DROP_TRACK), Same, Same, 400, NA, TTLocalizer.TheBrrrghTrackQuestDict),
-    5004: (BR_TIER, Cont, (TrackChoiceQuest, ToontownBattleGlobals.HEAL_TRACK, ToontownBattleGlobals.LURE_TRACK), Same, Same, 400, NA, TTLocalizer.TheBrrrghTrackQuestDict),
-    5005: (BR_TIER, Cont, (TrackChoiceQuest, ToontownBattleGlobals.TRAP_TRACK, ToontownBattleGlobals.SOUND_TRACK), Same, Same, 400, NA, TTLocalizer.TheBrrrghTrackQuestDict),
-    5006: (BR_TIER, Cont, (TrackChoiceQuest, ToontownBattleGlobals.TRAP_TRACK, ToontownBattleGlobals.HEAL_TRACK), Same, Same, 400, NA, TTLocalizer.TheBrrrghTrackQuestDict),
-    5007: (BR_TIER, Cont, (TrackChoiceQuest, ToontownBattleGlobals.TRAP_TRACK, ToontownBattleGlobals.DROP_TRACK), Same, Same, 400, NA, TTLocalizer.TheBrrrghTrackQuestDict),
-    5008: (BR_TIER, Cont, (TrackChoiceQuest, ToontownBattleGlobals.TRAP_TRACK, ToontownBattleGlobals.LURE_TRACK), Same, Same, 400, NA, TTLocalizer.TheBrrrghTrackQuestDict),
+    5250: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'l', 4, 0), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5250]),
+    5258: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'c', 4, 0), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5258]),
+    5259: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'm', 4, 0), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5259]),
+    5260: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 's', 4, 0), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5260]),
     5020: (BR_TIER, Start, (CogQuest, Anywhere, 36, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     5021: (BR_TIER, Start, (CogQuest, Anywhere, 38, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     5022: (BR_TIER, Start, (CogQuest, Anywhere, 40, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -2393,7 +2538,7 @@ QuestDict = {
     5239: (BR_TIER + 2, Cont, (DeliverItemQuest, 3015), Same, 3112, NA, (5240, 5281), TTLocalizer.QuestDialogDict[5239]),
     5240: (BR_TIER + 2, Cont, (RecoverItemQuest, Anywhere, 1, 3016, Hard, 'bw'), Same, Same, NA, 5241, TTLocalizer.QuestDialogDict[5240]),
     5281: (BR_TIER + 2, Cont, (RecoverItemQuest, Anywhere, 1, 3023, Hard, 'mh'), Same, Same, NA, 5241, TTLocalizer.QuestDialogDict[5281]),
-    5241: (BR_TIER + 2, Cont, (BuildingQuest, Anywhere, 20, Any, 4, 0), Same, Same, NA, 5242, TTLocalizer.QuestDialogDict[5241]),
+    5241: (BR_TIER + 2, Cont, (BuildingQuest, Anywhere, 30, Any, 4, 0), Same, Same, NA, 5242, TTLocalizer.QuestDialogDict[5241]),
     5242: (BR_TIER + 2, Cont, (RecoverItemQuest, Anywhere, 1, 3014, VeryHard, AnyFish), Same, Same, 900, NA, TTLocalizer.QuestDialogDict[5242]),
     5320: (BR_TIER + 2, Start, (CogQuest, Anywhere, 36, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     5321: (BR_TIER + 2, Start, (CogQuest, Anywhere, 38, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -2434,64 +2579,64 @@ QuestDict = {
     5384: (BR_TIER + 2, Start, (ForemanQuest, ToontownGlobals.SellbotHQ, 2), Any, ToonHQ, Any, NA, DefaultDialog),
     5385: (BR_TIER + 2, Start, (RescueQuest, InVP, 3), Any, ToonHQ, Any, NA, DefaultDialog),
     5386: (BR_TIER + 2, Start, (RescueQuest, InFO, 6), Any, ToonHQ, Any, NA, DefaultDialog),
-    6101: (DL_TIER, Start, (CogQuest, ToontownGlobals.DonaldsDreamland, 60, Any), Any, ToonHQ, Any, NA, DefaultDialog),
-    6102: (DL_TIER, Start, (CogQuest, ToontownGlobals.DonaldsDreamland, 65, Any), Any, ToonHQ, Any, NA, DefaultDialog),
-    6103: (DL_TIER, OBSOLETE, (CogQuest, ToontownGlobals.DonaldsDreamland, 70, Any), Any, ToonHQ, Any, NA, DefaultDialog),
-    6104: (DL_TIER, Start, (CogQuest, Anywhere, 80, Any), Any, ToonHQ, Any, NA, DefaultDialog),
-    6105: (DL_TIER, Start, (CogQuest, Anywhere, 90, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    6101: (DL_TIER, Start, (CogQuest, ToontownGlobals.DonaldsDreamland, 40, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    6102: (DL_TIER, Start, (CogQuest, ToontownGlobals.DonaldsDreamland, 45, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    6103: (DL_TIER, OBSOLETE, (CogQuest, ToontownGlobals.DonaldsDreamland, 50, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    6104: (DL_TIER, Start, (CogQuest, Anywhere, 100, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    6105: (DL_TIER, Start, (CogQuest, Anywhere, 100, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     6106: (DL_TIER, Start, (CogQuest, Anywhere, 100, Any), Any, ToonHQ, Any, NA, DefaultDialog),
-    6107: (DL_TIER, Start, (CogQuest, Anywhere, 25, 'ym'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6108: (DL_TIER, Start, (CogQuest, Anywhere, 25, 'mm'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6109: (DL_TIER, Start, (CogQuest, Anywhere, 25, 'ds'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6110: (DL_TIER, Start, (CogQuest, Anywhere, 25, 'hh'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6111: (DL_TIER, Start, (CogQuest, Anywhere, 15, 'cr'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6112: (DL_TIER, Start, (CogQuest, Anywhere, 8, 'tbc'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6113: (DL_TIER, Start, (CogQuest, Anywhere, 25, 'nd'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6114: (DL_TIER, Start, (CogQuest, Anywhere, 25, 'gh'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6115: (DL_TIER, Start, (CogQuest, Anywhere, 25, 'ms'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6116: (DL_TIER, Start, (CogQuest, Anywhere, 25, 'tf'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6117: (DL_TIER, Start, (CogQuest, Anywhere, 15, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6118: (DL_TIER, Start, (CogQuest, Anywhere, 8, 'mh'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6119: (DL_TIER, Start, (CogQuest, Anywhere, 25, 'tw'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6120: (DL_TIER, Start, (CogQuest, Anywhere, 25, 'bc'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6121: (DL_TIER, Start, (CogQuest, Anywhere, 25, 'nc'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6122: (DL_TIER, OBSOLETE, (CogQuest, Anywhere, 25, 'mb'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6123: (DL_TIER, Start, (CogQuest, Anywhere, 15, 'ls'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6124: (DL_TIER, Start, (CogQuest, Anywhere, 8, 'rb'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6125: (DL_TIER, Start, (CogQuest, Anywhere, 25, 'dt'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6126: (DL_TIER, Start, (CogQuest, Anywhere, 25, 'ac'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6127: (DL_TIER, Start, (CogQuest, Anywhere, 25, 'bs'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6128: (DL_TIER, Start, (CogQuest, Anywhere, 25, 'sd'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6129: (DL_TIER, Start, (CogQuest, Anywhere, 15, 'le'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6130: (DL_TIER, Start, (CogQuest, Anywhere, 8, 'bw'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6131: (DL_TIER, Start, (CogLevelQuest, Anywhere, 50, 5), Any, ToonHQ, Any, NA, DefaultDialog),
-    6132: (DL_TIER, Start, (CogLevelQuest, Anywhere, 40, 6), Any, ToonHQ, Any, NA, DefaultDialog),
-    6133: (DL_TIER, Start, (CogLevelQuest, Anywhere, 35, 7), Any, ToonHQ, Any, NA, DefaultDialog),
-    6134: (DL_TIER, Start, (CogLevelQuest, Anywhere, 30, 8), Any, ToonHQ, Any, NA, DefaultDialog),
-    6135: (DL_TIER, Start, (CogLevelQuest, Anywhere, 25, 9), Any, ToonHQ, Any, NA, DefaultDialog),
-    6136: (DL_TIER, Start, (CogLevelQuest, Anywhere, 20, 9), Any, ToonHQ, Any, NA, DefaultDialog),
-    6137: (DL_TIER, Start, (CogLevelQuest, Anywhere, 15, 9), Any, ToonHQ, Any, NA, DefaultDialog),
-    6138: (DL_TIER, Start, (CogLevelQuest, Anywhere, 10, 10), Any, ToonHQ, Any, NA, DefaultDialog),
-    6139: (DL_TIER, Start, (CogTrackQuest, ToontownGlobals.DonaldsDreamland, 50, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6140: (DL_TIER, Start, (CogTrackQuest, ToontownGlobals.DonaldsDreamland, 50, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6141: (DL_TIER, OBSOLETE, (CogTrackQuest, ToontownGlobals.DonaldsDreamland, 50, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6142: (DL_TIER, Start, (CogTrackQuest, ToontownGlobals.DonaldsDreamland, 50, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6143: (DL_TIER, OBSOLETE, (CogTrackQuest, ToontownGlobals.DonaldsDreamland, 55, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6144: (DL_TIER, Start, (CogTrackQuest, ToontownGlobals.DonaldsDreamland, 55, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6145: (DL_TIER, Start, (CogTrackQuest, ToontownGlobals.DonaldsDreamland, 55, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6146: (DL_TIER, Start, (CogTrackQuest, ToontownGlobals.DonaldsDreamland, 55, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6147: (DL_TIER, OBSOLETE, (CogTrackQuest, Anywhere, 70, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6148: (DL_TIER, Start, (CogTrackQuest, Anywhere, 70, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6149: (DL_TIER, Start, (CogTrackQuest, Anywhere, 70, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6150: (DL_TIER, Start, (CogTrackQuest, Anywhere, 70, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
-    6151: (DL_TIER, Start, (BuildingQuest, Anywhere, 10, Any, 2, 0), Any, ToonHQ, Any, NA, DefaultDialog),
-    6152: (DL_TIER, Start, (BuildingQuest, Anywhere, 6, Any, 4, 0), Any, ToonHQ, Any, NA, DefaultDialog),
-    6153: (DL_TIER, OBSOLETE, (BuildingQuest, Anywhere, 8, Any, 4, 0), Any, ToonHQ, Any, NA, DefaultDialog),
-    6154: (DL_TIER, Start, (BuildingQuest, Anywhere, 6, Any, 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
-    6155: (DL_TIER, Start, (BuildingQuest, Anywhere, 2, 'm', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
-    6156: (DL_TIER, Start, (BuildingQuest, Anywhere, 2, 's', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
-    6157: (DL_TIER, Start, (BuildingQuest, Anywhere, 2, 'c', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
-    6158: (DL_TIER, Start, (BuildingQuest, Anywhere, 2, 'l', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    6107: (DL_TIER, Start, (CogQuest, Anywhere, 15, 'ym'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6108: (DL_TIER, Start, (CogQuest, Anywhere, 15, 'mm'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6109: (DL_TIER, Start, (CogQuest, Anywhere, 35, 'ds'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6110: (DL_TIER, Start, (CogQuest, Anywhere, 35, 'hh'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6111: (DL_TIER, Start, (CogQuest, Anywhere, 35, 'cr'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6112: (DL_TIER, Start, (CogQuest, Anywhere, 10, 'tbc'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6113: (DL_TIER, Start, (CogQuest, Anywhere, 22, 'nd'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6114: (DL_TIER, Start, (CogQuest, Anywhere, 22, 'gh'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6115: (DL_TIER, Start, (CogQuest, Anywhere, 22, 'ms'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6116: (DL_TIER, Start, (CogQuest, Anywhere, 22, 'tf'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6117: (DL_TIER, Start, (CogQuest, Anywhere, 10, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6118: (DL_TIER, Start, (CogQuest, Anywhere, 9, 'mh'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6119: (DL_TIER, Start, (CogQuest, Anywhere, 20, 'tw'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6120: (DL_TIER, Start, (CogQuest, Anywhere, 20, 'bc'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6121: (DL_TIER, Start, (CogQuest, Anywhere, 20, 'nc'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6122: (DL_TIER, OBSOLETE, (CogQuest, Anywhere, 15, 'mb'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6123: (DL_TIER, Start, (CogQuest, Anywhere, 13, 'ls'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6124: (DL_TIER, Start, (CogQuest, Anywhere, 11, 'rb'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6125: (DL_TIER, Start, (CogQuest, Anywhere, 20, 'dt'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6126: (DL_TIER, Start, (CogQuest, Anywhere, 20, 'ac'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6127: (DL_TIER, Start, (CogQuest, Anywhere, 20, 'bs'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6128: (DL_TIER, Start, (CogQuest, Anywhere, 20, 'sd'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6129: (DL_TIER, Start, (CogQuest, Anywhere, 12, 'le'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6130: (DL_TIER, Start, (CogQuest, Anywhere, 16, 'bw'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6131: (DL_TIER, Start, (CogLevelQuest, Anywhere, 40, 5), Any, ToonHQ, Any, NA, DefaultDialog),
+    6132: (DL_TIER, Start, (CogLevelQuest, Anywhere, 36, 6), Any, ToonHQ, Any, NA, DefaultDialog),
+    6133: (DL_TIER, Start, (CogLevelQuest, Anywhere, 39, 7), Any, ToonHQ, Any, NA, DefaultDialog),
+    6134: (DL_TIER, Start, (CogLevelQuest, Anywhere, 39, 8), Any, ToonHQ, Any, NA, DefaultDialog),
+    6135: (DL_TIER, Start, (CogLevelQuest, Anywhere, 29, 9), Any, ToonHQ, Any, NA, DefaultDialog),
+    6136: (DL_TIER, Start, (CogLevelQuest, Anywhere, 26, 9), Any, ToonHQ, Any, NA, DefaultDialog),
+    6137: (DL_TIER, Start, (CogLevelQuest, Anywhere, 20, 9), Any, ToonHQ, Any, NA, DefaultDialog),
+    6138: (DL_TIER, Start, (CogLevelQuest, Anywhere, 30, 10), Any, ToonHQ, Any, NA, DefaultDialog),
+    6139: (DL_TIER, Start, (CogTrackQuest, ToontownGlobals.DonaldsDreamland, 30, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6140: (DL_TIER, Start, (CogTrackQuest, ToontownGlobals.DonaldsDreamland, 30, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6141: (DL_TIER, OBSOLETE, (CogTrackQuest, ToontownGlobals.DonaldsDreamland, 30, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6142: (DL_TIER, Start, (CogTrackQuest, ToontownGlobals.DonaldsDreamland, 30, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6143: (DL_TIER, OBSOLETE, (CogTrackQuest, ToontownGlobals.DonaldsDreamland, 35, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6144: (DL_TIER, Start, (CogTrackQuest, ToontownGlobals.DonaldsDreamland, 35, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6145: (DL_TIER, Start, (CogTrackQuest, ToontownGlobals.DonaldsDreamland, 35, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6146: (DL_TIER, Start, (CogTrackQuest, ToontownGlobals.DonaldsDreamland, 35, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6147: (DL_TIER, OBSOLETE, (CogTrackQuest, Anywhere, 80, 'm'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6148: (DL_TIER, Start, (CogTrackQuest, Anywhere, 80, 's'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6149: (DL_TIER, Start, (CogTrackQuest, Anywhere, 75, 'c'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6150: (DL_TIER, Start, (CogTrackQuest, Anywhere, 75, 'l'), Any, ToonHQ, Any, NA, DefaultDialog),
+    6151: (DL_TIER, Start, (BuildingQuest, Anywhere, 4, Any, 2, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    6152: (DL_TIER, Start, (BuildingQuest, Anywhere, 4, Any, 4, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    6153: (DL_TIER, OBSOLETE, (BuildingQuest, Anywhere, 4, Any, 4, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    6154: (DL_TIER, Start, (BuildingQuest, Anywhere, 4, Any, 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    6155: (DL_TIER, Start, (BuildingQuest, Anywhere, 3, 'm', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    6156: (DL_TIER, Start, (BuildingQuest, Anywhere, 3, 's', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    6157: (DL_TIER, Start, (BuildingQuest, Anywhere, 3, 'c', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    6158: (DL_TIER, Start, (BuildingQuest, Anywhere, 3, 'l', 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
     6170: (DL_TIER, OBSOLETE, (CogQuest, ToontownGlobals.SellbotHQ, 40, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     6171: (DL_TIER, OBSOLETE, (CogQuest, ToontownGlobals.SellbotHQ, 45, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     6172: (DL_TIER, OBSOLETE, (CogQuest, ToontownGlobals.SellbotHQ, 50, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -3023,8 +3168,25 @@ QuestDict = {
     12029: (BOSSBOT_HQ_TIER + 14, Start, (SkeleReviveQuest, Anywhere, 1), Same, Same, 4214, NA, TTLocalizer.QuestDialogDict[12029]),
     12030: (BOSSBOT_HQ_TIER + 15, Start, (VisitQuest,), Any, 1222, NA, 12031, TTLocalizer.QuestDialogDict[12030]),
     12031: (BOSSBOT_HQ_TIER + 15, Start, (SkeleReviveQuest, Anywhere, 1), Same, Same, 4215, NA, TTLocalizer.QuestDialogDict[12031]),
-    12032: (BOSSBOT_HQ_TIER + 16, Start, (VisitQuest,), Any, 2001, 4216, NA, TTLocalizer.QuestDialogDict[12032])}
-
+    12032: (BOSSBOT_HQ_TIER + 16, Start, (VisitQuest,), Any, 2001, 4216, NA, TTLocalizer.QuestDialogDict[12032]),
+    12033: (EXTREME_TIER, Start, (BuildingQuest, Anywhere, 10000, Any, 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    12034: (EXTREME_TIER, Start, (BuildingQuest, Anywhere, 20000, Any, 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    12035: (EXTREME_TIER, Start, (BuildingQuest, Anywhere, 30000, Any, 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    12036: (EXTREME_TIER, Start, (BuildingQuest, Anywhere, 40000, Any, 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    12037: (EXTREME_TIER, Start, (BuildingQuest, Anywhere, 50000, Any, 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    12038: (EXTREME_TIER, Start, (BuildingQuest, Anywhere, 60000, Any, 5, 0), Any, ToonHQ, Any, NA, DefaultDialog),
+    12039: (EXTREME_TIER, Start, (CogQuest, ToontownGlobals.ToontownCentral, 12000, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    12040: (EXTREME_TIER, Start, (CogQuest, ToontownGlobals.ToontownCentral, 22000, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    12041: (EXTREME_TIER, Start, (CogQuest, ToontownGlobals.ToontownCentral, 32000, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    12042: (EXTREME_TIER, Start, (CogQuest, ToontownGlobals.ToontownCentral, 42000, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    12043: (EXTREME_TIER, Start, (CogQuest, ToontownGlobals.ToontownCentral, 52000, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    12044: (EXTREME_TIER, Start, (CogQuest, ToontownGlobals.ToontownCentral, 62000, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    12045: (EXTREME_TIER, Start, (CogQuest, ToontownGlobals.DonaldsDock, 82000, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    12046: (EXTREME_TIER, Start, (CogQuest, ToontownGlobals.DonaldsDock, 82600, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    12047: (EXTREME_TIER, Start, (CogQuest, ToontownGlobals.DonaldsDock, 82800, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    12048: (EXTREME_TIER, Start, (CogQuest, ToontownGlobals.DonaldsDock, 83000, Any), Any, ToonHQ, Any, NA, DefaultDialog),
+    12049: (EXTREME_TIER, Start, (CogQuest, ToontownGlobals.DonaldsDock, 83200, Any), Any, ToonHQ, Any, NA, DefaultDialog)}
+    
 Tier2QuestsDict = {}
 
 for questId, questDesc in QuestDict.items():
@@ -3227,37 +3389,18 @@ def chooseTrackChoiceQuest(tier, av, fixed = 0):
 
     bestQuest = None
     trackAccess = av.getTrackAccess()
-    if tier == MM_TIER:
-        if trackAccess[ToontownBattleGlobals.HEAL_TRACK] == 1:
-            bestQuest = 4002
-        elif trackAccess[ToontownBattleGlobals.SOUND_TRACK] == 1:
-            bestQuest = 4001
-        else:
-            notify.warning('av %s has bogus trackAccess: %s' % (av.getDoId(), trackAccess))
-            return fixAndCallAgain()
+    if tier == TT_TIER:
+        bestQuest = 100
+    elif tier == TT_TIER + 1:
+        bestQuest = 400    
+    elif tier == DD_TIER:
+        bestQuest = 401
+    elif tier == MM_TIER:
+        bestQuest = 4001
     elif tier == BR_TIER:
-        if trackAccess[ToontownBattleGlobals.SOUND_TRACK] + trackAccess[ToontownBattleGlobals.DROP_TRACK] == 0:
-            bestQuest = 5001
-        elif trackAccess[ToontownBattleGlobals.SOUND_TRACK] + trackAccess[ToontownBattleGlobals.LURE_TRACK] == 0:
-            bestQuest = 5002
-        elif trackAccess[ToontownBattleGlobals.HEAL_TRACK] + trackAccess[ToontownBattleGlobals.DROP_TRACK] == 0:
-            bestQuest = 5003
-        elif trackAccess[ToontownBattleGlobals.HEAL_TRACK] + trackAccess[ToontownBattleGlobals.LURE_TRACK] == 0:
-            bestQuest = 5004
-        elif trackAccess[ToontownBattleGlobals.TRAP_TRACK] + trackAccess[ToontownBattleGlobals.SOUND_TRACK] == 0:
-            bestQuest = 5005
-        elif trackAccess[ToontownBattleGlobals.TRAP_TRACK] + trackAccess[ToontownBattleGlobals.HEAL_TRACK] == 0:
-            bestQuest = 5006
-        elif trackAccess[ToontownBattleGlobals.TRAP_TRACK] + trackAccess[ToontownBattleGlobals.DROP_TRACK] == 0:
-            bestQuest = 5007
-        elif trackAccess[ToontownBattleGlobals.TRAP_TRACK] + trackAccess[ToontownBattleGlobals.LURE_TRACK] == 0:
-            bestQuest = 5008
-        else:
-            notify.warning('av %s has bogus trackAccess: %s' % (av.getDoId(), trackAccess))
-            return fixAndCallAgain()
+        bestQuest = 5001
     else:
-        if notify.getDebug():
-            notify.debug('questPool for reward 400 had no dynamic choice, tier: %s' % tier)
+        notify.warning('questPool for reward 400 had no dynamic choice, tier: %s' % tier)
         bestQuest = seededRandomChoice(Tier2Reward2QuestsDict[tier][400])
     if notify.getDebug():
         notify.debug('chooseTrackChoiceQuest: avId: %s trackAccess: %s tier: %s bestQuest: %s' % (av.getDoId(),
@@ -3342,6 +3485,23 @@ def transformReward(baseRewardId, av):
 
 
 def chooseBestQuests(tier, currentNpc, av):
+    if currentNpc.tutorial and (currentNpc.npcId == 20000):
+        if 50 in av.getQuestHistory():
+            print 'has 50'
+            if 51 in av.getQuestHistory():
+                print 'has 51'
+                if av.hasTrackAccess(0) and av.hasTrackAccess(1):
+                    print 'toonup and trap' + str(av.getTrackAccess()) 
+                    return [[52, 0, 20000]]
+                elif av.hasTrackAccess(0) and av.hasTrackAccess(2):
+                    print 'toonup and lure' + str(av.getTrackAccess())
+                    return [[52, 0, 20000]]
+                else:
+                    return [[101, 0 ,20000]]
+            else:
+                return [[51, 0, 20000]]
+        else:
+            return [[50, 0, 20000]]
     if isLoopingFinalTier(tier):
         rewardHistory = map(lambda questDesc: questDesc[3], av.quests)
     else:
@@ -3397,12 +3557,12 @@ def questExists(id):
     return id in QuestDict
 
 
-def getQuest(id):
+def getQuest(id, avId = None):
     questEntry = QuestDict.get(id)
     if questEntry:
         questDesc = questEntry[QuestDictDescIndex]
         questClass = questDesc[0]
-        return questClass(id, questDesc[1:])
+        return questClass(id, avId, questDesc[0])
     else:
         return None
     return None
@@ -3418,7 +3578,9 @@ def getQuestClass(id):
 
 
 def getVisitSCStrings(npcId):
-    if npcId == ToonHQ:
+    if npcId == TutorialTom:
+        strings = [TTLocalizer.QuestsRecoverItemQuestTutorialSCString, TTLocalizer.QuestsRecoverItemQuestGoToTutorialSCString]
+    elif npcId == ToonHQ:
         strings = [TTLocalizer.QuestsRecoverItemQuestSeeHQSCString, TTLocalizer.QuestsRecoverItemQuestGoToHQSCString]
     elif npcId == ToonTailor:
         strings = [TTLocalizer.QuestsTailorQuestSCString]
@@ -3440,13 +3602,36 @@ def getFinishToonTaskSCStrings(npcId):
 
 
 def chooseQuestDialog(id, status):
-    questDialog = getQuestDialog(id).get(status)
-    if questDialog == None:
+    if id == 2906:
+        quest = getQuest(id)
+        trackId = base.localAvatar.getSecondTrackPicked()
+        if trackId == base.localAvatar.getFirstTrackPicked():
+           trackId = 4
         if status == QUEST:
-            quest = getQuest(id)
-            questDialog = quest.getDefaultQuestDialog()
+            questDialog = TTLocalizer.QuestDialogDict[2906].get(status)[trackId]
         else:
-            questDialog = DefaultDialog[status]
+            questDialog = getQuestDialog(id).get(status)
+            if questDialog == None:
+                questDialog = DefaultDialog[status]         
+    elif id == 4208:
+        quest = getQuest(id)
+        gag = base.localAvatar.getFirstTrackPicked()
+        if trackId == base.localAvatar.getSecondTrackPicked():
+           trackId = 5
+        if status == QUEST:
+            questDialog = TTLocalizer.QuestDialogDict[4208].get(status) % BattleGlobalAvPropStringsSingular[gag][4]
+        else:
+            questDialog = getQuestDialog(id).get(status)
+            if questDialog == None:
+                questDialog = DefaultDialog[status]
+    else:    
+        questDialog = getQuestDialog(id).get(status)
+        if questDialog == None:
+            if status == QUEST:
+                quest = getQuest(id)
+                questDialog = quest.getDefaultQuestDialog()
+            else:
+                questDialog = DefaultDialog[status]
     if type(questDialog) == type(()):
         return random.choice(questDialog)
     else:
@@ -3515,7 +3700,12 @@ def fillInQuestNames(text, avName = None, fromNpcId = None, toNpcId = None):
     if avName != None:
         text = text.replace('_avName_', avName)
     if toNpcId:
-        if toNpcId == ToonHQ:
+        if toNpcId == TutorialTom:
+            toNpcName = 'Tutorial Tom'
+            where = 'Toontorial'
+            buildingName = ''
+            streetDesc = ''
+        elif toNpcId == ToonHQ:
             toNpcName = TTLocalizer.QuestsHQOfficerFillin
             where = TTLocalizer.QuestsHQWhereFillin
             buildingName = TTLocalizer.QuestsHQBuildingNameFillin
@@ -3536,7 +3726,7 @@ def fillInQuestNames(text, avName = None, fromNpcId = None, toNpcId = None):
 
 
 def getVisitingQuest():
-    return VisitQuest(VISIT_QUEST_ID, QUEST)
+    return VisitQuest(VISIT_QUEST_ID)
 
 
 class Reward:
@@ -3732,22 +3922,44 @@ class TrackTrainingReward(Reward):
     def __init__(self, id, reward):
         Reward.__init__(self, id, reward)
 
-    def getTrack(self):
+    def getTrack(self, av):
         track = self.reward[0]
         if track == None:
             track = 0
+            trackAccess = av.getTrackAccess()
+
+            for i in xrange(len(trackAccess)):
+                if trackAccess[i] == 0:
+                    return i
         return track
 
     def sendRewardAI(self, av):
-        av.b_setTrackProgress(self.getTrack(), 0)
+        av.b_setTrackProgress(self.getTrack(av), 0)
 
     def countReward(self, qrc):
-        qrc.trackProgressId = self.getTrack()
+        qrc.trackProgressId = self.getTrack(base.localAvatar)
         qrc.trackProgress = 0
 
     def getString(self):
-        trackName = ToontownBattleGlobals.Tracks[self.getTrack()].capitalize()
+        trackName = ToontownBattleGlobals.Tracks[self.getTrack(base.localAvatar)].capitalize()
         return TTLocalizer.QuestsTrackTrainingReward % trackName
+
+    def getPosterString(self):
+        return TTLocalizer.QuestsTrackTrainingRewardPoster
+
+class TrackAccessReward(Reward):
+    def __init__(self, id, reward):
+        Reward.__init__(self, id, reward)
+
+    def sendRewardAI(self, av):
+        pass
+
+    def countReward(self, qrc):
+        qrc.trackProgressId = 0
+        qrc.trackProgress = 0
+
+    def getString(self):
+        pass
 
     def getPosterString(self):
         return TTLocalizer.QuestsTrackTrainingRewardPoster
@@ -3969,6 +4181,24 @@ class EPPReward(Reward):
         return TTLocalizer.QuestsEPPRewardPoster % self.getCogTrackName()       
 
 
+class ToonColorReward(Reward):
+     def sendRewardAI(self, av):
+         dna = ToonDNA.ToonDNA(av.getDNAString())
+         dna.headColor = self.getColorId()
+         dna.armColor = self.getColorId()
+         dna.legColor = self.getColorId()
+         av.b_setDNAString(dna.makeNetString())
+
+     def getColorId(self):
+         return self.reward[0]
+
+     def getString(self):
+         return TTLocalizer.getColorRewardString(self.getColorId())
+
+     def getPosterString(self):
+         return TTLocalizer.getColorPosterString(self.getColorId())
+
+
 def getRewardClass(id):
     reward = RewardDict.get(id)
     if reward:
@@ -3992,8 +4222,7 @@ def getReward(id):
 def getNextRewards(numChoices, tier, av):
     rewardTier = list(getRewardsInTier(tier))
     optRewards = list(getOptionalRewardsInTier(tier))
-    if tier == TT_TIER + 3:
-        optRewards = []
+
     if isLoopingFinalTier(tier):
         rewardHistory = map(lambda questDesc: questDesc[3], av.quests)
         if notify.getDebug():
@@ -4002,19 +4231,10 @@ def getNextRewards(numChoices, tier, av):
         rewardHistory = av.getRewardHistory()[1]
         if notify.getDebug():
             notify.debug('getNextRewards: rewardHistory: %s' % rewardHistory)
+
     if notify.getDebug():
         notify.debug('getNextRewards: rewardTier: %s' % rewardTier)
         notify.debug('getNextRewards: numChoices: %s' % numChoices)
-    for rewardId in getRewardsInTier(tier):
-        if getRewardClass(rewardId) == CogSuitPartReward:
-            deptStr = RewardDict.get(rewardId)[1]
-            cogPart = RewardDict.get(rewardId)[2]
-            dept = ToontownGlobals.cogDept2index[deptStr]
-            if av.hasCogPart(cogPart, dept):
-                notify.debug('getNextRewards: already has cog part: %s dept: %s' % (cogPart, dept))
-                rewardTier.remove(rewardId)
-            else:
-                notify.debug('getNextRewards: keeping quest for cog part: %s dept: %s' % (cogPart, dept))
 
     for rewardId in rewardHistory:
         if rewardId in rewardTier:
@@ -4065,6 +4285,8 @@ def getNextRewards(numChoices, tier, av):
 
 
 RewardDict = {
+    50: (TrackAccessReward, None),
+    51: (TrackAccessReward, None), 
     100: (MaxHpReward, 1),
     101: (MaxHpReward, 2),
     102: (MaxHpReward, 3),
@@ -4097,6 +4319,7 @@ RewardDict = {
     405: (TrackTrainingReward, ToontownBattleGlobals.THROW_TRACK),
     406: (TrackTrainingReward, ToontownBattleGlobals.SQUIRT_TRACK),
     407: (TrackTrainingReward, ToontownBattleGlobals.DROP_TRACK),
+    408: (TrackTrainingReward, None),
     500: (MaxQuestCarryReward, 2),
     501: (MaxQuestCarryReward, 3),
     502: (MaxQuestCarryReward, 4),
@@ -4209,6 +4432,36 @@ RewardDict = {
     1313: (TrackProgressReward, ToontownBattleGlobals.SOUND_TRACK, 13),
     1314: (TrackProgressReward, ToontownBattleGlobals.SOUND_TRACK, 14),
     1315: (TrackProgressReward, ToontownBattleGlobals.SOUND_TRACK, 15),
+    1401: (TrackProgressReward, ToontownBattleGlobals.THROW_TRACK, 1),
+    1402: (TrackProgressReward, ToontownBattleGlobals.THROW_TRACK, 2),
+    1403: (TrackProgressReward, ToontownBattleGlobals.THROW_TRACK, 3),
+    1404: (TrackProgressReward, ToontownBattleGlobals.THROW_TRACK, 4),
+    1405: (TrackProgressReward, ToontownBattleGlobals.THROW_TRACK, 5),
+    1406: (TrackProgressReward, ToontownBattleGlobals.THROW_TRACK, 6),
+    1407: (TrackProgressReward, ToontownBattleGlobals.THROW_TRACK, 7),
+    1408: (TrackProgressReward, ToontownBattleGlobals.THROW_TRACK, 8),
+    1409: (TrackProgressReward, ToontownBattleGlobals.THROW_TRACK, 9),
+    1410: (TrackProgressReward, ToontownBattleGlobals.THROW_TRACK, 10),
+    1411: (TrackProgressReward, ToontownBattleGlobals.THROW_TRACK, 11),
+    1412: (TrackProgressReward, ToontownBattleGlobals.THROW_TRACK, 12),
+    1413: (TrackProgressReward, ToontownBattleGlobals.THROW_TRACK, 13),
+    1414: (TrackProgressReward, ToontownBattleGlobals.THROW_TRACK, 14),
+    1415: (TrackProgressReward, ToontownBattleGlobals.THROW_TRACK, 15),
+    1501: (TrackProgressReward, ToontownBattleGlobals.SQUIRT_TRACK, 1),
+    1502: (TrackProgressReward, ToontownBattleGlobals.SQUIRT_TRACK, 2),
+    1503: (TrackProgressReward, ToontownBattleGlobals.SQUIRT_TRACK, 3),
+    1504: (TrackProgressReward, ToontownBattleGlobals.SQUIRT_TRACK, 4),
+    1505: (TrackProgressReward, ToontownBattleGlobals.SQUIRT_TRACK, 5),
+    1506: (TrackProgressReward, ToontownBattleGlobals.SQUIRT_TRACK, 6),
+    1507: (TrackProgressReward, ToontownBattleGlobals.SQUIRT_TRACK, 7),
+    1508: (TrackProgressReward, ToontownBattleGlobals.SQUIRT_TRACK, 8),
+    1509: (TrackProgressReward, ToontownBattleGlobals.SQUIRT_TRACK, 9),
+    1510: (TrackProgressReward, ToontownBattleGlobals.SQUIRT_TRACK, 10),
+    1511: (TrackProgressReward, ToontownBattleGlobals.SQUIRT_TRACK, 11),
+    1512: (TrackProgressReward, ToontownBattleGlobals.SQUIRT_TRACK, 12),
+    1513: (TrackProgressReward, ToontownBattleGlobals.SQUIRT_TRACK, 13),
+    1514: (TrackProgressReward, ToontownBattleGlobals.SQUIRT_TRACK, 14),
+    1515: (TrackProgressReward, ToontownBattleGlobals.SQUIRT_TRACK, 15),
     1601: (TrackProgressReward, ToontownBattleGlobals.DROP_TRACK, 1),
     1602: (TrackProgressReward, ToontownBattleGlobals.DROP_TRACK, 2),
     1603: (TrackProgressReward, ToontownBattleGlobals.DROP_TRACK, 3),
@@ -4368,7 +4621,11 @@ RewardDict = {
     10003: (EPPReward, 3) # Sellbot
 }
 
-BuffRewardIds = [3001, 3002, 3003, 3004]
+
+# Add the color rewards...
+for i, _ in enumerate(ToonDNA.allColorsList):
+     RewardDict[4000+i] = (ToonColorReward, i)
+
 
 def getNumTiers():
     return len(RequiredRewardTrackDict) - 1
@@ -4399,24 +4656,24 @@ def getRewardIdFromTrackId(trackId):
 
 
 RequiredRewardTrackDict = {
-    TT_TIER: (100,),
+    TT_TIER: (50, 51),
     TT_TIER + 1: (400,),
-    TT_TIER + 2: (100, 801, 200, 802, 803, 101, 804, 805, 102, 806, 807, 100, 808, 809, 101, 810, 811, 500, 812, 813, 700, 814, 815, 300),
+    TT_TIER + 2: (801, 200, 802, 803, 804, 805, 102, 806, 807, 808, 809, 810, 811, 500, 812, 813, 814, 815, 300),
     TT_TIER + 3: (900,),
     DD_TIER: (400,),
-    DD_TIER + 1: (100, 801, 802, 201, 803, 804, 101, 805, 806, 102, 807, 808, 100, 809, 810, 101, 811, 812, 701, 813, 814, 815, 301),
+    DD_TIER + 1: (801, 802, 201, 803, 804, 101, 805, 806, 102, 807, 808, 809, 810, 811, 812, 813, 814, 815, 301),
     DD_TIER + 2: (900,),
-    DG_TIER: (100, 202, 101, 102, 100, 101, 501, 702, 302),
+    DG_TIER: (202, 501, 302),
     MM_TIER: (400,),
-    MM_TIER + 1: (100, 801, 802, 203, 803, 804, 101, 805, 806, 102, 807, 808, 100, 809, 810, 101, 811, 812, 703, 813, 814, 815, 303),
+    MM_TIER + 1: (801, 802, 203, 803, 804, 805, 806, 102, 807, 808, 809, 810, 811, 812, 813, 814, 815, 303),
     MM_TIER + 2: (900,),
     BR_TIER: (400,),
-    BR_TIER + 1: (100, 801, 802, 704, 803, 804, 101, 805, 806, 502, 807, 808, 102, 809, 810, 204, 811, 812, 100, 813, 814, 101, 815, 304, 10003),
+    BR_TIER + 1: (801, 802, 803, 804, 805, 806, 502, 807, 808, 809, 810, 204, 811, 812, 100, 813, 814, 815, 304),
     BR_TIER + 2: (900,),
-    DL_TIER: (4000, 100, 205, 101, 102, 705, 103, 305, 4001, 4002),
-    DL_TIER + 1: (100, 206, 101, 4003, 4004, 4005, 102, 4006, 4007, 4008, 706, 103, 4009, 4010, 4011, 4000, 4001, 4002),
-    DL_TIER + 2: (4006, 4007, 4008, 100, 4000, 4001, 4002, 4003, 101, 4004, 4005, 4009, 102, 103, 4010, 4011),
-    DL_TIER + 3: (4009, 4010, 4011, 100, 4000, 4001, 101, 4002, 4003, 102, 4004, 4005, 102, 4006, 4007, 707, 207, 4008, 10002),
+    DL_TIER: (205, 305),
+    DL_TIER + 1: (),
+    DL_TIER + 2: (),
+    DL_TIER + 3: (207,),
     LAWBOT_HQ_TIER: (4100,),
     LAWBOT_HQ_TIER + 1: (4101,),
     LAWBOT_HQ_TIER + 2: (4102,),
@@ -4449,29 +4706,41 @@ RequiredRewardTrackDict = {
     BOSSBOT_HQ_TIER + 15: (4215,),
     BOSSBOT_HQ_TIER + 16: (4216,),
     PRE_ELDER_TIER: (10001, 10000),
-    ELDER_TIER: (4000, 4001, 4002, 4003, 4004, 4005, 4006, 4007, 4008, 4009, 4010, 4011)}
-
+    ELDER_TIER: () }
 OptionalRewardTrackDict = {
     TT_TIER: (),
     TT_TIER + 1: (),
-    TT_TIER + 2: (1000, 601, 601, 602, 602, 2205, 2206, 2205, 2206, 3001, 3001, 3001, 3001),
-    TT_TIER + 3: (601, 601, 602, 602, 2205, 2206, 2205, 2206, 3002, 3001, 3001, 3001),
-    DD_TIER: (1000, 602, 602, 603, 603, 2101, 2102, 2105, 2106, 3002, 3002, 3002, 3001),
-    DD_TIER + 1: (1000, 602, 602, 603, 603, 2101, 2102, 2105, 2106, 3002, 3002, 3002, 3001),
-    DD_TIER + 2: (1000, 602, 602, 603, 603, 2101, 2102, 2105, 2106, 3002, 3002, 3002, 3002),
-    DG_TIER: (1000, 603, 603, 604, 604, 2501, 2502, 2503, 2504, 2505, 2506, 3002, 3002, 3002, 3002),
-    MM_TIER: (1000, 604, 604, 605, 605, 2403, 2404, 2405, 2406, 2407, 2408, 2409, 3002, 3002, 3002, 3002),
-    MM_TIER + 1: (1000, 604, 604, 605, 605, 2403, 2404, 2405, 2406, 2407, 2408, 2409, 3003, 3003, 3002, 3002),
-    MM_TIER + 2: (1000, 604, 604, 605, 605, 2403, 2404, 2405, 2406, 2407, 2408, 2409, 3003, 3003, 3002, 3002),
-    BR_TIER: (1000, 2305, 2306, 2307, 2308, 2309, 2310, 2311, 3003, 3003, 3003, 3003),
-    BR_TIER + 1: (1000, 2305, 2306, 2307, 2308, 2309, 2310, 2311, 3003, 3003, 3003, 3003),
-    BR_TIER + 2: (1000, 2305, 2306, 2307, 2308, 2309, 2310, 2311, 3003, 3003, 3003, 3003),
-    DL_TIER: (2901, 2902, 2907, 2908, 2909, 2910, 2911, 3003, 3003, 3004, 3004),
-    DL_TIER + 1: (1000, 2923, 2924, 2927, 2928, 2929, 2930, 2931, 3003, 3003, 3004, 3004),
-    DL_TIER + 2: (2941, 2942, 2943, 2944, 2947, 2948, 2949, 2950, 2951, 3004, 3004, 3004, 3004),
-    DL_TIER + 3: (1000, 2961, 2962, 2963, 2964, 2965, 2966, 2967, 2968, 2969, 2970, 2971, 3004, 3004, 3004, 3004),
-    ELDER_TIER: (1000, 1000, 613, 614, 615, 616, 617, 618, 2961, 2962, 2963, 2964, 2965, 2966, 2967, 2968, 2969, 2970, 2971, 3004, 3004, 3004)
+    TT_TIER + 2: (100, 101, 102, 100, 101, 1000, 601, 601, 602, 602, 2205, 2206, 2205, 2206, 3001, 3001, 3001, 3001, 3005, 3005, 3005, 3005, 3009, 3009, 3009, 3009),
+    TT_TIER + 3: (601, 601, 602, 602, 2205, 2206, 2205, 2206, 3002, 3001, 3001, 3001, 3006, 3005, 3005, 3005, 3010, 3009, 3009, 3009),
+    DD_TIER: (100, 101, 102, 103, 104, 1000, 602, 602, 603, 603, 2101, 2102, 2105, 2106, 3002, 3002, 3002, 3001, 3006, 3006, 3006, 3005, 3010, 3010, 3010, 3009),
+    DD_TIER + 1: (100, 101, 102, 100, 101, 1000, 602, 602, 603, 603, 2101, 2102, 2105, 2106, 3002, 3002, 3002, 3001, 3006, 3006, 3006, 3005, 3010, 3010, 3010, 3009),
+    DD_TIER + 2: (1000, 602, 602, 603, 603, 2101, 2102, 2105, 2106, 3002, 3002, 3002, 3002, 3006, 3006, 3006, 3006, 3010, 3010, 3010, 3010),
+    DG_TIER: (100, 101, 102, 100, 101, 1000, 603, 603, 604, 604, 2501, 2502, 2503, 2504, 2505, 2506, 3002, 3002, 3002, 3002, 3006, 3006, 3006, 3006, 3010, 3010, 3010, 3010),
+    MM_TIER: (100, 101, 102, 103, 104, 1000, 604, 604, 605, 605, 2403, 2404, 2405, 2406, 2407, 2408, 2409, 3002, 3002, 3002, 3002, 3006, 3006, 3006, 3006, 3010, 3010, 3010, 3010),
+    MM_TIER + 1: (100, 101, 101, 1000, 604, 604, 605, 605, 2403, 2404, 2405, 2406, 2407, 2408, 2409, 3003, 3003, 3002, 3002, 3007, 3007, 3007, 3006, 3011, 3011, 3011, 3010),
+    MM_TIER + 2: (1000, 604, 604, 605, 605, 2403, 2404, 2405, 2406, 2407, 2408, 2409, 3003, 3003, 3002, 3002, 3007, 3007, 3007, 3006, 3011, 3011, 3011, 3010),
+    BR_TIER: (100, 101, 102, 103, 104, 1000, 606, 606, 606, 606, 606, 607, 607, 607, 607, 607, 2305, 2306, 2307, 2308, 2309, 2310, 2311, 3003, 3003, 3003, 3003, 3007, 3007, 3007, 3007, 3011, 3011, 3011, 3011),
+    BR_TIER + 1: (100, 101, 102, 100, 101, 1000, 606, 606, 606, 606, 606, 607, 607, 607, 607, 607, 2305, 2306, 2307, 2308, 2309, 2310, 2311, 3003, 3003, 3003, 3003, 3007, 3007, 3007, 3007, 3011, 3011, 3011, 3011),
+    BR_TIER + 2: (1000, 606, 606, 606, 606, 606, 607, 607, 607, 607, 607, 2305, 2306, 2307, 2308, 2309, 2310, 2311, 3003, 3003, 3003, 3003, 3007, 3007, 3007, 3007, 3011, 3011, 3011, 3011),
+    DL_TIER: (100, 101, 102, 103, 607, 607, 607, 607, 608, 608, 608, 608, 2901, 2902, 2907, 2908, 2909, 2910, 2911, 3003, 3003, 3004, 3004, 3007, 3007, 3008, 3008, 3011, 3011, 3012, 3012),
+    DL_TIER + 1: (100, 101, 102, 103, 1000, 607, 607, 607, 607, 608, 608, 608, 608, 2923, 2924, 2927, 2928, 2929, 2930, 2931, 3003, 3003, 3004, 3004, 3007, 3007, 3008, 3008, 3011, 3011, 3012, 3012),
+    DL_TIER + 2: (100, 101, 102, 103, 608, 608, 608, 608, 609, 609, 609, 609, 2941, 2942, 2943, 2944, 2947, 2948, 2949, 2950, 2951, 3004, 3004, 3004, 3004, 3008, 3008, 3008, 3008, 3012, 3012, 3012, 3012),
+    DL_TIER + 3: (100, 101, 102, 102, 1000, 609, 609, 609, 609, 609, 609, 2961, 2962, 2963, 2964, 2965, 2966, 2967, 2968, 2969, 2970, 2971, 3004, 3004, 3004, 3004, 3008, 3008, 3008, 3008, 3012, 3012, 3012, 3012),
+    ELDER_TIER: (1000, 1000, 610, 611, 612, 613, 614, 615, 616, 617, 618, 2961, 2962, 2963, 2964, 2965, 2966, 2967, 2968, 2969, 2970, 2971, 3004, 3004, 3004, 3008, 3008, 3008, 3012, 3012, 3012)
 }
+
+# Add the ToonColorRewards
+for tier in OptionalRewardTrackDict:
+    tierRewards = OptionalRewardTrackDict[tier]
+
+    if not tierRewards:
+        continue
+
+    tierRewards = list(tierRewards)
+    for i, _ in enumerate(ToonDNA.allColorsList):
+        tierRewards.append(4000+i)
+    OptionalRewardTrackDict[tier] = tuple(tierRewards)
+
 
 def isRewardOptional(tier, rewardId):
     return tier in OptionalRewardTrackDict and rewardId in OptionalRewardTrackDict[tier]
@@ -4485,6 +4754,10 @@ def getPluralItemName(itemId):
     return ItemDict[itemId][1]
 
 
+def avatarGetRemainingTrackIds(av):
+   return [track for track in xrange(7) if not av.hasTrackAccess(track)]
+   
+   
 def avatarHasTrolleyQuest(av):
     return len(av.quests) == 1 and av.quests[0][0] == TROLLEY_QUEST_ID
 

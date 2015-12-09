@@ -586,7 +586,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.NPCFriendsDict[npcFriend] = self.maxCallsPerNPC
         self.d_setNPCFriendsDict(self.NPCFriendsDict)
         self.air.questManager.toonMadeNPCFriend(self, numCalls, method)
-        self.addStat(ToontownGlobals.STAT_SOS, numCalls)
         return 1
 
     def attemptSubtractNPCFriend(self, npcFriend):
@@ -950,8 +949,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             if sendTotal:
                 self.d_setHp(self.hp)
 
-        if self.hp <= 0:
-            self.addStat(ToontownGlobals.STAT_SAD)
+        
 
     def b_setMaxHp(self, maxHp):
         if maxHp > ToontownGlobals.MaxHpLimit:
@@ -2017,7 +2015,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
         msgs.append([textId, 1])
         self.b_setResistanceMessages(msgs)
-        self.addStat(ToontownGlobals.STAT_UNITES)
 
     def removeResistanceMessage(self, textId):
         msgs = self.getResistanceMessages()
@@ -2256,6 +2253,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def b_setMaxMoney(self, maxMoney):
         self.d_setMaxMoney(maxMoney)
         self.setMaxMoney(maxMoney)
+
         if self.getMoney() > maxMoney:
             self.b_setBankMoney(self.bankMoney + (self.getMoney() - maxMoney))
             self.b_setMoney(maxMoney)
@@ -2269,7 +2267,25 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def getMaxMoney(self):
         return self.maxMoney
 
+    def b_setMaxBankMoney(self, maxBankMoney):
+        self.d_setMaxBankMoney(maxBankMoney)
+        self.setMaxBankMoney(maxBankMoney)
+
+        if self.getBankMoney() > maxBankMoney:
+            self.b_setBankMoney(maxBankMoney)
+
+    def d_setMaxBankMoney(self, maxBankMoney):
+        self.sendUpdate('setMaxBankMoney', [maxBankMoney])
+
+    def setMaxBankMoney(self, maxBankMoney):
+        self.maxBankMoney = maxBankMoney
+
+    def getMaxBankMoney(self):
+        return self.maxBankMoney
+
     def addMoney(self, deltaMoney):
+        if deltaMoney > 0:
+            messenger.send('topToonsManager-event', [self.doId, TopToonsGlobals.CAT_JELLYBEAN, deltaMoney])
         money = deltaMoney + self.money
         pocketMoney = min(money, self.maxMoney)
         self.b_setMoney(pocketMoney)
@@ -2290,7 +2306,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.b_setMoney(0)
         else:
             self.b_setMoney(self.money - deltaMoney)
-        self.addStat(ToontownGlobals.STAT_BEANS_SPENT, deltaMoney)
         return True
 
     def b_setMoney(self, money):
@@ -2310,6 +2325,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             dislId = self.DISLid
             if simbase.config.GetBool('want-ban-negative-money', False):
                 simbase.air.banManager.ban(self.doId, dislId, commentStr)
+                pass
         self.money = money
 
     def getMoney(self):
@@ -3431,7 +3447,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             return 0
         elif self.flowerBasket.addFlower(species, variety):
             self.d_setFlowerBasket(*self.flowerBasket.getNetLists())
-            self.addStat(ToontownGlobals.STAT_FLOWERS)
             return 1
         else:
             self.notify.warning('addFlowerToBasket: addFlower failed')
@@ -3711,7 +3726,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def addPinkSlips(self, amountToAdd):
         pinkSlips = min(self.getPinkSlips() + amountToAdd, 255)
         self.b_setPinkSlips(pinkSlips)
-        self.addStat(ToontownGlobals.STAT_SLIPS, amountToAdd)
 
     def removePinkSlips(self, amount):
         if hasattr(self, 'autoRestockPinkSlips') and self.autoRestockPinkSlips:

@@ -3974,6 +3974,7 @@ FishPageTrophyTab = 'Trophies'
 FishPickerTotalValue = 'Bucket: %s / %s\nValue: %d Jellybeans'
 UnknownFish = '???'
 FishingRod = '%s Rod'
+FishTank = '%s Fishing Bucket'
 FishingRodNameDict = {0: 'Twig',
  1: 'Bamboo',
  2: 'Hardwood',

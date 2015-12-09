@@ -1,5 +1,5 @@
 from otp.otpbase.OTPTimer import OTPTimer
-from panda3d.core import *
+from pandac.PandaModules import *
 
 class ToontownTimer(OTPTimer):
 

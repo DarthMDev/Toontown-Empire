@@ -21,9 +21,6 @@ def init():
      'camera': camera,
      'hidden': hidden,
      'aspect2d': aspect2d,
-     'topLeft': base.a2dTopLeft,
-     'bottomLeft': base.a2dBottomLeft,
-     'bottomRight': base.a2dBottomRight,
      'localToon': base.localAvatar,
      'laffMeter': base.localAvatar.laffMeter,
      'inventory': base.localAvatar.inventory,
@@ -140,7 +137,7 @@ class NPCMoviePlayer(DirectObject.DirectObject):
         elif varName in globalVarDict:
             return globalVarDict[varName]
         elif varName.find('tomDialogue') > -1 or varName.find('harryDialogue') > -1:
-            notify.warning('%s getting referenced. Tutorial Ack: %d Place: %s' % (varName, base.localAvatar.tutorialAck, base.cr.playGame.hood))
+            notify.warning('%s getting referenced. Tutorial Ack: %d                                  Place: %s' % (varName, base.localAvatar.tutorialAck, base.cr.playGame.hood))
             return None
         else:
             notify.error('Variable not defined: %s' % varName)
@@ -406,11 +403,8 @@ class NPCMoviePlayer(DirectObject.DirectObject):
                     self.closePreviousChapter(iList)
                     chapterList = []
                     self.currentEvent = nextEvent
-                elif command == 'TUTORIAL_ACK_DONE':
-                    iList.append(Func(base.localAvatar.setTutorialAck, True))
                 else:
                     notify.warning('Unknown command token: %s for scriptId: %s on line: %s' % (command, self.scriptId, lineNum))
-
 
         self.closePreviousChapter(chapterList)
         if timeoutList:
@@ -785,11 +779,11 @@ class NPCMoviePlayer(DirectObject.DirectObject):
             notify.error('invalid inventory detail level: %s' % val)
 
     def parseShowFriendsList(self, line):
-        from toontown.friends import FriendsListPanel
+        from src.toontown.friends import FriendsListPanel
         return Func(FriendsListPanel.showFriendsListTutorial)
 
     def parseHideFriendsList(self, line):
-        from toontown.friends import FriendsListPanel
+        from src.toontown.friends import FriendsListPanel
         return Func(FriendsListPanel.hideFriendsListTutorial)
 
     def parseShowBook(self, line):
@@ -840,8 +834,7 @@ class NPCMoviePlayer(DirectObject.DirectObject):
         toonHeadFrame = self.toonHeads.get(toonId)
         if not toonHeadFrame:
             toonHeadFrame = ToonHeadFrame.ToonHeadFrame(toon)
-#TODO fix the line below
-            #toonHeadFrame.tag1Node.setActive(1)
+            toonHeadFrame.tag1Node
             toonHeadFrame.hide()
             self.toonHeads[toonId] = toonHeadFrame
             self.setVar('%sToonHead' % toonName, toonHeadFrame)
@@ -889,18 +882,18 @@ class NPCMoviePlayer(DirectObject.DirectObject):
         minGagLevel = ToontownBattleGlobals.MIN_LEVEL_INDEX + 1
         maxGagLevel = ToontownBattleGlobals.MAX_LEVEL_INDEX + 1
         curGagLevel = minGagLevel
+        track1 = base.localAvatar.getFirstTrackPicked()
+        track2 = base.localAvatar.getSecondTrackPicked()
 
         def updateGagLevel(t, curGagLevel = curGagLevel):
             newGagLevel = int(round(t))
             if newGagLevel == curGagLevel:
                 return
             curGagLevel = newGagLevel
-            access = [0, 0, 0, 0, 0, 0, 0]
-
-            for i in xrange(len(self.oldTrackAccess)):
-                access[i] = curGagLevel if self.oldTrackAccess[i] > 0 else 0
-
-            base.localAvatar.setTrackAccess(access)
+            tempTracks = base.localAvatar.getTrackAccess()
+            tempTracks[track1] = curGagLevel
+            tempTracks[track2] = curGagLevel
+            base.localAvatar.setTrackAccess(tempTracks)
 
         return Sequence(Func(grabCurTrackAccess), LerpFunctionInterval(updateGagLevel, fromData=1, toData=7, duration=0.3), WaitInterval(3.5), LerpFunctionInterval(updateGagLevel, fromData=7, toData=1, duration=0.3), Func(restoreTrackAccess), Func(messenger.send, 'donePreview'))
 
