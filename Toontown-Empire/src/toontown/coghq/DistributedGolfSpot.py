@@ -678,7 +678,8 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
             self.flyBallHandler.addInPattern('flyBallHit-%d' % self.index)
         return self.__flyBallBubble
 
-    def __flyBallHit(self, entry):
+    @staticmethod
+    def __flyBallHit(entry):
         print entry
 
     def flyBallFinishedFlying(self, sequence):

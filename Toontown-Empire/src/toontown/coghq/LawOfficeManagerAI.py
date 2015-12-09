@@ -43,10 +43,11 @@ class LawOfficeManagerAI(DirectObject.DirectObject):
                         if roomId in layout.getRoomIds():
                             layoutIndex = lt
                             floor = i
+                            break
                 else:
                     StageRoomSpecs = StageRoomSpecs
                     roomName = StageRoomSpecs.CashbotStageRoomId2RoomName[roomId]
-                    LawOfficeManagerAI.notify.warning('room %s (%s) not found in any floor of Stage %s' % (roomId, roomName, StageId))
+                    LawOfficeManagerAI.notify.warning('room {0} ({1}) not found in any floor of Stage {2}'.format((roomId, roomName, StageId)))
         StageZone = self.air.allocateZone()
         if layoutIndex is None:
             layoutIndex = random.choice(StageId2Layouts[StageId])

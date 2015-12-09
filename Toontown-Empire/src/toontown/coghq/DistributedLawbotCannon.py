@@ -190,12 +190,12 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
         self.cannonLocation = Point3(0, 0, 0.025)
         self.cannonPosition = [0, CANNON_ANGLE_MIN]
         self.cannon.setPos(self.cannonLocation)
-        self.__updateCannonPosition(self.avId)
+        self.__updateCannonPosition()
 
     def updateCannonPosition(self, avId, zRot, angle):
         if avId != self.localAvId:
             self.cannonPosition = [zRot, angle]
-            self.__updateCannonPosition(avId)
+            self.__updateCannonPosition()
 
     def __updateCannonPosition(self, avId):
         self.cannon.setHpr(self.cannonPosition[0], 0.0, 0.0)
@@ -483,7 +483,7 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
             if self.cannonMoving == 0:
                 self.cannonMoving = 1
                 base.playSfx(self.sndCannonMove, looping=1)
-            self.__updateCannonPosition(self.localAvId)
+            self.__updateCannonPosition()
             if task.time - task.lastPositionBroadcastTime > CANNON_MOVE_UPDATE_FREQ:
                 task.lastPositionBroadcastTime = task.time
                 self.__broadcastLocalCannonPosition()
@@ -496,7 +496,7 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
     def __broadcastLocalCannonPosition(self):
         self.sendUpdate('setCannonPosition', [self.cannonPosition[0], self.cannonPosition[1]])
 
-    def __updateCannonPosition(self, avId):
+    def __updateCannonPosition(self):
         self.cannon.setHpr(self.cannonPosition[0], 0.0, 0.0)
         self.barrel.setHpr(0.0, self.cannonPosition[1], 0.0)
         maxP = 90
@@ -654,7 +654,7 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
             return
         self.cannonPosition[0] = zRot
         self.cannonPosition[1] = angle
-        self.__updateCannonPosition(avId)
+        self.__updateCannonPosition()
         task = Task(self.__fireCannonTask)
         task.avId = avId
         ts = globalClockDelta.localElapsedTime(timestamp)
