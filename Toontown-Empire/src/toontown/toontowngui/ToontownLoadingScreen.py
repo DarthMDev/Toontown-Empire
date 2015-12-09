@@ -4,6 +4,8 @@ from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 import random
 
+LOADING_SCREEN_SORT_INDEX = 4000
+
 class ToontownLoadingScreen:
 
     def __init__(self):

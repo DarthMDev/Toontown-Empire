@@ -7,8 +7,8 @@ from panda3d.core import TextNode
 from panda3d.core import VBase4
 from panda3d.core import NodePath
 from panda3d.core import BitMask32
-from direct.fsm import FSM
 from panda3d.direct import SmoothMover
+from direct.fsm import FSM
 from direct.distributed import DistributedObject
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.directnotify import DirectNotifyGlobal
@@ -677,6 +677,9 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
             self.flyBallHandler = CollisionHandlerEvent()
             self.flyBallHandler.addInPattern('flyBallHit-%d' % self.index)
         return self.__flyBallBubble
+
+    def __flyBallHit(self, entry):
+        print entry
 
     def flyBallFinishedFlying(self, sequence):
         if sequence in self.flyBallTracks:

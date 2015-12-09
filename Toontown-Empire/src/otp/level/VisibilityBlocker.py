@@ -1,6 +1,6 @@
 import Entity
 
-class VisibilityBlocker:
+class VisibilityBlocker(object):
 
     def __init__(self):
         self.__nextSetZoneDoneEvent = None

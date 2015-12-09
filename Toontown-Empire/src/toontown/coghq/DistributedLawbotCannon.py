@@ -496,6 +496,15 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
     def __broadcastLocalCannonPosition(self):
         self.sendUpdate('setCannonPosition', [self.cannonPosition[0], self.cannonPosition[1]])
 
+    def __updateCannonPosition(self, avId):
+        self.cannon.setHpr(self.cannonPosition[0], 0.0, 0.0)
+        self.barrel.setHpr(0.0, self.cannonPosition[1], 0.0)
+        maxP = 90
+        newP = self.barrel.getP()
+        yScale = 1 - 0.5 * float(newP) / maxP
+        shadow = self.cannon.find('**/square_drop_shadow')
+        shadow.setScale(1, yScale, 1)
+
     def __createToonModels(self):
         self.model_Created = 1
         self.jurorToon = NPCToons.createLocalNPC(ToontownGlobals.LawbotBossBaseJurorNpcId + self.index)

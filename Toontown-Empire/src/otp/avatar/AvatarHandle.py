@@ -1,6 +1,6 @@
 
 
-class AvatarHandle:
+class AvatarHandle(object):
     dclassName = 'AvatarHandle'
 
     def getName(self):

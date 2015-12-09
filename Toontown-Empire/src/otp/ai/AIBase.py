@@ -16,9 +16,10 @@ from direct.task import Task
 from direct.task.TaskManagerGlobal import *
 from otp.otpbase import BackupManager
 from panda3d.core import *
+from panda3d.direct import getConfigShowbase
 
 
-class AIBase:
+class AIBase(object):
     notify = directNotify.newCategory('AIBase')
 
     def __init__(self):

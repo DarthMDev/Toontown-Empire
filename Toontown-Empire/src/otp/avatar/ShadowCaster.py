@@ -1,7 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.ShadowPlacer import ShadowPlacer
-from panda3d.core import *
-
+from panda3d.core import NodePath
 from otp.otpbase import OTPGlobals
 
 
@@ -21,10 +20,10 @@ def setGlobalDropShadowGrayLevel(grayLevel):
         messenger.send('globalDropShadowGrayLevelChanged')
 
 
-class ShadowCaster:
+class ShadowCaster(object):
     notify = DirectNotifyGlobal.directNotify.newCategory('ShadowCaster')
 
-    def __init__(self, squareShadow = False):
+    def __init__(self, squareShadow=False):
         if squareShadow:
             self.shadowFileName = 'phase_3/models/props/square_drop_shadow'
         else:
@@ -45,7 +44,7 @@ class ShadowCaster:
         self.deleteDropShadow()
         self.shadowJoint = None
 
-    def initializeDropShadow(self, hasGeomNode = True):
+    def initializeDropShadow(self, hasGeomNode=True):
         self.deleteDropShadow()
         if hasGeomNode:
             self.getGeomNode().setTag('cam', 'caster')
@@ -77,7 +76,7 @@ class ShadowCaster:
             self.dropShadow.removeNode()
             self.dropShadow = None
 
-    def setActiveShadow(self, isActive = 1):
+    def setActiveShadow(self, isActive=1):
         isActive = isActive and self.wantsActive
         if not globalDropShadowFlag:
             self.storedActiveState = isActive

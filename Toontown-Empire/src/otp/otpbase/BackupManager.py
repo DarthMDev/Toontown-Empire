@@ -2,7 +2,7 @@ import json
 import os
 
 
-class BackupManager:
+class BackupManager(object):
     def __init__(self, filepath='dependencies/backups/', extension='.json'):
         self.filepath = filepath
         self.extension = extension

@@ -20,8 +20,6 @@ class GardenDropGame:
         self.massCount = 0
         self.foundCount = 0
 
-        return None
-
     def reinitialize(self):
         self.inHelp = False
         self.sprites = []

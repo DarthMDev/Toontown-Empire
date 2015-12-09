@@ -1,135 +1,131 @@
-from panda3d.core import *
-from direct.interval.IntervalGlobal import *
-from toontown.effects.FireworkGlobals import *
+from panda3d.core import Vec4
+from panda3d.core import Vec3
+from panda3d.core import NodePath
+from direct.interval.IntervalGlobal import Wait
+from direct.interval.IntervalGlobal import Sequence
+from direct.interval.IntervalGlobal import Func
+from toontown.effects.FireworkGlobals import FireworkType
 from toontown.effects.Firework import Firework
 from toontown.toonbase import ToontownGlobals
 from toontown.parties import PartyGlobals
 import random
 colors = [Vec4(1, 1, 1, 1),
- Vec4(1, 0.1, 0.1, 1),
- Vec4(0.1, 1, 0.1, 1),
- Vec4(0.3, 1, 0.3, 1),
- Vec4(0.2, 0.2, 1, 1),
- Vec4(1, 1, 0.1, 1),
- Vec4(1, 0.5, 0.1, 1),
- Vec4(1, 0.1, 1, 1),
- Vec4(0.1, 1, 1, 1),
- Vec4(0.1, 0.5, 1, 1)]
+          Vec4(1, 0.1, 0.1, 1),
+          Vec4(0.1, 1, 0.1, 1),
+          Vec4(0.3, 1, 0.3, 1),
+          Vec4(0.2, 0.2, 1, 1),
+          Vec4(1, 1, 0.1, 1),
+          Vec4(1, 0.5, 0.1, 1),
+          Vec4(1, 0.1, 1, 1),
+          Vec4(0.1, 1, 1, 1),
+          Vec4(0.1, 0.5, 1, 1)]
 fireworkShowTypes = [ToontownGlobals.SUMMER_FIREWORKS,
- PartyGlobals.FireworkShows.Summer,
- ToontownGlobals.NEW_YEAR_FIREWORKS,
- ToontownGlobals.COMBO_FIREWORKS]
+                     PartyGlobals.FireworkShows.Summer,
+                     ToontownGlobals.NEW_YEAR_FIREWORKS,
+                     ToontownGlobals.COMBO_FIREWORKS]
 
 class FireworkShow(NodePath):
-
-    @staticmethod
     def r():
         return random.randint(8, 12) / 10.0
 
-    @staticmethod
     def rV():
         return Vec3(random.randint(-60, 60), random.randint(10, 30), random.randint(125, 150))
 
-    @staticmethod
     def rP():
         return Point3(0, 0, 0)
 
-    @staticmethod
     def rS():
         return 1.0 + random.random() / 2.0
 
-    @staticmethod
     def rC():
         return random.choice(colors)
 
-    @staticmethod
     def rT():
         return random.randint(12, 20) / 10.0
 
-    @staticmethod
     def rD():
         return random.randint(1, 20) / 10.0
 
     showData = {ToontownGlobals.SUMMER_FIREWORKS: [[FireworkType.GlowFlare,
-                                        Vec3(-90, 0, 80),
-                                        Vec3(120, 0, 0),
-                                        rS(),
-                                        Vec4(1, 1, 1, 1),
-                                        Vec4(1, 1, 1, 1),
-                                        1.5,
-                                        0.0],
-                                       [FireworkType.GlowFlare,
-                                        Vec3(90, 0, 80),
-                                        Vec3(-120, 0, 0),
-                                        rS(),
-                                        Vec4(1, 1, 1, 1),
-                                        Vec4(1, 1, 1, 1),
-                                        1.5,
-                                        1.0],
-                                       [FireworkType.BasicPeony,
-                                        Vec3(50, 0, 140),
-                                        rP(),
-                                        rS(),
-                                        Vec4(1, 1, 1, 1),
-                                        Vec4(1, 1, 1, 1),
-                                        rT(),
-                                        0.0],
-                                       [FireworkType.BasicPeony,
-                                        Vec3(-50, 0, 140),
-                                        rP(),
-                                        rS(),
-                                        Vec4(1, 1, 1, 1),
-                                        Vec4(1, 1, 1, 1),
-                                        rT(),
-                                        3.0],
-                                       [FireworkType.AdvancedPeony,
-                                        Vec3(-90, 0, 110),
-                                        rP(),
-                                        rS(),
-                                        rC(),
-                                        rC(),
-                                        rT(),
-                                        0.25],
-                                       [FireworkType.AdvancedPeony,
-                                        Vec3(0, 0, 90),
-                                        rP(),
-                                        rS(),
-                                        rC(),
-                                        rC(),
-                                        rT(),
-                                        0.25],
-                                       [FireworkType.AdvancedPeony,
-                                        Vec3(90, 0, 110),
-                                        rP(),
-                                        rS(),
-                                        rC(),
-                                        rC(),
-                                        rT(),
-                                        4.0],
-                                       [FireworkType.GlowFlare,
-                                        Vec3(-90, 0, 80),
-                                        Vec3(120, 0, 0),
-                                        1.5,
-                                        Vec4(1, 1, 1, 1),
-                                        Vec4(1, 1, 1, 1),
-                                        3.0,
-                                        3.0],
-                                       [FireworkType.Ring,
-                                        Vec3(-90, 0, 120),
-                                        rP(),
-                                        rS(),
-                                        rC(),
-                                        rC(),
-                                        rT(),
-                                        0.2],
-                                       [FireworkType.Ring,
-                                        Vec3(-30, 0, 100),
-                                        rP(),
-                                        rS(),
-                                        rC(),
-                                        rC(),
-                                        rT(),
-                                        0.2],
+                                                    Vec3(-90, 0, 80),
+                                                    Vec3(120, 0, 0),
+                                                    rS(),
+                                                    Vec4(1, 1, 1, 1),
+                                                    Vec4(1, 1, 1, 1),
+                                                    1.5,
+                                                    0.0],
+                                                   [FireworkType.GlowFlare,
+                                                    Vec3(90, 0, 80),
+                                                    Vec3(-120, 0, 0),
+                                                    rS(),
+                                                    Vec4(1, 1, 1, 1),
+                                                    Vec4(1, 1, 1, 1),
+                                                    1.5,
+                                                    1.0],
+                                                   [FireworkType.BasicPeony,
+                                                    Vec3(50, 0, 140),
+                                                    rP(),
+                                                    rS(),
+                                                    Vec4(1, 1, 1, 1),
+                                                    Vec4(1, 1, 1, 1),
+                                                    rT(),
+                                                    0.0],
+                                                   [FireworkType.BasicPeony,
+                                                    Vec3(-50, 0, 140),
+                                                    rP(),
+                                                    rS(),
+                                                    Vec4(1, 1, 1, 1),
+                                                    Vec4(1, 1, 1, 1),
+                                                    rT(),
+                                                    3.0],
+                                                   [FireworkType.AdvancedPeony,
+                                                    Vec3(-90, 0, 110),
+                                                    rP(),
+                                                    rS(),
+                                                    rC(),
+                                                    rC(),
+                                                    rT(),
+                                                    0.25],
+                                                   [FireworkType.AdvancedPeony,
+                                                    Vec3(0, 0, 90),
+                                                    rP(),
+                                                    rS(),
+                                                    rC(),
+                                                    rC(),
+                                                    rT(),
+                                                    0.25],
+                                                   [FireworkType.AdvancedPeony,
+                                                    Vec3(90, 0, 110),
+                                                    rP(),
+                                                    rS(),
+                                                    rC(),
+                                                    rC(),
+                                                    rT(),
+                                                    4.0],
+                                                   [FireworkType.GlowFlare,
+                                                    Vec3(-90, 0, 80),
+                                                    Vec3(120, 0, 0),
+                                                    1.5,
+                                                    Vec4(1, 1, 1, 1),
+                                                    Vec4(1, 1, 1, 1),
+                                                    3.0,
+                                                    3.0],
+                                                   [FireworkType.Ring,
+                                                    Vec3(-90, 0, 120),
+                                                    rP(),
+                                                    rS(),
+                                                    rC(),
+                                                    rC(),
+                                                    rT(),
+                                                    0.2],
+                                                   [FireworkType.Ring,
+                                                    Vec3(-30, 0, 100),
+                                                    rP(),
+                                                    rS(),
+                                                    rC(),
+                                                    rC(),
+                                                    rT(),
+                                                    0.2],
                                        [FireworkType.Ring,
                                         Vec3(30, 0, 120),
                                         rP(),
@@ -1084,9 +1080,9 @@ class FireworkShow(NodePath):
                                            10.0]]}
     showData[ToontownGlobals.COMBO_FIREWORKS] = showData[ToontownGlobals.NEW_YEAR_FIREWORKS]
     sectionData = {ToontownGlobals.SUMMER_FIREWORKS: [(0, 24), (24, len(showData[ToontownGlobals.SUMMER_FIREWORKS]))],
-     PartyGlobals.FireworkShows.Summer: [(0, 24), (24, len(showData[PartyGlobals.FireworkShows.Summer]))],
-     ToontownGlobals.NEW_YEAR_FIREWORKS: [(0, len(showData[PartyGlobals.FireworkShows.Summer]))],
-     ToontownGlobals.COMBO_FIREWORKS: [(0, len(showData[PartyGlobals.FireworkShows.Summer]))]}
+                   PartyGlobals.FireworkShows.Summer: [(0, 24), (24, len(showData[PartyGlobals.FireworkShows.Summer]))],
+                   ToontownGlobals.NEW_YEAR_FIREWORKS: [(0, len(showData[PartyGlobals.FireworkShows.Summer]))],
+                   ToontownGlobals.COMBO_FIREWORKS: [(0, len(showData[PartyGlobals.FireworkShows.Summer]))]}
     showMusic = {}
 
     @classmethod
@@ -1140,7 +1136,7 @@ class FireworkShow(NodePath):
         self.curOffset = offset
         self.delaySectionStart = FrameDelayedCall('delaySectionStart', self.startCurSection, frames=24)
 
-    def startCurSection():
+    def startCurSection(self):
         self.curSection.start(self.curOffset)
 
     def begin(self, timestamp):
@@ -1176,14 +1172,14 @@ class FireworkShow(NodePath):
 
         return duration
 
-    def isPlaying():
+    def isPlaying(self):
         for ival in self.sectionIvals:
             if ival.isPlaying():
                 return True
 
         return False
 
-    def cleanupShow():
+    def cleanupShow(self):
         if self.delaySectionStart:
             self.delaySectionStart.destroy()
             del self.delaySectionStart

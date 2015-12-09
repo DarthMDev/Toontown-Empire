@@ -53,6 +53,7 @@ class BattleBlocker(BasicEntities.DistributedNodePathEntity):
             del self.cSphere
             del self.cSphereNode
             self.cSphereNodePath.removeNode()
+            self.cSphereNodePath.cleanup()
             del self.cSphereNodePath
 
     def __handleToonEnter(self, collEntry):

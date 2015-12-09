@@ -1,7 +1,7 @@
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from otp.avatar import Avatar
 
-class AvatarDetail:
+class AvatarDetail(object):
     notify = directNotify.newCategory('AvatarDetail')
 
     def __init__(self, doId, callWhenDone):
