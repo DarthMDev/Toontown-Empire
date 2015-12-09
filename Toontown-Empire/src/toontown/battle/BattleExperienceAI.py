@@ -183,15 +183,9 @@ def assignRewards(activeToons, toonSkillPtsGained, suitsKilled, zoneId, helpfulT
             if helpfulToons and toon.doId in helpfulToons:
                 simbase.air.questManager.toonKilledCogs(toon, suitsKilled, zoneId)
                 simbase.air.cogPageManager.toonKilledCogs(toon, suitsKilled, zoneId)
-                addStats(toon, suitsKilled)
             else:
                 BattleExperienceAINotify.debug('toon=%d unhelpful not getting killed cog quest credit' % toon.doId)
         else:
             simbase.air.questManager.toonKilledCogs(toon, suitsKilled, zoneId)
             simbase.air.cogPageManager.toonKilledCogs(toon, suitsKilled, zoneId)
-            addStats(toon, suitsKilled)
 
-def addStats(toon, suitsKilled):
-    toon.addStat(ToontownGlobals.STAT_COGS, len(suitsKilled))
-    toon.addStat(ToontownGlobals.STAT_V2, len([suit for suit in suitsKilled if 'hasRevives' in suit and suit['hasRevives']]))
-    toon.addStat(ToontownGlobals.STAT_SKELE, len([suit for suit in suitsKilled if 'isSkelecog' in suit and suit['isSkelecog']]))

@@ -89,8 +89,8 @@ class WhisperPopup(MarginPopup, ClickablePopup):
         taskMgr.doMethodLater(self.timeout, self.unmanage, 'whisper-timeout-%d' % id(self), [manager])
 
     # Manually Clean up
-    def unmanage(self, manager):
-        MarginPopup.unmanage(self, manager)
+    def unmanage(self, marginManager):
+        MarginPopup.unmanage(self, marginManager)
 
         ClickablePopup.destroy(self)
         self.innerNP.removeNode()

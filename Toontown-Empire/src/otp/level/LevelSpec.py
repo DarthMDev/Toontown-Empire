@@ -3,7 +3,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.PythonUtil import list2dict, uniqueElements
 import LevelConstants, types
 
-class LevelSpec:
+class LevelSpec(object):
     notify = DirectNotifyGlobal.directNotify.newCategory('LevelSpec')
     SystemEntIds = (LevelConstants.UberZoneEntId, LevelConstants.LevelMgrEntId)
 

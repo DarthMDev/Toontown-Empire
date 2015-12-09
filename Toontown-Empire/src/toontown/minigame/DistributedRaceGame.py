@@ -273,7 +273,6 @@ class DistributedRaceGame(DistributedMinigame):
          -2.96)
         self.timer = None
         self.timerStartTime = None
-        return None
 
     def getTitle(self):
         return TTLocalizer.RaceGameTitle

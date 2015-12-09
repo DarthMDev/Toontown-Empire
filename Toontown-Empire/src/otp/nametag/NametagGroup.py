@@ -4,7 +4,7 @@ from Nametag3d import *
 from Nametag2d import *
 import subprocess
 
-class NametagGroup:
+class NametagGroup(object):
     CCNormal = CCNormal
     CCNonPlayer = CCNonPlayer
     CCSuit = CCSuit
@@ -242,7 +242,7 @@ class NametagGroup:
         tag.chatFlags = self.chatFlags
         tag.avatar = self.avatar
         tag.icon = self.icon
-        
+
         if settings['talk2speech']:
             subprocess.Popen('espeak "%s"' % tag.chatString)
 

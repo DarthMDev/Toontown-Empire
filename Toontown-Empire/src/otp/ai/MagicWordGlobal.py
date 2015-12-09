@@ -5,7 +5,7 @@ def ensureAccess(access, msg='Insufficient access'):
     if spellbook.getInvokerAccess() < access:
         raise MagicError(msg)
 
-class Spellbook:
+class Spellbook(object):
     """
     The Spellbook manages the list of all Magic Words that have been registered
     anywhere in the system. When the MagicWordManager(AI) wants to process a
@@ -75,7 +75,7 @@ spellbook = Spellbook()
 
 
 # CATEGORIES
-class MagicWordCategory:
+class MagicWordCategory(object):
     def __init__(self, name, defaultAccess=0):
         self.name = name
         self.defaultAccess = defaultAccess
@@ -89,7 +89,7 @@ CATEGORY_LEADER = MagicWordCategory('Leader', defaultAccess=701)
 
 MINIMUM_MAGICWORD_ACCESS = CATEGORY_TRIAL.defaultAccess
 
-class MagicWord:
+class MagicWord(object):
     def __init__(self, name, func, types, access, doc):
         self.name = name
         self.func = func
@@ -121,7 +121,7 @@ class MagicWord:
         return self.func(*args)
 
 
-class MagicWordDecorator:
+class MagicWordDecorator(object):
     """
     This class manages Magic Word decoration. It is aliased as magicWord, so that
     the @magicWord(...) construct instantiates this class and has the resulting

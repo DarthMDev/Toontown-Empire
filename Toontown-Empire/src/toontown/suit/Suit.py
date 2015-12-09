@@ -235,8 +235,8 @@ def loadDialog(level):
         SuitDialogFiles = ['COG_VO_grunt',
          'COG_VO_murmur',
          'COG_VO_statement',
-         'COG_VO_question',
-         'COG_VO_exclaim']
+         'COG_VO_question'
+         ]
         for file in SuitDialogFiles:
             SuitDialogArray.append(base.loadSfx(loadPath + file + '.ogg'))
 
@@ -252,13 +252,11 @@ def loadSkelDialog():
         murmur = loader.loadSfx('phase_5/audio/sfx/Skel_COG_VO_murmur.ogg')
         statement = loader.loadSfx('phase_5/audio/sfx/Skel_COG_VO_statement.ogg')
         question = loader.loadSfx('phase_5/audio/sfx/Skel_COG_VO_question.ogg')
-        exclaim = loader.loadSfx('phase_5/audio/sfx/Skel_COG_VO_exclaim.ogg')
         SkelSuitDialogArray = [grunt,
-         murmur,
-         statement,
-         question,
-         exclaim,
-         statement]
+                               murmur,
+                               statement,
+                               question,
+                               statement]
 
 
 def unloadDialog(level):
@@ -668,7 +666,7 @@ class Suit(Avatar.Avatar):
             return SkelSuitDialogArray
         else:
             return SuitDialogArray
-    
+
     def getTypeText(self):
         if self.virtual:
             return TTLocalizer.CogPanelVirtual

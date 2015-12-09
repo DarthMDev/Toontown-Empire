@@ -1,6 +1,6 @@
 import json
 
-class Settings:
+class Settings(object):
     """
     This is the class that reads JSON formatted settings files, and
     returns the values back to whatever requested them.

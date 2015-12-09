@@ -4,7 +4,7 @@ import compiler
 import re
 
 
-class CategoryParser:
+class CategoryParser(object):
     def __init__(self, filepath):
         self.filepath = filepath
 
@@ -102,7 +102,7 @@ class MethodParser(CategoryParser):
         return self.methods
 
 
-class MediaWikiGenerator:
+class MediaWikiGenerator(object):
     def __init__(self, methods):
         self.methods = methods
 

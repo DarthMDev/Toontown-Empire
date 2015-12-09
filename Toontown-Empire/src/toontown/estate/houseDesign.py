@@ -590,7 +590,7 @@ class ObjectManager(NodePath, DirectObject):
             self.moveObjectInit()
             self.firstTime = 0
         else:
-            self.gridSnapNP.iPos()
+            self.gridSnapNP.setPosHpr(0, 0, 0, 0, 0, 0)
             self.collisionOffsetNP.setPosHpr(0, 0, 0, 0, 0, 0)
         if self.gridSpacing:
             pos = self.dragPointNP.getPos(target)
@@ -1101,7 +1101,7 @@ class ObjectManager(NodePath, DirectObject):
         picker.scrollTo(selectedIndex)
         return picker
 
-    def reset():
+    def reset(self):
         self.destroy()
         furnitureMenu.destroy()
 

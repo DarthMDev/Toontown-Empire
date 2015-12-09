@@ -5,7 +5,7 @@ from direct.task import Task
 from otp.otpbase import OTPGlobals
 import random
 
-class AIZoneData:
+class AIZoneData(object):
     notify = directNotify.newCategory('AIZoneData')
 
     def __init__(self, air, parentId, zoneId):
@@ -25,7 +25,7 @@ class AIZoneData:
         return getattr(self._data, attr)
 
 
-class AIZoneDataObj:
+class AIZoneDataObj(object):
     notify = directNotify.newCategory('AIZoneDataObj')
     DefaultCTravName = 'default'
 
@@ -170,7 +170,7 @@ class AIZoneDataObj:
         return self._collTravs[cTravName].getRespectPrevTransform()
 
 
-class AIZoneDataStore:
+class AIZoneDataStore(object):
     notify = directNotify.newCategory('AIZoneDataStore')
 
     def __init__(self):

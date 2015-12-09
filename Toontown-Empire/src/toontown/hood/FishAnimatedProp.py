@@ -27,6 +27,7 @@ class FishAnimatedProp:
         self.splash.destroy()
         del self.splash
         del self.track
+        self.fish.cleanup()
         self.fish.removeNode()
         del self.fish
         del self.geom

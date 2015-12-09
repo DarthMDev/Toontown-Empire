@@ -1,6 +1,6 @@
-from panda3d.core import *
 
-class MarginPopup:
+
+class MarginPopup(object):
     def __init__(self):
         self.__manager = None
         self.__visible = False
@@ -14,7 +14,7 @@ class MarginPopup:
     def setVisible(self, visibility):
         visibility = bool(visibility)
         if self.__visible == visibility:
-             return
+            return
 
         self.__visible = visibility
 
