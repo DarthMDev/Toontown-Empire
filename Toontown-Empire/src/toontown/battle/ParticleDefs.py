@@ -4,6 +4,7 @@ from panda3d.physics import BaseParticleRenderer
 from panda3d.physics import BaseParticleEmitter
 from panda3d.physics import LinearSinkForce
 from panda3d.physics import LinearDistanceForce
+from panda3d.physics import LinearVectorForce
 
 ParticleTable = {}
 
