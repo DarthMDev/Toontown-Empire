@@ -88,7 +88,7 @@ class FriendsListManager:
         self.notify.debug('__handleClickedNametag. doId = %s' % avatar.doId)
         if avatar.isPet():
             self.avatarPanel = PetAvatarPanel.PetAvatarPanel(avatar)
-        elif isinstance(avatar, Toon.Toon) or isinstance(avatar, FriendHandle.FriendHandle):
+        elif isinstance(avatar, (Toon.Toon, FriendHandle.FriendHandle)):
             if hasattr(self, 'avatarPanel'):
                 if self.avatarPanel:
                     if not hasattr(self.avatarPanel, 'getAvId') or self.avatarPanel.getAvId() == avatar.doId:

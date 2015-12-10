@@ -1508,6 +1508,16 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
         else:
             return 0
 
+    def b_setHealthDisplay(self, mode):
+        self.setHealthDisplay(mode)
+        self.d_setHealthDisplay(mode)
+
+    def d_setHealthDisplay(self, mode):
+        self.sendUpdate('setHealthDisplay', [mode])
+
+    def setHealthDisplay(self, mode):
+        self.mode = mode
+
     def addQuest(self, quest, finalReward, recordHistory = 1):
         self.quests.append(quest)
         self.b_setQuests(self.quests)

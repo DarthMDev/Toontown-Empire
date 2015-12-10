@@ -74,6 +74,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         Toon.Toon.__init__(self)
         DistributedSmoothNode.DistributedSmoothNode.__init__(self, cr)
         self.bFake = bFake
+        self.overheadMeter = None
         self.kart = None
         self._isGM = False
         self._gmType = None
@@ -93,6 +94,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.sosPageFlag = 0
         self.disguisePage = None
         self.sosPage = None
+        self.__meterMode = 0
         self.gardenPage = None
         self.emoteAccess = [0] * 27
         self.cogTypes = [0, 0, 0, 0]
@@ -561,6 +563,38 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         DistributedPlayer.DistributedPlayer.setMaxHp(self, hitPoints)
         if self.inventory:
             self.inventory.updateGUI()
+            
+    def setHp(self, hp):
+        DistributedPlayer.DistributedPlayer.setHp(self, hp)
+
+        self.__considerUpdateMeter()
+
+    def setHealthDisplay(self, mode):
+        self.__meterMode = mode
+        self.__considerUpdateMeter()
+
+    def __considerUpdateMeter(self):
+        wantMeter = self.__shouldDisplayMeter()
+        if wantMeter and not self.overheadMeter:
+            self.overheadMeter = LaffMeter(self.style, self.hp, self.maxHp)
+            self.overheadMeter.setAvatar(self)
+            self.overheadMeter.setZ(5)
+            self.overheadMeter.setScale(1.5)
+            self.overheadMeter.reparentTo(NodePath(self.nametag.getNameIcon()))
+            self.overheadMeter.hide(BitMask32.bit(1)) # Hide from 2D camera.
+            self.overheadMeter.start()
+        elif not wantMeter and self.overheadMeter:
+            self.overheadMeter.stop()
+            self.overheadMeter.destroy()
+            self.overheadMeter = None
+
+    def __shouldDisplayMeter(self):
+        if self.__meterMode == 0:
+            return False
+        elif self.__meterMode == 1:
+            return True
+        elif self.__meterMode == 2:
+            return self.hp < self.maxHp
 
     def died(self):
         messenger.send(self.uniqueName('died'))
