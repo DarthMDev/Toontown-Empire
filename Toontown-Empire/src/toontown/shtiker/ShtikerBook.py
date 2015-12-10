@@ -1,9 +1,10 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
-from direct.gui.DirectGui import *
-from direct.showbase import DirectObject
-from panda3d.core import *
-
+from direct.gui.DirectGui import DirectButton
+from direct.gui.DirectGui import DirectFrame
+from direct.gui.DirectGui import DGG
+from panda3d.core import Vec4
+from panda3d.core import TextNode
 from toontown.effects import DistributedFireworkShow
 from otp.nametag import NametagGlobals
 from toontown.parties import DistributedPartyFireworksActivity
@@ -35,18 +36,18 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         self.hide()
         self.setPos(0, 0, 0.1)
         self.pageOrder = [TTLocalizer.OptionsPageTitle,
-         TTLocalizer.ShardPageTitle,
-         TTLocalizer.MapPageTitle,
-         TTLocalizer.InventoryPageTitle,
-         TTLocalizer.QuestPageToonTasks,
-         TTLocalizer.TrackPageShortTitle,
-         TTLocalizer.SuitPageTitle,
-         TTLocalizer.FishPageTitle,
-         TTLocalizer.KartPageTitle,
-         TTLocalizer.DisguisePageTitle,
-         TTLocalizer.NPCFriendPageTitle,
-         TTLocalizer.GardenPageTitle,
-         TTLocalizer.GolfPageTitle,
+                          TTLocalizer.ShardPageTitle,
+                          TTLocalizer.MapPageTitle,
+                          TTLocalizer.InventoryPageTitle,
+                          TTLocalizer.QuestPageToonTasks,
+                          TTLocalizer.TrackPageShortTitle,
+                          TTLocalizer.SuitPageTitle,
+                          TTLocalizer.FishPageTitle,
+                          TTLocalizer.KartPageTitle,
+                          TTLocalizer.DisguisePageTitle,
+                          TTLocalizer.NPCFriendPageTitle,
+                          TTLocalizer.GardenPageTitle,
+                          TTLocalizer.GolfPageTitle,
 
 
          TTLocalizer.PhotoPageTitle,
@@ -103,7 +104,8 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         base.render.show()
         setBlackBackground = 0
         for obj in base.cr.doId2do.values():
-            if isinstance(obj, DistributedFireworkShow.DistributedFireworkShow) or isinstance(obj, DistributedPartyFireworksActivity.DistributedPartyFireworksActivity):
+            if isinstance(obj, (DistributedFireworkShow.DistributedFireworkShow,
+                                DistributedPartyFireworksActivity.DistributedPartyFireworksActivity)):
                 setBlackBackground = 1
 
         if setBlackBackground:
@@ -177,7 +179,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         del self.tempLeft
         del self.tempRight
 
-    def addPage(self, page, pageName = 'Page'):
+    def addPage(self, page, pageName='Page'):
         if pageName not in self.pageOrder:
             self.notify.error('Trying to add page %s in the ShtickerBook. Page not listed in the order.' % pageName)
             return
@@ -206,9 +208,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
 
 
 
-    def addPageTab(self, page, pageIndex, pageName = 'Page'):
-        tabIndex = len(self.pageTabs)
-
+    def addPageTab(self, page, pageIndex, pageName='Page'):
         def goToPage():
             messenger.send('wakeup')
             base.playSfx(self.pageSound)
@@ -292,7 +292,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         elif pageName == TTLocalizer.PhotoPageTitle:
             iconGeom = iconModels = loader.loadModel('phase_4/models/minigames/photogame_filmroll')
             iconScale = (1.9, 1.5, 1.5)
-            iconModels.detachNode()         
+            iconModels.detachNode()
         elif pageName == TTLocalizer.NewsPageName:
             iconModels = loader.loadModel('phase_3.5/models/gui/sos_textures')
             iconGeom = iconModels.find('**/tt_t_gui_sbk_newsPageTab')
@@ -311,7 +311,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         self.pageTabs.insert(pageIndex, pageTab)
         return
 
-    def setPage(self, page, enterPage = True):
+    def setPage(self, page, enterPage=True):
         if self.currPageIndex is not None:
             self.pages[self.currPageIndex].exit()
         self.currPageIndex = self.pages.index(page)
@@ -324,7 +324,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
             self.pageBeforeNews = page
         return
 
-    def setPageBeforeNews(self, enterPage = True):
+    def setPageBeforeNews(self, enterPage=True):
         self.setPage(self.pageBeforeNews, enterPage)
         self.accept(ToontownGlobals.StickerBookHotkey, self.__close)
         self.accept(ToontownGlobals.OptionsPageHotkey, self.__close)
@@ -480,11 +480,3 @@ class ShtikerBook(DirectFrame, StateData.StateData):
     def enableAllPageTabs(self):
         for button in self.pageTabs:
             button['state'] = DGG.NORMAL
-
-
-
-
-
-
-
-

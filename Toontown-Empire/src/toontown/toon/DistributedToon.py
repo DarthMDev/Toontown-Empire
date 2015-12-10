@@ -74,6 +74,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         Toon.Toon.__init__(self)
         DistributedSmoothNode.DistributedSmoothNode.__init__(self, cr)
         self.bFake = bFake
+        self.overheadMeter = None
         self.kart = None
         self._isGM = False
         self._gmType = None
@@ -93,6 +94,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.sosPageFlag = 0
         self.disguisePage = None
         self.sosPage = None
+        self.__meterMode = 0
         self.gardenPage = None
         self.emoteAccess = [0] * 27
         self.cogTypes = [0, 0, 0, 0]

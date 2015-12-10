@@ -1516,7 +1516,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
         self.sendUpdate('setHealthDisplay', [mode])
 
     def setHealthDisplay(self, mode):
-        pass
+        self.mode = mode
 
     def addQuest(self, quest, finalReward, recordHistory = 1):
         self.quests.append(quest)
