@@ -26,7 +26,7 @@ from toontown.toonbase import ToontownGlobals
 import types
 import random
 import time
-from panda3d.core import *
+from pandac.PandaModules import *
 MetaItems = {100: getAllClothes(101, 102, 103, 104, 105, 106, 107, 108, 109, 109, 111, 115, 201, 202, 203, 204, 205, 206, 207, 208, 209, 209, 211, 215),
  300: getAllClothes(301, 302, 303, 304, 305, 308, 401, 403, 404, 405, 407, 451, 452, 453),
  2000: getChatRange(0, 1999),
@@ -1512,7 +1512,7 @@ class CatalogGenerator:
                 weeklyCatalog += self.__selectItem(avatar, nextAvailableTank, monthlyCatalog, saleItem = 0)
             if nextAvailablePole not in schedule:
                 weeklyCatalog += self.__selectItem(avatar, nextAvailablePole, monthlyCatalog, saleItem = 0)
-
+        
         def hasPetTrick(catalog):
             for item in catalog:
                 if isinstance(item, CatalogPetTrickItem):
@@ -1661,32 +1661,33 @@ class CatalogGenerator:
         return item
 
     def outputSchedule(self, filename):
-        with open(Filename(filename).toOsSpecific(), 'w') as out:
-
-            sched = self.generateScheduleDictionary()
-            items = sched.keys()
-            items.sort()
-            for item in items:
-                weeklist, maybeWeeklist = sched[item]
-                color = self.__formatColor(item.getColor())
-                seriesDict = {}
-                self.__determineSeries(seriesDict, weeklist)
-                self.__determineSeries(seriesDict, maybeWeeklist)
-                seriesList = seriesDict.keys()
-                seriesList.sort()
-                series = str(seriesList)[1:-1]
-                week = self.__formatWeeklist(weeklist)
-                maybeWeek = self.__formatWeeklist(maybeWeeklist)
-                line = '"%s"\t"%s"\t"%s"\t%s\t"%s"\t"%s"\t"%s"\t"%s"\t"%s"' % (item.output(store=0),
-                item.getTypeName(),
-                item.getDisplayName(),
-                item.getBasePrice(),
-                item.getFilename(),
-                color,
-                series,
-                week,
-                maybeWeek)
+        out = open(Filename(filename).toOsSpecific(), 'w')
+        sched = self.generateScheduleDictionary()
+        items = sched.keys()
+        items.sort()
+        for item in items:
+            weeklist, maybeWeeklist = sched[item]
+            color = self.__formatColor(item.getColor())
+            seriesDict = {}
+            self.__determineSeries(seriesDict, weeklist)
+            self.__determineSeries(seriesDict, maybeWeeklist)
+            seriesList = seriesDict.keys()
+            seriesList.sort()
+            series = str(seriesList)[1:-1]
+            week = self.__formatWeeklist(weeklist)
+            maybeWeek = self.__formatWeeklist(maybeWeeklist)
+            line = '"%s"\t"%s"\t"%s"\t%s\t"%s"\t"%s"\t"%s"\t"%s"\t"%s"' % (item.output(store=0),
+             item.getTypeName(),
+             item.getDisplayName(),
+             item.getBasePrice(),
+             item.getFilename(),
+             color,
+             series,
+             week,
+             maybeWeek)
             out.write(line + '\n')
+
+        out.close()
 
     def __formatColor(self, color):
         if color == None:

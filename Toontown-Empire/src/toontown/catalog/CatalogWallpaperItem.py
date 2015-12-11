@@ -620,7 +620,7 @@ class CatalogWallpaperItem(CatalogSurfaceItem):
         return WallpaperTypes[self.patternIndex][WTBasePrice]
 
     def loadTexture(self):
-        from panda3d.core import Texture
+        from pandac.PandaModules import Texture
         filename = WallpaperTypes[self.patternIndex][WTTextureName]
         texture = loader.loadTexture(filename)
         texture.setMinfilter(Texture.FTLinearMipmapLinear)
@@ -641,7 +641,7 @@ class CatalogWallpaperItem(CatalogSurfaceItem):
         return
 
     def loadBorderTexture(self):
-        from panda3d.core import Texture
+        from pandac.PandaModules import Texture
         if self.borderIndex == None or self.borderIndex == 0:
             return self.loadTexture()
         borderInfo = BorderTypes[self.borderIndex]

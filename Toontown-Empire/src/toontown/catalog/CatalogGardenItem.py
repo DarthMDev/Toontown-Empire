@@ -5,7 +5,7 @@ from otp.otpbase import OTPLocalizer
 from direct.interval.IntervalGlobal import *
 from toontown.estate import GardenGlobals
 from direct.actor import Actor
-from panda3d.core import NodePath
+from pandac.PandaModules import NodePath
 
 class CatalogGardenItem(CatalogItem.CatalogItem):
     sequenceNumber = 0
@@ -123,6 +123,16 @@ class CatalogGardenItem(CatalogItem.CatalogItem):
         else:
             return 0
 
+    def getPurchaseLimit(self):
+        if self.gardenIndex == GardenGlobals.GardenAcceleratorSpecial:
+            return 1
+        else:
+            return 0
+
+    def compareTo(self, other):
+        if self.gardenIndex != other.gardenIndex:
+            return self.gardenIndex - other.gardenIndex
+        return self.gardenIndex - other.gardenIndex
 
     def reachedPurchaseLimit(self, avatar):
         if avatar.onOrder.count(self) != 0:
