@@ -9,13 +9,14 @@ import random
 from toontown.racing import RaceGlobals
 from toontown.racing.DistributedGagAI import DistributedGagAI
 from toontown.racing.DistributedVehicleAI import DistributedVehicleAI
-from toontown.toonbase import TTLocalizer, ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
 
 
 class DistributedRaceAI(DistributedObjectAI, FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedRaceAI")
 
-    def __init__(self, air, circuitPoints=[], circuitWinnings=[]):
+    def __init__(self, air, circuitPoints=None, circuitWinnings=[]):
         DistributedObjectAI.__init__(self, air)
         FSM.__init__(self, 'DistributedRaceAI')
         self.air = air
@@ -33,7 +34,7 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
         self.livingGags = []
         self.currentlyAffectedByAnvil = {}
         self.avatarProgress = {}
-        self.circuitPoints = circuitPoints
+        self.circuitPoints = circuitPoints or []
         self.circuitWinnings = circuitWinnings
         self.quitAvatars = []
         self.startTime = globalClockDelta.networkToLocalTime(globalClockDelta.getRealNetworkTime()) + 3

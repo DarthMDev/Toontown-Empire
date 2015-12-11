@@ -364,8 +364,6 @@ def setPos(Pos):
     else:
 	   print("Target is not Invoker")
 	   avatar = target
-    try:
-       avatar.setPos(Pos)
-       print("Magic Word Manager Has Set Postion For Target.")
-    except:
-    	print 'Bruh'
+    avatar.setPos(Pos)
+    print("Magic Word Manager Has Set Postion For Target.")
+    	

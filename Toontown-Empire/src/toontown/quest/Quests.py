@@ -1754,7 +1754,7 @@ class LocationBasedQuest(Quest):
          'location': self.getLocationName()}
 
 
-class NewbieQuest:
+class NewbieQuest(object):
     @staticmethod
     def getNewbieLevel():
         notify.error('Pure virtual - please override me')
@@ -2010,7 +2010,7 @@ class CogLevelQuest(CogQuest):
         return questCogLevel <= cogDict['level'] and avId in cogDict['activeToons'] and self.isLocationMatch(zoneId)
 
 
-class SkelecogQBase:
+class SkelecogQBase(object):
     def getCogNameString(self):
         numCogs = self.getNumCogs()
         if numCogs == 1:
@@ -2093,7 +2093,7 @@ class SkelecogLevelQuest(CogLevelQuest, SkelecogQBase):
         return SkelecogQBase.doesCogCount(self, avId, cogDict, zoneId, avList) and self.getCogLevel() <= cogDict['level']
 
 
-class SkeleReviveQBase:
+class SkeleReviveQBase(object):
     def getCogNameString(self):
         numCogs = self.getNumCogs()
         if numCogs == 1:
@@ -19068,7 +19068,7 @@ def chooseMatchingQuest(tier, validQuestPool, rewardId, npc, av):
                 else:
                     questsMatchingReward = Tier2Reward2QuestsDict[tier].get(Any, [])
                     if notify.getDebug():
-                        notify.debug('questsMatchingReward: Any tier: %s = %s' % (tier, questsMatchingReward))
+                        notify.debug('questsMatchingReward: Any tier: {0} = {1}'.format((tier, questsMatchingReward)))
                     if not questsMatchingReward:
                         notify.warning('chooseMatchingQuests, no questsMatchingReward')
                         return None
@@ -20356,10 +20356,10 @@ def avatarHasAllRequiredRewards(av, tier):
                 return 0
 
     if notify.getDebug():
-        notify.debug('avatarHasAllRequiredRewards: remaining rewards: %s' % rewardHistory)
+        notify.debug('avatarHasAllRequiredRewards: remaining rewards: {0}'.format(rewardHistory))
         for rewardId in rewardHistory:
             if not isRewardOptional(tier, rewardId):
-                notify.warning('required reward found, expected only optional: %s' % rewardId)
+                notify.warning('required reward found, expected only optional: {0}'.format(rewardId))
 
     return 1
 

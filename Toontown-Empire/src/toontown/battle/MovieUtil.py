@@ -219,7 +219,6 @@ def virtualize(deathsuit):
 
 def createTrainTrackAppearTrack(dyingSuit, toon, battle, npcs):
     retval = Sequence()
-    return retval
     possibleSuits = []
     for suitAttack in battle.movie.suitAttackDicts:
         suit = suitAttack['suit']

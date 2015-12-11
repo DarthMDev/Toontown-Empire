@@ -8,7 +8,8 @@ __builtin__.process = 'ai'
 __builtin__.__dict__.update(__import__('panda3d.core', fromlist=['*']).__dict__)
 from direct.extensions_native import HTTPChannel_extensions
 
-import sys, os
+import sys
+import os
 sys.path.append(
     os.path.abspath(
         os.path.join(
