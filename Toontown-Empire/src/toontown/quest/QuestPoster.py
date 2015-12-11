@@ -70,8 +70,9 @@ class QuestPoster(DirectFrame):
         self.questProgress.hide()
         self.funQuest = DirectLabel(parent=self.questFrame, relief=None, text=TTLocalizer.QuestPosterFun, text_fg=(0.0, 0.439, 1.0, 1.0), text_shadow=(0, 0, 0, 1), pos=(0, 0, -0.125), scale=0.04)
         self.funQuest.hide()
-        self.teleportButton = DirectButton(parent=self.questFrame, relief=None, image=circleModel, text=TTLocalizer.TeleportButton, text_scale=0.035, text_pos=(-0.0025, -0.015), pos=(0.175, 0, 0.125), scale=0.75)  #, text_bg=(0, 0.75, 1, 1)
-        self.teleportButton.hide()
+# This will be activated later in alpha! ~FordTheWriter
+#        self.teleportButton = DirectButton(parent=self.questFrame, relief=None, image=circleModel, text=TTLocalizer.TeleportButton, text_scale=0.035, text_pos=(-0.0025, -0.015), pos=(0.175, 0, 0.125), scale=0.75)  #, text_bg=(0, 0.75, 1, 1)
+#        self.teleportButton.hide()
         self.laffMeter = None
         self.dialog = None
 
@@ -250,7 +251,7 @@ class QuestPoster(DirectFrame):
         self.lPictureFrame.hide()
         self.rPictureFrame.hide()
         self.questProgress.hide()
-        self.teleportButton.hide()
+#        self.teleportButton.hide()
         self.destroyDialog()
         if hasattr(self, 'chooseButton'):
             self.chooseButton.destroy()
@@ -295,8 +296,9 @@ class QuestPoster(DirectFrame):
     def update(self, questDesc):
         questId, fromNpcId, toNpcId, rewardId, toonProgress = questDesc
         quest = Quests.getQuest(questId)
-        self.teleportButton['command'] = self.teleportToShop
-        self.teleportButton['extraArgs'] = [toNpcId]
+# Deactivated until late Alpha
+#        self.teleportButton['command'] = self.teleportToShop
+#        self.teleportButton['extraArgs'] = [toNpcId]
         if quest == None:
             self.notify.warning('Tried to display poster for unknown quest %s' % questId)
             return
@@ -356,11 +358,11 @@ class QuestPoster(DirectFrame):
         objectiveStrings = quest.getObjectiveStrings()
         captions = map(string.capwords, quest.getObjectiveStrings())
         imageColor = Vec4(*self.colors['white'])
-        self.teleportButton.hide()
+#        self.teleportButton.hide()
 
-        if base.localAvatar.tutorialAck and (fComplete or quest.getType() in (Quests.DeliverGagQuest, Quests.DeliverItemQuest, Quests.VisitQuest, Quests.TrackChoiceQuest)):
-            self.teleportButton.show()
-            self.teleportButton.setPos(0.3, 0, -0.15)
+#        if base.localAvatar.tutorialAck and (fComplete or quest.getType() in (Quests.DeliverGagQuest, Quests.DeliverItemQuest, Quests.VisitQuest, Quests.TrackChoiceQuest)):
+#            self.teleportButton.show()
+#            self.teleportButton.setPos(0.3, 0, -0.15)
 
         if isinstance(quest, Quests.TexturedQuest) and quest.hasFrame():
             frame = quest.getFrame()

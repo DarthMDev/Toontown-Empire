@@ -577,15 +577,7 @@ TheBrrrghTrackQuestDict = {GREETING: '',
  LEAVING: 'Good luck.  Return to me when you have mastered your new skill.'}
 QuestDialog_3225 = {QUEST: "Oh, thanks for coming, _avName_!\x07The Cogs in the neighborhood frightened away my delivery person.\x07I don't have anyone to deliver this salad to _toNpcName_!\x07Can you do it for me? Thanks so much!_where_"}
 QuestDialog_2910 = {QUEST: 'Back so soon?\x07Great job on the spring.\x07The final item is a counter weight.\x07Stop by and see _toNpcName_ and bring back whatever you can get._where_'}
-QuestDialogDict = {
- 120: {QUEST: "Good job finding the trolley!\x07By the way, have you met Banker Bob?\x07He has quite a sweet tooth.\x07Why don't you introduce yourself by taking him this candy bar as a gift._where_"},
- 121: {QUEST: "Yum, thank you for the Candy Bar.\x07Say, if you can help me, I'll give you a reward.\x07Those Cogs stole the keys to my safe. Defeat Cogs to find a stolen key.\x07When you find a key, bring it back to me."},
- 130: {QUEST: 'Good job finding the trolley!\x07By the way, I received a package for Professor Pete today.\x07It must be his new chalk he ordered.\x07Can you please take it to him?_where_'},
- 131: {QUEST: 'Oh, thanks for the chalk.\x07What?!?\x07Those Cogs stole my blackboard. Defeat Cogs to find my stolen blackboard.\x07When you find it, bring it back to me.'},
- 140: {QUEST: 'Good job finding the trolley!\x07By the way, I have this friend, Librarian Larry, who is quite a book worm.\x07I picked this book up for him last time I was over in ' + lDonaldsDock + '.\x07Could you take it over to him?_where_'},
- 141: {QUEST: 'Oh, yes, this book almost completes my collection.\x07Let me see...\x07Uh oh...\x07Now where did I put my glasses?\x07I had them just before those Cogs took over my building.\x07Defeat Cogs to find my stolen glasses.'},
- 142: {QUEST: "Thank you! I have a feeling you will be a great help to everyone around here.\x07By the way, I just received a message from Toon HQ.\x07They forgot to mention a few important concepts. You're needed there!"},
- 160: {GREETING: '',
+QuestDialogDict = {160: {GREETING: '',
        QUEST: "Ok, now I think you are ready for something more rewarding.\x07If you can defeat 3 Bossbots I'll give you a little bonus.",
        INCOMPLETE_PROGRESS: TheCogs + ' are out in the streets, through the tunnels.',
        INCOMPLETE_WRONG_NPC: 'Good job defeating those Cogs. Now go to the Toon Headquarters for your next step!',
@@ -624,7 +616,7 @@ QuestDialogDict = {
        COMPLETE: 'Hope you have fun ordering things from Clarabelle!\x07I just finished redecorating my house. It looks Toontastic!\x07Keep doing ToonTasks to get more rewards!',
        LEAVING: QuestsDefaultLeaving},
  400: {GREETING: '',
-       QUEST: 'You will need more gags to fight higher level Cogs.\x07When you team up with other Toons against the Cogs, you can combine attacks for even more damage.\x07Try different combinations of gags to see what works best.\x07When you are ready to decide, come back here and choose.',
+       QUEST: 'Throw and Squirt are great, but you will need more gags to fight higher level Cogs.\x07When you team up with other Toons against the Cogs, you can combine attacks for even more damage.\x07Try different combinations of gags to see what works best.\x07For your next track, choose between Sound and Toonup.\x07Sound is special because when it hits, it damages all Cogs.\x07Toonup lets you heal other Toons in battle.\x07When you are ready to decide, come back here and choose.',
        INCOMPLETE_PROGRESS: 'Back so soon?  Okay, are you ready to choose?',
        INCOMPLETE_WRONG_NPC: 'Think about your decision before choosing.',
        COMPLETE: 'Good decision.  Now before you can use those gags, you must train for them.\x07You must complete a series of ToonTasks for training.\x07Each task will give you a single frame of your gag attack animation.\x07When you collect all 15, you can get the Final Gag Training task that will allow you to use your new gags.\x07You can check your progress in the Shticker Book.',
@@ -779,8 +771,8 @@ QuestDialogDict = {
         INCOMPLETE_PROGRESS: "Still haven't found him?\x07He's tall and has a pointy head",
         COMPLETE: "You found it!?!?\x07Aren't you a darling!\x07You've more than earned this..."},
  2209: {QUEST: 'Melville is preparing for an important voyage.\x07Pop in and see what you can do to help sort him out._where_'},
- 2210: {QUEST: "I can use your help.\x07I've been asked by Toon HQ to take a voyage and see if I can find where the Cogs are coming from.\x07I'll need a few things for my ship but I don't have many Jellybeans.\x07Stop by and pick up some ballast from Alice. You'll have to do a favor for her to get it._where_",
-        GREETING: 'Howdy, _avName_!',
+ 2210: {QUEST: "I can use your help.\x07I've been asked by Toon HQ to take a voyage and see if I can find where the Cogs are coming from.\x07I'll need a few things for my ship but I don't have many jellybeans.\x07Stop by and pick up some ballast from Alice. You'll have to do a favor for her to get it._where_",
+        GREETING: 'Howdy, _avName_',
         LEAVING: ''},
  2211: {QUEST: "So Melville wants ballast, does he?\x07He still owes me for the last bushel.\x07I'll give it to you if you can clear five Micromanagers off my street.",
         INCOMPLETE_PROGRESS: 'No, silly! I said FIVE micromanagers...',
@@ -990,22 +982,18 @@ QuestDialogDict = {
         INCOMPLETE_PROGRESS: 'It seems you may not be so clever with the rod and reel.'},
  5250: {GREETING: '',
         LEAVING: '',
-        COMPLETE: 'Now you are ready.\x07Good luck.  Return to me when you have mastered your new skill.',
         QUEST: 'Aha!  These dice will look great hanging from the rearview mirror of my ox cart!\x07Now, show me that you can tell your enemies from one another.\x07Return when you have restored two of the tallest Lawbot buildings.',
         INCOMPLETE_PROGRESS: 'Do the buildings give you trouble?'},
  5258: {GREETING: '',
         LEAVING: '',
-        COMPLETE: 'Now you are ready.\x07Good luck.  Return to me when you have mastered your new skill.',
         QUEST: 'Aha!  These dice will look great hanging from the rearview mirror of my ox cart!\x07Now, show me that you can tell your enemies from one another.\x07Return when you have restored two of the tallest Bossbot buildings.',
         INCOMPLETE_PROGRESS: 'Do the buildings give you trouble?'},
  5259: {GREETING: '',
         LEAVING: '',
-        COMPLETE: 'Now you are ready.\x07Good luck.  Return to me when you have mastered your new skill.',
         QUEST: 'Aha!  These dice will look great hanging from the rearview mirror of my ox cart!\x07Now, show me that you can tell your enemies from one another.\x07Return when you have restored two of the tallest Cashbot buildings.',
         INCOMPLETE_PROGRESS: 'Do the buildings give you trouble?'},
  5260: {GREETING: '',
         LEAVING: '',
-        COMPLETE: 'Now you are ready.\x07Good luck.  Return to me when you have mastered your new skill.',
         QUEST: 'Aha!  These dice will look great hanging from the rearview mirror of my ox cart!\x07Now, show me that you can tell your enemies from one another.\x07Return when you have restored two of the tallest Sellbot buildings.',
         INCOMPLETE_PROGRESS: 'Do the buildings give you trouble?'},
  5200: {QUEST: 'Those sneaky Cogs are at it again.\x07_toNpcName_ has reported another missing item. Stop by and see if you can straighten it out._where_'},
@@ -1881,7 +1869,7 @@ QuestDialogDict = {
          INCOMPLETE_PROGRESS: 'Flippy can be found in Toon Hall',
          COMPLETE: 'A new type of Cog!\x07Good work!\x07Here is your final disguise part.'}}
 ChatGarblerDog = ['woof', 'arf', 'rruff']
-ChatGarblerCat = ['meow', 'mew'] #mew = pokemon :D
+ChatGarblerCat = ['meow', 'mew']
 ChatGarblerMouse = ['squeak', 'squeaky', 'squeakity']
 ChatGarblerHorse = ['neigh', 'brrr']
 ChatGarblerRabbit = ['eek',
