@@ -1419,13 +1419,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
     def getFishingRod(self):
         return self.fishingRod
 
-    def b_setMaxFishingRod(self, rodId):
-        if (not 0 <= rodId <= 4) or rodId <= self.maxFishingRod:
-            return
-
-        self.d_setMaxFishingRod(rodId)
-        self.setMaxFishingRod(rodId)
-
     def b_setFishingTrophies(self, trophyList):
         self.setFishingTrophies(trophyList)
         self.d_setFishingTrophies(trophyList)
