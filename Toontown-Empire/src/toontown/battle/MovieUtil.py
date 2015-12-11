@@ -9,7 +9,6 @@ import BattleProps
 from toontown.toonbase import TTLocalizer
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieUtil')
 SUIT_LOSE_DURATION = 6.0
-SUIT_LOSE_REVIVE_DURATION = 6.0
 SUIT_LURE_DISTANCE = 2.6
 SUIT_LURE_DOLLAR_DISTANCE = 5.1
 SUIT_EXTRA_REACH_DISTANCE = 0.9
@@ -200,8 +199,8 @@ def removeReviveSuit(suit, deathSuit):
     if not deathSuit.isEmpty():
         deathSuit.detachNode()
         suit.cleanupLoseActor()
-    suit.healthBar.geom.show()
-    suit.resetHealthBarForSkele()
+    suit.healthBar.show()
+    suit.reseatHealthBarForSkele()
 
 
 def virtualize(deathsuit):
@@ -219,6 +218,7 @@ def virtualize(deathsuit):
 
 def createTrainTrackAppearTrack(dyingSuit, toon, battle, npcs):
     retval = Sequence()
+    return retval
     possibleSuits = []
     for suitAttack in battle.movie.suitAttackDicts:
         suit = suitAttack['suit']
@@ -254,15 +254,16 @@ def createSuitReviveTrack(suit, toon, battle, npcs = []):
     if hasattr(suit, 'battleTrapProp') and suit.battleTrapProp and suit.battleTrapProp.getName() == 'traintrack' and not suit.battleTrapProp.isHidden():
         suitTrack.append(createTrainTrackAppearTrack(suit, toon, battle, npcs))
     deathSuit = suit.getLoseActor()
+    suitTrack.append(Func(notify.debug, 'before insertDeathSuit'))
     suitTrack.append(Func(insertReviveSuit, suit, deathSuit, battle, suitPos, suitHpr))
-    suitTrack.append(ActorInterval(deathSuit, 'lose', duration=SUIT_LOSE_REVIVE_DURATION))
+    suitTrack.append(Func(notify.debug, 'before actorInterval lose'))
+    suitTrack.append(ActorInterval(deathSuit, 'lose', duration=SUIT_LOSE_DURATION))
+    suitTrack.append(Func(notify.debug, 'before removeDeathSuit'))
     suitTrack.append(Func(removeReviveSuit, suit, deathSuit, name='remove-death-suit'))
-    suitTrack.append(ActorInterval(suit, 'slip-forward', startTime=2.48, duration=0.1))
-    suitTrack.append(ActorInterval(suit, 'slip-forward', startTime=2.58))
+    suitTrack.append(Func(notify.debug, 'after removeDeathSuit'))
     suitTrack.append(Func(suit.loop, 'neutral'))
-    suitTrack.append(Func(suit.setHP, suit.getMaxHP()))
     spinningSound = base.loadSfx('phase_3.5/audio/sfx/Cog_Death.ogg')
-    deathSound = base.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart_%s.ogg' % random.randint(1, 6))
+    deathSound = base.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart.ogg')
     deathSoundTrack = Sequence(Wait(0.8), SoundInterval(spinningSound, duration=1.2, startTime=1.5, volume=0.2), SoundInterval(spinningSound, duration=3.0, startTime=0.6, volume=0.8), SoundInterval(deathSound, volume=0.32))
     BattleParticles.loadParticles()
     smallGears = BattleParticles.createParticleEffect(file='gearExplosionSmall')
@@ -307,7 +308,7 @@ def createSuitDeathTrack(suit, toon, battle, npcs = []):
     suitTrack.append(Func(removeDeathSuit, suit, deathSuit, name='remove-death-suit'))
     suitTrack.append(Func(notify.debug, 'after removeDeathSuit'))
     spinningSound = base.loadSfx('phase_3.5/audio/sfx/Cog_Death.ogg')
-    deathSound = base.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart_%s.ogg' % random.randint(1, 6))
+    deathSound = base.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart.ogg')
     deathSoundTrack = Sequence(Wait(0.8), SoundInterval(spinningSound, duration=1.2, startTime=1.5, volume=0.2), SoundInterval(spinningSound, duration=3.0, startTime=0.6, volume=0.8), SoundInterval(deathSound, volume=0.32))
     BattleParticles.loadParticles()
     smallGears = BattleParticles.createParticleEffect(file='gearExplosionSmall')

@@ -38,13 +38,13 @@ def doSquirts(squirts):
             if 1:
                 target = squirt['target'][0]
                 suitId = target['suit'].doId
-                if suitId in suitSquirtsDict:
+                if suitSquirtsDict.has_key(suitId):
                     suitSquirtsDict[suitId].append(squirt)
                 else:
                     suitSquirtsDict[suitId] = [squirt]
         else:
             suitId = squirt['target']['suit'].doId
-            if suitId in suitSquirtsDict:
+            if suitSquirtsDict.has_key(suitId):
                 suitSquirtsDict[suitId].append(squirt)
             else:
                 suitSquirtsDict[suitId] = [squirt]
@@ -206,11 +206,9 @@ def __getSuitTrack(suit, tContact, tDodge, hp, hpbonus, kbbonus, anim, died, lef
         if kbbonus > 0:
             bonusTrack.append(Wait(0.75))
             bonusTrack.append(Func(suit.showHpText, -kbbonus, 2, openEnded=0, attackTrack=SQUIRT_TRACK))
-            bonusTrack.append(Func(suit.updateHealthBar, kbbonus))
         if hpbonus > 0:
             bonusTrack.append(Wait(0.75))
             bonusTrack.append(Func(suit.showHpText, -hpbonus, 1, openEnded=0, attackTrack=SQUIRT_TRACK))
-            bonusTrack.append(Func(suit.updateHealthBar, hpbonus))
         if died != 0:
             suitTrack.append(MovieUtil.createSuitDeathTrack(suit, toon, battle))
         else:
@@ -283,12 +281,12 @@ def __doFlower(squirt, delay, fShowStun):
     lodnames = toon.getLODNames()
     toonlod0 = toon.getLOD(lodnames[0])
     toonlod1 = toon.getLOD(lodnames[1])
-    if base.config.GetBool('want-new-anims', 1):
+    if config.GetBool('want-new-anims', 1):
         if not toonlod0.find('**/def_joint_attachFlower').isEmpty():
             flower_joint0 = toonlod0.find('**/def_joint_attachFlower')
     else:
         flower_joint0 = toonlod0.find('**/joint_attachFlower')
-    if base.config.GetBool('want-new-anims', 1):
+    if config.GetBool('want-new-anims', 1):
         if not toonlod1.find('**/def_joint_attachFlower').isEmpty():
             flower_joint1 = toonlod1.find('**/def_joint_attachFlower')
     else:
@@ -337,7 +335,8 @@ def __doWaterGlass(squirt, delay, fShowStun):
     tContact = tSpray + dSprayScale
     tSuitDodges = max(tSpray - 0.5, 0.0)
     tracks = Parallel()
-    tracks.append(ActorInterval(toon, 'spit'))
+    toonTrack = Sequence(ActorInterval(toon, 'spit'), Func(toon.loop, 'neutral'))
+    tracks.append(toonTrack)
     soundTrack = __getSoundTrack(level, hitSuit, 1.7, toon)
     tracks.append(soundTrack)
     glass = globalPropPool.getProp('glass')
@@ -351,7 +350,7 @@ def __doWaterGlass(squirt, delay, fShowStun):
     def getSprayStartPos(toon = toon):
         toon.update(0)
         lod0 = toon.getLOD(toon.getLODNames()[0])
-        if base.config.GetBool('want-new-anims', 1):
+        if config.GetBool('want-new-anims', 1):
             if not lod0.find('**/def_head').isEmpty():
                 joint = lod0.find('**/def_head')
             else:
@@ -577,6 +576,8 @@ def __doFireHose(squirt, delay, fShowStun):
     tracks.append(propTrack)
     if hp > 0:
         tracks.append(__getSplashTrack(targetPoint, 0.4, 2.7, battle, splashHold=1.5))
+    # TODO: We added in an unused animation for the cogs reaction where the cog pushes against the gush from a fire hose.
+    # The stream from the fire hose needs to be scaled with the cog's animation - right now it is static.
     if hp > 0 or delay <= 0:
         tracks.append(__getSuitTrack(suit, tContact, tSuitDodges, hp, hpbonus, kbbonus, 'squirt-large-react', died, leftSuits, rightSuits, battle, toon, fShowStun, revived=revived))
     return tracks
@@ -641,7 +642,7 @@ def __doStormCloud(squirt, delay, fShowStun):
             delay = trickleDuration = cloudHold * 0.25
             trickleTrack = Sequence(Func(battle.movie.needRestoreParticleEffect, trickleEffect), ParticleInterval(trickleEffect, cloud, worldRelative=0, duration=trickleDuration, cleanup=True), Func(battle.movie.clearRestoreParticleEffect, trickleEffect))
             track.append(trickleTrack)
-            for i in xrange(0, 3):
+            for i in range(0, 3):
                 dur = cloudHold - 2 * trickleDuration
                 ptrack.append(Sequence(Func(battle.movie.needRestoreParticleEffect, rainEffects[i]), Wait(delay), ParticleInterval(rainEffects[i], cloud, worldRelative=0, duration=dur, cleanup=True), Func(battle.movie.clearRestoreParticleEffect, rainEffects[i])))
                 delay += effectDelay
@@ -715,13 +716,13 @@ def __doGeyser(squirt, delay, fShowStun, uberClone = 0):
             geyserMound = MovieUtil.copyProp(geyser)
             geyserRemoveM = geyserMound.findAllMatches('**/Splash*')
             geyserRemoveM.addPathsFrom(geyserMound.findAllMatches('**/spout'))
-            for i in xrange(geyserRemoveM.getNumPaths()):
+            for i in range(geyserRemoveM.getNumPaths()):
                 geyserRemoveM[i].removeNode()
 
             geyserWater = MovieUtil.copyProp(geyser)
             geyserRemoveW = geyserWater.findAllMatches('**/hole')
             geyserRemoveW.addPathsFrom(geyserWater.findAllMatches('**/shadow'))
-            for i in xrange(geyserRemoveW.getNumPaths()):
+            for i in range(geyserRemoveW.getNumPaths()):
                 geyserRemoveW[i].removeNode()
 
             track = Sequence(Wait(rainDelay), Func(MovieUtil.showProp, geyserMound, battle, suit.getPos(battle)), Func(MovieUtil.showProp, geyserWater, battle, suit.getPos(battle)), LerpScaleInterval(geyserWater, 1.0, scaleUpPoint, startScale=MovieUtil.PNT3_NEARZERO), Wait(geyserHold * 0.5), LerpScaleInterval(geyserWater, 0.5, MovieUtil.PNT3_NEARZERO, startScale=scaleUpPoint))

@@ -1,7 +1,8 @@
 from direct.particles.ParticleEffect import *
+import os
 from direct.directnotify import DirectNotifyGlobal
+from direct.showbase import AppRunnerGlobal
 import ParticleDefs
-
 notify = DirectNotifyGlobal.directNotify.newCategory('BattleParticles')
 TutorialParticleEffects = ('gearExplosionBig.ptf', 'gearExplosionSmall.ptf', 'gearExplosion.ptf')
 ParticleNames = ('audit-div', 'audit-five', 'audit-four', 'audit-minus', 'audit-mult', 'audit-one', 'audit-plus', 'audit-six', 'audit-three', 'audit-two', 'blah', 'brainstorm-box', 'brainstorm-env', 'brainstorm-track', 'buzzwords-crash', 'buzzwords-inc', 'buzzwords-main', 'buzzwords-over', 'buzzwords-syn', 'confetti', 'doubletalk-double', 'doubletalk-dup', 'doubletalk-good', 'filibuster-cut', 'filibuster-fiscal', 'filibuster-impeach', 'filibuster-inc', 'jargon-brow', 'jargon-deep', 'jargon-hoop', 'jargon-ipo', 'legalese-hc', 'legalese-qpq', 'legalese-vd', 'mumbojumbo-boiler', 'mumbojumbo-creative', 'mumbojumbo-deben', 'mumbojumbo-high', 'mumbojumbo-iron', 'poundsign', 'schmooze-genius', 'schmooze-instant', 'schmooze-master', 'schmooze-viz', 'roll-o-dex', 'rollodex-card', 'dagger', 'fire', 'snow-particle', 'raindrop', 'gear', 'checkmark', 'dollar-sign', 'spark')
@@ -12,6 +13,8 @@ def loadParticles():
     global particleModel
     if particleModel == None:
         particleModel = loader.loadModel('phase_3.5/models/props/suit-particles')
+    return
+
 
 def unloadParticles():
     global particleModel
@@ -19,6 +22,8 @@ def unloadParticles():
         particleModel.removeNode()
     del particleModel
     particleModel = None
+    return
+
 
 def getParticle(name):
     if name in ParticleNames:
@@ -29,6 +34,7 @@ def getParticle(name):
         return None
     return None
 
+
 def loadParticleFile(name):
     assert name.endswith('.ptf')
     name = name[:-4] # Strip .ptf
@@ -37,6 +43,7 @@ def loadParticleFile(name):
     effect = ParticleEffect()
     particleFunc(effect)
     return effect
+
 
 def createParticleEffect(name = None, file = None, numParticles = None, color = None):
     if not name:
@@ -84,8 +91,6 @@ def createParticleEffect(name = None, file = None, numParticles = None, color = 
         return loadParticleFile('shred.ptf')
     elif name == 'Smile':
         return loadParticleFile('smile.ptf')
-    elif name == 'Smoke':
-        return loadParticleFile('smoke.ptf')
     elif name == 'SpriteFiredFlecks':
         return loadParticleFile('spriteFiredFlecks.ptf')
     elif name == 'Synergy':
@@ -104,12 +109,14 @@ def createParticleEffect(name = None, file = None, numParticles = None, color = 
         notify.warning('createParticleEffect() - no name: %s' % name)
     return None
 
+
 def setEffectTexture(effect, name, color = None):
     particles = effect.getParticlesNamed('particles-1')
     np = getParticle(name)
     if color:
         particles.renderer.setColor(color)
     particles.renderer.setFromNode(np)
+
 
 def __makeGearExplosion(numParticles = None, style = 'Normal'):
     if style == 'Normal':
@@ -122,6 +129,7 @@ def __makeGearExplosion(numParticles = None, style = 'Normal'):
         particles = effect.getParticlesNamed('particles-1')
         particles.setPoolSize(numParticles)
     return effect
+
 
 def __makeRubOut(color = None):
     effect = loadParticleFile('demotionUnFreeze.ptf')
@@ -137,6 +145,7 @@ def __makeRubOut(color = None):
     else:
         particles.renderer.setColor(Vec4(0.54, 0.92, 0.32, 0.7))
     return effect
+
 
 def __makeShiftLift():
     effect = loadParticleFile('pixieDrop.ptf')

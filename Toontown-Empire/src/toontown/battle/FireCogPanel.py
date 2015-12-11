@@ -4,7 +4,7 @@ from direct.fsm import StateData
 from direct.directnotify import DirectNotifyGlobal
 from toontown.battle import BattleBase
 from direct.gui.DirectGui import *
-from panda3d.core import *
+from pandac.PandaModules import *
 from toontown.toonbase import TTLocalizer
 
 class FireCogPanel(StateData.StateData):
@@ -26,7 +26,7 @@ class FireCogPanel(StateData.StateData):
         self.textFrame = DirectFrame(parent=self.frame, relief=None, image=gui.find('**/PckMn_Select_Tab'), image_color=Vec4(1, 1, 0, 1), image_scale=(1.0, 1.0, 2.0), text='', text_fg=Vec4(0, 0, 0, 1), text_pos=(0, 0.02, 0), text_scale=TTLocalizer.FCPtextFrame, pos=(-0.013, 0, 0.013))
         self.textFrame['text'] = TTLocalizer.FireCogTitle % localAvatar.getPinkSlips()
         self.avatarButtons = []
-        for i in xrange(4):
+        for i in range(4):
             button = DirectButton(parent=self.frame, relief=None, text='', text_fg=Vec4(0, 0, 0, 1), text_scale=0.067, text_pos=(0, -0.015, 0), textMayChange=1, image_scale=(1.0, 1.0, 1.0), image=(gui.find('**/PckMn_Arrow_Up'), gui.find('**/PckMn_Arrow_Dn'), gui.find('**/PckMn_Arrow_Rlvr')), command=self.__handleAvatar, extraArgs=[i])
             button.setScale(1, 1, 1)
             button.setPos(0, 0, 0.2)
@@ -47,7 +47,7 @@ class FireCogPanel(StateData.StateData):
             del self.backButton
         self.loaded = 0
 
-    def enter(self, numAvatars, localNum = None, luredIndices = None, trappedIndices = None, track = None):
+    def enter(self, numAvatars, localNum = None, luredIndices = None, trappedIndices = None, track = None, fireCosts = None):
         if not self.loaded:
             self.load()
         self.frame.show()
@@ -59,7 +59,7 @@ class FireCogPanel(StateData.StateData):
             if len(trappedIndices) > 0:
                 if track == BattleBase.TRAP:
                     invalidTargets += trappedIndices
-        self.__placeButtons(numAvatars, invalidTargets, localNum)
+        self.__placeButtons(numAvatars, invalidTargets, localNum, fireCosts)
 
     def exit(self):
         self.frame.hide()
@@ -87,24 +87,23 @@ class FireCogPanel(StateData.StateData):
     def adjustToons(self, numToons, localNum):
         self.__placeButtons(numToons, [], localNum)
 
-    def __placeButtons(self, numAvatars, invalidTargets, localNum):
-        canFire = 0
-
-        for i in xrange(4):
+    def __placeButtons(self, numAvatars, invalidTargets, localNum, fireCosts):
+        canfire = 0
+        for i in range(4):
             if numAvatars > i and i not in invalidTargets and i != localNum:
                 self.avatarButtons[i].show()
                 self.avatarButtons[i]['text'] = ''
-                if localAvatar.getPinkSlips():
+                if fireCosts[i] <= localAvatar.getPinkSlips():
                     self.avatarButtons[i]['state'] = DGG.NORMAL
                     self.avatarButtons[i]['text_fg'] = (0, 0, 0, 1)
-                    canFire = 1
+                    canfire = 1
                 else:
                     self.avatarButtons[i]['state'] = DGG.DISABLED
                     self.avatarButtons[i]['text_fg'] = (1.0, 0, 0, 1)
             else:
                 self.avatarButtons[i].hide()
 
-        if canFire:
+        if canfire:
             self.textFrame['text'] = TTLocalizer.FireCogTitle % localAvatar.getPinkSlips()
         else:
             self.textFrame['text'] = TTLocalizer.FireCogLowTitle % localAvatar.getPinkSlips()

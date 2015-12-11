@@ -11,7 +11,6 @@ from toontown.toonbase import ToontownBattleGlobals
 import BattleParticles
 import BattleProps
 import MovieNPCSOS
-import random
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieLures')
 
 def safeWrtReparentTo(nodePath, parent):
@@ -130,7 +129,7 @@ def __createFishingPoleMultiTrack(lure, dollar, dollarName):
 
 def __createMagnetMultiTrack(lure, magnet, pos, hpr, scale, isSmallMagnet = 1, npcs = []):
     toon = lure['toon']
-    if 'npc' in lure:
+    if lure.has_key('npc'):
         toon = lure['npc']
     battle = lure['battle']
     sidestep = lure['sidestep']
@@ -163,7 +162,7 @@ def __createMagnetMultiTrack(lure, magnet, pos, hpr, scale, isSmallMagnet = 1, n
                 suitTrack.append(Func(suit.loop, 'neutral'))
                 suitTrack.append(Wait(suitDelay))
                 suitTrack.append(ActorInterval(suit, 'landing', startTime=2.37, endTime=1.82))
-                for i in xrange(0, numShakes):
+                for i in range(0, numShakes):
                     suitTrack.append(ActorInterval(suit, 'landing', startTime=1.82, endTime=1.16, duration=shakeDuration))
 
                 suitTrack.append(ActorInterval(suit, 'landing', startTime=1.16, endTime=0.7))
@@ -190,7 +189,7 @@ def __createMagnetMultiTrack(lure, magnet, pos, hpr, scale, isSmallMagnet = 1, n
 
 def __createHypnoGogglesMultiTrack(lure, npcs = []):
     toon = lure['toon']
-    if 'npc' in lure:
+    if lure.has_key('npc'):
         toon = lure['npc']
     targets = lure['target']
     battle = lure['battle']
@@ -284,8 +283,8 @@ def __lureSlideshow(lure, npcs):
 
 
 def __createSuitDamageTrack(battle, suit, hp, lure, trapProp):
-    if (trapProp is None) or trapProp.isEmpty():
-        return Func(suit.loop, 'lured')
+    if trapProp == None or trapProp.isEmpty():
+        return Func(suit.loop, 'neutral')
     trapProp.wrtReparentTo(battle)
     trapTrack = ToontownBattleGlobals.TRAP_TRACK
     trapLevel = suit.battleTrap
@@ -353,7 +352,7 @@ def __createSuitDamageTrack(battle, suit, hp, lure, trapProp):
         sinkPos1.setZ(sinkPos1.getZ() - 3.1)
         sinkPos2.setZ(sinkPos2.getZ() - 9.1)
         dropPos.setZ(dropPos.getZ() + 15)
-        if base.config.GetBool('want-new-cogs', 0):
+        if config.GetBool('want-new-cogs', 0):
             nameTag = suit.find('**/def_nameTag')
         else:
             nameTag = suit.find('**/joint_nameTag')
@@ -380,7 +379,7 @@ def __createSuitDamageTrack(battle, suit, hp, lure, trapProp):
         explosionTrack = Sequence(Wait(2.3), createTNTExplosionTrack(battle, trapProp=trapProp, relativeTo=parent))
         suitTrack = Sequence(ActorInterval(suit, 'flail', duration=0.7), ActorInterval(suit, 'flail', startTime=0.7, endTime=0.0), ActorInterval(suit, 'neutral', duration=0.4), ActorInterval(suit, 'flail', startTime=0.6, endTime=0.7), Wait(0.4), ActorInterval(suit, 'slip-forward', startTime=2.48, duration=0.1), Func(battle.movie.needRestoreColor), Func(suit.setColorScale, Vec4(0.2, 0.2, 0.2, 1)), Func(trapProp.reparentTo, hidden), ActorInterval(suit, 'slip-forward', startTime=2.58), Func(suit.clearColorScale), Func(trapProp.sparksEffect.cleanup), Func(battle.movie.clearRestoreColor))
         damageTrack = Sequence(Wait(2.3), Func(suit.showHpText, -hp, openEnded=0), Func(suit.updateHealthBar, hp))
-        explosionSound = base.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart_%s.ogg' % random.randint(1, 6))
+        explosionSound = base.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart.ogg')
         soundTrack = Sequence(SoundInterval(globalBattleSoundCache.getSound('TL_dynamite.ogg'), duration=2.0, node=suit), SoundInterval(explosionSound, duration=0.6, node=suit))
         result.append(Parallel(tntTrack, suitTrack, damageTrack, explosionTrack, soundTrack))
     elif trapName == 'traintrack':
@@ -413,7 +412,7 @@ def getSplicedLerpAnimsTrack(object, animName, origDuration, newDuration, startT
     numIvals = origDuration * fps
     timeInterval = newDuration / numIvals
     animInterval = origDuration / numIvals
-    for i in xrange(0, int(numIvals)):
+    for i in range(0, int(numIvals)):
         track.append(Wait(timeInterval))
         track.append(ActorInterval(object, animName, startTime=startTime + addition, duration=animInterval))
         addition += animInterval
@@ -474,11 +473,14 @@ def createSuitReactionToTrain(battle, suit, hp, lure, trapProp):
     anim = 'flatten'
     suitReact = ActorInterval(suit, anim)
     cogGettingHit = getSoundTrack('TL_train_cog.ogg', node=toon)
-    suitTrack.append(Func(suit.loop, 'neutral'))
+    hideTrack = Sequence()
+    hideTrack.append(Wait(2.0))
+    hideTrack.append(LerpColorScaleInterval(trapProp, 1.0, Point4(1, 1, 1, 0)))
+    hideTrack.append(showDamage)
+    suitTrack.append(Func(suit.loop, 'lured'))
     suitTrack.append(Wait(timeToGetHit + TRAIN_MATERIALIZE_TIME))
     suitTrack.append(updateHealthBar)
-    suitTrack.append(Parallel(suitReact, cogGettingHit))
-    suitTrack.append(showDamage)
+    suitTrack.append(Parallel(suitReact, cogGettingHit, hideTrack))
     curDuration = suitTrack.getDuration()
     timeTillEnd = TOTAL_TRAIN_TIME - curDuration
     if timeTillEnd > 0:
@@ -526,19 +528,26 @@ def createIncomingTrainInterval(battle, suit, hp, lure, trapProp):
     materializeIval = Parallel()
     materializeIval.append(LerpColorScaleInterval(train, TRAIN_MATERIALIZE_TIME, Point4(1, 1, 1, 1)))
     for tunnel in tunnels:
-        materializeIval.append(LerpColorScaleInterval(tunnel, TRAIN_MATERIALIZE_TIME, Point4(1, 1, 1, 1)))
+        materializeIval.append(LerpColorScaleInterval(tunnel, TRAIN_MATERIALIZE_TIME - 1.5, Point4(1, 1, 1, 1)))
 
     for tunnel in tunnels:
         tunnelScaleIval = Sequence()
-        tunnelScaleIval.append(LerpScaleInterval(tunnel, TRAIN_MATERIALIZE_TIME - 1.0, Point3(1.0, 2.0, 2.5)))
-        tunnelScaleIval.append(LerpScaleInterval(tunnel, 0.5, Point3(1.0, 3.0, 1.5)))
-        tunnelScaleIval.append(LerpScaleInterval(tunnel, 0.5, Point3(1.0, 2.5, 2.0)))
+        tunnelScaleIval.append(LerpScaleInterval(tunnel, 0.75, Point3(1.0, 1.5, 1.7)))
+        tunnelScaleIval.append(LerpScaleInterval(tunnel, 0.5, Point3(1.0, 2.0, 2.1)))
+        tunnelScaleIval.append(LerpScaleInterval(tunnel, 0.5, Point3(1.0, 1.6, 1.7)))
         materializeIval.append(tunnelScaleIval)
 
     trainIval.append(materializeIval)
     endingX = TRAIN_STARTING_X + TRAIN_TRAVEL_DISTANCE
     trainIval.append(LerpPosInterval(train, TRAIN_DURATION, Point3(endingX, 0, 0), other=battle))
-    trainIval.append(LerpColorScaleInterval(train, TRAIN_MATERIALIZE_TIME, Point4(1, 1, 1, 0)))
+
+    dematerializeIval = Parallel()
+    dematerializeIval.append(LerpColorScaleInterval(train, TRAIN_MATERIALIZE_TIME, Point4(1, 1, 1, 0)))
+    for tunnel in tunnels:
+        dematerializeIval.append(LerpColorScaleInterval(tunnel, TRAIN_MATERIALIZE_TIME - 2.0, Point4(1, 1, 1, 0)))
+        dematerializeIval.append(LerpScaleInterval(tunnel, TRAIN_MATERIALIZE_TIME - 1.5, Point3(1.0, 0.01, 0.01)))
+    trainIval.append(dematerializeIval)
+
     retval.append(trainIval)
     trainSoundTrack = getSoundTrack('TL_train.ogg', node=toon)
     retval.append(trainSoundTrack)

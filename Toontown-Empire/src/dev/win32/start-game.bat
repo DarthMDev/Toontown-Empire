@@ -8,6 +8,7 @@ echo #1 - Localhost
 echo #2 - Toontown Empire Dev Server
 echo #3 - Custom
 echo #4 - Local RemoteDB
+echo #5 - Production Server
 echo.
 
 :selection
@@ -18,8 +19,12 @@ set /P INPUT=Selection:
 if %INPUT%==1 (
     set TTE_GAMESERVER=127.0.0.1
 ) else if %INPUT%==2 (
-    set TTE_GAMESERVER=167.114.220.172
-) else if %INPUT%==4 (
+    set TTE_GAMESERVER=45.55.208.151
+)
+else if %INPUT == 5 (
+    set TTE_GAMESERVER = gameserver.toontownempire.com
+    )
+ else if %INPUT%==4 (
     set TTE_GAMESERVER=127.0.0.1
 ) else if %INPUT%==3 (
     echo.

@@ -20,3 +20,4 @@ class DistributedBattleWaitersAI(DistributedBattleFinalAI.DistributedBattleFinal
         self.d_setMembers()
         self.needAdjust = 1
         self.b_setState('ReservesJoining')
+        

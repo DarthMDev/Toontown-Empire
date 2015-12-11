@@ -82,7 +82,7 @@ class DistributedBattleFinalAI(DistributedBattleBaseAI.DistributedBattleBaseAI):
             battleMultiplier = getBossBattleCreditMultiplier(self.battleNumber)
             for toonId in self.activeToons:
                 toon = self.getToon(toonId)
-                if toon and hasattr(self.air, 'questManager'):
+                if toon:
                     recovered, notRecovered = self.air.questManager.recoverItems(toon, self.suitsKilledThisBattle, self.zoneId)
                     self.toonItems[toonId][0].extend(recovered)
                     self.toonItems[toonId][1].extend(notRecovered)

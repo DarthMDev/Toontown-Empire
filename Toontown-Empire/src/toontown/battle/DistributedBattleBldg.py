@@ -1,23 +1,21 @@
-from direct.actor import Actor
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import State
+from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
-from panda3d.core import *
-import random
-
 from BattleBase import *
+from direct.actor import Actor
+from toontown.suit import SuitDNA
+from direct.directnotify import DirectNotifyGlobal
 import DistributedBattleBase
-import MovieUtil
-import SuitBattleGlobals
+from toontown.toon import TTEmote
 from otp.avatar import Emote
+from toontown.toonbase import TTLocalizer
+import MovieUtil
+from direct.fsm import State
+from toontown.suit import Suit
+import SuitBattleGlobals
+import random
+from toontown.toonbase import ToontownGlobals
 from otp.nametag.NametagConstants import *
 from otp.nametag import NametagGlobals
-from toontown.suit import Suit
-from toontown.suit import SuitDNA
-from toontown.toon import TTEmote
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
-
 
 class DistributedBattleBldg(DistributedBattleBase.DistributedBattleBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattleBldg')
@@ -133,7 +131,7 @@ class DistributedBattleBldg(DistributedBattleBase.DistributedBattleBase):
         camPos = Point3(0, -6, 4)
         camHpr = Vec3(0, 0, 0)
         camTrack.append(Func(camera.reparentTo, base.localAvatar))
-        camTrack.append(Func(setCamFov, settings['fov']))
+        camTrack.append(Func(setCamFov, ToontownGlobals.DefaultCameraFov))
         camTrack.append(Func(camera.setPosHpr, camPos, camHpr))
         mtrack = Parallel(suitTrack, toonTrack, camTrack)
         done = Func(callback)
@@ -192,11 +190,14 @@ class DistributedBattleBldg(DistributedBattleBase.DistributedBattleBase):
         for toon in self.toons:
             toon.startSmooth()
 
+        return None
+
     def enterBuildingReward(self, ts):
         self.delayDeleteMembers()
         if self.hasLocalToon():
             NametagGlobals.setMasterArrowsOn(0)
         self.movie.playReward(ts, self.uniqueName('building-reward'), self.__handleBuildingRewardDone, noSkip=True)
+        return None
 
     def __handleBuildingRewardDone(self):
         if self.hasLocalToon():
@@ -208,10 +209,12 @@ class DistributedBattleBldg(DistributedBattleBase.DistributedBattleBase):
         self.movie.resetReward(finish=1)
         self._removeMembersKeep()
         NametagGlobals.setMasterArrowsOn(1)
+        return None
 
-    def enterResume(self, ts=0):
+    def enterResume(self, ts = 0):
         if self.hasLocalToon():
             self.removeLocalToon()
+        return None
 
     def exitResume(self):
         return None

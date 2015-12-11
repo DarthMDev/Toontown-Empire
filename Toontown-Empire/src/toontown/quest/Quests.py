@@ -221,22 +221,22 @@ class Quest:
         self.check(track in self._cogTracks, 'invalid cog track: %s' % track)
 
     def checkSkelecogLevel(self, level):
-        self.check(level >= 1 and level <= 12, 'invalid cog level: %s' % level)
+        self.check(level >= 1 and level <= 12, 'invalid cog level: {0}'.format(level))
 
     def checkNumSkeleRevives(self, num):
-        self.check(1, 'invalid number of cogs: %s' % num)
+        self.check(1, 'invalid number of cogs: {0}'.format(num))
 
     def checkNumForemen(self, num):
-        self.check(num > 0, 'invalid number of foremen: %s' % num)
+        self.check(num > 0, 'invalid number of foremen: {0}'.format(num))
 
     def checkNumBosses(self, num):
-        self.check(num > 0, 'invalid number of bosses: %s' % num)
+        self.check(num > 0, 'invalid number of bosses: {0}'.format(num))
 
     def checkNumSupervisors(self, num):
-        self.check(num > 0, 'invalid number of supervisors: %s' % num)
+        self.check(num > 0, 'invalid number of supervisors: {0}'.format(num))
 
     def checkNumBuildings(self, num):
-        self.check(1, 'invalid num buildings: %s' % num)
+        self.check(1, 'invalid num buildings: {0}'.format(num))
 
     def checkBuildingTrack(self, track):
         self.check(track in self._cogTracks, 'invalid building track: %s' % track)
@@ -263,10 +263,10 @@ class Quest:
         self.check(1, 'invalid num gags: %s' % num)
 
     def checkGagTrack(self, track):
-        self.check(track >= ToontownBattleGlobals.MIN_TRACK_INDEX and track <= ToontownBattleGlobals.MAX_TRACK_INDEX, 'invalid gag track: %s' % track)
+        self.check(track >= ToontownBattleGlobals.MIN_TRACK_INDEX and track <= ToontownBattleGlobals.MAX_TRACK_INDEX, 'invalid gag track: {0}'.format(track))
 
     def checkGagItem(self, item):
-        self.check(item >= ToontownBattleGlobals.MIN_LEVEL_INDEX and item <= ToontownBattleGlobals.MAX_LEVEL_INDEX, 'invalid gag item: %s' % item)
+        self.check(item >= ToontownBattleGlobals.MIN_LEVEL_INDEX and item <= ToontownBattleGlobals.MAX_LEVEL_INDEX, 'invalid gag item: {0}'.format(item))
 
     def checkDeliveryItem(self, item):
         self.check(item in ItemDict, 'invalid delivery item: %s' % item)
@@ -292,13 +292,13 @@ class Quest:
             self.check(holder in self._cogTracks, 'invalid recovery item holder: %s for holderType: %s' % (holder, holderType))
 
     def checkTrackChoice(self, option):
-        self.check(option >= ToontownBattleGlobals.MIN_TRACK_INDEX and option <= ToontownBattleGlobals.MAX_TRACK_INDEX, 'invalid track option: %s' % option)
+        self.check(option >= ToontownBattleGlobals.MIN_TRACK_INDEX and option <= ToontownBattleGlobals.MAX_TRACK_INDEX, 'invalid track option: {0}'.format(option))
 
     def checkNumFriends(self, num):
         self.check(1, 'invalid number of friends: %s' % num)
 
     def checkNumMinigames(self, num):
-        self.check(1, 'invalid number of minigames: %s' % num)
+        self.check(1, 'invalid number of minigames: {0}'.format(num))
 
     def filterFunc(avatar):
         return 1
@@ -1669,7 +1669,7 @@ class PhoneQuest(Quest):
 
     def getObjectiveStrings(self):
         return [TTLocalizer.QuestsPhoneQuestString]
-    
+
 
 DefaultDialog = {GREETING: DefaultGreeting,
  QUEST: DefaultQuest,
@@ -1755,7 +1755,8 @@ class LocationBasedQuest(Quest):
 
 
 class NewbieQuest:
-    def getNewbieLevel(self):
+    @staticmethod
+    def getNewbieLevel():
         notify.error('Pure virtual - please override me')
 
     def getString(self, newStr = TTLocalizer.QuestsCogNewNewbieQuestObjective, oldStr = TTLocalizer.QuestsCogOldNewbieQuestObjective):
@@ -1799,7 +1800,7 @@ class CogQuest(LocationBasedQuest):
     def getNumCogs(self):
         return self.quest[1]
 
-    def getCompletionStatus(self, av, questDesc, npc = None):
+    def getCompletionStatus(self, questDesc, npc = None):
         questId, fromNpcId, toNpcId, rewardId, toonProgress = questDesc
         questComplete = toonProgress >= self.getNumCogs()
         return getCompleteStatusWithNpc(questComplete, toNpcId, npc)
@@ -1851,8 +1852,8 @@ class CogQuest(LocationBasedQuest):
         cogLoc = self.getLocationName()
         return text % {'cogName': cogName,
          'cogLoc': cogLoc}
-
-    def getHeadlineString(self):
+    @staticmethod
+    def getHeadlineString():
         return TTLocalizer.QuestsCogQuestHeadline
 
     def doesCogCount(self, avId, cogDict, zoneId, avList):
@@ -1940,8 +1941,8 @@ class CogTrackQuest(CogQuest):
         cogLocName = self.getLocationName()
         return text % {'cogText': cogText,
          'cogLoc': cogLocName}
-
-    def getHeadlineString(self):
+    @staticmethod
+    def getHeadlineString():
         return TTLocalizer.QuestsCogTrackQuestHeadline
 
     def doesCogCount(self, avId, cogDict, zoneId, avList):
@@ -2814,7 +2815,7 @@ class RecoverItemQuest(LocationBasedQuest):
 
     def testDone(self, progress):
         numberDone = progress & pow(2, 16) - 1
-        print 'Quest number done %s' % numberDone
+        print 'Quest number done {0}'.format(numberDone)
         if numberDone >= self.getNumItems():
             return 1
         else:
@@ -2996,7 +2997,7 @@ class TrackChoiceQuest(Quest):
 
 class FriendQuest(Quest):
     def filterFunc(avatar):
-        if len(avatar.getFriendsList()) == 0:
+        if avatar.getFriendsList() == 0:
             return 1
         else:
             return 0
@@ -3076,7 +3077,7 @@ class FriendNewbieQuest(FriendQuest, NewbieQuest):
         return [TTLocalizer.QuestsFriendNewbieQuestString % (self.getNumFriends(), self.getNewbieLevel())]
 
     def doesFriendCount(self, av, otherAv):
-        if otherAv != None and otherAv.getMaxHp() <= self.getNewbieLevel():
+        if otherAv is not None and otherAv.getMaxHp() <= self.getNewbieLevel():
             return 1
         return 0
 
@@ -18817,7 +18818,7 @@ def findFinalRewardId(questId):
         try:
             questDesc = QuestDict[questId]
         except KeyError:
-            print 'findFinalRewardId: Quest ID: %d not found' % questId
+            print 'findFinalRewardId: Quest ID: {0:d} not found'.format(questId)
             return -1
 
         nextQuestId = questDesc[QuestDictNextQuestIndex]
@@ -18972,7 +18973,7 @@ def filterQuests(entireQuestPool, currentNpc, av):
 
     finalQuestPool = filter(lambda key: validQuestPool[key], validQuestPool.keys())
     if notify.getDebug():
-        notify.debug('filterQuests: finalQuestPool: %s' % finalQuestPool)
+        notify.debug('filterQuests: finalQuestPool: {0}'.format(finalQuestPool))
     return finalQuestPool
 
 
@@ -19076,7 +19077,7 @@ def chooseMatchingQuest(tier, validQuestPool, rewardId, npc, av):
                         notify.warning('chooseMatchingQuests, no validQuestsMatchingReward')
                         return None
                     if notify.getDebug():
-                        notify.debug('validQuestsMatchingReward: Any tier: %s = %s' % (tier, validQuestsMatchingReward))
+                        notify.debug('validQuestsMatchingReward: Any tier: {0} = {1}'.format(tier, validQuestsMatchingReward))
                     bestQuest = seededRandomChoice(validQuestsMatchingReward)
     return bestQuest
 
@@ -19713,21 +19714,21 @@ class EPPReward(Reward):
                   TTLocalizer.Lawbot,
                   TTLocalizer.Cashbot,
                   TTLocalizer.Sellbot]
-     
+
     def sendRewardAI(self, av):
         av.addEPP(self.reward[0])
-    
+
     def countReward(self, qrc):
         pass
-    
+
     def getCogTrackName(self):
         return EPPReward.trackNames[self.reward[0]]
-    
+
     def getString(self):
         return TTLocalizer.QuestsEPPReward % self.getCogTrackName()
-    
+
     def getPosterString(self):
-        return TTLocalizer.QuestsEPPRewardPoster % self.getCogTrackName()       
+        return TTLocalizer.QuestsEPPRewardPoster % self.getCogTrackName()
 
 
 def getRewardClass(id):

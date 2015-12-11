@@ -1,19 +1,17 @@
-from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
-import random
-
-import BattleParticles
 from BattleProps import *
 from BattleSounds import *
+from direct.directnotify import DirectNotifyGlobal
 import MovieCamera
+import random
 import MovieUtil
-from otp.nametag.NametagConstants import *
-from otp.nametag import NametagGlobals
-from toontown.toon import NPCToons
+import BattleParticles
+import HealJokes
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownBattleGlobals
-
-
+from toontown.toon import NPCToons
+from otp.nametag.NametagConstants import *
+from otp.nametag import NametagGlobals
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieNPCSOS')
 soundFiles = ('AA_heal_tickle.ogg', 'AA_heal_telljoke.ogg', 'AA_heal_smooch.ogg', 'AA_heal_happydance.ogg', 'AA_heal_pixiedust.ogg', 'AA_heal_juggle.ogg')
 offset = Point3(0, 4.0, 0)
@@ -99,14 +97,8 @@ def teleportIn(attack, npc, pos = Point3(0, 0, 0), hpr = Vec3(180.0, 0.0, 0.0)):
     f = Func(npc.setChatAbsolute, TTLocalizer.MovieNPCSOSGreeting % attack['toon'].getName(), CFSpeech | CFTimeout)
     g = ActorInterval(npc, 'wave')
     h = Func(npc.loop, 'neutral')
-    seq = Sequence(a, b, c, d, e, ee, f, g, h)
-    seq.append(Func(npc.clearChat))
-    if npc.getName() == 'Magic Cat':
-        magicCatTrack = Sequence()
-        magicCatTrack.append(Func(npc.setChatAbsolute, "I've got this, so start dancing!", CFSpeech | CFTimeout))
-        magicCatTrack.append(Func(attack['toon'].loop, 'victory'))
-        seq.append(magicCatTrack)
-    return seq
+    i = Func(npc.clearChat)
+    return Sequence(a, b, c, d, e, ee, f, g, h, i)
 
 
 def teleportOut(attack, npc):
@@ -116,11 +108,11 @@ def teleportOut(attack, npc):
         a = ActorInterval(npc, 'curtsy')
     b = Func(npc.setChatAbsolute, TTLocalizer.MovieNPCSOSGoodbye, CFSpeech | CFTimeout)
     c = npc.getTeleportOutTrack()
-    seq = Sequence(a, b, c)
-    seq.append(Func(npc.removeActive))
-    seq.append(Func(npc.detachNode))
-    seq.append(Func(npc.delete))
-    return seq
+    d = Func(npc.removeActive)
+    e = Func(npc.detachNode)
+    f = Func(npc.delete)
+    return Sequence(a, b, c, d, e, f)
+
 
 def __getPartTrack(particleEffect, startDelay, durationDelay, partExtraArgs):
     pEffect = partExtraArgs[0]
@@ -251,7 +243,7 @@ def doNPCTeleports(attacks):
     arrivals = Sequence()
     departures = Parallel()
     for attack in attacks:
-        if 'npcId' in attack:
+        if attack.has_key('npcId'):
             npcId = attack['npcId']
             npc = NPCToons.createLocalNPC(npcId)
             if npc != None:
