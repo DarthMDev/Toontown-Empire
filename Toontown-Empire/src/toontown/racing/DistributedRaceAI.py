@@ -16,7 +16,7 @@ from toontown.toonbase import ToontownGlobals
 class DistributedRaceAI(DistributedObjectAI, FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedRaceAI")
 
-    def __init__(self, air, circuitPoints=None, circuitWinnings=[]):
+    def __init__(self, air, circuitPoints=None, circuitWinnings=None):
         DistributedObjectAI.__init__(self, air)
         FSM.__init__(self, 'DistributedRaceAI')
         self.air = air
@@ -35,7 +35,7 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
         self.currentlyAffectedByAnvil = {}
         self.avatarProgress = {}
         self.circuitPoints = circuitPoints or []
-        self.circuitWinnings = circuitWinnings
+        self.circuitWinnings = circuitWinnings or []
         self.quitAvatars = []
         self.startTime = globalClockDelta.networkToLocalTime(globalClockDelta.getRealNetworkTime()) + 3
 
