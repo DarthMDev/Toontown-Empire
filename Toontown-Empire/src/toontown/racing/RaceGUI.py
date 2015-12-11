@@ -15,7 +15,7 @@ from toontown.racing.RaceHeadFrame import RaceHeadFrame
 from toontown.racing.RaceGag import RaceGag
 from toontown.racing.RaceEndPanels import RaceEndPanel
 from toontown.racing import RaceGlobals
-from panda3d.core import CardMaker, OrthographicLens, LineSegs
+from pandac.PandaModules import CardMaker, OrthographicLens, LineSegs
 from direct.particles.ParticleEffect import *
 from math import fmod
 from math import sqrt
@@ -275,7 +275,7 @@ class RaceGUI:
 
     def enableResultMode(self):
         self.endPanel.enable()
-        if not self.race.circuitLoop:
+        if len(self.race.circuitLoop) > 1:
             taskMgr.doMethodLater(180, self.endPanel.closeButtonPressed, 'clearRaceEndPanel', extraArgs=[])
 
     def destroy(self):

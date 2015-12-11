@@ -1,6 +1,8 @@
-from pandac.PandaModules import *
+from panda3d.core import *
+from toontown.hood import Place, ZoneUtil
 from toontown.toon import Toon
-from toontown.hood import Place
+from toontown.toonbase import ToontownGlobals
+
 
 class BattlePlace(Place.Place):
 
@@ -33,7 +35,7 @@ class BattlePlace(Place.Place):
         pass
 
     def enterBattle(self, event):
-        if config.GetBool('want-qa-regression', 0):
+        if base.config.GetBool('want-qa-regression', 0):
             self.notify.info('QA-REGRESSION: COGBATTLE: Enter Battle')
         self.loader.music.stop()
         base.playMusic(self.loader.battleMusic, looping=1, volume=0.9)
@@ -86,7 +88,6 @@ class BattlePlace(Place.Place):
             except:
                 self.notify.warning('Invalid floor collision node in street: %s' % newZone.getIntoNode().getName())
                 return
-
         else:
             newZoneId = newZone
         self.doEnterZone(newZoneId)
@@ -94,7 +95,19 @@ class BattlePlace(Place.Place):
     def doEnterZone(self, newZoneId):
         if newZoneId != self.zoneId:
             if newZoneId != None:
-                base.cr.sendSetZoneMsg(newZoneId)
+                if hasattr(self, 'zoneVisDict'):
+                    visList = self.zoneVisDict[newZoneId]
+                else:
+                    visList = base.cr.playGame.getPlace().loader.zoneVisDict[newZoneId]
+                base.cr.sendSetZoneMsg(newZoneId, visList)
                 self.notify.debug('Entering Zone %d' % newZoneId)
             self.zoneId = newZoneId
-        return
+
+    def genDNAFileName(self, zoneId):
+        zoneId = ZoneUtil.getCanonicalZoneId(zoneId)
+        hoodId = ZoneUtil.getCanonicalHoodId(zoneId)
+        hood = ToontownGlobals.dnaMap[hoodId]
+        phase = ToontownGlobals.streetPhaseMap[hoodId]
+        if hoodId == zoneId:
+            zoneId = 'sz'
+        return 'phase_%s/dna/%s_%s.pdna' % (phase, hood, zoneId)

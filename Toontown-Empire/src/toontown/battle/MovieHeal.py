@@ -1,21 +1,22 @@
+from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
+from direct.task import Task
+import random
+
+from BattleBase import *
+import BattleParticles
 from BattleProps import *
 from BattleSounds import *
-from BattleBase import *
-from direct.directnotify import DirectNotifyGlobal
 import MovieCamera
-import random
+import MovieNPCSOS
 import MovieUtil
-import BattleParticles
-import HealJokes
+from otp.nametag.NametagConstants import *
+from toontown.effects import Splash
+from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase.ToontownBattleGlobals import AvPropDamage
-from toontown.toon import NPCToons
-import MovieNPCSOS
-from toontown.effects import Splash
-from direct.task import Task
-from otp.nametag.NametagConstants import *
-from otp.nametag import NametagGlobals
+
+
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieHeal')
 soundFiles = ('AA_heal_tickle.ogg', 'AA_heal_telljoke.ogg', 'AA_heal_smooch.ogg', 'AA_heal_happydance.ogg', 'AA_heal_pixiedust.ogg', 'AA_heal_juggle.ogg', 'AA_heal_High_Dive.ogg')
 healPos = Point3(0, 0, 0)
@@ -168,7 +169,7 @@ def __healTickle(heal, hasInteractivePropHealBonus):
 
 def __healJoke(heal, hasInteractivePropHealBonus):
     npcId = 0
-    if heal.has_key('npcId'):
+    if 'npcId' in heal:
         npcId = heal['npcId']
         toon = NPCToons.createLocalNPC(npcId)
         if toon == None:
@@ -178,7 +179,7 @@ def __healJoke(heal, hasInteractivePropHealBonus):
     targets = heal['target']
     ineffective = heal['sidestep']
     level = heal['level']
-    jokeIndex = heal['hpbonus'] % len(HealJokes.toonHealJokes)
+    jokeIndex = heal['hpbonus'] % len(TTLocalizer.ToonHealJokes)
     if npcId != 0:
         track = Sequence(MovieNPCSOS.teleportIn(heal, toon))
     else:
@@ -201,7 +202,7 @@ def __healJoke(heal, hasInteractivePropHealBonus):
     tracks.append(Sequence(Wait(tDoSoundAnimation), ActorInterval(toon, 'sound')))
     soundTrack = __getSoundTrack(level, 2.0, node=toon)
     tracks.append(soundTrack)
-    joke = HealJokes.toonHealJokes[jokeIndex]
+    joke = TTLocalizer.ToonHealJokes[jokeIndex]
     tracks.append(Sequence(Wait(tSpeakSetup), Func(toon.setChatAbsolute, joke[0], CFSpeech | CFTimeout)))
     tracks.append(Sequence(Wait(tSpeakPunchline), Func(toon.setChatAbsolute, joke[1], CFSpeech | CFTimeout)))
     reactTrack = Sequence(Wait(tTargetReact))
@@ -259,7 +260,7 @@ def __healSmooch(heal, hasInteractivePropHealBonus):
 
 def __healDance(heal, hasInteractivePropHealBonus):
     npcId = 0
-    if heal.has_key('npcId'):
+    if 'npcId' in heal:
         npcId = heal['npcId']
         toon = NPCToons.createLocalNPC(npcId)
         if toon == None:
@@ -342,7 +343,7 @@ def __healSprinkle(heal, hasInteractivePropHealBonus):
 
 def __healJuggle(heal, hasInteractivePropHealBonus):
     npcId = 0
-    if heal.has_key('npcId'):
+    if 'npcId' in heal:
         npcId = heal['npcId']
         toon = NPCToons.createLocalNPC(npcId)
         if toon == None:
@@ -390,7 +391,7 @@ def __healDive(heal, hasInteractivePropHealBonus):
     splash = Splash.Splash(render)
     splash.reparentTo(render)
     npcId = 0
-    if heal.has_key('npcId'):
+    if 'npcId' in heal:
         npcId = heal['npcId']
         toon = NPCToons.createLocalNPC(npcId)
         if toon == None:

@@ -280,7 +280,7 @@ def pingpong(anim, start=None, end=None, part=None):
     target = spellbook.getTarget()
     target.pingpong(anim, partName=part, fromFrame=start, toFrame=end)
 
-@magicWord(category=CATEGORY_LEADER, types=[str])
+@magicWord(category=CATEGORY_DEVELOPER, types=[str])
 def rightHand(prop=None):
     """
     parents the optional <prop> to the target's right hand node.
@@ -296,7 +296,7 @@ def rightHand(prop=None):
         requestedProp = globalPropPool.getProp(prop)
         requestedProp.reparentTo(rightHand)
 
-@magicWord(category=CATEGORY_LEADER, types=[str])
+@magicWord(category=CATEGORY_DEVELOPER, types=[str])
 def leftHand(prop=None):
     """
     parents the optional <prop> to the target's left hand node.
@@ -312,14 +312,14 @@ def leftHand(prop=None):
         requestedProp = globalPropPool.getProp(prop)
         requestedProp.reparentTo(leftHand)
 
-@magicWord(category=CATEGORY_LEADER, types=[])
+@magicWord(category=CATEGORY_DEVELOPER, types=[])
 def getPos():
     """
     Return your target's position.
     """
     return spellbook.getTarget().getPos()
 
-@magicWord(category=CATEGORY_LEADER, types=[int])
+@magicWord(category=CATEGORY_DEVELOPER, types=[int])
 def setFov(fov=OTPGlobals.DefaultCameraFov):
     """
     Set your field of view in-game.
@@ -350,8 +350,8 @@ def ToonUp(Laff):
    avatar.setHp(Laff)
    
 #Disabled because of Indent Error can be Fixed!
-'''
-magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+
+magicWord(category=CATEGORY_DEVELOPER, types=[int])
 def setPos(Pos):
     """
     Sets your target's position.
@@ -365,6 +365,7 @@ def setPos(Pos):
 	   print("Target is not Invoker")
 	   avatar = target
     try:
-     avatar.setPos(Pos)
-     print("Magic Word Manager Has Set Postion For Target.")
-'''
+       avatar.setPos(Pos)
+       print("Magic Word Manager Has Set Postion For Target.")
+    except:
+    	print 'Bruh'

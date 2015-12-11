@@ -3,19 +3,19 @@ from direct.distributed.ClockDelta import *
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from direct.fsm.FSM import FSM
 from direct.task import Task
-
+from toontown.uberdog import TopToonsGlobals
 import random
 
 from toontown.racing import RaceGlobals
 from toontown.racing.DistributedGagAI import DistributedGagAI
 from toontown.racing.DistributedVehicleAI import DistributedVehicleAI
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 
 
 class DistributedRaceAI(DistributedObjectAI, FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedRaceAI")
 
-    def __init__(self, air):
+    def __init__(self, air, circuitPoints=[], circuitWinnings=[]):
         DistributedObjectAI.__init__(self, air)
         FSM.__init__(self, 'DistributedRaceAI')
         self.air = air
@@ -33,6 +33,10 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
         self.livingGags = []
         self.currentlyAffectedByAnvil = {}
         self.avatarProgress = {}
+        self.circuitPoints = circuitPoints
+        self.circuitWinnings = circuitWinnings
+        self.quitAvatars = []
+        self.startTime = globalClockDelta.networkToLocalTime(globalClockDelta.getRealNetworkTime()) + 3
 
     def generate(self):
         for avatar in self.avatars:
@@ -45,9 +49,11 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
             kart.requestDelete()
         for gag in self.livingGags:
             gag.requestDelete()
-        self.air.deallocateZone(self.zoneId)
+        if not self.circuitLoop:
+            self.air.deallocateZone(self.zoneId)
         for i in xrange(len(self.gags)):
             taskMgr.remove('regenGag%i-%i' % (i, self.doId))
+        taskMgr.remove(self.uniqueName('next-race'))
         DistributedObjectAI.delete(self)
 
     def enterJoin(self):
@@ -130,6 +136,9 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
 
     def setCircuitLoop(self, circuitLoop):
         self.circuitLoop = circuitLoop
+        if self.circuitLoop and not self.circuitPoints:
+            self.circuitPoints = [[0, 0]] * len(self.avatars)
+            self.circuitWinnings = [0] * len(self.avatars)
 
     def getCircuitLoop(self):
         return self.circuitLoop
@@ -270,9 +279,36 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
         if not avId in self.avatars:
             self.air.writeServerEvent('suspicious', avId, 'Toon tried to leave race they\'re not in!')
             return
-        self.avatars.remove(avId)
-        if set(self.finishedAvatars) == set(self.avatars) or len(self.avatars) == 0:
-            self.requestDelete()
+        
+        if self.circuitLoop and self.finishedAvatars:
+            if avId in self.quitAvatars:
+                return
+            
+            self.quitAvatars.append(avId)
+            self.checkForNextRace()
+        else:
+            self.avatars.remove(avId)
+            if avId in self.quitAvatars:
+                self.quitAvatars.remove(avId)
+            if set(self.finishedAvatars) == set(self.avatars) or len(self.avatars) == 0:
+                self.requestDelete()
+    
+    def checkForNextRace(self):
+        if len(self.quitAvatars) >= len(self.avatars):
+            trackId = self.circuitLoop[0]
+            self.nextRace = DistributedRaceAI(self.air, self.circuitPoints, self.circuitWinnings)
+            self.nextRace.setZoneId(self.zoneId)
+            self.nextRace.setTrackId(trackId)
+            self.nextRace.setRaceType(self.raceType)
+            self.nextRace.setAvatars(self.avatars)
+            self.nextRace.setCircuitLoop(self.circuitLoop)
+            self.nextRace.setStartingPlaces(range(len(self.avatars)))
+            self.nextRace.setLapCount(3)
+            taskMgr.doMethodLater(3, self.startNewRace, self.uniqueName('next-race'), extraArgs=[trackId])
+    
+    def startNewRace(self, trackId, task=None):
+        self.nextRace.generateWithRequired(self.zoneId)
+        self.sendUpdate('setRaceZone', [self.zoneId, trackId])
 
     def heresMyT(self, avId, laps, currentLapT, timestamp):
         realAvId = self.air.getAvatarIdFromSender()
@@ -298,6 +334,7 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
 
         av = self.air.doId2do.get(avId)
         place = len(self.finishedAvatars)
+        listPlace = place + (4 - len(self.avatarProgress)) - 1
         entryFee = RaceGlobals.getEntryFee(self.trackId, self.raceType)
         bonus = 0
         totalTime = globalClockDelta.networkToLocalTime(globalClockDelta.getRealNetworkTime()) - self.startTime
@@ -309,8 +346,7 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
             winnings = RaceGlobals.PracticeWinnings
             trophies = []
         elif qualify:
-            offset = 4 - len(self.avatarProgress) # self.avatarProgress contains the amount of STARTING players.
-            winnings = entryFee * RaceGlobals.Winnings[(place+offset)-1]
+            winnings = entryFee * RaceGlobals.Winnings[listPlace]
             trophies = self.calculateTrophies(avId, place == 1, qualify, totalTime)
         else:
             winnings = 0
@@ -318,9 +354,25 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
         av.b_setTickets(av.getTickets() + winnings)
         if av.getTickets() > RaceGlobals.MaxTickets:
             av.b_setTickets(RaceGlobals.MaxTickets)
-        self.sendUpdate('setPlace', [avId, totalTime, place, entryFee, qualify, max((winnings-entryFee), 0), bonus, trophies, [], 0])
+        points = []
+        if self.circuitPoints:
+            avIndex = self.avatars.index(avId)
+            points = self.circuitPoints[avIndex]
+            points[0] += points[1]
+            points[1] = RaceGlobals.CircuitPoints[place - 1]
+        self.sendUpdate('setPlace', [avId, totalTime, place, entryFee, qualify, max((winnings-entryFee), 0), bonus, trophies, points, 0])
+        if self.circuitPoints:
+            self.circuitWinnings[avIndex] += winnings
+            self.sendUpdate('setCircuitPlace', [avId, place, entryFee, self.circuitWinnings[avIndex], bonus, trophies])
+            
+            if len(self.finishedAvatars) == len(self.avatars):
+                del self.circuitLoop[0]
+                self.sendUpdate('setCircuitLoop', [self.circuitLoop])
+                self.sendUpdate('endCircuitRace')
 
     def calculateTrophies(self, avId, won, qualify, time):
+        if won:
+            messenger.send('topToonsManager-event', [avId, TopToonsGlobals.CAT_RACE_WON, 1])
         av = self.air.doId2do[avId]
         kartingHistory = av.getKartingHistory()
         avTrophies = av.getKartingTrophies()
@@ -432,8 +484,11 @@ class DistributedRaceAI(DistributedObjectAI, FSM):
             count += 1
         if len(self.avatars) == 0:
             self.requestDelete()
+        else:
+            self.checkForNextRace()
 
     def requestKart(self):
+        pass
         avId = self.air.getAvatarIdFromSender()
         accId = self.air.getAccountIdFromSender()
         if not avId in self.avatars:

@@ -1,11 +1,15 @@
-from direct.interval.IntervalGlobal import *
-import MovieCamera
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import TTLocalizer
-from pandac.PandaModules import *
+from direct.interval.IntervalGlobal import *
+from panda3d.core import *
+
+import MovieCamera
 from otp.nametag.NametagConstants import *
 from otp.nametag import NametagGlobals
+from toontown.toonbase import TTLocalizer
+
+
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieSOS')
+
 
 def doSOSs(calls):
     if len(calls) == 0:
@@ -13,7 +17,7 @@ def doSOSs(calls):
 
     def callerFunc(toon, handle):
         toon.setChatAbsolute(TTLocalizer.MovieSOSCallHelp % handle.getName(), CFSpeech | CFTimeout)
-        handle.d_battleSOS(base.localAvatar.doId)
+        handle.d_battleSOS(handle.doId)
 
     def calleeFunc(toon, handle):
         toon.setChatAbsolute(TTLocalizer.MovieSOSCallHelp % handle.getName(), CFSpeech | CFTimeout)

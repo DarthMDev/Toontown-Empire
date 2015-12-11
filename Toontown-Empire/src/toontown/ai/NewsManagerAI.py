@@ -1,12 +1,14 @@
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.task import Task
+from otp.ai.MagicWordGlobal import *
 from toontown.effects.DistributedFireworkShowAI import DistributedFireworkShowAI
 from toontown.effects import FireworkShows
 from toontown.toonbase import ToontownGlobals
 from toontown.parties import PartyGlobals
-import datetime, random
 import HolidayGlobals
+import datetime
+import random
 
 class NewsManagerAI(DistributedObjectAI):
 
@@ -64,7 +66,7 @@ class NewsManagerAI(DistributedObjectAI):
         else:
             return HolidayGlobals.getStartDate(holiday) <= date <= HolidayGlobals.getEndDate(holiday)
 
-    def isHolidayRunning(self, id):
+    def isHolidayRunning(self, *args):
         return id in self.activeHolidays
 
     def startHoliday(self, id):
@@ -112,3 +114,34 @@ class NewsManagerAI(DistributedObjectAI):
             fireworkShow.b_startShow(type, random.randint(0, maxShow), globalClockDelta.getRealNetworkTime())
 
         return Task.again
+
+    def isGrandPrixRunning(self):
+        return self.isHolidayRunning(ToontownGlobals.SILLY_SATURDAY, ToontownGlobals.GRAND_PRIX) or True
+
+@magicWord(category=CATEGORY_DEVELOPER)
+def newsShutdown():
+    """
+    Shutdown the news manager tasks.
+    """
+    simbase.air.newsManager.deleteTasks()
+    return 'News manager shut down!'
+
+@magicWord(category=CATEGORY_DEVELOPER, types=[int])
+def startHoliday(holiday):
+    """
+    Start a holiday.
+    """
+    if simbase.air.newsManager.startHoliday(holiday):
+        return 'Started holiday %s!' % holiday
+    
+    return 'Holiday %s is already running!' % holiday
+
+@magicWord(category=CATEGORY_DEVELOPER, types=[int])
+def stopHoliday(holiday):
+    """
+    Stop a holiday.
+    """
+    if simbase.air.newsManager.endHoliday(holiday):
+        return 'Stopped holiday %s!' % holiday
+    
+    return 'Holiday %s is not running!' % holiday

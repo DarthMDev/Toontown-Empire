@@ -83,6 +83,7 @@ def __getSuitTrack(sound, lastSoundThatHit, delay, hitCount, targets, totalDamag
                 breakEffect.setDepthWrite(0)
                 breakEffect.setDepthTest(0)
                 breakEffect.setTwoSided(1)
+                breakEffect.setBin('fixed', 10)
                 soundEffect = globalBattleSoundCache.getSound(hitSoundFiles[0])
             suitTrack.append(Wait(delay + tSuitReact))
             if isUber:
@@ -102,7 +103,7 @@ def __getSuitTrack(sound, lastSoundThatHit, delay, hitCount, targets, totalDamag
                 suitTrack.append(Func(battle.unlureSuit, suit))
             bonusTrack = None
             if hpbonus > 0:
-                bonusTrack = Sequence(Wait(delay + tSuitReact + delay + 0.75 + uberDelay), Func(suit.showHpText, -hpbonus, 1, openEnded=0))
+                bonusTrack = Sequence(Wait(delay + tSuitReact + delay + 0.75 + uberDelay), Func(suit.showHpText, -hpbonus, 1, openEnded=0), Func(suit.updateHealthBar, hpbonus))
             suitTrack.append(Func(suit.loop, 'neutral'))
             if bonusTrack == None:
                 tracks.append(suitTrack)
@@ -129,7 +130,7 @@ def __doSoundsLevel(sounds, delay, hitCount, npcs):
     deathTracks = Parallel()
     for sound in sounds:
         toon = sound['toon']
-        if sound.has_key('npc'):
+        if 'npc' in sound:
             toon = sound['npc']
         level = sound['level']
         targets = sound['target']
@@ -185,7 +186,7 @@ def __createToonInterval(sound, delay, toon, operaInstrument = None):
         sprayEffect.setTwoSided(1)
         I1 = 2.8
         retval.append(ActorInterval(toon, 'sound', playRate=1.0, startTime=0.0, endTime=I1))
-        retval.append(Func(setPosFromOther, sprayEffect, operaInstrument, Point3(0, 1.6, -0.18)))
+        retval.append(Func(setPosFromOther, sprayEffect, operaInstrument, (0, 1.6, -0.18)))
         retval.append(__getPartTrack(sprayEffect, 0.0, 6.0, [sprayEffect, toon, 0], softStop=-3.5))
         retval.append(ActorInterval(toon, 'sound', playRate=1.0, startTime=I1))
     else:

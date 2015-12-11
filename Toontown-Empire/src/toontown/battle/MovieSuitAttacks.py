@@ -1,20 +1,23 @@
-from toontown.toonbase.ToontownGlobals import *
-from SuitBattleGlobals import *
+from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
+from direct.particles import ParticleEffect
+
 from BattleBase import *
+from BattleBase import *
+import BattleParticles
 from BattleProps import *
-from toontown.suit.SuitDNA import *
-from BattleBase import *
 from BattleSounds import *
 import MovieCamera
-from direct.directnotify import DirectNotifyGlobal
 import MovieUtil
-from direct.particles import ParticleEffect
-import BattleParticles
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from SuitBattleGlobals import *
 from otp.nametag.NametagConstants import *
 from otp.nametag import NametagGlobals
+from toontown.suit.SuitDNA import *
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase.ToontownGlobals import *
+
+
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieSuitAttacks')
 
 def __doDamage(toon, dmg, died):
@@ -240,7 +243,7 @@ def doSuitAttack(attack):
     elif name == TEE_OFF:
         suitTrack = doTeeOff(attack)
     elif name == THROW_BOOK:
-        suitTrack = doDefault(attack)
+        suitTrack = doThrowBook(attack)
     elif name == TREMOR:
         suitTrack = doTremor(attack)
     elif name == WATERCOOLER:
@@ -544,7 +547,7 @@ def getToonTrack(attack, damageDelay = 1e-06, damageAnimNames = None, dodgeDelay
     animTrack = Sequence()
     animTrack.append(Func(toon.headsUp, battle, suitPos))
     if dmg > 0:
-        animTrack.append(getToonTakeDamageTrack(toon, target['died'], dmg, damageDelay, damageAnimNames, splicedDamageAnims, showDamageExtraTime))
+        animTrack.append(getToonTakeDamageTrack(toon, attack, target['died'], dmg, damageDelay, damageAnimNames, splicedDamageAnims, showDamageExtraTime))
         return animTrack
     else:
         animTrack.append(getToonDodgeTrack(target, dodgeDelay, dodgeAnimNames, splicedDodgeAnims, showMissedExtraTime))
@@ -555,7 +558,7 @@ def getToonTrack(attack, damageDelay = 1e-06, damageAnimNames = None, dodgeDelay
 def getToonTracks(attack, damageDelay = 1e-06, damageAnimNames = None, dodgeDelay = 1e-06, dodgeAnimNames = None, splicedDamageAnims = None, splicedDodgeAnims = None, showDamageExtraTime = 0.01, showMissedExtraTime = 0.5):
     toonTracks = Parallel()
     targets = attack['target']
-    for i in range(len(targets)):
+    for i in xrange(len(targets)):
         tgt = targets[i]
         toonTracks.append(getToonTrack(attack, damageDelay, damageAnimNames, dodgeDelay, dodgeAnimNames, splicedDamageAnims, splicedDodgeAnims, target=tgt, showDamageExtraTime=showDamageExtraTime, showMissedExtraTime=showMissedExtraTime))
 
@@ -632,7 +635,7 @@ def getPropThrowTrack(attack, prop, hitPoints = [], missPoints = [], hitDuration
     battle = attack['battle']
 
     def getLambdas(list, prop, toon):
-        for i in range(len(list)):
+        for i in xrange(len(list)):
             if list[i] == 'face':
                 list[i] = lambda toon = toon: __toonFacePoint(toon)
             elif list[i] == 'miss':
@@ -654,12 +657,12 @@ def getPropThrowTrack(attack, prop, hitPoints = [], missPoints = [], hitDuration
     if lookAt != 'none':
         propTrack.append(Func(prop.lookAt, lookAt))
     if dmg > 0:
-        for i in range(len(hitPoints)):
+        for i in xrange(len(hitPoints)):
             pos = hitPoints[i]
             propTrack.append(LerpPosInterval(prop, hitDuration, pos=pos))
 
     else:
-        for i in range(len(missPoints)):
+        for i in xrange(len(missPoints)):
             pos = missPoints[i]
             propTrack.append(LerpPosInterval(prop, missDuration, pos=pos))
 
@@ -700,7 +703,7 @@ def throwPos(t, object, duration, target, values, gravity = -32.144):
     object.setPos(x, y, z)
 
 
-def getToonTakeDamageTrack(toon, died, dmg, delay, damageAnimNames = None, splicedDamageAnims = None, showDamageExtraTime = 0.01):
+def getToonTakeDamageTrack(toon, attack, died, dmg, delay, damageAnimNames = None, splicedDamageAnims = None, showDamageExtraTime = 0.01):
     toonTrack = Sequence()
     toonTrack.append(Wait(delay))
     if damageAnimNames:
@@ -714,7 +717,9 @@ def getToonTakeDamageTrack(toon, died, dmg, delay, damageAnimNames = None, splic
         indicatorTrack = Sequence(Wait(delay + showDamageExtraTime), Func(__doDamage, toon, dmg, died))
     toonTrack.append(Func(toon.loop, 'neutral'))
     if died:
-        toonTrack.append(Wait(5.0))
+        pbpText = attack['playByPlayText']
+
+        toonTrack.append(pbpText.getToonsDiedInterval([TTLocalizer.ToonDefeatedMessage % toon.getName()], 7.0))
     return Parallel(toonTrack, indicatorTrack)
 
 
@@ -761,7 +766,7 @@ def getSplicedLerpAnims(animName, origDuration, newDuration, startTime = 0, fps 
     animInterval = origDuration / numAnims
     if reverse == 1:
         animInterval = -animInterval
-    for i in range(0, int(numAnims)):
+    for i in xrange(0, int(numAnims)):
         anims.append([animName,
          timeInterval,
          startTime + addition,
@@ -771,12 +776,12 @@ def getSplicedLerpAnims(animName, origDuration, newDuration, startTime = 0, fps 
     return anims
 
 
-def getSoundTrack(fileName, delay = 0.01, startTime = 0.0, duration = None, node = None):
+def getSoundTrack(fileName, delay = 0.01, duration = None, node = None):
     soundEffect = globalBattleSoundCache.getSound(fileName)
     if duration:
-        return Sequence(Wait(delay), SoundInterval(soundEffect, startTime=startTime, duration=duration, node=node))
+        return Sequence(Wait(delay), SoundInterval(soundEffect, duration=duration, node=node))
     else:
-        return Sequence(Wait(delay), SoundInterval(soundEffect, startTime=startTime, node=node))
+        return Sequence(Wait(delay), SoundInterval(soundEffect, node=node))
 
 
 def doClipOnTie(attack):
@@ -906,17 +911,16 @@ def doFillWithLead(attack):
 
     def colorParts(parts):
         track = Parallel()
-        for partNum in range(0, parts.getNumPaths()):
+        for partNum in xrange(0, parts.getNumPaths()):
             nextPart = parts.getPath(partNum)
-            track.append(LerpColorScaleInterval(nextPart, 0.2, Point4(0, 0, 0, 1)))
+            track.append(Func(nextPart.setColorScale, Vec4(0, 0, 0, 1)))
 
         return track
 
     def resetParts(parts):
-        track = Sequence()
-        for partNum in range(0, parts.getNumPaths()):
+        track = Parallel()
+        for partNum in xrange(0, parts.getNumPaths()):
             nextPart = parts.getPath(partNum)
-            track.append(LerpColorScaleInterval(nextPart, 0.2, Point4(1, 1, 1, 1)))
             track.append(Func(nextPart.clearColorScale))
 
         return track
@@ -933,11 +937,10 @@ def doFillWithLead(attack):
         colorTrack.append(colorParts(torsoParts))
         colorTrack.append(Wait(partIvalDelay))
         colorTrack.append(colorParts(legsParts))
-        colorTrack.append(Wait(0.9))
+        colorTrack.append(Wait(2.5))
         colorTrack.append(resetParts(headParts))
         colorTrack.append(resetParts(torsoParts))
         colorTrack.append(resetParts(legsParts))
-        colorTrack.append(Wait(partIvalDelay))
         colorTrack.append(Func(battle.movie.clearRestoreColor))
         return Parallel(suitTrack, pencilPropTrack, sharpenerPropTrack, sprayTrack, headTrack, torsoTrack, legsTrack, colorTrack, toonTrack)
     else:
@@ -983,15 +986,14 @@ def doFountainPen(attack):
         splashTrack = Sequence(Func(battle.movie.needRestoreRenderProp, splash), Wait(1.65), Func(prepSplash, splash, __toonFacePoint(toon)), ActorInterval(splash, 'splash-from-splat'), Func(MovieUtil.removeProp, splash), Func(battle.movie.clearRenderProp, splash))
         headParts = toon.getHeadParts()
         splashTrack.append(Func(battle.movie.needRestoreColor))
-        for partNum in range(0, headParts.getNumPaths()):
+        for partNum in xrange(0, headParts.getNumPaths()):
             nextPart = headParts.getPath(partNum)
             splashTrack.append(Func(nextPart.setColorScale, Vec4(0, 0, 0, 1)))
 
         splashTrack.append(Func(MovieUtil.removeProp, splash))
-        splashTrack.append(Wait(2.1))
-        for partNum in range(0, headParts.getNumPaths()):
+        splashTrack.append(Wait(2.6))
+        for partNum in xrange(0, headParts.getNumPaths()):
             nextPart = headParts.getPath(partNum)
-            splashTrack.append(LerpColorScaleInterval(nextPart, 0.1, Point4(1, 1, 1, 1)))
             splashTrack.append(Func(nextPart.clearColorScale))
 
         splashTrack.append(Func(battle.movie.clearRestoreColor))
@@ -1042,7 +1044,7 @@ def doRubOut(attack):
 
     def hideParts(parts):
         track = Parallel()
-        for partNum in range(0, parts.getNumPaths()):
+        for partNum in xrange(0, parts.getNumPaths()):
             nextPart = parts.getPath(partNum)
             track.append(Func(nextPart.setTransparency, 1))
             track.append(LerpFunctionInterval(nextPart.setAlphaScale, fromData=1, toData=0, duration=0.2))
@@ -1051,7 +1053,7 @@ def doRubOut(attack):
 
     def showParts(parts):
         track = Parallel()
-        for partNum in range(0, parts.getNumPaths()):
+        for partNum in xrange(0, parts.getNumPaths()):
             nextPart = parts.getPath(partNum)
             track.append(Func(nextPart.clearColorScale))
             track.append(Func(nextPart.clearTransparency))
@@ -1330,7 +1332,7 @@ def doBuzzWord(attack):
      'buzzwords-main',
      'buzzwords-over',
      'buzzwords-syn']
-    for i in range(0, 5):
+    for i in xrange(0, 5):
         effect = BattleParticles.createParticleEffect('BuzzWord')
         if random.random() > 0.5:
             BattleParticles.setEffectTexture(effect, texturesList[i], color=Vec4(1, 0.94, 0.02, 1))
@@ -1591,13 +1593,11 @@ def doReOrg(attack):
     dmg = target['hp']
     damageDelay = 1.7
     attackDelay = 1.7
-    sprayEffect = BattleParticles.createParticleEffect(file='spinSpray')
+    sprayEffect = BattleParticles.createParticleEffect(file='reorgSpray')
     suitTrack = getSuitTrack(attack)
     partTrack = getPartTrack(sprayEffect, 1.0, 1.9, [sprayEffect, suit, 0])
     if dmg > 0:
         headParts = toon.getHeadParts()
-        print '***********headParts pos=', headParts[0].getPos()
-        print '***********headParts hpr=', headParts[0].getHpr()
         headTracks = Parallel()
         for partNum in xrange(0, headParts.getNumPaths()):
             part = headParts.getPath(partNum)
@@ -1617,7 +1617,6 @@ def doReOrg(attack):
         arms = toon.findAllMatches('**/arms')
         sleeves = toon.findAllMatches('**/sleeves')
         hands = toon.findAllMatches('**/hands')
-        print '*************arms hpr=', arms[0].getHpr()
         for partNum in xrange(0, arms.getNumPaths()):
             chestTracks.append(getChestTrack(arms.getPath(partNum)))
             chestTracks.append(getChestTrack(sleeves.getPath(partNum)))
@@ -1706,7 +1705,7 @@ def doGlowerPower(attack):
     battle = attack['battle']
     leftKnives = []
     rightKnives = []
-    for i in range(0, 3):
+    for i in xrange(0, 3):
         leftKnives.append(globalPropPool.getProp('dagger'))
         rightKnives.append(globalPropPool.getProp('dagger'))
 
@@ -1723,7 +1722,7 @@ def doGlowerPower(attack):
         rightPosPoints = [Point3(-0.4, 3.8, 3.7), MovieUtil.PNT3_ZERO]
     leftKnifeTracks = Parallel()
     rightKnifeTracks = Parallel()
-    for i in range(0, 3):
+    for i in xrange(0, 3):
         knifeDelay = 0.11
         leftTrack = Sequence()
         leftTrack.append(Wait(1.1))
@@ -1771,8 +1770,7 @@ def doHalfWindsor(attack):
       0.01,
       0.4], ['cringe', 0.01, 0.7]]
     toonTrack = getToonTrack(attack, damageDelay=damageDelay, splicedDamageAnims=damageAnims, dodgeDelay=dodgeDelay, dodgeAnimNames=['sidestep'])
-    throwSound = getSoundTrack('SA_powertie_throw.ogg', delay=throwDelay + 1, node=suit)
-    return Parallel(suitTrack, toonTrack, tiePropTrack, throwSound)
+    return Parallel(suitTrack, toonTrack, tiePropTrack)
 
 
 def doHeadShrink(attack):
@@ -1829,7 +1827,7 @@ def doHeadShrink(attack):
 
         def scaleHeadParallel(scale, duration, headParts = headParts):
             headTracks = Parallel()
-            for partNum in range(0, headParts.getNumPaths()):
+            for partNum in xrange(0, headParts.getNumPaths()):
                 nextPart = headParts.getPath(partNum)
                 headTracks.append(LerpScaleInterval(nextPart, duration, Point3(scale, scale, scale)))
 
@@ -2187,7 +2185,7 @@ def doHotAir(attack):
 
     def changeColor(parts):
         track = Parallel()
-        for partNum in range(0, parts.getNumPaths()):
+        for partNum in xrange(0, parts.getNumPaths()):
             nextPart = parts.getPath(partNum)
             track.append(Func(nextPart.setColorScale, Vec4(0, 0, 0, 1)))
 
@@ -2195,7 +2193,7 @@ def doHotAir(attack):
 
     def resetColor(parts):
         track = Parallel()
-        for partNum in range(0, parts.getNumPaths()):
+        for partNum in xrange(0, parts.getNumPaths()):
             nextPart = parts.getPath(partNum)
             track.append(Func(nextPart.clearColorScale))
 
@@ -2252,6 +2250,60 @@ def doPickPocket(attack):
     return multiTrackList
 
 
+def doCigarSmoke(attack):
+    suit = attack['suit']
+    battle = attack['battle']
+    target = attack['target']
+    toon = target['toon']
+    dmg = target['hp']
+    BattleParticles.loadParticles()
+    smoke = BattleParticles.createParticleEffect('Smoke')
+    BattleParticles.setEffectTexture(smoke, 'snow-particle')
+    cigar = globalPropPool.getProp('cigar')
+    suitTrack = getSuitTrack(attack)
+    cigarPosPoints = [Point3(-0.05, -0.2, -0.25), VBase3(180.0, 0.0, 0.0)]
+    cigarPropTrack = getPropTrack(cigar, suit.getRightHand(), cigarPosPoints, 0.6, 3.6, scaleUpPoint=Point3(6.0, 6.0, 6.0))
+    toonTrack = getToonTrack(attack, 3.55, ['cringe'], 3.0, ['sidestep'])
+    multiTrackList = Parallel(suitTrack, toonTrack)
+    smokeTrack = getPartTrack(smoke, 3.45, 1.5, [smoke, suit, 0])
+    multiTrackList.append(cigarPropTrack)
+    multiTrackList.append(smokeTrack)
+
+    def changeColor(parts):
+        track = Parallel()
+        for partNum in xrange(0, parts.getNumPaths()):
+            nextPart = parts.getPath(partNum)
+            track.append(Func(nextPart.setColorScale, Vec4(0, 0, 0, 1)))
+
+        return track
+
+    def resetColor(parts):
+        track = Parallel()
+        for partNum in xrange(0, parts.getNumPaths()):
+            nextPart = parts.getPath(partNum)
+            track.append(Func(nextPart.clearColorScale))
+
+        return track
+
+    if dmg > 0:
+        headParts = toon.getHeadParts()
+        torsoParts = toon.getTorsoParts()
+        legsParts = toon.getLegsParts()
+        colorTrack = Sequence()
+        colorTrack.append(Wait(3.6))
+        colorTrack.append(Func(battle.movie.needRestoreColor))
+        colorTrack.append(changeColor(headParts))
+        colorTrack.append(changeColor(torsoParts))
+        colorTrack.append(changeColor(legsParts))
+        colorTrack.append(Wait(2.2))
+        colorTrack.append(resetColor(headParts))
+        colorTrack.append(resetColor(torsoParts))
+        colorTrack.append(resetColor(legsParts))
+        colorTrack.append(Func(battle.movie.clearRestoreColor))
+        multiTrackList.append(colorTrack)
+    return multiTrackList
+
+
 def doFilibuster(attack):
     suit = attack['suit']
     target = attack['target']
@@ -2277,7 +2329,7 @@ def doFilibuster(attack):
     sprayTrack3 = getPartTrack(sprayEffect3, partDelay + 1.6, partDuration, [sprayEffect3, suit, 0])
     sprayTrack4 = getPartTrack(sprayEffect4, partDelay + 2.4, partDuration, [sprayEffect4, suit, 0])
     damageAnims = []
-    for i in range(0, 4):
+    for i in xrange(0, 4):
         damageAnims.append(['cringe',
          1e-05,
          0.3,
@@ -2294,8 +2346,6 @@ def doFilibuster(attack):
 def doSchmooze(attack):
     suit = attack['suit']
     battle = attack['battle']
-    target = attack['target']
-    dmg = target['hp']
     BattleParticles.loadParticles()
     upperEffects = []
     lowerEffects = []
@@ -2303,7 +2353,7 @@ def doSchmooze(attack):
      'schmooze-instant',
      'schmooze-master',
      'schmooze-viz']
-    for i in range(0, 4):
+    for i in xrange(0, 4):
         upperEffect = BattleParticles.createParticleEffect(file='schmoozeUpperSpray')
         lowerEffect = BattleParticles.createParticleEffect(file='schmoozeLowerSpray')
         BattleParticles.setEffectTexture(upperEffect, textureNames[i], color=Vec4(0, 0, 1, 1))
@@ -2327,12 +2377,12 @@ def doSchmooze(attack):
     suitTrack = getSuitTrack(attack)
     upperPartTracks = Parallel()
     lowerPartTracks = Parallel()
-    for i in range(0, 4):
+    for i in xrange(0, 4):
         upperPartTracks.append(getPartTrack(upperEffects[i], partDelay + i * 0.65, 0.8, [upperEffects[i], suit, 0]))
         lowerPartTracks.append(getPartTrack(lowerEffects[i], partDelay + i * 0.65 + 0.7, 1.0, [lowerEffects[i], suit, 0]))
 
     damageAnims = []
-    for i in range(0, 3):
+    for i in xrange(0, 3):
         damageAnims.append(['conked',
          0.01,
          0.3,
@@ -2350,11 +2400,7 @@ def doSchmooze(attack):
      1.28])
     dodgeAnims.append(['duck', 0.01, 3.16])
     toonTrack = getToonTrack(attack, damageDelay=damageDelay, splicedDamageAnims=damageAnims, dodgeDelay=dodgeDelay, splicedDodgeAnims=dodgeAnims, showMissedExtraTime=1.9, showDamageExtraTime=1.1)
-    if dmg > 0:
-        hitSound = getSoundTrack('SA_schmooze.ogg', delay=damageDelay + 0.35, startTime=1.2, node=suit)
-        return Parallel(suitTrack, toonTrack, upperPartTracks, lowerPartTracks, hitSound)
-    else:
-        return Parallel(suitTrack, toonTrack, upperPartTracks, lowerPartTracks)
+    return Parallel(suitTrack, toonTrack, upperPartTracks, lowerPartTracks)
 
 
 def doQuake(attack):
@@ -2422,7 +2468,7 @@ def doRedTape(attack):
     dmg = target['hp']
     tape = globalPropPool.getProp('redtape')
     tubes = []
-    for i in range(0, 3):
+    for i in xrange(0, 3):
         tubes.append(globalPropPool.getProp('redtape-tube'))
 
     suitTrack = getSuitTrack(attack)
@@ -2456,7 +2502,7 @@ def doRedTape(attack):
     tubePosPoints = [Point3(0, 0, tubeHeight), MovieUtil.PNT3_ZERO]
     tubeTracks = Parallel()
     tubeTracks.append(Func(battle.movie.needRestoreHips))
-    for partNum in range(0, hips.getNumPaths()):
+    for partNum in xrange(0, hips.getNumPaths()):
         nextPart = hips.getPath(partNum)
         tubeTracks.append(getPropTrack(tubes[partNum], nextPart, tubePosPoints, 3.25, 3.17, scaleUpPoint=scaleUpPoint))
 
@@ -2514,7 +2560,7 @@ def doParadigmShift(attack):
             shakeTrack.append(Wait(damageDelay + 0.25))
             shakeTrack.append(Func(shadow.hide))
             shakeTrack.append(LerpPosInterval(toon, 1.1, risePoint))
-            for i in range(0, 17):
+            for i in xrange(0, 17):
                 shakeTrack.append(LerpPosInterval(toon, 0.03, shakeLeft))
                 shakeTrack.append(LerpPosInterval(toon, 0.03, shakeRight))
 
@@ -2730,7 +2776,7 @@ def doFired(attack):
 
     def changeColor(parts):
         track = Parallel()
-        for partNum in range(0, parts.getNumPaths()):
+        for partNum in xrange(0, parts.getNumPaths()):
             nextPart = parts.getPath(partNum)
             track.append(Func(nextPart.setColorScale, Vec4(0, 0, 0, 1)))
 
@@ -2738,7 +2784,7 @@ def doFired(attack):
 
     def resetColor(parts):
         track = Parallel()
-        for partNum in range(0, parts.getNumPaths()):
+        for partNum in xrange(0, parts.getNumPaths()):
             nextPart = parts.getPath(partNum)
             track.append(Func(nextPart.clearColorScale))
 
@@ -2913,7 +2959,7 @@ def doCrunch(attack):
     numberSpillTrack2 = getPartTrack(numberSpill2, 1.5, 1.0, [numberSpill2, suit, 0])
     numberSprayTracks = Parallel()
     numOfNumbers = random.randint(5, 9)
-    for i in range(0, numOfNumbers - 1):
+    for i in xrange(0, numOfNumbers - 1):
         nextSpray = BattleParticles.createParticleEffect(file='numberSpray')
         nextTexture = random.choice(numberNames)
         BattleParticles.setEffectTexture(nextSpray, 'audit-' + nextTexture)
@@ -2923,7 +2969,7 @@ def doCrunch(attack):
         numberSprayTracks.append(nextSprayTrack)
 
     numberTracks = Parallel()
-    for i in range(0, numOfNumbers):
+    for i in xrange(0, numOfNumbers):
         texture = random.choice(numberNames)
         next = MovieUtil.copyProp(BattleParticles.getParticle('audit-' + texture))
         next.reparentTo(suit.getRightHand())
@@ -3221,6 +3267,49 @@ def doEvictionNotice(attack):
     return Parallel(suitTrack, toonTrack, propTrack)
 
 
+def doThrowBook(attack):
+    suit = attack['suit']
+    battle = attack['battle']
+    target = attack['target']
+    toon = target['toon']
+    dmg = target['hp']
+    suitDelay = 2.0
+    propDelay = 0.6
+    throwDuration = 1.5
+    paper = globalPropPool.getProp('lawbook')
+    suitTrack = getSuitTrack(attack)
+    posPoints = [Point3(0.00, -1.00, -1.85), VBase3(180.00, -45.00, -45.00)]
+    paperTrack = Sequence(getPropAppearTrack(paper, suit.getRightHand(), posPoints, propDelay, Point3(2.25, 2.25, 2.25), scaleUpTime=0.5))
+    paperTrack.append(Wait(suitDelay))
+    hitPoint = toon.getPos(battle)
+    hitPoint.setX(hitPoint.getX() + 1.2)
+    hitPoint.setY(hitPoint.getY() + 1.5)
+    if dmg > 0:
+        hitPoint.setZ(hitPoint.getZ() + 1.1)
+    movePoint = Point3(hitPoint.getX(), hitPoint.getY() - 1.8, hitPoint.getZ() + 0.2)
+    paperTrack.append(Func(battle.movie.needRestoreRenderProp, paper))
+    paperTrack.append(Func(paper.wrtReparentTo, battle))
+    paperTrack.append(getThrowTrack(paper, hitPoint, duration=throwDuration, parent=battle))
+    paperTrack.append(Wait(0.6))
+    paperTrack.append(LerpPosInterval(paper, 0.4, movePoint))
+    spinTrack = Sequence(Wait(propDelay + suitDelay + 0.2), LerpHprInterval(paper, throwDuration, Point3(-360, 0, 0)))
+    sizeTrack = Sequence(Wait(propDelay + suitDelay + 0.2), LerpScaleInterval(paper, throwDuration, Point3(6, 6, 6)), Wait(0.95), LerpScaleInterval(paper, 0.4, MovieUtil.PNT3_NEARZERO))
+    propTrack = Sequence(Parallel(paperTrack, spinTrack, sizeTrack), Func(MovieUtil.removeProp, paper), Func(battle.movie.clearRenderProp, paper))
+    damageAnims = []
+    damageAnims.append(['cringe',
+     0.01,
+     0.21,
+     0.08])
+    damageAnims.append(['slip-forward',
+     0.01,
+     0.6,
+     0.85])
+    damageAnims.extend(getSplicedLerpAnims('slip-forward', 0.31, 0.95, startTime=1.2))
+    damageAnims.append(['slip-forward', 0.01, 1.51])
+    toonTrack = getToonTrack(attack, damageDelay=4.35, splicedDamageAnims=damageAnims, dodgeDelay=2.4, dodgeAnimNames=['sidestep'], showDamageExtraTime=0.4, showMissedExtraTime=1.3)
+    return Parallel(suitTrack, toonTrack, propTrack)
+
+
 def doWithdrawal(attack):
     suit = attack['suit']
     battle = attack['battle']
@@ -3239,7 +3328,7 @@ def doWithdrawal(attack):
 
     def changeColor(parts):
         track = Parallel()
-        for partNum in range(0, parts.getNumPaths()):
+        for partNum in xrange(0, parts.getNumPaths()):
             nextPart = parts.getPath(partNum)
             track.append(Func(nextPart.setColorScale, Vec4(0, 0, 0, 1)))
 
@@ -3247,7 +3336,7 @@ def doWithdrawal(attack):
 
     def resetColor(parts):
         track = Parallel()
-        for partNum in range(0, parts.getNumPaths()):
+        for partNum in xrange(0, parts.getNumPaths()):
             nextPart = parts.getPath(partNum)
             track.append(Func(nextPart.clearColorScale))
 
@@ -3407,35 +3496,6 @@ def doGuiltTrip(attack):
     return Parallel(suitTrack, partTrack1, partTrack2, soundTrack, waterfallTrack, toonTracks)
 
 
-def doCigarSmoke(attack):
-    suit = attack['suit']
-    battle = attack['battle']
-    target = attack['target']
-    toon = target['toon']
-    dmg = target['hp']
-    cigar = globalPropPool.getProp('cigar')
-    cigar.setScale(10)
-    cigar.setX(-0.10)
-    cigar.setY(-0.50)
-    cigar.setZ(-0.50)
-    cigar.setH(180)
-    cigar.reparentTo(suit.getRightHand())
-    suitTrack = getSuitTrack(attack)
-    posPoints = [Point3(0, 0, 0), VBase3(0, 0, 0)]
-    propTrack = Sequence(getPropAppearTrack(cigar, suit.getRightHand(), posPoints, 5, MovieUtil.PNT3_ONE, scaleUpTime=0.5))
-    propTrack.append(Wait(1.73))
-    hitPoint = __toonFacePoint(toon, parent=battle)
-    hitPoint.setX(hitPoint.getX() - 1.4)
-    missPoint = __toonGroundPoint(attack, toon, 0.7, parent=battle)
-    missPoint.setX(missPoint.getX() - 1.1)
-    propTrack.append(getPropThrowTrack(attack, cigar, parent=battle))
-    damageAnims = [['conked']]
-    toonTrack = getToonTrack(attack, damageDelay=4.5, splicedDamageAnims=damageAnims, dodgeDelay=2.8, dodgeAnimNames=['sidestep'])
-    if dmg > 0:
-        return Parallel(suitTrack, toonTrack, propTrack)
-    else:
-        return Parallel(suitTrack, toonTrack, propTrack)
-
 def doRestrainingOrder(attack):
     suit = attack['suit']
     battle = attack['battle']
@@ -3559,7 +3619,7 @@ def doPeckingOrder(attack):
     numBirds = random.randint(4, 7)
     birdTracks = Parallel()
     propDelay = 1.5
-    for i in range(0, numBirds):
+    for i in xrange(0, numBirds):
         next = globalPropPool.getProp('bird')
         next.setScale(0.01)
         next.reparentTo(suit.getRightHand())

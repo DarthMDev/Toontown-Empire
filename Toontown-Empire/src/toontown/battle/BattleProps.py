@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.actor import Actor
 from direct.directnotify import DirectNotifyGlobal
 from otp.otpbase import OTPGlobals
@@ -198,12 +198,14 @@ Props = ((5, 'partyBall', 'partyBall'),
 CreampieColor = VBase4(250.0 / 255.0, 241.0 / 255.0, 24.0 / 255.0, 1.0)
 FruitpieColor = VBase4(55.0 / 255.0, 40.0 / 255.0, 148.0 / 255.0, 1.0)
 BirthdayCakeColor = VBase4(253.0 / 255.0, 119.0 / 255.0, 220.0 / 255.0, 1.0)
+SnowballColor = VBase4(1.0, 1.0, 1.0, 1.0)
 Splats = {'tart': (0.3, FruitpieColor),
  'fruitpie-slice': (0.5, FruitpieColor),
  'creampie-slice': (0.5, CreampieColor),
  'fruitpie': (0.7, FruitpieColor),
  'creampie': (0.7, CreampieColor),
- 'birthday-cake': (0.9, BirthdayCakeColor)}
+ 'birthday-cake': (0.9, BirthdayCakeColor),
+ 'wedding-cake': (0.9, BirthdayCakeColor)}
 Variants = ('tart',
  'fruitpie',
  'splat-tart',
@@ -215,6 +217,7 @@ Variants = ('tart',
  'splat-fruitpie',
  'splat-creampie',
  'splat-birthday-cake',
+ 'splat-wedding-cake',
  'splash-from-splat',
  'clip-on-tie',
  'lips',
@@ -237,7 +240,7 @@ class PropPool:
         self.propCache = []
         self.propStrings = {}
         self.propTypes = {}
-        self.maxPoolSize = config.GetInt('prop-pool-size', 8)
+        self.maxPoolSize = base.config.GetInt('prop-pool-size', 8)
         for p in Props:
             phase = p[0]
             propName = p[1]
@@ -287,7 +290,7 @@ class PropPool:
         self.propStrings[propName] = (self.getPath(5, 'kapow-mod'), self.getPath(5, 'kapow-chan'))
         self.propTypes[propName] = 'actor'
         propName = 'ship'
-        self.propStrings[propName] = ('phase_5/models/props/ship',)
+        self.propStrings[propName] = ('phase_5/models/props/ship.bam',)
         self.propTypes[propName] = 'model'
         propName = 'trolley'
         self.propStrings[propName] = ('phase_4/models/modules/trolley_station_TT',)
@@ -314,8 +317,7 @@ class PropPool:
             tie = self.props[name]
             tie.getChild(0).setHpr(23.86, -16.03, 9.18)
         elif name == 'small-magnet':
-            magnet = self.props[name]
-            magnet.setScale(0.5)
+            self.props[name].setScale(0.5)
         elif name == 'shredder-paper':
             paper = self.props[name]
             paper.setPosHpr(2.22, -0.95, 1.16, -48.61, 26.57, -111.51)
@@ -336,7 +338,7 @@ class PropPool:
             self.props[name].setTexture(tex, 1)
         elif name == 'dust':
             bin = 110
-            for cloudNum in range(1, 12):
+            for cloudNum in xrange(1, 12):
                 cloudName = '**/cloud' + str(cloudNum)
                 cloud = self.props[name].find(cloudName)
                 cloud.setBin('fixed', bin)
@@ -389,7 +391,7 @@ class PropPool:
 
     def __getPropCopy(self, name):
         if self.propTypes[name] == 'actor':
-            if not self.props.has_key(name):
+            if name not in self.props:
                 prop = Actor.Actor()
                 prop.loadModel(self.propStrings[name][0])
                 animDict = {}
@@ -401,7 +403,7 @@ class PropPool:
                     self.makeVariant(name)
             return Actor.Actor(other=self.props[name])
         else:
-            if not self.props.has_key(name):
+            if name not in self.props:
                 prop = loader.loadModel(self.propStrings[name][0])
                 prop.setName(name)
                 self.storeProp(name, prop)

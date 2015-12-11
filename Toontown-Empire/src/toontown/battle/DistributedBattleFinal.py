@@ -1,19 +1,19 @@
-from pandac.PandaModules import *
-from direct.interval.IntervalGlobal import *
-from BattleBase import *
 from direct.actor import Actor
-from toontown.distributed import DelayDelete
 from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import State
+from direct.interval.IntervalGlobal import *
+from panda3d.core import *
+import random
+
+from BattleBase import *
 import DistributedBattleBase
 import MovieUtil
-from toontown.suit import Suit
 import SuitBattleGlobals
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.toonbase import ToontownGlobals
-from direct.fsm import State
-import random
+from toontown.distributed import DelayDelete
 from otp.nametag.NametagConstants import *
 from otp.nametag import NametagGlobals
+from toontown.suit import Suit
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals, TTLocalizer
 
 class DistributedBattleFinal(DistributedBattleBase.DistributedBattleBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattleFinal')
@@ -51,7 +51,7 @@ class DistributedBattleFinal(DistributedBattleBase.DistributedBattleBase):
 
     def setBossCogId(self, bossCogId):
         self.bossCogId = bossCogId
-        if base.cr.doId2do.has_key(bossCogId):
+        if bossCogId in base.cr.doId2do:
             tempBossCog = base.cr.doId2do[bossCogId]
             self.__gotBossCog([tempBossCog])
         else:
@@ -91,6 +91,12 @@ class DistributedBattleFinal(DistributedBattleBase.DistributedBattleBase):
     def showSuitsJoining(self, suits, ts, name, callback):
         if self.bossCog == None:
             return
+        
+        bossDept = self.bossCog.dna.dept
+        
+        if bossDept in TTLocalizer.SendCogBossTaunts:
+            self.bossCog.setChatAbsolute(random.choice(TTLocalizer.SendCogBossTaunts[bossDept]), CFSpeech | CFTimeout)
+
         if self.battleSide:
             openDoor = Func(self.bossCog.doorB.request, 'open')
             closeDoor = Func(self.bossCog.doorB.request, 'close')
@@ -116,12 +122,12 @@ class DistributedBattleFinal(DistributedBattleBase.DistributedBattleBase):
             suitTrack.append(Track((delay, self.createAdjustInterval(suit, destPos, destHpr)), (delay + 1.5, suit.scaleInterval(1.5, 1))))
             delay += 1
 
-        if self.hasLocalToon():
-            camera.reparentTo(self)
+        if self.hasLocalToon() and hasattr(base, 'camera') and base.camera is not None:
+            base.camera.reparentTo(self)
             if random.choice([0, 1]):
-                camera.setPosHpr(20, -4, 7, 60, 0, 0)
+                base.camera.setPosHpr(20, -4, 7, 60, 0, 0)
             else:
-                camera.setPosHpr(-20, -4, 7, -60, 0, 0)
+                base.camera.setPosHpr(-20, -4, 7, -60, 0, 0)
         done = Func(callback)
         track = Sequence(openDoor, suitTrack, closeDoor, done, name=name)
         track.start(ts)
@@ -136,8 +142,8 @@ class DistributedBattleFinal(DistributedBattleBase.DistributedBattleBase):
         name = self.uniqueName('floorReward')
         track = Sequence(toonTracks, name=name)
         if self.hasLocalToon():
-            camera.setPos(0, 0, 1)
-            camera.setHpr(180, 10, 0)
+            base.camera.setPos(0, 0, 1)
+            base.camera.setHpr(180, 10, 0)
         track += [self.bossCog.makeEndOfBattleMovie(self.hasLocalToon()), Func(callback)]
         self.storeInterval(track, name)
         track.start(ts)
@@ -159,8 +165,6 @@ class DistributedBattleFinal(DistributedBattleBase.DistributedBattleBase):
         NametagGlobals.setMasterArrowsOn(1)
         for toon in self.toons:
             toon.startSmooth()
-
-        return None
 
     def enterResume(self, ts = 0):
         if self.hasLocalToon():

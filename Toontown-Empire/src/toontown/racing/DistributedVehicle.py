@@ -205,6 +205,9 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         self.engine = engine
 
     def disable(self):
+        if self.ownerId not in DistributedVehicle.AvId2kart:
+            return
+
         DistributedVehicle.AvId2kart.pop(self.ownerId)
         self.finishMovies()
         self.request('Off')
@@ -989,7 +992,7 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
 
     def enableControls(self):
         self.canRace = True
-        self.accept(base.JUMP, self.__controlPressed)
+        self.accept('control', self.__controlPressed)
         self.accept('control-up', self.__controlReleased)
         self.accept('InputState-forward', self.__upArrow)
         self.accept('InputState-reverse', self.__downArrow)
@@ -999,7 +1002,7 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
     def disableControls(self):
         self.arrowVert = 0
         self.arrowHorz = 0
-        self.ignore(base.JUMP)
+        self.ignore('control')
         self.ignore('control-up')
         self.ignore('tab')
         self.ignore('InputState-forward')

@@ -12,14 +12,13 @@ from RaceGag import RaceGag
 from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.toon import ToonHeadFrame
 from toontown.racing.KartDNA import InvalidEntry, getAccessory, getDefaultColor
-from panda3d.core import CardMaker, OrthographicLens, LineSegs
+from pandac.PandaModules import CardMaker, OrthographicLens, LineSegs
 from direct.distributed import DistributedSmoothNode
 from math import fmod
 from math import sqrt
 from RaceGUI import RaceGUI
 import RaceGlobals
 from direct.task.Task import Task
-from toontown.hood import SkyUtil
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from toontown.battle.BattleProps import *
@@ -29,6 +28,7 @@ from toontown.racing import EffectManager
 from toontown.racing import PiejectileManager
 from toontown.dna.DNAParser import *
 from otp.ai.MagicWordGlobal import *
+from toontown.safezone import SZUtil
 
 class DistributedRace(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedRace')
@@ -41,6 +41,8 @@ class DistributedRace(DistributedObject.DistributedObject):
     SFX_Applause = SFX_BaseDir + 'KART_Applause_%d.ogg'
 
     def __init__(self, cr):
+        if hasattr(base, 'race') and base.race:
+            base.race.delete()
         self.qbox = loader.loadModel('phase_6/models/karting/qbox')
         self.boostArrowTexture = loader.loadTexture('phase_6/maps/boost_arrow.jpg', 'phase_6/maps/boost_arrow_a.rgb')
         self.boostArrowTexture.setMinfilter(Texture.FTLinear)
@@ -182,6 +184,8 @@ class DistributedRace(DistributedObject.DistributedObject):
                 del i
 
         self.piejectileManager.delete()
+        if not hasattr(base, 'race') or not hasattr(self, 'curveTs'):
+            return
         if self.curveTs:
             del self.curveTs
         if self.curvePoints:
@@ -194,13 +198,12 @@ class DistributedRace(DistributedObject.DistributedObject):
         del self.anvilFall
         del self.bananaSound
         del self.localKart
-        DistributedObject.DistributedObject.delete(self)
         taskMgr.remove(self.uniqueName('countdownTimerTask'))
         taskMgr.remove('raceWatcher')
         bboard.remove('race')
         self.ignoreAll()
+        DistributedObject.DistributedObject.delete(self)
         del base.race
-        return
 
     def d_requestThrow(self, x, y, z):
         self.sendUpdate('requestThrow', [x, y, z])
@@ -254,7 +257,6 @@ class DistributedRace(DistributedObject.DistributedObject):
         return
 
     def setCircuitPlace(self, avId, place, entryFee, winnings, bonus, trophies):
-        print 'setting cicruit place'
         if self.fsm.getCurrentState().getName() == 'leaving':
             return
         if avId == localAvatar.doId:
@@ -267,13 +269,9 @@ class DistributedRace(DistributedObject.DistributedObject):
             self.placeFixup.append([oldPlace - 1, place - 1])
         avatar = base.cr.doId2do.get(avId, None)
         if avatar:
-            print 'circuit trophies %s' % trophies
-            print 'winnings %s' % winnings
             self.gui.racerFinishedCircuit(avId, oldPlace, entryFee, winnings, bonus, trophies)
-        return
 
     def endCircuitRace(self):
-        print self.placeFixup
         self.gui.circuitFinished(self.placeFixup)
 
     def prepForRace(self):
@@ -551,14 +549,14 @@ class DistributedRace(DistributedObject.DistributedObject):
         newLapT = (newT - self.startT) / self.curve.getMaxT() % 1.0
         if newLapT - self.currLapT < -0.5:
             self.laps += 1
-            self.changeMusicTempo(1 + self.laps * 0.33)
+            self.changeMusicTempo(1 + self.laps * 0.5)
             self.notify.debug('crossed the start line: %s, %s, %s, %s' % (self.laps,
              self.startT,
              self.currT,
              newT))
         elif newLapT - self.currLapT > 0.5:
             self.laps -= 1
-            self.changeMusicTempo(1 + self.laps * 0.33)
+            self.changeMusicTempo(1 + self.laps * 0.5)
             self.notify.debug('crossed the start line - wrong way: %s, %s, %s, %s' % (self.laps,
              self.startT,
              self.currT,
@@ -721,6 +719,7 @@ class DistributedRace(DistributedObject.DistributedObject):
         if self.trackId in (RaceGlobals.RT_Urban_2, RaceGlobals.RT_Urban_2_rev):
             dnaFile = 'phase_6/dna/urban_track_town_B.pdna'
         node = loader.loadDNAFile(self.dnaStore, dnaFile)
+        self.geomNode = node
         self.townGeom = self.geom.attachNewNode(node)
         self.townGeom.findAllMatches('**/+CollisionNode').stash()
         self.buildingGroups = {}
@@ -1095,13 +1094,13 @@ class DistributedRace(DistributedObject.DistributedObject):
             self.gui.racerLeft(avId, unexpected=False)
 
     def skyTrack(self, task):
-        return SkyUtil.cloudSkyTrack(task)
+        return SZUtil.cloudSkyTrack(task)
 
     def startSky(self):
         if self.hasFog:
-            SkyUtil.startCloudSky(self, parent=self.dummyNode, effects=CompassEffect.PRot)
+            SZUtil.startCloudSky(self, parent=self.dummyNode, effects=CompassEffect.PRot)
         else:
-            SkyUtil.startCloudSky(self, parent=render)
+            SZUtil.startCloudSky(self, parent=render)
 
     def stopSky(self):
         taskMgr.remove('skyTrack')
@@ -1201,7 +1200,6 @@ class DistributedRace(DistributedObject.DistributedObject):
         dotP = arrowVec.dot(fvec)
         if dotP > 0.7:
             self.localKart.startTurbo()
-        return
 
     def fadeOutMusic(self):
         if self.musicTrack:
@@ -1219,8 +1217,8 @@ class DistributedRace(DistributedObject.DistributedObject):
 
     def setRaceZone(self, zoneId, trackId):
         hoodId = self.cr.playGame.hood.hoodId
-        base.loader.endBulkLoad('atRace')
-        self.kartCleanup()
+        #base.loader.endBulkLoad('atRace')
+        #self.kartCleanup()
         self.doneBarrier('waitingForExit')
         self.sendUpdate('racerLeft', [localAvatar.doId])
         out = {'loader': 'racetrack',
@@ -1235,7 +1233,7 @@ class DistributedRace(DistributedObject.DistributedObject):
 
 
 # TODO: Move this command to the AI server, and add more features to it.
-@magicWord(category=CATEGORY_STAFF, types=[str])
+@magicWord(category=CATEGORY_DEVELOPER, types=[str])
 def race(command):
     """
     A command set for races.

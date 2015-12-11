@@ -4,7 +4,7 @@ import __builtin__
 __builtin__.process = 'uberdog'
 
 # Temporary hack patch:
-__builtin__.__dict__.update(__import__('panda3d.core', fromlist=['*']).__dict__)
+__builtin__.__dict__.update(__import__('pandac.PandaModules', fromlist=['*']).__dict__)
 from direct.extensions_native import HTTPChannel_extensions
 
 import sys, os
@@ -31,8 +31,8 @@ args = parser.parse_args()
 for prc in args.config:
     loadPrcFile(prc)
 
-if os.path.isfile('dependencies/config/release/dev.prc'):
-    loadPrcFile('dependencies/config/release/dev.prc')
+if os.path.isfile('dependencies/config/local.prc'):
+    loadPrcFile('dependencies/config/local.prc')
 
 localconfig = ''
 if args.base_channel:

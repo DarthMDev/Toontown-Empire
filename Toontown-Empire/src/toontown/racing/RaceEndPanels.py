@@ -129,10 +129,10 @@ class RaceResultsPanel(DirectFrame):
         displayPar = Parallel(bonusSeq, ticketSeq)
         displayPar.start()
         self.entryListSeqs.append(displayPar)
-        if not circuitPoints == []:
+        if circuitPoints:
             self.pointsLabel.show()
-            newPoints = circuitPoints[:].pop()
-            currentPoints = sum(circuitPoints[:-1])
+            newPoints = circuitPoints[1]
+            currentPoints = circuitPoints[0]
             self.entryList[place - 1][5]['text'] = '%s' % currentPoints
             self.entryList[place - 1][6]['text'] = ' + %s' % newPoints
 
@@ -178,7 +178,7 @@ class RaceResultsPanel(DirectFrame):
                 shiftRacersSeq.append(Parallel(Func(fixPlaceValue), LerpPosInterval(self.rowFrame[oldPlace], 1, newPos)))
 
         self.circuitFinishSeq = Sequence(calcPointsSeq, shiftRacersSeq)
-        if not len(self.race.circuitLoop) == 0:
+        if len(self.race.circuitLoop) > 1:
             self.notify.debug('Not the last race in a circuit, pressing next race in 30 secs')
             self.circuitFinishSeq.append(Wait(30))
             self.circuitFinishSeq.append(Func(self.raceEndPanel.closeButtonPressed))
@@ -331,7 +331,7 @@ class RaceEndPanel(DirectFrame):
         self.race = race
         self.results = RaceResultsPanel(numRacers, race, self, parent=self, pos=(0, 0, 0.525))
         self.winnings = RaceWinningsPanel(race, parent=self, pos=(0, 0, -0.525))
-        if len(self.race.circuitLoop) == 0:
+        if len(self.race.circuitLoop) <= 1:
             exitText = TTLocalizer.KartRace_Exit
         else:
             exitText = TTLocalizer.KartRace_NextRace
@@ -374,10 +374,8 @@ class RaceEndPanel(DirectFrame):
         self.results.updateWinnings(place, winnings)
 
     def updateWinningsFromCircuit(self, place, entryFee, winnings, bonus, trophies = ()):
-        print 'updateWinningsFromCircuit'
         self.seq.finish()
-        totalTickets = winnings + entryFee + bonus
-        self.results.updateWinnings(place, totalTickets)
+        self.results.updateWinnings(place, winnings + entryFee + bonus)
         self.startWinningsPanel(entryFee, winnings, 0, bonus, trophies, True)
 
     def startWinningsPanel(self, entryFee, winnings, track, bonus = None, trophies = (), endOfCircuitRace = False):
