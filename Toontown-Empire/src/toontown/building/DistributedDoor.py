@@ -6,8 +6,6 @@ from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.task.Task import Task
 from direct.distributed.ClockDelta import globalClockDelta
-from direct.fsm import ClassicFSM
-from direct.fsm import State
 from panda3d.core import Point3
 from panda3d.core import VBase3
 from panda3d.core import NodePath
@@ -418,7 +416,7 @@ class DistributedDoor(DistributedObject.DistributedObject, DelayDeletable):
         if hasattr(avatar, 'stopSmooth'):
             avatar.stopSmooth()
         otherNP = self.getDoorNodePath()
-        trackName = 'avatarExitDoor-{0:d}-{1:d}'.format((self.doId, avatar.doId)
+        trackName = 'avatarExitDoor-{0:d}-{1:d}'.format(self.doId, avatar.doId)
         track = Sequence(name=trackName)
         track.append(self.getAnimStateInterval(avatar, 'walk'))
         track.append(

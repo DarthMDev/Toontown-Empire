@@ -31,7 +31,7 @@ class DistributedInGameNewsMgr(DistributedObject):
         self.latestIssueStr = issueStr
         self.latestIssue = base.cr.toontownTimeManager.convertUtcStrToToontownTime(issueStr)
         messenger.send('newIssueOut')
-        self.notify.info('latestIssue=%s' % self.latestIssue)
+        self.notify.info('latestIssue={0}'.format(self.latestIssue))
 
     def getLatestIssueStr(self):
         pass
