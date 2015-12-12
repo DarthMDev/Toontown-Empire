@@ -1,9 +1,11 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
-from direct.gui.DirectGui import *
+from direct.gui.DirectGui import DirectButton
+from direct.gui.DirectGui import DirectFrame
+from direct.gui.DirectGui import DGG
+from panda3d.core import Vec4
+from panda3d.core import TextNode
 from direct.showbase import DirectObject
-from panda3d.core import TextNode, Vec4
-
 from toontown.effects import DistributedFireworkShow
 from otp.nametag import NametagGlobals
 from toontown.parties import DistributedPartyFireworksActivity
@@ -94,7 +96,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         base.render.show()
         setBlackBackground = 0
         for obj in base.cr.doId2do.values():
-            if isinstance(obj, DistributedFireworkShow.DistributedFireworkShow) or isinstance(obj, DistributedPartyFireworksActivity.DistributedPartyFireworksActivity):
+            if isinstance(obj, (DistributedFireworkShow.DistributedFireworkShow, DistributedPartyFireworksActivity.DistributedPartyFireworksActivity)):
                 setBlackBackground = 1
 
         if setBlackBackground:
