@@ -1800,7 +1800,7 @@ class CogQuest(LocationBasedQuest):
     def getNumCogs(self):
         return self.quest[1]
 
-    def getCompletionStatus(self, questDesc, npc = None):
+    def getCompletionStatus(self, av, questDesc, npc = None):
         questId, fromNpcId, toNpcId, rewardId, toonProgress = questDesc
         questComplete = toonProgress >= self.getNumCogs()
         return getCompleteStatusWithNpc(questComplete, toNpcId, npc)
