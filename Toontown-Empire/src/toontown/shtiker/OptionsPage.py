@@ -382,8 +382,6 @@ class OptionsTabPage(DirectFrame):
         del self.Friends_Label
         del self.Whispers_Label
         del self.SpeedChatStyle_Label
-        del self.SoundFX_toggleButton
-        del self.Music_toggleButton
         del self.Friends_toggleButton
         del self.Whispers_toggleButton
         del self.speedChatStyleLeftArrow
