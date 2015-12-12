@@ -6,7 +6,7 @@ from toontown.suit import DistributedSuitBaseAI
 import SuitBattleGlobals
 import BattleExperienceAI
 from toontown.toon import NPCToons
-from toontown.pets import PetTricks, DistributedPetProxyAI
+from toontown.pets import PetTricks
 from toontown.hood import ZoneUtil
 from direct.showbase.PythonUtil import lerp
 import sys
@@ -722,7 +722,7 @@ class BattleCalculatorAI:
                  0,
                  0]
                 self.toonSkillPtsGained[id] = expList
-            expList[trk] = expList[trk] + (lvl + 1) * self.__skillCreditMultiplier
+            expList[trk] = min(ExperienceCap, expList[trk] + (lvl + 1) * self.__skillCreditMultiplier)
         return
 
     def __clearTgtDied(self, tgt, lastAtk, currAtk):

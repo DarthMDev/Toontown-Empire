@@ -3,6 +3,7 @@ from panda3d.core import *
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from direct.interval.IntervalGlobal import *
+from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagram import STInt16
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
 import types
@@ -40,9 +41,9 @@ class CatalogItem:
         else:
             self.makeNewItem(*args, **kw)
         return
-
-    def isAward(self):
-        result = self.specialEventId != 0
+    @staticmethod
+    def isAward():#self):
+        #result = self.specialEventId != 0
         return False
 
     def makeNewItem(self):

@@ -93,7 +93,6 @@ class QuestManagerAI:
                     # The toon has completed this quest. Give them a reward!
                     npc.completeQuest(avId, questId, rewardId)
                     self.completeQuest(av, questId)
-                    av.addStat(ToontownGlobals.STAT_TASKS)
                 break
         else:
             # They haven't completed any quests so we have to give them choices.

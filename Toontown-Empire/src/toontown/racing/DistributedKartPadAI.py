@@ -18,7 +18,7 @@ class DistributedKartPadAI(DistributedObjectAI):
 
     def b_setArea(self, area):
         self.setArea(area)
-        self.d_setArea(area)
+        self.d_setArea(self, area)
 
     def getArea(self):
         return self.area

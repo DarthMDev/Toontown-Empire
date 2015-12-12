@@ -1662,7 +1662,7 @@ class CatalogGenerator:
 
     def outputSchedule(self, filename):
         with open(Filename(filename).toOsSpecific(), 'w') as out:
-
+            s
             sched = self.generateScheduleDictionary()
             items = sched.keys()
             items.sort()
@@ -1678,15 +1678,15 @@ class CatalogGenerator:
                 week = self.__formatWeeklist(weeklist)
                 maybeWeek = self.__formatWeeklist(maybeWeeklist)
                 line = '"%s"\t"%s"\t"%s"\t%s\t"%s"\t"%s"\t"%s"\t"%s"\t"%s"' % (item.output(store=0),
-                item.getTypeName(),
-                item.getDisplayName(),
-                item.getBasePrice(),
-                item.getFilename(),
-                color,
-                series,
-                week,
-                maybeWeek)
-            out.write(line + '\n')
+                 item.getTypeName(),
+                 item.getDisplayName(),
+                 item.getBasePrice(),
+                 item.getFilename(),
+                 color,
+                 series,
+                 week,
+                 maybeWeek)
+                out.write(line + '\n')
 
     def __formatColor(self, color):
         if color == None:
