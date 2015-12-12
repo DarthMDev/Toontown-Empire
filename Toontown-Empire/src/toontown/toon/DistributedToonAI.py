@@ -5227,4 +5227,4 @@ def exp(track, amt):
     av = spellbook.getTarget()
     av.experience.setExp(trackIndex, amt)
     av.b_setExperience(av.experience.makeNetString())
-    return "Set %s exp to %d successfully." % (track, amt)
+    return "Set {0} exp to {1:d} successfully.".format((track, amt))
