@@ -418,7 +418,7 @@ class DistributedDoor(DistributedObject.DistributedObject, DelayDeletable):
         if hasattr(avatar, 'stopSmooth'):
             avatar.stopSmooth()
         otherNP = self.getDoorNodePath()
-        trackName = 'avatarExitDoor-{0:d}-{1:d}'.format((self.doId, avatar.doId)
+        trackName = 'avatarExitDoor-{0:d}-{1:d}'.format(self.doId, avatar.doId)
         track = Sequence(name=trackName)
         track.append(self.getAnimStateInterval(avatar, 'walk'))
         track.append(
