@@ -230,7 +230,7 @@ class ToonBase(OTPBase.OTPBase):
 
         self.filters = CommonFilters(self.win, self.cam)
         self.wantCogInterface = settings.get('cogInterface', True)
-        self.wantantialiasing = settings.get('antialiasing', 0)
+        self.wantantialiasing = settings.get('antialiasing', 1)
 
 	self.wantWASD = settings.get('want-WASD', False)
 
