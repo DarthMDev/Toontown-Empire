@@ -135,8 +135,8 @@ class DistributedLaserField(BattleBlocker.BattleBlocker):
             self.successTrack.start()
         else:
             if not in_battle:
-           		in_battle = True
-           		self.startBattle()
+                in_battle = True
+                self.startBattle()
             	self.failTrack.start()
             	self.cSphereNodePath.setPos(self.blockerX, self.blockerY, 0)
 
