@@ -796,8 +796,39 @@ class ExtraOptionsTabPage(DirectFrame):
         self.cogLevel_label['text'] = TTLocalizer.CogLevelLabelOn if settings['cogInterface'] else TTLocalizer.CogLevelLabelOff
         self.cogLevel_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff if settings['cogInterface'] else TTLocalizer.OptionsPageToggleOn
 
+    def __updateNametagStyle(self, resetIndex=True):
+        chooser = self.optionChoosers['nametag_style']
 
+        if resetIndex:
+            chooser.setIndex(base.localAvatar.nametagStyles.index(base.localAvatar.getNametagStyle()))
 
+        nametagId = base.localAvatar.nametagStyles[chooser.index]
+        chooser.setDisplayText('%s\n%s' % (base.localAvatar.getName(), TTLocalizer.NametagFontNames[nametagId]))
+        chooser.setDisplayFont(ToontownGlobals.getNametagFont(nametagId))
+        chooser.decideButtons(0, len(base.localAvatar.nametagStyles) - 1)
+    
+    def __applyNametagStyle(self, index):
+        if index != -1 and index != base.localAvatar.nametagStyles.index(base.localAvatar.getNametagStyle()):
+            base.localAvatar.requestNametagStyle(base.localAvatar.nametagStyles[index])
+
+    def __updateFishingPole(self, resetIndex=True):
+        chooser = self.optionChoosers['pole']
+
+        if resetIndex:
+            chooser.setIndex(base.localAvatar.getFishingRod())
+
+        chooser.setDisplayText(TTLocalizer.FishingRodNameDict[chooser.index])
+        chooser.decideButtons(0, base.localAvatar.maxFishingRod)
+    
+    def __applyFishingPole(self, index):
+        if index != -1 and index != base.localAvatar.getFishingRod():
+            base.localAvatar.requestFishingRod(index)
+
+    def destroyReportNotice(self):
+        if hasattr(self, 'dialog'):
+            self.dialog.destroy()
+            del self.dialog
+            
     def showReportNotice(self):
         self.dialog = TTDialog.TTDialog(style=TTDialog.YesNo, text=TTLocalizer.BugReportNotice, command=self.confirmBugReport)
         self.dialog.show()

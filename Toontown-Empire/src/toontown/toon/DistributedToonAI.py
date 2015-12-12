@@ -4306,6 +4306,21 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
     def hasEPP(self, dept):
         return dept in self.epp
 
+# Exp command
+
+    def b_setExperience(self, experience):
+        self.d_setExperience(experience)
+        self.setExperience(experience)
+
+    def d_setExperience(self, experience):
+        self.sendUpdate('setExperience', [experience])
+
+    def setExperience(self, experience):
+        self.experience = Experience.Experience(experience, self)
+
+    def getExperience(self):
+        return self.experience.makeNetString()
+
 @magicWord(category=CATEGORY_STAFF, types=[str, int, int])
 def cheesyEffect(value, hood=0, expire=0):
     """
@@ -4374,11 +4389,12 @@ def allSummons():
     return 'Lots of summons!'
 
 @magicWord(category=CATEGORY_STAFF, types=[str])
-def maxToon(missingTrack=None):
-    """
-    Max the target's stats for end-level gameplay.
-    """
-    target = spellbook.getTarget()
+def maxToon(hasConfirmed='UNCONFIRMED', missingTrack=None):
+    """Max out the toons stats, for end-level gameplay. Should only be (and is restricted to) casting on Administrators only."""
+    toon = spellbook.getInvoker()
+
+    if hasConfirmed != 'CONFIRM':
+        return 'Are you sure you want to max out %s? This process is irreversible. Use "~maxToon CONFIRM" to confirm.' % toon.getName()
 
     # First, unlock the target's Gag tracks:
     gagTracks = [1, 1, 1, 1, 1, 1, 1]
@@ -4458,36 +4474,6 @@ def maxToon(missingTrack=None):
     target.b_setMaxBankMoney(30000)
     target.b_setMoney(target.getMaxMoney())
     target.b_setBankMoney(target.getMaxBankMoney())
-
-    # Finally, unlock all of their pet phrases:
-    if simbase.wantPets:
-        target.b_setPetTrickPhrases(range(7))
-
-    return 'Maxed your Toon!'
-
-@magicWord(category=CATEGORY_STAFF)
-def unlocks():
-    """
-    Unlocks the target's teleport access, emotions, and pet trick phrases.
-    """
-    target = spellbook.getTarget()
-
-    # First, unlock their teleport access:
-    hoods = list(ToontownGlobals.HoodsForTeleportAll)
-    target.b_setHoodsVisited(hoods)
-    target.b_setTeleportAccess(hoods)
-
-    # Next, unlock all of their emotions:
-    emotes = list(target.getEmoteAccess())
-    for emoteId in OTPLocalizer.EmoteFuncDict.values():
-        if emoteId >= len(emotes):
-            continue
-        # The following emotions are ignored because they are unable to be
-        # obtained:
-        if emoteId in (17, 18, 19):
-            continue
-        emotes[emoteId] = 1
-    target.b_setEmoteAccess(emotes)
 
     # Finally, unlock all of their pet phrases:
     if simbase.wantPets:
@@ -5233,3 +5219,12 @@ def goto(avIdShort):
         return "Unable to teleport to target, they are not currently on this district."
     spellbook.getInvoker().magicWordTeleportRequests.append(avId)
     toon.sendUpdate('magicTeleportRequest', [spellbook.getInvoker().getDoId()])
+
+@magicWord(category=CATEGORY_STAFF, types=[str, int])
+def exp(track, amt):
+    """ Set your experience to the amount specified for a single track. """
+    trackIndex = TTLocalizer.BattleGlobalTracks.index(track)
+    av = spellbook.getTarget()
+    av.experience.setExp(trackIndex, amt)
+    av.b_setExperience(av.experience.makeNetString())
+    return "Set %s exp to %d successfully." % (track, amt)
