@@ -1,11 +1,11 @@
 @echo off
 
-title TTE Alpha Lancher
+title Toontown Empire Alpha Game Launcher
 
 echo Choose your connection method!
 echo.
 echo #1 - Localhost
-echo #2 - Toontown Empire Dev Server
+echo #2 - Developer Server
 echo #3 - Custom
 echo #4 - Local RemoteDB
 echo #5 - Production Server
@@ -20,12 +20,10 @@ if %INPUT%==1 (
     set TTE_GAMESERVER=127.0.0.1
 ) else if %INPUT%==2 (
     set TTE_GAMESERVER=45.55.208.151
-)
-else if %INPUT == 5 (
-    set TTE_GAMESERVER = gameserver.toontownempire.com
-    )
- else if %INPUT%==4 (
+) else if %INPUT%==4 (
     set TTE_GAMESERVER=127.0.0.1
+) else if %INPUT%==5 (
+    SET TTE_GAMESERVER=gameserver.toontownempire.com
 ) else if %INPUT%==3 (
     echo.
     set /P TTE_GAMESERVER=Gameserver: 
@@ -64,6 +62,7 @@ echo ===============================
 
 cd ../../
 
+:main
 if %INPUT%==2 (
     "dependencies/panda/python/ppython.exe" -m toontown.toonbase.ToontownStartRemoteDB
 ) else if %INPUT%==4 (
@@ -71,5 +70,6 @@ if %INPUT%==2 (
 ) else (
     "dependencies/panda/python/ppython.exe" -m toontown.toonbase.ToontownStart
 )
-
 pause
+
+goto main

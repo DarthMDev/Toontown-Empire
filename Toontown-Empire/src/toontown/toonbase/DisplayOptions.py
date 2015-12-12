@@ -31,7 +31,7 @@ class DisplayOptions:
         sfxVol = self.settings.getInt('game', 'sfx-vol', 100) / 100.0
         res = self.settings.getList('game', 'resolution', default=[800, 600], expectedLength=2)
         embed = self.settings.getBool('game', 'embed', False)
-        antialias = self.settings.getInt('game', 'antialiasing', 0)
+        antialias = self.settings.getInt('game', 'antialiasing', 1)
         if antialias:
             loadPrcFileData('toonBase Settings Framebuffer MSAA', 'framebuffer-multisample 1')
             loadPrcFileData('toonBase Settings MSAA Level', 'multisamples %i' % antialias)
