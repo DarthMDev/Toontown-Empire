@@ -73,7 +73,7 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
     codes = {
         'pinktober': {
             'items': [
-                CatalogClothingItem.CatalogClothingItem(2003, 0)
+                CatalogClothingItem.CatalogClothingItem(1821, 0)
             ]
         },
         'sillymeter': {
