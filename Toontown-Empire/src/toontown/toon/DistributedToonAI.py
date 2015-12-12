@@ -4394,7 +4394,7 @@ def maxToon(hasConfirmed='UNCONFIRMED', missingTrack=None):
     toon = spellbook.getInvoker()
 
     if hasConfirmed != 'CONFIRM':
-        return 'Are you sure you want to max out %s? This process is irreversible. Use "~maxToon CONFIRM" to confirm.' % toon.getName()
+        return 'Are you sure you want to max out {0}? This process is irreversible. Use "~maxToon CONFIRM" to confirm.'.format(toon.getName())
 
     # First, unlock the target's Gag tracks:
     gagTracks = [1, 1, 1, 1, 1, 1, 1]
