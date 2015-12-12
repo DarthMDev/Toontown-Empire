@@ -3763,7 +3763,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
 
     def getNametagStyle(self):
         return self.nametagStyle
-
+    
     def b_setNametagStyles(self, nametagStyles):
         self.d_setNametagStyles(nametagStyles)
         self.setNametagStyles(nametagStyles)
@@ -3773,7 +3773,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
 
     def setNametagStyles(self, nametagStyles):
         self.nametagStyles = nametagStyles
-
+    
     def addNametagStyle(self, nametagStyle):
         if nametagStyle in self.nametagStyles:
             return
@@ -3783,7 +3783,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
 
     def getNametagStyles(self):
         return self.nametagStyles
-
+    
     def requestNametagStyle(self, nametagStyle):
         if nametagStyle not in self.nametagStyles:
             return
@@ -5186,7 +5186,7 @@ def maxGarden():
 @magicWord(category=CATEGORY_TRIAL, types=[int], access=103)
 def badge(gmId):
     if not 0 <= gmId <= 5:
-        return 'Staff-Icons: 0=off, 1=Trial, 2=Staff, 3=Lead-Staff, 4=Developers, 5=Leaders'
+        return 'Staff-Badges: 0=off, 1=Trial, 2=Staff, 3=Lead-Staff, 4=Developers, 5=Leaders'
 
     if (spellbook.getInvokerAccess() < 103) and (gmId > 1):
         return 'This badge is for trial-staff only!'
@@ -5208,7 +5208,7 @@ def badge(gmId):
 
     spellbook.getTarget().b_setGM(gmId)
 
-    return 'You have set %s to GM type %s' % (spellbook.getTarget().getName(), gmId)
+    return 'You have set %s to badge type %s' % (spellbook.getTarget().getName(), gmId)
 
 @magicWord(category=CATEGORY_STAFF, types=[int])
 def goto(avIdShort):

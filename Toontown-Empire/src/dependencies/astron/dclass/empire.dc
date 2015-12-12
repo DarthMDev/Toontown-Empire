@@ -756,13 +756,7 @@ dclass DistributedToon : DistributedPlayer {
   setNextKnockHeal(uint32) ram airecv;
   setEPP(uint8[] = []) required ownrecv db;
   setStats(uint32[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) required ownrecv db;
-
   requestNametagStyle(uint8) airecv ownsend;
-  setFirstTrackPicked(uint8) required ownrecv db;
-  setSecondTrackPicked(uint8) required ownrecv db;
-  freezeToon() ownrecv;
-  unfreezeToon() ownrecv;
-  warnLocalToon(string) ownrecv;
 };
 
 dclass DistributedPartyGate : DistributedObject {

@@ -580,7 +580,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             self.overheadMeter.setAvatar(self)
             self.overheadMeter.setZ(5)
             self.overheadMeter.setScale(1.5)
-            self.overheadMeter.reparentTo(NodePath(self.nametag.getNameIcon()))
             self.overheadMeter.hide(BitMask32.bit(1)) # Hide from 2D camera.
             self.overheadMeter.start()
         elif not wantMeter and self.overheadMeter:
@@ -2459,7 +2458,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         name = self.name
         self.setDisplayName(name)
         if self._isGM:
-            self.setNametagStyle(0)
+            self.setNametagStyle(12)
             self.setGMIcon(self._gmType)
             self.gmToonLockStyle = True
         else:

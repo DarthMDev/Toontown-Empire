@@ -262,8 +262,8 @@ class OZSafeZoneLoader(SafeZoneLoader):
         camera.setPosHpr(newPos, newHpr)
 
     def doPrint(self, thing):
-        print thing
         return 0
+        print thing
 
     def unload(self):
         del self.birdSound
