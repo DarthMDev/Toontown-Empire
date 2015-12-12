@@ -3839,7 +3839,6 @@ OptionsPageTitle = 'Options'
 ExtraOptionsPageTitle = 'Advanced'
 OptionsTabTitle = 'Options\n& Codes'
 OptionsPageExitToontown = 'Exit Toontown'
-:display: Closing wglGraphicsWindow
 OptionsPageMusic = 'Music Volume:'
 OptionsPageSFX = 'SFX Volume:'                                
 OptionsPageMusicOnLabel = 'Music is on.'
