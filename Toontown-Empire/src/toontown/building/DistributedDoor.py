@@ -6,8 +6,6 @@ from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.task.Task import Task
 from direct.distributed.ClockDelta import globalClockDelta
-from direct.fsm import ClassicFSM
-from direct.fsm import State
 from panda3d.core import Point3
 from panda3d.core import VBase3
 from panda3d.core import NodePath
