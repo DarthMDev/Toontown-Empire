@@ -150,7 +150,9 @@ class OptionsPage(ShtikerPage.ShtikerPage):
             parent=self, relief=None, text=TTLocalizer.OptionsPageTitle,
             text_scale=0.12, pos=(0, 0, 0.61))
 
+        guiButton = loader.loadModel('phase_3/models/gui/quit_button')
         gui = loader.loadModel('phase_3.5/models/gui/fishingBook.bam')
+        circleModel = loader.loadModel('phase_3/models/gui/tt_m_gui_mat_nameShop')
         normalColor = (1, 1, 1, 1)
         clickColor = (0.8, 0.8, 0, 1)
         rolloverColor = (0.15, 0.82, 1.0, 1)
