@@ -8,9 +8,7 @@ Last Updated: 2/27/2006
 
 from direct.showbase.DirectObject import DirectObject
 import string, sys, md5
-from pandac.PandaModules import Filename
-from pandac.PandaModules import WindowProperties
-from pandac.PandaModules import ConfigVariableList
+from panda3d.core import Filename, WindowProperties, ConfigVariableList
 
 class JamoDrum(DirectObject):
     """

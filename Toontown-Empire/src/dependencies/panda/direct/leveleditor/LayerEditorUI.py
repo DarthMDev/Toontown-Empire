@@ -4,7 +4,7 @@ Defines Layer UI
 import wx
 import sys
 import cPickle as pickle
-from pandac.PandaModules import *
+from panda3d.core import *
 
 import ObjectGlobals as OG
 
