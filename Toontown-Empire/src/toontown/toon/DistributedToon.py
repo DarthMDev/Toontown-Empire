@@ -96,7 +96,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.sosPage = None
         self.__meterMode = 0
         self.gardenPage = None
-        self.emoteAccess = [0] * 27
+        self.emoteAccess = [0] * 25
         self.cogTypes = [0, 0, 0, 0]
         self.cogLevels = [0, 0, 0, 0]
         self.cogParts = [0, 0, 0, 0]

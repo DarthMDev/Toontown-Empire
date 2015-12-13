@@ -102,7 +102,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
         self.fishingRod = 0
         self.fishingTrophies = []
         self.trackArray = []
-        self.emoteAccess = [0] * 27
+        self.emoteAccess = [0] * 25
         self.maxMoney = 0
         self.maxBankMoney = 0
         self.bankMoney = 0
