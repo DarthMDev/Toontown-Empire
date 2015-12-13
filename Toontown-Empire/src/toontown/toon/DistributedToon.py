@@ -2479,7 +2479,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def setGMIcon(self, gmType = None):
         if hasattr(self, 'gmIcon') and self.gmIcon:
             return
-        
+
         modelName = 'phase_3.5/models/gui/tt_m_gui_gm_accesslvl_%s.bam'
         al = (103, 502, 504, 508, 701)
         

@@ -4389,97 +4389,53 @@ def allSummons():
     return 'Lots of summons!'
 
 @magicWord(category=CATEGORY_STAFF, types=[str])
-def maxToon(hasConfirmed='UNCONFIRMED', missingTrack=None):
+def maxToon(missingTrack=None, hasConfirmed='UNCONFIRMED'):
     """Max out the toons stats, for end-level gameplay. Should only be (and is restricted to) casting on Administrators only."""
     toon = spellbook.getInvoker()
 
     if hasConfirmed != 'CONFIRM':
-        return 'Are you sure you want to max out {0}? This process is irreversible. Use "~maxToon CONFIRM" to confirm.'.format(toon.getName())
+        return 'Are you sure you want to max out %s? This process is irreversible. Use "~maxToon CONFIRM" to confirm.' % toon.getName()
 
-    # First, unlock the target's Gag tracks:
-    gagTracks = [1, 1, 1, 1, 1, 1, 1]
-    if missingTrack is not None:
-        try:
-            index = ('toonup', 'trap', 'lure', 'sound', 'throw',
-                     'squirt', 'drop').index(missingTrack)
-        except:
-            return 'Missing Gag track is invalid!'
-        if index in (4, 5):
-            return 'You are required to have Throw and Squirt.'
-        gagTracks[index] = 0
-    target.b_setTrackAccess(gagTracks)
-    target.b_setMaxCarry(80)
+    # Max out gag tracks (all 7 tracks)
+    toon.b_setTrackAccess([1] * 7)
+    toon.b_setMaxCarry(MaxCarryLimit + 15) # Compensate for the extra gag track.
+    toon.experience.maxOutExp() # Completely max out the toons experience.
+    toon.b_setExperience(toon.experience.makeNetString())
 
-    # Next, max out their experience for the tracks they have:
-    experience = Experience.Experience(target.getExperience(), target)
-    for i, track in enumerate(target.getTrackAccess()):
-        if track:
-            experience.experience[i] = (
-                Experience.MaxSkill - Experience.UberSkill)
-    target.b_setExperience(experience.makeNetString())
+    # Restock all gags.
+    toon.inventory.zeroInv()
+    toon.inventory.maxOutInv(filterUberGags=0, filterPaidGags=0)
+    toon.b_setInventory(toon.inventory.makeNetString())
 
-    # Max out their Laff:
-    target.b_setMaxHp(ToontownGlobals.MaxHpLimit)
-    target.toonUp(target.getMaxHp() - target.hp)
+    # Max out laff
+    toon.b_setMaxHp(ToontownGlobals.MaxHpLimit)
+    toon.toonUp(toon.getMaxHp() - toon.getHp())
 
-    # Unlock all of the emotes:
-    emotes = list(target.getEmoteAccess())
-    for emoteId in OTPLocalizer.EmoteFuncDict.values():
-        if emoteId >= len(emotes):
-            continue
-        # The following emotions are ignored because they are unable to be
-        # obtained:
-        if emoteId in (17, 18, 19):
-            continue
-        emotes[emoteId] = 1
-    target.b_setEmoteAccess(emotes)
+    # Max out cog suits (ORDER: Bossbot, Lawbot, Cashbot, Sellbot)
+    toon.b_setCogParts([
+        CogDisguiseGlobals.PartsPerSuitBitmasks[0], # Bossbot
+        CogDisguiseGlobals.PartsPerSuitBitmasks[1], # Lawbot
+        CogDisguiseGlobals.PartsPerSuitBitmasks[2], # Cashbot
+        CogDisguiseGlobals.PartsPerSuitBitmasks[3]  # Sellbot
+    ])
+    toon.b_setCogLevels([ToontownGlobals.MaxCogSuitLevel] * 4)
+    toon.b_setCogTypes([SuitDNA.suitsPerDept-1] * 4)
 
-    # Max out their Cog suits:
-    target.b_setCogParts(
-        [
-            CogDisguiseGlobals.PartsPerSuitBitmasks[0],  # Bossbot
-            CogDisguiseGlobals.PartsPerSuitBitmasks[1],  # Lawbot
-            CogDisguiseGlobals.PartsPerSuitBitmasks[2],  # Cashbot
-            CogDisguiseGlobals.PartsPerSuitBitmasks[3]   # Sellbot
-        ]
-    )
-    target.b_setCogLevels([49] * 4)
-    target.b_setCogTypes([7, 7, 7, 7])
+    # High racing tickets
+    toon.b_setTickets(99999)
 
-    # Max their Cog gallery:
-    deptCount = len(SuitDNA.suitDepts)
-    target.b_setCogCount(list(CogPageGlobals.COG_QUOTAS[1]) * deptCount)
-    cogStatus = [CogPageGlobals.COG_COMPLETE2] * SuitDNA.suitsPerDept
-    target.b_setCogStatus(cogStatus * deptCount)
-    target.b_setCogRadar([1, 1, 1, 1])
-    target.b_setBuildingRadar([1, 1, 1, 1])
+    # Teleport access everywhere (Including CogHQ, excluding Funny Farm.)
+    toon.b_setHoodsVisited(ToontownGlobals.Hoods)
+    toon.b_setTeleportAccess(ToontownGlobals.HoodsForTeleportAll)
 
-    # Max out their racing tickets:
-    target.b_setTickets(99999)
+    # General end game settings
+    toon.b_setQuestCarryLimit(ToontownGlobals.MaxQuestCarryLimit)
+    toon.b_setRewardHistory(Quests.ELDER_TIER, [])
+    toon.b_setMaxMoney(250)
+    toon.b_setMoney(toon.getMaxMoney())
+    toon.b_setBankMoney(ToontownGlobals.DefaultMaxBankMoney)
 
-    # Give them teleport access everywhere (including Cog HQs):
-    hoods = list(ToontownGlobals.HoodsForTeleportAll)
-    target.b_setHoodsVisited(hoods)
-    target.b_setTeleportAccess(hoods)
-
-    # Max their quest carry limit:
-    target.b_setQuestCarryLimit(4)
-
-    # Complete their quests:
-    target.b_setQuests([])
-    target.b_setRewardHistory(Quests.ELDER_TIER, [])
-
-    # Max their money:
-    target.b_setMaxMoney(250)
-    target.b_setMaxBankMoney(30000)
-    target.b_setMoney(target.getMaxMoney())
-    target.b_setBankMoney(target.getMaxBankMoney())
-
-    # Finally, unlock all of their pet phrases:
-    if simbase.wantPets:
-        target.b_setPetTrickPhrases(range(7))
-
-    return 'Unlocked teleport access, emotions, and pet trick phrases!'
+    return 'By the power invested in me, I, Dynamite106tt/FordTheWriter, max your toon.'
 
 @magicWord(category=CATEGORY_STAFF, types=[int, str])
 def sos(count, name):
