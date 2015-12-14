@@ -1203,9 +1203,10 @@ ShirtStyles = {'bss1': [0, 0, [(0, 0),
  'sa_ss52': [147, 134, [(27, 27)]],
  'sa_ss53': [148, 135, [(27, 27)]],
  'sa_ss54': [149, 136, [(27, 27)]],
- 'pinktober': [150, 137, [(27, 27)]], # Pinktober Shirt
- 'splat': [151, 138, [(27, 27)]], # Xentel Shirt (Splatter Shirt)
- 'san_1': [152, 139, [(27, 27)]], # San's Shirt (Sherlock Holmes)
+ 'sa_ss55': [150, 137, [(27, 27)]],
+ 'pinktober': [151, 138, [(27, 27)]], # Pinktober Shirt
+ 'splat': [152, 139, [(27, 27)]], # Xentel Shirt (Splatter Shirt)
+ 'san_1': [153, 140, [(27, 27)]], # San's Shirt (Sherlock Holmes)
  'sc_1': [97, 86, [(27, 27)]],
  'sc_2': [98, 86, [(27, 27)]],
  'sc_3': [99, 86, [(27, 27)]],

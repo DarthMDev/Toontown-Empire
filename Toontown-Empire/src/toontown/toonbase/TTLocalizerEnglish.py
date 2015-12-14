@@ -30,10 +30,13 @@ NametagFonts = (
     'phase_3/models/fonts/Danger.bam',
     'phase_3/models/fonts/Alie.bam',
     'phase_3/models/fonts/OysterBar.bam',
-    'phase_3/models/fonts/RedDogSaloon.bam'
+    'phase_3/models/fonts/RedDogSaloon.bam',
+    'phase_3/models/fonts/PBN.ttf',
+    'phase_3/models/fonts/Festive.ttf',
+    'phase_3/models/fonts/DinosaursAreAlive.ttf'
 )
 NametagFontNames = (
-    'Default',
+    'Basic',
     'Plain',
     'Shivering',
     'Wonky',
@@ -47,7 +50,10 @@ NametagFontNames = (
     'Action',
     'Poetic',
     'Boardwalk',
-    'Western'
+    'Western',
+    'Pixelated',
+    'Festive',
+    'Dinosaurs'
 )
 NametagLabel = ' Nametag'
 BasicNameTag = 'Basic'
@@ -5210,6 +5216,8 @@ FurnitureNames = {100: 'Armchair',
  1510: 'Radio',
  1520: 'Radio',
  1530: 'Television',
+ 1531: 'Television 50inch',
+ 1532: 'Televisions 100inch',
  1600: 'Short Vase',
  1610: 'Tall Vase',
  1620: 'Short Vase',
@@ -7017,7 +7025,7 @@ EstateTeleportFailedNotFriends = "Sorry, %s is in a toon's estate that you are n
 EstateTargetGameStart = 'The Toon-up Target game has started!'
 EstateTargetGameInst = "The more you hit the red target, the more you'll get Tooned up."
 EstateTargetGameEnd = 'The Toon-up Target game is now over...'
-EstatePlaneReturn = "I'm back!!!"
+EstatePlaneReturn = "Frgh Fudfnhg"
 EstatePlaneHoliday = 'Happy Halloween!!!'
 AvatarsHouse = '%s\n House'
 BankGuiCancel = lCancel
@@ -10090,3 +10098,11 @@ CatalogAcceptFitError = "This won't fit you!"
 CatalogAcceptInvalidError = 'This item has gone out of style!'
 CatalogAcceptClosetError = 'You already have a bigger closet!'
 ChairAskToUse = 'Would you like to sit on this chair?'
+
+TVNotOwner = 'Sorry, but this is not your TV.'
+TVInvalidVideo = "Sorry, but we can't play that video. Make sure it is a MP4 video."
+TVUnknownVideo = "Oops! Looks like the owner has picked a video to play which isn't currently on your computer!"
+TVUnknownVideoPack = 'Oops! Looks like the owner has picked a video to play, but you need to download the %s TV Pack in the launcher.'
+TVChooseVideo = 'Choose a video to play!'
+TVOK = 'The video you selected is now playing!'
+TVPacks = ['QuackityHQ']

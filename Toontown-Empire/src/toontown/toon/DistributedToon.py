@@ -96,7 +96,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.sosPage = None
         self.__meterMode = 0
         self.gardenPage = None
-        self.emoteAccess = [0] * 27
+        self.emoteAccess = [0] * 25
         self.cogTypes = [0, 0, 0, 0]
         self.cogLevels = [0, 0, 0, 0]
         self.cogParts = [0, 0, 0, 0]
@@ -580,7 +580,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             self.overheadMeter.setAvatar(self)
             self.overheadMeter.setZ(5)
             self.overheadMeter.setScale(1.5)
-            self.overheadMeter.reparentTo(NodePath(self.nametag.getNameIcon()))
             self.overheadMeter.hide(BitMask32.bit(1)) # Hide from 2D camera.
             self.overheadMeter.start()
         elif not wantMeter and self.overheadMeter:
@@ -2459,7 +2458,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         name = self.name
         self.setDisplayName(name)
         if self._isGM:
-            self.setNametagStyle(0)
+            self.setNametagStyle(12)
             self.setGMIcon(self._gmType)
             self.gmToonLockStyle = True
         else:
@@ -2480,7 +2479,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def setGMIcon(self, gmType = None):
         if hasattr(self, 'gmIcon') and self.gmIcon:
             return
-        
+
         modelName = 'phase_3.5/models/gui/tt_m_gui_gm_accesslvl_%s.bam'
         al = (103, 502, 504, 508, 701)
         

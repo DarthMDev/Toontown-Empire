@@ -25,6 +25,9 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         self.currPageTabIndex = None
         self.pageTabFrames = [self.createPageTabFrame(x) for x in (-0.93, 0.93)]
         self.currPageIndex = None
+        self.pageBeforeNews = None
+        self.tempLeft = None
+        self.tempRight = None
         self.entered = 0
         self.safeMode = 0
         self.__obscured = 0
@@ -85,6 +88,8 @@ class ShtikerBook(DirectFrame, StateData.StateData):
             for tab in self.pageTabFrames:
                 tab.show()
         self.pages[self.currPageIndex].enter()
+        if hasattr(localAvatar, 'newsButtonMgr') and localAvatar.newsButtonMgr:
+            localAvatar.newsButtonMgr.hideNewIssueButton()
 
     def exit(self):
         if not self.entered:
@@ -169,12 +174,28 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         if pageName not in self.pageOrder:
             self.notify.error('Trying to add page %s in the ShtickerBook. Page not listed in the order.' % pageName)
             return
-        self.pages.append(page)
-        pageIndex = len(self.pages) - 1
+        pageIndex = 0
+        if self.pages:
+            newIndex = len(self.pages)
+            prevIndex = newIndex - 1
+            if self.pages[prevIndex].pageName == TTLocalizer.NewsPageName:
+                self.pages.insert(prevIndex, page)
+                pageIndex = prevIndex
+                if self.currPageIndex >= pageIndex:
+                    self.currPageIndex += 1
+            else:
+                self.pages.append(page)
+                pageIndex = len(self.pages) - 1
+        else:
+            self.pages.append(page)
+            pageIndex = len(self.pages) - 1
         page.setBook(self)
         page.setPageName(pageName)
         page.reparentTo(self)
         self.addPageTab(page, pageIndex, pageName)
+        from toontown.shtiker import MapPage
+        if isinstance(page, MapPage.MapPage):
+            self.pageBeforeNews = page
 
     def addPageTab(self, page, pageIndex, pageName = 'Page'):
         tabIndex = len(self.pageTabs)
@@ -183,8 +204,10 @@ class ShtikerBook(DirectFrame, StateData.StateData):
             messenger.send('wakeup')
             base.playSfx(self.pageSound)
             self.setPage(page)
-            if base.config.GetBool('want-qa-regression', 0):
+            if config.GetBool('want-qa-regression', 0):
                 self.notify.info('QA-REGRESSION: SHTICKERBOOK: Browse tabs %s' % page.pageName)
+            localAvatar.newsButtonMgr.setGoingToNewsPageFromStickerBook(False)
+            localAvatar.newsButtonMgr.showAppropriateButton()
 
         yOffset = 0.07 * (pageIndex % 16)
         iconGeom = None
@@ -291,7 +314,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
             self.pageBeforeNews = page
         return
 
-    def setPageBeforeNews(self, enterPage=True):
+    def setPageBeforeNews(self, enterPage = True):
         self.setPage(self.pageBeforeNews, enterPage)
         self.accept(ToontownGlobals.StickerBookHotkey, self.__close)
         self.accept(ToontownGlobals.OptionsPageHotkey, self.__close)

@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 import CatalogItem
 import CatalogItemList
-from CatalogFurnitureItem import CatalogFurnitureItem, nextAvailableCloset, nextAvailableBank, getAllClosets, get50ItemCloset, getMaxClosets, getAllBanks
+from CatalogFurnitureItem import CatalogFurnitureItem, nextAvailableCloset, getAllClosets, get50ItemCloset, getMaxClosets, getAllBanks
 from CatalogAnimatedFurnitureItem import CatalogAnimatedFurnitureItem
 from CatalogClothingItem import CatalogClothingItem, getAllClothes
 from CatalogChatItem import CatalogChatItem, getChatRange
@@ -13,7 +13,6 @@ from CatalogWainscotingItem import CatalogWainscotingItem, getAllWainscotings
 from CatalogWindowItem import CatalogWindowItem
 from CatalogPoleItem import nextAvailablePole, getAllPoles
 from CatalogPetTrickItem import CatalogPetTrickItem, getAllPetTricks
-from CatalogTankItem import nextAvailableTank, getAllTanks
 from CatalogGardenItem import CatalogGardenItem
 from CatalogToonStatueItem import CatalogToonStatueItem
 from CatalogRentalItem import CatalogRentalItem
@@ -525,7 +524,6 @@ MonthlySchedule = ((7,
    CatalogFurnitureItem(1532),
    CatalogNametagItem(15),
    CatalogNametagItem(16),
-   CatalogNametagItem(17),
    CatalogClothingItem(1608, 0, True),
    CatalogClothingItem(1605, 0, True),
    CatalogClothingItem(1602, 0, True),
@@ -539,9 +537,7 @@ MonthlySchedule = ((7,
    CatalogEmoteItem(21, True),
    CatalogEmoteItem(22, True),
    CatalogEmoteItem(23, True),
-   CatalogEmoteItem(24, True),
-   CatalogEmoteItem(25, True),
-   CatalogClothingItem(1821, 0, True))),
+   CatalogEmoteItem(24, True))),
  (5,
   26,
   6,
@@ -1506,11 +1502,6 @@ class CatalogGenerator:
 
             if nextAvailableCloset not in schedule:
                 weeklyCatalog += self.__selectItem(avatar, nextAvailableCloset, monthlyCatalog, saleItem=0)
-            if nextAvailableBank not in schedule:
-                weeklyCatalog += self.__selectItem(avatar, nextAvailableBank, monthlyCatalog, saleItem = 0)
-            if nextAvailableTank not in schedule:
-                weeklyCatalog += self.__selectItem(avatar, nextAvailableTank, monthlyCatalog, saleItem = 0)
-            if nextAvailablePole not in schedule:
                 weeklyCatalog += self.__selectItem(avatar, nextAvailablePole, monthlyCatalog, saleItem = 0)
 
         def hasPetTrick(catalog):
@@ -1745,10 +1736,6 @@ class CatalogGenerator:
                     item = getAllPoles()
                 elif item == nextAvailableCloset:
                     item = getAllClosets()
-                elif item == nextAvailableBank:
-                    item = getAllBanks()
-                elif item == nextAvailableTank:
-                    item == getAllTanks()
                 elif item == get50ItemCloset:
                     item = getMaxClosets()
                 else:

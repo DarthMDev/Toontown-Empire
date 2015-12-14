@@ -4,7 +4,7 @@ Defines ProtoPalette tree UI
 import wx
 import os
 import cPickle as pickl
-from pandac.PandaModules import *
+from panda3d.core import *
 from PaletteTreeCtrl import *
 
 class UniversalDropTarget(wx.PyDropTarget):

@@ -15,7 +15,7 @@ import glob
 import shutil
 
 import direct
-from pandac.PandaModules import Filename, DSearchPath
+from panda3d.core import Filename, DSearchPath
 
 def usage(code, msg = ''):
     print >> sys.stderr, __doc__

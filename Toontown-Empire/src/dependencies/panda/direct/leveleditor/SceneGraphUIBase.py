@@ -3,7 +3,7 @@ Defines Scene Graph tree UI Base
 """
 import wx
 import cPickle as pickle
-from pandac.PandaModules import *
+from panda3d.core import *
 from ActionMgr import *
 
 import ObjectGlobals as OG
