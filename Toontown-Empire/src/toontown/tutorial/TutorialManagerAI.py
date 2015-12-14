@@ -173,7 +173,7 @@ class TutorialManagerAI(DistributedObjectAI):
         av.experience.zeroOutExp()
         av.d_setExperience(av.experience.makeNetString())
 
-        av.b_setTrackAccess([0 for x in xrange(7)])
+        av.b_setTrackAccess([0, 0, 0, 0, 1, 1, 0])
 
     def __handleUnexpectedExit(self, avId):
         fsm = self.avId2fsm.get(avId)
