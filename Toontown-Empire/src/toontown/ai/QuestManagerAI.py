@@ -503,22 +503,26 @@ class QuestManagerAI:
     def toonDefeatedStage(self, av, stageId):
         pass
 
-    def toonKilledCogs(self, av, suitsKilled, zoneId):
-        # Get the avatar's current quests.
-        messenger.send('topToonsManager-event', [av.doId, TopToonsGlobals.CAT_COGS, len(suitsKilled)])
+    def toonKilledCogs(self, av, suitsKilled, zoneId, activeToonList):
+         # Get the avatar's current quests.
         avQuests = av.getQuests()
         questList = []
+
+        # Make a list of the activeToonDoIds
+        activeToonDoIds = [toon.doId for toon in activeToonList if not None]
 
         # Iterate through the avatar's current quests.
         for i in xrange(0, len(avQuests), 5):
             questDesc = avQuests[i : i + 5]
-            questClass = Quests.getQuest(questDesc[QuestIdIndex])
+            questClass = Quests.getQuest(questDesc[QuestIdIndex], av.doId)
 
             # Check if they are doing a cog quest
             if isinstance(questClass, Quests.CogQuest):
+
                 # Check if the cog counts...
                 for suit in suitsKilled:
-                    if questClass.doesCogCount(av.doId, suit, zoneId):
+                    if questClass.doesCogCount(av.doId, suit, zoneId, activeToonDoIds):
+
                         # Looks like the cog counts!
                         if questClass.getCompletionStatus(av, questDesc) != Quests.COMPLETE:
                             questDesc[QuestProgressIndex] += 1
@@ -528,6 +532,7 @@ class QuestManagerAI:
 
         # Update the avatar's quests
         av.b_setQuests(questList)
+
 
 @magicWord(category=CATEGORY_STAFF, types=[str, int, int])
 def quests(command, arg0=0, arg1=0):
