@@ -388,7 +388,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.trophyStar1.setH(r)
         return Task.cont
 
-    def isAvFriend(self, avId):
+    @staticmethod
+    def isAvFriend(avId):
         return base.cr.isFriend(avId)
 
     def setTalkWhisper(self, avId, chat):
@@ -408,8 +409,9 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def setSleepAutoReply(self, fromId):
         pass
-
-    def _isValidWhisperSource(self, source):
+        
+    @staticmethod
+    def _isValidWhisperSource(source):
         return isinstance(source, (DistributedToon, FriendHandle.FriendHandle))
 
     def setWhisperSCEmoteFrom(self, fromId, emoteId):
@@ -463,7 +465,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                 return
         return DistributedPlayer.DistributedPlayer.setWhisperSCCustomFrom(self, fromId, msgIndex)
 
-    def whisperSCToontaskTo(self, taskId, toNpcId, toonProgress, msgIndex, sendToId):
+    @staticmethod
+    def whisperSCToontaskTo(taskId, toNpcId, toonProgress, msgIndex, sendToId):
         messenger.send('wakeup')
 
         base.cr.ttsFriendsManager.d_whisperSCToontaskTo(sendToId, taskId,
@@ -1474,7 +1477,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.trophyStar.setR(r)
         return Task.cont
 
-    def getZoneId(self):
+    @staticmethod
+    def getZoneId():
         place = base.cr.playGame.getPlace()
         if place:
             return place.getZoneId()
@@ -1482,7 +1486,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             return None
         return None
 
-    def getRequestID(self):
+    @staticmethod
+    def getRequestID():
         return CLIENT_GET_AVATAR_DETAILS
 
     def announceBingo(self):
@@ -1713,7 +1718,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def d_reqCogSummons(self, type, suitIndex):
         self.sendUpdate('reqCogSummons', [type, suitIndex])
 
-    def cogSummonsResponse(self, returnCode, suitIndex, doId):
+    @staticmethod
+    def cogSummonsResponse(returnCode, suitIndex, doId):
         messenger.send('cog-summons-response', [returnCode, suitIndex, doId])
 
     def setCogSummonsEarned(self, cogSummonsEarned):
@@ -1899,7 +1905,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def getGardenTrophies(self):
         return self.gardenTrophies
 
-    def useSpecialResponse(self, returnCode):
+    @staticmethod
+    def useSpecialResponse(returnCode):
         messenger.send('use-special-response', [returnCode])
 
     def setGardenStarted(self, bStarted):
