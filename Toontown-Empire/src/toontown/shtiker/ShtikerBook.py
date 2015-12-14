@@ -3,6 +3,7 @@ from direct.fsm import StateData
 from direct.gui.DirectGui import DirectButton
 from direct.gui.DirectGui import DirectFrame
 from direct.gui.DirectGui import DGG
+from direct.gui.DirectGui import cleanupDialog
 from panda3d.core import Vec4
 from panda3d.core import TextNode
 from direct.showbase import DirectObject
