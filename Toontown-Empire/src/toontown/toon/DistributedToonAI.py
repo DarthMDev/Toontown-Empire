@@ -1947,10 +1947,10 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
         return anyChanged
 
     def b_setEmoteAccess(self, bits):
-        if bits[26]:
-            bits.remove(bits[26])
-        if self.emoteAccess[26]:
-            self.emoteAccess.remove(self.emoteAccess[26])
+        if bits[19]:
+            bits.remove(bits[19])
+        if self.emoteAccess[19]:
+            self.emoteAccess.remove(self.emoteAccess[19])
         self.setEmoteAccess(bits)
         self.d_setEmoteAccess(bits)
 
@@ -1961,7 +1961,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
         if bits[19]:
             bits.remove(bits[19])
         if self.emoteAccess[19]:
-            self.emoteAccess.remove(self.emoteAccess[26])
+            self.emoteAccess.remove(self.emoteAccess[19])
         maxBitCount = len(self.emoteAccess)
         bits = bits[:maxBitCount]
         bitCount = len(bits)
