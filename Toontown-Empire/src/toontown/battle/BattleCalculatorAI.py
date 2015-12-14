@@ -246,7 +246,8 @@ class BattleCalculatorAI:
     def __checkPropBonus(self, track):
         return self.battle.getInteractivePropTrackBonus() == track
 
-    def __targetDefense(self, suit, atkTrack):
+    @staticmethod
+    def __targetDefense(suit, atkTrack):
         if atkTrack == HEAL:
             return 0
         suitDef = SuitBattleGlobals.SuitAttributes[suit.dna.name]['def'][suit.getLevel()]
@@ -587,7 +588,8 @@ class BattleCalculatorAI:
             track = self.__getActualTrack(attack)
             return not attack[TOON_ACCBONUS_COL] and track != NO_ATTACK
 
-    def __attackDamage(self, attack, suit = 0):
+    @staticmethod
+    def __attackDamage(attack, suit = 0):
         if suit:
             for dmg in attack[SUIT_HP_COL]:
                 if dmg > 0:
@@ -601,7 +603,8 @@ class BattleCalculatorAI:
 
             return 0
 
-    def __attackDamageForTgt(self, attack, tgtPos, suit = 0):
+    @staticmethod
+    def __attackDamageForTgt(attack, tgtPos, suit = 0):
         if suit:
             return attack[SUIT_HP_COL][tgtPos]
         else:
