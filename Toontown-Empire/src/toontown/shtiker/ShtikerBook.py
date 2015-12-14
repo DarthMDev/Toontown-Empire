@@ -175,7 +175,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
             self.notify.error('Trying to add page %s in the ShtickerBook. Page not listed in the order.' % pageName)
             return
         pageIndex = 0
-        if len(self.pages):
+        if self.pages:
             newIndex = len(self.pages)
             prevIndex = newIndex - 1
             if self.pages[prevIndex].pageName == TTLocalizer.NewsPageName:

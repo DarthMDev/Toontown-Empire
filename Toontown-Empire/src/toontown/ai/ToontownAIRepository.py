@@ -190,19 +190,19 @@ class ToontownAIRepository(ToontownInternalRepository):
 
     def startDistrict(self):
         self.districtId = self.allocateChannel()
-        self.notify.info('Creating ToontownDistrictAI(%d)...' % self.districtId)
+        self.notify.info('Creating ToontownDistrictAI({0:d})...'.format(self.districtId))
         self.distributedDistrict = ToontownDistrictAI(self)
         self.distributedDistrict.setName(self.districtName)
         self.distributedDistrict.generateWithRequiredAndId(
             self.districtId, self.getGameDoId(), 2)
-        self.notify.info('Claiming ownership of channel ID: %d...' % self.districtId)
+        self.notify.info('Claiming ownership of channel ID: {0:d}...'.format(self.districtId))
         self.claimOwnership(self.districtId)
 
         self.districtStats = ToontownDistrictStatsAI(self)
         self.districtStats.setDistrictId(self.districtId)
         self.districtStats.generateWithRequiredAndId(
             self.allocateChannel(), self.getGameDoId(), 3)
-        self.notify.info('Created ToontownDistrictStats(%d)' % self.districtStats.doId)
+        self.notify.info('Created ToontownDistrictStats({0:d})'.format(self.districtStats.doId))
 
         self.notify.info('Creating managers...')
         self.createManagers()
@@ -232,7 +232,7 @@ class ToontownAIRepository(ToontownInternalRepository):
             phaseNum = ToontownGlobals.phaseMap[hoodId]
         else:
             phaseNum = ToontownGlobals.streetPhaseMap[hoodId]
-        return 'phase_%s/dna/%s_%s.pdna' % (phaseNum, hood, zoneId)
+        return 'phase_{0}/dna/{1}_{2}.pdna'.format(phaseNum, hood, zoneId)
 
     def loadDNAFileAI(self, dnastore, filename):
         return loadDNAFileAI(dnastore, filename)
@@ -256,7 +256,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         return self.wantTrackClsends
 
     def getAvatarExitEvent(self, avId):
-        return 'distObjDelete-%d' % avId
+        return 'distObjDelete-{0:d}'.format(avId)
 
     def trueUniqueName(self, name):
         return self.uniqueName(name)
