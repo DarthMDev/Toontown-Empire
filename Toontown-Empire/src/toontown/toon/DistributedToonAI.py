@@ -404,7 +404,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             self.air.writeServerEvent(
                 'suspicious', self.doId, 'Invalid DNA string.')
 
-    def verifyDNA(self):
+    @staticmethod
+    def verifyDNA():
         return True
 
     def getDNAString(self):
@@ -2444,7 +2445,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
         self.nextToonup = (healFrequency, self.indexOf(ToontownGlobals.TOONUP_PULSE_ZONES, ZoneUtil.getCanonicalHoodId(self.zoneId), 0) + 1)
         self.__waitForNextToonUp()
 
-    def indexOf(self, list, element, default):
+    @staticmethod
+    def indexOf(list, element, default):
         try:
             return list.index(element)
         except:
