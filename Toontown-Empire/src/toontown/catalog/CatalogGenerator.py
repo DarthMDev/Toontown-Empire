@@ -523,7 +523,6 @@ MonthlySchedule = ((7,
    CatalogFurnitureItem(1531),
    CatalogFurnitureItem(1532),
    CatalogNametagItem(15),
-   CatalogNametagItem(16),
    CatalogClothingItem(1608, 0, True),
    CatalogClothingItem(1605, 0, True),
    CatalogClothingItem(1602, 0, True),
@@ -1638,7 +1637,8 @@ class CatalogGenerator:
 
         return selection
 
-    def __chooseFromList(self, avatar, list, duplicateItems):
+    @staticmethod
+    def __chooseFromList(avatar, list, duplicateItems):
         index = random.randrange(len(list))
         item = list[index]
         del list[index]
@@ -1679,14 +1679,16 @@ class CatalogGenerator:
                  maybeWeek)
                 out.write(line + '\n')
 
-    def __formatColor(self, color):
+    @staticmethod
+    def __formatColor(color):
         if color == None:
             return ''
         else:
             return '(%0.2f, %0.2f, %0.2f)' % (color[0], color[1], color[2])
         return
 
-    def __determineSeries(self, seriesDict, weeklist):
+    @staticmethod
+    def __determineSeries(seriesDict, weeklist):
         for week in weeklist:
             if isinstance(week, types.IntType):
                 series = (week - 1) / ToontownGlobals.CatalogNumWeeksPerSeries + 1
@@ -1694,7 +1696,8 @@ class CatalogGenerator:
 
         return
 
-    def __formatWeeklist(self, weeklist):
+    @staticmethod
+    def __formatWeeklist(weeklist):
         str = ''
         for week in weeklist:
             str += ', %s' % week
@@ -1753,7 +1756,8 @@ class CatalogGenerator:
 
         return
 
-    def __recordScheduleItem(self, sched, weekCode, maybeWeekCode, item):
+    @staticmethod
+    def __recordScheduleItem(sched, weekCode, maybeWeekCode, item):
         if not item in sched:
             sched[item] = [[], []]
         if weekCode != None:

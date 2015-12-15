@@ -32,8 +32,6 @@ NametagFonts = (
     'phase_3/models/fonts/OysterBar.bam',
     'phase_3/models/fonts/RedDogSaloon.bam',
     'phase_3/models/fonts/PBN.ttf',
-    'phase_3/models/fonts/Festive.ttf',
-    'phase_3/models/fonts/DinosaursAreAlive.ttf'
 )
 NametagFontNames = (
     'Basic',
@@ -51,9 +49,7 @@ NametagFontNames = (
     'Poetic',
     'Boardwalk',
     'Western',
-    'Pixelated',
-    'Festive',
-    'Dinosaurs'
+    'Pixelated'
 )
 NametagLabel = ' Nametag'
 BasicNameTag = 'Basic'
@@ -4993,7 +4989,7 @@ BackpackStylesDescriptions = {'bpb1': 'Blue Backpack',
  'bhw4': 'Toonosaur Backpack',
  'bob1': 'Jamboree Pack',
  'bfg1': 'Gag Attack Pack',
- 'bfl1': 'Cog Pack by Savanah'}
+ 'bfl1': 'Cog Pack'}
 ShoesStylesDescriptions = {'sat1': 'Green Athletic Shoes',
  'sat2': 'Red Athletic Shoes',
  'smb1': 'Green Toon Boots',
@@ -5216,8 +5212,8 @@ FurnitureNames = {100: 'Armchair',
  1510: 'Radio',
  1520: 'Radio',
  1530: 'Television',
- 1531: 'Television 50inch',
- 1532: 'Televisions 100inch',
+ 1531: '50 inch Television',
+ 1532: '100 inch Television',
  1600: 'Short Vase',
  1610: 'Tall Vase',
  1620: 'Short Vase',
@@ -8197,7 +8193,7 @@ TopToonsMarathonEnd = "The Top Toons New Year's Day Marathon has ended."
 WinterDecorationsStart = "It's Winter Holiday time in Toontown!"
 WinterDecorationsEnd = 'Winter Holiday is over - Happy New Year!'
 WackyWinterDecorationsStart = 'Brrr! Silly Meter goes from silly to chilly!'
-WinterCarolingStart = 'Caroling has come to Toontown. Sing for your Snowman Head - see the Blog for details!'
+WinterCarolingStart = 'Caroling has come to Toontown. Sing for your Snowman Head!'
 ExpandedClosetsStart = 'Attention Toons: For a limited time, Members can purchase the new 50 item Closet from the Cattlelog for the low price of 50 Jellybeans!'
 KartingTicketsHolidayStart = 'Get double tickets from Practice races at Goofy Speedway today!'
 IdesOfMarchStart = 'Toons go GREEN!'
