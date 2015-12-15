@@ -7,6 +7,7 @@ from toontown.quest import BlinkingArrows
 from direct.interval.IntervalGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
+from toontown.toontowngui import TTDialog
 from otp.otpbase import OTPGlobals
 
 class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
@@ -117,12 +118,14 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
 
     def updateTotalPropsText(self):
         textTotal = TTLocalizer.InventoryTotalGags % (self.totalProps, self.toon.getMaxCarry())
-        if localAvatar.getPinkSlips() > 1:
-            textTotal = textTotal + '\n\n' + TTLocalizer.InventroyPinkSlips % localAvatar.getPinkSlips()
-        elif localAvatar.getPinkSlips() == 1:
-            textTotal = textTotal + '\n\n' + TTLocalizer.InventroyPinkSlip
-        self.totalLabel['text'] = textTotal
 
+        if localAvatar.getPinkSlips() > 1:
+            textTotal += TTLocalizer.InventoryPinkSlips % localAvatar.getPinkSlips()
+            textTotal += '\n'
+        elif localAvatar.getPinkSlips() == 1:
+            textTotal += TTLocalizer.InventoryPinkSlip
+            textTotal += '\n'
+        
     def unload(self):
         self.notify.debug('Unloading Inventory for %d' % self.toon.doId)
         self.stopAndClearPropBonusIval()
@@ -150,6 +153,8 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         del self.detailAmountLabel
         del self.detailDataLabel
         del self.totalLabel
+        self.cleanupDialog()
+
         for row in self.trackRows:
             row.destroy()
 
@@ -163,7 +168,11 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         del self.buttons
         InventoryBase.InventoryBase.unload(self)
         DirectFrame.destroy(self)
-        return
+    
+    def cleanupDialog(self):
+        if self.dialog:
+            self.dialog.cleanup()
+            self.dialog = None
 
     def load(self):
         self.notify.debug('Loading Inventory for %d' % self.toon.doId)
@@ -191,7 +200,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         trashcanGui = loader.loadModel('phase_3/models/gui/trashcan_gui')
         trashcanImage = (trashcanGui.find('**/TrashCan_CLSD'), trashcanGui.find('**/TrashCan_OPEN'), trashcanGui.find('**/TrashCan_RLVR'))
         self.deleteEnterButton = DirectButton(parent=self.invFrame, image=trashcanImage, text=('', TTLocalizer.InventoryDelete, TTLocalizer.InventoryDelete), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), text_scale=0.1, text_pos=(0, -0.1), text_font=getInterfaceFont(), textMayChange=0, relief=None, pos=(-1, 0, -0.35), scale=1.0)
-        self.deleteAllButton = DirectButton(parent=self.invFrame, image=trashcanImage, text=('', TTLocalizer.InventoryDeleteAll, TTLocalizer.InventoryDeleteAll), text_fg=(1, 0, 0, 1), text_shadow=(1, 1, 1, 1), text_scale=0.1, text_pos=(0, -0.1), text_font=getInterfaceFont(), textMayChange=0, relief=None, pos=(-0.3, 0, -0.91), scale=0.75, command=self.__zeroInvAndUpdate)
+        self.deleteAllButton = DirectButton(parent=self.invFrame, image=trashcanImage, text=('', TTLocalizer.InventoryDeleteAll, TTLocalizer.InventoryDeleteAll), text_fg=(1, 0, 0, 1), text_shadow=(1, 1, 1, 1), text_scale=0.1, text_pos=(0, -0.1), text_font=getInterfaceFont(), textMayChange=0, relief=None, pos=(-0.3, 0, -0.91), scale=0.75, command=self.__zeroInvConfirm)
         self.deleteExitButton = DirectButton(parent=self.invFrame, image=(trashcanGui.find('**/TrashCan_OPEN'), trashcanGui.find('**/TrashCan_CLSD'), trashcanGui.find('**/TrashCan_RLVR')), text=('', TTLocalizer.InventoryDone, TTLocalizer.InventoryDone), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), text_scale=0.1, text_pos=(0, -0.1), text_font=getInterfaceFont(), textMayChange=0, relief=None, pos=(-1, 0, -0.35), scale=1.0)
         trashcanGui.removeNode()
         self.deleteHelpText = DirectLabel(parent=self.invFrame, relief=None, pos=(0.272, 0.3, -0.907), text=TTLocalizer.InventoryDeleteHelp, text_fg=(0, 0, 0, 1), text_scale=0.08, textMayChange=0)
@@ -203,6 +212,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.detailCreditLabel = DirectLabel(parent=self.detailFrame, text=TTLocalizer.InventorySkillCreditNone, text_fg=(0.05, 0.14, 0.4, 1), scale=0.04, pos=(-0.22, 0, -0.365), text_font=getInterfaceFont(), text_align=TextNode.ALeft, relief=None)
         self.detailCreditLabel.hide()
         self.totalLabel = DirectLabel(text='', parent=self.detailFrame, pos=(0, 0, -0.095), scale=0.05, text_fg=(0.05, 0.14, 0.4, 1), text_font=getInterfaceFont(), relief=None)
+        self.dialog = None
         self.updateTotalPropsText()
         self.trackRows = []
         self.trackNameLabels = []
@@ -268,9 +278,17 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
     def __handleBackToPlayground(self):
         messenger.send('inventory-back-to-playground')
     
-    def __zeroInvAndUpdate(self):
-        self.zeroInv()
-        self.updateGUI()
+    def __zeroInvConfirm(self):
+        self.cleanupDialog()
+        self.dialog = TTDialog.TTDialog(style=TTDialog.YesNo, text=TTLocalizer.InventoryDeleteConfirm, command=self.__zeroInvAndUpdate)
+        self.dialog.show()
+    
+    def __zeroInvAndUpdate(self, value):
+        self.cleanupDialog()
+        
+        if value > 0:
+            self.zeroInv()
+            self.updateGUI()
 
     def showDetail(self, track, level, event = None):
         self.totalLabel.hide()
@@ -318,6 +336,9 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
 
     def setDetailCredit(self, track, credit):
         if credit != None:
+            if self.toon.earnedExperience:
+                maxCredit = ExperienceCap - self.toon.earnedExperience[track]
+                credit = min(credit, maxCredit)
             credit = int(credit * 10 + 0.5)
             if credit % 10 == 0:
                 credit /= 10
@@ -379,6 +400,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.enableUberGags()
 
     def deactivateButtons(self):
+        self.cleanupDialog()
         if self.previousActivateMode == 'purchaseDelete':
             self.purchaseDeleteDeactivateButtons()
         elif self.previousActivateMode == 'purchase':
@@ -399,6 +421,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
             self.plantTreeDeactivateButtons()
 
     def __activateButtons(self):
+        self.cleanupDialog()
         if hasattr(self, 'activateMode'):
             if self.activateMode == 'book':
                 self.bookActivateButtons()
@@ -761,7 +784,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
             self.sosButton.show()
             self.passButton.show()
             self.fireButton.show()
-            if localAvatar.getPinkSlips() > 0:
+            if localAvatar.getPinkSlips():
                 self.fireButton['state'] = DGG.NORMAL
                 self.fireButton['image_color'] = Vec4(0, 0.6, 1, 1)
             else:
