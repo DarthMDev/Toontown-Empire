@@ -32,8 +32,6 @@ NametagFonts = (
     'phase_3/models/fonts/OysterBar.bam',
     'phase_3/models/fonts/RedDogSaloon.bam',
     'phase_3/models/fonts/PBN.ttf',
-    'phase_3/models/fonts/Festive.ttf',
-    'phase_3/models/fonts/DinosaursAreAlive.ttf'
 )
 NametagFontNames = (
     'Basic',
@@ -51,9 +49,7 @@ NametagFontNames = (
     'Poetic',
     'Boardwalk',
     'Western',
-    'Pixelated',
-    'Festive',
-    'Dinosaurs'
+    'Pixelated'
 )
 NametagLabel = ' Nametag'
 BasicNameTag = 'Basic'
