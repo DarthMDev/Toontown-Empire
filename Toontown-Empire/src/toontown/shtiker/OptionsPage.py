@@ -490,7 +490,8 @@ class OptionsTabPage(DirectFrame):
             self.displaySettingsApi = base.pipe.getInterfaceName()
             self.displaySettingsApiChanged = apiChanged
 
-    def isPropertiesEmbedded(self, properties):
+    @staticmethod
+    def isPropertiesEmbedded(properties):
         result = False
         if properties.getParentWindow():
             result = True
@@ -787,7 +788,8 @@ class ExtraOptionsTabPage(DirectFrame):
         chooser.setDisplayFont(ToontownGlobals.getNametagFont(nametagId))
         chooser.decideButtons(0, len(base.localAvatar.nametagStyles) - 1)
 
-    def __applyNametagStyle(self, index):
+    @staticmethod
+    def __applyNametagStyle(index):
         if index not in [-1, base.localAvatar.nametagStyles.index(base.localAvatar.getNametagStyle())]:
             base.localAvatar.requestNametagStyle(base.localAvatar.nametagStyles[index])
 
@@ -800,7 +802,8 @@ class ExtraOptionsTabPage(DirectFrame):
         chooser.setDisplayText(TTLocalizer.FishingRodNameDict[chooser.index])
         chooser.decideButtons(0, base.localAvatar.maxFishingRod)
 
-    def __applyFishingPole(self, index):
+    @staticmethod
+    def __applyFishingPole(index):
         if index not in [ -1, base.localAvatar.getFishingRod()]:
             base.localAvatar.requestFishingRod(index)
 
