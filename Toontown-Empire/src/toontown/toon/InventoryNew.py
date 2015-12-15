@@ -117,7 +117,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         DirectFrame.hide(self)
 
     def updateTotalPropsText(self):
-        textTotal = '%s\n\n' % (TTLocalizer.InventoryTotalGags % (self.totalProps, self.toon.getMaxCarry()))
+        textTotal = TTLocalizer.InventoryTotalGags % (self.totalProps, self.toon.getMaxCarry())
 
         if localAvatar.getPinkSlips() > 1:
             textTotal += TTLocalizer.InventoryPinkSlips % localAvatar.getPinkSlips()
@@ -873,14 +873,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
             return 1
 
     def itemIsCredit(self, track, level):
-        if self.toon.earnedExperience:
-            if self.toon.earnedExperience[track] >= ExperienceCap:
-                return 0
-        if self.battleCreditLevel == None:
-            return 1
-        else:
-            return level < self.battleCreditLevel
-        return
+        return self.battleCreditLevel == None or level < self.battleCreditLevel
 
     def getMax(self, track, level):
         if self.gagTutMode and (track not in (4, 5) or level > 0):
