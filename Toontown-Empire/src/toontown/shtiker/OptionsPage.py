@@ -184,7 +184,7 @@ class OptionsPage(ShtikerPage.ShtikerPage):
         self.extraOptionsTab = DirectButton(
             parent=self, relief=None, text=TTLocalizer.ExtraOptionsPageTitle,
             text_scale=TTLocalizer.OPextraOptionsTab, text_align=TextNode.ALeft,
-            text_pos=(0.027, 0.0, 0.0),
+            text_pos=(-0.01, 0.0, 0.0),
             image=gui.find('**/tabs/polySurface2'), image_pos=(0.12, 1, -0.91),
             image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035),
             image_color=normalColor, image1_color=clickColor,
