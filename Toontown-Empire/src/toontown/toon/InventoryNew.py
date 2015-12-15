@@ -117,7 +117,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         DirectFrame.hide(self)
 
     def updateTotalPropsText(self):
-        textTotal = '%s\n\n' % (TTLocalizer.InventoryTotalGags % (self.totalProps, self.toon.getMaxCarry()))
+        textTotal = '{0}\n\n'.format(TTLocalizer.InventoryTotalGags.format(self.totalProps, self.toon.getMaxCarry()))
 
         if localAvatar.getPinkSlips() > 1:
             textTotal += TTLocalizer.InventoryPinkSlips % localAvatar.getPinkSlips()
