@@ -8,13 +8,12 @@ Official Repo for Toontown Empire, a new Toontown game based on Disney's Toontow
 2. Dubito: Leader, Server Administrator and Launcher Developer
 3. Josh Zimmer- Leader and Game Developer
 4. Xikyl- Art Director, Texture and Graphic Artist
-5. MGRacer48- Game Developer, Mac Support
-6. Craigy- Malv: Game Developer
-7. Spike- Community Manager
-8. San- Graphic Designer and Texture Artist
-9. EpicrockersMC- Moderator
-10. Jaq - 3D Modeler
-11. Awerlu * Daniel- Website Developer
+5. Craigy- Malv: Game Developer
+6. Spike- Community Manager
+7. San- Graphic Designer and Texture Artist
+8. EpicrockersMC- Moderator
+9. Jaq - 3D Modeler
+10. Awerlu * Daniel- Website Developer
 
 # Repo Rules and Regulations:
 
