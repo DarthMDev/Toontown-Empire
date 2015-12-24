@@ -247,6 +247,9 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         del self.laffMeter
         self.questMap.destroy()
         self.questMap = None
+        if hasattr(self, 'purchaseButton'):
+            self.purchaseButton.destroy()
+            del self.purchaseButton
         self.newsButtonMgr.request('Off')
         self.book.unload()
         del self.optionsPage
@@ -829,7 +832,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         if show:
             claraXPos += AdjustmentForNewsButton
             notifyXPos += AdjustmentForNewsButton
-        newScale = oldScale = 0.42 if WantNewsPage else 0.5
         if WantNewsPage:
             newPos = (claraXPos, 1.0, -0.55)
         else:
@@ -841,7 +843,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         notifyPos[0] = notifyXPos
         self.__catalogNotifyDialog.frame.setPos(notifyPos)
         return
-
 
     def loadClarabelleGui(self):
         if self.__clarabelleButton:
@@ -879,7 +880,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.clarabelleNewsPageCollision(True)
         self.__clarabelleButton.show()
         self.__clarabelleFlash.resume()
-
 
     def hideClarabelleGui(self):
         if self.__clarabelleButton:
