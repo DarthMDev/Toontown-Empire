@@ -14,7 +14,7 @@ multitexture rendering techniques.  It's not a particularly great
 way to do shadows.
 """
 
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.task import Task
 
 sc = None

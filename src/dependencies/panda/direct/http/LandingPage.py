@@ -1,6 +1,8 @@
 import os
 from direct.directnotify.DirectNotifyGlobal import directNotify
-from panda3d.core import VirtualFileSystem, Filename, DSearchPath
+from pandac.PandaModules import VirtualFileSystem
+from pandac.PandaModules import Filename
+from pandac.PandaModules import DSearchPath
 import xml.etree.ElementTree as ET
 import LandingPageHTML
 from StringIO import StringIO
