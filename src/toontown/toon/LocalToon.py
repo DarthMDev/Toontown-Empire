@@ -1745,15 +1745,3 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
 
     def stopAprilToonsControls(self):
         self.controlManager.currentControls.setGravity(ToontownGlobals.GravityValue * 2.0)
-
-    def setAsGM(self, state):
-        self.notify.debug('Setting GM State: %s in LocalToon' % state)
-        DistributedToon.DistributedToon.setAsGM(self, state)
-        if self.gmState:
-            if base.config.GetString('gm-nametag-string', '') != '':
-                self.gmNameTagString = base.config.GetString('gm-nametag-string')
-            if base.config.GetString('gm-nametag-color', '') != '':
-                self.gmNameTagColor = base.config.GetString('gm-nametag-color')
-            if base.config.GetInt('gm-nametag-enabled', 0):
-                self.gmNameTagEnabled = 1
-            self.d_updateGMNameTag()
