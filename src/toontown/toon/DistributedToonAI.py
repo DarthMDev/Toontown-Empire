@@ -50,6 +50,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
                         DistributedSmoothNodeAI.DistributedSmoothNodeAI,
                         PetLookerAI.PetLookerAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedToonAI')
+    WantOldGMNameBan = simbase.config.GetBool('want-old-gm-name-ban', 1)
     maxCallsPerNPC = 100
     partTypeIds = {ToontownGlobals.FT_FullSuit: (CogDisguiseGlobals.leftLegIndex,
                                                  CogDisguiseGlobals.rightLegIndex,
@@ -180,7 +181,10 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
     def announceGenerate(self):
         DistributedPlayerAI.DistributedPlayerAI.announceGenerate(self)
         DistributedSmoothNodeAI.DistributedSmoothNodeAI.announceGenerate(self)
-
+        if self.isPlayerControlled():
+            if self.WantOldGMNameBan:
+                self._checkOldGMName()
+            messenger.send('avatarEntered', [self])
         if self.isPlayerControlled():
             messenger.send('avatarEntered', [self])
 

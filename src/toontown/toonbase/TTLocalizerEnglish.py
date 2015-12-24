@@ -10122,3 +10122,7 @@ NamePurchased = "Your new name will be considered by the Toon Council, once it's
 NameGoodbyeMessage = "Come back again soon!"
 NameGUIPurchase = 'Buy'
 NameGUICancel = 'Cancel'
+
+TeleportLabelOn = 'Accepting teleports.'
+TeleportLabelOff = 'Not accepting teleports.'
+TeleportPanelNoTeleport = '%s wants some time alone right now.'

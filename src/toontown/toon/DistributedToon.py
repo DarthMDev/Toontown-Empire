@@ -2489,6 +2489,32 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             self.removeGMIcon()
             self.setNametagStyle(0)
 
+    def d_updateGMNameTag(self):
+        self.refreshName()
+
+    def updateGMNameTag(self, tagString, color, state):
+        try:
+            unicode(tagString, 'utf-8')
+        except UnicodeDecodeError:
+            self.sendUpdate('logSuspiciousEvent', ['invalid GM name tag: %s from %s' % (tagString, self.doId)])
+            return
+
+    def refreshName(self):
+        return
+        self.notify.debug('Refreshing GM Nametag String: %s Color: %s State: %s' % (self.gmNameTagString, self.gmNameTagColor, self.gmNameTagEnabled))
+        if hasattr(self, 'nametag') and self.gmNameTagEnabled:
+            self.setDisplayName(self.gmNameTagString)
+            self.setName(self.gmNameTagString)
+            self.trophyStar1 = loader.loadModel('models/misc/smiley')
+            self.trophyStar1.reparentTo(self.nametag.getNameIcon())
+            self.trophyStar1.setScale(1)
+            self.trophyStar1.setZ(2.25)
+            self.trophyStar1.setColor(Vec4(0.75, 0.75, 0.75, 0.75))
+            self.trophyStar1.setTransparency(1)
+            self.trophyStarSpeed = 15
+        else:
+            taskMgr.add(self.__refreshNameCallBack, self.uniqueName('refreshNameCallBack'))
+
     def setGM(self, type):
         wasGM = self._isGM
         self._isGM = type != 0

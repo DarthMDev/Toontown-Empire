@@ -733,6 +733,8 @@ class ExtraOptionsTabPage(DirectFrame):
         button_image_scale = (0.7, 1, 1)
         button_textpos = (0, -0.02)
         options_text_scale = 0.052
+        disabled_arrow_color = Vec4(0.6, 0.6, 0.6, 1.0)
+        button_image = (guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR'))
         self.speed_chat_scale = 0.055
         self.cogLevel_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord), command=self.__doToggleCogLevelGui)
         self.cogLevel_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight))
@@ -740,6 +742,8 @@ class ExtraOptionsTabPage(DirectFrame):
         command=self.showReportNotice, pos=(0.0, 0.0, -0.6), text_scale=(0.045))
         self.WASD_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - textRowHeight))
         self.WASD_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight), command=self.__doToggleWASD)
+        self.teleport_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - 2 * textRowHeight))
+        self.teleport_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - 2 * textRowHeight), command=self.__doToggleTeleport)
         gui.removeNode()
         guiButton.removeNode()
 
@@ -748,6 +752,7 @@ class ExtraOptionsTabPage(DirectFrame):
         self.__setWASDButton()
         self.settingsChanged = 0
         self.__setCogLevelGuiButton()
+        self.__setTeleportButton()
 
     def exit(self):
         self.ignore('confirmDone')
@@ -763,6 +768,10 @@ class ExtraOptionsTabPage(DirectFrame):
         del self.WASD_Label
         self.WASD_toggleButton.destroy()
         del self.WASD_toggleButton
+        self.teleport_label.destroy()
+        del self.teleport_label
+        self.teleport_toggleButton.destroy()
+        del self.teleport_toggleButton
 
     def __doToggleCogLevelGui(self):
         messenger.send('wakeup')
@@ -861,3 +870,20 @@ class ExtraOptionsTabPage(DirectFrame):
             self.WASD_toggleButton['text'] = 'On'
         else:
             self.WASD_toggleButton['text'] = 'Off'
+
+    def __doToggleTeleport(self):
+        messenger.send('wakeup')
+        acceptingTeleport = settings.get('acceptingTeleport', {})
+        if base.localAvatar.acceptingTeleport:
+            base.localAvatar.acceptingTeleport = 0
+            acceptingTeleport[str(base.localAvatar.doId)] = False
+        else:
+            base.localAvatar.acceptingTeleport  = 1
+            acceptingTeleport[str(base.localAvatar.doId)] = True
+        settings['acceptingTeleport'] = acceptingTeleport
+        self.settingsChanged = 1
+        self.__setTeleportButton()
+    
+    def __setTeleportButton(self):
+        self.teleport_label['text'] = TTLocalizer.TeleportLabelOn if base.localAvatar.acceptingTeleport else TTLocalizer.TeleportLabelOff
+        self.teleport_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff if base.localAvatar.acceptingTeleport else TTLocalizer.OptionsPageToggleOn
