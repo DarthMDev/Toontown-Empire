@@ -33,6 +33,7 @@ dclass Account {
   string ACCOUNT_ID db;
   uint16 ACCESS_LEVEL db;
   uint32 LAST_LOGIN_TS db;
+  uint8[] CHAT_SETTINGS db;
 };
 
 struct BarrierData {
