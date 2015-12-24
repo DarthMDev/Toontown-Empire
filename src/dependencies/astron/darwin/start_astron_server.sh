@@ -1,0 +1,1 @@
+./astrond --loglevel info ../config/cluster2.yml
