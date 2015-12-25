@@ -262,6 +262,7 @@ from toontown.safezone import DistributedChineseCheckers/AI
 from toontown.safezone import DistributedCheckers/AI
 from toontown.safezone import DistributedFindFour/AI
 from toontown.safezone import DistributedTreasure/AI
+from toontown.safezone import DistributedEFlyingTreasure/AI
 from toontown.minigame import DistributedMinigame/AI
 from toontown.minigame import DistributedVineGame/AI
 from toontown.minigame import DistributedMinigameTemplate/AI
@@ -1543,6 +1544,9 @@ dclass DistributedTreasure : DistributedObject {
   requestGrab() airecv clsend;
   setGrab(uint32) broadcast ram;
   setReject() broadcast;
+};
+
+dclass DistributedEFlyingTreasure : DistributedTreasure {
 };
 
 dclass DistributedCashbotBossTreasure : DistributedTreasure {

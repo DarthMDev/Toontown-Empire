@@ -67,8 +67,9 @@ class GroupManagerAI(DistributedObjectAI.DistributedObjectAI):
         for groupId, group in self.groupPlayers.items():
             for player in group:
                 toon = simbase.air.doId2do.get(player)
-                if (toon.zoneId != groupId) or (toon.zoneId + 100 != groupId):
-                    self.removePlayerFromGroup(groupId, player)
+                if toon != None:
+                 if toon.zoneId != groupId or toon.zoneId + 100 != groupId:
+                      self.removePlayerFromGroup(groupId, player)
         return task.again
 
     def updateInfo(self):
