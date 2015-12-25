@@ -22,7 +22,6 @@ $RECYCLE.BIN/
 #Compiled Python Files
 *.pyc
 #*.pyo
-*.pyd
 
 #Compiled Game Files
 *.mf
