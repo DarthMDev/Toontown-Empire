@@ -2,8 +2,6 @@ from panda3d.core import *
 from direct.task import Task
 from direct.distributed import DistributedObjectAI
 from direct.directnotify import DirectNotifyGlobal
-from direct.distributed import import DistributedObject
-from direct.distributed import CRCache
 from toontown.toonbase.ToontownGlobals import *
 from GlobalGroup import GlobalGroup
 
