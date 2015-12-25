@@ -95,13 +95,13 @@ CRNoConnectProxyNoPort = 'Could not connect to %s:%s.\n\nYou are communicating t
 CRNoDistrictsTryAgain = 'No Districts are available. Try again?'
 CRRejectRemoveAvatar = 'The avatar was not able to be deleted, try again another time.'
 CRLostConnection = 'Your internet connection to the servers has been unexpectedly broken.'
-CRBootedReasons = {100: 'You have been disconnected because someone else just logged in using your account on another computer.',
- 101: 'Please relaunch the game from the official launcher.',
+CRBootedReasons = {100: 'You have been disconnected because someone else logged in using your account!',
+ 101: 'Please relaunch the game from the official Toontown Empire launcher.',
  102: 'You are not authorized to use administrator privileges.',
  103: 'You were banned by a moderator.\n\nBehave next time!',
  105: 'Toontown Empire is now temporarily closed for maintenance. Everyone who was playing has been disconnected from the game.\n\nFor more information, please visit the Toontown Empire website.',
- 153: 'The district you were playing on has been reset.  Everyone who was playing on that district has been disconnected.  However, you should be able to connect again and go right back into the game.'}
-CRBootedReasonUnknownCode = 'An unexpected problem has occurred (error code %s).  Your connection has been lost, but you should be able to connect again and go right back into the game.'
+ 153: 'The district has been reset.  Everyone who was playing on that district has been disconnected.  However, you should be able to connect again and go right back into the game.'}
+CRBootedReasonUnknownCode = 'An unexpected problem has occurred (error code %s).  Your connection was lost, but you should be able to connect again and go right back into the game.'
 CRTryConnectAgain = '\n\nTry to connect again?'
 CRToontownUnavailable = 'The server appears to be temporarily unavailable, still trying...'
 CRToontownUnavailableCancel = lCancel
@@ -110,7 +110,7 @@ CRNameAccepted = 'Your name has been\napproved by the Toon Council.\n\nFrom this
 CRMaintenanceCountdownMessage = 'Attention Toons! Toontown Empire will be going down for maintenance in %d minutes.'
 CRMaintenanceMessage = 'Attention Toons! Toontown Empire is now going down for maintenance.'
 AfkForceAcknowledgeMessage = 'Your toon got sleepy and went to bed.'
-CREnteringToontown = 'Entering...'
+CREnteringToontown = 'Entering Toontown Empire...'
 DialogSpecial = 'ooo'
 DialogExclamation = '!'
 DialogQuestion = '?'
@@ -685,7 +685,7 @@ SpeedChatStaticTextToontown = {100: 'Hi!',
  103: 'Hey!',
  104: 'Howdy!',
  105: 'Hi everybody!',
- 106: 'Welcome to Toontown!',
+ 106: 'Welcome to Toontown Empire!',
  107: "What's up?",
  108: 'How are you doing?',
  109: 'Hello?',
