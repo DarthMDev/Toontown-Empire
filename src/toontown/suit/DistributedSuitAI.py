@@ -8,7 +8,7 @@ import SuitPlannerBase
 import SuitBase
 import SuitDialog
 import SuitDNA
-from libpandadna import *
+from toontown.libpandadna.SuitLegList import *
 from direct.directnotify import DirectNotifyGlobal
 from toontown.battle import SuitBattleGlobals
 from toontown.building import FADoorCodes

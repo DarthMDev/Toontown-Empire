@@ -18,12 +18,11 @@ import SuitDialog
 import SuitTimings
 from otp.avatar import DistributedAvatar
 from otp.otpbase import OTPLocalizer
-from toontown.battle import BattleProps
-from toontown.battle import DistributedBattle
+from toontown.battle import BattleProps, DistributedBattle
 from toontown.distributed.DelayDeletable import DelayDeletable
 from otp.nametag.NametagConstants import *
 from otp.nametag import NametagGlobals
-from libpandadna import *
+from toontown.libpandadna.SuitLegList import *
 from toontown.toonbase import ToontownGlobals
 
 
