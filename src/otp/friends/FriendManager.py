@@ -50,7 +50,7 @@ class FriendManager(DistributedObject.DistributedObject):
 
     def up_inviteeFriendResponse(self, yesNoMaybe, context):
         if yesNoMaybe == 1:
-            base.cr.tteFriendsManager.friendOnline(self.otherToon)
+            base.cr.TTEFriendsManager.friendOnline(self.otherToon)
         self.sendUpdate('inviteeFriendResponse', [yesNoMaybe, context])
         self.notify.debug('Client: inviteeFriendResponse(%d, %d)' % (yesNoMaybe, context))
 
@@ -64,7 +64,7 @@ class FriendManager(DistributedObject.DistributedObject):
 
     def friendResponse(self, yesNoMaybe, context):
         if yesNoMaybe == 1:
-            base.cr.tteFriendsManager.friendOnline(self.otherToon)
+            base.cr.TTEFriendsManager.friendOnline(self.otherToon)
         self.notify.debug('Client: friendResponse(%d, %d)' % (yesNoMaybe, context))
         messenger.send('friendResponse', [yesNoMaybe, context])
 
@@ -91,3 +91,14 @@ class FriendManager(DistributedObject.DistributedObject):
         self.notify.debug('Client: inviteeCancelFriendQuery(%d)' % context)
         messenger.send('cancelFriendInvitation', [context])
         self.up_inviteeAcknowledgeCancel(context)
+    
+    def requestTFCode(self, callback):
+        self.tfCallback = callback
+        self.sendUpdate('requestTFCode')
+    
+    def redeemTFCode(self, code, callback):
+        self.tfCallback = callback
+        self.sendUpdate('redeemTFCode', [code])
+    
+    def tfResponse(self, response, code):
+        self.tfCallback(response, code)

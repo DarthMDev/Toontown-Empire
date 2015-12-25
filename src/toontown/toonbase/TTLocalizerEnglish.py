@@ -1930,6 +1930,8 @@ AvatarPanelGroupMerge = 'Resulting in'
 AvatarPanelGroupRetract = 'Retract Invitation'
 AvatarPanelGroupMember = 'Already In Group'
 AvatarPanelGroupMemberKick = 'Remove'
+AvatarPanelCast = 'Staff Member'
+AvatarPanelCastInfo = '%s is a Toontown Empire staff Member.'
 ReportPanelTitle = 'Report A Toon'
 ReportPanelBody = 'This feature will send a complete report to a Moderator. Instead of sending a report, you might choose to do one of the following:\n\n  - Teleport to another district\n  - Use "Ignore" on the toon\'s panel\n\nDo you really want to report %s to a Moderator?'
 ReportPanelBodyFriends = 'This feature will send a complete report to a Moderator. Instead of sending a report, you might choose to do one of the following:\n\n  - Teleport to another district\n  - Break your friendship\n\nDo you really want to report %s to a Moderator?\n\n(This will also break your friendship)'
@@ -5803,7 +5805,6 @@ CatalogCurrentButtonText = 'To Current Items'
 CatalogPastButtonText = 'To Past Items'
 TutorialHQOfficerName = 'HQ Harry'
 NPCToonNames = {20000: 'Tutorial Tom',
- 998: 'Talkative Tyler',
  999: 'Toon Tailor',
  1000: lToonHQ,
  20001: Flippy,
@@ -6458,7 +6459,7 @@ NPCToonNames = {20000: 'Tutorial Tom',
  7008: 'Ima Cagedtoon',
  7009: 'Jimmy Thelock',
  7010: 'Ziggy',
- 7011: 'Donald'}
+ 7011: 'Dolan'}
  # 10001: 'Medic Manny',
  # 11001: 'Medic Marlson',
  # 12001: 'Medic Manson',
@@ -10126,3 +10127,24 @@ NameGUICancel = 'Cancel'
 TeleportLabelOn = 'Accepting teleports.'
 TeleportLabelOff = 'Not accepting teleports.'
 TeleportPanelNoTeleport = '%s wants some time alone right now.'
+
+# True Friends Dialog
+
+FriendSecretIntro = "If you are playing Toontown Stride with someone you know in the real world, you can become True Friends.  You can chat using the keyboard with your True Friends.  Other Toons won't understand what you're saying.\n\nYou do this by getting a True Friend Code.  Tell the True Friend Code to your friend, but not to anyone else.  When your friend types in your True Friend Code on his or her screen, you'll be True Friends in Toontown!"
+FriendSecretGetSecret = 'Get a True Friend Code'
+FriendSecretEnterSecret = 'If you have a True Friend Code from someone you know, type it here.'
+FriendSecretOK = lOK
+FriendSecretEnter = 'Enter True Friend Code'
+FriendSecretCancel = lCancel
+FriendSecretGettingSecret = 'Getting True Friend Code. . .'
+FriendSecretGotSecret = "Here is your new True Friend Code.  Be sure to write it down!\n\nYou may give this True Friend Code to one person only.  Once someone types in your True Friend Code, it will not work for anyone else.  If you want to give a True Friend Code to more than one person, get another True Friend Code.\n\nThe True Friend Code will only work for the next three days.  Your friend will have to type it in before it goes away, or it won't work.\n\nYour True Friend Code is:"
+FriendSecretTooMany = "Sorry, you can't have any more True Friend Codes today.  You've already had more than your fair share!\n\nTry again tomorrow."
+FriendSecretTryingSecret = 'Trying True Friend Code. . .'
+FriendSecretEnteredSecretUnknown = "That's not anyone's True Friend Code.  Are you sure you spelled it correctly?\n\nIf you did type it correctly, it may have expired.  Ask your friend to get a new True Friend Code for you (or get a new one yourself and give it to your friend)."
+FriendSecretEnteredSecretFullYou = "You can't be True Friends because you have too many friends on your friends list."
+FriendSecretEnteredSecretFullHim = "You can't be True Friends because %s has too many friends on his friends list."
+FriendSecretAlreadyFriends = 'You are already True Friends!'
+FriendSecretAlreadyFriendsName = 'You are already True Friends with %s!'
+FriendSecretEnteredSecretSelf = 'You just typed in your own True Friend Code!'
+FriendSecretTooFast = 'You are redeeming codes too fast! Please wait a few seconds.'
+FriendSecretNowFriends = 'You are now True Friends with %s!'

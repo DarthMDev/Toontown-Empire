@@ -181,10 +181,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
     def announceGenerate(self):
         DistributedPlayerAI.DistributedPlayerAI.announceGenerate(self)
         DistributedSmoothNodeAI.DistributedSmoothNodeAI.announceGenerate(self)
-        if self.isPlayerControlled():
-            if self.WantOldGMNameBan:
-                self._checkOldGMName()
-            messenger.send('avatarEntered', [self])
+
         if self.isPlayerControlled():
             messenger.send('avatarEntered', [self])
 

@@ -663,7 +663,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         return 1
 
     def removeFriend(self, avatarId):
-        self.tteFriendsManager.d_removeFriend(avatarId)
+        self.TTEFriendsManager.d_removeFriend(avatarId)
         base.localAvatar.removeTrueFriends(avatarId)
 
     def clearFriendState(self):

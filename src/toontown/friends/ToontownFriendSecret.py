@@ -1,33 +1,29 @@
-from panda3d.core import aspect2dp
-from direct.gui.DirectGui import DirectFrame
-from direct.gui.DirectGui import DGG
-from direct.gui.DirectGui import DirectLabel
-from direct.gui.DirectGui import DirectEntry
-from direct.gui.DirectGui import DirectButton
+from panda3d.core import *
+from direct.gui.DirectGui import *
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 from otp.otpbase import OTPGlobals
 
+globalFriendSecret = None
+
 def showFriendSecret():
-    global_friend_secret = None
+    global globalFriendSecret
     if not base.cr.wantTrueFriends():
         chatMgr = base.localAvatar.chatMgr
         chatMgr.fsm.request('noTrueFriends')
     else:
-        if global_friend_secret is not None:
-            global_friend_secret.unload()
-        global_friend_secret = ToontownFriendSecret()
-        global_friend_secret.enter()
+        if globalFriendSecret != None:
+            globalFriendSecret.unload()
+        globalFriendSecret = ToontownFriendSecret()
+        globalFriendSecret.enter()
 
 def hideFriendSecret():
-    globalFriendSecret = None
-    if globalFriendSecret is not None:
+    if globalFriendSecret != None:
         globalFriendSecret.exit()
 
 def unloadFriendSecret():
-    globalFriendSecret = None
-    if globalFriendSecret is not None:
+    global globalFriendSecret
+    if globalFriendSecret != None:
         globalFriendSecret.unload()
         globalFriendSecret = None
     return
@@ -39,17 +35,7 @@ class ToontownFriendSecret(DirectFrame):
         DirectFrame.__init__(self, parent=aspect2dp, pos=(0, 0, 0.3), relief=None, image=DGG.getDefaultDialogGeom(), image_scale=(1.6, 1, 1.4), image_pos=(0, 0, -0.05), image_color=OTPGlobals.GlobalDialogColor, borderWidth=(0.01, 0.01))
         self.initialiseoptions(ToontownFriendSecret)
         self.isLoaded = 0
-        self.introText = DirectLabel(parent=self, relief=None, pos=(0, 0, 0.4), scale=0.05, text=TTLocalizer.FriendSecretIntro, text_fg=(0, 0, 0, 1), text_wordwrap=30)
         self.isEntered = 0
-        self.ok1 = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=TTLocalizer.FSok1, text=TTLocalizer.FriendSecretEnter, text_scale=0.06, text_pos=(0, -0.02), pos=(0, 0, -0.5), command=self.__ok1)
-        self.ok2 = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=TTLocalizer.FSok2, text=TTLocalizer.FriendSecretOK, text_scale=0.06, text_pos=(0, -0.02), pos=(0, 0, -0.57), command=self.__ok2)
-        self.nextText = DirectLabel(parent=self, relief=None, pos=(0, 0, 0.3), scale=0.06, text='', text_scale=TTLocalizer.FSnextText, text_fg=(0, 0, 0, 1), text_wordwrap=25.5)
-        self.secretText = DirectLabel(parent=self, relief=None, pos=(0, 0, -0.42), scale=0.08, text='', text_fg=(0, 0, 0, 1), text_wordwrap=30)
-        self.enterSecret = DirectEntry(parent=self, relief=DGG.SUNKEN, scale=0.06, pos=(-0.6, 0, -0.38), frameColor=(0.8, 0.8, 0.5, 1), borderWidth=(0.1, 0.1), numLines=1, width=20, frameSize=(-0.4,
-         20.4,
-         -0.4,
-         1.1), command=self.__enterSecret)
-        self.cancel = DirectButton(parent=self, relief=None, text=TTLocalizer.FriendSecretCancel, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=TTLocalizer.FScancel, text_scale=0.06, text_pos=(0, -0.02), pos=(0, 0, -0.57), command=self.__cancel)
 
     def unload(self):
         if self.isLoaded == 0:
@@ -70,18 +56,28 @@ class ToontownFriendSecret(DirectFrame):
         if self.isLoaded == 1:
             return None
         self.isLoaded = 1
+        self.introText = DirectLabel(parent=self, relief=None, pos=(0, 0, 0.4), scale=0.05, text=TTLocalizer.FriendSecretIntro, text_fg=(0, 0, 0, 1), text_wordwrap=30)
         self.introText.hide()
         guiButton = loader.loadModel('phase_3/models/gui/quit_button')
         self.getSecret = DirectButton(parent=self, relief=None, pos=(0, 0, -0.11), image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=TTLocalizer.FSgetSecret, text=TTLocalizer.FriendSecretGetSecret, text_scale=TTLocalizer.FSgetSecretButton, text_pos=(0, -0.02), command=self.__getSecret)
         self.getSecret.hide()
         self.enterSecretText = DirectLabel(parent=self, relief=None, pos=TTLocalizer.FSenterSecretTextPos, scale=0.05, text=TTLocalizer.FriendSecretEnterSecret, text_fg=(0, 0, 0, 1), text_wordwrap=30)
         self.enterSecretText.hide()
+        self.enterSecret = DirectEntry(parent=self, relief=DGG.SUNKEN, scale=0.06, pos=(-0.6, 0, -0.38), frameColor=(0.8, 0.8, 0.5, 1), borderWidth=(0.1, 0.1), numLines=1, width=20, frameSize=(-0.4,
+         20.4,
+         -0.4,
+         1.1), command=self.__enterSecret)
         self.enterSecret.resetFrameSize()
         self.enterSecret.hide()
+        self.ok1 = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=TTLocalizer.FSok1, text=TTLocalizer.FriendSecretEnter, text_scale=0.06, text_pos=(0, -0.02), pos=(0, 0, -0.5), command=self.__ok1)
         self.ok1.hide()
+        self.ok2 = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=TTLocalizer.FSok2, text=TTLocalizer.FriendSecretOK, text_scale=0.06, text_pos=(0, -0.02), pos=(0, 0, -0.57), command=self.__ok2)
         self.ok2.hide()
+        self.cancel = DirectButton(parent=self, relief=None, text=TTLocalizer.FriendSecretCancel, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=TTLocalizer.FScancel, text_scale=0.06, text_pos=(0, -0.02), pos=(0, 0, -0.57), command=self.__cancel)
         self.cancel.hide()
+        self.nextText = DirectLabel(parent=self, relief=None, pos=(0, 0, 0.3), scale=0.06, text='', text_scale=TTLocalizer.FSnextText, text_fg=(0, 0, 0, 1), text_wordwrap=25.5)
         self.nextText.hide()
+        self.secretText = DirectLabel(parent=self, relief=None, pos=(0, 0, -0.42), scale=0.08, text='', text_fg=(0, 0, 0, 1), text_wordwrap=30)
         self.secretText.hide()
         guiButton.removeNode()
 
@@ -119,13 +115,13 @@ class ToontownFriendSecret(DirectFrame):
         self.ok1.hide()
         self.cancel.show()
         base.cr.friendManager.requestTFCode(self.gotSecret)
-
+    
     def gotSecret(self, response, code):
         if response == ToontownGlobals.TF_COOLDOWN:
             self.rejectGetSecret(TTLocalizer.FriendSecretTooMany)
         elif response == ToontownGlobals.TF_SUCCESS:
             self.successGetSecret(code)
-
+    
     def rejectGetSecret(self, reason):
         self.nextText['text'] = reason
         self.nextText.show()
@@ -148,11 +144,11 @@ class ToontownFriendSecret(DirectFrame):
     def __enterSecret(self, secret):
         self.enterSecret.set('')
         secret = secret.strip()
-
+        
         if not secret:
             self.exit()
             return
-
+        
         self.__cleanupFirstPage()
         self.nextText['text'] = TTLocalizer.FriendSecretTryingSecret
         base.cr.friendManager.redeemTFCode(secret, self.gotResponse)
