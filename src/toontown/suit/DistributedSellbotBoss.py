@@ -460,6 +460,8 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         
         if self.keyReward:
             speech += TTLocalizer.BossRTKeyReward
+
+        return speech
         
         return speech
 

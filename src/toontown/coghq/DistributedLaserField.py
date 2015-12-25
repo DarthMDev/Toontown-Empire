@@ -6,7 +6,7 @@ from direct.showbase.PythonUtil import lerp
 import math
 from otp.level import DistributedEntity
 from direct.directnotify import DirectNotifyGlobal
-from panda3d.core import NodePath
+from pandac.PandaModules import NodePath
 from otp.level import BasicEntities
 from direct.task import Task
 from toontown.toonbase import ToontownGlobals
@@ -56,7 +56,6 @@ class DistributedLaserField(BattleBlocker.BattleBlocker):
         self.gridGame = 'some game'
         self.gridGameText = ' '
         self.activeLF = 1
-        self.in_battle = False
         self.successSound = loader.loadSfx('phase_11/audio/sfx/LB_capacitor_discharge_3.ogg')
         self.successTrack = Parallel(SoundInterval(self.successSound, node=self, volume=0.8))
         self.failSound = loader.loadSfx('phase_11/audio/sfx/LB_sparks_1.ogg')
@@ -132,15 +131,12 @@ class DistributedLaserField(BattleBlocker.BattleBlocker):
             self.activeLF = 0
 
     def setSuccess(self, success):
-    	self.in_battle = False
         if success:
             self.successTrack.start()
         else:
-            if not self.in_battle:
-                self.in_battle = True
-                self.startBattle()
-            	self.failTrack.start()
-            	self.cSphereNodePath.setPos(self.blockerX, self.blockerY, 0)
+            self.startBattle()
+            self.failTrack.start()
+            self.cSphereNodePath.setPos(self.blockerX, self.blockerY, 0)
 
     def makeGridSymbols(self):
         symbolBlank = [0, (1.0, 0.0, 0.0), ()]
@@ -684,15 +680,13 @@ class DistributedLaserField(BattleBlocker.BattleBlocker):
             if self.gridWireGN and self.gridBeamGN:
                 self.createGrid()
 
-    @staticmethod
-    def hideSuit(suitIdarray):
+    def hideSuit(self, suitIdarray):
         for suitId in suitIdarray:
             suit = base.cr.doId2do.get(suitId)
             if suit:
                 suit.stash()
 
-    @staticmethod
-    def showSuit(suitIdarray):
+    def showSuit(self, suitIdarray):
         for suitId in suitIdarray:
             suit = base.cr.doId2do.get(suitId)
             if suit:

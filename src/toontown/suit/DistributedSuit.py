@@ -23,7 +23,7 @@ from toontown.battle import DistributedBattle
 from toontown.distributed.DelayDeletable import DelayDeletable
 from otp.nametag.NametagConstants import *
 from otp.nametag import NametagGlobals
-from toontown.libpandadna.SuitLegList import *
+from libpandadna import *
 from toontown.toonbase import ToontownGlobals
 
 
@@ -38,6 +38,12 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
     ENABLE_EXPANDED_NAME = 0
 
     def __init__(self, cr):
+        try:
+            self.DistributedSuit_initialized
+            return
+        except:
+            self.DistributedSuit_initialized = 1
+
         DistributedSuitBase.DistributedSuitBase.__init__(self, cr)
         self.spDoId = None
         self.pathEndpointStart = 0

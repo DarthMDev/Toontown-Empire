@@ -6,7 +6,7 @@ from direct.task.Task import Task
 from direct.interval.IntervalGlobal import Sequence, Parallel, LerpScaleInterval, LerpFunctionInterval, Func, Wait, LerpFunc, SoundInterval, ParallelEndTogether, LerpPosInterval, ActorInterval, LerpPosHprInterval, LerpHprInterval
 from direct.directutil import Mopath
 from direct.showbase.PythonUtil import bound as clamp
-from panda3d.core import CollisionSphere, CollisionNode, CollisionTube, CollisionPolygon, Vec3, Point3
+from pandac.PandaModules import CollisionSphere, CollisionNode, CollisionTube, CollisionPolygon, Vec3, Point3
 from toontown.suit import Suit
 from toontown.suit import SuitDNA
 from toontown.toonbase import ToontownGlobals
@@ -425,7 +425,7 @@ class CogdoFlyingLegalEagle(DirectObject, FSM):
         taskMgr.add(self.updateLockOnTask, taskName, 45, extraArgs=[])
         messenger.send(CogdoFlyingLegalEagle.LockOnToonEventName, [self.target.doId])
         range = self.target.getDistance(self.interestConeOrigin) / self.getInterestConeLength()
-        range = clamp(xrange, 0.0, 1.0)
+        range = clamp(range, 0.0, 1.0)
         dur = Globals.LegalEagle.LockOnTime
         if self.oldState == 'TakeOff':
             dur *= range

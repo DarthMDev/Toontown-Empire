@@ -1,6 +1,6 @@
 import math
 import random
-from panda3d.core import Vec3
+from pandac.PandaModules import Vec3
 from direct.showbase import PythonUtil
 from direct.directnotify import DirectNotifyGlobal
 from direct.task.Task import Task
@@ -526,7 +526,7 @@ class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
             minVal = -Globals.Gameplay.ToonVelMax['fallNoFuel']
         maxVal = Globals.Gameplay.ToonVelMax['boost']
         if self.controlVelocity[2] > minVal:
-            if not self._inputMgr.arrowKeys.jumpPressed() or not self.isFuelLeft() and not self.isToonOnFloor:
+            if (not self._inputMgr.arrowKeys.jumpPressed() or not self.isFuelLeft()) and not self.isToonOnFloor:
                 self.controlVelocity[2] -= Globals.Gameplay.ToonAcceleration['fall'] * dt
         if self.controlVelocity[2] < 0.0 and self.isToonOnFloor:
             self.controlVelocity[2] = 0.0
@@ -710,9 +710,9 @@ class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
             self.notify.debug('Pressed Control and have fuel')
             self.request('FlyingUp')
         else:
-            self.ignore(base.JUMP)
+            self.ignore('control')
             self.ignore('lcontrol')
-            self.acceptOnce(base.JUMP, self.pressedControlWhileRunning)
+            self.acceptOnce('control', self.pressedControlWhileRunning)
             self.acceptOnce('lcontrol', self.pressedControlWhileRunning)
 
     def setPropellerState(self, propState):
@@ -886,7 +886,7 @@ class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
     def exitRunning(self):
         CogdoFlyingLocalPlayer.notify.debug("exit%s: '%s' -> '%s'" % (self.oldState, self.oldState, self.newState))
         self.orthoWalk.stop()
-        self.ignore(base.JUMP)
+        self.ignore('control')
         self.ignore('lcontrol')
 
     def enterOutOfTime(self):

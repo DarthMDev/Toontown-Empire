@@ -63,6 +63,7 @@ class GolfKart(StateData.StateData):
                             'start'])],
             'start', 'final')
         self.parentFSM = parentFSM
+        return None
 
     def load(self):
         self.parentFSM.getStateNamed('golfKartBlock').addChild(self.fsm)

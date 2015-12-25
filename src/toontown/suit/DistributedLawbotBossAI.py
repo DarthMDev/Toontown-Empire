@@ -187,6 +187,8 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
             action = random.randrange(1,101)
             if action <= chanceToDoTaunt:
                 self.doTaunt()
+                pass
+        return
         if self.attackCode == ToontownGlobals.BossCogDizzyNow:
             attackCode = ToontownGlobals.BossCogRecoverDizzyAttack
         else:
@@ -285,7 +287,6 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
         toon = simbase.air.doId2do.get(avId)
         if toon:
             toon.b_setNumPies(0)
-            toon.b_setHealthDisplay(0)
         DistributedBossCogAI.DistributedBossCogAI.removeToon(self, avId)
 
     def enterOff(self):
@@ -509,7 +510,6 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
             toon = simbase.air.doId2do.get(toonId)
             if toon:
                 toon.__touchedCage = 0
-                toon.b_setHealthDisplay(2)
 
         for aGavel in self.gavels:
             aGavel.turnOn()
@@ -620,11 +620,6 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
         taskMgr.remove(taskName)
         self.__resetLawyers()
         self.__deleteBattleThreeObjects()
-        for toonId in self.involvedToons:
-            toon = self.air.doId2do.get(toonId)
-            if toon:
-                toon.b_setHealthDisplay(0)
-
 
     def enterNearVictory(self):
         self.resetBattles()
@@ -716,8 +711,8 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
                     foundOne = True
                     break
 
-            possibleCogLevel = xrange(SuitDNA.suitsPerDept)
-            possibleDeptIndex = xrange(len(SuitDNA.suitDepts))
+            possibleCogLevel = range(SuitDNA.suitsPerDept)
+            possibleDeptIndex = range(len(SuitDNA.suitDepts))
             possibleSummonType = ['building', 'invasion', 'cogdo', 'skelinvasion', 'waiterinvasion', 'v2invasion']
             #typeWeights = ['single'] * 70 + ['building'] * 27 + ['invasion'] * 3
             if not foundOne:

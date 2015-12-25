@@ -17,6 +17,12 @@ class DistributedSuitBase(DistributedAvatar.DistributedAvatar, Suit.Suit, SuitBa
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedSuitBase')
 
     def __init__(self, cr):
+        try:
+            self.DistributedSuitBase_initialized
+            return
+        except:
+            self.DistributedSuitBase_initialized = 1
+
         DistributedAvatar.DistributedAvatar.__init__(self, cr)
         Suit.Suit.__init__(self)
         SuitBase.SuitBase.__init__(self)

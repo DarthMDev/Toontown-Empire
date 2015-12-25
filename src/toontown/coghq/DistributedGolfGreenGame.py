@@ -1,3 +1,4 @@
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from direct.particles import ParticleEffect
 from StomperGlobals import *
@@ -5,7 +6,7 @@ from direct.distributed import ClockDelta
 from direct.showbase.PythonUtil import lerp
 from otp.level import DistributedEntity
 from direct.directnotify import DirectNotifyGlobal
-from panda3d.core import NodePath
+from pandac.PandaModules import NodePath
 from otp.level import BasicEntities
 from direct.task import Task
 from toontown.toonbase import ToontownGlobals
@@ -248,7 +249,7 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
             count += 1
 
     def pickLevelPattern(self):
-        self.boardIndex = random.choice(xrange(0, len(self.boardData)))
+        self.boardIndex = random.choice(range(0, len(self.boardData)))
         self.board = self.boardData[self.boardIndex]
         self.attackPattern = self.attackPatterns[self.boardIndex]
         self.attackCounter = 0
@@ -986,7 +987,7 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         size = self.radiusBall * 2.0
         facing = 1
         if color == None:
-            colorChoice = random.choice(xrange(0, 3))
+            colorChoice = random.choice(range(0, 3))
         else:
             colorChoice = color
         newSprite = GameSprite3D.GameSprite(spriteBase, size, colorChoice, found, facing)

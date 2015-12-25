@@ -3,7 +3,7 @@ from direct.distributed.ClockDelta import *
 from direct.task.Task import Task
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from panda3d.core import CollisionSphere, CollisionNode
+from pandac.PandaModules import CollisionSphere, CollisionNode
 from toontown.toonbase import ToontownGlobals
 from toontown.estate import DistributedCannon
 from toontown.estate import CannonGlobals
@@ -190,12 +190,12 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
         self.cannonLocation = Point3(0, 0, 0.025)
         self.cannonPosition = [0, CANNON_ANGLE_MIN]
         self.cannon.setPos(self.cannonLocation)
-        self.__updateCannonPosition()
+        self.__updateCannonPosition(self.avId)
 
     def updateCannonPosition(self, avId, zRot, angle):
         if avId != self.localAvId:
             self.cannonPosition = [zRot, angle]
-            self.__updateCannonPosition()
+            self.__updateCannonPosition(avId)
 
     def __updateCannonPosition(self, avId):
         self.cannon.setHpr(self.cannonPosition[0], 0.0, 0.0)
@@ -483,7 +483,7 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
             if self.cannonMoving == 0:
                 self.cannonMoving = 1
                 base.playSfx(self.sndCannonMove, looping=1)
-            self.__updateCannonPosition()
+            self.__updateCannonPosition(self.localAvId)
             if task.time - task.lastPositionBroadcastTime > CANNON_MOVE_UPDATE_FREQ:
                 task.lastPositionBroadcastTime = task.time
                 self.__broadcastLocalCannonPosition()
@@ -496,7 +496,7 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
     def __broadcastLocalCannonPosition(self):
         self.sendUpdate('setCannonPosition', [self.cannonPosition[0], self.cannonPosition[1]])
 
-    def __updateCannonPosition(self):
+    def __updateCannonPosition(self, avId):
         self.cannon.setHpr(self.cannonPosition[0], 0.0, 0.0)
         self.barrel.setHpr(0.0, self.cannonPosition[1], 0.0)
         maxP = 90
@@ -654,7 +654,7 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
             return
         self.cannonPosition[0] = zRot
         self.cannonPosition[1] = angle
-        self.__updateCannonPosition()
+        self.__updateCannonPosition(avId)
         task = Task(self.__fireCannonTask)
         task.avId = avId
         ts = globalClockDelta.localElapsedTime(timestamp)

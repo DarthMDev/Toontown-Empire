@@ -1836,6 +1836,8 @@ class Toon(Avatar.Avatar, ToonHead):
         self.track.start(ts)
         self.setActiveShadow(0)
 
+# if self == base.localAvatar and settings['tpTransition'] and not ZoneUtil.isDynamicZone(self.zoneId):
+
     def finishTeleportOut(self, callback = None, extraArgs = []):
         name = self.name
         if hasattr(self, 'doId'):

@@ -76,10 +76,6 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
          'reserveSuits': reserveSuits}
 
     def removeToon(self, avId):
-        toon = simbase.air.doId2do.get(avId)
-        if toon:
-            toon.b_setHealthDisplay(0)
-    
         if self.cranes != None:
             for crane in self.cranes:
                 crane.removeToon(avId)
@@ -446,11 +442,6 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         taskName = self.uniqueName('NextGoon')
         taskMgr.remove(taskName)
         taskMgr.doMethodLater(2, self.__doInitialGoons, taskName)
-        for toonId in self.involvedToons:
-            toon = simbase.air.doId2do.get(toonId)
-            if not toon:
-                continue
-            toon.b_setHealthDisplay(2)
 
     def __doInitialGoons(self, task):
         self.makeGoon(side='EmergeA')
@@ -467,12 +458,6 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         self.stopGoons()
         self.stopHelmets()
         self.heldObject = None
-        for toonId in self.involvedToons:
-            toon = simbase.air.doId2do.get(toonId)
-            if not toon:
-                continue
-            toon.b_setHealthDisplay(0)
-        
         return
 
     def enterVictory(self):

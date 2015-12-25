@@ -1,13 +1,5 @@
 import math
-from panda3d.core import Point3
-from panda3d.core import CollisionSphere
-from panda3d.core import CollisionNode
-from panda3d.core import CollisionHandlerEvent
-from panda3d.core import TextNode
-from panda3d.core import VBase4
-from panda3d.core import NodePath
-from panda3d.core import BitMask32
-from panda3d.direct import SmoothMover
+from pandac.PandaModules import Point3, CollisionSphere, CollisionNode, CollisionHandlerEvent, TextNode, VBase4, SmoothMover, NodePath, BitMask32
 from direct.fsm import FSM
 from direct.distributed import DistributedObject
 from direct.distributed.ClockDelta import globalClockDelta
@@ -678,8 +670,7 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
             self.flyBallHandler.addInPattern('flyBallHit-%d' % self.index)
         return self.__flyBallBubble
 
-    @staticmethod
-    def __flyBallHit(entry):
+    def __flyBallHit(self, entry):
         print entry
 
     def flyBallFinishedFlying(self, sequence):

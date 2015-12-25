@@ -3,7 +3,7 @@ from direct.distributed.ClockDelta import globalClockDelta
 from direct.fsm import FSM
 from direct.interval.IntervalGlobal import LerpPosInterval
 import math
-from panda3d.core import Point3
+from pandac.PandaModules import Point3
 import random
 
 from otp.ai.MagicWordGlobal import *
@@ -387,7 +387,7 @@ class DistributedBossbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
             self.battleA.startBattle(self.toonsA, self.suitsA)
         if self.battleB:
             self.battleB.startBattle(self.toonsB, self.suitsB)
-            
+
     def exitBattleThree(self):
         self.resetBattles()
 
@@ -409,24 +409,11 @@ class DistributedBossbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         self.setupBattleFourObjects()
         self.battleFourStart = globalClock.getFrameTime()
         self.waitForNextAttack(5)
-        #TTR leaked source doesnt have it in ceo but i can figure it out yay :D
-        for toonId in self.involvedToons:
-            toon = simbase.air.doId2do.get(toonId)
-            if not toon:
-                continue
-            toon.b_setHealthDisplay(2)
-
 
     def exitBattleFour(self):
         self.recordCeoInfo()
         for belt in self.foodBelts:
             belt.goInactive()
-            
-        for toonId in self.involvedToons:
-            toon = simbase.air.doId2do.get(toonId)
-            if not toon:
-                continue
-            toon.b_setHealthDisplay(0)
 
     def recordCeoInfo(self):
         didTheyWin = 0

@@ -1,20 +1,8 @@
-from panda3d.core import CollisionSphere
-from panda3d.core import CollisionTube
-from panda3d.core import CollisionNode
-from panda3d.core import NodePath
-from panda3d.core import BitMask32
-from panda3d.core import Point3
-from panda3d.core import Point4
-from panda3d.core import Vec3
-from panda3d.core import Vec4
-from direct.interval.IntervalGlobal import LerpScaleInterval
-from direct.interval.IntervalGlobal import LerpColorScaleInterval
-from direct.interval.IntervalGlobal import LerpPosInterval
-from direct.interval.IntervalGlobal import LerpFunc
-from direct.interval.IntervalGlobal import Func
-from direct.interval.IntervalGlobal import Sequence
-from direct.interval.IntervalGlobal import Parallel
-from direct.interval.IntervalGlobal import WaitInterval
+from pandac.PandaModules import CollisionSphere, CollisionTube, CollisionNode
+from pandac.PandaModules import NodePath, BitMask32
+from pandac.PandaModules import Point3, Point4, WaitInterval, Vec3, Vec4
+from direct.interval.IntervalGlobal import LerpScaleInterval, LerpColorScaleInterval, LerpPosInterval, LerpFunc
+from direct.interval.IntervalGlobal import Func, Sequence, Parallel
 from direct.showbase.DirectObject import DirectObject
 from direct.task.Task import Task
 from toontown.toonbase import ToontownGlobals

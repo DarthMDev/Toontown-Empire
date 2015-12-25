@@ -1,17 +1,18 @@
-from TrolleyConstants import TOON_EXIT_TIME
+from TrolleyConstants import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObjectAI
-from direct.fsm import ClassicFSM
+from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.showbase import RandomNumGen
 from direct.task import Task
+from otp.ai.AIBase import *
 from toontown.golf import GolfGlobals
 from toontown.golf import GolfManagerAI
-from direct.distributed.ClockDelta import globalClockDelta
 from toontown.minigame import MinigameCreatorAI
 from toontown.quest import Quests
 from toontown.toonbase import ToontownGlobals
-# from toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase.ToontownGlobals import *
 
 
 class DistributedPicnicBasketAI(DistributedObjectAI.DistributedObjectAI):
@@ -58,7 +59,7 @@ class DistributedPicnicBasketAI(DistributedObjectAI.DistributedObjectAI):
                 avCounter += 1
         return avCounter
 
-    def rejectingBoardersHandler(self, avId):
+    def rejectingBoardersHandler(self, avId, si):
         self.rejectBoarder(avId)
 
     def rejectBoarder(self, avId):
@@ -67,7 +68,7 @@ class DistributedPicnicBasketAI(DistributedObjectAI.DistributedObjectAI):
     def acceptingBoardersHandler(self, avId, si):
         self.notify.debug('acceptingBoardersHandler')
         seatIndex = si
-        if seatIndex is not None:
+        if not seatIndex is None:
             self.acceptBoarder(avId, seatIndex)
 
     def acceptBoarder(self, avId, seatIndex):
@@ -146,7 +147,7 @@ class DistributedPicnicBasketAI(DistributedObjectAI.DistributedObjectAI):
                 self.acceptingBoardersHandler(avId, si)
             else:
                 self.notify.debug('rejecting boarder %d' % avId)
-                self.rejectingBoardersHandler(avId)
+                self.rejectingBoardersHandler(avId, si)
         else:
             self.notify.warning('avid: %s does not exist, but tried to board a trolley' % avId)
 
@@ -212,7 +213,7 @@ class DistributedPicnicBasketAI(DistributedObjectAI.DistributedObjectAI):
         self.accepting = 1
         taskMgr.doMethodLater(self.trolleyCountdownTime, self.timeToGoTask, self.uniqueName('countdown-timer'))
 
-    def timeToGoTask(self):
+    def timeToGoTask(self, task):
         self.accepting = 0
         if self.countFullSeats() > 0:
             for x in xrange(len(self.seats)):

@@ -109,6 +109,7 @@ class DistributedPicnicTableAI(DistributedNodeAI):
             if xx != None:
                 isEmpty = False
                 break
+                continue
 
         if isEmpty == True or self.hasPicked == False:
             self.sendUpdateToAvatarId(avId, 'allowPick', [])
@@ -315,6 +316,7 @@ class DistributedPicnicTableAI(DistributedNodeAI):
         for i in xrange(len(self.seats)):
             if self.seats[i] == avId:
                 return i
+                continue
 
     def countFullSeats(self):
         avCounter = 0

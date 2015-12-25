@@ -1,4 +1,4 @@
-from panda3d.core import Point3, PlaneNode
+from pandac.PandaModules import Point3, PlaneNode
 from direct.showbase.ShowBase import Plane
 from direct.showbase.RandomNumGen import RandomNumGen
 from direct.interval.MetaInterval import Sequence, Parallel
@@ -53,7 +53,7 @@ class CogdoFlyingGameIntro(CogdoGameMovie):
     def load(self):
         CogdoGameMovie.load(self)
         self.toonDNA = ToonDNA.ToonDNA()
-        self.toonDNA.newToonFromProperties('dss', 'ss', 'm', 'm', 2, 0, 2, 2, 1, 8, 1, 8, 1, 14, 0)
+        self.toonDNA.newToonFromProperties('dss', 'ss', 'm', 'm', 2, 0, 2, 2, 1, 8, 1, 8, 1, 14)
         self.toonHead = Toon.Toon()
         self.toonHead.setDNA(self.toonDNA)
         self.makeSuit('sc')

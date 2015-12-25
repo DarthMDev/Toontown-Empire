@@ -1,4 +1,4 @@
-from panda3d.core import NodePath, VBase4
+from pandac.PandaModules import NodePath, VBase4
 from direct.showbase.DirectObject import DirectObject
 from direct.showbase.RandomNumGen import RandomNumGen
 from toontown.minigame.MazeBase import MazeBase
@@ -94,7 +94,7 @@ class CogdoMazeFactory:
 
     def _gatherQuadrantData(self):
         self.openBarriers = []
-        barrierItems = xrange(Globals.TotalBarriers)
+        barrierItems = range(Globals.TotalBarriers)
         self._rng.shuffle(barrierItems)
         for i in barrierItems[0:len(barrierItems) - Globals.NumBarriers]:
             self.openBarriers.append(i)

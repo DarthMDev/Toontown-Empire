@@ -1,4 +1,4 @@
-from panda3d.core import NodePath, Point3, PlaneNode, TextNode
+from pandac.PandaModules import NodePath, Point3, PlaneNode, TextNode
 from direct.interval.IntervalGlobal import *
 from direct.showbase.ShowBase import Plane
 from direct.directnotify import DirectNotifyGlobal
@@ -67,7 +67,7 @@ class CogdoElevatorMovie(CogdoGameMovie):
         self.frame.hide()
         backgroundGui.removeNode()
         self.toonDNA = ToonDNA.ToonDNA()
-        self.toonDNA.newToonFromProperties('dss', 'ss', 'm', 'm', 2, 0, 2, 2, 1, 8, 1, 8, 1, 14, 0)
+        self.toonDNA.newToonFromProperties('dss', 'ss', 'm', 'm', 2, 0, 2, 2, 1, 8, 1, 8, 1, 14)
         self.toonHead = Toon.Toon()
         self.toonHead.setDNA(self.toonDNA)
         self.makeSuit('sc')

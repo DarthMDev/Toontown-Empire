@@ -136,6 +136,7 @@ class DistributedCheckersAI(DistributedNodeAI):
 
         if self.playersSitting > 2 and self.fsm.getCurrentState().getName() == 'waitingToBegin':
             pass
+        1
         self.timerEnd = 0
         if self.timerEnd != 0:
             self.sendUpdate('setTimer', [
@@ -218,6 +219,7 @@ class DistributedCheckersAI(DistributedNodeAI):
                 self.playersTurn = self.playersGamePos.index(x)
                 self.d_sendTurn(self.playersTurn + 1)
                 break
+                continue
 
         self.setTurnCountdownTime()
         self.sendUpdate('setTurnTimer', [
@@ -357,6 +359,7 @@ class DistributedCheckersAI(DistributedNodeAI):
                 y = self.checkLegalJump(self.board.getSquare(moveList[x]), self.board.getSquare(moveList[x + 1]), moveType)
                 if y == False:
                     return False
+                    continue
 
             return True
 
@@ -556,6 +559,51 @@ class DistributedCheckersAI(DistributedNodeAI):
                 adj.getState() == 0
 
             return False
+
+
+
+    def existsLegalJumpsFrom(self, index, peice):
+        if peice == 'king':
+            for x in xrange(4):
+                if self.board.squareList[index].getAdjacent()[x] != None and self.board.squareList[index].getJumps()[x] != None:
+                    adj = self.board.squareList[self.board.squareList[index].getAdjacent()[x]]
+                    jump = self.board.squareList[self.board.squareList[index].getJumps()[x]]
+                    if adj.getState() == 0:
+                        pass
+                    elif adj.getState() == self.playerNum or adj.getState() == self.playerNum + 2:
+                        pass
+                    elif jump.getState() == 0:
+                        return True
+
+                adj.getState() == self.playerNum + 2
+
+            return False
+        elif peice == 'normal':
+            if self.playerNum == 1:
+                moveForward = [
+                    1,
+                    2]
+            elif self.playerNum == 2:
+                moveForward = [
+                    0,
+                    3]
+
+            for x in moveForward:
+                if self.board.squareList[index].getAdjacent()[x] != None and self.board.squareList[index].getJumps()[x] != None:
+                    adj = self.board.squareList[self.board.squareList[index].getAdjacent()[x]]
+                    jump = self.board.squareList[self.board.squareList[index].getJumps()[x]]
+                    if adj.getState() == 0:
+                        pass
+                    elif adj.getState() == self.playerNum or adj.getState() == self.playerNum + 2:
+                        pass
+                    elif jump.getState() == 0:
+                        return True
+
+                adj.getState() == self.playerNum + 2
+
+            return False
+
+
 
     def checkLegalMove(self, firstSquare, secondSquare, peice):
         if self.playerNum == 1:

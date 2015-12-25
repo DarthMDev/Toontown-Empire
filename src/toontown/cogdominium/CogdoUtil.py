@@ -1,4 +1,4 @@
-from panda3d.core import ColorBlendAttrib
+from pandac.PandaModules import ColorBlendAttrib
 from toontown.suit import SuitDNA
 import random
 
@@ -81,7 +81,7 @@ class CogdoGameMovie:
 
     def load(self):
         from toontown.toonbase import ToontownGlobals
-        from panda3d.core import TextNode
+        from pandac.PandaModules import TextNode
         textNode = TextNode('moviedialogue')
         textNode.setTextColor(0, 0, 0, 1)
         textNode.setCardColor(1, 1, 1, 1)

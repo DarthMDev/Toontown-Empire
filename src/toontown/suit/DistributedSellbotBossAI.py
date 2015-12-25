@@ -199,7 +199,6 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         toon = simbase.air.doId2do.get(avId)
         if toon:
             toon.b_setNumPies(0)
-            toon.b_setHealthDisplay(0)
         DistributedBossCogAI.DistributedBossCogAI.removeToon(self, avId)
 
     def enterOff(self):
@@ -270,7 +269,6 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
             toon = simbase.air.doId2do.get(toonId)
             if toon:
                 toon.__touchedCage = 0
-                toon.b_setHealthDisplay(2)
 
         self.waitForNextAttack(5)
         self.waitForNextStrafe(9)
@@ -315,12 +313,6 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         self.stopStrafes()
         taskName = self.uniqueName('CagedToonSaySomething')
         taskMgr.remove(taskName)
-        for toonId in self.involvedToons + self.looseToons:
-            toon = self.air.doId2do.get(toonId)
-            if not toon:
-                continue
-            toon.b_setHealthDisplay(0)
-
 
     def enterNearVictory(self):
         self.resetBattles()
@@ -399,23 +391,9 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         if self.hitCount < self.limitHitCount or self.bossDamage < self.hitCountDamage:
             return
         self.b_setAttackCode(ToontownGlobals.BossCogRecoverDizzyAttack)
-      
-    def enterReward(self):
-        newCogSuitLevel = localAvatar.getCogLevels()[CogDisguiseGlobals.dept2deptIndex(self.style.dept)]
-        if newCogSuitLevel == ToontownGlobals.MaxCogSuitLevel:
-            if av.getStyle().getGender() == 'm':
-                CatalogClothingItem(1765, 0) #storm sellbot shirt
-                CatalogClothingItem(1766, 0) # storm sellbot shorts
-            elif av.getStyle().getGender() == 'f':
-                CatalogClothingItem(1765, 0) #storm sellbot shirt
-                CatalogClothingItem(1767, 0) #storm sellbot skirt
-        DistributedBossCogAI.DistributedBossCogAI.enterReward(self)      
-        
-# Old code (works) just in case the new code doesn't work.       
-'''
+
     def enterReward(self):
         DistributedBossCogAI.DistributedBossCogAI.enterReward(self)
-'''
 
 def getVP(invoker):
     for do in simbase.air.doId2do.values():

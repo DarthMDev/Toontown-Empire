@@ -1,4 +1,4 @@
-from panda3d.core import Point3, CollisionNode, CollisionSphere, CollisionHandlerEvent
+from pandac.PandaModules import Point3, CollisionNode, CollisionSphere, CollisionHandlerEvent
 from direct.interval.IntervalGlobal import Func, Sequence, Wait
 from direct.showbase.PythonUtil import bound as clamp
 from direct.directnotify import DirectNotifyGlobal
@@ -44,7 +44,7 @@ class CogdoMazeLocalPlayer(CogdoMazePlayer):
          'squashed': False,
          'boss': False,
          'minion': False}
-        self.accept(base.JUMP, self.controlKeyPressed)
+        self.accept('control', self.controlKeyPressed)
 
     def destroy(self):
         self.toon.showName()
@@ -132,7 +132,7 @@ class CogdoMazeLocalPlayer(CogdoMazePlayer):
     def enterDone(self):
         CogdoMazePlayer.enterDone(self)
         self._guiMgr.hideQuestArrow()
-        self.ignore(base.JUMP)
+        self.ignore('control')
         self._guiMgr.setMessage('')
         if self.exited == False:
             self.lostMemos()

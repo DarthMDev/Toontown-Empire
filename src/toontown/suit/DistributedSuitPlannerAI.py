@@ -12,10 +12,10 @@ from toontown.battle import BattleManagerAI
 from toontown.battle import SuitBattleGlobals
 from toontown.building import HQBuildingAI
 from toontown.building import SuitBuildingGlobals
-from toontown.dna.DNASuitPoint import DNASuitPoint
+from toontown.dna.DNAParser import DNASuitPoint
 from toontown.hood import ZoneUtil
 from toontown.suit.SuitInvasionGlobals import IFSkelecog, IFWaiter, IFV2
-from toontown.dna.SuitLegList import *
+from libpandadna import *
 from toontown.toon import NPCToons
 from toontown.toonbase import ToontownBattleGlobals
 from toontown.toonbase import ToontownGlobals
@@ -960,7 +960,7 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
         if level is None:
             level = random.choice(self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_LVL])
         if type is None:
-            typeChoices = xrange(max(level - 4, 1), min(level, self.MAX_SUIT_TYPES) + 1)
+            typeChoices = range(max(level - 4, 1), min(level, self.MAX_SUIT_TYPES) + 1)
             type = random.choice(typeChoices)
         else:
             level = min(max(level, type), type + 4)

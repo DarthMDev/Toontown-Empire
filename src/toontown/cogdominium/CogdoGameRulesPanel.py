@@ -10,7 +10,7 @@ from toontown.minigame import MinigameGlobals
 class CogdoGameRulesPanel(StateData.StateData):
     hiddenNode = NodePath('hiddenNode')
 
-    def __init__(self, panelName, gameTitle, instructions, doneEvent, timeout= MinigameGlobals.rulesDuration):
+    def __init__(self, panelName, gameTitle, instructions, doneEvent, timeout = MinigameGlobals.rulesDuration):
         StateData.StateData.__init__(self, doneEvent)
         self.gameTitle = gameTitle
         self.instructions = instructions

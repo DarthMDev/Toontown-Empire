@@ -253,7 +253,7 @@ class SuitDNA:
     def newSuitRandom(self, level = None, dept = None):
         self.type = 's'
         if level == None:
-            level = random.choice(xrange(1, len(suitsPerLevel)))
+            level = random.choice(range(1, len(suitsPerLevel)))
         elif level < 0 or level > len(suitsPerLevel):
             notify.error('Invalid suit level: %d' % level)
         if dept == None:
@@ -268,7 +268,7 @@ class SuitDNA:
 
         bottom = base + offset
         top = bottom + suitsPerLevel[level - 1]
-        self.name = suitHeadTypes[random.choice(xrange(bottom, top))]
+        self.name = suitHeadTypes[random.choice(range(bottom, top))]
         self.body = getSuitBodyType(self.name)
         return
 

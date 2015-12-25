@@ -1,31 +1,16 @@
-from panda3d.core import Point3
-from panda3d.core import BitMask32
-from panda3d.core import TextNode
-from panda3d.core import Vec3
-from panda3d.core import Fog
-from direct.distributed.ClockDelta import globalClockDelta
+from panda3d.core import *
+from direct.distributed.ClockDelta import *
 from direct.task.Task import Task
-from direct.interval.IntervalGlobal import Func
-from direct.interval.IntervalGlobal import LerpPosInterval
-from direct.interval.IntervalGlobal import Sequence
-from direct.interval.IntervalGlobal import LerpFunctionInterval
-from direct.interval.IntervalGlobal import LerpHprInterval
-from direct.interval.IntervalGlobal import ActorInterval
-from direct.interval.IntervalGlobal import Parallel
-from direct.interval.IntervalGlobal import Wait
-from direct.interval.IntervalGlobal import SoundInterval
-from TrolleyConstants import TROLLEY_COUNTDOWN_TIME
-import math
-from TrolleyConstants import TROLLEY_EXIT_TIME
-from TrolleyConstants import TROLLEY_ENTER_TIME
-from TrolleyConstants import TOON_BOARD_TIME
-from TrolleyConstants import TOON_EXIT_TIME
+from direct.interval.IntervalGlobal import *
+from TrolleyConstants import *
 from toontown.toonbase import ToontownGlobals
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
+from direct.fsm import State
 from toontown.distributed import DelayDelete
-
+from direct.task.Task import Task
+from toontown.hood import ZoneUtil
 
 class DistributedTrolley(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedTrolley')
@@ -75,8 +60,8 @@ class DistributedTrolley(DistributedObject.DistributedObject):
         for i in xrange(self.numKeys):
             key = self.keys[i]
             key.setTwoSided(1)
-            ref = self.trolleyCar.attachNewNode('key' + repr(i) + 'ref')
-            ref.setPosHpr(key, 0, 0, 0, 0, 0, 0)
+            ref = self.trolleyCar.attachNewNode('key' + `i` + 'ref')
+            ref.iPosHpr(key)
             self.keyRef.append(ref)
             self.keyInit.append(key.getTransform())
 
@@ -86,8 +71,8 @@ class DistributedTrolley(DistributedObject.DistributedObject):
         self.frontWheelRef = []
         for i in xrange(self.numFrontWheels):
             wheel = self.frontWheels[i]
-            ref = self.trolleyCar.attachNewNode('frontWheel' + repr(i) + 'ref')
-            ref.setPosHpr(wheel, 0, 0, 0, 0, 0, 0)
+            ref = self.trolleyCar.attachNewNode('frontWheel' + `i` + 'ref')
+            ref.iPosHpr(wheel)
             self.frontWheelRef.append(ref)
             self.frontWheelInit.append(wheel.getTransform())
 
@@ -97,8 +82,8 @@ class DistributedTrolley(DistributedObject.DistributedObject):
         self.backWheelRef = []
         for i in xrange(self.numBackWheels):
             wheel = self.backWheels[i]
-            ref = self.trolleyCar.attachNewNode('backWheel' + repr(i) + 'ref')
-            ref.setPosHpr(wheel, 0, 0, 0, 0, 0, 0)
+            ref = self.trolleyCar.attachNewNode('backWheel' + `i` + 'ref')
+            ref.iPosHpr(wheel)
             self.backWheelRef.append(ref)
             self.backWheelInit.append(wheel.getTransform())
 
@@ -183,6 +168,7 @@ class DistributedTrolley(DistributedObject.DistributedObject):
         self.loader.place.detectedTrolleyCollision()
 
     def handleEnterTrolley(self):
+        toon = base.localAvatar
         self.sendUpdate('requestBoard', [])
 
     def fillSlot0(self, avId):

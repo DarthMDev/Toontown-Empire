@@ -99,7 +99,7 @@ class DistributedCogdoInteriorAI(DistributedObjectAI, FSM.FSM):
         maxStars = min(2, int(math.ceil(difficulty / 5.)))
         minStars = max(0, maxStars - 1)
 
-        while not minStars <= getStars(v) <= maxStars:
+        while not (minStars <= getStars(v) <= maxStars):
             v = g()
 
         self.notify.info('selected SOS %s (stars = %s)' % (v, getStars(v)))
@@ -478,6 +478,9 @@ class DistributedCogdoInteriorAI(DistributedObjectAI, FSM.FSM):
             savedBy])
         self.d_setState('Reward')
 
+    def removeToon(self, toonId):
+        if self.toons.count(toonId):
+            self.toons.remove(toonId)
 
     def d_setToons(self):
         self.sendUpdate('setToons', self.getToons())

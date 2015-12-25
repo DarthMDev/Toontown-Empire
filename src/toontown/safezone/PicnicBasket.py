@@ -65,6 +65,7 @@ class PicnicBasket(StateData.StateData):
                             'start'])],
             'start', 'final')
         self.parentFSM = parentFSM
+        return None
 
     def load(self):
         self.parentFSM.getStateNamed('picnicBasketBlock').addChild(self.fsm)

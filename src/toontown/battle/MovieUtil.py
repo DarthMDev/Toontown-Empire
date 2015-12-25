@@ -8,8 +8,8 @@ import BattleParticles
 import BattleProps
 from toontown.toonbase import TTLocalizer
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieUtil')
-SUIT_LOSE_DURATION = 8.5
-SUIT_LOSE_REVIVE_DURATION = 6.0
+SUIT_LOSE_DURATION = 6.0
+# SUIT_LOSE_REVIVE_DURATION = 8.5
 SUIT_LURE_DISTANCE = 2.6
 SUIT_LURE_DOLLAR_DISTANCE = 5.1
 SUIT_EXTRA_REACH_DISTANCE = 0.9
@@ -219,6 +219,7 @@ def virtualize(deathsuit):
 
 def createTrainTrackAppearTrack(dyingSuit, toon, battle, npcs):
     retval = Sequence()
+    return retval
     possibleSuits = []
     for suitAttack in battle.movie.suitAttackDicts:
         suit = suitAttack['suit']
@@ -587,7 +588,7 @@ def createSuitStunInterval(suit, before, after):
     stars.adjustAllPriorities(100)
     head = suit.getHeadParts()[0]
     head.calcTightBounds(p1, p2)
-    return Sequence(Wait(before), Func(stars.reparentTo, head), Func(stars.setZ, max(0.0, p2[2] - 1.0)), Func(stars.loop, 'stun'), Wait(after), Func(stars.cleanup), Func(stars.removeNode))
+    return Sequence(Wait(before), Func(stars.reparentTo, head), Func(stars.setZ, max(0.0, p2[2] - 1.0)), Func(stars.loop, 'stun'), Wait(after), Func(stars.removeNode))
 
 
 def calcAvgSuitPos(throw):

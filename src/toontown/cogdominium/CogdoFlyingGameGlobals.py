@@ -1,5 +1,5 @@
 from direct.showbase import PythonUtil
-from panda3d.core import VBase4, Vec3, Point3
+from pandac.PandaModules import VBase4, Vec3, Point3
 from CogdoUtil import VariableContainer, DevVariableContainer
 AI = VariableContainer()
 AI.GameActions = PythonUtil.Enum(('LandOnWinPlatform', 'WinStateFinished', 'GotoWinState', 'HitWhirlwind', 'HitLegalEagle', 'HitMinion', 'DebuffInvul', 'RequestEnterEagleInterest', 'RequestExitEagleInterest', 'RanOutOfTimePenalty', 'Died', 'Spawn', 'SetBlades', 'BladeLost'))
@@ -9,25 +9,29 @@ AI.SafezoneId2DeathDamage = {2000: 1,
  5000: 4,
  4000: 8,
  3000: 12,
- 9000: 16}
+ 9000: 16,
+ 7000: 20}
 AI.SafezoneId2WhirlwindDamage = {2000: 1,
  1000: 2,
  5000: 4,
  4000: 8,
  3000: 12,
- 9000: 16}
+ 9000: 16,
+ 7000: 20}
 AI.SafezoneId2LegalEagleDamage = {2000: 2,
  1000: 4,
  5000: 8,
  4000: 16,
  3000: 24,
- 9000: 32}
+ 9000: 32,
+ 7000: 36}
 AI.SafezoneId2MinionDamage = {2000: 1,
  1000: 2,
  5000: 4,
  4000: 8,
  3000: 12,
- 9000: 16}
+ 9000: 16,
+ 7000: 20}
 Camera = VariableContainer()
 Camera.Angle = 12.5
 Camera.Distance = 20
@@ -96,7 +100,8 @@ Gameplay.SafezoneId2LaffPickupHealAmount = {2000: 1,
  5000: 4,
  4000: 8,
  3000: 12,
- 9000: 16}
+ 9000: 16,
+ 7000: 20}
 Gameplay.InvulBuffTime = 15.0
 Gameplay.InvulBlinkTime = 5.0
 Gameplay.InvulSingleBlinkTime = 0.5
@@ -227,7 +232,8 @@ Level.DifficultyOrder = {2000: (1, 1, 1, 2, 1),
  5000: (1, 2, 1, 2, 2),
  4000: (1, 2, 1, 2, 3, 2),
  3000: (1, 2, 2, 3, 2, 3),
- 9000: (2, 3, 2, 3, 2, 3, 2)}
+ 9000: (2, 3, 2, 3, 2, 3, 2),
+ 7000: (2, 3, 2, 3, 2, 3, 2)}
 Dev.WantTempLevel = True
 Dev.DevQuadsOrder = (1, 2, 3, 4, 5, 6, 7, 8)
 Level.AddSparkleToPowerups = False

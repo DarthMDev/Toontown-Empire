@@ -1,16 +1,6 @@
 import math
 import random
-from panda3d.core import NodePath
-from panda3d.core import Point3
-from panda3d.core import VBase4
-from panda3d.core import TextNode
-from panda3d.core import Vec3
-from panda3d.core import deg2Rad
-from panda3d.core import CollisionSegment
-from panda3d.core import CollisionHandlerQueue
-from panda3d.core import CollisionNode
-from panda3d.core import BitMask32
-from panda3d.direct import SmoothMover
+from pandac.PandaModules import NodePath, Point3, VBase4, TextNode, Vec3, deg2Rad, CollisionSegment, CollisionHandlerQueue, CollisionNode, BitMask32, SmoothMover
 from direct.fsm import FSM
 from direct.distributed import DistributedObject
 from direct.distributed.ClockDelta import globalClockDelta

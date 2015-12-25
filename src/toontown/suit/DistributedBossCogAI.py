@@ -628,3 +628,11 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
             if toon:
                 toon.addCrateKeys(1)
     
+    def addStats(self):
+        stat = BOSS_TO_STAT[self.dept]
+
+        for toonId in self.involvedToons:
+            toon = self.air.doId2do.get(toonId)
+            
+            if toon:
+                toon.addStat(stat)

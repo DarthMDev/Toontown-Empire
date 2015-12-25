@@ -348,10 +348,10 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                     target = suitIds.index(ta[TOON_TGT_COL])
                 else:
                     target = -1
-                p.extend([index,
+                p = p + [index,
                  track,
                  ta[TOON_LVL_COL],
-                 target])
+                 target]
                 p = p + ta[4:]
             else:
                 index = self.activeToons.index(t)
@@ -374,7 +374,7 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                     self.notify.debug('suit attack: %d must be group' % sa[SUIT_ATK_COL])
                 else:
                     toonId = self.activeToons[targetIndex]
-            p.extend([index, sa[SUIT_ATK_COL], targetIndex])
+            p = p + [index, sa[SUIT_ATK_COL], targetIndex]
             sa[SUIT_TAUNT_COL] = 0
             if sa[SUIT_ATK_COL] != -1:
                 suit = self.findSuit(id)
@@ -637,7 +637,7 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
             self.__requestAdjust()
 
     def __removeSuit(self, suit):
-        self.notify.debug('__removeSuit({0:d})'.format(suit.doId))
+        self.notify.debug('__removeSuit(%d)' % suit.doId)
         self.suits.remove(suit)
         self.activeSuits.remove(suit)
         if self.luredSuits.count(suit) == 1:

@@ -109,6 +109,7 @@ class Movie(DirectObject.DirectObject):
             self.renderProps.remove(prop)
 
     def restore(self):
+        return
         for toon in self.battle.activeToons:
             toon.loop('neutral')
             origPos, origHpr = self.battle.getActorPosHpr(toon)

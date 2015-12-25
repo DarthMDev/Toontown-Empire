@@ -1,17 +1,18 @@
-# from toontown.toonbase.ToonBaseGlobal import *
-from panda3d.core import Point3
-from panda3d.core import Vec3
-from direct.interval.IntervalGlobal import Func
-from direct.interval.IntervalGlobal import Wait
-from direct.interval.IntervalGlobal import Sequence
-# from direct.distributed.ClockDelta import
-from toontown.dna.DNAParser import DNADoor
+from toontown.toonbase.ToonBaseGlobal import *
+from panda3d.core import *
+from direct.interval.IntervalGlobal import *
+from direct.distributed.ClockDelta import *
+from toontown.toonbase import ToontownGlobals
+from toontown.dna.DNAParser import *
+import ToonInterior
+from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
 import random
 import ToonInteriorColors
 from toontown.hood import ZoneUtil
 from toontown.suit import SuitDNA
 from toontown.suit import Suit
+from toontown.quest import QuestParser
 from toontown.toon import DistributedNPCSpecialQuestGiver
 from toontown.toonbase import TTLocalizer
 from otp.nametag.NametagConstants import CFSpeech
@@ -81,8 +82,8 @@ class DistributedTutorialInterior(DistributedObject.DistributedObject):
         self.randomGenerator.seed(self.zoneId)
         self.interior = loader.loadModel('phase_3.5/models/modules/toon_interior_tutorial')
         self.interior.reparentTo(render)
-        node = loader.loadDNAFile(self.cr.playGame.hood.dnaStore,
-                                  'phase_3.5/dna/tutorial_street.pdna')
+        dnaStore = DNAStorage()
+        node = loader.loadDNAFile(self.cr.playGame.hood.dnaStore, 'phase_3.5/dna/tutorial_street.pdna')
         self.street = render.attachNewNode(node)
         self.street.flattenMedium()
         self.street.setPosHpr(-17, 42, -0.5, 180, 0, 0)
@@ -111,19 +112,15 @@ class DistributedTutorialInterior(DistributedObject.DistributedObject):
         door_origin.setScale(0.8, 0.8, 0.8)
         door_origin.setPos(door_origin, 0, -0.025, 0)
         color = self.randomGenerator.choice(self.colors['TI_door'])
-        DNADoor.setupDoor(doorNP, self.interior, door_origin, self.dnaStore, str(self.block), color)
+        setupDoor(doorNP, self.interior, door_origin, self.dnaStore, str(self.block), color)
         doorFrame = doorNP.find('door_*_flat')
         doorFrame.wrtReparentTo(self.interior)
         doorFrame.setColor(color)
         del self.colors
         del self.dnaStore
         del self.randomGenerator
-
         self.interior.flattenMedium()
-        npcOrigin = self.interior.find('**/npc_origin_' + repr((self.cr.doId2do[self.npcId].posIndex
-                                                                )
-                                                               )
-                                       )
+        npcOrigin = self.interior.find('**/npc_origin_' + `(self.cr.doId2do[self.npcId].posIndex)`)
         if not npcOrigin.isEmpty():
             self.cr.doId2do[self.npcId].reparentTo(npcOrigin)
             self.cr.doId2do[self.npcId].clearMat()
@@ -135,8 +132,7 @@ class DistributedTutorialInterior(DistributedObject.DistributedObject):
             self.notify.info('Tutorial movie: Place ready.')
             self.playMovie()
         else:
-            self.notify.info('Tutorial movie: Waiting for place=%s, has fsm=%s' % (place,
-                                                                                   hasattr(place, 'fsm')))
+            self.notify.info('Tutorial movie: Waiting for place=%s, has fsm=%s' % (place, hasattr(place, 'fsm')))
             if hasattr(place, 'fsm'):
                 self.notify.info('Tutorial movie: place state=%s' % place.fsm.getCurrentState().getName())
             self.acceptOnce('enterTutorialInterior', self.playMovie)
@@ -154,19 +150,7 @@ class DistributedTutorialInterior(DistributedObject.DistributedObject):
         self.suit.loop('neutral')
         self.suit.setPosHpr(-20, 8, 0, 0, 0, 0)
         self.suit.reparentTo(self.interior)
-        self.suitWalkTrack = Sequence(self.suit.hprInterval(0.1,
-                                                            Vec3(0, 0, 0)),
-                                      Func(self.suit.loop,
-                                           'walk'),
-                                      self.suit.posInterval(2, Point3(-20, 20, 0)),
-                                      Func(self.suit.loop,
-                                           'neutral'),
-                                      Wait(1.0),
-                                      self.suit.hprInterval(0.1, Vec3(180, 0, 0)),
-                                      Func(self.suit.loop, 'walk'),
-                                      self.suit.posInterval(2, Point3(-20, 10, 0)),
-                                      Func(self.suit.loop, 'neutral'),
-                                      Wait(1.0))
+        self.suitWalkTrack = Sequence(self.suit.hprInterval(0.1, Vec3(0, 0, 0)), Func(self.suit.loop, 'walk'), self.suit.posInterval(2, Point3(-20, 20, 0)), Func(self.suit.loop, 'neutral'), Wait(1.0), self.suit.hprInterval(0.1, Vec3(180, 0, 0)), Func(self.suit.loop, 'walk'), self.suit.posInterval(2, Point3(-20, 10, 0)), Func(self.suit.loop, 'neutral'), Wait(1.0))
         self.suitWalkTrack.loop()
 
     def setZoneIdAndBlock(self, zoneId, block):

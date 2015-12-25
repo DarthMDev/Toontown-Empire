@@ -1,40 +1,26 @@
-from panda3d.core import TextNode
-from panda3d.core import DepthOffsetAttrib
-from panda3d.core import Point3
-from panda3d.core import VBase4
-from panda3d.core import Vec3
-from direct.distributed.ClockDelta import globalClockDelta
-from direct.interval.IntervalGlobal import Parallel
-from direct.interval.IntervalGlobal import Func
-from direct.interval.IntervalGlobal import Sequence
-from panda3d.core import DecalEffect
-from direct.interval.IntervalGlobal import LerpFunctionInterval
-from direct.interval.IntervalGlobal import LerpScaleInterval
-from direct.interval.IntervalGlobal import LerpPosInterval
-from direct.interval.IntervalGlobal import Wait
-from direct.interval.IntervalGlobal import LerpHprInterval
-from toontown.building.SuitBuildingGlobals import VICTORY_RUN_TIME
-from ElevatorConstants import LIGHT_OFF_COLOR
-from ElevatorConstants import ElevatorOutPoints
-from ElevatorConstants import ElevatorOutPointsFar
-from ElevatorConstants import ElevatorPoints
-from ElevatorUtils import closeDoors
-from SuitBuildingGlobals import TO_TOON_BLDG_TIME
-from SuitBuildingGlobals import TO_SUIT_BLDG_TIME
-from SuitBuildingGlobals import TOON_VICTORY_EXIT_TIME
-from direct.gui.DirectGui import DirectLabel
+from panda3d.core import *
+from direct.distributed.ClockDelta import *
+from direct.interval.IntervalGlobal import *
+from direct.directtools.DirectGeometry import *
+from ElevatorConstants import *
+from ElevatorUtils import *
+from SuitBuildingGlobals import *
+from direct.gui.DirectGui import *
 from toontown.toonbase import ToontownGlobals
+from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.distributed import DistributedObject
+import random
 from toontown.suit import SuitDNA
 from toontown.toonbase import TTLocalizer
 from toontown.distributed import DelayDelete
+from toontown.toon import TTEmote
 from otp.avatar import Emote
 import sys
 FO_DICT = {'s': 'tt_m_ara_cbe_fieldOfficeMoverShaker',
-           'l': 'tt_m_ara_cbe_fieldOfficeLegalEagle',
-           'm': 'tt_m_ara_cbe_fieldOfficeMoverShaker',
-           'c': 'tt_m_ara_cbe_fieldOfficeMoverShaker'}
+ 'l': 'tt_m_ara_cbe_fieldOfficeLegalEagle',
+ 'm': 'tt_m_ara_cbe_fieldOfficeMoverShaker',
+ 'c': 'tt_m_ara_cbe_fieldOfficeMoverShaker'}
 
 class DistributedBuilding(DistributedObject.DistributedObject):
     SUIT_INIT_HEIGHT = 125
@@ -45,8 +31,7 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         self.interactiveProp = None
         self.suitDoorOrigin = None
         self.elevatorModel = None
-        self.fsm = ClassicFSM.ClassicFSM('DistributedBuilding',
-                                         [State.State('off', self.enterOff, self.exitOff, ['waitForVictors',
+        self.fsm = ClassicFSM.ClassicFSM('DistributedBuilding', [State.State('off', self.enterOff, self.exitOff, ['waitForVictors',
           'waitForVictorsFromCogdo',
           'becomingToon',
           'becomingToonFromCogdo',
@@ -75,9 +60,9 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         self.transitionTrack = None
         self.elevatorNodePath = None
         self.victorList = [0,
-                           0,
-                           0,
-                           0]
+         0,
+         0,
+         0]
         self.waitingMessage = None
         self.cogDropSound = None
         self.cogLandSound = None
@@ -161,7 +146,7 @@ class DistributedBuilding(DistributedObject.DistributedObject):
     def exitOff(self):
         pass
 
-    def enterWaitForVictors(self):
+    def enterWaitForVictors(self, ts):
         if self.mode != 'suit':
             self.setToSuit()
         victorCount = self.victorList.count(base.localAvatar.doId)
@@ -199,7 +184,7 @@ class DistributedBuilding(DistributedObject.DistributedObject):
             self.waitingMessage = None
         return
 
-    def enterWaitForVictorsFromCogdo(self):
+    def enterWaitForVictorsFromCogdo(self, ts):
         if self.mode != 'cogdo':
             self.setToCogdo()
         victorCount = self.victorList.count(base.localAvatar.doId)
@@ -248,7 +233,7 @@ class DistributedBuilding(DistributedObject.DistributedObject):
     def exitBecomingToonFromCogdo(self):
         pass
 
-    def enterToon(self, *args):
+    def enterToon(self, ts):
         prop = self.getInteractiveProp()
 
         if prop:
@@ -271,7 +256,7 @@ class DistributedBuilding(DistributedObject.DistributedObject):
     def exitBecomingSuit(self):
         pass
 
-    def enterSuit(self):
+    def enterSuit(self, ts):
         prop = self.getInteractiveProp()
 
         if prop and not prop.state == 'Sad':
@@ -300,7 +285,7 @@ class DistributedBuilding(DistributedObject.DistributedObject):
     def exitBecomingCogdoFromCogdo(self):
         pass
 
-    def enterCogdo(self):
+    def enterCogdo(self, ts):
         self.setToCogdo()
 
     def exitCogdo(self):
@@ -450,7 +435,9 @@ class DistributedBuilding(DistributedObject.DistributedObject):
             return
         dnaStore = self.cr.playGame.dnaStore
         level = int(self.difficulty / 2) + 1
-        suitNP = dnaStore.findNode('suit_landmark_' + chr(self.track) + str(level))
+        if level > 5:
+            self.notify.warning('Level is bigger than 5: %s' % level)
+        suitNP = dnaStore.findNode('suit_landmark_' + chr(self.track) + str(min(level, 5)))
         zoneId = dnaStore.getZoneFromBlockNumber(self.block)
         newParentNP = base.cr.playGame.hood.loader.zoneDict[zoneId]
         suitBuildingNP = suitNP.copyTo(newParentNP)
@@ -473,7 +460,7 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         backgroundNP.reparentTo(signOrigin)
         backgroundNP.setPosHprScale(0.0, 0.0, textHeight * 0.8 / zScale, 0.0, 0.0, 0.0, 8.0, 8.0, 8.0 * zScale)
         signTextNodePath = backgroundNP.attachNewNode(textNode.generate())
-        signTextNodePath.setPosHprScale(0.0, -0.01, -0.21 + textHeight * 0.1 / zScale, 0.0, 0.0, 0.0, 0.1, 0.1, 0.1 / zScale)
+        signTextNodePath.setPosHprScale(0.0, 0.0, -0.21 + textHeight * 0.1 / zScale, 0.0, 0.0, 0.0, 0.1, 0.1, 0.1 / zScale)
         signTextNodePath.setColor(1.0, 1.0, 1.0, 1.0)
         frontNP = suitBuildingNP.find('**/*_front/+GeomNode;+s')
         backgroundNP.wrtReparentTo(frontNP)
@@ -549,6 +536,7 @@ class DistributedBuilding(DistributedObject.DistributedObject):
 
     def setupCogdo(self, nodePath):
         dnaStore = self.cr.playGame.dnaStore
+        level = int(self.difficulty / 2) + 1
         suitNP = dnaStore.findNode(FO_DICT[chr(self.track)])
         if not suitNP:
             suitNP = loader.loadModel('phase_5/models/cogdominium/%s' % FO_DICT[chr(self.track)])
@@ -602,8 +590,7 @@ class DistributedBuilding(DistributedObject.DistributedObject):
                     hideTrack.append(Func(base.playSfx, self.cogWeakenSound, 0, 1, None, 0.0))
                 hideTrack.append(self.createBounceTrack(i, 3, 1.2, TO_TOON_BLDG_TIME * 0.05, slowInitBounce=0.0))
                 hideTrack.append(self.createBounceTrack(i, 5, 0.8, TO_TOON_BLDG_TIME * 0.1, slowInitBounce=0.0))
-                hideTrack.append(self.createBounceTrack(i,
-                                                        7, 1.2, TO_TOON_BLDG_TIME * 0.17, slowInitBounce=0.0))
+                hideTrack.append(self.createBounceTrack(i, 7, 1.2, TO_TOON_BLDG_TIME * 0.17, slowInitBounce=0.0))
                 hideTrack.append(self.createBounceTrack(i, 9, 1.2, TO_TOON_BLDG_TIME * 0.18, slowInitBounce=0.0))
                 realScale = i.getScale()
                 hideTrack.append(LerpScaleInterval(i, TO_TOON_BLDG_TIME * 0.1, Vec3(realScale[0], realScale[1], 0.01)))
@@ -755,6 +742,7 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         for victor in self.victorList:
             if victor != 0 and victor in self.cr.doId2do:
                 toon = self.cr.doId2do[victor]
+                p0 = Point3(0, 0, 0)
                 p1 = Point3(ElevatorPoints[i][0], ElevatorPoints[i][1] - 5.0, ElevatorPoints[i][2])
                 if useFarExitPoints:
                     p2 = Point3(ElevatorOutPointsFar[i][0], ElevatorOutPointsFar[i][1], ElevatorOutPointsFar[i][2])

@@ -38,7 +38,6 @@ class MintManagerAI(DirectObject.DirectObject):
                     layout = MintLayout.MintLayout(mintId, i)
                     if roomId in layout.getRoomIds():
                         floor = i
-                        break
                 else:
                     from toontown.coghq import MintRoomSpecs
                     roomName = MintRoomSpecs.CashbotMintRoomId2RoomName[roomId]

@@ -93,6 +93,7 @@ class QuestManagerAI:
                     # The toon has completed this quest. Give them a reward!
                     npc.completeQuest(avId, questId, rewardId)
                     self.completeQuest(av, questId)
+                    av.addStat(ToontownGlobals.STAT_TASKS)
                 break
         else:
             # They haven't completed any quests so we have to give them choices.
@@ -115,13 +116,11 @@ class QuestManagerAI:
                 else:
                     npc.rejectAvatar(avId)
 
-    @staticmethod
-    def npcGiveTrackChoice(av, tier):
+    def npcGiveTrackChoice(self, av, tier):
         trackQuest = Quests.chooseTrackChoiceQuest(tier, av)
         return [(trackQuest, 400, Quests.ToonHQ)]
 
-    @staticmethod
-    def avatarQuestChoice(av, npc):
+    def avatarQuestChoice(self, av, npc):
         # Get the best quests for an avatar/npc.
         return Quests.chooseBestQuests(av.getRewardTier(), npc, av)
 
@@ -174,8 +173,7 @@ class QuestManagerAI:
         # Remove the task for timeout.
         taskMgr.remove(npc.uniqueName('clearMovie'))
 
-    @staticmethod
-    def nextQuest(av, npc, questId):
+    def nextQuest(self, av, npc, questId):
         # Get the next QuestId and toNpcId.
         nextQuestId, toNpcId = Quests.getNextQuest(questId, npc, av)
 
@@ -229,8 +227,7 @@ class QuestManagerAI:
 
         av.b_setRewardHistory(rewardTier, rewardHistory)
 
-    @staticmethod
-    def avatarConsiderProgressTier(av):
+    def avatarConsiderProgressTier(self, av):
         # Get the avatars current tier.
         currentTier = av.getRewardTier()
 
@@ -261,8 +258,7 @@ class QuestManagerAI:
         # Toon played a minigame.
         self.toonPlayedMinigame(av, [])
 
-    @staticmethod
-    def toonPlayedMinigame(av, toons):
+    def toonPlayedMinigame(self, av, toons):
         # Get the avatars current quests.
         avQuests = av.getQuests()
         questList = []
@@ -297,8 +293,7 @@ class QuestManagerAI:
 
         av.b_setQuests(questList)
     
-    @staticmethod
-    def toonCalledClarabelle(av):
+    def toonCalledClarabelle(self, av):
         avQuests = av.getQuests()
         questList = []
         for i in xrange(0, len(avQuests), 5):
@@ -309,8 +304,7 @@ class QuestManagerAI:
             questList.append(questDesc)
         av.b_setQuests(questList)
 
-    @staticmethod
-    def toonMadeNPCFriend(av, count, method):
+    def toonMadeNPCFriend(self, av, count, method):
         avQuests = av.getQuests()
         questList = []
 
@@ -344,8 +338,7 @@ class QuestManagerAI:
 
         av.b_setQuests(questList)
 
-    @staticmethod
-    def toonCaughtFishingItem(av):
+    def toonCaughtFishingItem(self, av):
         # Get the avatars current quests.
         avQuests = av.getQuests()
         fishingItem = -1
@@ -375,8 +368,7 @@ class QuestManagerAI:
         av.b_setQuests(questList)
         return fishingItem
 
-    @staticmethod
-    def hasTailorClothingTicket(av, npc):
+    def hasTailorClothingTicket(self, av, npc):
         # Get the avatars current quests.
         avQuests = av.getQuests()
 
@@ -390,8 +382,7 @@ class QuestManagerAI:
                     return 1
         return 0
 
-    @staticmethod
-    def removeClothingTicket(av, npc):
+    def removeClothingTicket(self, av, npc):
         # Get the avatars current quests.
         avQuests = av.getQuests()
 
@@ -404,8 +395,7 @@ class QuestManagerAI:
                     av.removeQuest(questDesc[QuestIdIndex])
                     break
 
-    @staticmethod
-    def recoverItems(av, suitsKilled, taskZoneId):
+    def recoverItems(self, av, suitsKilled, taskZoneId):
         # Get the avatars current quests.
         avQuests = av.getQuests()
         questList = []
@@ -459,8 +449,7 @@ class QuestManagerAI:
 
         return (recoveredItems, unrecoveredItems)
 
-    @staticmethod
-    def toonKilledBuilding(av, type, difficulty, floors, zoneId, cogdo):
+    def toonKilledBuilding(self, av, type, difficulty, floors, zoneId, cogdo):
         # Get the avatars current quests.
         messenger.send('topToonsManager-event', [av.doId, TopToonsGlobals.CAT_BLDG, 1])
         avQuests = av.getQuests()
@@ -480,8 +469,7 @@ class QuestManagerAI:
 
         av.b_setQuests(questList)
 
-    @staticmethod
-    def toonDefeatedFactory(av, factoryId):
+    def toonDefeatedFactory(self, av, factoryId):
         # Get the avatars current quests.
         avQuests = av.getQuests()
         questList = []
@@ -497,8 +485,7 @@ class QuestManagerAI:
 
         av.b_setQuests(questList)
 
-    @staticmethod
-    def toonDefeatedMint(av, mintId):
+    def toonDefeatedMint(self, av, mintId):
         # Get the avatars current quests.
         avQuests = av.getQuests()
         questList = []
@@ -517,27 +504,22 @@ class QuestManagerAI:
     def toonDefeatedStage(self, av, stageId):
         pass
 
-    @staticmethod
-    def toonKilledCogs(av, suitsKilled, zoneId, activeToonList):
-         # Get the avatar's current quests.
+    def toonKilledCogs(self, av, suitsKilled, zoneId):
+        # Get the avatar's current quests.
+        messenger.send('topToonsManager-event', [av.doId, TopToonsGlobals.CAT_COGS, len(suitsKilled)])
         avQuests = av.getQuests()
         questList = []
-
-        # Make a list of the activeToonDoIds
-        activeToonDoIds = [toon.doId for toon in activeToonList if not None]
 
         # Iterate through the avatar's current quests.
         for i in xrange(0, len(avQuests), 5):
             questDesc = avQuests[i : i + 5]
-            questClass = Quests.getQuest(questDesc[QuestIdIndex], av.doId)
+            questClass = Quests.getQuest(questDesc[QuestIdIndex])
 
             # Check if they are doing a cog quest
             if isinstance(questClass, Quests.CogQuest):
-
                 # Check if the cog counts...
                 for suit in suitsKilled:
-                    if questClass.doesCogCount(av.doId, suit, zoneId, activeToonDoIds):
-
+                    if questClass.doesCogCount(av.doId, suit, zoneId):
                         # Looks like the cog counts!
                         if questClass.getCompletionStatus(av, questDesc) != Quests.COMPLETE:
                             questDesc[QuestProgressIndex] += 1
@@ -547,7 +529,6 @@ class QuestManagerAI:
 
         # Update the avatar's quests
         av.b_setQuests(questList)
-
 
 @magicWord(category=CATEGORY_STAFF, types=[str, int, int])
 def quests(command, arg0=0, arg1=0):

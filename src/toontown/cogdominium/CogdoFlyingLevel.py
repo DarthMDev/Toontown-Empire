@@ -1,5 +1,5 @@
-from panda3d.core import NodePath, Plane, Vec3, Point3
-from panda3d.core import CollisionPlane, CollisionNode
+from pandac.PandaModules import NodePath, Plane, Vec3, Point3
+from pandac.PandaModules import CollisionPlane, CollisionNode
 from direct.showbase.RandomNumGen import RandomNumGen
 from direct.showbase.DirectObject import DirectObject
 from direct.showbase.PythonUtil import bound as clamp
@@ -168,7 +168,7 @@ class CogdoFlyingLevel(DirectObject):
                     self.endPlatform.onstage()
 
         self._currentQuadNum = quadNum
-        for i in xrange(0, max(self._currentQuadNum - self.quadVisibiltyBehind, 0)) + xrange(min(self._currentQuadNum + self.quadVisibiltyAhead + 1, self._numQuads), self._numQuads):
+        for i in range(0, max(self._currentQuadNum - self.quadVisibiltyBehind, 0)) + range(min(self._currentQuadNum + self.quadVisibiltyAhead + 1, self._numQuads), self._numQuads):
             self.quadrants[i].offstage()
             if i == 0:
                 self.startPlatform.offstage()
@@ -237,7 +237,7 @@ class CogdoFlyingLevelFactory:
             self.loadAndBuildLevel(safezoneId)
         return self._level
 
-    def createLevelFog(self, safezoneId = 2000):
+    def createLevelFog(self):
         if self._level is None:
-            self.loadAndBuildLevel(safezoneId)
+            self.loadAndBuildLevel()
         return CogdoFlyingLevelFog(self._level)

@@ -11,22 +11,13 @@ from direct.directnotify import DirectNotifyGlobal
 class DistributedElevatorAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedElevatorAI')
 
-    def __init__(self, air, bldg, numSeats = 4, antiShuffle = 0, minLaff = 0):
+    def __init__(self, air, bldg, numSeats = 4):
         DistributedObjectAI.DistributedObjectAI.__init__(self, air)
         self.type = ELEVATOR_NORMAL
         self.countdownTime = ElevatorData[self.type]['countdown']
         self.bldg = bldg
         self.bldgDoId = bldg.getDoId()
         self.seats = []
-        self.setAntiShuffle(antiShuffle)
-        self.setMinLaff(minLaff)
-        if self.antiShuffle:
-            if not hasattr(simbase.air, 'elevatorTripId'):
-                simbase.air.elevatorTripId = 1
-            self.elevatorTripId = simbase.air.elevatorTripId
-            simbase.air.elevatorTripId += 1
-        else:
-            self.elevatorTripId = 0
         for seat in xrange(numSeats):
             self.seats.append(None)
 
@@ -124,7 +115,6 @@ class DistributedElevatorAI(DistributedObjectAI.DistributedObjectAI):
 
     def clearEmptyNow(self, seatIndex):
         self.sendUpdate('emptySlot' + str(seatIndex), [0,
-         0,
          globalClockDelta.getRealNetworkTime(),
          0])
 
@@ -145,11 +135,9 @@ class DistributedElevatorAI(DistributedObjectAI.DistributedObjectAI):
         return self.fsm.getCurrentState().getName()
 
     def avIsOKToBoard(self, av):
-        return av.hp > self.minLaff and self.accepting
+        return self.accepting
 
     def checkBoard(self, av):
-        if av.hp < self.minLaff:
-            return REJECT_MINLAFF
         return 0
 
     def requestBoard(self, *args):
@@ -240,7 +228,6 @@ class DistributedElevatorAI(DistributedObjectAI.DistributedObjectAI):
     def exitWaitCountdown(self):
         self.accepting = 0
         taskMgr.remove(self.uniqueName('countdown-timer'))
-        self.newTrip()
 
     def enterAllAboard(self):
         self.accepting = 0
@@ -269,29 +256,3 @@ class DistributedElevatorAI(DistributedObjectAI.DistributedObjectAI):
 
     def exitWaitEmpty(self):
         self.accepting = 0
-
-    def setElevatorTripId(self, id):
-        self.elevatorTripId = id
-
-    def getElevatorTripId(self):
-        return self.elevatorTripId
-
-    def newTrip(self):
-        if self.antiShuffle:
-            self.elevatorTripId = simbase.air.elevatorTripId
-            if simbase.air.elevatorTripId > 2100000000:
-                simbase.air.elevatorTripId = 1
-            simbase.air.elevatorTripId += 1
-            self.sendUpdate('setElevatorTripId', [self.elevatorTripId])
-
-    def setAntiShuffle(self, antiShuffle):
-        self.antiShuffle = antiShuffle
-
-    def getAntiShuffle(self):
-        return self.antiShuffle
-
-    def setMinLaff(self, minLaff):
-        self.minLaff = minLaff
-
-    def getMinLaff(self):
-        return self.minLaff

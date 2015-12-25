@@ -1,7 +1,5 @@
-from panda3d.core import CollisionSphere
-from panda3d.core import CollisionNode
-from direct.interval.IntervalGlobal import Sequence
-from direct.interval.IntervalGlobal import Func
+from panda3d.core import *
+from direct.interval.IntervalGlobal import *
 from otp.level import BasicEntities
 from toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
@@ -13,11 +11,6 @@ class BattleBlocker(BasicEntities.DistributedNodePathEntity):
         BasicEntities.DistributedNodePathEntity.__init__(self, cr)
         self.suitIds = []
         self.battleId = None
-        self.in_battle = False
-        self.cSphere = CollisionSphere(0, 0, 0, self.radius)
-        self.cSphereNode = CollisionNode('battleBlocker-{0}-{1}'.format(self.level.getLevelId(), self.entId))
-        self.cSphereNodePath = self.attachNewNode(self.cSphereNode)
-        self.enterEvent = 'enter' + self.cSphereNode.getName()
         return
 
     def setActive(self, active):
@@ -42,13 +35,16 @@ class BattleBlocker(BasicEntities.DistributedNodePathEntity):
         self.battleId = battleId
 
     def setBattleFinished(self):
-        self.in_battle = False
         self.ignoreAll()
 
     def initCollisionGeom(self):
+        self.cSphere = CollisionSphere(0, 0, 0, self.radius)
+        self.cSphereNode = CollisionNode('battleBlocker-%s-%s' % (self.level.getLevelId(), self.entId))
         self.cSphereNode.addSolid(self.cSphere)
+        self.cSphereNodePath = self.attachNewNode(self.cSphereNode)
         self.cSphereNode.setCollideMask(ToontownGlobals.WallBitmask)
         self.cSphere.setTangible(0)
+        self.enterEvent = 'enter' + self.cSphereNode.getName()
         self.accept(self.enterEvent, self.__handleToonEnter)
 
     def unloadCollisionGeom(self):
@@ -57,38 +53,33 @@ class BattleBlocker(BasicEntities.DistributedNodePathEntity):
             del self.cSphere
             del self.cSphereNode
             self.cSphereNodePath.removeNode()
-            self.cSphereNodePath.cleanup()
             del self.cSphereNodePath
 
-    def __handleToonEnter(self, *args):
-        self.notify.debug('__handleToonEnter, {0}'.format(self.entId))
-        self.in_battle = True
-        self.startBattle(self.in_battle)
+    def __handleToonEnter(self, collEntry):
+        self.notify.debug('__handleToonEnter, %s' % self.entId)
+        self.startBattle()
 
-    def startBattle(self, in_battle = False):
+    def startBattle(self):
         if not self.active:
             return
         callback = None
-        self.in_battle = in_battle
-        if self.battleId != None and self.battleId in base.cr.doId2do and not self.in_battle:
+        if self.battleId != None and self.battleId in base.cr.doId2do:
             battle = base.cr.doId2do.get(self.battleId)
-            self.in_battle = True
             if battle:
-                self.notify.debug('act like we collided with battle {0:d}'.format(self.battleId))
+                self.notify.debug('act like we collided with battle %d' % self.battleId)
                 callback = battle.handleBattleBlockerCollision
-        elif self.suitIds > 0:
+        elif len(self.suitIds) > 0:
             for suitId in self.suitIds:
                 suit = base.cr.doId2do.get(suitId)
                 if suit:
-                    self.notify.debug('act like we collided with Suit {0:d} ( in state {1} )'.format(suitId, suit.fsm.getCurrentState().getName()))
+                    self.notify.debug('act like we collided with Suit %d ( in state %s )' % (suitId, suit.fsm.getCurrentState().getName()))
                     callback = suit.handleBattleBlockerCollision
                     break
 
         self.showReaction(callback)
         return
 
-    @staticmethod
-    def showReaction(callback = None):
+    def showReaction(self, callback = None):
         if not base.localAvatar.wantBattles:
             return
         track = Sequence()

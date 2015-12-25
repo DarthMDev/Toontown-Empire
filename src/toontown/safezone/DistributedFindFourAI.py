@@ -148,6 +148,7 @@ class DistributedFindFourAI(DistributedNodeAI):
 
         if self.playersSitting > 2 and self.fsm.getCurrentState().getName() == 'waitingToBegin':
             pass
+        1
         self.timerEnd = 0
         if self.timerEnd != 0:
             self.sendUpdate('setTimer', [
@@ -244,6 +245,7 @@ class DistributedFindFourAI(DistributedNodeAI):
                 self.playersTurn = self.playersGamePos.index(x)
                 self.d_sendTurn(self.playersTurn + 1)
                 break
+                continue
 
         self.setTurnCountdownTime()
         self.sendUpdate('setTurnTimer', [
