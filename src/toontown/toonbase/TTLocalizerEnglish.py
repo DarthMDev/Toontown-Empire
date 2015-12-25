@@ -8582,6 +8582,8 @@ InteractivePropTrackBonusTerms = {0: 'Super Toon-Up!',
  4: 'Super Throw!',
  5: 'Super Squirt!',
  6: ''}
+
+# Xikyl NPC
 GloveInvalidColorMessage = "That's an unpainted color."
 GloveSameColorMessage = "You already have those colors!"
 GloveNoMoneyMessage = "You don't have enough jellybeans!"
@@ -8593,6 +8595,8 @@ GloveGuiNotice = 'Costs %s jellybeans.'
 GloveGuiBuy = 'Buy'
 GloveGuiSameColor = 'You already have these!'
 GloveGuiCancel = 'Cancel'
+GloveByeMessage = 'Come back again if you change your mind!'
+
 LanguageButtonText = 'Language'
 LanguageSelectorTitle = 'Choose your language!'
 LanguageSelectorCurrent = 'Current language: %s'
