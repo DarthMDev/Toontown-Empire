@@ -138,8 +138,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         DistributedAvatar.DistributedAvatar.delete(self)
         return
 
-    @staticmethod
-    def shadowReach(state):
+    def shadowReach(self, state):
         if base.localAvatar.shadowPlacer:
             base.localAvatar.shadowPlacer.lifter.setReach(base.localAvatar.getAirborneHeight() + 4.0)
         return Task.cont
@@ -1113,8 +1112,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
     def d_setParent(self, parentToken):
         DistributedSmoothNode.DistributedSmoothNode.d_setParent(self, parentToken)
 
-    @staticmethod
-    def canChat():
+    def canChat(self):
         return 0
 
 @magicWord(category=CATEGORY_STAFF)

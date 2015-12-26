@@ -2494,7 +2494,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
 
     def decrementPopulation(self):
         if self.isPlayerControlled():
-            DistributedPlayerAI.DistributedPlayerAI.decrementPopulation()
+            DistributedPlayerAI.DistributedPlayerAI.decrementPopulation(self)
 
     def reqSCResistance(self, msgIndex, nearbyPlayers):
         self.d_setSCResistance(msgIndex, nearbyPlayers)

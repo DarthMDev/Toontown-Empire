@@ -1,22 +1,17 @@
-
-
 class AvatarHandle(object):
     dclassName = 'AvatarHandle'
 
-    @staticmethod
-    def getName():
+    def getName(self):
         if __dev__:
             pass
         return ''
 
-    @staticmethod
-    def isOnline():
+    def isOnline(self):
         if __dev__:
             pass
         return False
 
-    @staticmethod
-    def isUnderstandable():
+    def isUnderstandable(self):
         if __dev__:
             pass
         return True

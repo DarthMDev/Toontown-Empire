@@ -85,16 +85,13 @@ class Avatar(Actor, ShadowCaster):
             ShadowCaster.delete(self)
             Actor.delete(self)
 
-    @staticmethod
-    def isLocal():
+    def isLocal(self):
         return 0
 
-    @staticmethod
-    def isPet():
+    def isPet(self):
         return False
 
-    @staticmethod
-    def isProxy():
+    def isProxy(self):
         return False
 
     def setPlayerType(self, playerType):
@@ -166,8 +163,7 @@ class Avatar(Actor, ShadowCaster):
             if self.collNodePath:
                 self.collNodePath.forceRecomputeBounds()
 
-    @staticmethod
-    def getRadius():
+    def getRadius(self):
         return OTPGlobals.AvatarDefaultRadius
 
     def getName(self):
@@ -215,8 +211,7 @@ class Avatar(Actor, ShadowCaster):
     def setStyle(self, style):
         self.style = style
 
-    @staticmethod
-    def getDialogueArray():
+    def getDialogueArray(self):
         return None
 
     def playCurrentDialogue(self, dialogue, chatFlags, interrupt = 1):

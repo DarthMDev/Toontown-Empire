@@ -9,8 +9,7 @@ class AvatarDetail(object):
         self.callWhenDone = callWhenDone
         self.enterQuery()
 
-    @staticmethod
-    def isReady():
+    def isReady(self):
         return true
 
     def getId(self):
@@ -30,8 +29,7 @@ class AvatarDetail(object):
             base.cr.getAvatarDetails(self.avatar, self.__handleResponse, dclass)
         return
 
-    @staticmethod
-    def exitQuery():
+    def exitQuery(self):
         return true
 
     def createHolder(self):
