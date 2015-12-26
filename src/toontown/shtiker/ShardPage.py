@@ -2,13 +2,14 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
 from direct.task.Task import Task
 from panda3d.core import *
-
 from toontown.distributed import ToontownDistrictStats
 from toontown.hood import ZoneUtil
 from toontown.shtiker import ShtikerPage
 from toontown.coghq import CogDisguiseGlobals
-from toontown.suit import SuitDNA, Suit
-from toontown.toonbase import TTLocalizer, ToontownGlobals
+from toontown.suit import SuitDNA
+from toontown.suit import Suit
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
 from toontown.toontowngui import TTDialog
 
 
@@ -81,10 +82,12 @@ class ShardPage(ShtikerPage.ShtikerPage):
         self.showPop = config.GetBool('show-population', 0)
         self.showTotalPop = config.GetBool('show-total-population', 0)
         self.noTeleport = config.GetBool('shard-page-disable', 0)
-        self.shardGroups = None
-        self.currentGroupJoined = None
+        self.shardGroups = []
+        self.shardText = []
+        self.groupDialog = None
 
     def load(self):
+        matchGui = loader.loadModel('phase_3.5/models/gui/matching_game_gui')
         main_text_scale = 0.06
         title_text_scale = 0.12
         self.title = DirectLabel(parent=self, relief=None, text=TTLocalizer.ShardPageTitle, text_scale=title_text_scale, textMayChange=0, pos=(0, 0, 0.6))
@@ -94,6 +97,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
         totalPop_ycoord = shardPop_ycoord - 0.44
         self.districtInfo = NodePath('Selected-Shard-Info')
         self.districtInfo.reparentTo(self)
+        self.preferredButton = DirectButton(parent=self, relief=None, image=matchGui.find('**/minnieCircle'), pos=(0.1, 0, -0.575), scale=0.35, text=TTLocalizer.ShardPagePreferred, text_scale=0.11, text_pos=(0, -0.2), command=self.setPreferredShard)
         self.totalPopulationText = DirectLabel(parent=self.districtInfo, relief=None, text=TTLocalizer.ShardPagePopulationTotal % 1, text_scale=main_text_scale, text_wordwrap=8, textMayChange=1, text_align=TextNode.ACenter, pos=(0.4247, 0, totalPop_ycoord))
         if self.showTotalPop:
             self.totalPopulationText.show()
@@ -110,13 +114,14 @@ class ShardPage(ShtikerPage.ShtikerPage):
         self.buttonXstart = self.itemFrameXorigin + 0.293
         self.regenerateScrollList()
         scrollTitle = DirectFrame(parent=self.scrollList, text=TTLocalizer.ShardPageScrollTitle, text_scale=main_text_scale, text_align=TextNode.ACenter, relief=None, pos=(self.buttonXstart, 0, self.itemFrameZorigin + 0.127))
+        matchGui.removeNode()
 
     def firstLoadShard(self, buttonTuple):
         curShardTuples = base.cr.listActiveShards()
         curShardTuples.sort(compareShardTuples)
         actualShardId = base.localAvatar.defaultShard
         for i in xrange(len(curShardTuples)):
-            shardId, name, pop, invasionStatus = curShardTuples[i]
+            shardId, name, pop, invasionStatus, groupAvCount = curShardTuples[i]
             if shardId == actualShardId:
                 self.currentBTP = buttonTuple[0]
                 self.currentBTL = buttonTuple[1]
@@ -125,7 +130,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
                 self.currentO = [pop, name, shardId]
                 self.currentBTL['state'] = DGG.DISABLED
                 self.currentBTR['state'] = DGG.DISABLED
-                self.reloadRightBrain(pop, name, shardId, buttonTuple)
+                self.reloadRightBrain(pop, name, groupAvCount, shardId, buttonTuple)
 
     def unload(self):
         self.gui.removeNode()
@@ -164,7 +169,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
         taskMgr.doMethodLater(self.ShardInfoUpdateInterval, self.askForShardInfoUpdate, 'ShardPageUpdateTask-doLater')
         return Task.done
 
-    def makeShardButton(self, shardId, shardName, shardPop):
+    def makeShardButton(self, shardId, groupAvCount, shardName, shardPop):
         shardButtonParent = DirectFrame()
         shardButtonL = DirectButton(parent=shardButtonParent, relief=None, text=shardName, text_scale=0.06, text_align=TextNode.ALeft, text_fg=Vec4(0, 0, 0, 1), text3_fg=self.textDisabledColor, text1_bg=self.textDownColor, text2_bg=self.textRolloverColor, textMayChange=0, command=self.reloadRightBrain)
         popText = str(shardPop)
@@ -190,59 +195,62 @@ class ShardPage(ShtikerPage.ShtikerPage):
         invasionMarker.reparentTo(shardButtonParent)
 
         buttonTuple = (shardButtonParent, shardButtonR, shardButtonL, invasionMarker)
-        shardButtonL['extraArgs'] = extraArgs=[shardPop, shardName, shardId, buttonTuple]
-        shardButtonR['extraArgs'] = extraArgs=[shardPop, shardName, shardId, buttonTuple]
+        shardButtonL['extraArgs'] = extraArgs=[shardPop, shardName, groupAvCount, shardId, buttonTuple]
+        shardButtonR['extraArgs'] = extraArgs=[shardPop, shardName, groupAvCount, shardId, buttonTuple]
 
         return buttonTuple
 
-    def makeGroupButton(self, groupId, groupType):
-        groupPop = len(base.cr.groupManager.getGroupPlayers(groupId))
+    def makeGroupButton(self, shardId, group, population):
         groupButtonParent = DirectFrame()
-        groupButtonL = DirectButton(parent=groupButtonParent, relief=None, text=groupType, text_pos=(0.0, -0.0225), text_scale=0.06, text_align=TextNode.ALeft, text_fg=Vec4(0, 0, 0, 1), text3_fg=self.textDisabledColor, text1_bg=self.textDownColor, text2_bg=self.textRolloverColor, textMayChange=0, command=self.joinGroup)
-        popText = str(groupPop)
-        if popText is None:
-            return
-        model = loader.loadModel('phase_3.5/models/gui/matching_game_gui')
-        button = model.find('**/minnieCircle')
+        groupButtonL = DirectButton(parent=groupButtonParent, relief=None, text=TTLocalizer.GlobalStreetNames[group][-1], text_pos=(0.0, -0.0225), text_scale=0.048, text_align=TextNode.ALeft, text_fg=Vec4(0, 0, 0, 1), text3_fg=self.textDisabledColor, text1_bg=self.textDownColor, text2_bg=self.textRolloverColor, command=self.joinGroup, extraArgs=[group, shardId])
 
         groupButtonR = DirectButton(parent=groupButtonParent, relief=None,
-                                    image=button,
-                                    image_scale=(0.3, 1, 0.3),
-                                    image2_scale=(0.35, 1, 0.35),
-                                    image_color=Vec4(0, 0.8, 0, 1),
                                     pos=(0.58, 0, -0.0125),
-                                    text=popText,
+                                    text=str(population),
                                     text_scale=0.055,
                                     text_align=TextNode.ACenter,
-                                    text_pos=(-0.00575, -0.0125), text_fg=Vec4(0, 0, 0, 1), text3_fg=Vec4(0, 0, 0, 1), text1_bg=self.textRolloverColor, text2_bg=self.textRolloverColor, textMayChange=1)
+                                    command=self.joinGroup,
+                                    extraArgs=[group, shardId],
+                                    text_pos=(-0.00575, -0.0125), text_fg=Vec4(0, 0, 0, 1), text3_fg=Vec4(0, 0, 0, 1), text1_bg=self.textRolloverColor, text2_bg=self.textRolloverColor)
 
-        leaveButton = DirectButton(parent=groupButtonParent, relief=None,
-                                   image=button,
-                                   image_scale=(0.3, 1, 0.3),
-                                   image2_scale=(0.35, 1, 0.35),
-                                   image_color=Vec4(0, 0.8, 0, 1),
-                                   pos=(0.50, 0, -0.0125),
-                                   text='Leave',
-                                   text_scale=0.055,
-                                   text_align=TextNode.ACenter,
-                                   text_pos=(-0.00575, -0.0125),
-                                   text_fg=Vec4(0, 0, 0, 0),
-                                   text2_fg=Vec4(0, 0, 0, 1),
-                                   command=self.leaveGroup)
+        return (groupButtonParent, groupButtonL, groupButtonR)
+    
+    def joinGroup(self, group, shardId):
+        canonicalHoodId = ZoneUtil.getCanonicalHoodId(group)
+        shardName = base.cr.activeDistrictMap[shardId].name
+        hoodName = TTLocalizer.GlobalStreetNames[canonicalHoodId]
+        teleportAccess = base.localAvatar.hasTeleportAccess(canonicalHoodId)
 
-        leaveButton.hide()
-        model.removeNode()
-        button.removeNode()
+        if teleportAccess:
+            message = TTLocalizer.GroupAskAccess
+        elif base.localAvatar.defaultShard == shardId:
+            self.acceptOnce('groupDialogDone', self.cleanupGroupDialog)
+            self.groupDialog = TTDialog.TTGlobalDialog(style=TTDialog.Acknowledge, text=TTLocalizer.GroupAskNoAccessSame % (hoodName[0], hoodName[-1]), doneEvent='groupDialogDone')
+            self.groupDialog.show()
+            return
+        else:
+            message = TTLocalizer.GroupAskNoAccess
+        
+        self.acceptOnce('groupDialogDone', self.__handleGroupDialog, extraArgs=[canonicalHoodId if teleportAccess else base.localAvatar.lastHood, shardId])
+        self.groupDialog = TTDialog.TTGlobalDialog(style=TTDialog.TwoChoice, text=message % (hoodName[0], hoodName[-1], shardName), doneEvent='groupDialogDone')
+        self.groupDialog.show()
+    
+    def cleanupGroupDialog(self):
+        self.ignore('groupDialogDone')
+        self.groupDialog.cleanup()
+        del self.groupDialog
+    
+    def __handleGroupDialog(self, canonicalHoodId, shardId):
+        response = self.groupDialog.doneStatus
+        self.cleanupGroupDialog()
 
-        buttonTuple = (groupButtonParent, groupButtonR, groupButtonL, leaveButton)
-        groupButtonL['extraArgs'] = [groupId, buttonTuple]
-        leaveButton['extraArgs'] = [groupId, buttonTuple]
-        return buttonTuple
+        if response == 'ok':
+            self.requestTeleport(canonicalHoodId, shardId)
 
     def removeRightBrain(self):
         self.districtInfo.find('**/*district-info').removeNode()
 
-    def reloadRightBrain(self, shardPop, shardName, shardId, buttonTuple):
+    def reloadRightBrain(self, shardPop, shardName, groupAvCount, shardId, buttonTuple):
         self.currentRightBrain = (shardPop, shardName, shardId, buttonTuple)
         if self.districtInfo.find('**/*district-info'):
             self.removeRightBrain()
@@ -253,9 +261,9 @@ class ShardPage(ShtikerPage.ShtikerPage):
         popText = self.getPopText(shardPop)
         districtInfoNode = self.districtInfo.attachNewNode('district-info')
         self.districtStatusLabel = DirectLabel(parent=districtInfoNode, relief=None, pos=(0.4247, 0, 0.45), text=popText, text_scale=0.09, text_fg=Vec4(0, 0, 0, 1), textMayChange=1)
-        pText = '%s Population: %s' % (shardName, str(shardPop))
+        pText = TTLocalizer.ShardPageShardTitle % (shardName, str(shardPop))
         self.populationStatusLabel = DirectLabel(parent=districtInfoNode, relief=None, pos=(0.4247, 0, 0.38), text=pText, text_scale=0.04, text_fg=Vec4(0, 0, 0, 1), textMayChange=1)
-        tText = 'Teleport to\n%s' % shardName
+        tText = TTLocalizer.ShardPageTeleport % shardName
         tImage = loader.loadModel('phase_4/models/gui/purchase_gui')
         tImage.setSz(1.35)
         self.shardTeleportButton = DirectButton(parent=districtInfoNode, relief=None, pos=(0.4247, 0, 0.25), image=(tImage.find('**/PurchScrn_BTN_UP'), tImage.find('**/PurchScrn_BTN_DN'), tImage.find('**/PurchScrn_BTN_RLVR')), text=tText, text_scale=0.065, text_pos=(0.0, 0.015), text_fg=Vec4(0, 0, 0, 1), textMayChange=1, command=self.choseShard, extraArgs=[shardId])
@@ -267,40 +275,36 @@ class ShardPage(ShtikerPage.ShtikerPage):
         self.currentO = [shardPop, shardName, shardId]
         self.currentBTL['state'] = DGG.DISABLED
         self.currentBTR['state'] = DGG.DISABLED
+        self.preferredButton.setColor((0, 1, 0, 1) if settings.get('preferredShard') == shardName else (1, 0, 0, 1))
 
         if shardId == base.localAvatar.defaultShard:
             self.shardTeleportButton['state'] = DGG.DISABLED
 
-        if self.shardGroups is not None:
-            for button in self.shardGroups:
-                button.detachNode()
-
+        for button in self.shardGroups + self.shardText:
+            button.removeNode()
+        
         self.shardGroups = []
+        self.shardText = []
 
-        for gid, gtype in base.cr.groupManager.id2type.items():
-            btuple = self.makeGroupButton(gid, gtype)
-            if base.cr.groupManager.isInGroup(base.localAvatar.doId, gid):
+        for i, group in enumerate(ToontownGlobals.GROUP_ZONES):
+            btuple = self.makeGroupButton(shardId, group, groupAvCount[i])
+            if ZoneUtil.getCanonicalHoodId(base.localAvatar.zoneId) == ZoneUtil.getCanonicalHoodId(group):
                 btuple[1]['state'] = DGG.DISABLED
                 btuple[2]['state'] = DGG.DISABLED
-                btuple[3].show()
             self.shardGroups.append(btuple[0])
+            self.shardText.append(btuple[2])
 
+        buttonImage = (self.gui.find('**/FndsLst_ScrollUp'), self.gui.find('**/FndsLst_ScrollDN'), self.gui.find('**/FndsLst_ScrollUp_Rllvr'), self.gui.find('**/FndsLst_ScrollUp'))
         self.districtGroups = DirectScrolledList(parent=districtInfoNode, relief=None,
                                                  pos=(0.38, 0, -0.34),
-                                                 incButton_image=(self.gui.find('**/FndsLst_ScrollUp'),
-                                                                  self.gui.find('**/FndsLst_ScrollDN'),
-                                                                  self.gui.find('**/FndsLst_ScrollUp_Rllvr'),
-                                                                  self.gui.find('**/FndsLst_ScrollUp')),
+                                                 incButton_image=buttonImage,
                                                  incButton_relief=None,
                                                  incButton_scale=(self.arrowButtonScale,
                                                                   self.arrowButtonScale,
                                                                   -self.arrowButtonScale),
                                                  incButton_pos=(self.buttonXstart + 0.005, 0, -0.125),
                                                  incButton_image3_color=Vec4(1, 1, 1, 0.2),
-                                                 decButton_image=(self.gui.find('**/FndsLst_ScrollUp'),
-                                                                  self.gui.find('**/FndsLst_ScrollDN'),
-                                                                  self.gui.find('**/FndsLst_ScrollUp_Rllvr'),
-                                                                  self.gui.find('**/FndsLst_ScrollUp')),
+                                                 decButton_image=buttonImage,
                                                  decButton_relief=None,
                                                  decButton_scale=(self.arrowButtonScale,
                                                                   self.arrowButtonScale,
@@ -316,102 +320,9 @@ class ShardPage(ShtikerPage.ShtikerPage):
                                                                       (self.listZorigin + self.listFrameSizeZ)/2.1),
                                                  itemFrame_frameColor=(0.85, 0.95, 1, 1),
                                                  itemFrame_borderWidth=(0.01, 0.01),
-                                                 numItemsVisible=15,
+                                                 numItemsVisible=7,
                                                  forceHeight=0.065,
                                                  items=self.shardGroups)
-
-    def joinGroup(self, groupId, buttonTuple):
-        self.acceptOnce('confJoin', self.confirmJoinGroup, extraArgs=[groupId, buttonTuple])
-        self.joinDialog = TTDialog.TTGlobalDialog(message='Would you like to join this group?', doneEvent='confJoin', style=4)
-
-    def rejectGroup(self, reason, suitType=0):
-        self.acceptOnce('remRjD', self.doneReject)
-        if reason == 1:
-            self.rejectDialog = TTDialog.TTGlobalDialog(message='You need more suit parts!', doneEvent='remRjD', style=1)
-        elif reason == 2:
-            if suitType == 0:
-                meritType = 'Stock Options'
-            elif suitType == 1:
-                meritType = 'Merits'
-            elif suitType == 2:
-                meritType = 'Cogbucks'
-            elif suitType == 3:
-                meritType = 'Notices'
-            self.rejectDialog = TTDialog.TTGlobalDialog(message='You need more %s!'%meritType, doneEvent='remRjD', style=1)
-        elif reason == 3:
-            self.rejectDialog = TTDialog.TTGlobalDialog(message='That group is full, sorry!', doneEvent='remRjD', style=1)
-        elif reason == 4:
-            self.rejectDialog = TTDialog.TTGlobalDialog(message='You\'re already in a group!', doneEvent='remRjD', style=1)
-        elif reason == 5:
-            self.rejectDialog = TTDialog.TTGlobalDialog(message='You can\'t leave the district while you\'re in a group!', doneEvent='remRjD', style=1)
-
-    def doneReject(self):
-        self.rejectDialog.cleanup()
-        del self.rejectDialog
-
-    def confirmJoinGroup(self, groupId, buttonTuple):
-        doneStatus = self.joinDialog.doneStatus
-        self.joinDialog.cleanup()
-        del self.joinDialog
-        if doneStatus is not 'ok':
-            return
-        for gid in base.cr.groupManager.id2type.keys():
-            if base.cr.groupManager.isInGroup(base.localAvatar.doId, gid):
-                self.rejectGroup(4)
-                return
-        #if len(base.cr.groupManager.getGroupPlayers(groupId)) >= 8:
-        #    self.rejectGroup(3)
-        #    return
-        suitIdx = -1
-        gids = {10000:0, 11000:1, 12000:2, 13000:3}
-        suitIdx = gids.get(groupId)
-        if suitIdx is not None:
-            merits = base.localAvatar.cogMerits[suitIdx]
-            if CogDisguiseGlobals.getTotalMerits(base.localAvatar, suitIdx) > merits:
-                self.rejectGroup(2, suitIdx)
-                return
-            parts = base.localAvatar.getCogParts()
-            if not CogDisguiseGlobals.isSuitComplete(parts, suitIdx):
-                self.rejectGroup(1)
-                return
-        base.cr.groupManager.d_addPlayerToGroup(groupId, base.localAvatar.doId)
-        self.currentGroupJoined = groupId
-        try:
-            place = base.cr.playGame.getPlace()
-        except:
-            try:
-                place = base.cr.playGame.hood.loader.place
-            except:
-                place = base.cr.playGame.hood.place
-        place.requestTeleport(groupId, groupId, base.localAvatar.defaultShard, -1)
-
-    def leaveGroup(self, groupId, buttonTuple):
-        self.acceptOnce('confLeave', self.confirmLeaveGroup, extraArgs=[groupId, buttonTuple])
-        self.joinDialog = TTDialog.TTGlobalDialog(message='Are you sure you want to leave this group?', doneEvent='confLeave', style=4)
-
-    def confirmLeaveGroup(self, groupId, buttonTuple):
-        doneStatus = self.joinDialog.doneStatus
-        self.joinDialog.cleanup()
-        del self.joinDialog
-        if doneStatus is not 'ok':
-            return
-        if not base.cr.groupManager.isInGroup(base.localAvatar.doId, groupId):
-            return
-        base.cr.groupManager.d_removePlayerFromGroup(groupId, base.localAvatar.doId)
-        self.currentGroupJoined = None
-        try:
-            place = base.cr.playGame.getPlace()
-        except:
-            try:
-                place = base.cr.playGame.hood.loader.place
-            except:
-                place = base.cr.playGame.hood.place
-        hoodId = -1
-        gids = {10000:1000, 11000:5000, 12000:9000, 13000:3000}
-        hoodId = gids.get(groupId)
-        if hoodId is None:
-            return
-        place.requestTeleport(hoodId, hoodId, base.localAvatar.defaultShard, -1)
 
     def getPopColor(self, pop):
         if pop <= self.lowPop:
@@ -440,7 +351,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
         elif self.showPop:
             handler = self.choseShard
         else:
-            if localAvatar.adminAccess >= 200:
+            if localAvatar.isAdmin():
                 handler = self.choseShard
             else:
                 handler = self.shardChoiceReject
@@ -482,7 +393,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
 
         for i in xrange(len(curShardTuples)):
 
-            shardId, name, pop, invasionStatus = curShardTuples[i]
+            shardId, name, pop, invasionStatus, groupAvCount = curShardTuples[i]
 
             if shardId == actualShardId:
                 actualShardName = name
@@ -492,16 +403,19 @@ class ShardPage(ShtikerPage.ShtikerPage):
             buttonTuple = self.shardButtonMap.get(shardId)
 
             if buttonTuple == None:
-                buttonTuple = self.makeShardButton(shardId, name, pop)
+                buttonTuple = self.makeShardButton(shardId, groupAvCount, name, pop)
                 self.shardButtonMap[shardId] = buttonTuple
                 anyChanges = 1
             else:
                 buttonTuple[1]['image_color'] = self.getPopColor(pop)
                 buttonTuple[1]['text'] = str(pop)
                 buttonTuple[1]['command'] = self.reloadRightBrain
-                buttonTuple[1]['extraArgs'] = [pop, name, shardId, buttonTuple]
+                buttonTuple[1]['extraArgs'] = [pop, name, groupAvCount, shardId, buttonTuple]
                 buttonTuple[2]['command'] = self.reloadRightBrain
-                buttonTuple[2]['extraArgs'] = [pop, name, shardId, buttonTuple]
+                buttonTuple[2]['extraArgs'] = [pop, name, groupAvCount, shardId, buttonTuple]
+            
+            for i, button in enumerate(self.shardText):
+                button['text'] = str(groupAvCount[i])
 
             self.shardButtons.append(buttonTuple[0])
 
@@ -562,21 +476,26 @@ class ShardPage(ShtikerPage.ShtikerPage):
         del self.confirm
 
     def choseShard(self, shardId):
-        zoneId = self.getCurrentZoneId()
-        canonicalHoodId = ZoneUtil.getCanonicalHoodId(base.localAvatar.lastHood)
-        currentShardId = base.localAvatar.defaultShard
+        if not base.localAvatar.defaultShard == shardId:
+            self.requestTeleport(base.localAvatar.lastHood, shardId)
+        
+    def requestTeleport(self, hood, shardId):
+        canonicalHoodId = ZoneUtil.getCanonicalHoodId(hood)
 
-        if self.currentGroupJoined:
-            self.rejectGroup(5)
-            return
-        if shardId == currentShardId:
-            return
-        else:
+        try:
+            place = base.cr.playGame.getPlace()
+        except:
             try:
-                place = base.cr.playGame.getPlace()
+                place = base.cr.playGame.hood.loader.place
             except:
-                try:
-                    place = base.cr.playGame.hood.loader.place
-                except:
-                    place = base.cr.playGame.hood.place
-            place.requestTeleport(canonicalHoodId, canonicalHoodId, shardId, -1)
+                place = base.cr.playGame.hood.place
+
+        place.requestTeleport(canonicalHoodId, canonicalHoodId, shardId, -1)
+    
+    def setPreferredShard(self):
+        if settings.get('preferredShard', '') == self.currentO[1]:
+            self.preferredButton.setColor(1, 0, 0, 1)
+            del settings['preferredShard']
+        else:
+            self.preferredButton.setColor(0, 1, 0, 1)
+            settings['preferredShard'] = self.currentO[1]

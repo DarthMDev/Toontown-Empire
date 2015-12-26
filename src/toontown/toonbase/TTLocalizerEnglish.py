@@ -10166,3 +10166,9 @@ FriendSecretAlreadyFriendsName = 'You are already True Friends with %s!'
 FriendSecretEnteredSecretSelf = 'You just typed in your own True Friend Code!'
 FriendSecretTooFast = 'You are redeeming codes too fast! Please wait a few seconds.'
 FriendSecretNowFriends = 'You are now True Friends with %s!'
+
+# AI page dialog
+
+ShardPagePreferred = 'Preferred'
+ShardPageShardTitle = '%s Population: %s'
+ShardPageTeleport = 'Teleport to\n%s'
