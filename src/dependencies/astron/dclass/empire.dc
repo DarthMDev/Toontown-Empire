@@ -412,6 +412,7 @@ from toontown.parties import DistributedPartyJukeboxActivity/AI
 from toontown.parties import DistributedPartyJukebox40Activity/AI
 from toontown.parties import DistributedPartyValentineJukeboxActivity/AI
 from toontown.parties import DistributedPartyValentineJukebox40Activity/AI
+from toontown.friends import TTEFriendsManager/UD
 from toontown.safezone import DistributedGolfKart/AI
 from toontown.safezone import DistributedPicnicBasket/AI
 from toontown.distributed import DistributedTimer/AI
@@ -456,7 +457,6 @@ from toontown.cogdominium import DistCogdoCraneCog/AI
 from toontown.parties.GlobalPartyManager/AI/UD import GlobalPartyManager/AI/UD
 //from toontown.uberdog.GlobalLobbyManager/AI/UD import GlobalLobbyManager/AI/UD
 from toontown.uberdog.ARGManager import ARGManager
-from toontown.friends import TTEFriendsManager/UD
 
 struct gardenSpecial {
   uint8 index;
