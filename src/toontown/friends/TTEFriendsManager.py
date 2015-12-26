@@ -1,8 +1,14 @@
 from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
-from otp.otpbase import OTPLocalizer
+from otp.otpbase import OTPLocalizer, OTPGlobals
 from toontown.hood import ZoneUtil
+import time
 
 class TTEFriendsManager(DistributedObjectGlobal):
+    
+    def __init__(self, cr):
+        DistributedObjectGlobal.__init__(self, cr)
+        self.nextTeleportFail = 0
+    
     def d_removeFriend(self, friendId):
         self.sendUpdate('removeFriend', [friendId])
 
@@ -21,7 +27,7 @@ class TTEFriendsManager(DistributedObjectGlobal):
     def d_getAvatarDetails(self, avId):
         self.sendUpdate('getAvatarDetails', [avId])
 
-    def friendDetails(self, avId, inventory, trackAccess, trophies, hp, maxHp, defaultShard, lastHood, dnaString, experience, trackBonusLevel):
+    def friendDetails(self, avId, inventory, trackAccess, hp, maxHp, defaultShard, lastHood, dnaString, experience, trackBonusLevel, npcFriends):
         fields = [
             ['setExperience' , experience],
             ['setTrackAccess' , trackAccess],
@@ -32,6 +38,7 @@ class TTEFriendsManager(DistributedObjectGlobal):
             ['setDefaultShard' , defaultShard],
             ['setLastHood' , lastHood],
             ['setDNAString' , dnaString],
+            ['setNPCFriendsDict', npcFriends]
         ]
         base.cr.n_handleGetAvatarDetailsResp(avId, fields=fields)
 
@@ -65,11 +72,18 @@ class TTEFriendsManager(DistributedObjectGlobal):
         if not hasattr(base.localAvatar, 'getTeleportAvailable') or not hasattr(base.localAvatar, 'ghostMode'):
             self.sendUpdate('teleportResponse', [ fromId, 0, 0, 0, 0 ])
             return
+        if not base.localAvatar.acceptingTeleport:
+            self.sendUpdate('teleportResponse', [ fromId, 3, 0, 0, 0 ])
+            return
+        if base.localAvatar.isIgnored(fromId):
+            self.sendUpdate('teleportResponse', [ fromId, 2, 0, 0, 0 ])
+            return
 
         friend = base.cr.identifyFriend(fromId)
 
         if not base.localAvatar.getTeleportAvailable() or base.localAvatar.ghostMode:
-            if hasattr(friend, 'getName'):
+            if hasattr(friend, 'getName') and self.nextTeleportFail < time.time():
+                self.nextTeleportFail = time.time() + OTPGlobals.TeleportFailCooldown
                 base.localAvatar.setSystemMessage(fromId, OTPLocalizer.WhisperFailedVisit % friend.getName())
             self.sendUpdate('teleportResponse', [ fromId, 0, 0, 0, 0 ])
             return
