@@ -88,6 +88,8 @@ SignFont = None
 SignFontPath = None
 FancyFont = None
 FancyFontPath = None
+ChalkFont = None
+ChalkFontPath = None
 NametagFonts = {}
 NametagFontPaths = {}
 DialogClass = None
@@ -124,6 +126,21 @@ def getSignFont():
 def setSignFont(path):
     global SignFontPath
     SignFontPath = path
+
+def getChalkFont():
+    global ChalkFontPath
+    global ChalkFont
+    if ChalkFont == None:
+        if ChalkFontPath == None:
+            InterfaceFont = TextNode.getDefaultFont()
+            ChalkFont = TextNode.getDefaultFont()
+        else:
+            ChalkFont = loader.loadFont(ChalkFontPath, lineHeight=1.0)
+    return ChalkFont
+
+def setChalkFont(path):
+    global ChalkFontPath
+    ChalkFontPath = path
 
 def getFancyFont():
     global FancyFontPath
