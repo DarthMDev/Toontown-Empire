@@ -2480,13 +2480,11 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         name = self.name
         self.setDisplayName(name)
         if self._isGM:
-            self.setNametagStyle(12)
             self.setGMIcon(self._gmType)
             self.gmToonLockStyle = True
         else:
             self.gmToonLockStyle = False
             self.removeGMIcon()
-            self.setNametagStyle(0)
 
     def d_updateGMNameTag(self):
         self.refreshName()

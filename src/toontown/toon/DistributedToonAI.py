@@ -4086,18 +4086,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             self.b_setName(newName)
         return
 
-    def _handleGMName(self):
-        name = self.name
-        self.setDisplayName(name)
-        if self._isGM:
-            self.setNametagStyle(0)
-            self.setGMIcon(self._gmType)
-            self.gmToonLockStyle = True
-        else:
-            self.gmToonLockStyle = False
-            self.removeGMIcon()
-            self.setNametagStyle(0)
-
     def setGMIcon(self, gmType = None):
         if hasattr(self, 'gmIcon') and self.gmIcon:
             return
