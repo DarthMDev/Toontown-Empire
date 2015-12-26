@@ -6,7 +6,7 @@ from direct.interval.FunctionInterval import Func, Wait
 from direct.interval.SoundInterval import SoundInterval
 from direct.interval.LerpInterval import LerpScaleInterval, LerpFunc
 from direct.directnotify import DirectNotifyGlobal
-from panda3d.core import NodePath, Point3, VBase3
+from pandac.PandaModules import NodePath, Point3, VBase3
 from toontown.minigame.OrthoDrive import OrthoDrive
 from toontown.minigame.OrthoWalk import OrthoWalk
 from toontown.battle.BattleProps import globalPropPool
@@ -234,7 +234,7 @@ class PartyCogActivityLocalPlayer(PartyCogActivityPlayer):
     def _update(self):
         self.control.update()
 
-    def getLookat(self, whosLooking, refNode= None):
+    def getLookat(self, whosLooking, refNode = None):
         if refNode is None:
             refNode = render
         dist = 5.0

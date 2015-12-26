@@ -1,5 +1,5 @@
-from panda3d.core import Vec3, Point3, Point4, TextNode, NodePath
-from panda3d.core import CollisionHandlerEvent, CollisionNode, CollisionSphere
+from pandac.PandaModules import Vec3, Point3, Point4, TextNode, NodePath
+from pandac.PandaModules import CollisionHandlerEvent, CollisionNode, CollisionSphere
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.interval.IntervalGlobal import Sequence, Parallel
 from direct.interval.IntervalGlobal import LerpScaleInterval, LerpFunctionInterval, LerpColorScaleInterval, LerpPosInterval
@@ -332,7 +332,7 @@ class DistributedPartyCatchActivity(DistributedPartyActivity, DistributedPartyCa
     def getNumPlayers(self):
         return len(self.toonIds)
 
-    def defineConstants(self, forceNumPlayers= None):
+    def defineConstants(self, forceNumPlayers = None):
         DistributedPartyCatchActivity.notify.debug('defineConstants')
         self.ShowObjSpheres = 0
         self.ShowToonSpheres = 0

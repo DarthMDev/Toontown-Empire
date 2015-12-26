@@ -1,7 +1,7 @@
 import random
 import time
 import datetime
-from panda3d.core import Vec4, TextNode, CardMaker, NodePath
+from pandac.PandaModules import Vec4, TextNode, CardMaker, NodePath
 from direct.distributed import DistributedObject
 from direct.task.Task import Task
 from direct.interval.IntervalGlobal import *

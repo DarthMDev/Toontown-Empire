@@ -4,7 +4,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
 from panda3d.core import *
-from panda3d.core import NodePath
+from pandac.PandaModules import NodePath
 from toontown.toonbase.ToontownGlobals import *
 from toontown.safezone import SafeZoneLoader
 from toontown.parties import Party
@@ -182,6 +182,7 @@ class PartyLoader(SafeZoneLoader.SafeZoneLoader):
         return
 
     def startCloudPlatforms(self):
+        return
         if len(self.clouds):
             self.cloudTrack = self.__cloudTrack()
             self.cloudTrack.loop()

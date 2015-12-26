@@ -56,7 +56,7 @@ class KeyCodes(DirectObject):
         return self._patternLimit
 
     def getPossibleMatchesList(self):
-        return [p for p in self._patterns if p.startswith(self._keyCode)]
+        return [ p for p in self._patterns if p.startswith(self._keyCode) ]
 
     def reset(self):
         self._keyCode = ''

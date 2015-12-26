@@ -1,4 +1,4 @@
-from panda3d.core import Vec3
+from pandac.PandaModules import Vec3
 from direct.gui.DirectGui import DirectButton, DirectLabel
 from direct.gui import DirectGuiGlobals
 from toontown.toonbase import TTLocalizer
@@ -72,11 +72,11 @@ class PartyEditorListElement(DirectButton):
         self.bind(DirectGuiGlobals.B1RELEASE, self.released)
         self.partyEditorGridElements = []
         if self.isDecoration:
-            for i in xrange(PartyGlobals.DecorationInformationDict[self.id]['limitPerParty']):
+            for i in range(PartyGlobals.DecorationInformationDict[self.id]['limitPerParty']):
                 self.partyEditorGridElements.append(PartyEditorGridElement(self.partyEditor, self.id, self.isDecoration, self.checkSoldOutAndAffordability))
 
         else:
-            for i in xrange(PartyGlobals.ActivityInformationDict[self.id]['limitPerParty']):
+            for i in range(PartyGlobals.ActivityInformationDict[self.id]['limitPerParty']):
                 self.partyEditorGridElements.append(PartyEditorGridElement(self.partyEditor, self.id, self.isDecoration, self.checkSoldOutAndAffordability))
 
         self.activeGridElementIndex = -1
@@ -130,14 +130,13 @@ class PartyEditorListElement(DirectButton):
         else:
             self.setTooExpensive(False)
             tooExpensive = False
-        for i, e in enumerate(self.partyEditorGridElements):
+        for i in range(len(self.partyEditorGridElements)):
             if not self.partyEditorGridElements[i].overValidSquare:
                 if not tooExpensive:
                     self.setSoldOut(False)
                 return
 
         self.setSoldOut(True)
-        return
 
     def setTooExpensive(self, value):
         self.partyEditor.partyPlanner.elementBuyButton['text'] = TTLocalizer.PartyPlannerBuy
@@ -165,20 +164,20 @@ class PartyEditorListElement(DirectButton):
     def clicked(self, mouseEvent):
         PartyEditorListElement.notify.debug("Element %s's icon was clicked" % self.name)
         self.partyEditor.listElementClicked()
-        for i, e in enumerate(self.partyEditorGridElements):
+        for i in range(len(self.partyEditorGridElements)):
             if not self.partyEditorGridElements[i].overValidSquare:
                 self.partyEditorGridElements[i].attach(mouseEvent)
                 self.activeGridElementIndex = i
                 return
 
     def buyButtonClicked(self, desiredXY = None):
-        for i, e in enumerate(self.partyEditorGridElements):
+        for i in range(len(self.partyEditorGridElements)):
             if not self.partyEditorGridElements[i].overValidSquare:
                 if self.partyEditorGridElements[i].placeInPartyGrounds(desiredXY):
                     self.activeGridElementIndex = i
                     return True
                 else:
-                    self.checkSoldOutAndPaidStatusAndAffordability()
+                    self.checkSoldOutAndAffordability()
                     return False
 
     def released(self, mouseEvent):

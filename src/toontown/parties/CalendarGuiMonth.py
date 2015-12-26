@@ -1,4 +1,4 @@
-from panda3d.core import TextNode
+from pandac.PandaModules import TextNode
 from direct.gui.DirectGui import DirectFrame, DirectLabel, DirectButton, DirectScrolledList, DGG
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.parties.CalendarGuiDay import CalendarGuiDay
