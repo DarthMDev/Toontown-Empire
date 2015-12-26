@@ -1792,3 +1792,4 @@ TF_SUCCESS = 8
 # Libary Name change cost ~FordTheWriter
 NameChangeCost = 10000
 
+GROUP_ZONES = [11000, 11100, 11200, 12000, 12100, 13000, 13100, 13200, 10000, 10100]
