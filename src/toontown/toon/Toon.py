@@ -1177,8 +1177,7 @@ class Toon(Avatar.Avatar, ToonHead):
     def getWantLaughingMan(self):
         return self.style.laughingMan or self.getWantLaughingManHoliday()
 
-    @staticmethod
-    def getWantLaughingManHoliday():
+    def getWantLaughingManHoliday(self):
         return base.cr.newsManager and base.cr.newsManager.isHolidayRunning(ToontownGlobals.LAUGHING_MAN)
 
     def setGlasses(self, glassesIdx, textureIdx, colorIdx, fromRTM = False):
