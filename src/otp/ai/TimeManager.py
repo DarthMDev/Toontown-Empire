@@ -64,8 +64,7 @@ class TimeManager(DistributedObject.DistributedObject):
         self.stopTask()
         taskMgr.doMethodLater(self.updateFreq, self.doUpdate, 'timeMgrTask')
 
-    @staticmethod
-    def stopTask():
+    def stopTask(self):
         taskMgr.remove('timeMgrTask')
 
     def doUpdate(self, task):

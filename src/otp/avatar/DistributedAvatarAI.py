@@ -54,8 +54,7 @@ class DistributedAvatarAI(DistributedNodeAI.DistributedNodeAI):
         self.hp = min(self.hp + num, self.maxHp)
         self.b_setHp(self.hp)
 
-    @staticmethod
-    def getRadius():
+    def getRadius(self):
         return OTPGlobals.AvatarDefaultRadius
 
     def checkAvOnShard(self, avId):

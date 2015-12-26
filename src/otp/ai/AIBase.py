@@ -93,13 +93,11 @@ class AIBase(object):
         time.sleep(self.AISleep)
         return Task.cont
 
-    @staticmethod
-    def __resetPrevTransform(state):
+    def __resetPrevTransform(self, state):
         PandaNode.resetAllPrevTransform()
         return Task.cont
 
-    @staticmethod
-    def __ivalLoop(state):
+    def __ivalLoop(self, state):
         ivalMgr.step()
         return Task.cont
 

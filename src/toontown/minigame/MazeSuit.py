@@ -228,8 +228,7 @@ class MazeSuit(DirectObject):
             self.moveIval.start(curT - (moveStartT + self.gameStartTime))
         self.nextThinkTic += self.ticPeriod
 
-    @staticmethod
-    def thinkSuits(suitList, startTime, ticFreq = MazeGameGlobals.SUIT_TIC_FREQ):
+    def thinkSuits(self, suitList, startTime, ticFreq = MazeGameGlobals.SUIT_TIC_FREQ):
         curT = globalClock.getFrameTime() - startTime
         curTic = int(curT * float(ticFreq))
         suitUpdates = []

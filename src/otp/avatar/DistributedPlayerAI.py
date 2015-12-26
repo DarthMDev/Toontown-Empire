@@ -34,8 +34,7 @@ class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.Pl
         self._doPlayerExit()
         DistributedAvatarAI.DistributedAvatarAI.delete(self)
 
-    @staticmethod
-    def isPlayerControlled():
+    def isPlayerControlled(self):
         return True
 
     def setLocation(self, parentId, zoneId):
@@ -57,8 +56,7 @@ class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.Pl
     def incrementPopulation(self):
         self.air.incrementPopulation()
 
-    @staticmethod
-    def decrementPopulation():
+    def decrementPopulation(self):
         simbase.air.decrementPopulation()
 
     def d_setMaxHp(self, maxHp):

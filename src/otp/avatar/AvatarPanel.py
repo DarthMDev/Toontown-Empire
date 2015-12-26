@@ -68,10 +68,8 @@ class AvatarPanel(DirectObject.DirectObject):
         AvatarPanel.currentAvatarPanel = None
         return
 
-    @staticmethod
-    def isHidden():
+    def isHidden(self):
         return 1
 
-    @staticmethod
-    def getType():
+    def getType(self):
         return None
