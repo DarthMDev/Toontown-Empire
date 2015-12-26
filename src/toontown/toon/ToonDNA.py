@@ -2581,8 +2581,7 @@ class ToonDNA:
             notify.error('unknown avatar type: ', self.type)
         return dg.getMessage()
 
-    @staticmethod
-    def getDatagramWithFallback(dgi, fallback=0):
+    def getDatagramWithFallback(self, dgi, fallback=0):
         try:
             return dgi.getUint8()
         except:
@@ -2674,8 +2673,7 @@ class ToonDNA:
             notify.error('unknown avatar type: ', self.type)
         return None
 
-    @staticmethod
-    def defaultColor():
+    def defaultColor(self):
         return 25
 
     def __defaultColors(self):
@@ -2942,15 +2940,13 @@ class ToonDNA:
         except:
             return allColorsList[0]
 
-    @staticmethod
-    def getBlackColor():
+    def getBlackColor(self):
         try:
             return allColorsList[26]
         except:
             return allColorsList[0]
 
-    @staticmethod
-    def getWhiteColor():
+    def getWhiteColor(self):
         return allColorsList[0]
 
     def isLaughingMan(self):

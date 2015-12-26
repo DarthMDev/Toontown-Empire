@@ -316,8 +316,7 @@ class RaceGUI:
     def setSpotRaceLinear(self, t, spot):
         spot.setX(-1.0 + 2.0 * (t / self.lapCount))
 
-    @staticmethod
-    def setSpotLapLinear(t, spot):
+    def setSpotLapLinear(self, t, spot):
         spot.setX(-1.0 + 2.0 * (t - int(t)))
 
     def update(self, time):

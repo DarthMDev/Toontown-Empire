@@ -222,8 +222,7 @@ class EventsPage(ShtikerPage.ShtikerPage):
         label['geom_pos'] = (0.0, 0.0, -0.33)
         return label
 
-    @staticmethod
-    def getToonNameFromAvId(avId):
+    def getToonNameFromAvId(self, avId):
         result = TTLocalizer.EventsPageUnknownToon
         sender = base.cr.identifyAvatar(avId)
         if sender:

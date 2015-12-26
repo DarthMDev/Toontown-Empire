@@ -191,8 +191,7 @@ class DisplayOptions:
             base.panda3dRenderError()
             self.restore_failed = True
 
-    @staticmethod
-    def isDefaultEmbedded():
+    def isDefaultEmbedded(self):
         result = False
         try:
             embedOption = int(base.launcher.getValue('GAME_DEFAULT_TO_EMBEDDED', None))
@@ -203,8 +202,7 @@ class DisplayOptions:
 
         return result
 
-    @staticmethod
-    def isEmbeddedPossible():
+    def isEmbeddedPossible(self):
         result = False
         try:
             showOption = base.launcher.getValue('GAME_SHOW_EMBEDDED_OPTION', None)
@@ -215,8 +213,7 @@ class DisplayOptions:
 
         return result
 
-    @staticmethod
-    def isWindowedPossible():
+    def isWindowedPossible(self):
         result = True
         try:
             showOption = base.launcher.getValue('GAME_SHOW_WINDOWED_OPTION', None)

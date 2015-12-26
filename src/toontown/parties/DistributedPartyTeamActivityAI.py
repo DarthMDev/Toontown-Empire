@@ -200,6 +200,5 @@ class DistributedPartyTeamActivityAI(DistributedPartyActivityAI):
 
         self.setState('WaitForEnough')
 
-    @staticmethod
-    def isValidTeam(team):
+    def isValidTeam(self, team):
         return (team == PartyGlobals.TeamActivityTeams.LeftTeam) or (team == PartyGlobals.TeamActivityTeams.RightTeam)

@@ -439,6 +439,5 @@ class CogdoFlyingPlatform:
             spawnPos = self._floorColl.getPos(parent) + Vec3(x, y, 0.0)
         return spawnPos
 
-    @staticmethod
-    def getFromNode(node):
+    def getFromNode(self, node):
         return node.getPythonTag('platform')
