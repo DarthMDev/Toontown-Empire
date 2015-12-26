@@ -798,19 +798,6 @@ class ExtraOptionsTabPage(DirectFrame):
         if index not in [-1, base.localAvatar.nametagStyles.index(base.localAvatar.getNametagStyle())]:
             base.localAvatar.requestNametagStyle(base.localAvatar.nametagStyles[index])
 
-    def __updateFishingPole(self, resetIndex=True):
-        chooser = self.optionChoosers['pole']
-
-        if resetIndex:
-            chooser.setIndex(base.localAvatar.getFishingRod())
-
-        chooser.setDisplayText(TTLocalizer.FishingRodNameDict[chooser.index])
-        chooser.decideButtons(0, base.localAvatar.maxFishingRod)
-
-    def __applyFishingPole(self, index):
-        if index not in [ -1, base.localAvatar.getFishingRod()]:
-            base.localAvatar.requestFishingRod(index)
-
     def destroyReportNotice(self):
         if hasattr(self, 'dialog'):
             self.dialog.destroy()
