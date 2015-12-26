@@ -119,6 +119,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
         self.pieType = 0
         self._isGM = False
         self._gmType = None
+        self._gmDisabled = False
         self.hpOwnedByBattle = 0
         if simbase.wantPets:
             self.petTrickPhrases = []
@@ -4037,6 +4038,16 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
          hoodId,
          zoneId])
         self.air.send(dg)
+
+    def setName(self, name):
+         DistributedPlayerAI.DistributedPlayerAI.setName(self, name)
+         self._updateGMName()
+
+    def _nameIsPrefixed(self, prefix):
+         if len(self.name) > len(prefix):
+             if self.name[:len(prefix)] == prefix:
+                 return True
+         return False
 
     def b_setGM(self, type):
         self.sendUpdate('setGM', [type])

@@ -2472,6 +2472,10 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def wipeStats(self):
         self.sendUpdate('wipeStats')
 
+    def setName(self, name = 'unknownDistributedAvatar'):
+         DistributedPlayer.DistributedPlayer.setName(self, name)
+         self._handleGMName()
+
     def _handleGMName(self):
         name = self.name
         self.setDisplayName(name)
