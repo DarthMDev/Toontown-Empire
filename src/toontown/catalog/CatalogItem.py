@@ -41,9 +41,9 @@ class CatalogItem:
         else:
             self.makeNewItem(*args, **kw)
         return
-    @staticmethod
-    def isAward():#self):
-        #result = self.specialEventId != 0
+
+    def isAward(self):
+        result = self.specialEventId != 0
         return False
 
     def makeNewItem(self):

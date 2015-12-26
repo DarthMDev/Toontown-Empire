@@ -330,15 +330,13 @@ class Garden:
     #    low high (h) = index (8-bit)
     #    low low (l) = growthLevel (8-bit)
 
-    @staticmethod
-    def S_pack(data, lastCheck, index, growthLevel):
+    def S_pack(self, data, lastCheck, index, growthLevel):
         vh = data << 32 | lastCheck
         vl = index << 8 | growthLevel
 
         return vh << 16 | vl
 
-    @staticmethod
-    def S_unpack(x):
+    def S_unpack(self, x):
         vh = x >> 16
         vl = x & 0xFFFF
 

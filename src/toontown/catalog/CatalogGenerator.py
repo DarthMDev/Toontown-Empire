@@ -1640,8 +1640,7 @@ class CatalogGenerator:
 
         return selection
 
-    @staticmethod
-    def __chooseFromList(avatar, list, duplicateItems):
+    def __chooseFromList(self, avatar, list, duplicateItems):
         index = random.randrange(len(list))
         item = list[index]
         del list[index]
@@ -1682,16 +1681,14 @@ class CatalogGenerator:
                  maybeWeek)
                 out.write(line + '\n')
 
-    @staticmethod
-    def __formatColor(color):
+    def __formatColor(self, color):
         if color == None:
             return ''
         else:
             return '(%0.2f, %0.2f, %0.2f)' % (color[0], color[1], color[2])
         return
 
-    @staticmethod
-    def __determineSeries(seriesDict, weeklist):
+    def __determineSeries(self, seriesDict, weeklist):
         for week in weeklist:
             if isinstance(week, types.IntType):
                 series = (week - 1) / ToontownGlobals.CatalogNumWeeksPerSeries + 1
@@ -1699,8 +1696,7 @@ class CatalogGenerator:
 
         return
 
-    @staticmethod
-    def __formatWeeklist(weeklist):
+    def __formatWeeklist(self, weeklist):
         str = ''
         for week in weeklist:
             str += ', %s' % week
@@ -1759,8 +1755,7 @@ class CatalogGenerator:
 
         return
 
-    @staticmethod
-    def __recordScheduleItem(sched, weekCode, maybeWeekCode, item):
+    def __recordScheduleItem(self, sched, weekCode, maybeWeekCode, item):
         if not item in sched:
             sched[item] = [[], []]
         if weekCode != None:
