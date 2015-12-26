@@ -1,7 +1,6 @@
 from direct.gui.DirectGui import *
 from panda3d.core import *
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals, TTLocalizer
 import random
 
 LOADING_SCREEN_SORT_INDEX = 4000
@@ -17,10 +16,7 @@ class ToontownLoadingScreen:
         self.banner.setScale(0.4, 0.4, 0.4)
         self.tip = DirectLabel(guiId='ToontownLoadingScreenTip', parent=self.banner, relief=None, text='', text_scale=TTLocalizer.TLStip, textMayChange=1, pos=(-1.2, 0.0, 0.1), text_fg=(0.4, 0.3, 0.2, 1), text_wordwrap=13, text_align=TextNode.ALeft)
         self.title = DirectLabel(guiId='ToontownLoadingScreenTitle', parent=self.gui, relief=None, pos=(-1.06, 0, -0.77), text='', textMayChange=1, text_scale=0.08, text_fg=(0, 0, 0.5, 1), text_align=TextNode.ALeft)
-        self.waitBar = DirectWaitBar(guiId='ToontownLoadingScreenWaitBar', parent=self.gui, frameSize=(-1.06,
-         1.06,
-         -0.03,
-         0.03), pos=(0, 0, -0.85), text='')
+        self.waitBar = DirectWaitBar(guiId='ToontownLoadingScreenWaitBar', parent=self.gui, frameSize=(-1.06, 1.06, -0.03, 0.03), pos=(0, 0, -0.85), text='')
         logoScale = 0.5625
         self.logo = OnscreenImage(
             image='phase_3/maps/toontown-logo.jpg',

@@ -298,6 +298,26 @@ def attachSuitHead(node, suitName):
 
 class Suit(Avatar.Avatar):
     __module__ = __name__
+    healthColors = (Vec4(0, 1, 0, 1),# 0 Green
+     Vec4(0.5, 1, 0, 1),#1 Green-Yellow
+     Vec4(0.75, 1, 0, 1),#2 Yellow-Green
+     Vec4(1, 1, 0, 1),#3 Yellow
+     Vec4(1, 0.866, 0, 1),#4 Yellow-Orange
+     Vec4(1, 0.6, 0, 1),#5 Orange-Yellow
+     Vec4(1, 0.5, 0, 1),#6 Orange
+     Vec4(1, 0.25, 0, 1.0),#7 Red-Orange
+     Vec4(1, 0, 0, 1),#8 Red
+     Vec4(0.3, 0.3, 0.3, 1))#9 Grey
+    healthGlowColors = (Vec4(0.25, 1, 0.25, 0.5),#Green
+     Vec4(0.5, 1, 0.25, .5),#1 Green-Yellow
+     Vec4(0.75, 1, 0.25, .5),#2 Yellow-Green
+     Vec4(1, 1, 0.25, 0.5),#Yellow
+     Vec4(1, 0.866, 0.25, .5),#4 Yellow-Orange
+     Vec4(1, 0.6, 0.25, .5),#5 Orange-Yellow
+     Vec4(1, 0.5, 0.25, 0.5),#6 Orange
+     Vec4(1, 0.25, 0.25, 0.5),#7 Red-Orange
+     Vec4(1, 0.25, 0.25, 0.5),#8 Red
+     Vec4(0.3, 0.3, 0.3, 0))#9 Grey
     medallionColors = {'c': Vec4(0.863, 0.776, 0.769, 1.0),
      's': Vec4(0.843, 0.745, 0.745, 1.0),
      'l': Vec4(0.749, 0.776, 0.824, 1.0),
