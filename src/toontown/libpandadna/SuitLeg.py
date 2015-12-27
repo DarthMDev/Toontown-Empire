@@ -90,8 +90,7 @@ class SuitLeg:
     def getType(self):
         return self.type
 
-    @staticmethod
-    def getTypeName(legType):
+    def getTypeName(self, legType):
         if legType in SuitLeg.TypeToName:
             return SuitLeg.TypeToName[legType]
             

@@ -17,7 +17,6 @@ class DNADoor(DNAGroup.DNAGroup):
         self.code = dgi_extract_string8(dgi)
         self.color = dgi_extract_color(dgi)
 
-    @staticmethod
     def setupDoor(doorNodePath, parentNode, doorOrigin, dnaStore, block, color):
         doorNodePath.setPosHpr(doorOrigin, 0, 0, 0, 0, 0, 0)
         doorNodePath.setColor(color)

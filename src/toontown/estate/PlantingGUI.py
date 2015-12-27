@@ -54,6 +54,7 @@ class GenericBoxScrollList(DirectScrolledList):
         self.defineoptions(kw, optiondefs)
         DirectScrolledList.__init__(self, parent, forceHeight=self.forceHeight)
         self.initialiseoptions(GenericBoxScrollList)
+        return None
 
 
 class BoxItem(NodePath):

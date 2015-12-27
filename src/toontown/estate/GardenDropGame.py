@@ -20,6 +20,8 @@ class GardenDropGame:
         self.massCount = 0
         self.foundCount = 0
 
+        return None
+
     def reinitialize(self):
         self.inHelp = False
         self.sprites = []
@@ -91,11 +93,11 @@ class GardenDropGame:
     def addSprite(self, image, size = 0.5, posX = 0, posZ = 0, found = 0):
         nodeObj = DirectLabel(parent=self.frame, relief=None, image=image, pos=(posX, 0.0, posZ), scale=size, image_color=(1.0, 1.0, 1.0, 1))
         if LevelNumber == 1 or LevelNumber == 2:
-            colorChoice = random.choice(xrange(0, 3))
+            colorChoice = random.choice(range(0, 3))
         if LevelNumber == 3 or LevelNumber == 4:
-            colorChoice = random.choice(xrange(0, 4))
+            colorChoice = random.choice(range(0, 4))
         if LevelNumber == 5:
-            colorChoice = random.choice(xrange(0, 5))
+            colorChoice = random.choice(range(0, 5))
 
         newSprite = GameSprite.GameSprite(nodeObj, colorChoice, found)
         self.sprites.append(newSprite)
@@ -139,7 +141,7 @@ class GardenDropGame:
         else:
             return 0
 
-        return True
+        returnTrue
 
     def getValidGrid(self, x, z):
         if x < 0 or x >= GardenGameGlobals.gridDimX:
@@ -559,7 +561,7 @@ class GardenDropGame:
         self.frame.destroy()
         del self.frame
 
-        if GardenGameGlobals.acceptErrorDialog and GardenGameGlobals.acceptErrorDialog.cleanup():
+        if (GardenGameGlobals.acceptErrorDialog and GardenGameGlobals.acceptErrorDialog.cleanup()):
             GardenGameGlobals.acceptErrorDialog = 1
 
     def unloadHelp(self):

@@ -92,7 +92,7 @@ class DistributedGarden(DistributedObject.DistributedObject):
         self.notify.debug('addProp')
         self.props.append([prop, i, j])
         self.loadProp(prop, i, j)
-        self.b_setProps(props)
+        self.b_setProps(self, props)
 
     def b_setProps(self, props):
         self.notify.debug('b_setProps')

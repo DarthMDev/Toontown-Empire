@@ -112,6 +112,9 @@ class ClosetGUI(ClothesGUI.ClothesGUI):
         self.setupButtons()
         self.updateCount()
     
+    def updateCount(self, clothes, maxClothes):
+        self.countFrame['text'] = TTLocalizer.ClothesGUICount % (clothes, maxClothes)
+
     def updateTrashButtons(self):
         if len(self.tops) < 2:
             self.topTrashButton['state'] = DGG.DISABLED

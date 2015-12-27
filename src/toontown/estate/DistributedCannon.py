@@ -1,20 +1,25 @@
 from panda3d.core import *
+from toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase import ToontownGlobals
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownTimer
 from direct.task.Task import Task
+from toontown.minigame import Trajectory
 import math
-from direct.gui.DirectGui import *
-from direct.distributed import DistributedObject
-from direct.controls.ControlManager import CollisionHandlerRayStart
-
-from toontown.toonbase import ToontownGlobals, ToontownTimer, TTLocalizer
-from toontown.toonbase.ToonBaseGlobal import *
 from toontown.toon import ToonHead
-from toontown.effects import Splash, DustCloud, Wake
-from toontown.minigame import CannonGameGlobals, Trajectory
+from toontown.effects import Splash
+from toontown.effects import DustCloud
+from toontown.minigame import CannonGameGlobals
 import CannonGlobals
+from direct.gui.DirectGui import *
+from toontown.toonbase import TTLocalizer
+from direct.distributed import DistributedObject
+from toontown.effects import Wake
+from direct.controls.ControlManager import CollisionHandlerRayStart
 
 from otp.nametag.NametagFloat3d import NametagFloat3d
 from otp.nametag.Nametag import Nametag
@@ -352,6 +357,28 @@ class DistributedCannon(DistributedObject.DistributedObject):
         self.__enableAimInterface()
         self.madeGui = 1
         return
+
+    def __unmakeGui(self):
+        self.notify.debug('__unmakeGui')
+        if not self.madeGui:
+            return
+        self.__disableAimInterface()
+        self.upButton.unbind(DGG.B1PRESS)
+        self.upButton.unbind(DGG.B1RELEASE)
+        self.downButton.unbind(DGG.B1PRESS)
+        self.downButton.unbind(DGG.B1RELEASE)
+        self.leftButton.unbind(DGG.B1PRESS)
+        self.leftButton.unbind(DGG.B1RELEASE)
+        self.rightButton.unbind(DGG.B1PRESS)
+        self.rightButton.unbind(DGG.B1RELEASE)
+        self.aimPad.destroy()
+        del self.aimPad
+        del self.fireButton
+        del self.upButton
+        del self.downButton
+        del self.leftButton
+        del self.rightButton
+        self.madeGui = 0
 
     def unload(self):
         self.ignoreCode()
@@ -1104,7 +1131,7 @@ class DistributedCannon(DistributedObject.DistributedObject):
         dot = normal.dot(vel)
         self.notify.debug('--------------dot product = %s---------------' % dot)
         temp = render.attachNewNode('temp')
-        temp.setPosHpr(0, 0, 0, 0, 0, 0)
+        temp.iPosHpr()
         temp.lookAt(Point3(normal))
         temp.reparentTo(roof)
         self.notify.debug('avatar pos = %s, landingPos = %s' % (avatar.getPos(), self.landingPos))

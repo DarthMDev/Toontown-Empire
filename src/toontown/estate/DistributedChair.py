@@ -104,6 +104,17 @@ class DistributedChair(DistributedFurnitureItem):
             self.destroyGui()
             Sequence(Parallel(ActorInterval(av, 'sit-start', startTime=sitStartDuration, endTime=0.0), Sequence(Wait(sitStartDuration * 0.25), av.posInterval(sitStartDuration * 0.25, self.getChair()[2]))), Func(self.resetAvatar, av)).start()
 
+    def resetAvatar(self, av):
+        av.loop('neutral')
+        av.setPos(av.getPos(render))
+        av.getGeomNode().setHpr(0, 0, 0)
+        av.setH(self.getH() + self.getChair()[1][0])
+        av.reparentTo(render)
+        
+        if av == base.localAvatar:
+            base.localAvatar.setPreventCameraDisable(False)
+            base.cr.playGame.getPlace().setState('walk')
+            self.destroyGui()
     
     def __enterSphere(self, collisionEntry):
         if self.avId in base.cr.doId2do:

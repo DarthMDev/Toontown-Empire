@@ -410,7 +410,7 @@ class NPCMoviePlayer(DirectObject.DirectObject):
                     iList.append(Func(base.localAvatar.setTutorialAck, True))
                 else:
                     notify.warning('Unknown command token: %s for scriptId: %s on line: %s' % (command, self.scriptId, lineNum))
-
+                
 
         self.closePreviousChapter(chapterList)
         if timeoutList:
@@ -840,8 +840,7 @@ class NPCMoviePlayer(DirectObject.DirectObject):
         toonHeadFrame = self.toonHeads.get(toonId)
         if not toonHeadFrame:
             toonHeadFrame = ToonHeadFrame.ToonHeadFrame(toon)
-#TODO fix the line below
-            #toonHeadFrame.tag1Node.setActive(1)
+            toonHeadFrame.tag1Node
             toonHeadFrame.hide()
             self.toonHeads[toonId] = toonHeadFrame
             self.setVar('%sToonHead' % toonName, toonHeadFrame)

@@ -371,7 +371,7 @@ class ItemSelector(DirectFrame):
             self.deleteButton = DirectButton(parent=self, relief=None, geom=(uiRootNode.find('**/uiAccessorydelete_up'),
              uiRootNode.find('**/uiAccessorydelete_down'),
              uiRootNode.find('**/uiAccessorydelete_rollover'),
-             uiRootNode.find('**/uiAccessorydelete_rollover')), text=TTLocalizer.KartShtikerDelete, text_font=ToontownGlobals.getSignFont(), text_pos=(0, -0.125, 0), text_scale=TTLocalizer.KPdeleteButton, text_fg=(1, 1, 1, 1), scale=1.0, pressEffect=False, command=self.__handleItemDeleteConfirm())
+             uiRootNode.find('**/uiAccessorydelete_rollover')), text=TTLocalizer.KartShtikerDelete, text_font=ToontownGlobals.getSignFont(), text_pos=(0, -0.125, 0), text_scale=TTLocalizer.KPdeleteButton, text_fg=(1, 1, 1, 1), scale=1.0, pressEffect=False, command=lambda : self.__handleItemDeleteConfirm())
             self.deleteButton.hide()
             self.leftArrowButton = DirectButton(parent=self, relief=None, geom=(uiRootNode.find('**/ArrowLeftButtonUp'),
              uiRootNode.find('**/ArrowLeftButtonDown'),

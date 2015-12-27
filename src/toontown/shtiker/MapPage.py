@@ -18,7 +18,7 @@ class MapPage(ShtikerPage.ShtikerPage):
         mapModel.removeNode()
         self.allZones = []
         for hood in ToontownGlobals.Hoods:
-            if hood not in [ToontownGlobals.GolfZone]:
+            if hood not in [ToontownGlobals.GolfZone, ToontownGlobals.FunnyFarm]:
                 self.allZones.append(hood)
 
         self.cloudScaleList = (((0.55, 0, 0.4), (0.35, 0, 0.25)),
@@ -75,7 +75,6 @@ class MapPage(ShtikerPage.ShtikerPage):
             text=TTLocalizer.MapPageBackToPlayground,
             text_scale=TTLocalizer.MPsafeZoneButton,
             text_pos=(0, -0.02),
-            textMayChange=0,
             command=self.backToSafeZone)
         self.goHomeButton = DirectButton(
             parent=self.map,
@@ -86,7 +85,6 @@ class MapPage(ShtikerPage.ShtikerPage):
             text=TTLocalizer.MapPageGoHome,
             text_scale=TTLocalizer.MPgoHomeButton,
             text_pos=(0, -0.02),
-            textMayChange=0,
             command=self.goHome)
         self.goHomeButton.hide()
         guiButton.removeNode()
