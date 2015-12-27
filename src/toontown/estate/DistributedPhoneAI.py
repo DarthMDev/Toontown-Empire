@@ -175,13 +175,11 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
             if item.getDeliveryTime():
                 self.chargeAvatar(av, price, item.getEmblemPrices())
                 av.addToDeliverySchedule(item, item.getDeliveryTime())
-                av.addStat(ToontownGlobals.STAT_ITEMS)
             else:
                 returnCode = item.recordPurchase(av, optional)
                 
                 if returnCode == ToontownGlobals.P_ItemAvailable:
                     self.chargeAvatar(av, price, item.getEmblemPrices())
-                    av.addStat(ToontownGlobals.STAT_ITEMS)
 
             return returnCode
 
@@ -204,7 +202,6 @@ class DistributedPhoneAI(DistributedFurnitureItemAI):
 
         self.chargeAvatar(av, optional[2], item.getEmblemPrices())
         recipient.addToGiftSchedule(avId, targetId, item, item.getDeliveryTime())
-        av.addStat(ToontownGlobals.STAT_ITEMS)
 
         self.sendGiftPurchaseResponse(context, avId, ToontownGlobals.P_ItemOnOrder)
     
