@@ -12,8 +12,7 @@ Official Repo for Toontown Empire, a new Toontown game based on Disney's Toontow
 6. Spike- Community Manager
 7. San- Graphic Designer and Texture Artist
 8. EpicrockersMC- Moderator
-9. Jaq - 3D Modeler
-10. Awerlu * Daniel- Website Developer
+9. Awerlu * Daniel- Website Developer
 
 # Repo Rules and Regulations:
 
