@@ -2609,3 +2609,33 @@ def showParticle(name):
         return 'Successfully started particle!'
 
     return 'Particle %s does not exist.' % name
+
+# FordTheWriter added commands:
+
+@magicWord(category=CATEGORY_STAFF, types=[int])
+def mute(minutes):
+    """
+    Mute the target
+    """
+    if not MagicWordManager.lastClickedNametag:
+        return "nobody selected"
+    target = MagicWordManager.lastClickedNametag
+    if spellbook.getInvokerAccess() <= target.getAdminAccess():
+        return "Must be of a higher access level then target"
+    print ['mute', target.doId, 0]
+    base.cr.chatAgent.sendMuteAccount(target.doId, minutes)
+    return 'Mute request sent'
+
+@magicWord(category=CATEGORY_STAFF, types=[])
+def unmute():
+    """
+    Unmute the target
+    """
+    if not MagicWordManager.lastClickedNametag:
+        return "nobody selected"
+    target = MagicWordManager.lastClickedNametag
+    if spellbook.getInvokerAccess() <= target.getAdminAccess():
+        return "Must be of a higher access level then target"
+    print ['unmute', target.doId]
+    base.cr.chatAgent.sendUnmuteAccount(target.doId)
+    return 'Unmute request sent'

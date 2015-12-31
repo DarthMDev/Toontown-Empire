@@ -1,12 +1,12 @@
 from panda3d.core import *
-from toontown.toonbase import ToontownGlobals
 from toontown.language import LanguageSelector
 from direct.fsm import StateData
 from direct.gui.DirectGui import *
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer, ToontownGlobals,  DisplayOptions
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
 import random, AvatarChoice
+
 
 MAX_AVATARS = 6
 POSITIONS = (Vec3(-0.840167, 0, 0.359333),
@@ -29,10 +29,17 @@ class AvatarChooser(StateData.StateData):
         StateData.StateData.__init__(self, doneEvent)
         self.choice = None
         self.avatarList = avatarList
+        self.displayOptions = None
         return
 
     def enter(self):
         self.notify.info('AvatarChooser.enter')
+        if not self.displayOptions:
+            self.displayOptions = DisplayOptions.DisplayOptions()
+        self.notify.info('calling self.displayOptions.restrictToEmbedded(False)')
+        if base.appRunner:
+            self.displayOptions.loadFromSettings()
+            self.displayOptions.restrictToEmbedded(False)
         if self.isLoaded == 0:
             self.load()
         base.disableMouse()

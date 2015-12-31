@@ -4,8 +4,7 @@ from direct.gui.DirectGui import *
 from direct.task.Task import Task
 from panda3d.core import *
 
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer, DisplayOptions, ToontownGlobals
 from toontown.toontowngui import TTDialog
 
 
@@ -131,6 +130,12 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
             if changeDisplayAPI and len(self.apis) > 1:
                 self.apiLabel.show()
                 self.apiMenu.show()
+            else:
+                self.apiLabel.hide()
+                self.apiMenu.hide()
+            if DisplayOptions.isWindowedPossible():
+                self.c1b.show()
+                self.windowedButton.show()
             else:
                 self.apiLabel.hide()
                 self.apiMenu.hide()
