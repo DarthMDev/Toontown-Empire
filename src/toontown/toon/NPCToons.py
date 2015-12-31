@@ -6,10 +6,7 @@ import sys, os
 import ToonDNA
 from toontown.hood import ZoneUtil
 from otp.nametag.NametagGroup import *
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.toonbase import ToontownGlobals
-
+from toontown.toonbase import TTLocalizer, ToontownBattleGlobals, ToontownGlobals
 
 try:
     config = simbase.config
@@ -373,10 +370,10 @@ NPCToonDict = {20000: (-1,
         lnames[2011],
         ('rll',
          'ms',
-         's',
-         'm',
-         13,
-         45,
+         'l',
+         'f',
+         2,
+         0,
          2,
          2,
          1,
@@ -385,9 +382,9 @@ NPCToonDict = {20000: (-1,
          9,
          23,
          27),
-        'm',
-        0,
-        NPC_REGULAR),
+        'f',
+        1,
+        NPC_CLERK),
  2007: (2520,
         lnames[2007],
         ('dss',
