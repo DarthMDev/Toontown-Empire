@@ -10,14 +10,14 @@ class TTHood(ToonHood):
     ID = ToontownGlobals.ToontownCentral
     TOWNLOADER_CLASS = TTTownLoader
     SAFEZONELOADER_CLASS = TTSafeZoneLoader
-    STORAGE_DNA = 'phase_4/dna/storage_TT.pdna'
+    STORAGE_DNA = 'phase_4/dna/storage_TT.dna'
     SKY_FILE = 'phase_3.5/models/props/TT_sky'
     SPOOKY_SKY_FILE = 'phase_3.5/models/props/BR_sky'
     TITLE_COLOR = (1.0, 0.5, 0.4, 1.0)
 
     HOLIDAY_DNA = {
-      ToontownGlobals.CHRISTMAS: ['phase_4/dna/winter_storage_TT.pdna', 'phase_4/dna/winter_storage_TT_sz.pdna'],
-      ToontownGlobals.HALLOWEEN: ['phase_4/dna/halloween_props_storage_TT.pdna', 'phase_4/dna/halloween_props_storage_TT_sz.pdna']}
+      ToontownGlobals.CHRISTMAS: ['phase_4/dna/winter_storage_TT.dna', 'phase_4/dna/winter_storage_TT_sz.dna'],
+      ToontownGlobals.HALLOWEEN: ['phase_4/dna/halloween_props_storage_TT.dna', 'phase_4/dna/halloween_props_storage_TT_sz.dna']}
 
 @magicWord(category=CATEGORY_LEADER)
 def spooky():

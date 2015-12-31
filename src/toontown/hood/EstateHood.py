@@ -26,11 +26,11 @@ class EstateHood(Hood):
 
         self.id = MyEstate
         self.safeZoneLoaderClass = EstateLoader
-        self.storageDNAFile = 'phase_5.5/dna/storage_estate.pdna'
+        self.storageDNAFile = 'phase_5.5/dna/storage_estate.dna'
 
         self.holidayStorageDNADict = {
-          CHRISTMAS: ['phase_5.5/dna/winter_storage_estate.pdna'],
-          HALLOWEEN: ['phase_5.5/dna/halloween_props_storage_estate.pdna']}
+          CHRISTMAS: ['phase_5.5/dna/winter_storage_estate.dna'],
+          HALLOWEEN: ['phase_5.5/dna/halloween_props_storage_estate.dna']}
 
         self.skyFile = 'phase_3.5/models/props/TT_sky'
         self.spookySkyFile = 'phase_3.5/models/props/BR_sky'
