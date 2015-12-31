@@ -37,7 +37,7 @@ class ChatAgentUD(DistributedObjectGlobalUD):
          print ['muteAccount', account, howLong]
          self.muted[account] = True
  
-     def unmuteAccount(self, account):
+    def unmuteAccount(self, account):
          print ['unuteAccount', account]
          self.muted[account] = False
 

@@ -31,8 +31,8 @@ class ChatAgent(DistributedObjectGlobal):
     def sendMuteAccount(self, account, howLong):
         self.sendUpdate('muteAccount', [account, howLong])
 
-     def sendUnmuteAccount(self, account):
-         self.sendUpdate('unmuteAccount', [account])
+    def sendUnmuteAccount(self, account):
+        self.sendUpdate('unmuteAccount', [account])
 
 @magicWord(category=CATEGORY_TRIAL, types=[int])
 def chatmode(mode=-1):

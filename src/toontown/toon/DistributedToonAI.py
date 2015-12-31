@@ -614,8 +614,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             self.attemptAddNPCFriend(npcId)
 
     def isTrunkFull(self, extraAccessories = 0):
-        numAccessories = (len(self.hatList)  len(self.glassesList)  len(self.backpackList)  len(self.shoesList)) / 3
-        return numAccessories  extraAccessories >= ToontownGlobals.MaxAccessories
+        numAccessories = (len(self.hatList) + len(self.glassesList) + len(self.backpackList) + len(self.shoesList)) / 3
+        return numAccessories + extraAccessories >= ToontownGlobals.MaxAccessories
 
     def d_setHatList(self, clothesList):
         self.sendUpdate('setHatList', [clothesList])
@@ -685,7 +685,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             return 0
         index = 0
         for i in xrange(0, len(itemList), 3):
-            if itemList[i] == geomIdx and itemList[i  1] == texIdx and itemList[i  2] == colorIdx:
+            if itemList[i] == geomIdx and itemList[i + 1] == texIdx and itemList[i + 2] == colorIdx:
                 return 0
 
         if accessoryType == ToonDNA.HAT:
@@ -719,23 +719,23 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             return 0
         index = 0
         for i in xrange(0, len(itemList), 3):
-            if itemList[i] == geomIdxA and itemList[i  1] == texIdxA and itemList[i  2] == colorIdxA:
+            if itemList[i] == geomIdxA and itemList[i + 1] == texIdxA and itemList[i + 2] == colorIdxA:
                 if accessoryType == ToonDNA.HAT:
                     self.hatList[i] = geomIdxB
-                    self.hatList[i  1] = texIdxB
-                    self.hatList[i  2] = colorIdxB
+                    self.hatList[i + 1] = texIdxB
+                    self.hatList[i + 2] = colorIdxB
                 elif accessoryType == ToonDNA.GLASSES:
                     self.glassesList[i] = geomIdxB
-                    self.glassesList[i  1] = texIdxB
-                    self.glassesList[i  2] = colorIdxB
+                    self.glassesList[i + 1] = texIdxB
+                    self.glassesList[i + 2] = colorIdxB
                 elif accessoryType == ToonDNA.BACKPACK:
                     self.backpackList[i] = geomIdxB
-                    self.backpackList[i  1] = texIdxB
-                    self.backpackList[i  2] = colorIdxB
+                    self.backpackList[i + 1] = texIdxB
+                    self.backpackList[i + 2] = colorIdxB
                 else:
                     self.shoesList[i] = geomIdxB
-                    self.shoesList[i  1] = texIdxB
-                    self.shoesList[i  2] = colorIdxB
+                    self.shoesList[i + 1] = texIdxB
+                    self.shoesList[i + 2] = colorIdxB
                 return 1
 
         return 0
@@ -758,7 +758,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
         if cur == (geomIdx, texIdx, colorIdx):
             return True
         for i in xrange(0, len(itemList), 3):
-            if itemList[i] == geomIdx and itemList[i  1] == texIdx and itemList[i  2] == colorIdx:
+            if itemList[i] == geomIdx and itemList[i + 1] == texIdx and itemList[i + 2] == colorIdx:
                 return True
 
         return False
@@ -785,8 +785,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             return 0
         index = 0
         for i in xrange(0, len(itemList), 3):
-            if itemList[i] == geomIdx and itemList[i  1] == texIdx and itemList[i  2] == colorIdx:
-                itemList = itemList[0:i]  itemList[i  3:listLen]
+            if itemList[i] == geomIdx and itemList[i + 1] == texIdx and itemList[i + 2] == colorIdx:
+                itemList = itemList[0:i] + itemList[i + 3:listLen]
                 if accessoryType == ToonDNA.HAT:
                     self.hatList = itemList[:]
                     styles = ToonDNA.HatStyles
@@ -831,8 +831,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
         return self.maxClothes
 
     def isClosetFull(self, extraClothes = 0):
-        numClothes = len(self.clothesTopsList) / 4  len(self.clothesBottomsList) / 2
-        return numClothes  extraClothes >= self.maxClothes
+        numClothes = len(self.clothesTopsList) / 4 + len(self.clothesBottomsList) / 2
+        return numClothes + extraClothes >= self.maxClothes
 
     def d_setClothesTopsList(self, clothesList):
         self.sendUpdate('setClothesTopsList', [clothesList])
@@ -852,7 +852,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             return 0
         index = 0
         for i in xrange(0, len(self.clothesTopsList), 4):
-            if self.clothesTopsList[i] == topTex and self.clothesTopsList[i  1] == topTexColor and self.clothesTopsList[i  2] == sleeveTex and self.clothesTopsList[i  3] == sleeveTexColor:
+            if self.clothesTopsList[i] == topTex and self.clothesTopsList[i + 1] == topTexColor and self.clothesTopsList[i + 2] == sleeveTex and self.clothesTopsList[i + 3] == sleeveTexColor:
                 return 0
 
         self.clothesTopsList.append(topTex)
@@ -864,11 +864,11 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
     def replaceItemInClothesTopsList(self, topTexA, topTexColorA, sleeveTexA, sleeveTexColorA, topTexB, topTexColorB, sleeveTexB, sleeveTexColorB):
         index = 0
         for i in xrange(0, len(self.clothesTopsList), 4):
-            if self.clothesTopsList[i] == topTexA and self.clothesTopsList[i  1] == topTexColorA and self.clothesTopsList[i  2] == sleeveTexA and self.clothesTopsList[i  3] == sleeveTexColorA:
+            if self.clothesTopsList[i] == topTexA and self.clothesTopsList[i + 1] == topTexColorA and self.clothesTopsList[i + 2] == sleeveTexA and self.clothesTopsList[i + 3] == sleeveTexColorA:
                 self.clothesTopsList[i] = topTexB
-                self.clothesTopsList[i  1] = topTexColorB
-                self.clothesTopsList[i  2] = sleeveTexB
-                self.clothesTopsList[i  3] = sleeveTexColorB
+                self.clothesTopsList[i + 1] = topTexColorB
+                self.clothesTopsList[i + 2] = sleeveTexB
+                self.clothesTopsList[i + 3] = sleeveTexColorB
                 return 1
 
         return 0
@@ -880,8 +880,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             return 0
         index = 0
         for i in xrange(0, listLen, 4):
-            if self.clothesTopsList[i] == topTex and self.clothesTopsList[i  1] == topTexColor and self.clothesTopsList[i  2] == sleeveTex and self.clothesTopsList[i  3] == sleeveTexColor:
-                self.clothesTopsList = self.clothesTopsList[0:i]  self.clothesTopsList[i  4:listLen]
+            if self.clothesTopsList[i] == topTex and self.clothesTopsList[i + 1] == topTexColor and self.clothesTopsList[i + 2] == sleeveTex and self.clothesTopsList[i + 3] == sleeveTexColor:
+                self.clothesTopsList = self.clothesTopsList[0:i] + self.clothesTopsList[i + 4:listLen]
                 return 1
 
         return 0
@@ -905,7 +905,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             return 0
         index = 0
         for i in xrange(0, len(self.clothesBottomsList), 2):
-            if self.clothesBottomsList[i] == botTex and self.clothesBottomsList[i  1] == botTexColor:
+            if self.clothesBottomsList[i] == botTex and self.clothesBottomsList[i + 1] == botTexColor:
                 return 0
 
         self.clothesBottomsList.append(botTex)
@@ -915,9 +915,9 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
     def replaceItemInClothesBottomsList(self, botTexA, botTexColorA, botTexB, botTexColorB):
         index = 0
         for i in xrange(0, len(self.clothesBottomsList), 2):
-            if self.clothesBottomsList[i] == botTexA and self.clothesBottomsList[i  1] == botTexColorA:
+            if self.clothesBottomsList[i] == botTexA and self.clothesBottomsList[i + 1] == botTexColorA:
                 self.clothesBottomsList[i] = botTexB
-                self.clothesBottomsList[i  1] = botTexColorB
+                self.clothesBottomsList[i + 1] = botTexColorB
                 return 1
 
         return 0
@@ -929,8 +929,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             return 0
         index = 0
         for i in xrange(0, len(self.clothesBottomsList), 2):
-            if self.clothesBottomsList[i] == botTex and self.clothesBottomsList[i  1] == botTexColor:
-                self.clothesBottomsList = self.clothesBottomsList[0:i]  self.clothesBottomsList[i  2:listLen]
+            if self.clothesBottomsList[i] == botTex and self.clothesBottomsList[i + 1] == botTexColor:
+                self.clothesBottomsList = self.clothesBottomsList[0:i] + self.clothesBottomsList[i + 2:listLen]
                 return 1
 
         return 0
@@ -1144,11 +1144,11 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
         return self.cogLevels
 
     def incCogLevel(self, dept):
-        newLevel = self.cogLevels[dept]  1
+        newLevel = self.cogLevels[dept] + 1
         cogTypeStr = SuitDNA.suitHeadTypes[self.cogTypes[dept]]
         lastCog = self.cogTypes[dept] >= SuitDNA.suitsPerDept - 1
         if not lastCog:
-            maxLevel = SuitBattleGlobals.SuitAttributes[cogTypeStr]['level']  4
+            maxLevel = SuitBattleGlobals.SuitAttributes[cogTypeStr]['level'] + 4
         else:
             maxLevel = ToontownGlobals.MaxCogSuitLevel
         if newLevel > maxLevel:
@@ -1164,7 +1164,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             if lastCog:
                 if self.cogLevels[dept] in ToontownGlobals.CogSuitHPLevels:
                     maxHp = self.getMaxHp()
-                    maxHp = min(ToontownGlobals.MaxHpLimit, maxHp  1)
+                    maxHp = min(ToontownGlobals.MaxHpLimit, maxHp + 1)
                     self.b_setMaxHp(maxHp)
                     self.toonUp(maxHp)
         self.air.writeServerEvent('cogSuit', self.doId, '%s|%s|%s' % (dept, self.cogTypes[dept], self.cogLevels[dept]))
@@ -1179,7 +1179,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
         lowestCogLevel = SuitBattleGlobals.SuitAttributes[cogTypeStr]['level']
         multiple = 5 * cogType
         additional = self.cogLevels[deptIndex] - lowestCogLevel
-        numPromotions = multiple  additional
+        numPromotions = multiple + additional
         return numPromotions
 
     def b_setCogParts(self, parts):
@@ -1232,7 +1232,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             self.b_setCogParts(parts)
 
     def loseCogParts(self, dept):
-        loseCount = random.randrange(CogDisguiseGlobals.MinPartLoss, CogDisguiseGlobals.MaxPartLoss  1)
+        loseCount = random.randrange(CogDisguiseGlobals.MinPartLoss, CogDisguiseGlobals.MaxPartLoss + 1)
         parts = self.getCogParts()
         partBitmask = parts[dept]
         partList = xrange(17)
@@ -1451,7 +1451,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
         questList = []
         questLen = 5
         for i in xrange(0, len(flattenedQuests), questLen):
-            questList.append(flattenedQuests[i:i  questLen])
+            questList.append(flattenedQuests[i:i + questLen])
 
         self.quests = questList
 
@@ -1652,7 +1652,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
     def fixTrackAccess(self):
         fixed = 0
         healExp, trapExp, lureExp, soundExp, throwExp, squirtExp, dropExp = self.experience.experience
-        numTracks = reduce(lambda a, b: a  b, self.trackArray)
+        numTracks = reduce(lambda a, b: a + b, self.trackArray)
         if self.rewardTier in [0,
          1,
          2,
@@ -2108,7 +2108,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
         if config.GetBool('want-instant-delivery', False):
             minutes = 0
 
-        item.deliveryDate = int(time.time() / 60.  minutes  .5)
+        item.deliveryDate = int(time.time() / 60. + minutes + .5)
         self.onOrder.append(item)
         self.b_setDeliverySchedule(self.onOrder)
 
@@ -2142,7 +2142,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             return
         if doUpdateLater and hasattr(self, 'name'):
             taskName = 'next-bothDelivery-%s' % self.doId
-            now = int(time.time() / 60  0.5)
+            now = int(time.time() / 60 + 0.5)
             nextItem = None
             nextGiftItem = None
             nextTime = None
@@ -2181,13 +2181,13 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
         return
 
     def __deliverBothPurchases(self, task):
-        now = int(time.time() / 60  0.5)
+        now = int(time.time() / 60 + 0.5)
         delivered, remaining = self.onOrder.extractDeliveryItems(now)
         deliveredGifts, remainingGifts = self.onGiftOrder.extractDeliveryItems(now)
         giftItem = CatalogItemList.CatalogItemList(deliveredGifts, store=CatalogItem.Customization | CatalogItem.DeliveryDate)
         if len(giftItem) > 0:
             self.air.writeServerEvent('Getting Gift', self.doId, 'sender %s receiver %s gift %s' % (giftItem[0].giftTag, self.doId, giftItem[0].getName()))
-        self.b_setMailboxContents(self.mailboxContents  delivered  deliveredGifts)
+        self.b_setMailboxContents(self.mailboxContents + delivered + deliveredGifts)
         self.b_setCatalogNotify(self.catalogNotify, ToontownGlobals.NewItems)
         self.b_setBothSchedules(remaining, remainingGifts)
         return Task.done
@@ -2199,18 +2199,18 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
         return self.onGiftOrder.getBlob(store=CatalogItem.Customization | CatalogItem.DeliveryDate)
 
     def __deliverGiftPurchase(self, task):
-        now = int(time.time() / 60  0.5)
+        now = int(time.time() / 60 + 0.5)
         delivered, remaining = self.onGiftOrder.extractDeliveryItems(now)
         self.notify.info('Gift Delivery for %s: %s.' % (self.doId, delivered))
-        self.b_setMailboxContents(self.mailboxContents  delivered)
+        self.b_setMailboxContents(self.mailboxContents + delivered)
         self.b_setCatalogNotify(self.catalogNotify, ToontownGlobals.NewItems)
         return Task.done
 
     def __deliverPurchase(self, task):
-        now = int(time.time() / 60  0.5)
+        now = int(time.time() / 60 + 0.5)
         delivered, remaining = self.onOrder.extractDeliveryItems(now)
         self.notify.info('Delivery for %s: %s.' % (self.doId, delivered))
-        self.b_setMailboxContents(self.mailboxContents  delivered)
+        self.b_setMailboxContents(self.mailboxContents + delivered)
         self.b_setDeliverySchedule(remaining)
         self.b_setCatalogNotify(self.catalogNotify, ToontownGlobals.NewItems)
         return Task.done
@@ -2301,12 +2301,12 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
     def addMoney(self, deltaMoney):
         if deltaMoney > 0:
             messenger.send('topToonsManager-event', [self.doId, TopToonsGlobals.CAT_JELLYBEAN, deltaMoney])
-        money = deltaMoney  self.money
+        money = deltaMoney + self.money
         pocketMoney = min(money, self.maxMoney)
         self.b_setMoney(pocketMoney)
         overflowMoney = money - self.maxMoney
         if overflowMoney > 0:
-            bankMoney = self.bankMoney  overflowMoney
+            bankMoney = self.bankMoney + overflowMoney
             self.b_setBankMoney(bankMoney)
 
     def takeMoney(self, deltaMoney, bUseBank = True):
@@ -2346,7 +2346,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
         return self.money
 
     def getTotalMoney(self):
-        return self.money  self.bankMoney
+        return self.money + self.bankMoney
 
     def b_setBankMoney(self, money):
         bankMoney = min(money, ToontownGlobals.MaxBankMoney)
@@ -2443,7 +2443,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
 
     def startToonUp(self, healFrequency):
         self.stopToonUp()
-        self.nextToonup = (healFrequency, self.indexOf(ToontownGlobals.TOONUP_PULSE_ZONES, ZoneUtil.getCanonicalHoodId(self.zoneId), 0)  1)
+        self.nextToonup = (healFrequency, self.indexOf(ToontownGlobals.TOONUP_PULSE_ZONES, ZoneUtil.getCanonicalHoodId(self.zoneId), 0) + 1)
         self.__waitForNextToonUp()
 
     def indexOf(self, list, element, default):
@@ -2465,10 +2465,10 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             hpGained = self.maxHp
         if not quietly:
             self.sendUpdate('toonUp', [hpGained])
-        if self.hp  hpGained <= 0:
+        if self.hp + hpGained <= 0:
             self.hp = hpGained
         else:
-            self.hp = max(self.hp, 0)  hpGained
+            self.hp = max(self.hp, 0) + hpGained
         clampedHp = min(self.hp, self.maxHp)
         if not self.hpOwnedByBattle:
             self.hp = clampedHp
@@ -2555,7 +2555,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             else:
                 self.doResistanceMerits(msgValue)
         elif msgType == ResistanceChat.RESISTANCE_TICKETS:
-            self.b_setTickets(self.getTickets()  msgValue)
+            self.b_setTickets(self.getTickets() + msgValue)
 
     def doResistanceMerits(self, dept):
         if not CogDisguiseGlobals.isSuitComplete(self.cogParts, dept):
@@ -2653,7 +2653,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             return self.kartingPersonalBest2
 
         def getKartingPersonalBestAll(self):
-            return self.kartingPersonalBest  self.kartingPersonalBest2
+            return self.kartingPersonalBest + self.kartingPersonalBest2
 
         def setKartDNA(self, kartDNA):
             self.b_setKartBodyType(kartDNA[KartDNA.bodyType])
@@ -3092,7 +3092,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             return ['badlocation', suitIndex, 0]
         sp = self.air.suitPlanners[streetId]
         map = sp.getZoneIdToPointMap()
-        zones = [self.zoneId, self.zoneId - 1, self.zoneId  1]
+        zones = [self.zoneId, self.zoneId - 1, self.zoneId + 1]
         for zoneId in zones:
             if zoneId in map:
                 points = map[zoneId][:]
@@ -3263,7 +3263,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
         if level not in xrange(SuitDNA.suitsPerDept):
             self.notify.warning('invalid parameter level %s' % level)
             return False
-        suitIndex = deptIndex * SuitDNA.suitsPerDept  level
+        suitIndex = deptIndex * SuitDNA.suitsPerDept + level
         retval = self.hasCogSummons(suitIndex, type)
         return retval
 
@@ -3274,10 +3274,10 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             else:
                 numDepts = len(SuitDNA.suitDepts)
                 dept = random.randrange(0, numDepts)
-            suitIndex = dept * SuitDNA.suitsPerDept  level
+            suitIndex = dept * SuitDNA.suitsPerDept + level
         elif deptIndex in xrange(len(SuitDNA.suitDepts)):
             randomLevel = random.randrange(0, SuitDNA.suitsPerDept)
-            suitIndex = deptIndex * SuitDNA.suitsPerLevel  randomLevel
+            suitIndex = deptIndex * SuitDNA.suitsPerLevel + randomLevel
         else:
             numSuits = len(SuitDNA.suitHeadTypes)
             suitIndex = random.randrange(0, numSuits)
@@ -3303,9 +3303,9 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             return None
         zones = [zoneId,
                  zoneId - 1,
-                 zoneId  1,
+                 zoneId - 1,
                  zoneId - 2,
-                 zoneId  2]
+                 zoneId - 2]
         for zone in zones:
             for i in bm.getToonBlocks():
                 building = bm.getBuilding(i)
@@ -3328,9 +3328,9 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             return None
         zones = [zoneId,
                  zoneId - 1,
-                 zoneId  1,
+                 zoneId - 1,
                  zoneId - 2,
-                 zoneId  2]
+                 zoneId - 2]
         for zone in zones:
             for i in bm.getSuitBlocks():
                 building = bm.getBuilding(i)
@@ -3384,7 +3384,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
     def addGardenItem(self, index, count):
         for item in self.gardenSpecials:
             if item[0] == index:
-                newCount = item[1]  count
+                newCount = item[1] + count
                 self.gardenSpecials.remove(item)
                 self.gardenSpecials.append((index, newCount))
                 self.gardenSpecials.sort()
@@ -3491,7 +3491,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
         self.sendGardenEvent()
         if skillLevel >= GardenGlobals.ShovelAttributes[self.shovel]['skillPts']:
             if self.shovel < GardenGlobals.MAX_SHOVELS - 1:
-                self.b_setShovel(self.shovel  1)
+                self.b_setShovel(self.shovel + 1)
                 self.setShovelSkill(0)
                 self.d_setShovelSkill(0)
                 self.sendUpdate('promoteShovel', [self.shovel])
@@ -3526,7 +3526,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
         self.sendGardenEvent()
         if skillLevel >= GardenGlobals.WateringCanAttributes[self.wateringCan]['skillPts']:
             if self.wateringCan < GardenGlobals.MAX_WATERING_CANS - 1:
-                self.b_setWateringCan(self.wateringCan  1)
+                self.b_setWateringCan(self.wateringCan + 1)
                 self.setWateringCanSkill(0)
                 self.d_setWateringCanSkill(0)
                 self.sendUpdate('promoteWateringCan', [self.wateringCan])
@@ -3738,7 +3738,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
         return self.specialInventory[1]
 
     def addPinkSlips(self, amountToAdd):
-        pinkSlips = min(self.getPinkSlips()  amountToAdd, 255)
+        pinkSlips = min(self.getPinkSlips() + amountToAdd, 255)
         self.b_setPinkSlips(pinkSlips)
 
     def removePinkSlips(self, amount):
@@ -3748,7 +3748,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
         self.b_setPinkSlips(pinkSlips)
 
     def addCrateKeys(self, amountToAdd):
-        self.b_setCrateKeys(min(self.getCrateKeys()  amountToAdd, 255))
+        self.b_setCrateKeys(min(self.getCrateKeys() + amountToAdd, 255))
 
     def removeCrateKeys(self, amount):
         self.b_setCrateKeys(max(self.getCrateKeys() - amount, 0))
@@ -3990,7 +3990,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             if doUpdateLater and hasattr(self, 'air'):
                 taskName = self.uniqueName('next-award-delivery')
                 taskMgr.remove(taskName)
-                now = int(time.time() / 60  0.5)
+                now = int(time.time() / 60 + 0.5)
                 nextItem = None
                 nextTime = self.onAwardOrder.getNextDeliveryDate()
                 nextItem = self.onAwardOrder.getNextDeliveryItem()
@@ -4002,10 +4002,10 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
         return
 
     def __deliverAwardPurchase(self, task):
-        now = int(time.time() / 60  0.5)
+        now = int(time.time() / 60 + 0.5)
         delivered, remaining = self.onAwardOrder.extractDeliveryItems(now)
         self.notify.info('Award Delivery for %s: %s.' % (self.doId, delivered))
-        self.b_setAwardMailboxContents(self.awardMailboxContents  delivered)
+        self.b_setAwardMailboxContents(self.awardMailboxContents + delivered)
         self.b_setAwardSchedule(remaining)
         if delivered:
             self.b_setAwardNotify(ToontownGlobals.NewItems)
@@ -4038,6 +4038,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
          hoodId,
          zoneId])
         self.air.send(dg)
+
+# ~Badge coding:
 
     def setName(self, name):
          DistributedPlayerAI.DistributedPlayerAI.setName(self, name)
@@ -4074,12 +4076,12 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             formerType = self._gmType
         name = self.name
         if formerType is not None:
-            gmPrefix = TTLocalizer.GM_NAMES[formerType]  ' '
+            gmPrefix = TTLocalizer.GM_NAMES[formerType] + ' '
             if self._nameIsPrefixed(gmPrefix):
                 name = self.name[len(gmPrefix):]
         if self._isGM:
-            gmPrefix = TTLocalizer.GM_NAMES[self._gmType]  ' '
-            newName = gmPrefix  name
+            gmPrefix = TTLocalizer.GM_NAMES[self._gmType] + ' '
+            newName = gmPrefix + name
         else:
             newName = name
         if self.name != newName:
@@ -4651,7 +4653,7 @@ def badName():
     _name = target.getName()
     colorString = TTLocalizer.ColorfulToon
     animalType = TTLocalizer.AnimalToSpecies[target.dna.getAnimal()]
-    target.b_setName(colorString  ' '  animalType)
+    target.b_setName(colorString + ' ' + animalType)
     target.sendUpdate('setWishNameState', ['REJECTED'])
     return "Revoked %s's name!" % _name
 
@@ -4684,43 +4686,43 @@ def inventory(a, b=None, c=None):
     if a == 'reset':
         maxLevelIndex = b or 5
         if not 0 <= maxLevelIndex < len(ToontownBattleGlobals.Levels[0]):
-            return 'Invalid max level index: '  str(maxLevelIndex)
+            return 'Invalid max level index: ' + str(maxLevelIndex)
         targetTrack = -1 or c
         if not -1 <= targetTrack < len(ToontownBattleGlobals.Tracks):
-            return 'Invalid target track index: '  str(targetTrack)
+            return 'Invalid target track index: ' + str(targetTrack)
         for track in xrange(0, len(ToontownBattleGlobals.Tracks)):
             if (targetTrack == -1) or (track == targetTrack):
-                inventory.inventory[track][:maxLevelIndex  1] = [0] * (maxLevelIndex1)
+                inventory.inventory[track][:maxLevelIndex + 1] = [0] * (maxLevelIndex1)
         target.b_setInventory(inventory.makeNetString())
         if targetTrack == -1:
             return 'Inventory reset.'
         else:
-            return 'Inventory reset for target track index: '  str(targetTrack)
+            return 'Inventory reset for target track index: ' + str(targetTrack)
     elif a == 'restock':
         maxLevelIndex = b or 5
         if not 0 <= maxLevelIndex < len(ToontownBattleGlobals.Levels[0]):
-            return 'Invalid max level index: '  str(maxLevelIndex)
+            return 'Invalid max level index: ' + str(maxLevelIndex)
         targetTrack = -1 or c
         if not -1 <= targetTrack < len(ToontownBattleGlobals.Tracks):
-            return 'Invalid target track index: '  str(targetTrack)
+            return 'Invalid target track index: ' + str(targetTrack)
         if (targetTrack != -1) and (not target.hasTrackAccess(targetTrack)):
-            return "You don't have target track index: "  str(targetTrack)
+            return "You don't have target track index: " + str(targetTrack)
         inventory.NPCMaxOutInv(targetTrack=targetTrack, maxLevelIndex=maxLevelIndex)
         target.b_setInventory(inventory.makeNetString())
         if targetTrack == -1:
             return 'Inventory restocked.'
         else:
-            return 'Inventory restocked for target track index: '  str(targetTrack)
+            return 'Inventory restocked for target track index: ' + str(targetTrack)
     else:
         try:
             targetTrack = int(a)
         except:
             return 'Invalid first argument.'
         if not target.hasTrackAccess(targetTrack):
-            return "You don't have target track index: "  str(targetTrack)
+            return "You don't have target track index: " + str(targetTrack)
         maxLevelIndex = b or 6
         if not 0 <= maxLevelIndex < len(ToontownBattleGlobals.Levels[0]):
-            return 'Invalid max level index: '  str(maxLevelIndex)
+            return 'Invalid max level index: ' + str(maxLevelIndex)
         for _ in xrange(c):
             inventory.addItem(targetTrack, maxLevelIndex)
         target.b_setInventory(inventory.makeNetString())
@@ -4740,10 +4742,10 @@ def dna(part, value):
 
     if part == 'gender':
         if value not in ('m', 'f', 'male', 'female'):
-            return 'Invalid gender: '  value
+            return 'Invalid gender: ' + value
         dna.gender = value[0]
         target.b_setDNAString(dna.makeNetString())
-        return 'Gender set to: '  dna.gender
+        return 'Gender set to: ' + dna.gender
 
     if part in ('head', 'species'):
         speciesNames = (
@@ -4754,18 +4756,18 @@ def dna(part, value):
             speciesIndex = speciesNames.index(value)
             value = ToonDNA.toonSpeciesTypes[speciesIndex]
         if value not in ToonDNA.toonSpeciesTypes:
-            return 'Invalid species: '  value
-        dna.head = value  dna.head[1:3]
+            return 'Invalid species: ' + value
+        dna.head = value + dna.head[1:3]
         target.b_setDNAString(dna.makeNetString())
-        return 'Species set to: '  dna.head[0]
+        return 'Species set to: ' + dna.head[0]
 
     if part == 'headsize':
         sizes = ('ls', 'ss', 'sl', 'll')
         if not 0 <= value <= len(sizes):
-            return 'Invalid head size index: '  str(value)
-        dna.head = dna.head[0]  sizes[value]
+            return 'Invalid head size index: ' + str(value)
+        dna.head = dna.head[0] + sizes[value]
         target.b_setDNAString(dna.makeNetString())
-        return 'Head size index set to: '  dna.head[1:]
+        return 'Head size index set to: ' + dna.head[1:]
 
     if part == 'torso':
         if dna.gender not in ('m', 'f'):
@@ -4777,7 +4779,7 @@ def dna(part, value):
             return 'Female torso index out of range (3-8).'
         dna.torso = ToonDNA.toonTorsoTypes[value]
         target.b_setDNAString(dna.makeNetString())
-        return 'Torso set to: '  dna.torso
+        return 'Torso set to: ' + dna.torso
 
     if part == 'legs':
         value = int(value)
@@ -4785,75 +4787,75 @@ def dna(part, value):
             return 'Legs index out of range (0-%d).' % len(ToonDNA.toonLegTypes)
         dna.legs = ToonDNA.toonLegTypes[value]
         target.b_setDNAString(dna.makeNetString())
-        return 'Legs set to: '  dna.legs
+        return 'Legs set to: ' + dna.legs
 
     if part == 'headcolor':
         if value not in ToonDNA.defaultColorList:
-            return 'Invalid head color index: '  str(value)
+            return 'Invalid head color index: ' + str(value)
         dna.headColor = value
         target.b_setDNAString(dna.makeNetString())
-        return 'Head color index set to: '  str(dna.headColor)
+        return 'Head color index set to: ' + str(dna.headColor)
 
     if part == 'armcolor':
         if value not in ToonDNA.defaultColorList:
-            return 'Invalid arm color index: '  str(value)
+            return 'Invalid arm color index: ' + str(value)
         dna.armColor = value
         target.b_setDNAString(dna.makeNetString())
-        return 'Arm color index set to: '  str(dna.armColor)
+        return 'Arm color index set to: ' + str(dna.armColor)
 
     if part == 'legcolor':
         if value not in ToonDNA.defaultColorList:
-            return 'Invalid leg color index: '  str(value)
+            return 'Invalid leg color index: ' + str(value)
         dna.legColor = value
         target.b_setDNAString(dna.makeNetString())
-        return 'Leg color index set to: '  str(dna.legColor)
+        return 'Leg color index set to: ' + str(dna.legColor)
 
     if part == 'color':
         if (value not in ToonDNA.defaultColorList) and (value != 0x1a) and (value != 0x00):
-            return 'Invalid color index: '  str(value)
+            return 'Invalid color index: ' + str(value)
         if (value == 0x1a) and (dna.getAnimal() != 'cat'):
-            return 'Invalid color index for species: '  dna.getAnimal()
+            return 'Invalid color index for species: ' + dna.getAnimal()
         if (value == 0x00) and (dna.getAnimal() != 'bear'):
-            return 'Invalid color index for species: '  dna.getAnimal()
+            return 'Invalid color index for species: ' + dna.getAnimal()
         dna.headColor = value
         dna.armColor = value
         dna.legColor = value
         target.b_setDNAString(dna.makeNetString())
-        return 'Color index set to: '  str(dna.headColor)
+        return 'Color index set to: ' + str(dna.headColor)
 
     if part == 'gloves':
         value = int(value)
         dna.gloveColor = value
         target.b_setDNAString(dna.makeNetString())
-        return 'Glove color set to: '  str(dna.gloveColor)
+        return 'Glove color set to: ' + str(dna.gloveColor)
 
     if part == 'toptex':
         if not 0 <= value <= len(ToonDNA.Shirts):
             return 'Top texture index out of range (0-%d).' % len(ToonDNA.Shirts)
         dna.topTex = value
         target.b_setDNAString(dna.makeNetString())
-        return 'Top texture index set to: '  str(dna.topTex)
+        return 'Top texture index set to: ' + str(dna.topTex)
 
     if part == 'toptexcolor':
         if not 0 <= value <= len(ToonDNA.ClothesColors):
             return 'Top texture color index out of range(0-%d).' % len(ToonDNA.ClothesColors)
         dna.topTexColor = value
         target.b_setDNAString(dna.makeNetString())
-        return 'Top texture color index set to: '  str(dna.topTexColor)
+        return 'Top texture color index set to: ' + str(dna.topTexColor)
 
     if part == 'sleevetex':
         if not 0 <= value <= len(ToonDNA.Sleeves):
             return 'Sleeve texture index out of range(0-%d).' % len(ToonDNA.Sleeves)
         dna.sleeveTex = value
         target.b_setDNAString(dna.makeNetString())
-        return 'Sleeve texture index set to: '  str(dna.sleeveTex)
+        return 'Sleeve texture index set to: ' + str(dna.sleeveTex)
 
     if part == 'sleevetexcolor':
         if not 0 <= value <= len(ToonDNA.ClothesColors):
             return 'Sleeve texture color index out of range(0-%d).' % len(ToonDNA.ClothesColors)
         dna.sleeveTexColor = value
         target.b_setDNAString(dna.makeNetString())
-        return 'Sleeve texture color index set to: '  str(dna.sleeveTexColor)
+        return 'Sleeve texture color index set to: ' + str(dna.sleeveTexColor)
 
     if part == 'bottex':
         if dna.gender not in ('m', 'f'):
@@ -4866,20 +4868,20 @@ def dna(part, value):
             return 'Bottom texture index out of range (0-%d).' % len(bottoms)
         dna.botTex = value
         target.b_setDNAString(dna.makeNetString())
-        return 'Bottom texture index set to: '  str(dna.botTex)
+        return 'Bottom texture index set to: ' + str(dna.botTex)
 
     if part == 'bottexcolor':
         if not 0 <= value <= len(ToonDNA.ClothesColors):
             return 'Bottom texture color index out of range(0-%d).' % len(ToonDNA.ClothesColors)
         dna.botTexColor = value
         target.b_setDNAString(dna.makeNetString())
-        return 'Bottom texture color index set to: '  str(dna.botTexColor)
+        return 'Bottom texture color index set to: ' + str(dna.botTexColor)
 
     if part == 'show':
         return dna.asNpcTuple() if value else dna.asTuple()
     if part == 'showrandom':
         return NPCToons.getRandomDNA(time.time(), value)
-    return 'Invalid part: '  part
+    return 'Invalid part: ' + part
 
 @magicWord(category=CATEGORY_LEADER, types=[int])
 def trophyScore(value):
@@ -4887,7 +4889,7 @@ def trophyScore(value):
     Modifies the target's trophy score.
     """
     if value < 0:
-        return 'Invalid trophy score: '  str(value)
+        return 'Invalid trophy score: ' + str(value)
     target = spellbook.getTarget()
     simbase.air.trophyMgr.updateTrophyScore(target.doId, value)
     return "%s's trophy score has been set to: %d" % (target.getName(), value)
@@ -4963,23 +4965,23 @@ def suit(command, suitName = 'f'):
     invoker = spellbook.getInvoker()
     command = command.lower()
     if suitName not in SuitDNA.suitHeadTypes:
-        return 'Invalid suit name: '  suitName
+        return 'Invalid suit name: ' + suitName
     suitFullName = SuitBattleGlobals.SuitAttributes[suitName]['name']
     if command == 'spawn':
         returnCode = invoker.doSummonSingleCog(SuitDNA.suitHeadTypes.index(suitName))
         if returnCode[0] == 'success':
-            return 'Successfully spawned: '  suitFullName
-        return "Couldn't spawn: "  suitFullName
+            return 'Successfully spawned: ' + suitFullName
+        return "Couldn't spawn: " + suitFullName
     elif command == 'building':
         returnCode = invoker.doBuildingTakeover(SuitDNA.suitHeadTypes.index(suitName))
         if returnCode[0] == 'success':
-            return 'Successfully spawned a Cog building with: '  suitFullName
-        return "Couldn't spawn a Cog building with: "  suitFullName
+            return 'Successfully spawned a Cog building with: ' + suitFullName
+        return "Couldn't spawn a Cog building with: " + suitFullName
     elif command == 'nobuilding':
         returnCode = invoker.doToonBuildingTakeover()
         if returnCode[0] == 'success':
             return 'Toons took over the cog building!'
-        return "Couldn't allow toons to take over cog building because "  returnCode[1]
+        return "Couldn't allow toons to take over cog building because " + returnCode[1]
     else:
         return 'Invalid command.'
 
@@ -5160,16 +5162,6 @@ def badge(gmId):
     spellbook.getTarget().b_setGM(gmId)
 
     return 'You have set %s to badge type %s' % (spellbook.getTarget().getName(), gmId)
-
-@magicWord(category=CATEGORY_STAFF, types=[int])
-def goto(avIdShort):
-    """ Teleport to the avId specified. """
-    avId = 100000000avIdShort # To get target doId.
-    toon = simbase.air.doId2do.get(avId)
-    if not toon:
-        return "Unable to teleport to target, they are not currently on this district."
-    spellbook.getInvoker().magicWordTeleportRequests.append(avId)
-    toon.sendUpdate('magicTeleportRequest', [spellbook.getInvoker().getDoId()])
 
 @magicWord(category=CATEGORY_STAFF, types=[str, int])
 def exp(track, amt):
