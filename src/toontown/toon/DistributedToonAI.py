@@ -4086,55 +4086,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI,
             self.b_setName(newName)
         return
 
-    def setGMIcon(self, gmType = None):
-        if hasattr(self, 'gmIcon') and self.gmIcon:
-            return
-
-        modelName = 'phase_3.5/models/gui/tt_m_gui_gm_accesslvl_%s.bam'
-        al = (103, 502, 504, 508, 701)
-
-        access = self._gmType
-        if access >= len(al):
-            return
-
-        self.gmIcon = loader.loadModel(modelName % al[access])
-        self.gmIcon.setScale(5.25)
-        np = NodePath(self.nametag.getNameIcon())
-        self.gmIcon.reparentTo(np)
-        self.setTrophyScore(self.trophyScore)
-        self.gmIcon.setZ(-2.5)
-        self.gmIcon.setY(0.0)
-        self.gmIcon.setColor(Vec4(1.0, 1.0, 1.0, 1.0))
-        self.gmIcon.setTransparency(1)
-        self.gmIconInterval = LerpHprInterval(self.gmIcon, 3.0, Point3(0, 0, 0), Point3(-360, 0, 0))
-        self.gmIconInterval.loop()
-
-        self.gmIcon.find('**/gmPartyHat').removeNode()
-
-    def setGMPartyIcon(self):
-        gmType = self._gmType
-        iconInfo = ('phase_3.5/models/gui/tt_m_gui_gm_toonResistance_fist', 'phase_3.5/models/gui/tt_m_gui_gm_toontroop_whistle', 'phase_3.5/models/gui/tt_m_gui_gm_toonResistance_fist', 'phase_3.5/models/gui/tt_m_gui_gm_toontroop_getConnected')
-        if gmType > len(iconInfo) - 1:
-            return
-        self.gmIcon = loader.loadModel(iconInfo[gmType])
-        self.gmIcon.reparentTo(NodePath(self.nametag.getNameIcon()))
-        self.gmIcon.setScale(3.25)
-        self.setTrophyScore(self.trophyScore)
-        self.gmIcon.setZ(1.0)
-        self.gmIcon.setY(0.0)
-        self.gmIcon.setColor(Vec4(1.0, 1.0, 1.0, 1.0))
-        self.gmIcon.setTransparency(1)
-        self.gmIconInterval = LerpHprInterval(self.gmIcon, 3.0, Point3(0, 0, 0), Point3(-360, 0, 0))
-        self.gmIconInterval.loop()
-
-    def removeGMIcon(self):
-        if hasattr(self, 'gmIconInterval') and self.gmIconInterval:
-            self.gmIconInterval.finish()
-            del self.gmIconInterval
-        if hasattr(self, 'gmIcon') and self.gmIcon:
-            self.gmIcon.detachNode()
-            del self.gmIcon
-
     def staticGetLogicalZoneChangeAllEvent(self):
         return 'DOLogicalChangeZone-all'
 

@@ -2527,7 +2527,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             return
 
         modelName = 'phase_3.5/models/gui/tt_m_gui_gm_accesslvl_%s.bam'
-        al = (103, 502, 504, 508, 701)
+        al = (110, 511, 550, 551, 750)
 
         access = self._gmType
         if access >= len(al):
