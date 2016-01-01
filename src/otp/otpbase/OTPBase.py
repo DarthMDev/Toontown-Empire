@@ -132,3 +132,10 @@ def backgroundColor(r=None, g=1, b=1, a=1):
         r, g, b, a = OTPGlobals.DefaultBackgroundColor
     base.setBackgroundColor(Vec4(r, g, b, a))
     return 'The background color has been changed.'
+
+# New command for developers to check game performance ~FordTheWriter
+
+@magicWord(category=CATEGORY_DEVELOPER)
+def fps():
+    'Toggle frame rate meter on or off.'
+    base.setFrameRateMeter(not base.frameRateMeter)
