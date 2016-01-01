@@ -12,7 +12,7 @@ from direct.fsm import ClassicFSM, State
 from direct.distributed import DistributedObject
 import random
 from toontown.suit import SuitDNA
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer, DisplayOptions
 from toontown.distributed import DelayDelete
 from toontown.toon import TTEmote
 from otp.avatar import Emote

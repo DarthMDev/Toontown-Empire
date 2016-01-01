@@ -65,7 +65,7 @@ class FactoryExterior(BattlePlace.BattlePlace):
         dnaStore = DNAStorage()
         dnaFileName = self.genDNAFileName(self.zoneId)
 
-        if not dnaFileName.endswith('13200.dna'):
+        if not dnaFileName.endswith('13200.pdna'):
 
             loadDNAFileAI(dnaStore, dnaFileName)
 
