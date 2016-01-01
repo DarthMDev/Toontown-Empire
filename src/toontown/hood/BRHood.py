@@ -9,11 +9,11 @@ class BRHood(ToonHood):
     ID = ToontownGlobals.TheBrrrgh
     TOWNLOADER_CLASS = BRTownLoader
     SAFEZONELOADER_CLASS = BRSafeZoneLoader
-    STORAGE_DNA = 'phase_8/dna/storage_BR.dna'
+    STORAGE_DNA = 'phase_8/dna/storage_BR.pdna'
     SKY_FILE = 'phase_3.5/models/props/BR_sky'
     SPOOKY_SKY_FILE = 'phase_3.5/models/props/BR_sky'
     TITLE_COLOR = (0.3, 0.6, 1.0, 1.0)
 
     HOLIDAY_DNA = {
-      ToontownGlobals.CHRISTMAS: ['phase_8/dna/winter_storage_BR.dna'],
-      ToontownGlobals.HALLOWEEN: ['phase_8/dna/halloween_props_storage_BR.dna']}
+      ToontownGlobals.CHRISTMAS: ['phase_8/dna/winter_storage_BR.pdna'],
+      ToontownGlobals.HALLOWEEN: ['phase_8/dna/halloween_props_storage_BR.pdna']}

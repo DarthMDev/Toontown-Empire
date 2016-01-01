@@ -709,15 +709,15 @@ class DistributedRace(DistributedObject.DistributedObject):
 
     def loadUrbanTrack(self):
         self.dnaStore = DNAStorage()
-        files = ('phase_4/dna/storage.dna', 'phase_5/dna/storage_town.dna',
-                 'phase_4/dna/storage_TT.dna', 'phase_5/dna/storage_TT_town.dna',
-                 'phase_8/dna/storage_BR.dna', 'phase_8/dna/storage_BR_town.dna',
-                 'phase_8/dna/storage_DL.dna', 'phase_8/dna/storage_DL_town.dna')
+        files = ('phase_4/dna/storage.pdna', 'phase_5/dna/storage_town.pdna',
+                 'phase_4/dna/storage_TT.pdna', 'phase_5/dna/storage_TT_town.pdna',
+                 'phase_8/dna/storage_BR.pdna', 'phase_8/dna/storage_BR_town.pdna',
+                 'phase_8/dna/storage_DL.pdna', 'phase_8/dna/storage_DL_town.pdna')
         dnaBulk = DNABulkLoader(self.dnaStore, files)
         dnaBulk.loadDNAFiles()
-        dnaFile = 'phase_6/dna/urban_track_town.dna'
+        dnaFile = 'phase_6/dna/urban_track_town.pdna'
         if self.trackId in (RaceGlobals.RT_Urban_2, RaceGlobals.RT_Urban_2_rev):
-            dnaFile = 'phase_6/dna/urban_track_town_B.dna'
+            dnaFile = 'phase_6/dna/urban_track_town_B.pdna'
         node = loader.loadDNAFile(self.dnaStore, dnaFile)
         self.geomNode = node
         self.townGeom = self.geom.attachNewNode(node)

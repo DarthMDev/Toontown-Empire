@@ -184,7 +184,7 @@ class TownLoader(StateData.StateData):
 
     def createHood(self, dnaFile, loadStorage = 1):
         if loadStorage:
-            files = ('phase_5/dna/storage_town.dna', self.townStorageDNAFile)
+            files = ('phase_5/dna/storage_town.pdna', self.townStorageDNAFile)
             dnaBulk = DNABulkLoader(self.hood.dnaStore, files)
             dnaBulk.loadDNAFiles()
         node = loader.loadDNAFile(self.hood.dnaStore, dnaFile)
