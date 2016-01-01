@@ -115,6 +115,19 @@ want-dev #f
 want-pstats 0
 
 # Temporary:
-smooth-lag 0.4
 want-old-fireworks #t
 want-mongo-client #t
+
+# Enhancements for game Performance:
+smooth-lag 0.4
+framebuffer-stencil #f
+textures-power-2 none
+gl-force-no-error #t
+gl-force-no-flush #t
+gl-force-no-scissor #t
+texture-magfilter linear
+texture-minfilter linear
+support-threads #t
+gl-immutable-texture-storage #f
+framebuffer-multisample #f
+multisamples 0

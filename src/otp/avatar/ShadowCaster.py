@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-from direct.showbase.ShadowPlacer import ShadowPlacer
+from otp.avatar.ShadowPlacer import ShadowPlacer
 from panda3d.core import NodePath
 from otp.otpbase import OTPGlobals
 def setGlobalDropShadowFlag(flag):
@@ -50,7 +50,7 @@ class ShadowCaster(object):
         dropShadow.flattenMedium()
         dropShadow.setBillboardAxis(2)
         dropShadow.setColor(0.0, 0.0, 0.0, self.globalDropShadowGrayLevel, 1)
-        self.shadowPlacer = ShadowPlacer(base.shadowTrav, dropShadow, OTPGlobals.WallBitmask, OTPGlobals.FloorBitmask)
+        self.shadowPlacer = ShadowPlacer(dropShadow)#(base.shadowTrav, dropShadow, OTPGlobals.WallBitmask, OTPGlobals.FloorBitmask)
         self.dropShadow = dropShadow
         if not self.globalDropShadowFlag:
             self.dropShadow.hide()
