@@ -167,7 +167,7 @@ class Hood(StateData.StateData):
                 toPhrase = StreetNames[ZoneUtil.getCanonicalBranchZone(zoneId)][0]
                 streetName = StreetNames[ZoneUtil.getCanonicalBranchZone(zoneId)][-1]
                 loader.beginBulkLoad('hood', TTLocalizer.HeadingToStreet % {'to': toPhrase,
-                 'street': streetName}, townCountMap[self.id], 1, TTLocalizer.TIP_STREET, zoneId)
+                 'street': streetName}, townCountMap[self.id], 1, TTLocalizer.TIP_STREET)
             self.loadLoader(requestStatus)
             loader.endBulkLoad('hood')
         elif loaderName == 'minigame':
