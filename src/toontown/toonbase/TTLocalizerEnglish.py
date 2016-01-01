@@ -10132,7 +10132,7 @@ TVChooseVideo = 'Choose a video to play!'
 TVOK = 'The video you selected is now playing!'
 TVPacks = ['QuackityHQ']
 
-# Libary name change dialog
+# Libary name change 
 LibaryNameError = "There's been a mixup in paperwork, come back later!"
 NameEnoughBeans = "What do you want your new name to be?" 
 NameNotEnoughBeans = "Sorry, you don't have enough jellybeans."
@@ -10146,7 +10146,7 @@ TeleportLabelOn = 'Accepting teleports.'
 TeleportLabelOff = 'Not accepting teleports.'
 TeleportPanelNoTeleport = '%s wants some time alone right now.'
 
-# True Friends Dialog
+# True Friends 
 
 FriendSecretIntro = "If you are playing Toontown Empire with someone you know in the real world, you can become True Friends.  You can chat using the keyboard with your True Friends.  Other Toons won't understand what you're saying.\n\nYou do this by getting a True Friend Code.  Tell the True Friend Code to your friend, but not to anyone else.  When your friend types in your True Friend Code on his or her screen, you'll be True Friends in Toontown!"
 FriendSecretGetSecret = 'Get a True Friend Code'
@@ -10167,7 +10167,7 @@ FriendSecretEnteredSecretSelf = 'You just typed in your own True Friend Code!'
 FriendSecretTooFast = 'You are redeeming codes too fast! Please wait a few seconds.'
 FriendSecretNowFriends = 'You are now True Friends with %s!'
 
-# AI page dialog
+# AI page 
 
 ShardPagePreferred = 'Preferred'
 ShardPageShardTitle = '%s Population: %s'
