@@ -1,11 +1,14 @@
-import copy, string, os, sys, datetime
+import copy
+import string
+import os
+import sys
+import datetime
 from panda3d.core import loadPrcFileData, WindowProperties
-from direct.directnotify import DirectNotifyGlobal
-
 from otp.otpgui import OTPDialog
-from otp.otpbase import OTPGlobals, OTPRender
+from otp.otpbase import OTPGlobals
+from otp.otpbase import OTPRender
+from direct.directnotify import DirectNotifyGlobal
 from otp.otpbase.Settings import Settings
-
 try:
     import embedded
 except:
