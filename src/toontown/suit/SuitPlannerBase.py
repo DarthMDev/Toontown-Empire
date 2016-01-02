@@ -1,10 +1,9 @@
 from panda3d.core import *
 from direct.directnotify.DirectNotifyGlobal import *
-from toontown.hood import ZoneUtil, HoodUtil
-from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
-from toontown.building import SuitBuildingGlobals
-from toontown.dna.DNAParser import *
-from toontown.dna.DNAInteractiveProp import DNAInteractiveProp
+from src.toontown.hood import ZoneUtil, HoodUtil
+from src.toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
+from src.toontown.building import SuitBuildingGlobals
+from src.toontown.dna.DNAParser import *
 
 class SuitPlannerBase:
     notify = directNotify.newCategory('SuitPlannerBase')
@@ -356,8 +355,8 @@ class SuitPlannerBase:
        9),
       []],
      [10000,
-      3,
-      15,
+      10,
+      25,
       0,
       5,
       15,
@@ -391,7 +390,7 @@ class SuitPlannerBase:
        0,
        0,
        100),
-      (4, 5, 6),
+      (3, 4, 5, 6),
       []],
      [11200,
       10,
@@ -429,7 +428,7 @@ class SuitPlannerBase:
        0,
        100,
        0),
-      (7, 8, 9),
+      (6, 7, 8, 9),
       []],
      [13000,
       10,
@@ -448,7 +447,7 @@ class SuitPlannerBase:
        100,
        0,
        0),
-      (8, 9, 10),
+      (7, 8, 9),
       []]]
     SUIT_HOOD_INFO_ZONE = 0
     SUIT_HOOD_INFO_MIN = 1

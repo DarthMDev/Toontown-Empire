@@ -1,14 +1,14 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
-from otp.nametag import NametagGlobals
+from src.otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
+from src.otp.nametag import NametagGlobals
 from panda3d.core import *
-from toontown.battle import BattlePlace
-from toontown.building import Elevator
-from toontown.dna.DNAParser import loadDNAFileAI, DNAStorage
-from toontown.hood import ZoneUtil
-from toontown.toonbase import ToontownGlobals
+from src.toontown.battle import BattlePlace
+from src.toontown.building import Elevator
+from src.toontown.dna.DNAParser import loadDNAFileAI, DNAStorage
+from src.toontown.hood import ZoneUtil
+from src.toontown.toonbase import ToontownGlobals
 
 
 class FactoryExterior(BattlePlace.BattlePlace):
@@ -43,8 +43,8 @@ class FactoryExterior(BattlePlace.BattlePlace):
          State.State('battle', self.enterBattle, self.exitBattle, ['walk', 'teleportOut', 'died']),
          State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk']),
          State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn', 'final', 'WaitForBattle']),
-         State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk', 'stopped']),
-         State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['walk', 'stopped']),
+         State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk']),
+         State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['walk']),
          State.State('died', self.enterDied, self.exitDied, ['quietZone']),
          State.State('tunnelIn', self.enterTunnelIn, self.exitTunnelIn, ['walk']),
          State.State('tunnelOut', self.enterTunnelOut, self.exitTunnelOut, ['final']),

@@ -1,11 +1,11 @@
-from toontown.toonbase import ToontownGlobals
-from toontown.coghq import DistributedLevelBattleAI
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.coghq import DistributedLevelBattleAI
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import State
 from direct.fsm import ClassicFSM, State
-from toontown.battle.BattleBase import *
+from src.toontown.battle.BattleBase import *
 import CogDisguiseGlobals
-from toontown.toonbase.ToontownBattleGlobals import getMintCreditMultiplier
+from src.toontown.toonbase.ToontownBattleGlobals import getMintCreditMultiplier
 from direct.showbase.PythonUtil import addListsByValue
 
 class DistributedMintBattleAI(DistributedLevelBattleAI.DistributedLevelBattleAI):
@@ -28,12 +28,11 @@ class DistributedMintBattleAI(DistributedLevelBattleAI.DistributedLevelBattleAI)
         amount = ToontownGlobals.MintCogBuckRewards[self.level.mintId]
         index = ToontownGlobals.cogHQZoneId2deptIndex(self.level.mintId)
         extraMerits[index] = amount
-        self.handleCrateReward(toons)
         for toon in toons:
             recovered, notRecovered = self.air.questManager.recoverItems(toon, self.suitsKilled, self.getTaskZoneId())
             self.toonItems[toon.doId][0].extend(recovered)
             self.toonItems[toon.doId][1].extend(notRecovered)
-            meritArray = self.air.promotionMgr.recoverMerits(toon, self.suitsKilled, self.getTaskZoneId(), getMintCreditMultiplier(self.getTaskZoneId()) * 2.0, extraMerits=extraMerits, addInvasion=False)
+            meritArray = self.air.promotionMgr.recoverMerits(toon, self.suitsKilled, self.getTaskZoneId(), getMintCreditMultiplier(self.getTaskZoneId()), extraMerits=extraMerits)
             if toon.doId in self.helpfulToons:
                 self.toonMerits[toon.doId] = addListsByValue(self.toonMerits[toon.doId], meritArray)
             else:

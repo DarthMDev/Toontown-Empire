@@ -3,7 +3,7 @@ from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from otp.level import BasicEntities
+from src.otp.level import BasicEntities
 import MovingPlatform
 from direct.distributed import DistributedObject
 import SinkingPlatformGlobals

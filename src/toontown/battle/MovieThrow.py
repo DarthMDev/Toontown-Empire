@@ -3,8 +3,8 @@ from direct.interval.IntervalGlobal import *
 from BattleBase import *
 from BattleProps import *
 from BattleSounds import *
-from toontown.toon.ToonDNA import *
-from toontown.suit.SuitDNA import *
+from src.toontown.toon.ToonDNA import *
+from src.toontown.suit.SuitDNA import *
 from direct.directnotify import DirectNotifyGlobal
 import random
 import MovieCamera

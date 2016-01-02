@@ -1,7 +1,5 @@
 from direct.particles import Particles, ForceGroup
 from panda3d.core import *
-from panda3d.physics import BaseParticleRenderer, LinearSinkForce, BaseParticleEmitter
-from panda3d.physics import LinearJitterForce, LinearDistanceForce, LinearVectorForce
 
 ParticleTable = {}
 

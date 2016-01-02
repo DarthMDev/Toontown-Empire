@@ -1,7 +1,7 @@
 from panda3d.core import *
 from direct.actor import Actor
 from direct.directnotify import DirectNotifyGlobal
-from otp.otpbase import OTPGlobals
+from src.otp.otpbase import OTPGlobals
 import random
 Props = ((5, 'partyBall', 'partyBall'),
  (5,

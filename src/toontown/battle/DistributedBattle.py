@@ -6,11 +6,11 @@ import random
 from BattleBase import *
 import DistributedBattleBase
 import SuitBattleGlobals
-from otp.avatar import Emote
-from toontown.distributed import DelayDelete
-from toontown.toonbase import ToontownBattleGlobals
-from otp.nametag.NametagConstants import *
-from otp.nametag import NametagGlobals
+from src.otp.avatar import Emote
+from src.toontown.distributed import DelayDelete
+from src.toontown.toonbase import ToontownBattleGlobals
+from src.otp.nametag.NametagConstants import *
+from src.otp.nametag import NametagGlobals
 
 
 class DistributedBattle(DistributedBattleBase.DistributedBattleBase):

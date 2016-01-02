@@ -1,13 +1,13 @@
 from BattleBase import *
 from DistributedBattleAI import *
-from toontown.toonbase.ToontownBattleGlobals import *
+from src.toontown.toonbase.ToontownBattleGlobals import *
 import random
-from toontown.suit import DistributedSuitBaseAI
+from src.toontown.suit import DistributedSuitBaseAI
 import SuitBattleGlobals
 import BattleExperienceAI
-from toontown.toon import NPCToons
-from toontown.pets import PetTricks
-from toontown.hood import ZoneUtil
+from src.toontown.toon import NPCToons
+from src.toontown.pets import PetTricks
+from src.toontown.hood import ZoneUtil
 from direct.showbase.PythonUtil import lerp
 import sys
 
@@ -156,7 +156,6 @@ class BattleCalculatorAI:
         else:
             randChoice = random.randint(0, 99)
         propAcc = AvPropAccuracy[atkTrack][atkLevel]
-        propAcc = min(propAcc * 1.3, 100)
         if atkTrack == LURE:
             treebonus = self.__toonCheckGagBonus(attack[TOON_ID_COL], atkTrack, atkLevel)
             propBonus = self.__checkPropBonus(atkTrack)
@@ -722,7 +721,7 @@ class BattleCalculatorAI:
                  0,
                  0]
                 self.toonSkillPtsGained[id] = expList
-            expList[trk] = min(ExperienceCap, expList[trk] + (lvl + 1) * self.__skillCreditMultiplier)
+            expList[trk] = expList[trk] + (lvl + 1) * self.__skillCreditMultiplier
         return
 
     def __clearTgtDied(self, tgt, lastAtk, currAtk):

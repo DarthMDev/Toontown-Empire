@@ -1,17 +1,17 @@
 from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from toontown.coghq import DistributedCashbotBossCraneAI
-from toontown.coghq import DistributedCashbotBossSafeAI
-from toontown.suit import DistributedCashbotBossGoonAI
-from toontown.coghq import DistributedCashbotBossTreasureAI
-from toontown.battle import BattleExperienceAI
-from toontown.chat import ResistanceChat
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.coghq import DistributedCashbotBossCraneAI
+from src.toontown.coghq import DistributedCashbotBossSafeAI
+from src.toontown.suit import DistributedCashbotBossGoonAI
+from src.toontown.coghq import DistributedCashbotBossTreasureAI
+from src.toontown.battle import BattleExperienceAI
+from src.toontown.chat import ResistanceChat
 from direct.fsm import FSM
 import DistributedBossCogAI
 import SuitDNA
 import random
-from otp.ai.MagicWordGlobal import *
+from src.otp.ai.MagicWordGlobal import *
 import math
 
 class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM):
@@ -143,18 +143,10 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         return
 
     def doNextAttack(self, task):
-        if random.random() <= 0.2:
-            self.b_setAttackCode(ToontownGlobals.BossCogAreaAttack)
-            taskMgr.doMethodLater(7.36, self.__reviveGoons, self.uniqueName('reviveGoons'))
-        else:
-            self.__doDirectedAttack()
-            if self.heldObject == None and not self.waitingForHelmet:
-                self.waitForNextHelmet()
-    
-    def __reviveGoons(self, task):
-        for goon in self.goons:
-            if goon.state == 'Stunned':
-                goon.request('Recovery')
+        self.__doDirectedAttack()
+        if self.heldObject == None and not self.waitingForHelmet:
+            self.waitForNextHelmet()
+        return
 
     def __doDirectedAttack(self):
         if self.toonsToAttack:
@@ -175,6 +167,7 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
             self.toonsToAttack.append(avId)
 
     def makeTreasure(self, goon):
+        return
         if self.state != 'BattleThree':
             return
         pos = goon.getPos(self)
@@ -292,7 +285,6 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
     def stopGoons(self):
         taskName = self.uniqueName('NextGoon')
         taskMgr.remove(taskName)
-        taskMgr.remove(self.uniqueName('reviveGoons'))
 
     def doNextGoon(self, task):
         if self.attackCode != ToontownGlobals.BossCogDizzy:
@@ -471,7 +463,6 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
          'isSupervisor': 0,
          'isVirtual': 0,
          'activeToons': self.involvedToons[:]})
-        self.addStats()
         self.barrier = self.beginBarrier('Victory', self.involvedToons, 30, self.__doneVictory)
         return
 
@@ -493,7 +484,7 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         self.d_setRewardId(self.rewardId)
 
 
-@magicWord(category=CATEGORY_LEADER)
+@magicWord(category=CATEGORY_ADMINISTRATOR)
 def restartCraneRound():
     """
     Restarts the crane round in the CFO.
@@ -513,7 +504,7 @@ def restartCraneRound():
     return 'Restarting the crane round...'
 
 
-@magicWord(category=CATEGORY_LEADER)
+@magicWord(category=CATEGORY_ADMINISTRATOR)
 def skipCFO():
     """
     Skips to the final round of the CFO.
@@ -533,7 +524,7 @@ def skipCFO():
     boss.b_setState('PrepareBattleThree')
     return 'Skipping the first round...'
 
-@magicWord(category=CATEGORY_LEADER)
+@magicWord(category=CATEGORY_ADMINISTRATOR)
 def killCFO():
     """
     Kills the CFO.

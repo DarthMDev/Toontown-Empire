@@ -10,11 +10,11 @@ from BattleSounds import *
 import MovieCamera
 import MovieNPCSOS
 import MovieUtil
-from otp.nametag.NametagConstants import *
-from toontown.effects import Splash
-from toontown.toon import NPCToons
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase.ToontownBattleGlobals import AvPropDamage
+from src.otp.nametag.NametagConstants import *
+from src.toontown.effects import Splash
+from src.toontown.toon import NPCToons
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase.ToontownBattleGlobals import AvPropDamage
 
 
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieHeal')

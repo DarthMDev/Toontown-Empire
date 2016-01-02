@@ -1,10 +1,10 @@
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM
 import DistributedCogHQDoor
-from toontown.hood import ZoneUtil
+from src.toontown.hood import ZoneUtil
 from BossLobbyGui import BossLobbyGui
 
 class DistributedCogHQExteriorDoor(DistributedCogHQDoor.DistributedCogHQDoor):

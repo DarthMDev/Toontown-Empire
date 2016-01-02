@@ -1,7 +1,7 @@
 from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-from otp.level import BasicEntities
-from toontown.toonbase import ToontownGlobals
+from src.otp.level import BasicEntities
+from src.toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 
 class BattleBlocker(BasicEntities.DistributedNodePathEntity):

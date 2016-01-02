@@ -1,5 +1,5 @@
 from direct.interval.IntervalGlobal import *
-from otp.level import BasicEntities
+from src.otp.level import BasicEntities
 import MovingPlatform
 from pandac.PandaModules import Vec3
 

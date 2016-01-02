@@ -4,14 +4,14 @@ from StomperGlobals import *
 from direct.distributed import ClockDelta
 from direct.showbase.PythonUtil import lerp
 import math
-from otp.level import DistributedEntity
+from src.otp.level import DistributedEntity
 from direct.directnotify import DirectNotifyGlobal
 from pandac.PandaModules import NodePath
-from otp.level import BasicEntities
+from src.otp.level import BasicEntities
 from direct.task import Task
-from toontown.toonbase import ToontownGlobals
-from toontown.coghq import BattleBlocker
-from toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.coghq import BattleBlocker
+from src.toontown.toonbase import TTLocalizer
 import random
 
 class DistributedLaserField(BattleBlocker.BattleBlocker):

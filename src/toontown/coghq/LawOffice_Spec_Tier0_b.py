@@ -1,4 +1,4 @@
-from toontown.coghq.SpecImports import *
+from src.toontown.coghq.SpecImports import *
 
 
 GlobalEntities = {

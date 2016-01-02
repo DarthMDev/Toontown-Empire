@@ -1,18 +1,18 @@
 from direct.directnotify import DirectNotifyGlobal
-from toontown.battle import BattlePlace
+from src.toontown.battle import BattlePlace
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.showbase import BulletinBoardWatcher
 from panda3d.core import *
-from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
-from toontown.toon import Toon
-from toontown.toonbase import ToontownGlobals
-from toontown.hood import ZoneUtil
-from toontown.toonbase import TTLocalizer
-from toontown.toontowngui import TTDialog
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.coghq import DistributedMint
-from otp.nametag import NametagGlobals
+from src.otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
+from src.toontown.toon import Toon
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.hood import ZoneUtil
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toontowngui import TTDialog
+from src.toontown.toonbase import ToontownBattleGlobals
+from src.toontown.coghq import DistributedMint
+from src.otp.nametag import NametagGlobals
 
 class MintInterior(BattlePlace.BattlePlace):
     notify = DirectNotifyGlobal.directNotify.newCategory('MintInterior')
@@ -63,7 +63,7 @@ class MintInterior(BattlePlace.BattlePlace):
     def load(self):
         self.parentFSM.getStateNamed('mintInterior').addChild(self.fsm)
         BattlePlace.BattlePlace.load(self)
-        self.music = base.loadMusic('phase_9/audio/bgm/CBHQ_Mint_bg.ogg')
+        self.music = base.loadMusic('phase_9/audio/bgm/CHQ_FACT_bg.ogg')
 
     def unload(self):
         self.parentFSM.getStateNamed('mintInterior').removeChild(self.fsm)

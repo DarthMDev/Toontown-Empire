@@ -1,4 +1,4 @@
-from otp.level import DistributedEntityAI
+from src.otp.level import DistributedEntityAI
 import DistributedBarrelBaseAI
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import globalClockDelta

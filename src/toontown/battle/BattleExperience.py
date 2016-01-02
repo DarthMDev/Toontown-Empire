@@ -1,4 +1,4 @@
-from toontown.toonbase import ToontownBattleGlobals
+from src.toontown.toonbase import ToontownBattleGlobals
 
 def genRewardDicts(entries):
     toonRewardDicts = []

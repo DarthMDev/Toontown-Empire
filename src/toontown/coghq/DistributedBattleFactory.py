@@ -1,18 +1,18 @@
 from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-from toontown.battle.BattleBase import *
-from toontown.coghq import DistributedLevelBattle
+from src.toontown.battle.BattleBase import *
+from src.toontown.coghq import DistributedLevelBattle
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toon import TTEmote
-from otp.avatar import Emote
-from toontown.battle import SuitBattleGlobals
+from src.toontown.toon import TTEmote
+from src.otp.avatar import Emote
+from src.toontown.battle import SuitBattleGlobals
 import random
-from toontown.suit import SuitDNA
+from src.toontown.suit import SuitDNA
 from direct.fsm import State
 from direct.fsm import ClassicFSM, State
-from toontown.toonbase import ToontownGlobals
-from otp.nametag.NametagConstants import *
-from otp.nametag import NametagGlobals
+from src.toontown.toonbase import ToontownGlobals
+from src.otp.nametag.NametagConstants import *
+from src.otp.nametag import NametagGlobals
 
 class DistributedBattleFactory(DistributedLevelBattle.DistributedLevelBattle):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattleFactory')

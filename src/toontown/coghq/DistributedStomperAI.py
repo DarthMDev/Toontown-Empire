@@ -1,10 +1,10 @@
-from otp.ai.AIBase import *
+from src.otp.ai.AIBase import *
 from direct.interval.IntervalGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 import DistributedCrusherEntityAI
 import StomperGlobals
 from direct.distributed import ClockDelta
-from toontown.coghq import CrusherCellAI
+from src.toontown.coghq import CrusherCellAI
 
 class DistributedStomperAI(DistributedCrusherEntityAI.DistributedCrusherEntityAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedStomperAI')

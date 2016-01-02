@@ -9,14 +9,14 @@ from BattleBase import *
 import DistributedBattleBase
 import MovieUtil
 import SuitBattleGlobals
-from otp.avatar import Emote
-from otp.nametag.NametagConstants import *
-from otp.nametag import NametagGlobals
-from toontown.suit import Suit
-from toontown.suit import SuitDNA
-from toontown.toon import TTEmote
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from src.otp.avatar import Emote
+from src.otp.nametag.NametagConstants import *
+from src.otp.nametag import NametagGlobals
+from src.toontown.suit import Suit
+from src.toontown.suit import SuitDNA
+from src.toontown.toon import TTEmote
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
 
 
 class DistributedBattleBldg(DistributedBattleBase.DistributedBattleBase):

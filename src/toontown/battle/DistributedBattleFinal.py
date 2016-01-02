@@ -9,11 +9,11 @@ from BattleBase import *
 import DistributedBattleBase
 import MovieUtil
 import SuitBattleGlobals
-from toontown.distributed import DelayDelete
-from otp.nametag.NametagConstants import *
-from otp.nametag import NametagGlobals
-from toontown.suit import Suit
-from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals, TTLocalizer
+from src.toontown.distributed import DelayDelete
+from src.otp.nametag.NametagConstants import *
+from src.otp.nametag import NametagGlobals
+from src.toontown.suit import Suit
+from src.toontown.toonbase import ToontownBattleGlobals, ToontownGlobals, TTLocalizer
 
 class DistributedBattleFinal(DistributedBattleBase.DistributedBattleBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattleFinal')

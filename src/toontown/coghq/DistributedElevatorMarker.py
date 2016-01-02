@@ -4,12 +4,12 @@ from StomperGlobals import *
 from direct.distributed import ClockDelta
 from direct.showbase.PythonUtil import lerp
 import math
-from otp.level import DistributedEntity
+from src.otp.level import DistributedEntity
 from direct.directnotify import DirectNotifyGlobal
 from pandac.PandaModules import NodePath
-from otp.level import BasicEntities
+from src.otp.level import BasicEntities
 from direct.task import Task
-from toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase import ToontownGlobals
 
 class DistributedElevatorMarker(BasicEntities.DistributedNodePathEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedElevatorMarker')

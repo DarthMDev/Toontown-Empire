@@ -1,9 +1,9 @@
 from panda3d.core import *
-from toontown.toonbase.ToonBaseGlobal import *
+from src.toontown.toonbase.ToonBaseGlobal import *
 from direct.interval.IntervalGlobal import *
 from BattleBase import *
 from direct.distributed.ClockDelta import *
-from toontown.toonbase import ToontownBattleGlobals
+from src.toontown.toonbase import ToontownBattleGlobals
 from direct.distributed import DistributedNode
 from direct.fsm import ClassicFSM
 from direct.fsm import State
@@ -11,17 +11,17 @@ from direct.task.Task import Task
 from direct.directnotify import DirectNotifyGlobal
 import Movie
 import MovieUtil
-from toontown.suit import Suit
+from src.toontown.suit import Suit
 from direct.actor import Actor
 import BattleProps
 from direct.particles import ParticleEffect
 import BattleParticles
-from toontown.hood import ZoneUtil
-from toontown.distributed import DelayDelete
-from toontown.toon import TTEmote
-from otp.avatar import Emote
-from otp.nametag.NametagConstants import *
-from otp.nametag import NametagGlobals
+from src.toontown.hood import ZoneUtil
+from src.toontown.distributed import DelayDelete
+from src.toontown.toon import TTEmote
+from src.otp.avatar import Emote
+from src.otp.nametag.NametagConstants import *
+from src.otp.nametag import NametagGlobals
 
 
 class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):

@@ -1,10 +1,9 @@
-from toontown.battle import DistributedBattleAI
-from toontown.battle import DistributedBattleBaseAI
-from toontown.catalog import CatalogFurnitureItem
+from src.toontown.battle import DistributedBattleAI
+from src.toontown.battle import DistributedBattleBaseAI
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import State
 from direct.fsm import ClassicFSM
-from toontown.battle.BattleBase import *
+from src.toontown.battle.BattleBase import *
 import CogDisguiseGlobals
 from direct.showbase.PythonUtil import addListsByValue
 
@@ -97,16 +96,6 @@ class DistributedLevelBattleAI(DistributedBattleAI.DistributedBattleAI):
 
     def handleToonsWon(self, toons):
         pass
-    
-    def handleCrateReward(self, toons):
-        if not (config.GetBool('get-crate-reward-always', False) or random.random() <= 0.25):
-            return
-        
-        self.sendUpdate('announceCrateReward')
-        item = CatalogFurnitureItem.CatalogFurnitureItem(10040)
-
-        for toon in toons:
-            toon.addToDeliverySchedule(item)
 
     def enterFaceOff(self):
         self.notify.debug('DistributedLevelBattleAI.enterFaceOff()')

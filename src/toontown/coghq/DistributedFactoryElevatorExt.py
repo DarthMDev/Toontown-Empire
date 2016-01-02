@@ -1,15 +1,15 @@
 from panda3d.core import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
-from toontown.building.ElevatorConstants import *
-from toontown.building.ElevatorUtils import *
-from toontown.building import DistributedElevatorExt
-from toontown.building import DistributedElevator
-from toontown.toonbase import ToontownGlobals
+from src.toontown.building.ElevatorConstants import *
+from src.toontown.building.ElevatorUtils import *
+from src.toontown.building import DistributedElevatorExt
+from src.toontown.building import DistributedElevator
+from src.toontown.toonbase import ToontownGlobals
 from direct.fsm import ClassicFSM
 from direct.fsm import State
-from toontown.hood import ZoneUtil
-from toontown.toonbase import TTLocalizer
+from src.toontown.hood import ZoneUtil
+from src.toontown.toonbase import TTLocalizer
 
 class DistributedFactoryElevatorExt(DistributedElevatorExt.DistributedElevatorExt):
 
@@ -31,7 +31,7 @@ class DistributedFactoryElevatorExt(DistributedElevatorExt.DistributedElevatorEx
         elif self.entranceId == 1:
             self.elevatorModel.setPosHpr(-162.25, 26.43, 0.0, 269.0, 0.0, 0.0)
         elif self.entranceId == 2 and base.config.GetBool('want-megacorp', True):
-            self.elevatorModel.setPosHpr(64.793, -2.34, 0.0, -900.0, 0.0, 0.0)
+            self.elevatorModel.setPosHpr(-21.181, -74.6196, 0.0, 2.0, 0.0, 0.0)
         else:
             self.notify.error('Invalid entranceId: %s' % entranceId)
 

@@ -1,9 +1,9 @@
-from otp.ai.AIBaseGlobal import *
+from src.otp.ai.AIBaseGlobal import *
 from direct.directnotify import DirectNotifyGlobal
-from toontown.battle import SuitBattleGlobals
+from src.toontown.battle import SuitBattleGlobals
 import DistributedGoonAI
 from direct.task.Task import Task
-from toontown.coghq import DistributedCrushableEntityAI
+from src.toontown.coghq import DistributedCrushableEntityAI
 import random
 
 class DistributedGridGoonAI(DistributedGoonAI.DistributedGoonAI):

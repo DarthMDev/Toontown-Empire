@@ -1,5 +1,5 @@
 from direct.distributed.ClockDelta import *
-from otp.level import DistributedEntityAI
+from src.otp.level import DistributedEntityAI
 from direct.directnotify import DirectNotifyGlobal
 from direct.task import Task
 from direct.fsm import ClassicFSM, State

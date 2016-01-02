@@ -4,8 +4,8 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.directnotify import DirectNotifyGlobal
 import DistributedSuitBase
-from toontown.toonbase import ToontownGlobals
-from toontown.battle import MovieUtil
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.battle import MovieUtil
 
 class DistributedLawbotBossSuit(DistributedSuitBase.DistributedSuitBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLawbotBossSuit')

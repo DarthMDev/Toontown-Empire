@@ -6,8 +6,8 @@ import MovieCamera
 from direct.directnotify import DirectNotifyGlobal
 import types
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieToonVictory')
-from otp.nametag.NametagConstants import *
-from otp.nametag import NametagGlobals
+from src.otp.nametag.NametagConstants import *
+from src.otp.nametag import NametagGlobals
 
 def __findToonReward(rewards, toon):
     for r in rewards:

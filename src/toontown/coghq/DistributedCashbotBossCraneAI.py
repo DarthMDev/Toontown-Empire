@@ -1,7 +1,7 @@
 from panda3d.core import *
 from direct.distributed import DistributedObjectAI
-from toontown.toonbase import ToontownGlobals
-from otp.otpbase import OTPGlobals
+from src.toontown.toonbase import ToontownGlobals
+from src.otp.otpbase import OTPGlobals
 from direct.fsm import FSM
 
 class DistributedCashbotBossCraneAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM):

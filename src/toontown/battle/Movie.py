@@ -24,15 +24,15 @@ import MovieUtil
 import PlayByPlayText
 import RewardPanel
 from SuitBattleGlobals import *
-from toontown.distributed import DelayDelete
-from toontown.toon import NPCToons
-from toontown.toon import Toon
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase.ToontownBattleGlobals import *
-from toontown.toontowngui import TTDialog
-from otp.nametag.NametagConstants import *
-from otp.nametag.NametagGroup import *
+from src.toontown.distributed import DelayDelete
+from src.toontown.toon import NPCToons
+from src.toontown.toon import Toon
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownGlobals
+from src.toontown.toonbase.ToontownBattleGlobals import *
+from src.toontown.toontowngui import TTDialog
+from src.otp.nametag.NametagConstants import *
+from src.otp.nametag.NametagGroup import *
 
 
 camPos = Point3(14, 0, 10)
@@ -306,53 +306,38 @@ class Movie(DirectObject.DirectObject):
         self.playTutorialReward_1(None, self.toonRewardDicts[0]['earnedExp'])
 
     def playTutorialReward_1(self, result, earnedXp, tutTrack=0):
-        if self.tutRewardDialog:
-            self.tutRewardDialog.cleanup()
-        elif tutTrack >= len(earnedXp):
-            self.playTutorialReward_2()
-            return
+        self.tutRewardDialog_1 = TTDialog.TTDialog(text=TTLocalizer.MovieTutorialReward1 % TTLocalizer.BattleGlobalTracks[base.localAvatar.getFirstTrackPicked()].capitalize(),
+		command=self.playTutorialReward_2, style=TTDialog.Acknowledge, fadeScreen=None, pos=(0.65, 0, 0.5), scale=0.8)
+        self.tutRewardDialog_1.hide()
+        self._deleteTrack()
+        self.track = Sequence(name='tutorial-reward-1')
+        self.track.append(Func(self.rewardPanel.initGagFrame, base.localAvatar, [0,
+         0,
+         0,
+         0,
+         0,
+         0,
+         0], [0,
+         0,
+         0,
+         0], noSkip=True))
+        self.track += self.rewardPanel.getTrackIntervalList(base.localAvatar, base.localAvatar.getFirstTrackPicked(), 0, 1, 0)
+        self.track.append(Func(self.tutRewardDialog_1.show))
+        self.track.start()
+        return
 
-        xp = earnedXp[tutTrack]
-
-        if xp > 0:
-            self.tutRewardDialog = TTDialog.TTDialog(text=TTLocalizer.MovieTutorialReward1 % (xp, TTLocalizer.BattleGlobalTracks[tutTrack].capitalize()), command=self.playTutorialReward_1, extraArgs=[earnedXp, tutTrack + 1], style=TTDialog.Acknowledge, fadeScreen=None, pos=(0.65, 0, 0.5), scale=0.8)
-            sequence = Sequence()
-            sequence += self.rewardPanel.getTrackIntervalList(base.localAvatar, tutTrack, 0, xp, 0)
-            sequence.start()
-        else:
-            self.playTutorialReward_1(None, earnedXp, tutTrack + 1)
-
-    def playTutorialReward_2(self, value=None):
-        from toontown.toon import Toon
-        from toontown.toon import ToonDNA
-
-        def doneChat1(page, elapsed = 0):
-            self.track2.start()
-
-        def doneChat2(elapsed):
-            self.track2.pause()
-            self.track3.start()
-
-        def uniqueName(hook):
-            return 'TutorialTom-' + hook
-
-        self.tutorialTom = Toon.Toon()
-        dna = ToonDNA.ToonDNA()
-        dna.newToonFromProperties(*('dls', 'ms', 'm', 'm', 7, 0, 7, 7, 2, 6, 2, 6, 2, 16))
-        self.tutorialTom.setDNA(dna)
-        self.tutorialTom.setName(TTLocalizer.NPCToonNames[20000])
-        self.tutorialTom.setPickable(0)
-        self.tutorialTom.setPlayerType(NametagGroup.CCNonPlayer)
-        self.tutorialTom.uniqueName = uniqueName
-        self.musicVolume = 0.9
-        music = base.cr.playGame.place.loader.battleMusic
-        if self.questList:
-            self.track1 = Sequence(Wait(1.0), Func(self.rewardPanel.initQuestFrame, base.localAvatar, copy.deepcopy(base.localAvatar.quests)), Wait(1.0), Sequence(*self.questList), Wait(1.0), Func(self.rewardPanel.hide), Func(camera.setPosHpr, render, 34, 19.88, 3.48, -90, -2.36, 0), Func(base.localAvatar.animFSM.request, 'neutral'), Func(base.localAvatar.setPosHpr, 40.31, 22.0, -0.47, 150.0, 360.0, 0.0), Wait(0.5), Func(self.tutorialTom.reparentTo, render), Func(self.tutorialTom.show), Func(self.tutorialTom.setPosHpr, 40.29, 17.9, -0.47, 11.31, 0.0, 0.07), Func(self.tutorialTom.animFSM.request, 'TeleportIn'), Wait(1.517), Func(self.tutorialTom.animFSM.request, 'neutral'), Func(self.acceptOnce, self.tutorialTom.uniqueName('doneChatPage'), doneChat1), Func(self.tutorialTom.addActive), Func(music.setVolume, self.musicVolume), Func(self.tutorialTom.setLocalPageChat, TTLocalizer.MovieTutorialReward3, 0, None, [None]), name='tutorial-reward-3a')
-            self.track2 = Sequence(Func(self.acceptOnce, self.tutorialTom.uniqueName('doneChatPage'), doneChat2), Func(self.tutorialTom.setLocalPageChat, TTLocalizer.MovieTutorialReward4, 1, None, [None]), Func(self.tutorialTom.setPlayRate, 1.5, 'right-hand-start'), Func(self.tutorialTom.play, 'right-hand-start'), Wait(self.tutorialTom.getDuration('right-hand-start') / 1.5), Func(self.tutorialTom.loop, 'right-hand'), name='tutorial-reward-3b')
-            self.track3 = Parallel(Sequence(Func(self.tutorialTom.setPlayRate, -1.8, 'right-hand-start'), Func(self.tutorialTom.play, 'right-hand-start'), Wait(self.tutorialTom.getDuration('right-hand-start') / 1.8), Func(self.tutorialTom.animFSM.request, 'neutral'), name='tutorial-reward-3ca'), Sequence(Wait(0.5), Func(self.tutorialTom.setChatAbsolute, TTLocalizer.MovieTutorialReward5, CFSpeech | CFTimeout), Wait(1.0), Func(self.tutorialTom.animFSM.request, 'TeleportOut'), Wait(self.tutorialTom.getDuration('teleport')), Wait(1.0), Func(self.playTutorialReward_3, 0), name='tutorial-reward-3cb'), name='tutorial-reward-3c')
-            self.track1.start()
-        else:
-            self.playTutorialReward_3()
+    def playTutorialReward_2(self, value):
+        self.tutRewardDialog_1.cleanup()
+        self.tutRewardDialog_2 = TTDialog.TTDialog(text=TTLocalizer.MovieTutorialReward1 % TTLocalizer.BattleGlobalTracks[base.localAvatar.getSecondTrackPicked()].capitalize(),
+		command=self.playTutorialReward_3, style=TTDialog.Acknowledge, fadeScreen=None, pos=(0.65, 0, 0.5), scale=0.8)
+        self.tutRewardDialog_2.hide()
+        self._deleteTrack()
+        self.track = Sequence(name='tutorial-reward-2')
+        self.track.append(Wait(1.0))
+        self.track += self.rewardPanel.getTrackIntervalList(base.localAvatar,  base.localAvatar.getSecondTrackPicked(), 0, 1, 0)
+        self.track.append(Func(self.tutRewardDialog_2.show))
+        self.track.start()
+        return
 
     def playTutorialReward_3(self, value=None):
         base.localAvatar.setH(270)

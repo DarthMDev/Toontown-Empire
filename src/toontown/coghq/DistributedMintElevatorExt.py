@@ -1,16 +1,16 @@
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
-from toontown.building.ElevatorConstants import *
-from toontown.building.ElevatorUtils import *
-from toontown.building import DistributedElevatorExt
-from toontown.building import DistributedElevator
-from toontown.toonbase import ToontownGlobals
+from src.toontown.building.ElevatorConstants import *
+from src.toontown.building.ElevatorUtils import *
+from src.toontown.building import DistributedElevatorExt
+from src.toontown.building import DistributedElevator
+from src.toontown.toonbase import ToontownGlobals
 from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.gui import DirectGui
-from toontown.hood import ZoneUtil
-from toontown.toonbase import TTLocalizer
-from toontown.toontowngui import TTDialog
+from src.toontown.hood import ZoneUtil
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toontowngui import TTDialog
 import CogDisguiseGlobals
 
 class DistributedMintElevatorExt(DistributedElevatorExt.DistributedElevatorExt):

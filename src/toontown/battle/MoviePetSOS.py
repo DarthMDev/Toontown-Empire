@@ -7,10 +7,10 @@ from BattleProps import *
 from BattleSounds import *
 import MovieCamera
 import MovieUtil
-from otp.nametag.NametagConstants import *
-from toontown.pets import Pet, PetTricks
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownBattleGlobals
+from src.otp.nametag.NametagConstants import *
+from src.toontown.pets import Pet, PetTricks
+from src.toontown.toonbase import TTLocalizer
+from src.toontown.toonbase import ToontownBattleGlobals
 
 
 notify = DirectNotifyGlobal.directNotify.newCategory('MoviePetSOS')
@@ -32,14 +32,18 @@ def doPetSOSs(PetSOSs):
     return (track, camTrack)
 
 
+def __doPetSOS(sos):
+    return __healJuggle(sos)
+
+
 def __healToon(toon, hp, gender, callerToonId, ineffective = 0):
     notify.debug('healToon() - toon: %d hp: %d ineffective: %d' % (toon.doId, hp, ineffective))
-    noLaughter = 0
+    nolaughter = 0
     if ineffective == 1:
         if callerToonId == toon.doId:
             laughter = TTLocalizer.MoviePetSOSTrickFail
         else:
-            noLaughter = 1
+            nolaughter = 1
     else:
         maxDam = ToontownBattleGlobals.AvPropDamage[0][1][0][1]
         if callerToonId == toon.doId:
@@ -51,33 +55,23 @@ def __healToon(toon, hp, gender, callerToonId, ineffective = 0):
             laughter = random.choice(TTLocalizer.MovieHealLaughterHits2)
         else:
             laughter = random.choice(TTLocalizer.MovieHealLaughterHits1)
-    if not noLaughter:
+    if nolaughter == 0:
         toon.setChatAbsolute(laughter, CFSpeech | CFTimeout)
     if hp > 0 and toon.hp != None:
         toon.toonUp(hp)
     else:
         notify.debug('__healToon() - toon: %d hp: %d' % (toon.doId, hp))
+    return
 
 
 def __teleportIn(attack, pet, pos = Point3(0, 0, 0), hpr = Vec3(180.0, 0.0, 0.0)):
-    callSfx = loader.loadSfx('phase_5.5/audio/sfx/call_pet.ogg')
-    toon = attack['toon']
-    seq = Sequence()
-    
-    seq.append(Func(toon.clearChat))
-    seq.append(Func(callSfx.play))
-    seq.append(ActorInterval(toon, 'callPet'))
-    seq.append(Func(toon.loop, 'neutral'))
-    seq.append(Func(pet.reparentTo, attack['battle']))
-    seq.append(Func(pet.setPos, pos))
-    seq.append(Func(pet.setHpr, hpr))
-    seq.append(Func(pet.pose, 'reappear', 0))
-    seq.append(pet.getTeleportInTrack())
-    seq.append(Func(toon.setSC, 21200 + attack['level']))
-    seq.append(Func(pet.loop, 'neutral'))
-    seq.append(Func(loader.unloadSfx, callSfx))
-
-    return seq
+    a = Func(pet.reparentTo, attack['battle'])
+    b = Func(pet.setPos, pos)
+    c = Func(pet.setHpr, hpr)
+    d = Func(pet.pose, 'reappear', 0)
+    e = pet.getTeleportInTrack()
+    g = Func(pet.loop, 'neutral')
+    return Sequence(a, b, c, d, e, g)
 
 
 def __teleportOut(attack, pet):
@@ -87,7 +81,14 @@ def __teleportOut(attack, pet):
     return Sequence(a, c)
 
 
-def __doPetSOS(heal):
+def __doPet(attack, level, hp):
+    track = __doSprinkle(attack, 'suits', hp)
+    pbpText = attack['playByPlayText']
+    pbpTrack = pbpText.getShowInterval(TTLocalizer.MovieNPCSOSCogsMiss, track.getDuration())
+    return (track, pbpTrack)
+
+
+def __healJuggle(heal):
     petProxyId = heal['petId']
     pet = Pet.Pet()
     gender = 0
@@ -99,8 +100,16 @@ def __doPetSOS(heal):
         pet.setName(petProxy.petName)
         gender = petProxy.gender
     else:
-        pet.setDNA([-1, 0, 0, -1, 2, 0, 4, 0, 1])
-        pet.setName(TTLocalizer.DefaultDoodleName)
+        pet.setDNA([-1,
+         0,
+         0,
+         -1,
+         2,
+         0,
+         4,
+         0,
+         1])
+        pet.setName('Smiley')
     targets = heal['target']
     ineffective = heal['sidestep']
     level = heal['level']
