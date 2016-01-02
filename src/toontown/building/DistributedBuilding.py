@@ -6,12 +6,13 @@ from ElevatorConstants import *
 from ElevatorUtils import *
 from SuitBuildingGlobals import *
 from direct.gui.DirectGui import *
-from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.distributed import DistributedObject
 import random
 from toontown.suit import SuitDNA
+from toontown.toonbase import TTLocalizer
 from toontown.distributed import DelayDelete
 from toontown.toon import TTEmote
 from otp.avatar import Emote

@@ -10172,6 +10172,3 @@ FriendSecretNowFriends = 'You are now True Friends with %s!'
 ShardPagePreferred = 'Preferred'
 ShardPageShardTitle = '%s Population: %s'
 ShardPageTeleport = 'Teleport to\n%s'
-
-# Rental item purchasable day dialog:
-
