@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.suit.DistributedGoonAI import DistributedGoonAI
+from toontown.suit.DistributedGoonAI import DistributedGoonAI
 
 class DistributedGridGoonAI(DistributedGoonAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedGridGoonAI")

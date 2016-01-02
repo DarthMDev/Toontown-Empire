@@ -1,4 +1,4 @@
-from src.otp.level import EntityCreator
+from otp.level import EntityCreator
 import FactoryLevelMgr
 import PlatformEntity
 import ConveyorBelt

@@ -1,8 +1,8 @@
 from panda3d.core import *
 from direct.showbase import DirectObject
 from direct.fsm import ClassicFSM, State
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.coghq import StageRoomSpecs
+from toontown.toonbase import ToontownGlobals
+from toontown.coghq import StageRoomSpecs
 import random
 
 class StageRoom(DirectObject.DirectObject):

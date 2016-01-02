@@ -1,8 +1,8 @@
-from src.otp.ai.AIBase import *
+from otp.ai.AIBase import *
 from direct.distributed.ClockDelta import *
 from BattleBase import *
 from BattleCalculatorAI import *
-from src.toontown.toonbase.ToontownBattleGlobals import *
+from toontown.toonbase.ToontownBattleGlobals import *
 from SuitBattleGlobals import *
 from panda3d.core import *
 import BattleExperienceAI
@@ -10,12 +10,12 @@ from direct.distributed import DistributedObjectAI
 from direct.fsm import ClassicFSM, State
 from direct.task import Task
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toon import InventoryBase
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.pets import DistributedPetProxyAI
+from toontown.toon import InventoryBase
+from toontown.toonbase import ToontownGlobals
+from toontown.pets import DistributedPetProxyAI
 import random
-from src.toontown.toon import NPCToons
-from src.otp.ai.MagicWordGlobal import *
+from toontown.toon import NPCToons
+from otp.ai.MagicWordGlobal import *
 
 class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattleBaseAI')
@@ -993,6 +993,7 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
             self.notify.warning('requestAttack() - no toon: %d' % toonId)
             return
         validResponse = 1
+        self.npcAttacks = {k:v for k, v in self.npcAttacks.iteritems() if v != toonId}
         if track == SOS:
             self.notify.debug('toon: %d calls for help' % toonId)
             self.air.writeServerEvent('friendSOS', toonId, '%s' % av)
@@ -1007,7 +1008,7 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                 npcCollision = 0
                 if av in self.npcAttacks:
                     callingToon = self.npcAttacks[av]
-                    if self.activeToons.count(callingToon) == 1:
+                    if callingToon != toonId and self.activeToons.count(callingToon) == 1:
                         self.toonAttacks[toonId] = getToonAttack(toonId, track=PASS)
                         npcCollision = 1
                 if npcCollision == 0:
@@ -1835,7 +1836,7 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
         return num
 
 
-@magicWord(category=CATEGORY_MODERATOR)
+@magicWord(category=CATEGORY_STAFF)
 def skipMovie():
     invoker = spellbook.getInvoker()
     battleId = invoker.getBattleId()

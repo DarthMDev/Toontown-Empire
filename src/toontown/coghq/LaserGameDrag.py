@@ -1,4 +1,4 @@
-from src.toontown.coghq import LaserGameBase
+from toontown.coghq import LaserGameBase
 from direct.distributed import ClockDelta
 from direct.task import Task
 import random

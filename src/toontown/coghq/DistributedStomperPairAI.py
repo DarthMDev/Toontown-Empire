@@ -1,6 +1,6 @@
-from src.otp.ai.AIBase import *
+from otp.ai.AIBase import *
 from direct.directnotify import DirectNotifyGlobal
-from src.otp.level import DistributedEntityAI
+from otp.level import DistributedEntityAI
 import StomperGlobals
 from direct.distributed import ClockDelta
 

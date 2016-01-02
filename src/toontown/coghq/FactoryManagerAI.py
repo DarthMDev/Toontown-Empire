@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 import DistributedMegaCorpAI
 import DistributedFactoryAI
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.showbase import DirectObject
 
 class FactoryManagerAI(DirectObject.DirectObject):

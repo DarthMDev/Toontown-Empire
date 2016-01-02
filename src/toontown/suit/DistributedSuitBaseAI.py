@@ -1,10 +1,10 @@
-from src.otp.ai.AIBaseGlobal import *
-from src.otp.avatar import DistributedAvatarAI
+from otp.ai.AIBaseGlobal import *
+from otp.avatar import DistributedAvatarAI
 import SuitPlannerBase
 import SuitBase
 import SuitDNA
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.battle import SuitBattleGlobals
+from toontown.battle import SuitBattleGlobals
 
 class DistributedSuitBaseAI(DistributedAvatarAI.DistributedAvatarAI, SuitBase.SuitBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedSuitBaseAI')
@@ -117,7 +117,6 @@ class DistributedSuitBaseAI(DistributedAvatarAI.DistributedAvatarAI, SuitBase.Su
     def useSkeleRevive(self):
         self.skeleRevives -= 1
         self.currHP = self.maxHP
-        self.d_setHP(self.currHP)
         self.reviveFlag = 1
 
     def reviveCheckAndClear(self):

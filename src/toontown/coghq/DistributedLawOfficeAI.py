@@ -1,15 +1,25 @@
+import cPickle
+
+import CogDisguiseGlobals
+import FactoryEntityCreatorAI
+import FactorySpecs
+import LawOfficeBase
+import LevelSuitPlannerAI
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import *
 from direct.showbase import PythonUtil
 from direct.task import Task
-from src.otp.level import DistributedLevelAI
-from src.otp.level import LevelSpec
-from src.toontown.ai.ToonBarrier import *
-from src.toontown.building import DistributedElevatorFloorAI
-from src.toontown.coghq import DistributedBattleFactoryAI, DistributedLawOfficeElevatorIntAI, DistributedLawOfficeFloorAI, LawOfficeLayout
-from src.toontown.suit import DistributedFactorySuitAI
-from src.toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
-import FactoryEntityCreatorAI, FactorySpecs, LawOfficeBase, LevelSuitPlannerAI
+from otp.level import DistributedLevelAI
+from otp.level import LevelSpec
+from toontown.ai.ToonBarrier import *
+from toontown.building import DistributedElevatorFloorAI
+from toontown.coghq import DistributedBattleFactoryAI
+from toontown.coghq import DistributedLawOfficeElevatorIntAI
+from toontown.coghq import DistributedLawOfficeFloorAI
+from toontown.coghq import LawOfficeLayout
+from toontown.suit import DistributedFactorySuitAI
+from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
+
 
 class DistributedLawOfficeAI(DistributedObjectAI, LawOfficeBase.LawOfficeBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLawOfficeAI')

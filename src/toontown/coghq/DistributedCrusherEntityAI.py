@@ -1,6 +1,6 @@
 # File: D (Python 2.4)
 
-from src.otp.level import DistributedEntityAI
+from otp.level import DistributedEntityAI
 from direct.directnotify import DirectNotifyGlobal
 
 class DistributedCrusherEntityAI(DistributedEntityAI.DistributedEntityAI):

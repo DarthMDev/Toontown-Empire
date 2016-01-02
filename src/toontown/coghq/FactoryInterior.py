@@ -1,18 +1,18 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.battle import BattlePlace
+from toontown.battle import BattlePlace
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from panda3d.core import *
-from src.otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
-from src.toontown.toon import Toon
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.hood import ZoneUtil
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toontowngui import TTDialog
-from src.toontown.toonbase import ToontownBattleGlobals
-from src.toontown.building import Elevator
-from src.otp.nametag.NametagConstants import *
-from src.otp.nametag import NametagGlobals
+from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
+from toontown.toon import Toon
+from toontown.toonbase import ToontownGlobals
+from toontown.hood import ZoneUtil
+from toontown.toonbase import TTLocalizer
+from toontown.toontowngui import TTDialog
+from toontown.toonbase import ToontownBattleGlobals
+from toontown.building import Elevator
+from otp.nametag.NametagConstants import *
+from otp.nametag import NametagGlobals
 
 class FactoryInterior(BattlePlace.BattlePlace):
     notify = DirectNotifyGlobal.directNotify.newCategory('FactoryInterior')

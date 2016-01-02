@@ -1,15 +1,15 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
 import CogHQLoader
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.gui import DirectGui
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toon import Toon
+from toontown.toonbase import TTLocalizer
+from toontown.toon import Toon
 from direct.fsm import State
-from src.toontown.coghq import BossbotHQExterior
-from src.toontown.coghq import BossbotHQBossBattle
-from src.toontown.coghq import BossbotOfficeExterior
-from src.toontown.coghq import CountryClubInterior
+from toontown.coghq import BossbotHQExterior
+from toontown.coghq import BossbotHQBossBattle
+from toontown.coghq import BossbotOfficeExterior
+from toontown.coghq import CountryClubInterior
 from pandac.PandaModules import DecalEffect, TextEncoder
 import random
 aspectSF = 0.7227
@@ -26,6 +26,7 @@ class BossbotCogHQLoader(CogHQLoader.CogHQLoader):
 
         self.musicFile = random.choice(['phase_12/audio/bgm/Bossbot_Entry_v1.ogg', 'phase_12/audio/bgm/Bossbot_Entry_v2.ogg', 'phase_12/audio/bgm/Bossbot_Entry_v3.ogg'])
         self.cogHQExteriorModelPath = 'phase_12/models/bossbotHQ/CogGolfHub'
+        self.factoryExteriorModelPath = 'phase_11/models/lawbotHQ/LB_DA_Lobby'
         self.cogHQLobbyModelPath = 'phase_12/models/bossbotHQ/CogGolfCourtyard'
         self.geom = None
 

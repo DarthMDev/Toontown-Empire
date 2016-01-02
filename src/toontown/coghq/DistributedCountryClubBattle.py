@@ -4,15 +4,15 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.interval.IntervalGlobal import *
-from src.otp.avatar import Emote
-from src.otp.nametag import NametagGlobals
+from otp.avatar import Emote
+from otp.nametag import NametagGlobals
 from panda3d.core import *
-from src.toontown.battle import SuitBattleGlobals
-from src.toontown.battle.BattleBase import *
-from src.toontown.coghq import DistributedLevelBattle
-from src.toontown.suit import SuitDNA
-from src.toontown.toon import TTEmote
-from src.toontown.toonbase import ToontownGlobals
+from toontown.battle import SuitBattleGlobals
+from toontown.battle.BattleBase import *
+from toontown.coghq import DistributedLevelBattle
+from toontown.suit import SuitDNA
+from toontown.toon import TTEmote
+from toontown.toonbase import ToontownGlobals
 
 
 class DistributedCountryClubBattle(DistributedLevelBattle.DistributedLevelBattle):

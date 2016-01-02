@@ -7,11 +7,11 @@ from BattleProps import *
 from BattleSounds import *
 import MovieCamera
 import MovieUtil
-from src.otp.nametag.NametagConstants import *
-from src.otp.nametag import NametagGlobals
-from src.toontown.toon import NPCToons
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownBattleGlobals
+from otp.nametag.NametagConstants import *
+from otp.nametag import NametagGlobals
+from toontown.toon import NPCToons
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownBattleGlobals
 
 
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieNPCSOS')

@@ -1,4 +1,4 @@
-from src.toontown.toonbase.ToontownBattleGlobals import *
+from toontown.toonbase.ToontownBattleGlobals import *
 import DistributedBarrelBaseAI
 from direct.directnotify import DirectNotifyGlobal
 from direct.task import Task

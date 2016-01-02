@@ -111,7 +111,10 @@ class NewsPageButtonManager(FSM.FSM):
 
     def isNewIssueButtonShown(self):
         if not config.GetBool('want-news-tab', 1):
+            return False
+        if localAvatar.getLastTimeReadNews():
             return True
+        return False
 
     def enterHidden(self):
         self.hideAllButtons()
@@ -184,8 +187,12 @@ class NewsPageButtonManager(FSM.FSM):
                 elif self.goingToNewsPageFromStickerBook or hasattr(localAvatar, 'newsPage') and localAvatar.book.isOnPage(localAvatar.newsPage):
                     if localAvatar.tutorialAck:
                         self.request('PrevPage')
+                    else:
+                        self.request('Hidden')
                 elif localAvatar.tutorialAck:
                     self.request('NormalWalk')
+                else:
+                    self.request('Hidden')
 
     def setGoingToNewsPageFromStickerBook(self, newVal):
         self.goingToNewsPageFromStickerBook = newVal
@@ -210,7 +217,7 @@ class NewsPageButtonManager(FSM.FSM):
         return
 
     def exitOff(self):
-        pass
+        self.notify.warning('Should not get here. NewsPageButtonManager.exitOff')
 
     def simulateEscapeKeyPress(self):
         if self.goingToNewsPageFrom3dWorld:

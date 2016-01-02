@@ -1,16 +1,16 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.building import DistributedElevatorExtAI
-from src.toontown.building import ElevatorConstants
-from src.toontown.safezone import DistributedGolfKartAI
-from src.toontown.toonbase import ToontownGlobals
+from toontown.building import DistributedElevatorExtAI
+from toontown.building import ElevatorConstants
+from toontown.safezone import DistributedGolfKartAI
+from toontown.toonbase import ToontownGlobals
 
 
 class DistributedCogKartAI(DistributedElevatorExtAI.DistributedElevatorExtAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCogKartAI')
 
-    def __init__(self, air, index, x, y, z, h, p, r, bldg, minLaff):
+    def __init__(self, air, index, x, y, z, h, p, r, bldg):
         self.posHpr = (x, y, z, h, p, r)
-        DistributedElevatorExtAI.DistributedElevatorExtAI.__init__(self, air, bldg, minLaff = minLaff)
+        DistributedElevatorExtAI.DistributedElevatorExtAI.__init__(self, air, bldg)
         self.type = ElevatorConstants.ELEVATOR_COUNTRY_CLUB
         self.courseIndex = index
         if self.courseIndex == 0:

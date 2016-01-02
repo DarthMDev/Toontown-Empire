@@ -4,10 +4,10 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.fsm import StateData
 from panda3d.core import *
-from src.toontown.hood import QuietZoneState
-from src.toontown.hood import ZoneUtil
-from src.toontown.suit import Suit
-from src.toontown.town import TownBattle
+from toontown.hood import QuietZoneState
+from toontown.hood import ZoneUtil
+from toontown.suit import Suit
+from toontown.town import TownBattle
 
 
 class CogHQLoader(StateData.StateData):

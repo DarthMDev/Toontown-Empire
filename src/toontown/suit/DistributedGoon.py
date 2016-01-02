@@ -1,18 +1,18 @@
 from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-from src.toontown.battle.BattleProps import *
+from toontown.battle.BattleProps import *
 from GoonGlobals import *
 from direct.fsm import FSM
 from direct.distributed import ClockDelta
-from src.otp.level import BasicEntities
-from src.otp.level import DistributedEntity
+from otp.level import BasicEntities
+from otp.level import DistributedEntity
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.coghq import DistributedCrushableEntity
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.coghq import MovingPlatform
+from toontown.coghq import DistributedCrushableEntity
+from toontown.toonbase import ToontownGlobals
+from toontown.coghq import MovingPlatform
 import Goon
 from direct.task.Task import Task
-from src.otp.level import PathEntity
+from otp.level import PathEntity
 import GoonDeath
 import random
 

@@ -1,12 +1,12 @@
 from panda3d.core import *
 from direct.actor import Actor
 from direct.task.Task import Task
-from src.otp.avatar import Avatar
-from src.toontown.battle import BattleProps, SuitBattleGlobals
-from src.otp.nametag.NametagGroup import NametagGroup
-from src.toontown.toonbase import TTLocalizer, ToontownGlobals
-from src.toontown.suit import SuitGlobals
-import SuitDNA, string
+from otp.avatar import Avatar
+from toontown.battle import SuitBattleGlobals
+from otp.nametag.NametagGroup import NametagGroup
+from toontown.toonbase import TTLocalizer, ToontownGlobals
+from toontown.suit import SuitGlobals
+import SuitDNA, SuitHealthBar, string
 
 aSize = 6.06
 bSize = 5.29
@@ -71,7 +71,6 @@ hh = (('pen-squirt', 'fountain-pen', 7),
 cr = (('pickpocket', 'pickpocket', 5), ('throw-paper', 'throw-paper', 3.5), ('glower', 'glower', 5))
 tbc = (('cigar-smoke', 'cigar-smoke', 8),
  ('glower', 'glower', 5),
- ('magic1', 'magic1', 5),
  ('song-and-dance', 'song-and-dance', 8),
  ('golf-club-swing', 'golf-club-swing', 5))
 cc = (('speak', 'speak', 5),
@@ -226,6 +225,7 @@ def loadSuitAnims(suit, flag = 1):
         else:
             loader.unloadModel(animName)
 
+
 def loadDialog(level):
     global SuitDialogArray
     if len(SuitDialogArray) > 0:
@@ -235,11 +235,11 @@ def loadDialog(level):
         SuitDialogFiles = ['COG_VO_grunt',
          'COG_VO_murmur',
          'COG_VO_statement',
-         'COG_VO_question']
+         'COG_VO_question',
+         'COG_VO_exclaim']
         for file in SuitDialogFiles:
             SuitDialogArray.append(base.loadSfx(loadPath + file + '.ogg'))
 
-        SuitDialogArray.append(SuitDialogArray[2])
         SuitDialogArray.append(SuitDialogArray[2])
 
 
@@ -252,11 +252,12 @@ def loadSkelDialog():
         murmur = loader.loadSfx('phase_5/audio/sfx/Skel_COG_VO_murmur.ogg')
         statement = loader.loadSfx('phase_5/audio/sfx/Skel_COG_VO_statement.ogg')
         question = loader.loadSfx('phase_5/audio/sfx/Skel_COG_VO_question.ogg')
+        exclaim = loader.loadSfx('phase_5/audio/sfx/Skel_COG_VO_exclaim.ogg')
         SkelSuitDialogArray = [grunt,
          murmur,
          statement,
          question,
-         statement,
+         exclaim,
          statement]
 
 
@@ -264,11 +265,9 @@ def unloadDialog(level):
     global SuitDialogArray
     SuitDialogArray = []
 
-
 def unloadSkelDialog():
     global SkelSuitDialogArray
     SkelSuitDialogArray = []
-
 
 def attachSuitHead(node, suitName):
     suitIndex = SuitDNA.suitHeadTypes.index(suitName)
@@ -341,8 +340,7 @@ class Suit(Avatar.Avatar):
         self.shadowJoint = None
         self.nametagJoint = None
         self.headParts = []
-        self.healthBar = None
-        self.healthCondition = 0
+        self.healthBar = SuitHealthBar.SuitHealthBar()
         self.isDisguised = 0
         self.isWaiter = 0
         self.isRental = 0
@@ -368,7 +366,7 @@ class Suit(Avatar.Avatar):
                 part.removeNode()
 
             self.headParts = []
-            self.removeHealthBar()
+            self.healthBar.delete()
             Avatar.Avatar.delete(self)
 
     def setHeight(self, height):
@@ -585,97 +583,18 @@ class Suit(Avatar.Avatar):
         icons.removeNode()
 
     def generateHealthBar(self):
-        self.removeHealthBar()
-        model = loader.loadModel('phase_3.5/models/gui/matching_game_gui')
-        button = model.find('**/minnieCircle')
-        model.removeNode()
-
-        button.setScale(3.0)
-        button.setH(180.0)
-        button.setColor(self.healthColors[0])
-        chestNull = self.find('**/joint_attachMeter')
-        button.reparentTo(chestNull)
-        self.healthBar = button
-        glow = BattleProps.globalPropPool.getProp('glow')
-        glow.reparentTo(self.healthBar)
-        glow.setScale(0.28)
-        glow.setPos(-0.005, 0.01, 0.015)
-        glow.setColor(self.healthGlowColors[0])
-        button.flattenLight()
-        self.healthBarGlow = glow
-        self.healthBar.hide()
-        self.healthCondition = 0
+        self.healthBar.generate()
+        self.healthBar.geom.reparentTo(self.find('**/joint_attachMeter'))
+        self.healthBar.geom.setScale(3.0)
 
     def resetHealthBarForSkele(self):
-        self.healthBar.setPos(0.0, 0.1, 0.0)
+        self.healthBar.geom.setPos(0.0, 0.1, 0.0)
 
     def updateHealthBar(self, hp, forceUpdate = 0):
         if hp > self.currHP:
             hp = self.currHP
         self.currHP -= hp
-        health = float(self.currHP) / float(self.maxHP)
-        if health > 0.95:
-            condition = 0
-        elif health > 0.9:
-            condition = 1
-        elif health > 0.8:
-            condition = 2
-        elif health > 0.7:
-            condition = 3#Yellow
-        elif health > 0.6:
-            condition = 4
-        elif health > 0.5:
-            condition = 5
-        elif health > 0.3:
-            condition = 6#Orange
-        elif health > 0.15:
-            condition = 7
-        elif health > 0.05:
-            condition = 8#Red
-        elif health > 0.0:
-            condition = 9#Blinking Red
-        else:
-            condition = 10
-        if self.healthCondition != condition or forceUpdate:
-            if condition == 9:
-                blinkTask = Task.loop(Task(self.__blinkRed), Task.pause(0.75), Task(self.__blinkGray), Task.pause(0.1))
-                taskMgr.add(blinkTask, self.uniqueName('blink-task'))
-            elif condition == 10:
-                if self.healthCondition == 9:
-                    taskMgr.remove(self.uniqueName('blink-task'))
-                blinkTask = Task.loop(Task(self.__blinkRed), Task.pause(0.25), Task(self.__blinkGray), Task.pause(0.1))
-                taskMgr.add(blinkTask, self.uniqueName('blink-task'))
-            else:
-                self.healthBar.setColor(self.healthColors[condition], 1)
-                self.healthBarGlow.setColor(self.healthGlowColors[condition], 1)
-            self.healthCondition = condition
-
-    def __blinkRed(self, task):
-        if not self.healthBar:
-            return Task.done
-        self.healthBar.setColor(self.healthColors[8], 1)
-        self.healthBarGlow.setColor(self.healthGlowColors[8], 1)
-        if self.healthCondition == 7:
-            self.healthBar.setScale(1.17)
-        return Task.done
-
-    def __blinkGray(self, task):
-        if not self.healthBar:
-            return Task.done
-        self.healthBar.setColor(self.healthColors[9], 1)
-        self.healthBarGlow.setColor(self.healthGlowColors[9], 1)
-        if self.healthCondition == 10:
-            self.healthBar.setScale(1.0)
-        return Task.done
-
-    def removeHealthBar(self):
-        if self.healthBar:
-            self.healthBar.removeNode()
-            self.healthBar = None
-        if self.healthCondition == 9 or self.healthCondition == 10:
-            taskMgr.remove(self.uniqueName('blink-task'))
-        self.healthCondition = 0
-        return
+        self.healthBar.update(float(self.currHP) / float(self.maxHP))
 
     def getLoseActor(self):
         if self.loseActor == None:
@@ -773,3 +692,14 @@ class Suit(Avatar.Avatar):
             return SkelSuitDialogArray
         else:
             return SuitDialogArray
+    
+    def getTypeText(self):
+        if self.virtual:
+            return TTLocalizer.CogPanelVirtual
+        elif self.isWaiter:
+            return TTLocalizer.CogPanelWaiter
+        elif self.skeleRevives:
+            return TTLocalizer.CogPanelRevives % (self.skeleRevives + 1)
+        elif self.isSkelecog:
+            return TTLocalizer.CogPanelSkeleton
+        return ''

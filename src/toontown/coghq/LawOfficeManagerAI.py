@@ -4,8 +4,8 @@ import DistributedLawOfficeAI
 import DistributedStageAI
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase import DirectObject
-from src.toontown.coghq import StageLayout
-from src.toontown.toonbase import ToontownGlobals
+from toontown.coghq import StageLayout
+from toontown.toonbase import ToontownGlobals
 
 
 StageId2Layouts = {

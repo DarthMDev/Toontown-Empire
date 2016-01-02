@@ -1,11 +1,11 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.battle import BattlePlace
+from toontown.battle import BattlePlace
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from panda3d.core import *
-from src.otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
-from src.otp.nametag import NametagGlobals
+from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
+from otp.nametag import NametagGlobals
 
 class CogHQExterior(BattlePlace.BattlePlace):
     notify = DirectNotifyGlobal.directNotify.newCategory('CogHQExterior')
@@ -99,7 +99,7 @@ class CogHQExterior(BattlePlace.BattlePlace):
         base.localAvatar.setTeleportAvailable(0)
         self.ignore('teleportQuery')
         base.localAvatar.laffMeter.stop()
-        base.localAvatar.obscureMoveFurnitureButton(-1)
+        base.localAvatar.obscureMoveFurnitureButton(0)
 
     def enterTunnelOut(self, requestStatus):
         fromZoneId = self.zoneId - self.zoneId % 100

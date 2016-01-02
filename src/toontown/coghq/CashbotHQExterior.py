@@ -2,11 +2,11 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import State
 from direct.interval.IntervalGlobal import *
 from panda3d.core import *
-from src.toontown.building import Elevator
-from src.toontown.coghq import CogHQExterior
-from src.toontown.dna.DNAParser import loadDNAFileAI, DNAStorage
-from src.toontown.hood import ZoneUtil
-from src.toontown.safezone import Train
+from toontown.building import Elevator
+from toontown.coghq import CogHQExterior
+from toontown.dna.DNAParser import loadDNAFileAI, DNAStorage
+from toontown.hood import ZoneUtil
+from toontown.safezone import Train
 
 
 class CashbotHQExterior(CogHQExterior.CogHQExterior):
@@ -71,7 +71,7 @@ class CashbotHQExterior(CogHQExterior.CogHQExterior):
             visZoneId = int(base.cr.hoodMgr.extractGroupName(groupFullName))
             visibles = []
             for i in xrange(visGroup.getNumVisibles()):
-                visibles.append(int(visGroup.getVisible(i)))
+                visibles.append(int(visGroup.visibles[i]))
             visibles.append(ZoneUtil.getBranchZone(visZoneId))
             self.zoneVisDict[visZoneId] = visibles
 

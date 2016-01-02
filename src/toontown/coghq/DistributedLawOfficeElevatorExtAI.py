@@ -2,15 +2,15 @@ from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.task import Task
-from src.otp.ai.AIBase import *
-from src.toontown.building import DistributedElevatorExtAI
-from src.toontown.building.ElevatorConstants import *
-from src.toontown.toonbase import ToontownGlobals
+from otp.ai.AIBase import *
+from toontown.building import DistributedElevatorExtAI
+from toontown.building.ElevatorConstants import *
+from toontown.toonbase import ToontownGlobals
 
 
 class DistributedLawOfficeElevatorExtAI(DistributedElevatorExtAI.DistributedElevatorExtAI):
-    def __init__(self, air, bldg, lawOfficeId, entranceId, antiShuffle = 0, minLaff = 0):
-        DistributedElevatorExtAI.DistributedElevatorExtAI.__init__(self, air, bldg, antiShuffle = antiShuffle, minLaff = minLaff)
+    def __init__(self, air, bldg, lawOfficeId, entranceId):
+        DistributedElevatorExtAI.DistributedElevatorExtAI.__init__(self, air, bldg)
         self.lawOfficeId = lawOfficeId
         self.entranceId = entranceId
 

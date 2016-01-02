@@ -4,17 +4,17 @@ from direct.task.Task import Task
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from pandac.PandaModules import CollisionSphere, CollisionNode
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.estate import DistributedCannon
-from src.toontown.estate import CannonGlobals
-from src.otp.nametag import NametagGlobals
+from toontown.toonbase import ToontownGlobals
+from toontown.estate import DistributedCannon
+from toontown.estate import CannonGlobals
+from otp.nametag import NametagGlobals
 from direct.gui.DirectGui import *
 from panda3d.core import *
-from src.toontown.toon import NPCToons
-from src.toontown.toon import ToonHead
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.minigame import Trajectory
-from src.toontown.effects import DustCloud
+from toontown.toon import NPCToons
+from toontown.toon import ToonHead
+from toontown.toonbase import TTLocalizer
+from toontown.minigame import Trajectory
+from toontown.effects import DustCloud
 GROUND_PLANE_MIN = -15
 CANNON_ROTATION_MIN = -55
 CANNON_ROTATION_MAX = 50
@@ -30,11 +30,11 @@ CAMERA_PULLBACK_MAX = 40
 class DistributedLawbotCannon(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLawbotCannon')
     LOCAL_CANNON_MOVE_TASK = 'localCannonMoveTask'
-    FIRE_KEY = base.JUMP
-    UP_KEY = base.Move_Up
-    DOWN_KEY = base.Move_Down
-    LEFT_KEY = base.Move_Left
-    RIGHT_KEY = base.Move_Right
+    FIRE_KEY = 'control'
+    UP_KEY = 'arrow_up'
+    DOWN_KEY = 'arrow_down'
+    LEFT_KEY = 'arrow_left'
+    RIGHT_KEY = 'arrow_right'
     HIT_GROUND = 0
 
     def __init__(self, cr):

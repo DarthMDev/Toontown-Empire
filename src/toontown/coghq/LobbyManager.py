@@ -1,8 +1,8 @@
 from panda3d.core import *
-from src.toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer
 
 class LobbyManager(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('LobbyManager')

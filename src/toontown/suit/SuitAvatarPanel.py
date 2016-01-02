@@ -1,12 +1,12 @@
 from panda3d.core import *
 from direct.gui.DirectGui import *
 from direct.showbase import DirectObject
-from src.otp.avatar import Avatar
+from otp.avatar import Avatar
 from direct.distributed import DistributedObject
 import SuitDNA
-from src.toontown.toonbase import TTLocalizer
-from src.otp.avatar import AvatarPanel
-from src.toontown.friends import FriendsListPanel
+from toontown.toonbase import TTLocalizer
+from otp.avatar import AvatarPanel
+from toontown.friends import FriendsListPanel
 
 class SuitAvatarPanel(AvatarPanel.AvatarPanel):
     currentAvatarPanel = None

@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.coghq import DistributedCogHQDoor
-from src.toontown.toonbase import TTLocalizer
+from toontown.coghq import DistributedCogHQDoor
+from toontown.toonbase import TTLocalizer
 import CogDisguiseGlobals
 
 class DistributedSellbotHQDoor(DistributedCogHQDoor.DistributedCogHQDoor):

@@ -1,19 +1,20 @@
 from panda3d.core import *
-from src.toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase.ToontownGlobals import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 import random
-from src.otp.level import DistributedLevel
+from otp.level import DistributedLevel
 from direct.directnotify import DirectNotifyGlobal
 import FactoryBase
 import FactoryEntityCreator
 import FactorySpecs
-from src.otp.level import LevelSpec
-from src.otp.level import LevelConstants
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.coghq import FactoryCameraViews
-from src.otp.nametag.NametagConstants import *
-from src.otp.ai.MagicWordGlobal import *
+from otp.level import LevelSpec
+from otp.level import LevelConstants
+from toontown.toonbase import TTLocalizer
+from toontown.coghq import FactoryCameraViews
+from direct.controls.ControlManager import CollisionHandlerRayStart
+from otp.nametag.NametagConstants import *
+from otp.ai.MagicWordGlobal import *
 
 class DistributedFactory(DistributedLevel.DistributedLevel, FactoryBase.FactoryBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFactory')
@@ -37,12 +38,14 @@ class DistributedFactory(DistributedLevel.DistributedLevel, FactoryBase.FactoryB
         self.factoryViews = FactoryCameraViews.FactoryCameraViews(self)
         base.localAvatar.chatMgr.chatInputSpeedChat.addFactoryMenu()
         self.accept('SOSPanelEnter', self.handleSOSPanel)
+        base.factory = self
 
     def delete(self):
         DistributedLevel.DistributedLevel.delete(self)
         base.localAvatar.chatMgr.chatInputSpeedChat.removeFactoryMenu()
         self.factoryViews.delete()
         del self.factoryViews
+        del base.factory
         self.ignore('SOSPanelEnter')
 
     def setFactoryId(self, id):
@@ -158,15 +161,12 @@ class DistributedFactory(DistributedLevel.DistributedLevel, FactoryBase.FactoryB
     def getBossBattleTaunt(self):
         return TTLocalizer.FactoryBossBattleTaunt
 
-@magicWord(category=CATEGORY_PROGRAMMER, types=[int])
+@magicWord(category=CATEGORY_LEADER, types=[int])
 def factoryWarp(zoneNum):
     """
     Warp to a specific factory zone.
     """
-    factory = [base.cr.doFind('DistributedFactory'), base.cr.doFind('DistributedMegaCorp')]
-    for f in factory:
-        if (not f) or (not isinstance(f, DistributedFactory)):
-            return 'You must be in a factory.'
-        factory = f
-    factory.warpToZone(zoneNum)
+    if not hasattr(base, 'factory'):
+        return 'You must be in a factory!'
+    base.factory.warpToZone(zoneNum)
     return 'Warped to zone: %d' % zoneNum

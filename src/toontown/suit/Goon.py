@@ -1,8 +1,8 @@
 from panda3d.core import *
 from direct.actor import Actor
-from src.otp.avatar import Avatar
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
+from otp.avatar import Avatar
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 import GoonGlobals
 import SuitDNA
 import math

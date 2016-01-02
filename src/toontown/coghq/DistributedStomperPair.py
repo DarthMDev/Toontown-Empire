@@ -3,7 +3,7 @@ from direct.interval.IntervalGlobal import *
 import math
 import StomperGlobals
 from direct.directnotify import DirectNotifyGlobal
-from src.otp.level import BasicEntities
+from otp.level import BasicEntities
 
 class DistributedStomperPair(BasicEntities.DistributedNodePathEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedStomperPair')

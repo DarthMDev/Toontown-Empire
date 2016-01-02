@@ -1,15 +1,15 @@
-from src.otp.level.BasicEntities import DistributedNodePathEntity
+from otp.level.BasicEntities import DistributedNodePathEntity
 from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-from src.toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase.ToontownGlobals import *
 import random
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import globalClockDelta
 import DistributedBarrelBase
-from src.otp.level.BasicEntities import DistributedNodePathEntity
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.toonbase import ToontownTimer
+from otp.level.BasicEntities import DistributedNodePathEntity
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownTimer
 from direct.task import Task
 from direct.gui.DirectGui import DGG, DirectFrame, DirectLabel
 

@@ -8,13 +8,13 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import Sequence, ProjectileInterval, Parallel, LerpHprInterval, ActorInterval, Func, Wait, SoundInterval, LerpPosHprInterval, LerpScaleInterval
 from direct.gui.DirectGui import DGG, DirectButton, DirectLabel, DirectWaitBar
 from direct.task import Task
-from src.toontown.suit import Suit
-from src.toontown.suit import SuitDNA
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.coghq import BanquetTableBase
-from src.toontown.coghq import DinerStatusIndicator
-from src.toontown.battle import MovieUtil
+from toontown.suit import Suit
+from toontown.suit import SuitDNA
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.coghq import BanquetTableBase
+from toontown.coghq import DinerStatusIndicator
+from toontown.battle import MovieUtil
 
 class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, BanquetTableBase.BanquetTableBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBanquetTable')
@@ -28,8 +28,8 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
      180]
     pitcherMinH = -360
     pitcherMaxH = 360
-    rotateSpeed = 45
-    waterPowerSpeed = base.config.GetDouble('water-power-speed', 1)
+    rotateSpeed = 30
+    waterPowerSpeed = base.config.GetDouble('water-power-speed', 15)
     waterPowerExponent = base.config.GetDouble('water-power-exponent', 0.75)
     useNewAnimations = True
     TugOfWarControls = False
@@ -40,7 +40,7 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
         BASELINE_KEY_RATE = 6
     UPDATE_KEY_PRESS_RATE_TASK = 'BanquetTableUpdateKeyPressRateTask'
     YELLOW_POWER_THRESHOLD = 0.75
-    RED_POWER_THRESHOLD = 0.95
+    RED_POWER_THRESHOLD = 0.97
 
     def __init__(self, cr):
         DistributedObject.DistributedObject.__init__(self, cr)
@@ -154,13 +154,13 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
     def setNumDiners(self, numDiners):
         self.numDiners = numDiners
 
-    def setDinerInfo(self, hungryDurations, eatingDurations, dinerLevels, dinerDept):
+    def setDinerInfo(self, hungryDurations, eatingDurations, dinerLevels):
         self.dinerInfo = {}
         for i in xrange(len(hungryDurations)):
             hungryDur = hungryDurations[i]
             eatingDur = eatingDurations[i]
             dinerLevel = dinerLevels[i]
-            self.dinerInfo[i] = (hungryDur, eatingDur, dinerLevel, dinerDept)
+            self.dinerInfo[i] = (hungryDur, eatingDur, dinerLevel)
 
     def loadAssets(self):
         self.tableGroup = loader.loadModel('phase_12/models/bossbotHQ/BanquetTableChairs')
@@ -190,8 +190,7 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
         diner.dna = SuitDNA.SuitDNA()
         level = self.dinerInfo[i][2]
         level -= 4
-        dept = self.dinerInfo[i][3][i]
-        diner.dna.newSuitRandom(level=level, dept=dept)
+        diner.dna.newSuitRandom(level=level, dept='c')
         diner.setDNA(diner.dna)
         diner.nametag3d.stash()
         diner.nametag.destroy()
@@ -375,7 +374,7 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
         deathSuit = diner.getLoseActor()
         ival = Sequence(Func(self.notify.debug, 'before actorinterval sit-lose'), ActorInterval(diner, 'sit-lose'), Func(self.notify.debug, 'before deathSuit.setHpr'), Func(deathSuit.setHpr, diner.getHpr()), Func(self.notify.debug, 'before diner.hide'), Func(diner.hide), Func(self.notify.debug, 'before deathSuit.reparentTo'), Func(deathSuit.reparentTo, self.chairLocators[chairIndex]), Func(self.notify.debug, 'befor ActorInterval lose'), ActorInterval(deathSuit, 'lose', duration=MovieUtil.SUIT_LOSE_DURATION), Func(self.notify.debug, 'before remove deathsuit'), Func(removeDeathSuit, diner, deathSuit, name='remove-death-suit-%d-%d' % (chairIndex, self.index)), Func(self.notify.debug, 'diner.stash'), Func(diner.stash))
         spinningSound = base.loadSfx('phase_3.5/audio/sfx/Cog_Death.ogg')
-        deathSound = base.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart.ogg')
+        deathSound = base.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart_%s.ogg' % random.randint(1, 6))
         deathSoundTrack = Sequence(Wait(0.8), SoundInterval(spinningSound, duration=1.2, startTime=1.5, volume=0.2, node=deathSuit), SoundInterval(spinningSound, duration=3.0, startTime=0.6, volume=0.8, node=deathSuit), SoundInterval(deathSound, volume=0.32, node=deathSuit))
         intervalName = 'dinerDie-%d-%d' % (self.index, chairIndex)
         deathIval = Parallel(ival, deathSoundTrack)
@@ -646,14 +645,14 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
          gui.find('**/CloseBtn_Rllvr'),
          gui.find('**/CloseBtn_UP')), relief=None, scale=2, text=TTLocalizer.BossbotPitcherLeave, text_scale=0.04, text_pos=(0, -0.07), text_fg=VBase4(1, 1, 1, 1), pos=(1.05, 0, -0.82), command=self.__exitPitcher)
         self.accept('escape', self.__exitPitcher)
-        self.accept(base.JUMP, self.__controlPressed)
+        self.accept('control', self.__controlPressed)
         self.accept('control-up', self.__controlReleased)
         self.accept('InputState-forward', self.__upArrow)
         self.accept('InputState-reverse', self.__downArrow)
         self.accept('InputState-turnLeft', self.__leftArrow)
         self.accept('InputState-turnRight', self.__rightArrow)
-        self.accept(base.Move_Up, self.__upArrowKeyPressed)
-        self.accept(base.Move_Down, self.__downArrowKeyPressed)
+        self.accept('arrow_up', self.__upArrowKeyPressed)
+        self.accept('arrow_down', self.__downArrowKeyPressed)
         taskMgr.add(self.__watchControls, self.watchControlsName)
         taskMgr.doMethodLater(5, self.__displayPitcherAdvice, self.pitcherAdviceName)
         self.arrowVert = 0
@@ -667,14 +666,14 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
             self.closeButton = None
         self.__cleanupPitcherAdvice()
         self.ignore('escape')
-        self.ignore(base.JUMP)
+        self.ignore('control')
         self.ignore('control-up')
         self.ignore('InputState-forward')
         self.ignore('InputState-reverse')
         self.ignore('InputState-turnLeft')
         self.ignore('InputState-turnRight')
-        self.ignore(base.Move_Up)
-        self.ignore(base.Move_Down)
+        self.ignore('arrow_up')
+        self.ignore('arrow_down')
         self.arrowVert = 0
         self.arrowHorz = 0
         taskMgr.remove(self.watchControlsName)
@@ -894,8 +893,6 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
         pieCode = int(tag)
         if pieCode == ToontownGlobals.PieCodeBossCog:
             self.hitBossSoundInterval.start()
-            if self.boss.dizzy:
-                self.boss.doAnimate('hit', now=1)
             self.sendUpdate('waterHitBoss', [self.index])
             if self.TugOfWarControls:
                 damage = 1

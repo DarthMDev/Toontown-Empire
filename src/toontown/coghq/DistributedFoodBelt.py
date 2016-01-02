@@ -4,8 +4,8 @@ from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import Sequence, Wait, LerpPosInterval, ProjectileInterval, Func, SoundInterval
 from direct.actor import Actor
-from src.toontown.toonbase import ToontownGlobals
-from src.toontown.coghq.FoodBeltBase import FoodBeltBase
+from toontown.toonbase import ToontownGlobals
+from toontown.coghq.FoodBeltBase import FoodBeltBase
 
 class DistributedFoodBelt(DistributedObject.DistributedObject, FSM.FSM, FoodBeltBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFoodBelt')
@@ -19,7 +19,6 @@ class DistributedFoodBelt(DistributedObject.DistributedObject, FSM.FSM, FoodBelt
      'phase_6/models/golf/picnic_sandwich.bam',
      'phase_6/models/golf/picnic_chocolate_cake.bam']
     ToonupScales = [5,
-     15,
      5,
      5,
      4]

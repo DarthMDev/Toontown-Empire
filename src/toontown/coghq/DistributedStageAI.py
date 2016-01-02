@@ -1,11 +1,11 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObjectAI
-from src.otp.level import DistributedLevelAI
-from panda3d.core import *
-from src.toontown.building import DistributedElevatorFloorAI
-from src.toontown.coghq import BattleExperienceAggregatorAI
-from src.toontown.coghq import StageLayout, DistributedStageRoomAI
-from src.toontown.toonbase import ToontownGlobals
+from otp.level import DistributedLevelAI
+from pandac.PandaModules import *
+from toontown.building import DistributedElevatorFloorAI
+from toontown.coghq import BattleExperienceAggregatorAI
+from toontown.coghq import StageLayout, DistributedStageRoomAI
+from toontown.toonbase import ToontownGlobals
 
 
 class DistributedStageAI(DistributedObjectAI.DistributedObjectAI):
@@ -39,6 +39,8 @@ class DistributedStageAI(DistributedObjectAI.DistributedObjectAI):
         self.sendUpdate('setRoomDoIds', [
             roomDoIds])
         self.placeElevatorsOnMarkers()
+        if __dev__:
+            simbase.stage = self
         description = '%s|%s|%s' % (self.stageId, self.floorNum, self.avIds)
         for avId in self.avIds:
             self.air.writeServerEvent('stageEntered', avId, description)
@@ -55,6 +57,9 @@ class DistributedStageAI(DistributedObjectAI.DistributedObjectAI):
 
     def delete(self):
         self.notify.info('delete: %s' % self.doId)
+        if __dev__:
+            if hasattr(simbase, 'stage') and simbase.stage is self:
+                del simbase.stage
         self.air.deallocateZone(self.zoneId)
         if hasattr(self, 'elevatorList'):
             del self.elevatorList

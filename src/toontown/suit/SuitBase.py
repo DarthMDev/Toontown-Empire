@@ -1,12 +1,12 @@
 import SuitDNA
-from libpandadna import *
+from toontown.dna.SuitLegList import *
 import SuitTimings
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
 from panda3d.core import *
 from pandac.PandaModules import Point3
-from src.toontown.battle import SuitBattleGlobals
-from src.toontown.toonbase import TTLocalizer
+from toontown.battle import SuitBattleGlobals
+from toontown.toonbase import TTLocalizer
 
 
 TIME_BUFFER_PER_WPT = 0.25

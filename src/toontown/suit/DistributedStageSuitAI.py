@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.suit import DistributedFactorySuitAI
+from toontown.suit import DistributedFactorySuitAI
 
 
 class DistributedStageSuitAI(DistributedFactorySuitAI.DistributedFactorySuitAI):

@@ -7,8 +7,8 @@ from direct.distributed import DistributedObject
 from direct.showutil import Rope
 from direct.showbase import PythonUtil
 from direct.task import Task
-from src.toontown.toonbase import ToontownGlobals
-from src.otp.otpbase import OTPGlobals
+from toontown.toonbase import ToontownGlobals
+from otp.otpbase import OTPGlobals
 from direct.actor import Actor
 
 class DistributedLawbotBossGavel(DistributedObject.DistributedObject, FSM.FSM):

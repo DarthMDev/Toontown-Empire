@@ -3,10 +3,10 @@ from direct.distributed.ClockDelta import *
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase import BulletinBoardWatcher
-from src.otp.otpbase import OTPGlobals
-from src.toontown.toonbase.ToontownGlobals import *
-from src.toontown.toonbase import TTLocalizer
-from src.toontown.coghq import DistributedMintRoom, MintLayout, MintRoom
+from otp.otpbase import OTPGlobals
+from toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase import TTLocalizer
+from toontown.coghq import DistributedMintRoom, MintLayout, MintRoom
 
 class DistributedMint(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedMint')

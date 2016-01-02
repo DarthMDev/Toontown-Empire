@@ -518,7 +518,7 @@ MonthlySchedule = ((7,
    CatalogGardenItem(104, 1),
    CatalogToonStatueItem(105, endPoseIndex=108),
 # Rental are not ready yet. I will code it ASAP ~FordTheWriter
-   CatalogRentalItem(1, 2880, 1000),
+#   CatalogRentalItem(1, 2880, 1000), cannons 
 #   CatalogRentalItem(2, 2890, 1000), game tables 
    CatalogGardenStarterItem(),
 # TVS DISABLE UNTIL READY ~FordTheWriter

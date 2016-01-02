@@ -1,12 +1,22 @@
+import cPickle
+
+import CogDisguiseGlobals
+import FactoryEntityCreatorAI
+import FactorySpecs
+import LawOfficeBase
+import LevelSuitPlannerAI
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObjectAI
 from direct.task import Task
-from src.otp.level import DistributedLevelAI, LevelSpec
-from src.toontown.ai.ToonBarrier import *
-from src.toontown.coghq import DistributedBattleFactoryAI, DistributedLawOfficeElevatorIntAI, LawOfficeLayout
-from src.toontown.suit import DistributedFactorySuitAI
-from src.toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
-import FactoryEntityCreatorAI, FactorySpecs, LawOfficeBase, LevelSuitPlannerAI
+from otp.level import DistributedLevelAI
+from otp.level import LevelSpec
+from toontown.ai.ToonBarrier import *
+from toontown.coghq import DistributedBattleFactoryAI
+from toontown.coghq import DistributedLawOfficeElevatorIntAI
+from toontown.coghq import LawOfficeLayout
+from toontown.suit import DistributedFactorySuitAI
+from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
+
 
 class DistributedLawOfficeFloorAI(DistributedLevelAI.DistributedLevelAI, LawOfficeBase.LawOfficeBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLawOfficeAI')
@@ -35,6 +45,10 @@ class DistributedLawOfficeFloorAI(DistributedLevelAI.DistributedLevelAI, LawOffi
     def startFloor(self):
         self.notify.info('loading spec')
         self.factorySpec = LevelSpec.LevelSpec(self.spec)
+        if __dev__:
+            self.notify.info('creating entity type registry')
+            typeReg = self.getEntityTypeReg()
+            self.factorySpec.setEntityTypeReg(typeReg)
         self.notify.info('creating entities')
         DistributedLevelAI.DistributedLevelAI.generate(self, self.factorySpec)
         self.notify.info('creating cogs')
@@ -96,7 +110,7 @@ class DistributedLawOfficeFloorAI(DistributedLevelAI.DistributedLevelAI, LawOffi
         for avId in activeVictorIds:
             self.air.writeServerEvent('DAOffice Defeated', avId, description)
         for toon in activeVictors:
-            simbase.air.questManager.toonDefeatedFactory(toon, self.lawOfficeId)
+            simbase.air.questManager.toonDefeatedFactory(toon, self.lawOfficeId, activeVictors)
 
     def b_setDefeated(self):
         self.d_setDefeated()

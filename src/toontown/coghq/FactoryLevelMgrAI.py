@@ -1,4 +1,4 @@
-from src.otp.level import LevelMgrAI
+from otp.level import LevelMgrAI
 
 class FactoryLevelMgrAI(LevelMgrAI.LevelMgrAI):
 

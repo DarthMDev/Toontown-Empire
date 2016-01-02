@@ -1,5 +1,5 @@
 from CrateGlobals import *
-from src.otp.level import DistributedEntityAI
+from otp.level import DistributedEntityAI
 from direct.directnotify import DirectNotifyGlobal
 
 class DistributedGridAI(DistributedEntityAI.DistributedEntityAI):

@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.toonbase import ToontownBattleGlobals
-from src.toontown.suit import SuitDNA
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals
+from toontown.suit import SuitDNA
 BattleExperienceAINotify = DirectNotifyGlobal.directNotify.newCategory('BattleExprienceAI')
 
 def getSkillGained(toonSkillPtsGained, toonId, track):
@@ -188,4 +188,3 @@ def assignRewards(activeToons, toonSkillPtsGained, suitsKilled, zoneId, helpfulT
         else:
             simbase.air.questManager.toonKilledCogs(toon, suitsKilled, zoneId)
             simbase.air.cogPageManager.toonKilledCogs(toon, suitsKilled, zoneId)
-    return

@@ -1,5 +1,5 @@
-from src.otp.level import DistributedEntityAI
-from src.toontown.coghq import MoleFieldBase
+from otp.level import DistributedEntityAI
+from toontown.coghq import MoleFieldBase
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.directnotify import DirectNotifyGlobal
 

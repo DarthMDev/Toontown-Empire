@@ -1,11 +1,11 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from src.toontown.hood import Place
-from src.toontown.building import Elevator
-from src.toontown.toonbase import ToontownGlobals
+from toontown.hood import Place
+from toontown.building import Elevator
+from toontown.toonbase import ToontownGlobals
 from panda3d.core import *
-from src.otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
+from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
 
 class CogHQLobby(Place.Place):
     notify = DirectNotifyGlobal.directNotify.newCategory('CogHQLobby')
@@ -22,8 +22,8 @@ class CogHQLobby(Place.Place):
           'doorOut',
           'stopped']),
          State.State('stopped', self.enterStopped, self.exitStopped, ['walk', 'teleportOut', 'elevator']),
-         State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk']),
-         State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['walk']),
+         State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk', 'stopped']),
+         State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['walk', 'stopped']),
          State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk']),
          State.State('elevator', self.enterElevator, self.exitElevator, ['walk', 'stopped']),
          State.State('final', self.enterFinal, self.exitFinal, ['start'])], 'start', 'final')

@@ -1,8 +1,8 @@
 from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-from src.toontown.suit import DistributedSellbotBoss
+from toontown.suit import DistributedSellbotBoss
 from direct.directnotify import DirectNotifyGlobal
-from src.toontown.coghq import CogHQBossBattle
+from toontown.coghq import CogHQBossBattle
 
 class SellbotHQBossBattle(CogHQBossBattle.CogHQBossBattle):
     notify = DirectNotifyGlobal.directNotify.newCategory('SellbotHQBossBattle')
@@ -29,7 +29,7 @@ class SellbotHQBossBattle(CogHQBossBattle.CogHQBossBattle):
         self.loader.hood.startSky()
         sky = self.loader.hood.sky
         sky.setH(150)
-        sky.setZ(-400)
+        sky.setZ(-100)
 
     def __cleanupHighSky(self):
         self.loader.hood.stopSky()
