@@ -57,6 +57,7 @@ FPnewEntry = 0.08
 FPnewRecord = 0.08
 GPgenus = 0.045
 FLPnewFriend = 0.045
+FLPtruefriends = 0.045
 FLPtruefriendsPos = (0.152, 0.0, 0.14)
 FLPtitle = 0.04
 FIbStop = 0.05
