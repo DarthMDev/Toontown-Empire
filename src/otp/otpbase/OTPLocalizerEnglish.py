@@ -1738,8 +1738,8 @@ SpeedChatStaticTextToontown = {100: 'Hi!',
  30507: "Have you found any bugs yet?",
  30508: "I hope that bug gets fixed soon.",
  30509: "What types of bugs have you ran into so far?",
- 30510: "Those bugs can get more obnoxious than the Cogs sometimes."}
-# 30511: "You can report bugs by clicking the Report a Bug button on the Toontown Empire launcher."}
+ 30510: "Those bugs can get more obnoxious than the Cogs sometimes.",
+ 30511: "I'm certain the Toontown Empire development team will fix that bug!"}
 SpeedChatStaticText = SpeedChatStaticTextCommon
 SCFactoryMeetMenuIndexes = (1903,
  1904,
