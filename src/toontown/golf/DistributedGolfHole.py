@@ -1,22 +1,7 @@
 import math
 import random
 import time
-from panda3d.core import TextNode
-from panda3d.core import BitMask32
-from panda3d.core import Point3
-from panda3d.core import Vec3
-from panda3d.core import Vec4
-from panda3d.core import deg2Rad
-from panda3d.core import Mat3
-from panda3d.core import NodePath
-from panda3d.core import VBase4
-from panda3d.ode import OdeTriMeshData
-from panda3d.ode import OdeTriMeshGeom
-from panda3d.ode import OdeRayGeom
-from panda3d.core import CollisionTraverser
-from panda3d.core import CollisionSegment
-from panda3d.core import CollisionNode
-from panda3d.core import CollisionHandlerQueue
+from pandac.PandaModules import TextNode, BitMask32, Point3, Vec3, Vec4, deg2Rad, Mat3, NodePath, VBase4, OdeTriMeshData, OdeTriMeshGeom, OdeRayGeom, CollisionTraverser, CollisionSegment, CollisionNode, CollisionHandlerQueue
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from otp.otpbase import OTPGlobals
@@ -1115,8 +1100,8 @@ class DistributedGolfHole(DistributedPhysicsWorld.DistributedPhysicsWorld, FSM, 
         self.perfectIval = Parallel(textTrack, soundTrack, animTrack)
         self.perfectIval.start()
 
-    def __playbackTask(self):
-        return self.playBackFrame()
+    def __playbackTask(self, task):
+        return self.playBackFrame(task)
 
     def toonRayCollisionCallback(self, x, y, z):
         if self.state not in ('Aim', 'WatchAim', 'ChooseTee', 'WatchTee'):
@@ -1253,7 +1238,7 @@ class DistributedGolfHole(DistributedPhysicsWorld.DistributedPhysicsWorld, FSM, 
         self.ballFollow.setPos(ballPos)
 
     def hitBall(self, ball, power, x, y):
-        self.performSwing(ball, power, x, y)
+        self.performSwing(self, ball, power, x, y)
 
     def ballMovie2Client(self, cycleTime, avId, movie, spinMovie, ballInFrame, ballTouchedHoleFrame, ballFirstTouchedHoleFrame, commonObjectData):
         self.notify.debug('received Movie, number of frames %s %s ballInFrame=%d ballTouchedHoleFrame=%d ballFirstTouchedHoleFrame=%d' % (len(movie),
@@ -1641,7 +1626,7 @@ class DistributedGolfHole(DistributedPhysicsWorld.DistributedPhysicsWorld, FSM, 
          diffTime,
          fpsTime,
          self.frame))
-        self.ballMovie2Client(cycleTime, avId, self.recording, self.aVRecording, self.ballInHoleFrame, self.ballTouchedHoleFrame, self.ballFirstTouchedHoleFrame, commonObjectData)
+        self.ballMovie2Client(cycleTime, avId, self.recording, self.aVRecording, self.ballInHoleFrame, self.ballTouchedHoleFrame, self.ballFirstTouchedHoleFrame)
         return
 
     def handleBallHitNonGrass(self, c0, c1):
