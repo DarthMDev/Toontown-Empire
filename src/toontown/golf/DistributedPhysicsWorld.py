@@ -1,7 +1,7 @@
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
-from panda3d.core import *
+from pandac.PandaModules import *
 from math import *
 import math
 from direct.fsm.FSM import FSM

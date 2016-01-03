@@ -1,7 +1,7 @@
 from direct.distributed import DistributedObjectAI
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
-from panda3d.core import *
+from pandac.PandaModules import *
 import DistributedPhysicsWorldAI
 from direct.fsm.FSM import FSM
 from toontown.ai.ToonBarrier import *
@@ -40,7 +40,7 @@ class DistributedGolfHoleAI(DistributedPhysicsWorldAI.DistributedPhysicsWorldAI,
          0,
          0]
         self.barrierPlayback = None
-        self.trustedAvId = None
+        self.trustedPlayerId = None
         self.activeGolferIndex = None
         self.activeGolferId = None
         self.holeInfo = GolfGlobals.HoleInfo[self.holeId]
@@ -263,8 +263,8 @@ class DistributedGolfHoleAI(DistributedPhysicsWorldAI.DistributedPhysicsWorldAI,
          dirX,
          dirY]
         self.commonHoldData = commonObjectData
-        self.trustedAvId = self.chooseAvatarToSimulate()
-        self.sendUpdateToAvatarId(self.trustedAvId, 'assignRecordSwing', [avId,
+        self.trustedPlayerId = self.choosePlayerToSimulate()
+        self.sendUpdateToAvatarId(self.trustedPlayerId, 'assignRecordSwing', [avId,
          cycleTime,
          power,
          x,
@@ -275,14 +275,19 @@ class DistributedGolfHoleAI(DistributedPhysicsWorldAI.DistributedPhysicsWorldAI,
          commonObjectData])
         self.golfCourse.addAimTime(avId, curAimTime)
 
-    def chooseAvatarToSimulate(self):
+    def choosePlayerToSimulate(self):
         stillPlaying = self.golfCourse.getStillPlayingAvIds()
-
-        return stillPlaying[0] if stillPlaying else 0
+        playerId = 0
+        if simbase.air.config.GetBool('golf-trust-driver-first', 0):
+            if stillPlaying:
+                playerId = stillPlaying[0]
+        else:
+            playerId = random.choice(stillPlaying)
+        return playerId
 
     def ballMovie2AI(self, cycleTime, avId, movie, spinMovie, ballInFrame, ballTouchedHoleFrame, ballFirstTouchedHoleFrame, commonObjectData):
         sentFromId = self.air.getAvatarIdFromSender()
-        if sentFromId == self.trustedAvId:
+        if sentFromId == self.trustedPlayerId:
             lastFrameNum = len(movie) - 2
             if lastFrameNum < 0:
                 lastFrameNum = 0
@@ -304,11 +309,11 @@ class DistributedGolfHoleAI(DistributedPhysicsWorldAI.DistributedPhysicsWorldAI,
             if self.state == 'WaitPlayback' or self.state == 'WaitTee':
                 self.notify.warning('ballMovie2AI requesting from %s to WaitPlayback' % self.state)
             self.request('WaitPlayback')
-        elif self.trustedAvId == None:
+        elif self.trustedPlayerId == None:
             return
         else:
             self.doAction()
-        self.trustedAvId = None
+        self.trustedPlayerId = None
         return
 
     def performReadyAction(self):
@@ -339,7 +344,7 @@ class DistributedGolfHoleAI(DistributedPhysicsWorldAI.DistributedPhysicsWorldAI,
          self.ballFirstTouchedHoleFrame,
          self.commonHoldData])
         self.ballPos[avId] = newPos
-        self.trustedAvId = None
+        self.trustedPlayerId = None
         return
 
     def postResult(self, cycleTime, avId, recording, aVRecording, ballInHoleFrame, ballTouchedHoleFrame, ballFirstTouchedHoleFrame):
@@ -417,7 +422,7 @@ class DistributedGolfHoleAI(DistributedPhysicsWorldAI.DistributedPhysicsWorldAI,
         if self.barrierPlayback:
             self.barrierPlayback.clear(avId)
         else:
-            if avId == self.trustedAvId:
+            if avId == self.trustedPlayerId:
                 self.doAction()
             if avId == self.activeGolferId and not self.golfCourse.haveAllGolfersExited():
                 self.selectNextGolfer()

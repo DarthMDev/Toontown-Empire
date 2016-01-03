@@ -1,6 +1,6 @@
 from direct.directnotify.DirectNotifyGlobal import *
 from direct.showbase import DirectObject
-from panda3d.core import *
+from pandac.PandaModules import *
 from toontown.golf import DistributedGolfCourseAI
 
 
