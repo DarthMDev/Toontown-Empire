@@ -5103,6 +5103,10 @@ SpecialEventMailboxStrings = {1: 'A special item from the Toon Council just for 
  15: 'Here is your Operation: Storm Sellbot prize! Congratulations!',
  16: 'Here is your Most C.J.s Defeated Tournament prize! Congratulations!',
  17: 'Here is your Operation: Lawbots Lose prize! Congratulations!'}
+# TODO: Add this to a gui for purchasable cannons time limit
+# Rental Cannons
+#CatalogRentalCannonsDialog = 'Rental Cannons!'
+#CatalogRentalItemPurchaseOneDay = '500 Jellybeans'
 RentalHours = 'Hours'
 RentalOf = 'Of'
 RentalCannon = 'Cannons!'
