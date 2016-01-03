@@ -8,7 +8,6 @@ TreasureMM = 4
 TreasureDL = 5
 TreasureOZ = 6
 TreasureE  = 7
-TreasureEF = 9 # Cannons teasure
 
 ValentineTreasureModel = 'phase_4/models/props/tt_m_ara_ext_heart'
 
@@ -42,11 +41,6 @@ TreasureModels = {
         'phase_4/audio/sfx/SZ_DD_treasure.ogg',
     ),
     TreasureE: (
-        'phase_5.5/models/props/popsicle_treasure',
-        'phase_4/audio/sfx/SZ_DD_treasure.ogg',
-    ),
-# Cannons treasure model
-    TreasureEF: (
         'phase_5.5/models/props/popsicle_treasure',
         'phase_4/audio/sfx/SZ_DD_treasure.ogg',
     ),

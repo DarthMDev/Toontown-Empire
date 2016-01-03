@@ -8758,7 +8758,7 @@ TeaserOtherGags = TeaserOtherHoods
 TeaserTricks = TeaserOtherHoods
 InventoryDelete = 'DELETE'
 InventoryDeleteAll = 'DELETE ALL'
-
+InventoryDeleteConfirm = 'Are you sure you want to delete all your gags? You will keep your level 7 gags.'
 
 Blacklist = [
  "$1ut",
