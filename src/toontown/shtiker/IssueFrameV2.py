@@ -1,4 +1,4 @@
-from panda3d.core import Filename
+from pandac.PandaModules import Filename
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import DGG, DirectFrame, DirectButton
 from toontown.shtiker import IssueFrame

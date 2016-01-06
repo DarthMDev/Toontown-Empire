@@ -1494,9 +1494,9 @@ dclass NewsManager : DistributedObject {
 };
 
 dclass DistributedInGameNewsMgr : DistributedObjectGlobal {
-  setLatestIssueStr(string) required broadcast ram;
-  inGameNewsMgrAIStartingUp(uint32, uint32);
-  newIssueUDtoAI(string) airecv;
+  setLatestIssueStr(string issueStr) required broadcast ram;
+  inGameNewsMgrAIStartingUp(uint32 todo0, uint32 todo1);
+  newIssueUDtoAI(string todo0) airecv;
 };
 
 
