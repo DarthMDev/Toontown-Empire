@@ -105,7 +105,7 @@ want-talkative-tyler #f
 estate-day-night #t
 want-garden-game #t
 want-language-selection #f
-want-mongo #t
+want-mongo #f
 want-toontorial #f
 want-news-tab #t
 want-news-page #t
@@ -116,7 +116,7 @@ want-pstats 0
 
 # Temporary:
 want-old-fireworks #t
-want-mongo-client #t
+want-mongo-client #f
 
 # Enhancements for game Performance:
 smooth-lag 0.4

@@ -5,11 +5,10 @@ __builtin__.process = 'ai'
 
 
 # Temporary hack patch:
-__builtin__.__dict__.update(__import__('panda3d.core', fromlist=['*']).__dict__)
+__builtin__.__dict__.update(__import__('pandac.PandaModules', fromlist=['*']).__dict__)
 from direct.extensions_native import HTTPChannel_extensions
 
-import sys
-import os
+import sys, os
 sys.path.append(
     os.path.abspath(
         os.path.join(
@@ -32,7 +31,7 @@ parser.add_argument('--stateserver', help="The control channel of this AI's desi
 parser.add_argument('--district-name', help="What this AI Server's district will be named.")
 parser.add_argument('--astron-ip', help="The IP address of the Astron Message Director to connect to.")
 parser.add_argument('--eventlogger-ip', help="The IP address of the Astron Event Logger to log to.")
-parser.add_argument('config', nargs='*', default=['dependencies/config/general.prc', 'dependencies/config/release/dev.prc'], help="PRC file(s) to load.")
+parser.add_argument('config', nargs='*', default=['dependencies/config/general.prc', 'dependencies/config/release/dev.prc'], help="PRC file(s) to load.") #change to test.prc on production server
 args = parser.parse_args()
 
 for prc in args.config:
