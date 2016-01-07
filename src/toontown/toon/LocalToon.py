@@ -1683,9 +1683,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.lastTimeReadNews = newTime
 
     def getLastTimeReadNews(self):
-        if self.lastTimeReadNews == None:
-        	self.notify.debug('Last time toon read news is None!')
-        self.notify.debug('Last time toon read news {0}'.format(self.lastTimeReadNews))
         return self.lastTimeReadNews
 
     def cheatCogdoMazeGame(self, kindOfCheat = 0):

@@ -1,8 +1,8 @@
 import os
 import time
 import datetime
-from pandac.PandaModules import Filename, DSearchPath, TextNode
-from pandac.PandaModules import HTTPClient, Ramfile, DocumentSpec
+from panda3d.core import Filename, DSearchPath, TextNode
+from panda3d.core import HTTPClient, Ramfile, DocumentSpec
 from direct.showbase import DirectObject
 from direct.gui.DirectGui import DirectFrame, DGG
 from direct.directnotify import DirectNotifyGlobal
@@ -103,7 +103,7 @@ class DirectNewsFrame(DirectObject.DirectObject):
         newsDirAsFile = vfs.getFile(Filename(newsDir))
         fileList = newsDirAsFile.scanDirectory()
         fileNames = fileList.getFiles()
-        self.notify.debug('filenames=%s' % fileNames)
+        #self.notify.debug('filenames=%s' % fileNames)
         homeFileNames = set([])
         for name in fileNames:
             self.notify.debug('processing %s' % name)
