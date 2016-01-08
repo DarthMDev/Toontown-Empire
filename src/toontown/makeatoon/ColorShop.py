@@ -19,9 +19,9 @@ class ColorShop(StateData.StateData):
 
     def getGenderColorList(self, dna):
         if self.dna.getGender() == 'm':
-            colorList = ToonDNA.allColorsList
+            colorList = ToonDNA.defaultBoyColorList
         else:
-            colorList = ToonDNA.allColorsList
+            colorList = ToonDNA.defaultGirlColorList
 
         return colorList
 

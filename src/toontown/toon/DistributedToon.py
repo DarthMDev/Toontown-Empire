@@ -100,7 +100,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.disguisePage = None
         self.sosPage = None
         self.gardenPage = None
-        self.emoteAccess = [0] * 27
+        self.emoteAccess = [0] * 26
         self.cogTypes = [0, 0, 0, 0]
         self.cogLevels = [0, 0, 0, 0]
         self.cogParts = [0, 0, 0, 0]
@@ -1184,8 +1184,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         DistributedSmoothNode.DistributedSmoothNode.d_setParent(self, parentToken)
 
     def setEmoteAccess(self, bits):
-        if bits[26]:
-            bits.remove(bits[26])
         self.emoteAccess = bits
         if self == base.localAvatar:
             messenger.send('emotesChanged')
