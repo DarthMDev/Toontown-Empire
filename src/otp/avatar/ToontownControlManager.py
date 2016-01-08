@@ -29,8 +29,6 @@ class ToontownControlManager(ControlManager.ControlManager):
         
         self.isEnabled = 1
 
-        
-        #self.inputStateTokens = []
         ist = self.inputStateTokens
         ist.append(inputState.watch("run", 'runningEvent', "running-on", "running-off"))
         
@@ -124,7 +122,7 @@ class ToontownControlManager(ControlManager.ControlManager):
         if self.currentControls:
             self.currentControls.disableAvatarControls()
             
-        if self.passMessagesThrough: # for not breaking toontown          
+        if self.passMessagesThrough:        
             if self.wantWASD:
                 print ':(ToontownControlManager) WASD support was enabled.'
                 self.istWASD.append(inputState.watchWithModifiers("forward", "w", inputSource=inputState.WASD))

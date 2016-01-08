@@ -1,10 +1,10 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 from NametagConstants import *
 from Nametag3d import *
 from Nametag2d import *
 import subprocess
 
-class NametagGroup(object):
+class NametagGroup:
     CCNormal = CCNormal
     CCNonPlayer = CCNonPlayer
     CCSuit = CCSuit
@@ -242,7 +242,7 @@ class NametagGroup(object):
         tag.chatFlags = self.chatFlags
         tag.avatar = self.avatar
         tag.icon = self.icon
-
+        
         if settings['talk2speech']:
             subprocess.Popen('espeak "%s"' % tag.chatString)
 

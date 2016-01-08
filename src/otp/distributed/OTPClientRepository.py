@@ -20,7 +20,6 @@ from otp.nametag.NametagConstants import *
 import sys, time, types, random
 import __builtin__
 
-
 class OTPClientRepository(ClientRepositoryBase):
     notify = directNotify.newCategory('OTPClientRepository')
     avatarLimit = 6
@@ -207,7 +206,7 @@ class OTPClientRepository(ClientRepositoryBase):
         self.centralLogger = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_CENTRAL_LOGGER, 'CentralLogger')
         self.csm = None # To be set by subclass.
 
-    def hasPlayToken(self):
+    def hasPlayToken():
         return self.playToken != None
 
     def readDCFile(self, dcFileNames=None):
@@ -347,7 +346,7 @@ class OTPClientRepository(ClientRepositoryBase):
             # in the DC file.
             for i in xrange(dcFile.getNumClasses()):
                 dclass = dcFile.getClass(i)
-                if (dclass.getName()+ownerDcSuffix) in ownerImportSymbols:
+                if ((dclass.getName()+ownerDcSuffix) in ownerImportSymbols):
                     number = dclass.getNumber()
                     className = dclass.getName() + ownerDcSuffix
 
@@ -618,7 +617,7 @@ class OTPClientRepository(ClientRepositoryBase):
         self.__currentAvId = 0
         self.stopHeartbeat()
         self.stopReaderPollTask()
-        if self.bootedIndex is not None and self.bootedIndex in OTPLocalizer.CRBootedReasons:
+        if (self.bootedIndex is not None) and (self.bootedIndex in OTPLocalizer.CRBootedReasons):
             message = OTPLocalizer.CRBootedReasons[self.bootedIndex]
         elif self.bootedIndex == 155:
             message = self.bootedText
@@ -627,7 +626,7 @@ class OTPClientRepository(ClientRepositoryBase):
         else:
             message = OTPLocalizer.CRLostConnection
         reconnect = 1
-        if self.bootedIndex in (152, 127):
+        if self.bootedIndex in (152, 127, 124, 101, 102, 103):
             reconnect = 0
         if self.bootedIndex == 152:
             message = message % {'name': self.bootedText}
@@ -828,7 +827,7 @@ class OTPClientRepository(ClientRepositoryBase):
             district = None
         if not district:
             self.distributedDistrict = self.getStartingDistrict()
-            if self.distributedDistrict is None:
+            if not self.distributedDistrict:
                 self.loginFSM.request('noShards')
                 return
             shardId = self.distributedDistrict.doId
@@ -1045,26 +1044,26 @@ class OTPClientRepository(ClientRepositoryBase):
         pass
 
     def getStartingDistrict(self):
-        district = None
-        if len(self.activeDistrictMap.keys()) == 0:
+        if not self.activeDistrictMap:
             self.notify.info('no shards')
             return
 
         maxPop = config.GetInt('shard-mid-pop', 300)
+        preferred = settings.get('preferredShard', None)
+        
+        if preferred:
+            for shard in self.activeDistrictMap.values():
+                if shard.available and shard.name == preferred and shard.avatarCount < maxPop:
+                    return shard
 
-        # Join the least populated district.
         for shard in self.activeDistrictMap.values():
-            if district:
-                if shard.avatarCount < district.avatarCount and shard.available:
-                    if shard.avatarCount < maxPop:
-                        district = shard
-            else:
-                if shard.available:
-                    if shard.avatarCount < maxPop:
-                        district = shard
+            if shard.available and shard.avatarCount < maxPop:
+                district = shard
+                maxPop = district.avatarCount
 
-        if district is not None:
+        if district:
             self.notify.debug('chose %s: pop %s' % (district.name, district.avatarCount))
+
         return district
 
     def getShardName(self, shardId):
@@ -1086,7 +1085,7 @@ class OTPClientRepository(ClientRepositoryBase):
 
         for s in self.activeDistrictMap.values():
             if s.available:
-                list.append((s.doId, s.name, s.avatarCount, s.invasionStatus))
+                list.append((s.doId, s.name, s.avatarCount, s.invasionStatus, s.groupAvCount))
 
         return list
 
@@ -1279,7 +1278,7 @@ class OTPClientRepository(ClientRepositoryBase):
         else:
             interest = None
 
-        if not interest or not interest.events:
+        if (not interest) or (not interest.events):
             # This object can be generated right away:
             return self.__doGenerate(doId, parentId, zoneId, classId, di, other)
 

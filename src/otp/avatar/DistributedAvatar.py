@@ -18,6 +18,12 @@ class DistributedAvatar(DistributedActor, Avatar):
     ManagesNametagAmbientLightChanged = True
 
     def __init__(self, cr):
+        try:
+            self.DistributedAvatar_initialized
+            return
+        except:
+            self.DistributedAvatar_initialized = 1
+
         Avatar.__init__(self)
         DistributedActor.__init__(self, cr)
         self.hpText = None
@@ -60,6 +66,12 @@ class DistributedAvatar(DistributedActor, Avatar):
         self.accept('nameTagShowName', self.__nameTagShowName)
 
     def announceGenerate(self):
+        try:
+            self.DistributedAvatar_announced
+            return
+        except:
+            self.DistributedAvatar_announced = 1
+
         if not self.isLocal():
             self.initializeBodyCollisions('distAvatarCollNode-' + str(self.doId))
         DistributedActor.announceGenerate(self)
@@ -117,12 +129,13 @@ class DistributedAvatar(DistributedActor, Avatar):
         return
 
     def hpChange(self, quietly = 0):
-        if hasattr(self, 'doId'):
-            if self.hp != None and self.maxHp != None:
-                messenger.send(self.uniqueName('hpChange'), [self.hp, self.maxHp, quietly])
-            if self.hp != None and self.hp > 0:
-                messenger.send(self.uniqueName('positiveHP'))
-        return
+        if (not hasattr(self, 'doId')) or self.hp == None:
+            return
+        
+        if self.maxHp != None:
+            messenger.send(self.uniqueName('hpChange'), [self.hp, self.maxHp, quietly])
+        if self.hp > 0:
+            messenger.send(self.uniqueName('positiveHP'))
 
     def died(self):
         pass
@@ -280,7 +293,7 @@ def pingpong(anim, start=None, end=None, part=None):
     target = spellbook.getTarget()
     target.pingpong(anim, partName=part, fromFrame=start, toFrame=end)
 
-@magicWord(category=CATEGORY_DEVELOPER, types=[str])
+@magicWord(category=CATEGORY_LEADER, types=[str])
 def rightHand(prop=None):
     """
     parents the optional <prop> to the target's right hand node.
@@ -296,7 +309,7 @@ def rightHand(prop=None):
         requestedProp = globalPropPool.getProp(prop)
         requestedProp.reparentTo(rightHand)
 
-@magicWord(category=CATEGORY_DEVELOPER, types=[str])
+@magicWord(category=CATEGORY_LEADER, types=[str])
 def leftHand(prop=None):
     """
     parents the optional <prop> to the target's left hand node.
@@ -312,14 +325,14 @@ def leftHand(prop=None):
         requestedProp = globalPropPool.getProp(prop)
         requestedProp.reparentTo(leftHand)
 
-@magicWord(category=CATEGORY_DEVELOPER, types=[])
+@magicWord(category=CATEGORY_STAFF, types=[])
 def getPos():
     """
     Return your target's position.
     """
     return spellbook.getTarget().getPos()
 
-@magicWord(category=CATEGORY_DEVELOPER, types=[int])
+@magicWord(category=CATEGORY_LEADER, types=[int])
 def setFov(fov=OTPGlobals.DefaultCameraFov):
     """
     Set your field of view in-game.
@@ -331,39 +344,3 @@ def setFov(fov=OTPGlobals.DefaultCameraFov):
         return 'Set FOV to the default.'
     else:
         return 'Set FOV to %s.' % fov
-		
-@magicWord(category=CATEGORY_STAFF, types=[int])
-def ToonUp(Laff):
-  '''
-  Set's Target's Laff
-  '''
-  target = spellbook.getTarget()
-  invoker = spellbook.getInvoker()
-  if invoker == target:
-    avatar = invoker
-  else:
-    avatar = target
-  MaxLaff = avatar.getMaxHp()
-  if Laff > MaxLaff:
-   avatar.setHp(MaxLaff)
-  else:
-   avatar.setHp(Laff)
-   
-#Disabled because of Indent Error can be Fixed!
-
-magicWord(category=CATEGORY_DEVELOPER, types=[int])
-def setPos(Pos):
-    """
-    Sets your target's position.
-    """
-    invoker = spellbook.getInvoker()
-    target = spellbook.getTarget()
-    if invoker == target:
-	   print("Target is Invoker")
-	   avatar = invoker
-    else:
-	   print("Target is not Invoker")
-	   avatar = target
-    avatar.setPos(Pos)
-    print("Magic Word Manager Has Set Postion For Target.")
-    	

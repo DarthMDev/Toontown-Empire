@@ -10,6 +10,7 @@ class WhisperPopup(MarginPopup, ClickablePopup):
     WTBattleSOS = WTBattleSOS
     WTEmote = WTEmote
     WTToontownBoardingGroup = WTToontownBoardingGroup
+
     WORDWRAP = 7.5
     SCALE_2D = 0.25
 
@@ -89,8 +90,8 @@ class WhisperPopup(MarginPopup, ClickablePopup):
         taskMgr.doMethodLater(self.timeout, self.unmanage, 'whisper-timeout-%d' % id(self), [manager])
 
     # Manually Clean up
-    def unmanage(self, marginManager):
-        MarginPopup.unmanage(self, marginManager)
+    def unmanage(self, manager):
+        MarginPopup.unmanage(self, manager)
 
         ClickablePopup.destroy(self)
         self.innerNP.removeNode()

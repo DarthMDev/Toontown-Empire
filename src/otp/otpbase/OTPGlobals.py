@@ -40,36 +40,27 @@ CEPumpkin = 12
 CEBigWhite = 13
 CESnowMan = 14
 CEGreenToon = 15
-CETinyToon = 16
-CEGiantToon = 17
-CEBeanToon = 109
 CEGhost = 'g'
 CEName2Id = {
-    'normal': CENormal,
-    'bighead': CEBigHead,
-    'smallhead': CESmallHead,
-    'biglegs': CEBigLegs,
-    'smalllegs': CESmallLegs,
-    'bigtoon': CEBigToon,
-    'smalltoon': CESmallToon,
-    'flatportrait': CEFlatPortrait,
-    'flatprofile': CEFlatProfile,
-    'transparent': CETransparent,
-    'nocolor': CENoColor,
-    'invisible': CEInvisible,
-    'pumpkin': CEPumpkin,
-    'bigwhite': CEBigWhite,
-    'snowman': CESnowMan,
-    'greentoon': CEGreenToon,
-    'tinytoon': CETinyToon,
-    'gianttoon': CEGiantToon,
-    'beantoon': CEBeanToon
+ 'normal': CENormal,
+ 'bighead': CEBigHead,
+ 'smallhead': CESmallHead,
+ 'biglegs': CEBigLegs,
+ 'smalllegs': CESmallLegs,
+ 'bigtoon': CEBigToon,
+ 'smalltoon': CESmallToon,
+ 'flatportrait': CEFlatPortrait,
+ 'flatprofile': CEFlatProfile,
+ 'transparent': CETransparent,
+ 'nocolor': CENoColor,
+ 'invisible': CEInvisible,
+ 'pumpkin': CEPumpkin,
+ 'bigwhite': CEBigWhite,
+ 'snowman': CESnowMan,
+ 'greentoon': CEGreenToon
 }
-BeanToonScale = 2.9
-GiantToonScale = 10.1
-BigToonScale = 1.4
-SmallToonScale = 0.4
-TinyToonScale = 0.2
+BigToonScale = 1.5
+SmallToonScale = 0.5
 DisconnectNone = 0
 DisconnectBookExit = 1
 DisconnectCloseWindow = 2
@@ -86,8 +77,6 @@ InterfaceFont = None
 InterfaceFontPath = None
 SignFont = None
 SignFontPath = None
-FancyFont = None
-FancyFontPath = None
 ChalkFont = None
 ChalkFontPath = None
 NametagFonts = {}
@@ -110,7 +99,6 @@ def setInterfaceFont(path):
     global InterfaceFont
     InterfaceFontPath = path
     InterfaceFont = None
-    return
 
 def getSignFont():
     global SignFont
@@ -142,26 +130,11 @@ def setChalkFont(path):
     global ChalkFontPath
     ChalkFontPath = path
 
-def getFancyFont():
-    global FancyFontPath
-    global FancyFont
-    if FancyFont == None:
-        if FancyFontPath == None:
-            InterfaceFont = TextNode.getDefaultFont()
-            FancyFont = TextNode.getDefaultFont()
-        else:
-            FancyFont = loader.loadFont(FancyFontPath, lineHeight=1.0)
-    return FancyFont
-
-def setFancyFont(path):
-    global FancyFontPath
-    FancyFontPath = path
-
 def getNametagFont(index):
     global NametagFontPaths
     global NametagFonts
-    if index not in NametagFonts or NametagFonts[index] is None:
-        if index not in NametagFontPaths or NametagFontPaths[index] is None:
+    if (index not in NametagFonts) or (NametagFonts[index] is None):
+        if (index not in NametagFontPaths) or (NametagFontPaths[index] is None):
             InterfaceFont = TextNode.getDefaultFont()
             NametagFonts[index] = TextNode.getDefaultFont()
         else:
@@ -192,7 +165,6 @@ def setDialogClasses(dialogClass, globalDialogClass):
     GlobalDialogClass = globalDialogClass
 
 NetworkLatency = 1.0
-maxLoginWidth = 9.1
 STAND_INDEX = 0
 WALK_INDEX = 1
 RUN_INDEX = 2
@@ -227,12 +199,10 @@ HideGameHotKeyOSX = 'meta-h'
 HideGameHotKeyRepeatOSX = 'meta-h-repeat'
 MinimizeGameHotKeyOSX = 'meta-m'
 MinimizeGameHotKeyRepeatOSX = 'meta-m-repeat'
-GlobalDialogColor = (1,
- 1,
- 0.75,
- 1)
+GlobalDialogColor = (1, 1, 0.75, 1)
 DefaultBackgroundColor = (0.3, 0.3, 0.3, 1)
-toonBodyScales = {'mouse': 0.6,
+toonBodyScales = {
+ 'mouse': 0.6,
  'cat': 0.73,
  'duck': 0.66,
  'rabbit': 0.74,
@@ -240,8 +210,10 @@ toonBodyScales = {'mouse': 0.6,
  'dog': 0.85,
  'monkey': 0.68,
  'bear': 0.85,
- 'pig': 0.77}
-toonHeadScales = {'mouse': Point3(1.0),
+ 'pig': 0.77
+}
+toonHeadScales = {
+ 'mouse': Point3(1.0),
  'cat': Point3(1.0),
  'duck': Point3(1.0),
  'rabbit': Point3(1.0),
@@ -249,11 +221,15 @@ toonHeadScales = {'mouse': Point3(1.0),
  'dog': Point3(1.0),
  'monkey': Point3(1.0),
  'bear': Point3(1.0),
- 'pig': Point3(1.0)}
-legHeightDict = {'s': 1.5,
+ 'pig': Point3(1.0)
+}
+legHeightDict = {
+ 's': 1.5,
  'm': 2.0,
- 'l': 2.75}
-torsoHeightDict = {'s': 1.5,
+ 'l': 2.75
+}
+torsoHeightDict = {
+ 's': 1.5,
  'm': 1.75,
  'l': 2.25,
  'ss': 1.5,
@@ -261,8 +237,10 @@ torsoHeightDict = {'s': 1.5,
  'ls': 2.25,
  'sd': 1.5,
  'md': 1.75,
- 'ld': 2.25}
-headHeightDict = {'dls': 0.75,
+ 'ld': 2.25
+}
+headHeightDict = {
+ 'dls': 0.75,
  'dss': 0.5,
  'dsl': 0.5,
  'dll': 0.75,
@@ -295,9 +273,10 @@ headHeightDict = {'dls': 0.75,
  'sls': 0.75,
  'sss': 0.5,
  'ssl': 0.5,
- 'sll': 0.75}
+ 'sll': 0.75
+}
 RandomButton = 'Randomize'
-TypeANameButton = 'Type A Name'
+TypeANameButton = 'Type Name'
 PickANameButton = 'Pick-A-Name'
 NameShopSubmitButton = 'Submit'
 RejectNameText = 'That name is not allowed. Please try again.'
@@ -307,7 +286,7 @@ NameShopContinueSubmission = 'Continue Submission'
 NameShopChooseAnother = 'Choose Another Name'
 NameShopToonCouncil = 'The Toon Council\nwill review your\nname.  ' + 'Review may\ntake a few days.\nWhile you wait\nyour name will be\n '
 PleaseTypeName = 'Please type your name:'
-AllNewNames = 'All new names\nwill be approved\nby the Toon Council.'
+AllNewNames = 'All new names\nmust be approved\nby the Toon Council.'
 NameShopNameRejected = 'The name you\nsubmitted has\nbeen rejected.'
 NameShopNameAccepted = 'Congratulations!\nThe name you\nsubmitted has\nbeen accepted!'
 NoPunctuation = "You can't use punctuation marks in your name!"
@@ -315,13 +294,5 @@ PeriodOnlyAfterLetter = 'You can use a period in your name, but only after a let
 ApostropheOnlyAfterLetter = 'You can use an apostrophe in your name, but only after a letter.'
 NoNumbersInTheMiddle = 'Numeric digits may not appear in the middle of a word.'
 ThreeWordsOrLess = 'Your name must be three words or fewer.'
-AvatarFriendAddEvent = 'avatarFriendAddEvent'
-AvatarNewFriendAddEvent = 'avatarNewFriendAddEvent'
-AvatarFriendUpdateEvent = 'avatarFriendUpdateEvent'
-AvatarFriendRemoveEvent = 'avatarFriendRemoveEvent'
-AvatarFriendConsideringEvent = 'avatarFriendConsideringEvent'
-AvatarFriendInvitationEvent = 'avatarFriendInvitationEvent'
-AvatarFriendRejectInviteEvent = 'avatarFriendRejectInviteEvent'
-AvatarFriendRetractInviteEvent = 'avatarFriendRetractInviteEvent'
-AvatarFriendRejectRemoveEvent = 'avatarFriendRejectRemoveEvent'
-WhisperIncomingEvent = 'whisperIncomingEvent'
+
+TeleportFailCooldown = 2.0

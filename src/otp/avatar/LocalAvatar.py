@@ -1,8 +1,8 @@
+from direct.controls import ControlManager
 from direct.controls.GhostWalker import GhostWalker
 from direct.controls.GravityWalker import GravityWalker
 from direct.controls.ObserverWalker import ObserverWalker
 from direct.controls.SwimWalker import SwimWalker
-import ToontownControlManager
 from direct.controls.TwoDWalker import TwoDWalker
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedSmoothNode
@@ -33,13 +33,20 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
     __enableMarkerPlacement = base.config.GetBool('place-markers', 0)
 
     def __init__(self, cr, chatMgr, talkAssistant = None, passMessagesThrough = False):
+        try:
+            self.LocalAvatar_initialized
+            return
+        except:
+            pass
+
+        self.LocalAvatar_initialized = 1
         DistributedAvatar.DistributedAvatar.__init__(self, cr)
         DistributedSmoothNode.DistributedSmoothNode.__init__(self, cr)
         self.cTrav = CollisionTraverser('base.cTrav')
         base.pushCTrav(self.cTrav)
         self.cTrav.setRespectPrevTransform(1)
         self.avatarControlsEnabled = 0
-        self.controlManager = ToontownControlManager.ToontownControlManager(True, passMessagesThrough)
+        self.controlManager = ControlManager.ControlManager(True, passMessagesThrough)
         self.initializeCollisions()
         self.initializeSmartCamera()
         self.cameraPositions = []
@@ -69,7 +76,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.accept('avatarMoving', self.clearPageUpDown)
         self.showNametag2d()
         self.setPickable(0)
-
+    
     def setPreventCameraDisable(self, prevent):
         self.preventCameraDisable = prevent
 
@@ -113,6 +120,12 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         messenger.send('openFriendsList')
 
     def delete(self):
+        try:
+            self.LocalAvatar_deleted
+            return
+        except:
+            self.LocalAvatar_deleted = 1
+
         self.ignoreAll()
         self.stopJumpLandTask()
         taskMgr.remove('shadowReach')
@@ -458,7 +471,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
             if self.cameraIndex < 0:
                 self.cameraIndex = len(self.cameraPositions) - 1
         self.setCameraPositionByIndex(self.cameraIndex)
-
+    
     def setCameraPosition(self, index):
         self.cameraIndex = index
         self.setCameraPositionByIndex(index)
@@ -1112,10 +1125,8 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
     def d_setParent(self, parentToken):
         DistributedSmoothNode.DistributedSmoothNode.d_setParent(self, parentToken)
 
-    def canChat(self):
-        return 0
 
-@magicWord(category=CATEGORY_STAFF)
+@magicWord(category=CATEGORY_LEADER)
 def run():
     """
     Toggles debugging run speed.
@@ -1123,7 +1134,7 @@ def run():
     inputState.set('debugRunning', inputState.isSet('debugRunning') != True)
     return 'Toggled debug run speed.'
 
-@magicWord(category=CATEGORY_STAFF)
+@magicWord(category=CATEGORY_LEADER)
 def collisionsOff():
     """
     Turns collisions off.
@@ -1131,7 +1142,7 @@ def collisionsOff():
     base.localAvatar.collisionsOff()
     return 'Collisions are disabled.'
 
-@magicWord(category=CATEGORY_STAFF)
+@magicWord(category=CATEGORY_LEADER)
 def collisionsOn():
     """
     Turns collisions on.

@@ -2,7 +2,7 @@ from NametagConstants import *
 import NametagGlobals
 from otp.margins.ClickablePopup import ClickablePopup
 from otp.otpbase import OTPGlobals
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
 
 class Nametag(ClickablePopup):
@@ -133,7 +133,7 @@ class Nametag(ClickablePopup):
         t.node().setAlign(TextNode.ACenter)
         t.node().setWordwrap(self.wordWrap)
         t.node().setText(self.displayName)
-        t.node().setTextColor(self.nameFg)
+        t.setColor(self.nameFg)
         t.setTransparency(self.nameFg[3] < 1.0)
 
         width, height = t.node().getWidth(), t.node().getHeight()

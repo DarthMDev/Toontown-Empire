@@ -1,4 +1,4 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 
 class MarginCell(NodePath):
     def __init__(self, manager):
@@ -6,7 +6,6 @@ class MarginCell(NodePath):
 
         self.manager = manager
 
-        self.active = False
         self.content = None
         self.available = False
 
@@ -14,15 +13,6 @@ class MarginCell(NodePath):
         self.debugMode = False
 
         self.setDebug(config.GetBool('want-cell-debug', False))
-
-    def setActive(self, active):
-        if not active:
-            self.setContent(None)
-
-        self.active = active
-
-    def getActive(self):
-        return self.active
 
     def setAvailable(self, available):
         if not available and self.hasContent():
@@ -71,8 +61,7 @@ class MarginCell(NodePath):
         self.debugSquare.setColor(color)
 
     def updateDebug(self):
-        if not self.debugMode:
-             return
+        if not self.debugMode: return
 
         if self.hasContent():
             self.setDebugColor(VBase4(0.0, 0.8, 0.0, 0.5))

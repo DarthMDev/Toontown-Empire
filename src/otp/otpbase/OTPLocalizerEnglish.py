@@ -28,7 +28,7 @@ WhisperNowSpecialFriend = '%s is now your True Friend!'
 WhisperComingToVisit = '%s is coming to visit you.'
 WhisperFailedVisit = '%s tried to visit you.'
 WhisperTargetLeftVisit = '%s has gone somewhere else. Try again!'
-WhisperGiveupVisit = "%s couldn't find you because you were moving around!"
+WhisperGiveupVisit = "%s couldn't find you because you're moving around!"
 TeleportGreeting = 'Hi, %s.'
 WhisperFriendComingOnline = '%s is coming online!'
 WhisperFriendLoggedOut = '%s has logged out.'
@@ -48,19 +48,19 @@ ChatManagerWhisperToName = 'Whisper To:\n%s'
 ChatManagerCancel = lCancel
 ChatManagerWhisperOffline = '%s is offline.'
 # True Friends
-NoTrueFriendsAtAllTitle = 'Open Chat With True Friends'
-NoTrueFriendsAtAll = 'Open Chat with True Friends allows real-life friends to chat openly with each other by means of a True Friend Code that must be shared outside of the game.\n\nTo activate these features or to learn more, exit Toontown and then click on Membership and select Manage Account. Log in to edit your "Community Settings."'
+NoTrueFriendsTitle = 'Open Chat With True Friends'
+NoTrueFriends = 'Open Chat with True Friends allows real-life friends to chat openly with each other by means of a True Friend Code that must be shared outside of the game.\n\nTo activate these features or to learn more, exit Toontown and then click on Membership and select Manage Account. Log in to edit your "Community Settings."'
 # Speedchat Plus
-NoTrueFriendsAtAllAndNoWhitelistTitle = 'Chat Button'
-NoTrueFriendsAtAllAndNoWhitelist = 'You can use the blue Chat button to communicate with other Toons by using Speechat Plus or Open Chat with True Friends.\n\nSpeedchat Plus is a form of type chat that allows users to communicate by using the SpeedChat Plus dictionary.\n\nOpen Chat with True Friends allows real-life friends to chat openly with each other by means of a True Friend Code that must be shared outside of the game.\n\nTo activate these features or to learn more, exit Toontown and then click on Membership and select Manage Account.  Log in to edit your "Community Settings."'
-NoTrueFriendsAtAllOK = lOK
+NoSpeedchatPlusTitle = 'Chat Button'
+NoSpeedchatPlus = 'You can use the blue Chat button to communicate with other Toons by using Speechat Plus or Open Chat with True Friends.\n\nSpeedchat Plus is a form of type chat that allows users to communicate by using the SpeedChat Plus dictionary.\n\nOpen Chat with True Friends allows real-life friends to chat openly with each other by means of a True Friend Code that must be shared outside of the game.\n\nTo activate these features or to learn more, exit Toontown and then click on Membership and select Manage Account.  Log in to edit your "Community Settings."'
+NoTrueFriendsOK = lOK
 WhisperToFormat = 'To %s %s'
 WhisperToFormatName = 'To %s'
 WhisperFromFormatName = '%s whispers'
 ThoughtOtherFormatName = '%s thinks'
 ThoughtSelfFormatName = 'You think'
-from panda3d.core import TextProperties
-from panda3d.core import TextPropertiesManager
+from pandac.PandaModules import TextProperties
+from pandac.PandaModules import TextPropertiesManager
 shadow = TextProperties()
 shadow.setShadow(-0.025, -0.025)
 shadow.setShadowColor(0, 0, 0, 1)
@@ -89,28 +89,62 @@ TextPropertiesManager.getGlobalPtr().setProperties('black', black)
 grey = TextProperties()
 grey.setTextColor(0.5, 0.5, 0.5, 1)
 TextPropertiesManager.getGlobalPtr().setProperties('grey', grey)
+
+# New colors:
+# Orange
+amber = TextProperties()
+amber.setTextColor(1, 0.75, 0, 1)
+TextPropertiesManager.getGlobalPtr().setProperties('amber', amber)
+
+# Pink
+amaranth = TextProperties()
+amaranth.setTextColor(0.9, 0.17, 0.31, 1)
+TextPropertiesManager.getGlobalPtr().setProperties('amaranth', amaranth)
+
+# Green
+androidGreen = TextProperties()
+androidGreen.setTextColor(0.64, 0.78, 0.22, 1)
+TextPropertiesManager.getGlobalPtr().setProperties('androidGreen', androidGreen)
+
+# Turquoise-green
+caribbeanGreen = TextProperties()
+caribbeanGreen.setTextColor(0, 0.8, 0.6, 1)
+TextPropertiesManager.getGlobalPtr().setProperties('caribbeanGreen', caribbeanGreen)
+
+# Blue
+azure = TextProperties()
+azure.setTextColor(0, 0.5, 1, 1)
+TextPropertiesManager.getGlobalPtr().setProperties('azure', azure)
+
+# Cobalt-blue
+cobalt = TextProperties()
+cobalt.setTextColor(0, 0.28, 0.67, 1)
+TextPropertiesManager.getGlobalPtr().setProperties('cobalt', cobalt)
+
 CRConnecting = 'Connecting...'
 CRNoConnectTryAgain = 'Could not connect to %s:%s. Try again?'
 CRNoConnectProxyNoPort = 'Could not connect to %s:%s.\n\nYou are communicating to the internet via a proxy, but your proxy does not permit connections on port %s.\n\nYou must open up this port, or disable your proxy, in order to play.  If your proxy has been provided by your ISP, you must contact your ISP to request them to open up this port.'
 CRNoDistrictsTryAgain = 'No Districts are available. Try again?'
 CRRejectRemoveAvatar = 'The avatar was not able to be deleted, try again another time.'
-CRLostConnection = 'Your internet connection to the servers has been broken.'
-CRBootedReasons = {100: 'You have been disconnected because someone else logged in using your account!',
- 101: 'Please relaunch the game from the official Toontown Empire launcher.',
+CRLostConnection = 'Your internet connection to the servers has been unexpectedly broken.'
+CRBootedReasons = {100: 'You have been disconnected because someone else just logged in using your account on another computer.',
+ 101: 'Please relaunch the game from the official launcher.',
  102: 'You are not authorized to use administrator privileges.',
  103: 'You were banned by a moderator.\n\nBehave next time!',
  105: 'Toontown Empire is now temporarily closed for maintenance. Everyone who was playing has been disconnected from the game.\n\nFor more information, please visit the Toontown Empire website.',
- 153: 'The district has been reset.  Everyone who was playing on that district has been disconnected.  However, you should be able to connect again and go right back into the game.'}
-CRBootedReasonUnknownCode = 'An unexpected problem has occurred (error code %s).  Your connection was lost, but you should be able to connect again and go right back into the game.'
+ 124: 'Your installed files are out of date!  Use the official launcher to download the newest version, or contact Toontown Empire Support if the problem persists.',
+ 153: 'The district you were playing on has been reset.  Everyone who was playing on that district has been disconnected.  However, you should be able to connect again and go right back into the game.',
+ 166: 'You were disconnected to prevent a district reset.'}
+CRBootedReasonUnknownCode = 'An unexpected problem has occurred (error code %s).  Your connection has been lost, but you should be able to connect again and go right back into the game.'
 CRTryConnectAgain = '\n\nTry to connect again?'
-CRToontownUnavailable = 'The server appears to be unavailable, still trying...'
+CRToontownUnavailable = 'The server appears to be temporarily unavailable, still trying...'
 CRToontownUnavailableCancel = lCancel
 CRNameCongratulations = 'CONGRATULATIONS!!'
-CRNameAccepted = 'Your name was \napproved by the Toon Council.\nYou will be named\n"%s"'
+CRNameAccepted = 'Your name has been\napproved by the Toon Council.\n\nFrom this day forth\nyou will be named\n"%s"'
 CRMaintenanceCountdownMessage = 'Attention Toons! Toontown Empire will be going down for maintenance in %d minutes.'
-CRMaintenanceMessage = 'Attention Toons! Toontown Empire is down for maintenance.'
+CRMaintenanceMessage = 'Attention Toons! Toontown Empire is now going down for maintenance.'
 AfkForceAcknowledgeMessage = 'Your toon got sleepy and went to bed.'
-CREnteringToontown = 'Entering Toontown Empire...'
+CREnteringToontown = 'Entering...'
 DialogSpecial = 'ooo'
 DialogExclamation = '!'
 DialogQuestion = '?'
@@ -125,8 +159,6 @@ SCMenuResistance = 'UNITE!'
 SCMenuPets = 'PETS'
 SCMenuPetTricks = 'TRICKS'
 SCMenuCog = 'COG SPEAK'
-SCMenuTesting = 'TESTING'
-SCMenuBugs = 'BUGS'
 SCMenuHello = 'HELLO'
 SCMenuBye = 'GOODBYE'
 SCMenuConvo = 'CHIT CHAT'
@@ -188,9 +220,9 @@ SCMenuWinter = 'WINTER'
 SCMenuSellbotInvasion = 'SELLBOT INVASION'
 SCMenuFieldOffice = 'FIELD OFFICES'
 SCMenuIdesOfMarch = 'GREEN'
+ScMenuBugs = 'Bugs'
 FriendInviteeTooManyFriends = '%s would like to be your friend, but you already have too many friends on your list!'
 FriendInviteeInvitation = '%s would like to be your friend.'
-FriendNotifictation = '%s is now your friend.'
 FriendInviteeOK = lOK
 FriendInviteeNo = lNo
 FriendOnline = 'has come online.'
@@ -202,6 +234,7 @@ FriendInviterConfirmRemove = 'Remove'
 FriendInviterYes = lYes
 FriendInviterNo = lNo
 FriendInviterClickToon = 'Click on the toon you would like to make friends with.'
+FriendInviterTooMany = 'You have too many friends on your list to add another one now. You will have to remove some friends if you want to make friends with %s.'
 FriendInviterToonTooMany = 'You have too many toon friends on your list to add another one now. You will have to remove some toon friends if you want to make friends with %s.'
 FriendInviterNotYet = 'Would you like to make friends with %s?'
 FriendInviterCheckAvailability = 'Seeing if %s is available.'
@@ -223,9 +256,6 @@ FriendInviterFriendSaidNoNewFriends = "%s isn't looking for new friends right no
 FriendInviterOtherTooMany = '%s has too many friends already!'
 FriendInviterMaybe = '%s was unable to answer.'
 FriendInviterDown = 'Cannot make friends now.'
-TalkGuild = 'G'
-TalkParty = 'P'
-TalkPVP = 'PVP'
 AntiSpamInChat = '***Spamming***'
 IgnoreConfirmOK = lOK
 IgnoreConfirmCancel = lCancel
@@ -253,7 +283,7 @@ EmoteList = ['Wave',
  'Bow',
  'Banana Peel',
  'Resistance Salute',
- 'Nothing',
+ 'Laugh',
  lYes,
  lNo,
  lOK,
@@ -261,7 +291,8 @@ EmoteList = ['Wave',
  'Cry',
  'Delighted',
  'Furious',
- 'Laugh']
+ 'Laugh',
+ 'Rage']
 EmoteWhispers = ['%s waves.',
  '%s is happy.',
  '%s is sad.',
@@ -286,7 +317,8 @@ EmoteWhispers = ['%s waves.',
  '%s is crying.',
  '%s is delighted.',
  '%s is furious.',
- '%s is laughing.']
+ '%s is laughing.',
+ '%s is raging.']
 EmoteFuncDict = {'Wave': 0,
  'Happy': 1,
  'Sad': 2,
@@ -303,6 +335,7 @@ EmoteFuncDict = {'Wave': 0,
  'Bow': 13,
  'Banana Peel': 14,
  'Resistance Salute': 15,
+ 'Laugh': 16,
  lYes: 17,
  lNo: 18,
  lOK: 19,
@@ -310,7 +343,8 @@ EmoteFuncDict = {'Wave': 0,
  'Cry': 21,
  'Delighted': 22,
  'Furious': 23,
- 'Laugh': 24}
+ 'Laugh': 24,
+ 'Rage': 25}
 SuitBrushOffs = {'f': ["I'm late for a meeting."],
  'p': ['Push off.'],
  'ym': ['Yes Man says NO.'],
@@ -339,7 +373,7 @@ SuitFaceoffTaunts = {'b': ['Do you have a donation for me?',
        'Good, it takes two to mingle.',
        "Let's mingle.",
        'This looks like a good place to mingle.',
-       "Well,isn't this cozy?",
+       "Well, isn't this cozy?",
        "You're mingling with defeat.",
        "I'm going to mingle in your business.",
        "Are you sure you're ready to mingle?"],
@@ -483,7 +517,7 @@ SuitFaceoffTaunts = {'b': ['Do you have a donation for me?',
         'Care to take a few turns with me?',
         'I have my own special spin on the subject.'],
  'f': ["I'm gonna tell the boss about you!",
-       "I may be just a flunky - But I'm real spunky.",
+       "I may be just a Flunky - But I'm real spunky.",
        "I'm using you to step up the corporate ladder.",
        "You're not going to like the way I work.",
        'The boss is counting on me to stop you.',
@@ -506,7 +540,7 @@ SuitFaceoffTaunts = {'b': ['Do you have a donation for me?',
        'Careful, I may leave a mark.'],
  'ym': ["I'm positive you're not going to like this.",
         "I don't know the meaning of no.",
-        'Want to meet?  I say yes, anytime.',
+        'Want to meet? I say yes, anytime.',
         'You need some positive enforcement.',
         "I'm going to make a positive impression.",
         "I haven't been wrong yet.",
@@ -555,7 +589,7 @@ SuitFaceoffTaunts = {'b': ['Do you have a donation for me?',
         'Can I interest you in an insurance plan?',
         'You should have missed my call.',
         "You won't be able to get rid of me now.",
-        'This a bad time?  Good.',
+        'This a bad time? Good.',
         'I was planning on running into you.',
         'I will be reversing the charges for this call.',
         'I have some costly items for you today.',
@@ -585,7 +619,7 @@ SuitFaceoffTaunts = {'b': ['Do you have a donation for me?',
         'Would you like some hand-me-downs?',
         'Let me show you some of my handiwork.',
         'I think the handwriting is on the wall.',
-        "I'll gladly handle your gags for you"],
+        "I'll gladly handle your gags for you."],
  'sc': ['I will make short work of you.',
         "You're about to have money trouble.",
         "You're about to be overcharged.",
@@ -607,7 +641,7 @@ SuitFaceoffTaunts = {'b': ['Do you have a donation for me?',
         "I've been asked to pinch-hit.",
         "I'll prove you're not dreaming.",
         'Heads you lose, tails I win.',
-        'A Penny for your gags.'],
+        'A penny for your gags.'],
  'tw': ['Things are about to get very tight.',
         "That's Mr. Tightwad to you.",
         "I'm going to cut off your funding.",
@@ -684,7 +718,7 @@ SpeedChatStaticTextToontown = {100: 'Hi!',
  103: 'Hey!',
  104: 'Howdy!',
  105: 'Hi everybody!',
- 106: 'Welcome to Toontown Empire!',
+ 106: 'Welcome to Toontown!',
  107: "What's up?",
  108: 'How are you doing?',
  109: 'Hello?',
@@ -1583,20 +1617,6 @@ SpeedChatStaticTextToontown = {100: 'Hi!',
  21206: 'Speak!',
  30100: "Happy April Toons' Week!",
  30101: "Welcome to my April Toons' Week party!",
- 30102: 'The Silly Meter is back in Toon Hall!',
- 30110: 'Mickey is in Daisy Gardens.',
- 30111: 'Daisy is in Toontown Central.',
- 30112: 'Minnie is in The Brrrgh.',
- 30113: 'Pluto is in Melodyland.',
- 30114: 'Donald is sleepwalking at the Speedway.',
- 30115: 'Goofy is in Dreamland.',
- 30120: 'Mickey is acting like Daisy!',
- 30121: 'Daisy is acting like Mickey!',
- 30122: 'Minnie is acting like Pluto!',
- 30123: 'Pluto is acting like Minnie!',
- 30124: 'Pluto is talking!',
- 30125: 'Goofy is acting like Donald!',
- 30126: 'Donald is dreaming he is Goofy!',
  30130: 'Watch how far I can jump.',
  30131: 'Wow, you jumped really far!',
  30132: 'Hey, Doodles can talk!',
@@ -1727,19 +1747,7 @@ SpeedChatStaticTextToontown = {100: 'Hi!',
  30418: "It's the Boss!",
  30450: "It's easy to be green!",
  30451: 'Visit Green Bean Jeans and you can be green too!',
- 30452: "It's on Oak Street in Daisy Gardens.",
- 30500: "Welcome to Toontown Empire!",
- 30501: "The Possibilities are never ending!",
- 30502: "Are you livestreaming?",
- 30503: "I'm livestreaming right now!",
- 30504: "I can't wait until the next Toontown Empire update!",
- 30505: "Did you know the Toontown Empire team works overtime to make the experience the best it can be?",
- 30506: "I can't stand that bug!",
- 30507: "Have you found any bugs yet?",
- 30508: "I hope that bug gets fixed soon.",
- 30509: "What types of bugs have you ran into so far?",
- 30510: "Those bugs can get more obnoxious than the Cogs sometimes.",
- 30511: "I'm certain the Toontown Empire development team will fix that bug!"}
+ 30452: "It's on Oak Street in Daisy Gardens."}
 SpeedChatStaticText = SpeedChatStaticTextCommon
 SCFactoryMeetMenuIndexes = (1903,
  1904,
@@ -2096,7 +2104,7 @@ CustomSCStrings = {10: 'Oh, well.',
  7210: 'This place is swinging!',
  7220: "I'm dying on the vine.",
  7230: 'This whole affair has me up a tree.',
- 7231: "Let's make like a tree and leave.",
+ 7230: "Let's make like a tree and leave.",
  7240: "Jellybeans don't grow on trees!",
  10000: 'This place is a ghost town.',
  10001: 'Nice costume!',
@@ -2220,12 +2228,12 @@ RandomButton = 'Randomize'
 TypeANameButton = 'Type Name'
 PickANameButton = 'Pick-A-Name'
 NameShopSubmitButton = 'Submit'
-RejectNameText = 'This name is not allowed. Please try again.'
+RejectNameText = 'That name is not allowed. Please try again.'
 WaitingForNameSubmission = 'Submitting your name...'
 NameShopNameMaster = 'NameMasterEnglish.txt'
 NameShopContinueSubmission = 'Continue Submission'
 NameShopChooseAnother = 'Choose Another Name'
-NameShopToonCouncil = 'The Toon Council\nwill review your\nname.  ' + 'Review might\ntake multiple days.\nWhile you wait\nyour name will be\n '
+NameShopToonCouncil = 'The Toon Council\nwill review your\nname.  ' + 'Review may\ntake a few days.\nWhile you wait\nyour name will be\n '
 PleaseTypeName = 'Please type your name:'
 ToonAlreadyExists = '%s already exists'
 AllNewNames = 'All new names\nmust be approved\nby the Name Council.'
@@ -2289,8 +2297,6 @@ KartRacingMenuSections = [-1,
  'TAUNTS']
 AprilToonsMenuSections = [-1,
  'GREETINGS',
- 'PLAYGROUNDS',
- 'CHARACTERS',
  'ESTATES']
 SillyHolidayMenuSections = [-1, 'WORLD', 'BATTLE']
 CarolMenuSections = [-1]
@@ -2329,11 +2335,4 @@ def timeElapsedString(timeDelta):
     else:
         return '%s minutes ago' % (timeDelta.seconds / 60)
 
-AccessToString = {
- 200: '\x01amaranth\x01Community Manager\x02',
- 300: '\x01caribbeanGreen\x01Moderator\x02',
- 400: '\x01amber\x01Artist\x02',
- 500: '\x01androidGreen\x01Developer\x02',
- 600: '\x01cobalt\x01Admin\x02',
- 700: '\x01azure\x01System Admin\x02'
-}
+AsciiNotSupported = 'Sorry, but Toontown Empire does not support non-ASCII characters.'

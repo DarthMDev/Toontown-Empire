@@ -13,7 +13,6 @@ from otp.otpbase import OTPGlobals, OTPLocalizer
 from otp.speedchat import SCDecoders
 from otp.nametag.NametagConstants import *
 from otp.margins.WhisperPopup import WhisperPopup
-from toontown.modpanel.ModPanel import ModPanel
 
 class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBase, TelemetryLimited):
     chatGarbler = ChatGarbler.ChatGarbler({'default': OTPLocalizer.ChatGarblerDefault})
@@ -31,7 +30,6 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
             self.experience = None
             self.friendsList = []
             self._districtWeAreGeneratedOn = None
-            self.DISLname = ''
             self.DISLid = 0
             self.adminAccess = 0
             self.autoRun = 0
@@ -84,14 +82,14 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         return None
 
     def isGeneratedOnDistrict(self, districtId = None):
+        return True # fix for the task button
         if districtId is None:
             return self._districtWeAreGeneratedOn is not None
         else:
             return self._districtWeAreGeneratedOn == districtId
         return
 
-    @staticmethod
-    def getArrivedOnDistrictEvent(districtId = None):
+    def getArrivedOnDistrictEvent(self, districtId = None):
         if districtId is None:
             return 'arrivedOnDistrict'
         else:
@@ -120,14 +118,12 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
     def setSystemMessage(self, aboutId, chatString, whisperType = WhisperPopup.WTSystem):
         self.displayWhisper(aboutId, chatString, whisperType)
 
-    @staticmethod
-    def displayWhisper(fromId, chatString, whisperType):
+    def displayWhisper(self, fromId, chatString, whisperType):
         print 'Whisper type %s from %s: %s' % (whisperType, fromId, chatString)
 
-    @staticmethod
-    def whisperSCTo(msgIndex, sendToId):
+    def whisperSCTo(self, msgIndex, sendToId):
         messenger.send('wakeup')
-        base.cr.TTEFriendsManager.d_whisperSCTo(sendToId, msgIndex)
+        base.cr.ttsFriendsManager.d_whisperSCTo(sendToId, msgIndex)
 
     def setWhisperSCFrom(self, fromId, msgIndex):
         handle = base.cr.identifyAvatar(fromId)
@@ -138,13 +134,11 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
             self.displayWhisper(fromId, chatString, WhisperPopup.WTNormal)
         return
 
-    @staticmethod
-    def whisperSCCustomTo(msgIndex, sendToId):
+    def whisperSCCustomTo(self, msgIndex, sendToId):
         messenger.send('wakeup')
-        base.cr.TTEFriendsManager.d_whisperSCCustomTo(sendToId, msgIndex)
+        base.cr.ttsFriendsManager.d_whisperSCCustomTo(sendToId, msgIndex)
 
-    @staticmethod
-    def _isValidWhisperSource(source):
+    def _isValidWhisperSource(self, source):
         return True
 
     def setWhisperSCCustomFrom(self, fromId, msgIndex):
@@ -160,10 +154,9 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         if chatString:
             self.displayWhisper(fromId, chatString, WhisperPopup.WTNormal)
 
-    @staticmethod
-    def whisperSCEmoteTo(emoteId, sendToId):
+    def whisperSCEmoteTo(self, emoteId, sendToId):
         messenger.send('wakeup')
-        base.cr.TTEFriendsManager.d_whisperSCEmoteTo(sendToId, emoteId)
+        base.cr.ttsFriendsManager.d_whisperSCEmoteTo(sendToId, emoteId)
 
     def setWhisperSCEmoteFrom(self, fromId, emoteId):
         handle = base.cr.identifyAvatar(fromId)
@@ -201,12 +194,10 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
             chat = base.whiteList.processThroughAll(chat, self.chatGarbler)
         self.displayTalkWhisper(avId, chat)
 
-    @staticmethod
-    def displayTalk(chat):
+    def displayTalk(self, chat):
         print 'Talk: %s' % chat
 
-    @staticmethod
-    def displayTalkWhisper(avId, chat):
+    def displayTalkWhisper(self, avId, chat):
         print 'TalkWhisper from %s: %s' % (avId, chat)
 
     def b_setSC(self, msgIndex):
@@ -264,7 +255,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
 
         self.lastTeleportQuery = time.time()
 
-        base.cr.TTEFriendsManager.d_teleportQuery(sendToId)
+        base.cr.ttsFriendsManager.d_teleportQuery(sendToId)
 
     def teleportQuery(self, requesterId):
         avatar = base.cr.identifyFriend(requesterId)
@@ -282,29 +273,26 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
             self.setSystemMessage(requesterId, OTPLocalizer.WhisperFailedVisit % avatar.getName())
             self.d_teleportResponse(self.doId, 0, 0, 0, 0, sendToId=requesterId)
 
-    @staticmethod
-    def d_teleportResponse(avId, available, shardId, hoodId, zoneId, sendToId):
+    def d_teleportResponse(self, avId, available, shardId, hoodId, zoneId, sendToId):
         teleportNotify.debug('sending teleportResponse%s' % ((avId, available,
             shardId, hoodId, zoneId, sendToId),)
         )
 
-        base.cr.TTEFriendsManager.d_teleportResponse(sendToId, available,
+        base.cr.ttsFriendsManager.d_teleportResponse(sendToId, available,
             shardId, hoodId, zoneId
         )
 
-    @staticmethod
-    def teleportResponse(avId, available, shardId, hoodId, zoneId):
+    def teleportResponse(self, avId, available, shardId, hoodId, zoneId):
         teleportNotify.debug('received teleportResponse%s' % ((avId, available,
             shardId, hoodId, zoneId),)
         )
 
         messenger.send('teleportResponse', [avId, available, shardId, hoodId, zoneId])
 
-    @staticmethod
-    def d_teleportGiveup(requesterId, sendToId):
+    def d_teleportGiveup(self, requesterId, sendToId):
         teleportNotify.debug('sending teleportGiveup(%s) to %s' % (requesterId, sendToId))
 
-        base.cr.TTEFriendsManager.d_teleportGiveup(sendToId)
+        base.cr.ttsFriendsManager.d_teleportGiveup(sendToId)
 
     def teleportGiveup(self, requesterId):
         teleportNotify.debug('received teleportGiveup(%s)' % (requesterId,))
@@ -352,16 +340,9 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
 
     def setDISLid(self, id):
         self.DISLid = id
-        
-    def setDISLname(self, name):
-        self.DISLname = name
 
     def setAdminAccess(self, access):
         self.adminAccess = access
-        if self.isLocal():
-            self.cr.wantMagicWords = self.adminAccess >= MINIMUM_MAGICWORD_ACCESS
-            if self.cr.wantMagicWords:
-                self.modPanel = ModPanel()
         self.considerUnderstandable()
 
     def getAdminAccess(self):
@@ -369,7 +350,6 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
 
     def isAdmin(self):
         return self.adminAccess >= MINIMUM_MAGICWORD_ACCESS
-
 
     def setAutoRun(self, value):
         self.autoRun = value

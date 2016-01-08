@@ -56,7 +56,7 @@ class DistributedLevelAI(DistributedObjectAI.DistributedObjectAI, Level.Level):
     def initializeLevel(self, levelSpec):
         self.startTime = globalClock.getRealTime()
         self.startTimestamp = globalClockDelta.localToNetworkTime(self.startTime, bits=32)
-        lol = zip([1] * levelSpec.getNumScenarios(), xrange(levelSpec.getNumScenarios()))
+        lol = zip([1] * levelSpec.getNumScenarios(), range(levelSpec.getNumScenarios()))
         scenarioIndex = weightedChoice(lol)
         Level.Level.initializeLevel(self, self.doId, levelSpec, scenarioIndex)
         for avId in self.avIdList:

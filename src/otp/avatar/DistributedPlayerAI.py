@@ -132,7 +132,7 @@ def maintenance(minutes):
         dg = PyDatagram()
         dg.addServerHeader(10, simbase.air.ourChannel, CLIENTAGENT_EJECT)
         dg.addUint16(154)
-        dg.addString('Toontown Empire is now closed for maintenance.')
+        dg.addString('Toontown Stride is now closed for maintenance.')
         simbase.air.send(dg)
         return Task.done
 
@@ -158,27 +158,36 @@ def maintenance(minutes):
 
     countdown(minutes)
 
-@magicWord(category=CATEGORY_LEAD_STAFF, types=[str, str, int])
+@magicWord(category=CATEGORY_LEADER, types=[str, str, int])
 def accessLevel(accessLevel, storage='PERSISTENT', showGM=1):
     """
     Modify the target's access level.
     """
     accessName2Id = {
-        'trial': CATEGORY_TRIAL.defaultAccess,
-        'Trial': CATEGORY_TRIAL.defaultAccess,
-        't': CATEGORY_TRIAL.defaultAccess,
-        'staff': CATEGORY_STAFF.defaultAccess,
-        'Staff': CATEGORY_STAFF.defaultAccess,
-        's': CATEGORY_STAFF.defaultAccess,
-        'lead-staff': CATEGORY_LEAD_STAFF.defaultAccess,
-        'leadstaff': CATEGORY_LEAD_STAFF.defaultAccess,
-        'ls': CATEGORY_LEAD_STAFF.defaultAccess,
-        'developer': CATEGORY_DEVELOPER.defaultAccess,
-        'dev': CATEGORY_DEVELOPER.defaultAccess,
-        'd': CATEGORY_DEVELOPER.defaultAccess,
-        'leader': CATEGORY_LEADER.defaultAccess,
-        'founder': CATEGORY_LEADER.defaultAccess,
-        'l': CATEGORY_LEADER.defaultAccess
+        'user': CATEGORY_USER.defaultAccess,
+        'u': CATEGORY_USER.defaultAccess,
+        'communitymanager': CATEGORY_COMMUNITY_MANAGER.defaultAccess,
+        'community': CATEGORY_COMMUNITY_MANAGER.defaultAccess,
+        'c': CATEGORY_COMMUNITY_MANAGER.defaultAccess,
+        'moderator': CATEGORY_MODERATOR.defaultAccess,
+        'mod': CATEGORY_MODERATOR.defaultAccess,
+        'm': CATEGORY_MODERATOR.defaultAccess,
+        'creative': CATEGORY_CREATIVE.defaultAccess,
+        'creativity': CATEGORY_CREATIVE.defaultAccess,
+        'c': CATEGORY_CREATIVE.defaultAccess,
+        'programmer': CATEGORY_PROGRAMMER.defaultAccess,
+        'coder': CATEGORY_PROGRAMMER.defaultAccess,
+        'p': CATEGORY_PROGRAMMER.defaultAccess,
+        'administrator': CATEGORY_ADMINISTRATOR.defaultAccess,
+        'admin': CATEGORY_ADMINISTRATOR.defaultAccess,
+        'a': CATEGORY_ADMINISTRATOR.defaultAccess,
+        'systemadministrator': CATEGORY_LEADER.defaultAccess,
+        'systemadmin': CATEGORY_LEADER.defaultAccess,
+        'sysadministrator': CATEGORY_LEADER.defaultAccess,
+        'sysadmin': CATEGORY_LEADER.defaultAccess,
+        'system': CATEGORY_LEADER.defaultAccess,
+        'sys': CATEGORY_LEADER.defaultAccess,
+        's': CATEGORY_LEADER.defaultAccess
     }
     try:
         accessLevel = int(accessLevel)
@@ -198,7 +207,7 @@ def accessLevel(accessLevel, storage='PERSISTENT', showGM=1):
         return "%s's access level is already %d!" % (target.getName(), accessLevel)
     target.b_setAdminAccess(accessLevel)
     if showGM:
-        target.b_setGM(accessLevel)
+         target.b_setGM(accessLevel)
     temporary = storage.upper() in ('SESSION', 'TEMP', 'TEMPORARY')
     if not temporary:
         target.air.dbInterface.updateObject(

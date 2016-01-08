@@ -1,8 +1,8 @@
 import string
 from otp.otpbase import OTPLocalizer
 from direct.directnotify import DirectNotifyGlobal
-from panda3d.core import NSError
-from panda3d.core import TextEncoder, TextNode
+from pandac.PandaModules import NSError
+from pandac.PandaModules import TextEncoder, TextNode
 notify = DirectNotifyGlobal.directNotify.newCategory('NameCheck')
 
 def filterString(str, filter):
@@ -65,7 +65,7 @@ def checkName(name, otherCheckFuncs = [], font = None):
 
     validAsciiChars = set(".,'-" + string.letters + string.whitespace)
 
-    def _validCharacter(c, validAsciiChars=validAsciiChars, font=font):
+    def _validCharacter(c, validAsciiChars = validAsciiChars, font = font):
         if c in validAsciiChars:
             return True
         if c.isalpha() or c.isspace():
@@ -76,12 +76,13 @@ def checkName(name, otherCheckFuncs = [], font = None):
         for char in name:
             if not _validCharacter(char):
                 if char in string.digits:
-                    return
+                    notify.info('name contains digits')
+                    return OTPLocalizer.NCNoDigits
                 else:
                     notify.info('name contains bad char: %s' % TextEncoder().encodeWtext(char))
                     return OTPLocalizer.NCBadCharacter % TextEncoder().encodeWtext(char)
 
-    def fontHasCharacters(name, font=font):
+    def fontHasCharacters(name, font = font):
         if font:
             tn = TextNode('NameCheck')
             tn.setFont(font)
@@ -241,11 +242,11 @@ def checkName(name, otherCheckFuncs = [], font = None):
                     return OTPLocalizer.NCMixedCase
 
     def checkJapanese(name):
-        asciiSpace = xrange(32, 33)
-        asciiDigits = xrange(48, 64)
-        hiragana = xrange(12353, 12448)
-        katakana = xrange(12449, 12544)
-        halfwidthKatakana = xrange(65381, 65440)
+        asciiSpace = range(32, 33)
+        asciiDigits = range(48, 64)
+        hiragana = range(12353, 12448)
+        katakana = range(12449, 12544)
+        halfwidthKatakana = range(65381, 65440)
         halfwidthCharacter = set(asciiSpace + halfwidthKatakana)
         allowedUtf8 = set(asciiSpace + hiragana + katakana + halfwidthKatakana)
 

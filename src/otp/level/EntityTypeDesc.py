@@ -39,7 +39,8 @@ class EntityTypeDesc:
 
         return names
 
-    def privCompileAttribDescs(self, entTypeClass):
+    @staticmethod
+    def privCompileAttribDescs(entTypeClass):
         if '_attribDescs' in entTypeClass.__dict__:
             return
         c = entTypeClass

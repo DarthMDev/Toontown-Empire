@@ -1,7 +1,7 @@
 from bisect import bisect_left
 import re
 
-class WhiteList(object):
+class WhiteList:
 
     def __init__(self):
         self.sequenceList = []

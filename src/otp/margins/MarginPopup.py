@@ -1,6 +1,6 @@
+from pandac.PandaModules import *
 
-
-class MarginPopup(object):
+class MarginPopup:
     def __init__(self):
         self.__manager = None
         self.__visible = False
@@ -13,8 +13,7 @@ class MarginPopup(object):
 
     def setVisible(self, visibility):
         visibility = bool(visibility)
-        if self.__visible == visibility:
-            return
+        if self.__visible == visibility: return
 
         self.__visible = visibility
 

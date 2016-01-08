@@ -2,7 +2,7 @@ import json
 import os
 
 
-class BackupManager(object):
+class BackupManager:
     def __init__(self, filepath='dependencies/backups/', extension='.json'):
         self.filepath = filepath
         self.extension = extension
@@ -26,7 +26,4 @@ class BackupManager(object):
             os.makedirs(filepath)
         filename = self.getFileName(category, info)
         with open(filename, 'w') as f:
-            json.dump(data, f, default=self.defaultHandler)
-
-    def defaultHandler(self, obj):
-        return obj.isoformat() if hasattr(obj, 'isoformat') else obj
+            json.dump(data, f)

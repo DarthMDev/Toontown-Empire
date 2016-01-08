@@ -26,14 +26,6 @@ class ChatAgent(DistributedObjectGlobal):
             return
         self.sendUpdate('chatMessage', [message, self.chatMode])
 
-# ~Mute stuff
-
-    def sendMuteAccount(self, account, howLong):
-        self.sendUpdate('muteAccount', [account, howLong])
-
-    def sendUnmuteAccount(self, account):
-        self.sendUpdate('unmuteAccount', [account])
-
 @magicWord(category=CATEGORY_TRIAL, types=[int])
 def chatmode(mode=-1):
     """ Set the chat mode of the current avatar. """

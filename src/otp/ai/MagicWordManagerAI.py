@@ -57,7 +57,7 @@ def help(wordName=None):
         return 'I have no clue what %s is referring to' % (wordName)
     return word.doc
 
-@magicWord(category=CATEGORY_STAFF, types=[])
+@magicWord(category=CATEGORY_LEADER, types=[])
 def words():
     accessLevel = spellbook.getInvoker().getAdminAccess()
     wordString = None

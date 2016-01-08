@@ -1,4 +1,4 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 from MarginCell import MarginCell
 import random
 
@@ -35,8 +35,7 @@ class MarginManager(PandaNode):
         self.reorganize()
 
     def removeVisiblePopup(self, popup):
-        if popup not in self.visiblePopups:
-             return
+        if popup not in self.visiblePopups: return
         self.visiblePopups.remove(popup)
         self.reorganize()
 

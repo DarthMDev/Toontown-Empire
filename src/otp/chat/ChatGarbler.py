@@ -1,20 +1,22 @@
 import random
-class ChatGarbler(object):
+
+class ChatGarbler:
+
     def __init__(self, messages):
         self.messages = messages
 
-    def garble(self, avatar, numwords):
-        new_message = ''
+    def garble(self, avatar, numWords):
+        newMessage = ''
 
         if avatar.style:
-            avatartype = avatar.style.getType()
-            wordlist = self.messages[avatartype if avatartype in self.messages else 'default']
+            avatarType = avatar.style.getType()
+            wordList = self.messages[avatarType if avatarType in self.messages else 'default']
 
-        for i in xrange(1, numwords + 1):
-            wordindex = random.randint(0, len(wordlist) - 1)
-            new_message = new_message + wordlist[wordindex]
+        for i in xrange(1, numWords + 1):
+            wordIndex = random.randint(0, len(wordList) - 1)
+            newMessage = newMessage + wordList[wordIndex]
 
-            if i < numwords:
-                new_message = new_message + ' '
+            if i < numWords:
+                newMessage = newMessage + ' '
 
-        return '\x01WLDisplay\x01%s\x02' % new_message
+        return '\x01WLDisplay\x01%s\x02' % newMessage

@@ -549,11 +549,17 @@ class Avatar(Actor, ShadowCaster):
 
         return sequence
 
+
 @magicWord(category=CATEGORY_TRIAL, types=[])
 def target():
     """
     Returns the current Spellbook target.
     """
     target = spellbook.getTarget()
-
+    print 'Called target.'
+    print 'Name: ' + target.getName()
+    doId = str(int(target.doId))
+    print 'doId: ', doId
+    accessLevel = str(int(target.getAdminAccess()))
+    print 'Access Level: ', accessLevel
     return 'Target: %s-%d [%d]' % (target.getName(), int(target.doId), int(target.getAdminAccess()))

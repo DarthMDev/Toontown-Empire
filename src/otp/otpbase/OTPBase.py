@@ -1,7 +1,7 @@
 from direct.showbase.ShowBase import ShowBase
 from otp.ai.MagicWordGlobal import *
 from otp.chat import WhiteList, WhiteListData, SequenceListData
-from panda3d.core import Camera, TPLow, VBase4, ColorWriteAttrib, Filename, getModelPath, NodePath, Vec4
+from pandac.PandaModules import Camera, TPLow, VBase4, ColorWriteAttrib, Filename, getModelPath, NodePath, Vec4
 import OTPGlobals, OTPRender, math
 
 class OTPBase(ShowBase):
@@ -15,13 +15,14 @@ class OTPBase(ShowBase):
         self.wantDynamicShadows = 1
         self.stereoEnabled = False
         self.whiteList = None
+
         if config.GetBool('want-whitelist', True):
             self.whiteList = WhiteList.WhiteList()
             self.whiteList.setWords(WhiteListData.WHITELIST)
 
             if config.GetBool('want-sequence-list', True):
                 self.whiteList.setSequenceList(SequenceListData.SEQUENCES)
-        
+
         base.cam.node().setCameraMask(OTPRender.MainCameraBitmask)
         taskMgr.setupTaskChain('net', numThreads=1, frameBudget=0.001, threadPriority=TPLow)
 
@@ -70,14 +71,14 @@ def wire():
     """
     base.toggleWireframe()
 
-@magicWord(category=CATEGORY_LEADER)
+@magicWord(category=CATEGORY_TRIAL)
 def idNametags():
     """
     Display avatar IDs inside nametags.
     """
     messenger.send('nameTagShowAvId')
 
-@magicWord(category=CATEGORY_LEADER)
+@magicWord(category=CATEGORY_TRIAL)
 def nameNametags():
     """
     Display only avatar names inside nametags.
@@ -132,10 +133,3 @@ def backgroundColor(r=None, g=1, b=1, a=1):
         r, g, b, a = OTPGlobals.DefaultBackgroundColor
     base.setBackgroundColor(Vec4(r, g, b, a))
     return 'The background color has been changed.'
-
-# New command for developers to check game performance ~FordTheWriter
-
-@magicWord(category=CATEGORY_DEVELOPER)
-def fps():
-    'Toggle frame rate meter on or off.'
-    base.setFrameRateMeter(not base.frameRateMeter)

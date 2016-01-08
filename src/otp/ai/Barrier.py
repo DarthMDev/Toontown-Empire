@@ -15,7 +15,7 @@ class Barrier(DirectObject.DirectObject):
         self.clearedFunc = clearedFunc
         self.timeoutFunc = timeoutFunc
         self.doneFunc = doneFunc
-        if not self.pendingAvatars:
+        if len(self.pendingAvatars) == 0:
             self.notify.debug('%s: barrier with empty list' % self.uniqueName)
             self.active = 0
             if self.clearedFunc:
@@ -48,7 +48,7 @@ class Barrier(DirectObject.DirectObject):
             return
         self.notify.debug('%s: clearing avatar %s' % (self.uniqueName, avId))
         self.pendingAvatars.remove(avId)
-        if not self.pendingAvatars:
+        if len(self.pendingAvatars) == 0:
             self.notify.debug('%s: barrier cleared by %s' % (self.uniqueName, self.avIdList))
             self.cleanup()
             if self.clearedFunc:
