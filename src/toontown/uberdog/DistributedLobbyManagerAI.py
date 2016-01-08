@@ -37,6 +37,7 @@ class DistributedLobbyManagerAI(DistributedObjectAI):
         avId = lobbyStruct[1]
         self.sendUpdateToAvatarId(avId, 'addLobbyResponse', [avId, errorCode])
         self.air.doId2do[avId].sendUpdate('setHostedLobby', [[lobbyStruct]])
+        pass
 
     def getLobbyZone(self, hostId, zoneId, isAvAboutToCreateLobby):
         avId = self.air.getAvatarIdFromSender()

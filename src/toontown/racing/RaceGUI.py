@@ -15,7 +15,7 @@ from toontown.racing.RaceHeadFrame import RaceHeadFrame
 from toontown.racing.RaceGag import RaceGag
 from toontown.racing.RaceEndPanels import RaceEndPanel
 from toontown.racing import RaceGlobals
-from panda3d.core import CardMaker, OrthographicLens, LineSegs
+from pandac.PandaModules import CardMaker, OrthographicLens, LineSegs
 from direct.particles.ParticleEffect import *
 from math import fmod
 from math import sqrt
@@ -223,7 +223,7 @@ class RaceGUI:
     def waitingOnGag(self, cycleTime):
         if self.gag:
             numTextures = len(self.gagTextures)
-            startOffset = random.choice(xrange(0, numTextures))
+            startOffset = random.choice(range(0, numTextures))
             self.gag.show()
             self.gagCycleInterval = Parallel(LerpFunc(self.showNextGag, fromData=startOffset, toData=numTextures * 2 * cycleTime + startOffset, blendType='easeOut', duration=cycleTime), LerpHprInterval(self.gag, duration=cycleTime, hpr=Point3(0, 180 * numTextures * 2 * cycleTime - 90, 0), blendType='easeOut', startHpr=Point3(0, 0, 0)), SoundInterval(self.gagCycleSound, loop=1, duration=cycleTime, startTime=0), name='gagCycleInterval')
             self.gagCycleInterval.start()
@@ -434,7 +434,7 @@ class RaceGUI:
         mapspot.reparentTo(self.mapLines)
         mapspot.setHpr(self.mapScene, 0, 0, 0)
         self.racerDict[avId] = self.RacerInfo(headframe, mapspot)
-        for key, i in zip(self.racerDict.keys(), xrange(len(self.racerDict.keys()))):
+        for key, i in zip(self.racerDict.keys(), range(len(self.racerDict.keys()))):
             face = self.racerDict[key].face
             mapspot = self.racerDict[key].mapspot
             face.setX(self.faceStartPos[0])

@@ -110,6 +110,9 @@ class ToontownChatManager(ChatManager.ChatManager):
         if base.config.GetBool('want-qa-regression', 0):
             self.notify.info('QA-REGRESSION: CHAT: Speedchat Plus')
         messenger.send('wakeup')
+        if not base.cr.wantTypedChat():
+            self.fsm.request('noSpeedchatPlus')
+            return
         self.fsm.request('normalChat')
 
     def __scButtonPressed(self):
@@ -121,16 +124,21 @@ class ToontownChatManager(ChatManager.ChatManager):
 
     def __whisperButtonPressed(self, avatarName, avatarId):
         messenger.send('wakeup')
+        if not base.cr.wantTypedChat():
+            self.fsm.request('noSpeedchatPlus')
+            return
         if avatarId:
             self.enterWhisperChat(avatarName, avatarId)
         self.whisperFrame.hide()
 
     def enterNormalChat(self):
-        if not base.localAvatar.getTutorialAck() or not ChatManager.ChatManager.enterNormalChat(self):
+        if not base.cr.wantTypedChat() or not base.localAvatar.getTutorialAck() or not ChatManager.ChatManager.enterNormalChat(self):
             self.fsm.request('mainMenu')
 
     def enterWhisperChat(self, avatarName, avatarId):
-        self.fsm.request('mainMenu')
+        if not base.cr.wantTypedChat():
+            self.fsm.request('mainMenu')
+            return
         result = ChatManager.ChatManager.enterWhisperChat(self, avatarName, avatarId)
         self.chatInputNormal.setPos(self.whisperPos)
         if result == None:

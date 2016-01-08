@@ -51,9 +51,8 @@ BankToMoney = {
 MoneyToBank = {}
 for bankId, maxMoney in BankToMoney.items():
     MoneyToBank[maxMoney] = bankId
+
 MaxBankId = 1340
-
-
 ClosetToClothes = {
  500: 10,
  502: 15,
@@ -76,16 +75,10 @@ for closetId, maxClothes in ClosetToClothes.items():
 MaxClosetIds = (508, 518)
 
 TvToPosScale = {
- 1530: ((-1.15, -0.5, 1.1), (2.5, 1.7, 1.4))}
-
-# New and bigger tvs that possible new release. 
-
-TvToPosScale = {
  1530: ((-1.15, -0.5, 1.1), (2.5, 1.7, 1.4)),
  1531: ((-2.3, -0.2, 2.522), (5, 3.75, 3.187)),
  1532: ((-7, -0.2, 2.8), (15, 10, 7.8))
 }
-
 
 ChairToPosHpr = {
  100: ((0, -3.9, 0.88), (180, 0, 0), (0, -4.9, 0), -3.0),
@@ -771,7 +764,7 @@ FurnitureTypes = {
         None,
         None,
         5000,
-        FLTV),	
+        FLTV),		
  1600: ('phase_5.5/models/estate/vaseA_short',
         None,
         None,

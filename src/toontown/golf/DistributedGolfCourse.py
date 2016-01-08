@@ -7,7 +7,7 @@ from toontown.distributed import DelayDelete
 from toontown.distributed.DelayDeletable import DelayDeletable
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.gui.DirectGui import *
 from direct.distributed.ClockDelta import *
 from direct.fsm.FSM import FSM
@@ -33,7 +33,7 @@ class DistributedGolfCourse(DistributedObject.DistributedObject, FSM, DelayDelet
     def __init__(self, cr):
         DistributedObject.DistributedObject.__init__(self, base.cr)
         FSM.__init__(self, 'Golf_%s_FSM' % self.id)
-        self.waitingStartLabel = DirectLabel(text=TTLocalizer.MinigameWaitingForOtherPlayers, text_fg=VBase4(1, 1, 1, 1), relief=None, pos=(-0.6, 0, -0.75), scale=0.075)
+        self.waitingStartLabel = DirectLabel(text=TTLocalizer.MinigameWaitingForOtherToons, text_fg=VBase4(1, 1, 1, 1), relief=None, pos=(-0.6, 0, -0.75), scale=0.075)
         self.waitingStartLabel.hide()
         self.avIdList = []
         self.remoteAvIdList = []
@@ -157,7 +157,7 @@ class DistributedGolfCourse(DistributedObject.DistributedObject, FSM, DelayDelet
                 else:
                     color += 1
 
-            base.setCellsActive(base.leftCells, 0)
+            base.setCellsAvailable(base.leftCells, 0)
 
         else:
             self.toonPanels = None
@@ -201,7 +201,7 @@ class DistributedGolfCourse(DistributedObject.DistributedObject, FSM, DelayDelet
             else:
                 self.notify.warning('GOLF COURSE: Attempting to clean up twice')
 
-            base.setCellsActive(base.leftCells, 1)
+            base.setCellsAvailable(base.leftCells, 1)
 
     def onstage(self):
         self.notify.debug('GOLF COURSE: onstage')

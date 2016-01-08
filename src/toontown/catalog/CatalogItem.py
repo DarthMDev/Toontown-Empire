@@ -4,7 +4,6 @@ from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from direct.interval.IntervalGlobal import *
 from direct.distributed.PyDatagram import PyDatagram
-from direct.distributed.PyDatagram import STInt16
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
 import types
 import sys
@@ -43,7 +42,7 @@ class CatalogItem:
         return
 
     def isAward(self):
-        result = self.specialEventId != 0
+        #result = self.specialEventId != 0
         return False
 
     def makeNewItem(self):

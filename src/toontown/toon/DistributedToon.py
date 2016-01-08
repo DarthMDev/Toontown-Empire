@@ -70,11 +70,16 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     gmNameTag = None
 
     def __init__(self, cr, bFake = False):
+        try:
+            self.DistributedToon_initialized
+            return
+        except:
+            self.DistributedToon_initialized = 1
+
         DistributedPlayer.DistributedPlayer.__init__(self, cr)
         Toon.Toon.__init__(self)
         DistributedSmoothNode.DistributedSmoothNode.__init__(self, cr)
         self.bFake = bFake
-        self.overheadMeter = None
         self.kart = None
         self._isGM = False
         self._gmType = None
@@ -94,9 +99,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.sosPageFlag = 0
         self.disguisePage = None
         self.sosPage = None
-        self.__meterMode = 0
         self.gardenPage = None
-        self.emoteAccess = [0] * 25
+        self.emoteAccess = [0] * 27
         self.cogTypes = [0, 0, 0, 0]
         self.cogLevels = [0, 0, 0, 0]
         self.cogParts = [0, 0, 0, 0]
@@ -488,7 +492,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def getNPCFriendsDict(self):
         return self.NPCFriendsDict
-
+    
     def getNPCFriendCount(self, npcId):
         return self.NPCFriendsDict.get(npcId, 0)
 
@@ -564,37 +568,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if self.inventory:
             self.inventory.updateGUI()
 
-    def setHp(self, hp):
-        DistributedPlayer.DistributedPlayer.setHp(self, hp)
-
-        self.__considerUpdateMeter()
-
-    def setHealthDisplay(self, mode):
-        self.__meterMode = mode
-        self.__considerUpdateMeter()
-
-    def __considerUpdateMeter(self):
-        wantMeter = self.__shouldDisplayMeter()
-        if wantMeter and not self.overheadMeter:
-            self.overheadMeter = LaffMeter(self.style, self.hp, self.maxHp)
-            self.overheadMeter.setAvatar(self)
-            self.overheadMeter.setZ(5)
-            self.overheadMeter.setScale(1.5)
-            self.overheadMeter.hide(BitMask32.bit(1)) # Hide from 2D camera.
-            self.overheadMeter.start()
-        elif not wantMeter and self.overheadMeter:
-            self.overheadMeter.stop()
-            self.overheadMeter.destroy()
-            self.overheadMeter = None
-
-    def __shouldDisplayMeter(self):
-        if self.__meterMode == 0:
-            return False
-        elif self.__meterMode == 1:
-            return True
-        elif self.__meterMode == 2:
-            return self.hp < self.maxHp
-
     def died(self):
         messenger.send(self.uniqueName('died'))
         if self.isLocal():
@@ -621,7 +594,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def setTutorialAck(self, tutorialAck):
         self.tutorialAck = tutorialAck
-
+    
     def getTutorialAck(self):
         return self.tutorialAck
 
@@ -907,9 +880,17 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def getFishingRod(self):
         return self.fishingRod
+    
+    def setMaxFishingRod(self, rodId):
+        self.maxFishingRod = rodId
+        if self == base.localAvatar:
+            messenger.send('refreshFishingRod')
 
+    def getMaxFishingRod(self):
+        return self.maxFishingRod
+    
     def requestFishingRod(self, rodId):
-        if not 0 <= rodId:
+        if not 0 <= rodId <= self.maxFishingRod:
             return
 
         self.sendUpdate('requestFishingRod', [rodId])
@@ -1161,7 +1142,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         return [self.trackProgressId, self.trackProgress]
 
     def getTrackProgressAsArray(self, maxLength = 15):
-        shifts = map(operator.rshift, maxLength * [self.trackProgress], xrange(maxLength - 1, -1, -1))
+        shifts = map(operator.rshift, maxLength * [self.trackProgress], range(maxLength - 1, -1, -1))
         digits = map(operator.mod, shifts, maxLength * [2])
         digits.reverse()
         return digits
@@ -1203,8 +1184,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         DistributedSmoothNode.DistributedSmoothNode.d_setParent(self, parentToken)
 
     def setEmoteAccess(self, bits):
-        if bits[19]:
-            bits.remove(bits[19])
+        if bits[26]:
+            bits.remove(bits[26])
         self.emoteAccess = bits
         if self == base.localAvatar:
             messenger.send('emotesChanged')
@@ -1279,7 +1260,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def getTotalMoney(self):
         return self.getBankMoney() + self.getMoney()
-
+    
     def takeMoney(self, money):
         self.sendUpdate('takeMoney', [money])
 
@@ -1971,13 +1952,13 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def getPinkSlips(self):
         return self.specialInventory[0]
-
+    
     def getCrateKeys(self):
         return self.specialInventory[1]
 
     def setSpecialInventory(self, specialInventory):
         self.specialInventory = specialInventory
-
+    
     def getSpecialInventory(self):
         return self.specialInventory
 
@@ -2013,19 +1994,19 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             nametagStyle = 0
         self.nametagStyle = nametagStyle
         self.setDisplayName(self.getName())
-
+    
     def getNametagStyles(self):
         return self.nametagStyles
-
+    
     def setNametagStyles(self, nametagStyles):
         self.nametagStyles = nametagStyles
         if self == base.localAvatar:
             messenger.send('refreshNametagStyle')
-
+    
     def requestNametagStyle(self, nametagStyle):
         if nametagStyle not in self.nametagStyles:
             return
-
+        
         self.sendUpdate('requestNametagStyle', [nametagStyle])
 
     def getAvIdName(self):
@@ -2282,6 +2263,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def announcePartyStarted(self, partyId):
         DistributedToon.partyNotify.debug('announcePartyStarted')
+        return
         for partyReplyInfo in self.partyReplyInfoBases:
             if partyReplyInfo.partyId == partyId:
                 for singleReply in partyReplyInfo.replies:
@@ -2411,35 +2393,19 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def addReport(self, doId):
         if not self.isReported(doId):
             self.reported.append(doId)
-
+    
     def setFriendsList(self, friendsList):
         DistributedPlayer.DistributedPlayer.setFriendsList(self, friendsList)
         messenger.send('friendsListChanged')
         Toon.reconsiderAllToonsUnderstandable()
 
-    def b_setTrueFriends(self, trueFriends):
-        self.setTrueFriends(trueFriends)
-        self.d_setTrueFriends(trueFriends)
-
     def setTrueFriends(self, trueFriends):
-        Toon.reconsiderAllToonsUnderstandable()
         self.trueFriends = trueFriends
-
-    def d_setTrueFriends(self, trueFriends):
-        self.sendUpdate('setTrueFriends', [trueFriends])
+        Toon.reconsiderAllToonsUnderstandable()
+        messenger.send('friendsListChanged')
 
     def isTrueFriends(self, doId):
         return base.cr.wantTrueFriends() and doId in self.trueFriends
-        
-    def addTrueFriends(self, doId):
-        if not self.isTrueFriends(doId):
-            self.trueFriends.append(doId)
-            self.b_setTrueFriends(self.trueFriends)
-
-    def removeTrueFriends(self, doId):
-        if self.isTrueFriends(doId):
-            self.trueFriends.remove(doId)
-            self.b_setTrueFriends(self.trueFriends)
 
     def applyBuffs(self):
         for id, timestamp in enumerate(self.buffs):
@@ -2457,18 +2423,18 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                     ToontownGlobals.ToonJumpForce,
                     ToontownGlobals.ToonReverseSpeed * ToontownGlobals.BMovementSpeedMultiplier,
                     ToontownGlobals.ToonRotateSpeed * ToontownGlobals.BMovementSpeedMultiplier)
-
+    
     def setStats(self, stats):
         self.stats = stats
         if self == base.localAvatar:
             messenger.send('refreshStats')
-
+    
     def getStats(self):
         return self.stats
-
+    
     def getStat(self, index):
         return self.stats[index]
-
+    
     def wipeStats(self):
         self.sendUpdate('wipeStats')
 
@@ -2480,7 +2446,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         name = self.name
         self.setDisplayName(name)
         if self._isGM:
-            self.setGMIcon(self._gmType)
+            self.SetxmasBadge(self._gmType)
             self.gmToonLockStyle = True
         else:
             self.gmToonLockStyle = False
@@ -2522,7 +2488,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             self._handleGMName()
         return
 
-    def setGMIcon(self, gmType = None):
+    def SetxmasBadge(self, gmType = None):
         if hasattr(self, 'gmIcon') and self.gmIcon:
             return
 
@@ -2609,33 +2575,3 @@ def showParticle(name):
         return 'Successfully started particle!'
 
     return 'Particle %s does not exist.' % name
-
-# FordTheWriter added commands:
-
-@magicWord(category=CATEGORY_STAFF, types=[int])
-def mute(minutes):
-    """
-    Mute the target
-    """
-    if not MagicWordManager.lastClickedNametag:
-        return "nobody selected"
-    target = MagicWordManager.lastClickedNametag
-    if spellbook.getInvokerAccess() <= target.getAdminAccess():
-        return "Must be of a higher access level then target"
-    print ['mute', target.doId, 0]
-    base.cr.chatAgent.sendMuteAccount(target.doId, minutes)
-    return 'Mute request sent'
-
-@magicWord(category=CATEGORY_STAFF, types=[])
-def unmute():
-    """
-    Unmute the target
-    """
-    if not MagicWordManager.lastClickedNametag:
-        return "nobody selected"
-    target = MagicWordManager.lastClickedNametag
-    if spellbook.getInvokerAccess() <= target.getAdminAccess():
-        return "Must be of a higher access level then target"
-    print ['unmute', target.doId]
-    base.cr.chatAgent.sendUnmuteAccount(target.doId)
-    return 'Unmute request sent'

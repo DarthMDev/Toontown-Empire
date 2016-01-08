@@ -1,7 +1,6 @@
 from toontown.toonbase.ToonBaseGlobal import *
 from otp.otpbase import OTPGlobals
 from direct.interval.IntervalGlobal import *
-from direct.showbase.PythonUtil import fitSrcAngle2Dest
 import ArrowKeys
 from direct.task.Task import Task
 
@@ -142,7 +141,7 @@ class TwoDDrive:
                 orientToon(self.atRestHeading)
             else:
                 curHeading = getHeading(xVel, yVel)
-                if (self.lastXVel and self.lastYVel) and not (xVel and yVel):
+                if ((self.lastXVel and self.lastYVel) and not (xVel and yVel)):
                     def setAtRestHeading(task, self = self, angle = curHeading):
                         self.atRestHeading = angle
                         return Task.done

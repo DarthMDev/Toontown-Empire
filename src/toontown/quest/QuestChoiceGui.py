@@ -28,8 +28,7 @@ class QuestChoiceGui(DirectFrame):
             qp = QuestPoster.QuestPoster()
             qp.reparentTo(self)
             qp.showChoicePoster(questId, fromNpcId, toNpcId, rewardId, self.chooseQuest)
-# This will be activated later in alpha! ~FordTheWriter
-         #   qp.teleportButton.hide()
+            qp.teleportButton.hide()
             self.questChoicePosters.append(qp)
 
         if len(quests) == 1 * 3:

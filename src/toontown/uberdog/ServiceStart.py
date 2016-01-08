@@ -4,7 +4,7 @@ import __builtin__
 __builtin__.process = 'uberdog'
 
 # Temporary hack patch:
-__builtin__.__dict__.update(__import__('panda3d.core', fromlist=['*']).__dict__)
+__builtin__.__dict__.update(__import__('pandac.PandaModules', fromlist=['*']).__dict__)
 from direct.extensions_native import HTTPChannel_extensions
 
 import sys, os
@@ -25,7 +25,7 @@ parser.add_argument('--max-channels', help='The number of channels the server ma
 parser.add_argument('--stateserver', help="The control channel of this UD's designated State Server.")
 parser.add_argument('--astron-ip', help="The IP address of the Astron Message Director to connect to.")
 parser.add_argument('--eventlogger-ip', help="The IP address of the Astron Event Logger to log to.")
-parser.add_argument('config', nargs='*', default=['dependencies/config/general.prc', 'dependencies/config/release/dev.prc'], help="PRC file(s) to load.") #change to test.prc on production server
+parser.add_argument('config', nargs='*', default=['dependencies/config/general.prc', 'dependencies/config/release/dev.prc'], help="PRC file(s) to load.")
 args = parser.parse_args()
 
 for prc in args.config:

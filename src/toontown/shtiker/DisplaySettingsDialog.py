@@ -4,7 +4,7 @@ from direct.gui.DirectGui import *
 from direct.task.Task import Task
 from panda3d.core import *
 
-from toontown.toonbase import TTLocalizer, DisplayOptions, ToontownGlobals
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.toontowngui import TTDialog
 
 
@@ -44,7 +44,16 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
         self.anyChanged = 0
         self.apiChanged = 0
 
-        self.screenSizes = ToontownGlobals.CommonDisplayResolutions[base.nativeRatio]
+        self.screenSizes = ((640, 480),
+         (800, 600),
+         (1024, 768),
+         (1280, 720),
+         (1280, 1024),
+         (1440, 900),
+         (1600, 900),
+         (1600, 1200),
+         (1920, 1080),
+         (2560, 1440))
 
         guiButton = loader.loadModel('phase_3/models/gui/quit_button.bam')
         gui = loader.loadModel('phase_3.5/models/gui/friendslist_gui.bam')
@@ -130,12 +139,6 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
             if changeDisplayAPI and len(self.apis) > 1:
                 self.apiLabel.show()
                 self.apiMenu.show()
-            else:
-                self.apiLabel.hide()
-                self.apiMenu.hide()
-            if DisplayOptions.isWindowedPossible():
-                self.c1b.show()
-                self.windowedButton.show()
             else:
                 self.apiLabel.hide()
                 self.apiMenu.hide()
@@ -294,15 +297,12 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
         self.current_pipe = base.pipe
         self.current_properties = WindowProperties(base.win.getProperties())
         properties = self.current_properties
-        if self.current_pipe == pipe  and self.current_properties.getFullscreen() == fullscreen and self.current_properties.getXSize() == width and self.current_properties.getYSize() == height:
+
+        if self.current_pipe == pipe and self.current_properties.getFullscreen() == fullscreen and self.current_properties.getXSize() == width and self.current_properties.getYSize() == height:
             self.notify.info('DISPLAY NO CHANGE REQUIRED')
             state = True
         else:
             properties = WindowProperties()
-            if fullscreen:
-                width, height = (base.nativeWidth, base.nativeHeight)
-            elif self.current_properties.getFullscreen():
-                width, height = self.screenSizes[self.screenSizeIndex]
             properties.setSize(width, height)
             properties.setFullscreen(fullscreen)
             properties.setParentWindow(0)

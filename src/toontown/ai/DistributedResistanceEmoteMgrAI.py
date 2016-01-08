@@ -18,8 +18,7 @@ class DistributedResistanceEmoteMgrAI(DistributedObjectAI, FSM):
     def addResistanceEmote(self):
         avId = self.air.getAvatarIdFromSender()
         av = self.air.doId2do.get(avId)
-        if not av:
-             return
+        if not av: return
         RESIST_INDEX = EmoteFuncDict['Resistance Salute']
         av.emoteAccess[RESIST_INDEX] = 1
         av.d_setEmoteAccess(av.emoteAccess)

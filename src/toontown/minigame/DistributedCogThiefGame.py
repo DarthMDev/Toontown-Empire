@@ -25,7 +25,7 @@ class DistributedCogThiefGame(DistributedMinigame):
     ToonSpeed = CTGG.ToonSpeed
     StageHalfWidth = 200.0
     StageHalfHeight = 100.0
-    BarrelScale = 0.3
+    BarrelScale = 0.25
     TOON_Z = 0
     UPDATE_SUITS_TASK = 'CogThiefGameUpdateSuitsTask'
     REWARD_COUNTDOWN_TASK = 'cogThiefGameRewardCountdown'
@@ -35,15 +35,12 @@ class DistributedCogThiefGame(DistributedMinigame):
         DistributedMinigame.__init__(self, cr)
         self.gameFSM = ClassicFSM.ClassicFSM('DistributedCogThiefGame', [State.State('off', self.enterOff, self.exitOff, ['play']), State.State('play', self.enterPlay, self.exitPlay, ['cleanup']), State.State('cleanup', self.enterCleanup, self.exitCleanup, [])], 'off', 'cleanup')
         self.addChildGameFSM(self.gameFSM)
-        toon = base.localAvatar
-        camera.reparentTo(toon)
-        camera.setPos(0,-15,5)
-        camera.setHpr(0, -5, 0)
+        self.cameraTopView = (0, 0, 55, 0, -90.0, 0)
         self.barrels = []
         self.cogInfo = {}
         self.lastTimeControlPressed = 0
         self.stolenBarrels = []
-        self.useOrthoWalk = config.GetBool('cog-thief-ortho', 0)
+        self.useOrthoWalk = base.config.GetBool('cog-thief-ortho', 1)
         self.resultIval = None
         self.gameIsEnding = False
         self.__textGen = TextNode('cogThiefGame')
@@ -65,7 +62,7 @@ class DistributedCogThiefGame(DistributedMinigame):
         DistributedMinigame.load(self)
         self.music = base.loadMusic('phase_4/audio/bgm/MG_CogThief.ogg')
         self.initCogInfo()
-        for barrelIndex in range(CTGG.NumBarrels):
+        for barrelIndex in xrange(CTGG.NumBarrels):
             barrel = loader.loadModel('phase_4/models/minigames/cogthief_game_gagTank')
             barrel.setPos(CTGG.BarrelStartingPositions[barrelIndex])
             barrel.setScale(self.BarrelScale)
@@ -91,33 +88,30 @@ class DistributedCogThiefGame(DistributedMinigame):
                 iconToHide.hide()
             self.barrels.append(barrel)
 
-        self.gameBoard = loader.loadModel('phase_8/models/minigames/tag_arena_DG')
-        self.sky = loader.loadModel('phase_3.5/models/props/TT_sky')
-        #self.gameBoard.find('**/floor_TT').hide()
-        #self.gameBoard.find('**/floor_DD').hide()
-        #self.gameBoard.find('**/floor_DG').hide()
-        #self.gameBoard.find('**/floor_MM').hide()
-        #self.gameBoard.find('**/floor_BR').hide()
-        #self.gameBoard.find('**/floor_DL').hide()
-        #zone = self.getSafezoneId()
-        #if zone == ToontownGlobals.ToontownCentral:
-        #    self.gameBoard.find('**/floor_TT').show()
-        #elif zone == ToontownGlobals.DonaldsDock:
-        #    self.gameBoard.find('**/floor_DD').show()
-        #elif zone == ToontownGlobals.DaisyGardens:
-        #    self.gameBoard.find('**/floor_DG').show()
-        #elif zone == ToontownGlobals.MinniesMelodyland:
-        #    self.gameBoard.find('**/floor_MM').show()
-        #elif zone == ToontownGlobals.TheBrrrgh:
-        #    self.gameBoard.find('**/floor_BR').show()
-        #elif zone == ToontownGlobals.DonaldsDreamland:
-        #    self.gameBoard.find('**/floor_DL').show()
-        #else:
-        #    self.gameBoard.find('**/floor_TT').show()
+        self.gameBoard = loader.loadModel('phase_4/models/minigames/cogthief_game')
+        self.gameBoard.find('**/floor_TT').hide()
+        self.gameBoard.find('**/floor_DD').hide()
+        self.gameBoard.find('**/floor_DG').hide()
+        self.gameBoard.find('**/floor_MM').hide()
+        self.gameBoard.find('**/floor_BR').hide()
+        self.gameBoard.find('**/floor_DL').hide()
+        zone = self.getSafezoneId()
+        if zone == ToontownGlobals.ToontownCentral:
+            self.gameBoard.find('**/floor_TT').show()
+        elif zone == ToontownGlobals.DonaldsDock:
+            self.gameBoard.find('**/floor_DD').show()
+        elif zone == ToontownGlobals.DaisyGardens:
+            self.gameBoard.find('**/floor_DG').show()
+        elif zone == ToontownGlobals.MinniesMelodyland:
+            self.gameBoard.find('**/floor_MM').show()
+        elif zone == ToontownGlobals.TheBrrrgh:
+            self.gameBoard.find('**/floor_BR').show()
+        elif zone == ToontownGlobals.DonaldsDreamland:
+            self.gameBoard.find('**/floor_DL').show()
+        else:
+            self.gameBoard.find('**/floor_TT').show()
         self.gameBoard.setPosHpr(0, 0, 0, 0, 0, 0)
         self.gameBoard.setScale(1.0)
-        self.sky.setPosHpr(0, 0, -47, 0, 0, 0)
-        self.sky.setScale(1.0)
         self.toonSDs = {}
         avId = self.localAvId
         toonSD = CogThiefGameToonSD.CogThiefGameToonSD(avId, self)
@@ -135,7 +129,7 @@ class DistributedCogThiefGame(DistributedMinigame):
         purchaseModels = loader.loadModel('phase_4/models/gui/purchase_gui')
         self.jarImage = purchaseModels.find('**/Jar')
         self.jarImage.reparentTo(hidden)
-        self.rewardPanel = DirectLabel(parent=hidden, relief=None, pos=(-0.173, -1.2, -0.55), scale=0.65, text='', text_scale=0.2, text_fg=(0.95, 0.95, 0, 1), text_pos=(0, -.13), text_font=ToontownGlobals.getSignFont(), image=self.jarImage)
+        self.rewardPanel = DirectLabel(parent=hidden, relief=None, pos=(-0.173, 0.0, -0.55), scale=0.65, text='', text_scale=0.2, text_fg=(0.95, 0.95, 0, 1), text_pos=(0, -.13), text_font=ToontownGlobals.getSignFont(), image=self.jarImage)
         self.rewardPanelTitle = DirectLabel(parent=self.rewardPanel, relief=None, pos=(0, 0, 0.06), scale=0.08, text=TTLocalizer.CannonGameReward, text_fg=(0.95, 0.95, 0, 1), text_shadow=(0, 0, 0, 1))
         return
 
@@ -146,7 +140,6 @@ class DistributedCogThiefGame(DistributedMinigame):
         self.removeChildGameFSM(self.gameFSM)
         del self.gameFSM
         self.gameBoard.removeNode()
-        self.sky.removeNode()
         del self.gameBoard
         for barrel in self.barrels:
             barrel.removeNode()
@@ -169,11 +162,11 @@ class DistributedCogThiefGame(DistributedMinigame):
         self.notify.debug('onstage')
         DistributedMinigame.onstage(self)
         self.gameBoard.reparentTo(render)
-        self.sky.reparentTo(render)
         lt = base.localAvatar
         lt.reparentTo(render)
         self.__placeToon(self.localAvId)
         lt.setSpeed(0, 0)
+        self.moveCameraToTop()
         toonSD = self.toonSDs[self.localAvId]
         toonSD.enter()
         toonSD.fsm.request('normal')
@@ -183,6 +176,8 @@ class DistributedCogThiefGame(DistributedMinigame):
             pos = self.cogInfo[cogIndex]['pos']
             suit.reparentTo(self.gameBoard)
             suit.setPos(pos)
+            suit.nametag3d.stash()
+            suit.nametag.destroy()
 
         for avId in self.avIdList:
             self.toonHitTracks[avId] = Wait(0.1)
@@ -198,6 +193,8 @@ class DistributedCogThiefGame(DistributedMinigame):
             self.sndTable['falling'][i] = base.loadSfx('phase_4/audio/sfx/MG_cannon_whizz.ogg')
 
         base.playMusic(self.music, looping=1, volume=0.8)
+        self.introTrack = self.getIntroTrack()
+        self.introTrack.start()
         return
 
     def offstage(self):
@@ -217,6 +214,9 @@ class DistributedCogThiefGame(DistributedMinigame):
 
         self.timer.reparentTo(hidden)
         self.rewardPanel.reparentTo(hidden)
+        if self.introTrack.isPlaying():
+            self.introTrack.finish()
+        del self.introTrack
         DistributedMinigame.offstage(self)
 
     def handleDisabledAvatar(self, avId):
@@ -250,13 +250,15 @@ class DistributedCogThiefGame(DistributedMinigame):
             return
         self.notify.debug('setGameStart')
         DistributedMinigame.setGameStart(self, timestamp)
-        if not config.GetBool('cog-thief-endless', 0):
+        if not base.config.GetBool('cog-thief-endless', 0):
             self.timer.show()
             self.timer.countdown(CTGG.GameTime, self.__gameTimerExpired)
         self.clockStopTime = None
         self.rewardPanel.reparentTo(base.a2dTopRight)
         self.scoreMult = MinigameGlobals.getScoreMult(self.cr.playGame.hood.id)
         self.__startRewardCountdown()
+        if self.introTrack.isPlaying():
+            self.introTrack.finish()
         self.gameFSM.request('play')
         return
 
@@ -270,9 +272,7 @@ class DistributedCogThiefGame(DistributedMinigame):
         self.notify.debug('enterPlay')
         self.startGameWalk()
         self.spawnUpdateSuitsTask()
-        self.accept('delete', self.controlKeyPressed)
-        self.accept('insert', self.controlKeyPressed)
-        self.accept('alt', self.controlKeyPressed)
+        self.accept('control', self.controlKeyPressed)
         self.pieHandler = CollisionHandlerEvent()
         self.pieHandler.setInPattern('pieHit-%fn')
 
@@ -315,13 +315,14 @@ class DistributedCogThiefGame(DistributedMinigame):
         if toon:
             index = self.avIdList.index(avId)
             toon.setPos(CTGG.ToonStartingPositions[index])
-            toon.setHpr(CTGG.ToonStartingRotations[index])
+            toon.setHpr(0, 0, 0)
 
     def moveCameraToTop(self):
         camera.reparentTo(render)
         p = self.cameraTopView
         camera.setPosHpr(p[0], p[1], p[2], p[3], p[4], p[5])
-        camera.setZ(camera.getZ() + config.GetFloat('cog-thief-z-camera-adjust', 0.0))
+        base.camLens.setMinFov(46/(4./3.))
+        camera.setZ(camera.getZ() + base.config.GetFloat('cog-thief-z-camera-adjust', 0.0))
 
     def destroyGameWalk(self):
         self.notify.debug('destroyOrthoWalk')
@@ -430,7 +431,7 @@ class DistributedCogThiefGame(DistributedMinigame):
         dropShadow.setScale(toon.dropShadow.getScale(render))
         trajectory = Trajectory.Trajectory(0, Point3(0, 0, 0), Point3(0, 0, 50), gravMult=1.0)
         oldFlyDur = trajectory.calcTimeOfImpactOnPlane(0.0)
-        trajectory = Trajectory.Trajectory(0, Point3(0, 0, 0), Point3(0, 0, 40), gravMult=1.0)
+        trajectory = Trajectory.Trajectory(0, Point3(0, 0, 0), Point3(0, 0, 50), gravMult=0.55)
         flyDur = trajectory.calcTimeOfImpactOnPlane(0.0)
         avIndex = self.avIdList.index(avId)
         endPos = CTGG.ToonStartingPositions[avIndex]
@@ -506,7 +507,7 @@ class DistributedCogThiefGame(DistributedMinigame):
                     toon.startSmooth()
 
         preFunc()
-        slipBack = Parallel(Sequence(ActorInterval(toon, 'slip-backward', endFrame=24), ActorInterval(toon, 'slip-backward', startFrame=24)))
+        slipBack = Parallel(Sequence(ActorInterval(toon, 'slip-backward', endFrame=24), Wait(CTGG.LyingDownDuration - (flyDur - oldFlyDur)), ActorInterval(toon, 'slip-backward', startFrame=24)))
         if toon.doId == self.localAvId:
             slipBack.append(SoundInterval(self.sndOof))
         hitTrack = Sequence(Parallel(flyTrack, spinHTrack, spinPTrack, soundTrack), slipBack, Func(postFunc), name=toon.uniqueName('hitBySuit'))
@@ -579,9 +580,6 @@ class DistributedCogThiefGame(DistributedMinigame):
                 if cog.suit:
                     cogPos = cog.suit.getPos()
                     collisionPos = colEntry.getContactPos(render)
-                    if (cogPos - collisionPos).length() > 4:
-                        import pdb
-                        pdb.set_trace()
                     self.sendUpdate('cogHitBarrel', [timestamp,
                      cogIndex,
                      barrelIndex,
@@ -766,8 +764,8 @@ class DistributedCogThiefGame(DistributedMinigame):
             self.stolenBarrels.append(barrelIndex)
             barrel = self.barrels[barrelIndex]
             barrel.hide()
-        if config.GetBool('cog-thief-check-barrels', 1):
-            if not config.GetBool('cog-thief-endless', 0):
+        if base.config.GetBool('cog-thief-check-barrels', 1):
+            if not base.config.GetBool('cog-thief-endless', 0):
                 if len(self.stolenBarrels) == len(self.barrels):
                     localStamp = globalClockDelta.networkToLocalTime(timestamp, bits=32)
                     gameTime = self.local2GameTime(localStamp)
@@ -838,7 +836,7 @@ class DistributedCogThiefGame(DistributedMinigame):
         return False
 
     def getNumCogs(self):
-        result = config.GetInt('cog-thief-num-cogs', 0)
+        result = base.config.GetInt('cog-thief-num-cogs', 0)
         if not result:
             safezone = self.getSafezoneId()
             result = CTGG.calculateCogs(self.numPlayers, safezone)
@@ -898,9 +896,6 @@ class DistributedCogThiefGame(DistributedMinigame):
                 soundTrack = Sequence()
             self.resultIval = Parallel(textTrack, soundTrack)
             self.resultIval.start()
-            #For the Alpha Blueprint ARG
-            if config.GetBool('want-blueprint4-ARG', False):
-                MinigameGlobals.generateDebugARGPhrase()
 
     def __genText(self, text):
         self.__textGen.setText(text)

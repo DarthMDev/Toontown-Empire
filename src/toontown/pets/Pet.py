@@ -419,7 +419,7 @@ class Pet(Avatar.Avatar):
 
     def enterNeutral(self):
         anim = 'neutral'
-        self.pose(anim, random.choice(xrange(0, self.getNumFrames(anim))))
+        self.pose(anim, random.choice(range(0, self.getNumFrames(anim))))
         self.loop(anim, restart=0)
 
     def exitNeutral(self):
@@ -427,7 +427,7 @@ class Pet(Avatar.Avatar):
 
     def enterNeutralHappy(self):
         anim = 'neutralHappy'
-        self.pose(anim, random.choice(xrange(0, self.getNumFrames(anim))))
+        self.pose(anim, random.choice(range(0, self.getNumFrames(anim))))
         self.loop(anim, restart=0)
 
     def exitNeutralHappy(self):
@@ -435,7 +435,7 @@ class Pet(Avatar.Avatar):
 
     def enterNeutralSad(self):
         anim = 'neutralSad'
-        self.pose(anim, random.choice(xrange(0, self.getNumFrames(anim))))
+        self.pose(anim, random.choice(range(0, self.getNumFrames(anim))))
         self.loop(anim, restart=0)
 
     def exitNeutralSad(self):
@@ -654,15 +654,15 @@ def gridPets():
         colors = getColors(body)
         for color in colors:
             p = Pet()
-            p.setDNA([random.choice(xrange(-1, len(HeadParts))),
-             random.choice(xrange(-1, len(EarParts))),
-             random.choice(xrange(-1, len(NoseParts))),
-             random.choice(xrange(-1, len(TailParts))),
+            p.setDNA([random.choice(range(-1, len(HeadParts))),
+             random.choice(range(-1, len(EarParts))),
+             random.choice(range(-1, len(NoseParts))),
+             random.choice(range(-1, len(TailParts))),
              body,
              color,
-             random.choice(xrange(-1, len(ColorScales))),
-             random.choice(xrange(0, len(PetEyeColors))),
-             random.choice(xrange(0, len(PetGenders)))])
+             random.choice(range(-1, len(ColorScales))),
+             random.choice(range(0, len(PetEyeColors))),
+             random.choice(range(0, len(PetGenders)))])
             p.setPos(startPos[0] + offsetX, startPos[1] + offsetY, startPos[2])
             p.animFSM.request('neutral')
             p.reparentTo(render)

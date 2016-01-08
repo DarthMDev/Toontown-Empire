@@ -52,10 +52,7 @@ class NewsManager(DistributedObject):
         self.endSpecialHoliday(id)
 
     def startSpecialHoliday(self, id):
-        if id == ToontownGlobals.LAUGHING_MAN:
-            for toon in base.cr.toons.values():
-                toon.generateLaughingMan()
-        elif id == ToontownGlobals.APRIL_TOONS_WEEK:
+        if id == ToontownGlobals.APRIL_TOONS_WEEK:
             if isinstance(base.cr.playGame.getPlace(), Estate.Estate):
                 base.localAvatar.startAprilToonsControls()
 
@@ -66,12 +63,9 @@ class NewsManager(DistributedObject):
             base.localAvatar.chatMgr.chatInputSpeedChat.addHalloweenMenu()
         elif id == ToontownGlobals.CHRISTMAS:
             base.localAvatar.chatMgr.chatInputSpeedChat.addWinterMenu()
-            
+
     def endSpecialHoliday(self, id):
-        if id == ToontownGlobals.LAUGHING_MAN:
-            for toon in base.cr.toons.values():
-                toon.swapToonHead(laughingMan=toon.getWantLaughingMan())
-        elif id == ToontownGlobals.APRIL_TOONS_WEEK:
+        if id == ToontownGlobals.APRIL_TOONS_WEEK:
             if isinstance(base.cr.playGame.getPlace(), Estate.Estate):
                 base.localAvatar.stopAprilToonsControls()
 

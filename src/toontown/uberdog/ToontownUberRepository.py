@@ -4,7 +4,7 @@ from otp.distributed.OtpDoGlobals import *
 from otp.distributed.DistributedDirectoryAI import DistributedDirectoryAI
 from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
 import toontown.minigame.MinigameCreatorAI
-from otp.otpbase import BackupManager
+from toontown.uberdog.TopToonsManagerUD import TopToonsManagerUD
 
 if config.GetBool('want-rpc-server', False):
     from toontown.rpc.ToontownRPCServer import ToontownRPCServer
@@ -15,6 +15,7 @@ class ToontownUberRepository(ToontownInternalRepository):
         ToontownInternalRepository.__init__(self, baseChannel, serverId, dcSuffix='UD')
 
         self.notify.setInfo(True)
+        self.wantTopToons = self.config.GetBool('want-top-toons', True)
 
     def handleConnected(self):
         ToontownInternalRepository.handleConnected(self)
@@ -25,10 +26,6 @@ class ToontownUberRepository(ToontownInternalRepository):
             endpoint = config.GetString('rpc-server-endpoint', 'http://localhost:8080/')
             self.rpcServer = ToontownRPCServer(endpoint, ToontownRPCHandler(self))
             self.rpcServer.start(useTaskChain=True)
-
-        self.backups = BackupManager.BackupManager(
-            filepath=self.config.GetString('backups-filepath', 'backups/'),
-            extension=self.config.GetString('backups-extension', '.json'))
 
         self.createGlobals()
         self.notify.info('Done.')
@@ -43,4 +40,6 @@ class ToontownUberRepository(ToontownInternalRepository):
         self.centralLogger = simbase.air.generateGlobalObject(OTP_DO_ID_CENTRAL_LOGGER, 'CentralLogger')
         self.friendsManager = simbase.air.generateGlobalObject(OTP_DO_ID_TTE_FRIENDS_MANAGER, 'TTEFriendsManager')
         self.globalPartyMgr = simbase.air.generateGlobalObject(OTP_DO_ID_GLOBAL_PARTY_MANAGER, 'GlobalPartyManager')
-#        self.groupManager = simbase.air.generateGlobalObject(OPT_DO_ID_GROUP_MANAGER, 'GroupManager')
+        if self.wantTopToons:
+            self.topToonsMgr = TopToonsManagerUD(self)
+

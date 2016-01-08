@@ -5,7 +5,7 @@ from otp.otpbase import OTPLocalizer
 from direct.interval.IntervalGlobal import *
 from toontown.estate import GardenGlobals
 from direct.actor import Actor
-from panda3d.core import NodePath
+from pandac.PandaModules import NodePath
 
 class CatalogGardenItem(CatalogItem.CatalogItem):
     sequenceNumber = 0

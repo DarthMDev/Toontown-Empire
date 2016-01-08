@@ -1,11 +1,9 @@
 from direct.showbase.DirectObject import DirectObject
 from direct.interval.MetaInterval import Parallel
 from direct.interval.LerpInterval import LerpPosInterval, LerpHprInterval
-from direct.interval.IntervalGlobal import WaitInterval
 from direct.showbase.RandomNumGen import RandomNumGen
-from panda3d.core import Point3
-from panda3d.core import CollisionSphere
-from panda3d.core import CollisionNode
+from pandac.PandaModules import Point3, WaitInterval
+from pandac.PandaModules import CollisionSphere, CollisionNode
 from toontown.suit import Suit
 from toontown.suit import SuitDNA
 from toontown.toonbase import ToontownGlobals
@@ -191,7 +189,7 @@ class MazeSuit(DirectObject):
         if curTic < self.nextThinkTic:
             return []
         else:
-            r = xrange(self.nextThinkTic, curTic + 1, self.ticPeriod)
+            r = range(self.nextThinkTic, curTic + 1, self.ticPeriod)
             self.lastTicBeforeRender = r[-1]
             return r
 
@@ -228,7 +226,8 @@ class MazeSuit(DirectObject):
             self.moveIval.start(curT - (moveStartT + self.gameStartTime))
         self.nextThinkTic += self.ticPeriod
 
-    def thinkSuits(self, suitList, startTime, ticFreq = MazeGameGlobals.SUIT_TIC_FREQ):
+    @staticmethod
+    def thinkSuits(suitList, startTime, ticFreq = MazeGameGlobals.SUIT_TIC_FREQ):
         curT = globalClock.getFrameTime() - startTime
         curTic = int(curT * float(ticFreq))
         suitUpdates = []

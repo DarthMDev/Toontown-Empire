@@ -3,10 +3,6 @@ from direct.interval.IntervalGlobal import *
 from direct.particles import ParticleEffect
 from direct.particles import Particles
 from direct.particles import ForceGroup
-from panda3d.physics import BaseParticleRenderer
-from panda3d.physics import BaseParticleEmitter
-from panda3d.physics import LinearVectorForce
-from panda3d.physics import LinearJitterForce
 import random
 
 class Bubbles(NodePath):

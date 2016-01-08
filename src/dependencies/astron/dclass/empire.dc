@@ -157,6 +157,7 @@ dclass DistributedPlayer : DistributedAvatar {
   setWishNameState(string = "OPEN") db ram;
   setAdminAccess(uint16 = 0) required broadcast ownrecv db;
   setAsGM(bool = 0) required ram broadcast ownrecv airecv;
+  setGM(uint8 = 0) required broadcast ownrecv db;
 };
 
 dclass MagicWordManager : DistributedObject {
@@ -585,7 +586,6 @@ typedef int16 pair16[2];
 dclass DistributedToon : DistributedPlayer {
   setDNAString(blob) required broadcast ownrecv db;
   setMaxBankMoney(int16 maxMoney = 10000) required broadcast ownrecv db;
-  setGM(uint8 = 0) required broadcast ownrecv db;
   setBankMoney(int16 money = 0) required broadcast ownrecv db;
   setMaxMoney(int16 maxMoney = 40) required broadcast ownrecv db;
   setMoney(int16 money = 0) required broadcast ownrecv db;
@@ -625,7 +625,7 @@ dclass DistributedToon : DistributedPlayer {
   setTunnelOut(int16, int16/10, int16/10, int16/10, int16/10, int16/100, int32/100) ownsend broadcast;
   setAnimState(char [0-1024], int16/1000, int16) broadcast ram ownsend airecv;
   setEmoteState(int16, int16/1000, int16) broadcast ram ownsend;
-  setEmoteAccess(uint8[] = [1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]) required ownrecv db;
+  setEmoteAccess(uint8[] = [1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]) required ownrecv db;
   setCustomMessages(uint16[] = []) required ownrecv db;
   setSleepAutoReply(uint32) broadcast clsend ownrecv;
   setResistanceMessages(pair16 [] = []) required ownrecv db;
@@ -665,7 +665,6 @@ dclass DistributedToon : DistributedPlayer {
   setCogParts(uint32[] = [0 * 4]) required broadcast ownrecv db;
   setCogMerits(uint16[] = [0 * 4]) required broadcast ownrecv db;
   setCogIndex(int8) broadcast ram;
-  setHealthDisplay(uint8 mode) broadcast ownrecv ram;
   setDisguisePageFlag(int8) ownrecv;
   setSosPageFlag(int8) ownrecv;
   setHouseId(uint32 = 0) required ownrecv db;
@@ -1499,7 +1498,6 @@ dclass DistributedInGameNewsMgr : DistributedObjectGlobal {
   newIssueUDtoAI(string) airecv;
 };
 
-
 dclass PurchaseManager : DistributedObject {
   setAvIds(uint32, uint32, uint32, uint32) required broadcast ram;
   setNewbieIds(uint32[]) required broadcast ram;
@@ -1829,8 +1827,8 @@ dclass DistributedNPCLaffRestock : DistributedNPCToonBase {
 };
 
 dclass DistributedNPCGlove : DistributedNPCToonBase {
-  doTransformation(uint32 avId, uint32) broadcast;
-  requestTransformation(uint32) airecv clsend;
+  changeGlove(uint8) airecv clsend;
+  changeGloveResult(uint32 avId, uint8) broadcast;
 };
 
 dclass DistributedKnockKnockDoor : DistributedAnimatedProp {

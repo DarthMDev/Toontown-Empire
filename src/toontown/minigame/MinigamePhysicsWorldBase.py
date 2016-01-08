@@ -1,9 +1,7 @@
-from panda3d.core import Quat
-from panda3d.ode import OdeWorld
-from panda3d.ode import OdeSimpleSpace
-from panda3d.ode import OdeJointGroup
-from panda3d.ode import OdeUtil
+from pandac.PandaModules import Quat
+from pandac.PandaModules import OdeWorld, OdeSimpleSpace, OdeJointGroup, OdeUtil
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed.ClockDelta import globalClockDelta
 
 class MinigamePhysicsWorldBase:
     notify = DirectNotifyGlobal.directNotify.newCategory('MinigamePhysicsWorldBase')

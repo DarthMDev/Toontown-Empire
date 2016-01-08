@@ -18,7 +18,7 @@ from toontown.hood import Place
 import HouseGlobals
 from toontown.building import ToonInteriorColors
 from direct.showbase.MessengerGlobal import messenger
-from toontown.dna.DNAParser import DNADoor
+from toontown.dna.DNAParser import *
 from otp.nametag.NametagGroup import NametagGroup
 from otp.nametag.Nametag import Nametag
 
@@ -114,7 +114,7 @@ class DistributedHouse(DistributedObject.DistributedObject):
         self.randomGenerator.seed(self.doId)
         houseColor = HouseGlobals.stairWood
         color = Vec4(houseColor[0], houseColor[1], houseColor[2], 1)
-        DNADoor.setupDoor(doorNP, door_origin, door_origin, self.dnaStore, str(self.colorIndex), color)
+        setupDoor(doorNP, door_origin, door_origin, self.dnaStore, str(self.colorIndex), color)
         self.__setupNamePlate()
         self.__setupFloorMat()
         self.__setupNametag()

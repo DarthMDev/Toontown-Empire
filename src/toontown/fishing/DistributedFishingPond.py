@@ -4,7 +4,7 @@ from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 import FishGlobals
 from toontown.fishing import DistributedPondBingoManager
-from panda3d.core import Vec3
+from pandac.PandaModules import Vec3
 from direct.task import Task
 
 class DistributedFishingPond(DistributedObject.DistributedObject):
@@ -90,7 +90,7 @@ class DistributedFishingPond(DistributedObject.DistributedObject):
         return self.pondBingoMgr
 
     def hasPondBingoManager(self):
-        return (self.pondBingoMgr and [1] or [0])[0]
+        return self.pondBingoMgr is not None
 
     def handleBingoCatch(self, catch):
         if self.pondBingoMgr:

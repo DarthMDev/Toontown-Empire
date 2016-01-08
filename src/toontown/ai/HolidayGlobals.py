@@ -65,7 +65,7 @@ Holidays = {
         'startMessage': TTLocalizer.WinterCarolingStart,
         'ongoingMessage': TTLocalizer.WinterCarolingStart,
         'endMessage': TTLocalizer.WinterCarolingEnd,
-        'speedchatIndexes': xrange(30200, 30206),
+        'speedchatIndexes': range(30200, 30206),
         'effectDelay': 15,
         'scavengerHunt': WINTER_CAROLING
     },
@@ -107,7 +107,6 @@ Holidays = {
         'startMessage': TTLocalizer.ValentinesDayStart,
         'ongoingMessage': TTLocalizer.ValentinesDayStart,
         'endMessage': TTLocalizer.ValentinesDayEnd
-        #todo add my birthday 6/29 - mgracer48
     }
 }
 

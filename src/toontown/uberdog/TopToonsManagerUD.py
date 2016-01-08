@@ -3,7 +3,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm.FSM import FSM
 from direct.showbase.DirectObject import *
-from toontown.toon.ToonDNA import ToonDNA, getSpeciesName
+from toontown.toon.ToonDNA import *
 import TopToonsGlobals
 import time, random
 import datetime, json

@@ -90,10 +90,10 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             friendsButtonPressed = friendsGui.find('**/FriendsBox_Rollover')
             friendsButtonRollover = friendsGui.find('**/FriendsBox_Rollover')
             newScale = oldScale = 0.68 if WantNewsPage else 0.8
-            self.bFriendsList = DirectButton(image=(friendsButtonNormal, friendsButtonPressed, friendsButtonRollover), relief=None, pos=(-0.139, 0, -0.127), parent=base.a2dTopRight, scale=newScale, text=('', TTLocalizer.FriendsListLabel, TTLocalizer.FriendsListLabel), text_scale=0.09, text_fg=Vec4(1, 1, 1, 1), text_shadow=Vec4(0, 0, 0, 1), text_pos=(0, -0.18), text_font=ToontownGlobals.getInterfaceFont(), command=self.sendFriendsListEvent)
-            newScale = oldScale = 0.8
             if WantNewsPage:
-                newScale = oldScale * ToontownGlobals.NewsPageScaleAdjust            
+                self.bFriendsList = DirectButton(image=(friendsButtonNormal, friendsButtonPressed, friendsButtonRollover), relief=None, pos=(-0.139, 0, -0.127), parent=base.a2dTopRight, scale=newScale, text=('', TTLocalizer.FriendsListLabel, TTLocalizer.FriendsListLabel), text_scale=0.09, text_fg=Vec4(1, 1, 1, 1), text_shadow=Vec4(0, 0, 0, 1), text_pos=(0, -0.18), text_font=ToontownGlobals.getInterfaceFont(), command=self.sendFriendsListEvent)
+            else:
+                self.bFriendsList = DirectButton(image=(friendsButtonNormal, friendsButtonPressed, friendsButtonRollover), relief=None, pos=(-0.141, 0, -0.125), parent=base.a2dTopRight, scale=newScale, text=('', TTLocalizer.FriendsListLabel, TTLocalizer.FriendsListLabel), text_scale=0.09, text_fg=Vec4(1, 1, 1, 1), text_shadow=Vec4(0, 0, 0, 1), text_pos=(0, -0.18), text_font=ToontownGlobals.getInterfaceFont(), command=self.sendFriendsListEvent)
             self.bFriendsList.hide()
             self.friendsListButtonActive = 0
             self.friendsListButtonObscured = 0
@@ -159,7 +159,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.createSystemMsgAckGui()
             if not hasattr(base.cr, 'lastLoggedIn'):
                 base.cr.lastLoggedIn = self.cr.toontownTimeManager.convertStrToToontownTime('')
-            self.setLastTimeReadNews(base.cr.lastLoggedIn)            
+            self.setLastTimeReadNews(base.cr.lastLoggedIn)    
             self.acceptingNewFriends = True
             self.acceptingNonFriendWhispers = True
             self.acceptingTeleport = True
@@ -316,7 +316,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
 
     def initInterface(self):
         self.newsButtonMgr = NewsPageButtonManager.NewsPageButtonManager()
-        self.newsButtonMgr.request('Hidden')    
+        self.newsButtonMgr.request('Hidden')   
         self.book = ShtikerBook.ShtikerBook('bookDone')
         self.book.load()
         self.book.hideButton()
@@ -359,7 +359,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.book.addPage(self.photoPage, pageName=TTLocalizer.PhotoPageTitle)
         self.addEventsPage()
         if WantNewsPage:
-            self.addNewsPage()        
+            self.addNewsPage()  
         self.book.setPage(self.mapPage, enterPage=False)
         self.laffMeter = LaffMeter.LaffMeter(self.style, self.hp, self.maxHp)
         self.laffMeter.setAvatar(self)
@@ -427,6 +427,18 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.gardenPage.load()
         self.book.addPage(self.gardenPage, pageName=TTLocalizer.GardenPageTitle)
 
+    def setAsGM(self, state):
+         self.notify.debug('Setting GM State: %s in LocalToon' % state)
+         DistributedToon.DistributedToon.setAsGM(self, state)
+         if self.gmState:
+             if base.config.GetString('gm-nametag-string', '') != '':
+                 self.gmNameTagString = base.config.GetString('gm-nametag-string')
+             if base.config.GetString('gm-nametag-color', '') != '':
+                 self.gmNameTagColor = base.config.GetString('gm-nametag-color')
+             if base.config.GetInt('gm-nametag-enabled', 0):
+                 self.gmNameTagEnabled = 1
+             self.d_updateGMNameTag()
+
     def displayTalkWhisper(self, avId, chat):
         sender = base.cr.identifyAvatar(avId)
 
@@ -443,9 +455,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         base.playSfx(self.soundWhisper)
 
     def isLocal(self):
-        return 1
-
-    def canChat(self):
         return 1
 
     def startChat(self):
@@ -822,7 +831,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
     def hideFurnitureGui(self):
         if self.__furnitureGui:
             self.__furnitureGui.hide()
-            
+
     def clarabelleNewsPageCollision(self, show = True):
         if self.__clarabelleButton == None:
             return
@@ -947,8 +956,9 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         else:
             zoneId = '?'
         strPosCoordText = 'X: %.3f' % pos[0] + ', Y: %.3f' % pos[1] + '\nZ: %.3f' % pos[2] + ', H: %.3f' % hpr[0] + '\nZone: %s' % str(zoneId) + ', Ver: %s, ' % serverVersion + 'District: %s' % districtName
-        self.refreshOnscreenButtons()
         return strPosCoordText
+        self.refreshOnscreenButtons()
+        return
 
     def thinkPos(self):
         pos = self.getPos()
@@ -1628,7 +1638,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.eventsPage.load()
         self.book.addPage(self.eventsPage, pageName=TTLocalizer.EventsPageName)
         return
-        
+
     def addNewsPage(self):
         self.newsPage = NewsPage.NewsPage()
         self.newsPage.load()
@@ -1677,7 +1687,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             base.localAvatar.setSystemMessage(0, TTLocalizer.SleepAutoReply % av.getName(), WTToontownBoardingGroup)
         elif av:
             self.notify.warning('setSleepAutoReply from non-toon %s' % fromId)
-            
+
     def setLastTimeReadNews(self, newTime):
         self.lastTimeReadNews = newTime
 
@@ -1699,7 +1709,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
 
         else:
             self.sendUpdate('logSuspiciousEvent', ['cheatCogdoMazeGame'])
-            
+
     def isReadingNews(self):
         result = False
         if base.cr and base.cr.playGame and base.cr.playGame.getPlace() and hasattr(base.cr.playGame.getPlace(), 'fsm') and base.cr.playGame.getPlace().fsm:
@@ -1744,15 +1754,3 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
 
     def stopAprilToonsControls(self):
         self.controlManager.currentControls.setGravity(ToontownGlobals.GravityValue * 2.0)
-
-    def setAsGM(self, state):
-        self.notify.debug('Setting GM State: %s in LocalToon' % state)
-        DistributedToon.DistributedToon.setAsGM(self, state)
-        if self.gmState:
-            if base.config.GetString('gm-nametag-string', '') != '':
-                self.gmNameTagString = base.config.GetString('gm-nametag-string')
-            if base.config.GetString('gm-nametag-color', '') != '':
-                self.gmNameTagColor = base.config.GetString('gm-nametag-color')
-            if base.config.GetInt('gm-nametag-enabled', 0):
-                self.gmNameTagEnabled = 1
-            self.d_updateGMNameTag()

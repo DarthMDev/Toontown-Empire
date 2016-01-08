@@ -168,7 +168,7 @@ class DistributedDivingGame(DistributedMinigame):
                 self.sendUpdate('handleCrabCollision', [avId, toonSD.status])
         else:
             spawnerId = int(name[2])
-            spawnId = int(name[3:])
+            spawnId = int(name[3:len(name)])
             if spawnId in self.spawners[spawnerId].fishArray:
                 self.sendUpdate('handleFishCollision', [avId,
                  spawnId,
@@ -761,7 +761,7 @@ class DistributedDivingGame(DistributedMinigame):
             fish.moveLerp.start(ts)
 
     def fishRemove(self, code):
-        spawnId = int(code[1:])
+        spawnId = int(code[1:len(code)])
         spawnerId = int(code[0])
         if spawnId in self.spawners[spawnerId].fishArray:
             fish = self.spawners[spawnerId].fishArray[spawnId]

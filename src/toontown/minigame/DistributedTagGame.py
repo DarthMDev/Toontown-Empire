@@ -54,7 +54,7 @@ class DistributedTagGame(DistributedMinigame):
         self.IT = None
 
         if TagGameGlobals.isSnowHood(safezoneId):
-            self.snow, self.snowRender = SnowUtil.createSnow(self.ground)
+            self.snow, self.snowRender = SZUtil.createSnow(self.ground)
 
         return
 

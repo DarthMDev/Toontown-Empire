@@ -230,18 +230,18 @@ class PhotoAlbumPage(ShtikerPage.ShtikerPage):
         files = os.listdir(self.photoPath)
         photos = []
         for fileName in files:
-            if fileName[0:17] == 'empire-screenshot' and fileName[-4:] == '.jpg':
+            if fileName[0:17] == 'stride-screenshot' and fileName[-4:] == '.jpg':
                 photos.append(fileName)
 
         return photos
 
     def openPhotoDirectory(self):
         if platform == "darwin":
-            OSXPhotoDir = self.installPath + '/src/user/screenshots'
+            OSXPhotoDir = self.installPath + '/user/screenshots'
             os.system('open "%s"' % OSXPhotoDir)
             self.notify.debug(OSXPhotoDir)
         elif platform == "win32":
-            PhotoDir = self.installPath + '/src/user/screenshots/'
+            PhotoDir = self.installPath + '/user/screenshots/'
             os.startfile(PhotoDir)
             self.notify.debug(PhotoDir)
 
@@ -305,12 +305,10 @@ class PhotoAlbumPage(ShtikerPage.ShtikerPage):
         try:
             self.chosePhoto(self.getPhotos()[self.photoIndex])
             self.photoIndex -= 1
-        except:
-            self.photoIndex = 0
+        except:self.photoIndex = 0
 
     def nextPhoto(self):
         try:
             self.chosePhoto(self.getPhotos()[self.photoIndex])
             self.photoIndex += 1
-        except:
-            self.photoIndex = 0
+        except:self.photoIndex = 0

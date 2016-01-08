@@ -1,15 +1,10 @@
 from direct.directnotify.DirectNotifyGlobal import directNotify
-
-
 from otp.distributed.DistributedDistrictAI import DistributedDistrictAI
-
 import time
 
 class ToontownDistrictAI(DistributedDistrictAI):
     notify = directNotify.newCategory('ToontownDistrictAI')
-
     created = 0
-
 
     def announceGenerate(self):
         DistributedDistrictAI.announceGenerate(self)
@@ -27,12 +22,7 @@ class ToontownDistrictAI(DistributedDistrictAI):
             'name': self.name,
             'created': int(time.time())
         }
-
-
-
-
         self.air.sendNetEvent('shardStatus', [self.air.ourChannel, status])
-
 
     def handleShardStatusQuery(self):
         # Send a shard status update with the information we have:
@@ -42,19 +32,6 @@ class ToontownDistrictAI(DistributedDistrictAI):
             'created': int(time.time())
         }
         self.air.sendNetEvent('shardStatus', [self.air.ourChannel, status])
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     def setName(self, name):
         DistributedDistrictAI.setName(self, name)

@@ -70,9 +70,8 @@ class QuestPoster(DirectFrame):
         self.questProgress.hide()
         self.funQuest = DirectLabel(parent=self.questFrame, relief=None, text=TTLocalizer.QuestPosterFun, text_fg=(0.0, 0.439, 1.0, 1.0), text_shadow=(0, 0, 0, 1), pos=(0, 0, -0.125), scale=0.04)
         self.funQuest.hide()
-# This will be activated later in alpha! ~FordTheWriter
-#        self.teleportButton = DirectButton(parent=self.questFrame, relief=None, image=circleModel, text=TTLocalizer.TeleportButton, text_scale=0.035, text_pos=(-0.0025, -0.015), pos=(0.175, 0, 0.125), scale=0.75)  #, text_bg=(0, 0.75, 1, 1)
-#        self.teleportButton.hide()
+        self.teleportButton = DirectButton(parent=self.questFrame, relief=None, image=circleModel, text=TTLocalizer.TeleportButton, text_scale=0.035, text_pos=(-0.0025, -0.015), pos=(0.175, 0, 0.125), scale=0.75)  #, text_bg=(0, 0.75, 1, 1)
+        self.teleportButton.hide()
         self.laffMeter = None
         self.dialog = None
 
@@ -80,7 +79,7 @@ class QuestPoster(DirectFrame):
         self._deleteGeoms()
         self.destroyDialog()
         DirectFrame.destroy(self)
-
+    
     def destroyDialog(self, extra=None):
         if self.dialog:
             self.dialog.destroy()
@@ -188,34 +187,34 @@ class QuestPoster(DirectFrame):
         if npcZone in (-1, 0, None):
             zoneId = base.localAvatar.getZoneId()
             if ZoneUtil.isDynamicZone(zoneId) or ZoneUtil.isCogHQZone(zoneId):
-                zoneId = 2000
+                zoneId = 2000 
             npcHood = ZoneUtil.getCanonicalHoodId(zoneId)
             npcZone = hqZone.get(npcHood, 2520)
-
+        
         cost = ToontownGlobals.getTeleportButtonCost(npcHood)
         self.destroyDialog()
         base.cr.playGame.getPlace().setState('stopped')
-
+        
         if base.localAvatar.getTotalMoney() < cost:
             self.dialog = TTDialog.TTDialog(style=TTDialog.Acknowledge, text=TTLocalizer.TeleportButtonNoMoney % cost, command=self.destroyDialog)
         else:
             self.dialog = TTDialog.TTDialog(style=TTDialog.YesNo, text=TTLocalizer.TeleportButtonConfirm % cost, command=lambda value: self.teleportToShopConfirm(npcZone, npcHood, cost, value))
 
         self.dialog.show()
-
+    
     def teleportToShopConfirm(self, npcZone, npcHood, cost, value):
         self.destroyDialog()
 
         if value > 0:
             base.cr.buildingQueryMgr.d_isSuit(npcZone, lambda isSuit: self.teleportToShopCallback(npcZone, npcHood, cost, isSuit))
-
+    
     def teleportToShopCallback(self, npcZone, npcHood, cost, flag):
         if flag:
             base.cr.playGame.getPlace().setState('stopped')
             self.dialog = TTDialog.TTDialog(style=TTDialog.Acknowledge, text=TTLocalizer.TeleportButtonTakenOver, command=self.destroyDialog)
             self.dialog.show()
             return
-
+        
         base.localAvatar.takeMoney(cost)
         base.cr.playGame.getPlace().requestTeleport(npcHood, npcZone, base.localAvatar.defaultShard, -1)
 
@@ -251,7 +250,7 @@ class QuestPoster(DirectFrame):
         self.lPictureFrame.hide()
         self.rPictureFrame.hide()
         self.questProgress.hide()
-#        self.teleportButton.hide()
+        self.teleportButton.hide()
         self.destroyDialog()
         if hasattr(self, 'chooseButton'):
             self.chooseButton.destroy()
@@ -296,9 +295,8 @@ class QuestPoster(DirectFrame):
     def update(self, questDesc):
         questId, fromNpcId, toNpcId, rewardId, toonProgress = questDesc
         quest = Quests.getQuest(questId)
-# Deactivated until late Alpha
-#        self.teleportButton['command'] = self.teleportToShop
-#        self.teleportButton['extraArgs'] = [toNpcId]
+        self.teleportButton['command'] = self.teleportToShop
+        self.teleportButton['extraArgs'] = [toNpcId]
         if quest == None:
             self.notify.warning('Tried to display poster for unknown quest %s' % questId)
             return
@@ -358,12 +356,12 @@ class QuestPoster(DirectFrame):
         objectiveStrings = quest.getObjectiveStrings()
         captions = map(string.capwords, quest.getObjectiveStrings())
         imageColor = Vec4(*self.colors['white'])
-#        self.teleportButton.hide()
-
-#        if base.localAvatar.tutorialAck and (fComplete or quest.getType() in (Quests.DeliverGagQuest, Quests.DeliverItemQuest, Quests.VisitQuest, Quests.TrackChoiceQuest)):
-#            self.teleportButton.show()
-#            self.teleportButton.setPos(0.3, 0, -0.15)
-
+        self.teleportButton.hide()
+        
+        if base.localAvatar.tutorialAck and (fComplete or quest.getType() in (Quests.DeliverGagQuest, Quests.DeliverItemQuest, Quests.VisitQuest, Quests.TrackChoiceQuest)):
+            self.teleportButton.show()
+            self.teleportButton.setPos(0.3, 0, -0.15)
+        
         if isinstance(quest, Quests.TexturedQuest) and quest.hasFrame():
             frame = quest.getFrame()
             frameBgColor = frame[1]
@@ -654,16 +652,13 @@ class QuestPoster(DirectFrame):
         if lIconGeom:
             try:
                 self.lQuestIcon['geom_scale'] = lIconGeomScale
-            except:
-                 pass
+            except: pass
             try:
                 self.lQuestIcon['geom_pos'] = Point3(lIconGeomPos[0], lIconGeomPos[1], lIconGeomPos[2])
-            except:
-                 pass
+            except: pass
             try:
                 self.lQuestIcon['geom_hpr'] = Point3(lIconGeomHpr[0], lIconGeomHpr[1], lIconGeomHpr[2])
-            except:
-                 pass
+            except: pass
         if self.laffMeter != None:
             self.laffMeter.reparentTo(self.lQuestIcon)
         self.rQuestIcon['geom'] = rIconGeom

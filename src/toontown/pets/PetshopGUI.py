@@ -191,7 +191,7 @@ class PetshopGUI(DirectObject):
             fishValue = base.localAvatar.fishTank.getTotalValue()
             if fishValue == 0:
                 self.sellFishButton['state'] = DGG.DISABLED
-            self.adoptPetButton = DirectButton(parent=self, relief=None, image=adoptImageList, geom=pawLogoAdoptImageList, scale=(modelScale, modelScale, modelScale), text=TTLocalizer.PetshopAdoptAPet, text_scale=textScale, text_pos=(0, 12.5), text0_fg=text0Color, text1_fg=text1Color, text2_fg=text2Color, text3_fg=text3Color, pressEffect=False, command=lambda: messenger.send(doneEvent, [2]))
+            self.adoptPetButton = DirectButton(parent=self, relief=None, image=adoptImageList, geom=pawLogoAdoptImageList, scale=(modelScale, modelScale, modelScale), text=TTLocalizer.PetshopAdoptAPet, text_scale=textScale, text_pos=(0, 12.5), text0_fg=text0Color, text1_fg=text1Color, text2_fg=text2Color, text3_fg=text3Color, pressEffect=False, command=lambda : messenger.send(doneEvent, [2]))
             self.returnPetButton = DirectButton(parent=self, relief=None, image=returnImageList, geom=pawLogoReturnImageList, image3_color=disabledImageColor, scale=(modelScale, modelScale, modelScale), text=TTLocalizer.PetshopReturnPet, text_scale=textScale, text_pos=(-0.6, 9.2), text0_fg=text2Color, text1_fg=text2Color, text2_fg=text0Color, text3_fg=text3Color, pressEffect=False, command=lambda : messenger.send(doneEvent, [3]))
             if not base.localAvatar.hasPet():
                 self.returnPetButton['state'] = DGG.DISABLED
@@ -227,7 +227,7 @@ class PetshopGUI(DirectObject):
             cancelImageList = (model.find('**/CancelButtonUp'), model.find('**/CancelButtonDown'), model.find('**/CancelRollover'))
             cancelIcon = model.find('**/CancelIcon')
             checkIcon = model.find('**/CheckIcon')
-            self.cancelButton = DirectButton(parent=self, relief=None, image=cancelImageList, geom=cancelIcon, scale=modelScale, text=('', TTLocalizer.PetshopGoBack), text_pos=(-5.8, 4.4), text_scale=0.7, pressEffect=False, command=lambda: messenger.send(doneEvent, [0]))
+            self.cancelButton = DirectButton(parent=self, relief=None, image=cancelImageList, geom=cancelIcon, scale=modelScale, text=('', TTLocalizer.PetshopGoBack), text_pos=(-5.8, 4.4), text_scale=0.7, pressEffect=False, command=lambda : messenger.send(doneEvent, [0]))
             self.okButton = DirectButton(parent=self, relief=None, image=okImageList, geom=checkIcon, scale=modelScale, text=('', TTLocalizer.PetshopAdopt), text_pos=(5.8, 4.4), text_scale=0.7, pressEffect=False, command=lambda : messenger.send(doneEvent, [1]))
             model.removeNode()
             return

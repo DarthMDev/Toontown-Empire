@@ -265,9 +265,11 @@ def unloadDialog(level):
     global SuitDialogArray
     SuitDialogArray = []
 
+
 def unloadSkelDialog():
     global SkelSuitDialogArray
     SkelSuitDialogArray = []
+
 
 def attachSuitHead(node, suitName):
     suitIndex = SuitDNA.suitHeadTypes.index(suitName)

@@ -1,22 +1,17 @@
 from direct.directnotify.DirectNotifyGlobal import directNotify
-from direct.directnotify import DirectNotifyGlobal
-from direct.gui.DirectGui import DirectButton
-from direct.gui.DirectGui import DGG
-from direct.gui.DirectGui import DirectFrame
-from direct.gui.DirectGui import DirectLabel
-from direct.gui.DirectGui import DirectSlider
+from direct.gui.DirectGui import *
 from direct.showbase import PythonUtil
 from direct.task import Task
-from panda3d.core import TextNode
-from panda3d.core import Vec4
+from panda3d.core import *
+
 import DisplaySettingsDialog
 import ShtikerPage
-from direct.gui.DirectGui import DirectEntry
+import OptionChooser
 from otp.speedchat import SCColorScheme
 from otp.speedchat import SCStaticTextTerminal
 from otp.speedchat import SpeedChat
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer, ToontownGlobals
+from toontown.toon import Toon
 from toontown.toontowngui import TTDialog
 import webbrowser
 
@@ -184,7 +179,7 @@ class OptionsPage(ShtikerPage.ShtikerPage):
         self.extraOptionsTab = DirectButton(
             parent=self, relief=None, text=TTLocalizer.ExtraOptionsPageTitle,
             text_scale=TTLocalizer.OPextraOptionsTab, text_align=TextNode.ALeft,
-            text_pos=(-0.01, 0.0, 0.0),
+            text_pos=(-0.02, 0.0, 0.0),
             image=gui.find('**/tabs/polySurface2'), image_pos=(0.12, 1, -0.91),
             image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035),
             image_color=normalColor, image1_color=clickColor,
@@ -201,7 +196,8 @@ class OptionsPage(ShtikerPage.ShtikerPage):
     def exit(self):
         self.optionsTabPage.exit()
         self.codesTabPage.exit()
-
+        self.extraOptionsTabPage.exit()
+        
         ShtikerPage.ShtikerPage.exit(self)
 
     def unload(self):
@@ -224,14 +220,19 @@ class OptionsPage(ShtikerPage.ShtikerPage):
         if self.codesTab is not None:
             self.codesTab.destroy()
             self.codesTab = None
+        
+        if self.extraOptionsTab is not None:
+            self.extraOptionsTab.destroy()
+            self.extraOptionsTab = None
 
         ShtikerPage.ShtikerPage.unload(self)
 
     def setMode(self, mode, updateAnyways=0):
         messenger.send('wakeup')
 
-        if not updateAnyways and self.mode == mode:
-            return
+        if not updateAnyways:
+            if self.mode == mode:
+                return
 
         self.mode = mode
 
@@ -261,35 +262,36 @@ class OptionsPage(ShtikerPage.ShtikerPage):
             self.extraOptionsTabPage.enter()
 
 class OptionsTabPage(DirectFrame):
-    notify = DirectNotifyGlobal.directNotify.newCategory('OptionsTabPage')
+    notify = directNotify.newCategory('OptionsTabPage')
     DisplaySettingsTaskName = 'save-display-settings'
     DisplaySettingsDelay = 60
-    ChangeDisplaySettings = config.GetBool('change-display-settings', 1)
-    ChangeDisplayAPI = config.GetBool('change-display-api', 0)
+    ChangeDisplaySettings = base.config.GetBool('change-display-settings', 1)
+    ChangeDisplayAPI = base.config.GetBool('change-display-api', 0)
 
     def __init__(self, parent = aspect2d):
         self.parent = parent
         self.currentSizeIndex = None
+
         DirectFrame.__init__(self, parent=self.parent, relief=None, pos=(0.0, 0.0, 0.0), scale=(1.0, 1.0, 1.0))
+
         self.load()
-        return
 
     def destroy(self):
         self.parent = None
+
         DirectFrame.destroy(self)
-        return
 
     def load(self):
         self.displaySettings = None
         self.displaySettingsChanged = 0
         self.displaySettingsSize = (None, None)
         self.displaySettingsFullscreen = None
-        self.displaySettingsEmbedded = None
         self.displaySettingsApi = None
         self.displaySettingsApiChanged = 0
         guiButton = loader.loadModel('phase_3/models/gui/quit_button')
         gui = loader.loadModel('phase_3.5/models/gui/friendslist_gui')
         circleModel = loader.loadModel('phase_3/models/gui/tt_m_gui_mat_nameShop')
+        titleHeight = 0.61
         textStartHeight = 0.45
         textRowHeight = 0.145
         leftMargin = -0.72
@@ -298,6 +300,7 @@ class OptionsTabPage(DirectFrame):
         button_image_scale = (0.7, 1, 1)
         button_textpos = (0, -0.02)
         options_text_scale = 0.052
+        disabled_arrow_color = Vec4(0.6, 0.6, 0.6, 1.0)
         self.speed_chat_scale = 0.055
         self.Music_Label = DirectLabel(parent=self, relief=None, text=TTLocalizer.OptionsPageMusic, text_align=TextNode.ALeft, text_scale=options_text_scale, pos=(leftMargin, 0, textStartHeight))
         self.SoundFX_Label = DirectLabel(parent=self, relief=None, text=TTLocalizer.OptionsPageSFX, text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - textRowHeight))
@@ -307,9 +310,13 @@ class OptionsTabPage(DirectFrame):
         self.SpeedChatStyle_Label = DirectLabel(parent=self, relief=None, text=TTLocalizer.OptionsPageSpeedChatStyleLabel, text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=10, pos=(leftMargin, 0, textStartHeight - 6 * textRowHeight))
         self.ToonChatSounds_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=15, pos=(leftMargin, 0, textStartHeight - 2 * textRowHeight + 0.025))
         self.ToonChatSounds_Label.setScale(0.9)
-        self.Music_toggleSlider = DirectSlider(parent=self, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord),value=settings['musicVol']*100, pageSize=5, range=(0, 100), command=self.__doMusicLevel, thumb_geom=(circleModel.find('**/tt_t_gui_mat_namePanelCircle')), thumb_relief=None, thumb_geom_scale=2)
+        self.Music_toggleSlider = DirectSlider(parent=self, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord),
+                                               value=settings['musicVol']*100, pageSize=5, range=(0, 100), command=self.__doMusicLevel,
+                                               thumb_geom=(circleModel.find('**/tt_t_gui_mat_namePanelCircle')), thumb_relief=None, thumb_geom_scale=2)
         self.Music_toggleSlider.setScale(0.25)
-        self.SoundFX_toggleSlider = DirectSlider(parent=self, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight), value=settings['sfxVol']*100, pageSize=5, range=(0, 100), command=self.__doSfxLevel, thumb_geom=(circleModel.find('**/tt_t_gui_mat_namePanelCircle')), thumb_relief=None, thumb_geom_scale=2)
+        self.SoundFX_toggleSlider = DirectSlider(parent=self, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight),
+                                               value=settings['sfxVol']*100, pageSize=5, range=(0, 100), command=self.__doSfxLevel,
+                                               thumb_geom=(circleModel.find('**/tt_t_gui_mat_namePanelCircle')), thumb_relief=None, thumb_geom_scale=2)
         self.SoundFX_toggleSlider.setScale(0.25)
         self.Friends_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight * 3), command=self.__doToggleAcceptFriends)
         self.Whispers_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight * 4), command=self.__doToggleAcceptWhispers)
@@ -334,7 +341,6 @@ class OptionsTabPage(DirectFrame):
         self.exitButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=1.15, text=TTLocalizer.OptionsPageExitToontown, text_scale=options_text_scale, text_pos=button_textpos, textMayChange=0, pos=(0.45, 0, -0.6), command=self.__handleExitShowWithConfirm)
         guiButton.removeNode()
         gui.removeNode()
-        return
 
     def enter(self):
         self.show()
@@ -380,6 +386,8 @@ class OptionsTabPage(DirectFrame):
         del self.Friends_Label
         del self.Whispers_Label
         del self.SpeedChatStyle_Label
+        del self.SoundFX_toggleSlider
+        del self.Music_toggleSlider
         del self.Friends_toggleButton
         del self.Whispers_toggleButton
         del self.speedChatStyleLeftArrow
@@ -388,7 +396,6 @@ class OptionsTabPage(DirectFrame):
         self.speedChatStyleText.destroy()
         del self.speedChatStyleText
         self.currentSizeIndex = None
-        return
 
     def __doMusicLevel(self):
         vol = self.Music_toggleSlider['value']
@@ -410,10 +417,10 @@ class OptionsTabPage(DirectFrame):
         messenger.send('wakeup')
         if base.toonChatSounds:
             base.toonChatSounds = 0
-            base.display.settings.updateSetting('game', 'toon-chat-sounds', False)
+            settings['toonChatSounds'] = False
         else:
             base.toonChatSounds = 1
-            base.display.settings.updateSetting('game', 'toon-chat-sounds', True)
+            settings['toonChatSounds'] = True
         self.settingsChanged = 1
         self.__setToonChatSoundsButton()
 
@@ -433,23 +440,27 @@ class OptionsTabPage(DirectFrame):
 
     def __doToggleAcceptFriends(self):
         messenger.send('wakeup')
+        acceptingNewFriends = settings.get('acceptingNewFriends', {})
         if base.localAvatar.acceptingNewFriends:
             base.localAvatar.acceptingNewFriends = 0
-            base.display.settings.updateSetting(str(base.localAvatar.getDoId()), 'accepting-new-friends', False)
+            acceptingNewFriends[str(base.localAvatar.doId)] = False
         else:
             base.localAvatar.acceptingNewFriends = 1
-            base.display.settings.updateSetting(str(base.localAvatar.getDoId()), 'accepting-new-friends', True)
+            acceptingNewFriends[str(base.localAvatar.doId)] = True
+        settings['acceptingNewFriends'] = acceptingNewFriends
         self.settingsChanged = 1
         self.__setAcceptFriendsButton()
 
     def __doToggleAcceptWhispers(self):
         messenger.send('wakeup')
+        acceptingNonFriendWhispers = settings.get('acceptingNonFriendWhispers', {})
         if base.localAvatar.acceptingNonFriendWhispers:
             base.localAvatar.acceptingNonFriendWhispers = 0
-            base.display.settings.updateSetting(str(base.localAvatar.getDoId()), 'accepting-non-friend-whispers', False)
+            acceptingNonFriendWhispers[str(base.localAvatar.doId)] = False
         else:
             base.localAvatar.acceptingNonFriendWhispers = 1
-            base.display.settings.updateSetting(str(base.localAvatar.getDoId()), 'accepting-non-friend-whispers', True)
+            acceptingNonFriendWhispers[str(base.localAvatar.doId)] = True
+        settings['acceptingNonFriendWhispers'] = acceptingNonFriendWhispers
         self.settingsChanged = 1
         self.__setAcceptWhispersButton()
 
@@ -475,7 +486,6 @@ class OptionsTabPage(DirectFrame):
             self.displaySettings.load()
             self.accept(self.displaySettings.doneEvent, self.__doneDisplaySettings)
         self.displaySettings.enter(self.ChangeDisplaySettings, self.ChangeDisplayAPI)
-        return
 
     def __doneDisplaySettings(self, anyChanged, apiChanged):
         if anyChanged:
@@ -484,25 +494,15 @@ class OptionsTabPage(DirectFrame):
             self.displaySettingsChanged = 1
             self.displaySettingsSize = (properties.getXSize(), properties.getYSize())
             self.displaySettingsFullscreen = properties.getFullscreen()
-            self.displaySettingsEmbedded = self.isPropertiesEmbedded(properties)
             self.displaySettingsApi = base.pipe.getInterfaceName()
             self.displaySettingsApiChanged = apiChanged
-
-    def isPropertiesEmbedded(self, properties):
-        result = False
-        if properties.getParentWindow():
-            result = True
-        return result
 
     def __setDisplaySettings(self):
         properties = base.win.getProperties()
         if properties.getFullscreen():
-            screensize = '{0} x {1}'.format(properties.getXSize(), properties.getYSize())
+            screensize = '%s x %s' % (properties.getXSize(), properties.getYSize())
         else:
             screensize = TTLocalizer.OptionsPageDisplayWindowed
-        isEmbedded = self.isPropertiesEmbedded(properties)
-        if isEmbedded:
-            screensize = TTLocalizer.OptionsPageDisplayEmbedded
         api = base.pipe.getInterfaceName()
         settings = {'screensize': screensize,
          'api': api}
@@ -543,17 +543,12 @@ class OptionsTabPage(DirectFrame):
             self.speedChatStyleRightArrow['state'] = DGG.DISABLED
         base.localAvatar.b_setSpeedChatStyleIndex(self.speedChatStyleIndex)
 
-    def writeDisplaySettings(self):
+    def writeDisplaySettings(self, task=None):
         if not self.displaySettingsChanged:
             return
         taskMgr.remove(self.DisplaySettingsTaskName)
-        self.notify.info('writing new display settings {0}, fullscreen {1}, embedded {2}, {3} to SettingsFile.'.format((self.displaySettingsSize,
-         self.displaySettingsFullscreen,
-         self.displaySettingsEmbedded,
-         self.displaySettingsApi)))
-        base.display.settings.updateSetting('game', 'resolution', (self.displaySettingsSize[0], self.displaySettingsSize[1]))
-        base.display.settings.updateSetting('game', 'fullscreen-mode', self.displaySettingsFullscreen)
-        base.display.settings.updateSetting('game', 'embedded-mode', self.displaySettingsEmbedded)
+        settings['res'] = (self.displaySettingsSize[0], self.displaySettingsSize[1])
+        settings['fullscreen'] = self.displaySettingsFullscreen
         return Task.done
 
     def __handleExitShowWithConfirm(self):
@@ -572,6 +567,7 @@ class OptionsTabPage(DirectFrame):
             base.cr._userLoggingOut = True
             messenger.send(self.parent.doneEvent)
 
+
 class CodesTabPage(DirectFrame):
     notify = directNotify.newCategory('CodesTabPage')
 
@@ -587,7 +583,7 @@ class CodesTabPage(DirectFrame):
         return
 
     def load(self):
-      #  self.notice = DirectLabel(parent=self, relief=None, text='EXAMPLE TEXT', text_scale=0.06, pos=(0.0, 0, 0.53), text_fg=Vec4(1.0, 0, 0, 1))
+#        self.notice = DirectLabel(parent=self, relief=None, text='NOTICE: All codes can only be entered once!', text_scale=0.06, pos=(0.0, 0, 0.53), text_fg=Vec4(1.0, 0, 0, 1))
         cdrGui = loader.loadModel('phase_3.5/models/gui/tt_m_gui_sbk_codeRedemptionGui')
         instructionGui = cdrGui.find('**/tt_t_gui_sbk_cdrPresent')
         flippyGui = cdrGui.find('**/tt_t_gui_sbk_cdrFlippy')
@@ -647,7 +643,7 @@ class CodesTabPage(DirectFrame):
         return
 
     def __submitCode(self, input = None):
-        if input is None:
+        if input == None:
             input = self.codeInput.get()
         self.codeInput['focus'] = 1
         if input == '':
@@ -660,7 +656,7 @@ class CodesTabPage(DirectFrame):
         return
 
     def __getCodeResult(self, result):
-        self.notify.debug('result = {0}'.format(result))
+        self.notify.debug('result = %s' % result)
         self.__enableCodeEntry()
         if result == 0:
             self.resultPanel['image'] = self.resultPanelSuccessGui

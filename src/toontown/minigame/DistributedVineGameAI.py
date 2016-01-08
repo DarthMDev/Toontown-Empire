@@ -156,6 +156,7 @@ class DistributedVineGameAI(DistributedMinigameAI):
 
     def reachedEndVine(self, vineIndex):
         self.notify.debug('reachedEndVine')
+        return
         avId = self.air.getAvatarIdFromSender()
         oldVineIndex = self.toonInfo[avId][0]
         self.updateToonInfo(avId, vineIndex=vineIndex)

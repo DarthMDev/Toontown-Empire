@@ -6,13 +6,30 @@ class LeaderboardMgrAI:
 
     def __init__(self, air):
         self.air = air
-        self.database = simbase.backups.load('leaderboard', (self.air.districtId,), default=({}))
+        if self.air.dbConn:
+            self.air.dbGlobalCursor.leaderboards.ensure_index([('ai', 1)])
+            shard = {'ai': self.air.districtId}
+            doc = self.air.dbGlobalCursor.leaderboards.find_one(shard)
+            if not doc:
+                self.database = ({})
+            else:
+                self.database = doc.get('database', ({}))
+            
+        else:
+            self.database = simbase.backups.load('leaderboard', (self.air.districtId,), default=({}))
 
     def getDatabase(self):
         return self.database
 
     def saveDatabase(self):
-        simbase.backups.save('leaderboard', (self.air.districtId,), self.database)
+        if self.air.dbConn:
+            shard = {'ai': self.air.districtId}
+            self.air.dbGlobalCursor.leaderboards.update(shard,
+                                                        {'$setOnInsert': shard,
+                                                        '$set': {'database': self.database}},
+                                                        upsert = True)
+        else:
+            simbase.backups.save('leaderboard', (self.air.districtId,), self.database)
         messenger.send('goofyLeaderboardChange')
 
     def trimList(self, list):
@@ -41,7 +58,7 @@ class LeaderboardMgrAI:
                 self.database[race] = [time.time(), [(name, timestamp)]]
                 self.saveDatabase()
 
-@magicWord(category=CATEGORY_STAFF, types=[str, int, int, str, int])
+@magicWord(category=CATEGORY_LEADER, types=[str, int, int, str, int])
 def leaderboard(command, raceId=0, type=0, name='', time=0):
     command = command.lower()
     race = '%s, %s' % (raceId, type)

@@ -1,5 +1,4 @@
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals, TTLocalizer
 
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *

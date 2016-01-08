@@ -12,20 +12,23 @@ from toontown.toonbase import TTLocalizer
 from toontown.uberdog import NameJudgeBlacklist
 
 from panda3d.core import *
-from sys import platform
 
 import hashlib, hmac, json
-import anydbm, math, os, dumbdbm
+import anydbm, math, os
 import urllib2, time, urllib
+import cookielib, socket
 
 def rejectConfig(issue, securityIssue=True, retarded=True):
     print
     print
+    print 'Lemme get this straight....'
+    print 'You are trying to use remote account database type...'
     print 'However,', issue + '!!!!'
     if securityIssue:
-        print 'Security Issue loading...'
+        print 'Do you want this server to get hacked?'
     if retarded:
-        print 'Go fix that!'
+        print '"Either down\'s or autism"\n  - JohnnyDaPirate, 2015'
+    print 'Go fix that!'
     exit()
 
 def entropy(string):
@@ -65,26 +68,34 @@ if accountDBType == 'remote':
 
     hashSize = len(hashAlgo('').digest())
 
-minAccessLevel = config.GetInt('min-access-level', 103)
+minAccessLevel = config.GetInt('min-access-level', 100)
 
 def executeHttpRequest(url, **extras):
+    # TO DO: THIS IS QUITE DISGUSTING
+    # MOVE THIS TO ToontownInternalRepository (this might be interesting for AI)
+    ##### USE PYTHON 2.7.9 ON PROD WITH SSL AND CLOUDFLARE #####
     _data = {}
     if len(extras.items()) != 0:
         for k, v in extras.items():
             _data[k] = v
     signature = hashlib.sha512(json.dumps(_data) + apiSecret).hexdigest()
     data = urllib.urlencode({'data': json.dumps(_data), 'hmac': signature})
-    req = urllib2.Request('http://www.toontownempire.com/api/' + url, data)
+    cookie_jar = cookielib.LWPCookieJar()
+    cookie = urllib2.HTTPCookieProcessor(cookie_jar)
+    opener = urllib2.build_opener(cookie)
+    req = urllib2.Request('http://192.168.1.212/api/' + url, data,
+                          headers={"Content-Type" : "application/x-www-form-urlencoded"})
     req.get_method = lambda: "POST"
     try:
-        return urllib2.urlopen(req).read()
+        return opener.open(req).read()
     except:
         return None
 
 notify = directNotify.newCategory('ClientServicesManagerUD')
 
 def executeHttpRequestAndLog(url, **extras):
-    response = executeHttpRequest(url, **extras)
+    # SEE ABOVE
+    response = executeHttpRequest(url, extras)
 
     if response is None:
         notify.error('A request to ' + url + ' went wrong.')
@@ -101,6 +112,7 @@ def executeHttpRequestAndLog(url, **extras):
 
     return data
 
+#blacklist = executeHttpRequest('names/blacklist.json') # todo; create a better system for this
 blacklist = json.dumps(["none"])
 if blacklist:
     blacklist = json.loads(blacklist)
@@ -119,9 +131,9 @@ def judgeName(name):
     return True
 
 # --- ACCOUNT DATABASES ---
-# These classes make up the available account databases for Toontown Empire.
+# These classes make up the available account databases for Toontown Stride.
 # DeveloperAccountDB is a special database that accepts a username, and assigns
-# each user with 0 access automatically upon login but can be easily changed.
+# each user with 700 access automatically upon login.
 
 class AccountDB:
     notify = directNotify.newCategory('AccountDB')
@@ -131,11 +143,8 @@ class AccountDB:
 
         filename = config.GetString('account-bridge-filename', 'account-bridge.db')
         filename = os.path.join('dependencies', filename)
-        if platform == 'darwin':
-            self.dbm = dumbdbm.open(filename, 'c')
-        else:
-            self.dbm = anydbm.open(filename, 'c')
 
+        self.dbm = anydbm.open(filename, 'c')
 
     def addNameRequest(self, avId, name, accountID = None):
         return True
@@ -179,9 +188,16 @@ class DeveloperAccountDB(AccountDB):
                                        'notAfter': 0},
                                 callback)
 
-class RemoteAccountDB(AccountDB):
+class RemoteAccountDB:
+    # TO DO FOR NAMES:
+    # CURRENTLY IT MAKES n REQUESTS FOR EACH AVATAR
+    # IN THE FUTURE, MAKE ONLY 1 REQUEST
+    # WHICH RETURNS ALL PENDING AVS
+    # ^ done, check before removing todo note
     notify = directNotify.newCategory('RemoteAccountDB')
 
+    def __init__(self, csm):
+        self.csm = csm
 
     def addNameRequest(self, avId, name, accountID = None):
         username = avId
@@ -225,7 +241,12 @@ class RemoteAccountDB(AccountDB):
             Token = BASE64(H + X)
         '''
 
+        cookie_check = executeHttpRequest('cookie', cookie=token)
+
         try:
+            check = json.loads(cookie_check)
+            if check['success'] is not True:
+                raise ValueError(check['error'])
             token = token.decode('base64')
             hash, token = token[:hashSize], token[hashSize:]
             correctHash = hashAlgo(token + accountServerSecret).digest()
@@ -241,12 +262,35 @@ class RemoteAccountDB(AccountDB):
 
             token = json.loads(token.decode('base64')[::-1].decode('rot13'))
 
+            if token['notAfter'] < int(time.time()):
+                raise ValueError('Expired token.')
         except:
             resp = {'success': False}
             callback(resp)
             return resp
 
-        return AccountDB.lookup(self, token, callback)
+        return self.account_lookup(token, callback)
+
+    def account_lookup(self, data, callback):
+        data['success'] = True
+        data['accessLevel'] = max(data['accessLevel'], minAccessLevel)
+        data['accountId'] = int(data['accountId'])
+
+        callback(data)
+        return data
+
+    def storeAccountID(self, userId, accountId, callback):
+        r = executeHttpRequest('associateuser', username=str(userId), accountId=str(accountId))
+        try:
+            r = json.loads(r)
+            if r['success']:
+                callback(True)
+            else:
+                self.notify.warning('Unable to associate user %s with account %d, got the return message of %s!' % (userId, accountId, r['error']))
+                callback(False)
+        except:
+            self.notify.warning('Unable to associate user %s with account %d!' % (userId, accountId))
+            callback(False)
 
 
 # --- FSMs ---
@@ -362,6 +406,7 @@ class LoginAccountFSM(OperationFSM):
         self.demand('SetAccount')
 
     def enterSetAccount(self):
+        # If necessary, update their account information:
         if self.accessLevel:
             self.csm.air.dbInterface.updateObject(
                 self.csm.air.dbId,
@@ -390,29 +435,23 @@ class LoginAccountFSM(OperationFSM):
 
         # Subscribe to any "staff" channels that the account has access to.
         access = self.account.get('ADMIN_ACCESS', 0)
-        if access >= 502:
-            # Subscribe to the staff channel.
+        if access >= 200:
+            # Subscribe to the moderator channel.
             dg = PyDatagram()
             dg.addServerHeader(self.target, self.csm.air.ourChannel, CLIENTAGENT_OPEN_CHANNEL)
-            dg.addChannel(OtpDoGlobals.OTP_STAFF_CHANNEL)
+            dg.addChannel(OtpDoGlobals.OTP_MOD_CHANNEL)
             self.csm.air.send(dg)
-        if access >= 504:
-            # Subscribe to the lead-staff channel.
+        if access >= 400:
+            # Subscribe to the administrator channel.
             dg = PyDatagram()
             dg.addServerHeader(self.target, self.csm.air.ourChannel, CLIENTAGENT_OPEN_CHANNEL)
-            dg.addChannel(OtpDoGlobals.OTP_LEAD_STAFF_CHANNEL)
+            dg.addChannel(OtpDoGlobals.OTP_ADMIN_CHANNEL)
             self.csm.air.send(dg)
-        if access >= 508:
-            # Subscribe to the developers channel.
+        if access >= 500:
+            # Subscribe to the system administrator channel.
             dg = PyDatagram()
             dg.addServerHeader(self.target, self.csm.air.ourChannel, CLIENTAGENT_OPEN_CHANNEL)
-            dg.addChannel(OtpDoGlobals.OTP_DEVELOPER_CHANNEL)
-            self.csm.air.send(dg)
-        if access >= 701:
-            # Subscribe to the leaders channel.
-            dg = PyDatagram()
-            dg.addServerHeader(self.target, self.csm.air.ourChannel, CLIENTAGENT_OPEN_CHANNEL)
-            dg.addChannel(OtpDoGlobals.OTP_LEADER_CHANNEL)
+            dg.addChannel(OtpDoGlobals.OTP_SYSADMIN_CHANNEL)
             self.csm.air.send(dg)
 
         # Now set their sender channel to represent their account affiliation:
@@ -497,7 +536,7 @@ class CreateAvatarFSM(OperationFSM):
     def enterCreateAvatar(self):
         dna = ToonDNA()
         dna.makeFromNetString(self.dna)
-        colorString = TTLocalizer.NumToColor[dna.headColor]
+        colorString = TTLocalizer.ColorfulToon
         animalType = TTLocalizer.AnimalToSpecies[dna.getAnimal()]
         name = ' '.join((colorString, animalType))
         toonFields = {
@@ -645,7 +684,6 @@ class GetAvatarsFSM(AvatarOperationFSM):
 
         self.csm.sendUpdateToAccountId(self.target, 'setAvatars', [self.account['CHAT_SETTINGS'], potentialAvs])
         self.demand('Off')
-
 
     def enterQueryNameState(self):
         def gotStates(data):
@@ -986,7 +1024,7 @@ class UnloadAvatarFSM(OperationFSM):
     def enterUnloadAvatar(self):
         channel = self.csm.GetAccountConnectionChannel(self.target)
 
-        # Tell TTEFriendsManager somebody is logging off:
+        # Tell TTSFriendsManager somebody is logging off:
         self.csm.air.friendsManager.toonOffline(self.avId)
 
         # Clear off POSTREMOVE:
@@ -1046,7 +1084,7 @@ class ClientServicesManagerUD(DistributedObjectGlobalUD):
         self.nameGenerator = NameGenerator()
 
         # Temporary HMAC key:
-        self.key = 'LRb<pS_sUxxfZhK^Q)BuH@EY.>Xp7yX.#xse*EC.s\Egy$q_HEyB&vHX!yF6g$"us~EnL/\[@cEWsYCV=%{wHP@7b-uSp%;&:Fb;VSSRKFkg\y`K7W;)]$gG\GD5LK}dH~"m>=%cj`2/@"~w.ffbBevkL/2jM#Z4m48xzNv`;E4Tttpk\(r4pJ+m*8MNeJ&[KUf7e]H>y"_At&[MwY\^{!m{ZVeF?nMTGj^/KykfBbha<ss>@<e@@Y(DC*)s54'
+        self.key = 'c603c5833021ce79f734943f6e662250fd4ecf7432bf85905f71707dc4a9370c6ae15a8716302ead43810e5fba3cf0876bbbfce658e2767b88d916f5d89fd31'
 
         # Instantiate our account DB interface:
         if accountDBType == 'developer':

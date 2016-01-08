@@ -249,7 +249,6 @@ class ClothesGUI(StateData.StateData):
             self.topStyleChoice = 0
         self.updateScrollButtons(self.topStyleChoice, length, 0, self.shirtStyleLButton, self.shirtStyleRButton)
         if self.topStyleChoice < 0 or self.topStyleChoice >= length:
-        #if self.topStyleChoice < 0 or self.topStyleChoice >= len(self.topStyles) or len(self.topStyles[self.topStyleChoice]) != 4:
             self.notify.warning('topChoice index is out of range!')
             return None
         self.toon.style.topTex = self.topStyles[self.topStyleChoice][0]
@@ -301,8 +300,6 @@ class ClothesGUI(StateData.StateData):
             self.bottomColorChoice = colorLength - 1
         self.updateScrollButtons(self.bottomColorChoice, colorLength, 0, self.bottomLButton, self.bottomRButton)
         self.toon.style.botTexColor = colors[self.bottomColorChoice]      
-        #colors = ToonDNA.getTopColors(self.gender, self.topStyles[self.topStyleChoice], tailorId=ToonDNA.MAKE_A_TOON)
-        #self.toon.style.topTexColor = colors[self.topColorChoice][0]
         if self.toon.generateToonClothes() == 1:
             self.toon.loop('neutral', 0)
             self.swappedTorso = 1

@@ -28,9 +28,8 @@ from otp.nametag.NametagGroup import *
 from toontown.suit import SuitDNA
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
-from toontown.toon import LaughingManGlobals
 
-def teleportDebug(requestStatus, msg, onlyIfToAv= True):
+def teleportDebug(requestStatus, msg, onlyIfToAv = True):
     if teleportNotify.getDebug():
         teleport = 'teleport'
         if 'how' in requestStatus and requestStatus['how'][:len(teleport)] == teleport:
@@ -240,7 +239,7 @@ def loadBossbotHQAnims():
 def unloadBossbotHQAnims():
     loadPhaseAnims('phase_12', 0)
 
-def loadPhaseAnims(phaseStr= 'phase_3', loadFlag= 1):
+def loadPhaseAnims(phaseStr = 'phase_3', loadFlag = 1):
     if phaseStr == 'phase_3':
         animList = Phase3AnimList
     elif phaseStr == 'phase_3.5':
@@ -339,44 +338,37 @@ def loadDialog():
     for file in catDialogueFiles:
         CatDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
 
-    horseDialogueFiles = ('AV_horse_short', 'AV_horse_med', 'AV_horse_long',
-     'AV_horse_question', 'AV_horse_exclaim', 'AV_horse_howl')
+    horseDialogueFiles = ('AV_horse_short', 'AV_horse_med', 'AV_horse_long', 'AV_horse_question', 'AV_horse_exclaim', 'AV_horse_howl')
     global HorseDialogueArray
     for file in horseDialogueFiles:
         HorseDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
 
-    rabbitDialogueFiles = ('AV_rabbit_short', 'AV_rabbit_med', 'AV_rabbit_long', 'AV_rabbit_question',
-     'AV_rabbit_exclaim', 'AV_rabbit_howl')
+    rabbitDialogueFiles = ('AV_rabbit_short', 'AV_rabbit_med', 'AV_rabbit_long', 'AV_rabbit_question', 'AV_rabbit_exclaim', 'AV_rabbit_howl')
     global RabbitDialogueArray
     for file in rabbitDialogueFiles:
         RabbitDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
 
-    mouseDialogueFiles = ('AV_mouse_short', 'AV_mouse_med', 'AV_mouse_long', 'AV_mouse_question', 'AV_mouse_exclaim',
-     'AV_mouse_howl')
+    mouseDialogueFiles = ('AV_mouse_short', 'AV_mouse_med', 'AV_mouse_long', 'AV_mouse_question', 'AV_mouse_exclaim', 'AV_mouse_howl')
     global MouseDialogueArray
     for file in mouseDialogueFiles:
         MouseDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
 
-    duckDialogueFiles = ('AV_duck_short', 'AV_duck_med', 'AV_duck_long',
-    'AV_duck_question', 'AV_duck_exclaim', 'AV_duck_howl')
+    duckDialogueFiles = ('AV_duck_short', 'AV_duck_med', 'AV_duck_long', 'AV_duck_question', 'AV_duck_exclaim', 'AV_duck_howl')
     global DuckDialogueArray
     for file in duckDialogueFiles:
         DuckDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
 
-    monkeyDialogueFiles = ('AV_monkey_short', 'AV_monkey_med', 'AV_monkey_long',
-    'AV_monkey_question', 'AV_monkey_exclaim', 'AV_monkey_howl')
+    monkeyDialogueFiles = ('AV_monkey_short', 'AV_monkey_med', 'AV_monkey_long', 'AV_monkey_question', 'AV_monkey_exclaim', 'AV_monkey_howl')
     global MonkeyDialogueArray
     for file in monkeyDialogueFiles:
         MonkeyDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
 
-    bearDialogueFiles = ('AV_bear_short', 'AV_bear_med', 'AV_bear_long', 'AV_bear_question', 'AV_bear_exclaim',
-     'AV_bear_howl')
+    bearDialogueFiles = ('AV_bear_short', 'AV_bear_med', 'AV_bear_long', 'AV_bear_question', 'AV_bear_exclaim', 'AV_bear_howl')
     global BearDialogueArray
     for file in bearDialogueFiles:
         BearDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
 
-    pigDialogueFiles = ('AV_pig_short', 'AV_pig_med', 'AV_pig_long', 'AV_pig_question', 'AV_pig_exclaim',
-     'AV_pig_howl')
+    pigDialogueFiles = ('AV_pig_short', 'AV_pig_med', 'AV_pig_long', 'AV_pig_question', 'AV_pig_exclaim', 'AV_pig_howl')
     global PigDialogueArray
     for file in pigDialogueFiles:
         PigDialogueArray.append(base.loadSfx(loadPath + file + '.ogg'))
@@ -413,7 +405,7 @@ class Toon(Avatar.Avatar, ToonHead):
     def __init__(self):
         try:
             self.Toon_initialized
-            #return
+            return
         except:
             self.Toon_initialized = 1
 
@@ -515,8 +507,7 @@ class Toon(Avatar.Avatar, ToonHead):
             if not self.animFSM.isInternalStateInFlux():
                 self.animFSM.request('off')
             else:
-                self.notify.warning('animFSM in flux, state=%s, not requesting off' %\
-                self.animFSM.getCurrentState().getName())
+                self.notify.warning('animFSM in flux, state=%s, not requesting off' % self.animFSM.getCurrentState().getName())
         else:
             self.notify.warning('animFSM has been deleted')
         if self.effectTrack != None:
@@ -563,15 +554,16 @@ class Toon(Avatar.Avatar, ToonHead):
             self.motion = None
 
             self.removeHeadMeter()
+            self.removeGMIcon()
             self.removePartyHat()
             Avatar.Avatar.delete(self)
             ToonHead.delete(self)
 
-    def updateToonDNA(self, newDNA, fForce= 0):
+    def updateToonDNA(self, newDNA, fForce = 0):
         self.style.gender = newDNA.getGender()
         oldDNA = self.style
-        if fForce or newDNA.head != oldDNA.head or newDNA.laughingMan != oldDNA.laughingMan:
-            self.swapToonHead(newDNA.head, newDNA.laughingMan)
+        if fForce or newDNA.head != oldDNA.head:
+            self.swapToonHead(newDNA.head)
         if fForce or newDNA.torso != oldDNA.torso:
             self.swapToonTorso(newDNA.torso, genClothes=0)
             self.loop('neutral')
@@ -650,7 +642,6 @@ class Toon(Avatar.Avatar, ToonHead):
         self.rescaleToon()
         self.resetHeight()
         self.setupToonNodes()
-        self.generateLaughingMan()
 
     def setupToonNodes(self):
         rightHand = NodePath('rightHand')
@@ -739,24 +730,16 @@ class Toon(Avatar.Avatar, ToonHead):
             animal = self.style.getAnimal()
             bodyScale = ToontownGlobals.toonBodyScales[animal]
             headScale = ToontownGlobals.toonHeadScales[animal][2]
-            shoulderHeight = ToontownGlobals.legHeightDict[self.style.legs] * bodyScale +\
-            ToontownGlobals.torsoHeightDict[self.style.torso] * bodyScale
+            shoulderHeight = ToontownGlobals.legHeightDict[self.style.legs] * bodyScale + ToontownGlobals.torsoHeightDict[self.style.torso] * bodyScale
             height = shoulderHeight + ToontownGlobals.headHeightDict[self.style.head] * headScale
             self.shoulderHeight = shoulderHeight
             if self.cheesyEffect == ToontownGlobals.CEBigToon or self.cheesyEffect == ToontownGlobals.CEBigWhite:
                 height *= ToontownGlobals.BigToonScale
             elif self.cheesyEffect == ToontownGlobals.CESmallToon:
                 height *= ToontownGlobals.SmallToonScale
-            elif self.cheesyEffect == ToontownGlobals.CETinyToon:
-                height *= ToontownGlobals.TinyToonScale
-            elif self.cheesyEffect == ToontownGlobals.CEGiantToon:
-                height *= ToontownGlobals.GiantToonScale
-	#bean fest size ONLY!
-            elif self.cheesyEffect == ToontownGlobals.CEBeanToon:
-                height *= ToontownGlobals.BeanToonScale
             self.setHeight(height)
 
-    def generateToonLegs(self, copy= 1):
+    def generateToonLegs(self, copy = 1):
         global Preloaded
         legStyle = self.style.legs
         filePrefix = LegDict.get(legStyle)
@@ -777,7 +760,7 @@ class Toon(Avatar.Avatar, ToonHead):
         self.findAllMatches('**/shoes').stash()
         return
 
-    def swapToonLegs(self, legStyle, copy= 1):
+    def swapToonLegs(self, legStyle, copy = 1):
         self.unparentToonParts()
         self.removePart('legs', '1000')
         self.removePart('legs', '500')
@@ -795,7 +778,7 @@ class Toon(Avatar.Avatar, ToonHead):
         self.initializeDropShadow()
         self.initializeNametag3d()
 
-    def generateToonTorso(self, copy= 1, genClothes= 1):
+    def generateToonTorso(self, copy = 1, genClothes = 1):
         global Preloaded
         torsoStyle = self.style.torso
         filePrefix = TorsoDict.get(torsoStyle)
@@ -819,7 +802,7 @@ class Toon(Avatar.Avatar, ToonHead):
             self.generateToonClothes()
         return
 
-    def swapToonTorso(self, torsoStyle, copy= 1, genClothes= 1):
+    def swapToonTorso(self, torsoStyle, copy = 1, genClothes = 1):
         self.unparentToonParts()
         self.removePart('torso', '1000')
         self.removePart('torso', '500')
@@ -836,14 +819,14 @@ class Toon(Avatar.Avatar, ToonHead):
         self.setupToonNodes()
         self.generateBackpack()
 
-    def generateToonHead(self, copy= 1):
+    def generateToonHead(self, copy = 1):
         headHeight = ToonHead.generateToonHead(self, copy, self.style, ('1000', '500', '250'))
         if self.style.getAnimal() == 'dog':
             self.loadAnims(HeadAnimDict[self.style.head], 'head', '1000')
             self.loadAnims(HeadAnimDict[self.style.head], 'head', '500')
             self.loadAnims(HeadAnimDict[self.style.head], 'head', '250')
 
-    def swapToonHead(self, headStyle=-1, laughingMan=0, copy= 1):
+    def swapToonHead(self, headStyle=-1, copy = 1):
         self.stopLookAroundNow()
         self.eyelids.request('open')
         self.unparentToonParts()
@@ -862,8 +845,6 @@ class Toon(Avatar.Avatar, ToonHead):
         self.resetHeight()
         self.eyelids.request('open')
         self.startLookAround()
-        if laughingMan or self.getWantLaughingMan():
-            LaughingManGlobals.addToonEffect(self)
 
     def generateToonColor(self):
         ToonHead.generateToonColor(self, self.style)
@@ -874,17 +855,17 @@ class Toon(Avatar.Avatar, ToonHead):
             torso = self.getPart('torso', lodName)
             if len(self.style.torso) == 1:
                 parts = torso.findAllMatches('**/torso*')
-                parts.setColor(armColor)
+                parts.setColor(*armColor)
             for pieceName in ('arms', 'neck'):
                 piece = torso.find('**/' + pieceName)
-                piece.setColor(armColor)
+                piece.setColor(*armColor)
 
             hands = torso.find('**/hands')
-            hands.setColor(gloveColor)
+            hands.setColor(*gloveColor)
             legs = self.getPart('legs', lodName)
             for pieceName in ('legs', 'feet'):
                 piece = legs.find('**/%s;+s' % pieceName)
-                piece.setColor(legColor)
+                piece.setColor(*legColor)
 
         if self.cheesyEffect == ToontownGlobals.CEGreenToon:
             self.reapplyCheesyEffect()
@@ -996,10 +977,6 @@ class Toon(Avatar.Avatar, ToonHead):
                 caps.setColor(darkBottomColor)
 
         return swappedTorso
-
-    def generateLaughingMan(self):
-        if self.getWantLaughingMan():
-            self.swapToonHead(laughingMan=True)
 
     def generateHat(self, fromRTM = False):
         hat = self.getHat()
@@ -1173,12 +1150,6 @@ class Toon(Avatar.Avatar, ToonHead):
 
     def getHat(self):
         return self.hat
-
-    def getWantLaughingMan(self):
-        return self.style.laughingMan or self.getWantLaughingManHoliday()
-
-    def getWantLaughingManHoliday(self):
-        return base.cr.newsManager and base.cr.newsManager.isHolidayRunning(ToontownGlobals.LAUGHING_MAN)
 
     def setGlasses(self, glassesIdx, textureIdx, colorIdx, fromRTM = False):
         self.glasses = (glassesIdx, textureIdx, colorIdx)
@@ -1835,8 +1806,6 @@ class Toon(Avatar.Avatar, ToonHead):
         self.track.start(ts)
         self.setActiveShadow(0)
 
-# if self == base.localAvatar and settings['tpTransition'] and not ZoneUtil.isDynamicZone(self.zoneId):
-
     def finishTeleportOut(self, callback = None, extraArgs = []):
         name = self.name
         if hasattr(self, 'doId'):
@@ -2433,14 +2402,14 @@ class Toon(Avatar.Avatar, ToonHead):
             legColor = color
             headColor = color
         for piece in torsoPieces:
-            colorTrack.append(Func(piece.setColor, armColor))
+            colorTrack.append(Func(piece.setColor, *armColor))
 
         for piece in legPieces:
-            colorTrack.append(Func(piece.setColor, legColor))
+            colorTrack.append(Func(piece.setColor, *legColor))
 
         for piece in headPieces:
             if 'hatNode' not in str(piece) and 'glassesNode' not in str(piece):
-                colorTrack.append(Func(piece.setColor, headColor))
+                colorTrack.append(Func(piece.setColor, *headColor))
 
         track.append(colorTrack)
         return track
@@ -2457,13 +2426,13 @@ class Toon(Avatar.Avatar, ToonHead):
             else:
                 headColor = color
             for piece in earPieces:
-                colorTrack.append(Func(piece.setColor, headColor))
+                colorTrack.append(Func(piece.setColor, *headColor))
 
         else:
             if colorScale == None:
                 colorScale = VBase4(1, 1, 1, 1)
             for piece in earPieces:
-                colorTrack.append(Func(piece.setColorScale, colorScale))
+                colorTrack.append(Func(piece.setColorScale, *colorScale))
 
         track.append(colorTrack)
         return track
@@ -2631,12 +2600,6 @@ class Toon(Avatar.Avatar, ToonHead):
             return self.__doToonScale(ToontownGlobals.BigToonScale, lerpTime)
         elif effect == ToontownGlobals.CESmallToon:
             return self.__doToonScale(ToontownGlobals.SmallToonScale, lerpTime)
-        elif effect == ToontownGlobals.CETinyToon:
-            return self.__doToonScale(ToontownGlobals.TinyToonScale, lerpTime)
-        elif effect == ToontownGlobals.CEGiantToon:
-            return self.__doToonScale(ToontownGlobals.GiantToonScale, lerpTime)
-        elif effect == ToontownGlobals.CEBeanToon:
-            return self.__doToonScale(ToontownGlobals.BeanToonScale, lerpTime)
         elif effect == ToontownGlobals.CEFlatPortrait:
             return self.__doToonScale(VBase3(1, 0.05, 1), lerpTime)
         elif effect == ToontownGlobals.CEFlatProfile:
@@ -2676,12 +2639,6 @@ class Toon(Avatar.Avatar, ToonHead):
         elif effect == ToontownGlobals.CEBigToon:
             return self.__doToonScale(None, lerpTime)
         elif effect == ToontownGlobals.CESmallToon:
-            return self.__doToonScale(None, lerpTime)
-        elif effect == ToontownGlobals.CETinyToon:
-            return self.__doToonScale(None, lerpTime)
-        elif effect == ToontownGlobals.CEGiantToon:
-            return self.__doToonScale(None, lerpTime)
-        elif effect == ToontownGlobals.CEBeanToon:
             return self.__doToonScale(None, lerpTime)
         elif effect == ToontownGlobals.CEFlatPortrait:
             return self.__doToonScale(None, lerpTime)
@@ -2769,9 +2726,9 @@ class Toon(Avatar.Avatar, ToonHead):
                 self.stopTrackAnimToSpeed()
                 self.startTrackAnimToSpeed()
             self.controlManager.disableAvatarJump()
-            indices = xrange(OTPLocalizer.SCMenuCommonCogIndices[0], OTPLocalizer.SCMenuCommonCogIndices[1] + 1)
+            indices = range(OTPLocalizer.SCMenuCommonCogIndices[0], OTPLocalizer.SCMenuCommonCogIndices[1] + 1)
             customIndices = OTPLocalizer.SCMenuCustomCogIndices[suitType]
-            indices += xrange(customIndices[0], customIndices[1] + 1)
+            indices += range(customIndices[0], customIndices[1] + 1)
             self.chatMgr.chatInputSpeedChat.addCogMenu(indices)
         self.suit.loop('neutral')
         self.isDisguised = 1
@@ -3081,6 +3038,34 @@ class Toon(Avatar.Avatar, ToonHead):
         self.headMeter = None
         self.setHeadPositions()
 
+    def setGMIcon(self, access):
+        if self.gmIcon:
+            return
+
+        icons = loader.loadModel('phase_3/models/props/gm_icons')
+        self.gmIcon = icons.find('**/access_level_%s' % access)
+        np = NodePath(self.nametag.getNameIcon())
+
+        if np.isEmpty() or not self.gmIcon:
+            return
+
+        self.gmIcon.flattenStrong()
+        self.gmIcon.reparentTo(np)
+        self.gmIcon.setScale(1.6)
+        self.gmIconInterval = LerpHprInterval(self.gmIcon, 3.0, Point3(0, 0, 0), Point3(-360, 0, 0))
+        self.gmIconInterval.loop()
+        self.setHeadPositions()
+
+    def removeGMIcon(self):
+        if not self.gmIcon:
+            return
+
+        self.gmIconInterval.finish()
+        self.gmIcon.detachNode()
+        del self.gmIconInterval
+        self.gmIcon = None
+        self.setHeadPositions()
+
     def setPartyHat(self):
         if self.partyHat:
             return
@@ -3128,7 +3113,7 @@ class Toon(Avatar.Avatar, ToonHead):
 loadModels()
 compileGlobalAnimList()
 
-@magicWord(category=CATEGORY_STAFF, types=[int])
+@magicWord(category=CATEGORY_LEADER, types=[int])
 def headMeter(create=True):
     """
     Create or remove the head meter.

@@ -71,7 +71,7 @@ class CashbotHQExterior(CogHQExterior.CogHQExterior):
             visZoneId = int(base.cr.hoodMgr.extractGroupName(groupFullName))
             visibles = []
             for i in xrange(visGroup.getNumVisibles()):
-                visibles.append(int(visGroup.visibles[i]))
+                visibles.append(int(visGroup.getVisible(i)))
             visibles.append(ZoneUtil.getBranchZone(visZoneId))
             self.zoneVisDict[visZoneId] = visibles
 

@@ -41,6 +41,7 @@ class DistributedMinigame(DistributedObject.DistributedObject):
         hoodMinigameState.addChild(self.frameworkFSM)
         self.rulesDoneEvent = 'rulesDone'
         self.acceptOnce('minigameAbort', self.d_requestExit)
+        self.acceptOnce('minigameSkip', self.requestSkip)
         base.curMinigame = self
         self.modelCount = 500
         self.cleanupActions = []
@@ -212,6 +213,7 @@ class DistributedMinigame(DistributedObject.DistributedObject):
         for avId in self.avIdList:
             if avId != self.localAvId:
                 self.remoteAvIdList.append(avId)
+        self.setSkipCount(0)
 
     def setTrolleyZone(self, trolleyZone):
         if not self.hasLocalToon:
@@ -327,7 +329,7 @@ class DistributedMinigame(DistributedObject.DistributedObject):
     def enterFrameworkRules(self):
         self.notify.debug('BASE: enterFrameworkRules')
         self.accept(self.rulesDoneEvent, self.handleRulesDone)
-        self.rulesPanel = MinigameRulesPanel.MinigameRulesPanel('MinigameRulesPanel', self.getTitle(), self.getInstructions(), self.rulesDoneEvent)
+        self.rulesPanel = MinigameRulesPanel.MinigameRulesPanel('MinigameRulesPanel', self.getTitle(), self.getInstructions(), self.rulesDoneEvent, playerCount=len(self.avIdList))
         self.rulesPanel.load()
         self.rulesPanel.enter()
 
@@ -342,6 +344,8 @@ class DistributedMinigame(DistributedObject.DistributedObject):
         self.sendUpdate('setAvatarReady', [])
         self.frameworkFSM.request('frameworkWaitServerStart')
 
+    def setAvatarReady(self):
+        messenger.send('disableMinigameSkip')
 
     def enterFrameworkWaitServerStart(self):
         self.notify.debug('BASE: enterFrameworkWaitServerStart')
@@ -427,3 +431,9 @@ class DistributedMinigame(DistributedObject.DistributedObject):
 
     def unsetEmotes(self):
         Emote.globalEmote.releaseAll(base.localAvatar)
+
+    def requestSkip(self):
+        self.sendUpdate('requestSkip')
+
+    def setSkipCount(self, count):
+        messenger.send('gameSkipCountChange', [count, len(self.avIdList)])

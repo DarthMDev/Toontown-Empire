@@ -1,3 +1,8 @@
+#!/usr/bin/env python2
+import gc
+
+gc.disable()
+
 import __builtin__
 
 __builtin__.process = 'client'
@@ -13,20 +18,15 @@ sys.path.append(
 )
 
 # Temporary hack patch:
-import panda3d.core
-__builtin__.__dict__.update(__import__('panda3d.core', fromlist=['*']).__dict__)
-from direct.extensions_native import HTTPChannel_extensions
-from direct.extensions_native import Mat3_extensions
-from direct.extensions_native import VBase3_extensions
-from direct.extensions_native import VBase4_extensions
-from direct.extensions_native import NodePath_extensions
+__builtin__.__dict__.update(__import__('pandac.PandaModules', fromlist=['*']).__dict__)
 
 
 from panda3d.core import loadPrcFile
 
-#Added for when injector code detection is added.
-######################from toontown.cheatdetection import CheatDector
- 
+if not os.path.exists('user/'):
+    os.mkdir('user/')
+
+
 if __debug__:
     import sys
     from direct.stdpy import threading
@@ -39,11 +39,21 @@ if __debug__:
 
     defaultText = ""
 
-
 from direct.directnotify.DirectNotifyGlobal import directNotify
 
 notify = directNotify.newCategory('ToontownStart')
 notify.setInfo(True)
+
+if __debug__:
+    # The VirtualFileSystem, which has already initialized, doesn't see the mount
+    # directives in the config(s) yet. We have to force it to load those manually:
+    from panda3d.core import VirtualFileSystem, ConfigVariableList, Filename
+    vfs = VirtualFileSystem.getGlobalPtr()
+    mounts = ConfigVariableList('vfs-mount')
+    for mount in mounts:
+        mountfile, mountpoint = (mount.split(' ', 2) + [None, None, None])[:2]
+        vfs.mount(Filename(mountfile), Filename(mountpoint), 0)
+
 from otp.settings.Settings import Settings
 from otp.otpbase import OTPGlobals
 
@@ -79,8 +89,6 @@ if 'tpTransition' not in settings:
     settings['tpTransition'] = True
 if 'fov' not in settings:
     settings['fov'] = OTPGlobals.DefaultCameraFov
-if 'antialiasing' not in settings:
-     settings['antialiasing'] = 1
 if 'talk2speech' not in settings:
     settings['talk2speech'] = False
 if 'fpsMeter' not in settings:
@@ -91,14 +99,6 @@ loadPrcFileData('Settings: fullscreen', 'fullscreen %s' % settings['fullscreen']
 loadPrcFileData('Settings: musicVol', 'audio-master-music-volume %s' % settings['musicVol'])
 loadPrcFileData('Settings: sfxVol', 'audio-master-sfx-volume %s' % settings['sfxVol'])
 loadPrcFileData('Settings: loadDisplay', 'load-display %s' % settings['loadDisplay'])
-if settings['antialiasing']:
-    loadPrcFileData('Settings: antialiasing',
-                    'framebuffer-multisample 1')
-    loadPrcFileData('Settings: antialiasing',
-                    'multisamples %s' % settings['antialiasing'])
-else:
-    loadPrcFileData('Settings: antialiasing',
-                    'framebuffer-multisample 0')
 
 import time
 import sys
@@ -108,19 +108,19 @@ from toontown.launcher.TTELauncher import TTELauncher
 
 __builtin__.launcher = TTELauncher()
 
-notify.info('Starting Toontown Empire')
+notify.info('Starting the game...')
 tempLoader = Loader()
 backgroundNode = tempLoader.loadSync(Filename('phase_3/models/gui/loading-background'))
 from direct.gui import DirectGuiGlobals
 from direct.gui.DirectGui import *
-notify.info('Default Font')
+notify.info('Setting the default font...')
 import ToontownGlobals
 DirectGuiGlobals.setDefaultFontFunc(ToontownGlobals.getInterfaceFont)
 import ToonBase
 ToonBase.ToonBase()
 from panda3d.core import *
 if base.win is None:
-    notify.error('Unable to open window; ')
+    notify.error('Unable to open window; aborting.')
 ConfigVariableDouble('decompressor-step-time').setValue(0.01)
 ConfigVariableDouble('extractor-step-time').setValue(0.01)
 backgroundNodePath = aspect2d.attachNewNode(backgroundNode, 0)
@@ -145,7 +145,7 @@ if base.musicManagerIsValid:
     if music:
         music.setLoop(1)
         music.play()
-    notify.info('GUI Sounds')
+    notify.info('Loading the default GUI sounds...')
     DirectGuiGlobals.setDefaultRolloverSound(base.loadSfx('phase_3/audio/sfx/GUI_rollover.ogg'))
     DirectGuiGlobals.setDefaultClickSound(base.loadSfx('phase_3/audio/sfx/GUI_create_toon_fwd.ogg'))
 else:
@@ -158,7 +158,7 @@ version.setPos(0.03,0.03)
 version.reparentTo(base.a2dBottomLeft)
 from toontown.suit import Suit
 Suit.loadModels()
-loader.beginBulkLoad('init', TTLocalizer.LoaderLabel, 138, 0, 0)
+loader.beginBulkLoad('init', TTLocalizer.LoaderLabel, 138, 0, TTLocalizer.TIP_NONE)
 from ToonBaseGlobal import *
 from direct.showbase.MessengerGlobal import *
 from toontown.distributed import ToontownClientRepository
@@ -166,6 +166,7 @@ cr = ToontownClientRepository.ToontownClientRepository(serverVersion)
 cr.music = music
 del music
 base.initNametagGlobals()
+base.setFrameRateMeter(settings['fpsMeter'])
 base.cr = cr
 loader.endBulkLoad('init')
 from otp.friends import FriendManager
@@ -182,13 +183,15 @@ del version
 base.loader = base.loader
 __builtin__.loader = base.loader
 autoRun = ConfigVariableBool('toontown-auto-run', 1)
+
+gc.enable()
+gc.collect()
+
 if autoRun:
     try:
         base.run()
     except SystemExit:
-        raise
+        pass
     except:
-        print describeException()
-        rollbar.report_exc_info()
-        raise
-        
+        import traceback
+        traceback.print_exc()

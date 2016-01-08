@@ -1,9 +1,6 @@
 import math
-from panda3d.core import CardMaker
-from panda3d.core import TextNode
-from direct.gui.DirectGui import DirectFrame
-from direct.gui.DirectGui import DirectLabel
-from direct.gui.DirectGui import DirectButton
+from pandac.PandaModules import CardMaker, TextNode
+from direct.gui.DirectGui import DirectFrame, DirectLabel, DirectButton
 from direct.task import Task
 from toontown.toon import NPCToons
 from toontown.hood import ZoneUtil
@@ -186,9 +183,8 @@ class QuestMap(DirectFrame):
                 self.marker.setHpr(0, 0, -180 - self.av.getH())
         i = 0
         for buildingMarker in self.buildingMarkers:
-            if not buildingMarker.isEmpty():        
-            	buildingMarker.setScale((math.sin(task.time * 16.0 + i * math.pi / 3.0) + 1) * 0.005 + 0.04)
-            	i = i + 1
+            buildingMarker.setScale((math.sin(task.time * 16.0 + i * math.pi / 3.0) + 1) * 0.005 + 0.04)
+            i = i + 1
 
         return Task.cont
 

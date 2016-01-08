@@ -4,14 +4,13 @@ from direct.gui.DirectGui import DirectButton
 from direct.gui.DirectGui import DirectFrame
 from direct.gui.DirectGui import DGG
 from direct.gui.DirectGui import cleanupDialog
-from panda3d.core import Vec4
-from panda3d.core import TextNode
+from panda3d.core import Vec4, TextNode
 from direct.showbase import DirectObject
+
 from toontown.effects import DistributedFireworkShow
 from otp.nametag import NametagGlobals
 from toontown.parties import DistributedPartyFireworksActivity
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 
 
 class ShtikerBook(DirectFrame, StateData.StateData):
@@ -52,7 +51,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
          TTLocalizer.PhotoPageTitle,
          TTLocalizer.EventsPageName,
          TTLocalizer.NewsPageName]
-
+    
     def createPageTabFrame(self, x):
         frame = DirectFrame(parent=self, relief=None, pos=(x, 0, 0.66), scale=1.25)
         frame.hide()
@@ -102,7 +101,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         base.render.show()
         setBlackBackground = 0
         for obj in base.cr.doId2do.values():
-            if isinstance(obj, (DistributedFireworkShow.DistributedFireworkShow, DistributedPartyFireworksActivity.DistributedPartyFireworksActivity)):
+            if isinstance(obj, DistributedFireworkShow.DistributedFireworkShow) or isinstance(obj, DistributedPartyFireworksActivity.DistributedPartyFireworksActivity):
                 setBlackBackground = 1
 
         if setBlackBackground:
@@ -205,7 +204,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
             messenger.send('wakeup')
             base.playSfx(self.pageSound)
             self.setPage(page)
-            if config.GetBool('want-qa-regression', 0):
+            if base.config.GetBool('want-qa-regression', 0):
                 self.notify.info('QA-REGRESSION: SHTICKERBOOK: Browse tabs %s' % page.pageName)
             localAvatar.newsButtonMgr.setGoingToNewsPageFromStickerBook(False)
             localAvatar.newsButtonMgr.showAppropriateButton()
@@ -279,16 +278,16 @@ class ShtikerBook(DirectFrame, StateData.StateData):
             iconModels = loader.loadModel('phase_4/models/parties/partyStickerbook')
             iconGeom = iconModels.find('**/Stickerbook_PartyIcon')
             iconModels.detachNode()
+        elif pageName == TTLocalizer.PhotoPageTitle:
+            iconGeom = iconModels = loader.loadModel('phase_4/models/minigames/photogame_filmroll')
+            iconScale = (1.9, 1.5, 1.5)
+            iconModels.detachNode()
         elif pageName == TTLocalizer.NewsPageName:
             iconModels = loader.loadModel('phase_3.5/models/gui/sos_textures')
             iconGeom = iconModels.find('**/tt_t_gui_sbk_newsPageTab')
             iconModels.detachNode()
             buttonPressedCommand = self.goToNewsPage
             extraArgs = [page]
-        elif pageName == TTLocalizer.PhotoPageTitle:
-            iconGeom = iconModels = loader.loadModel('phase_4/models/minigames/photogame_filmroll')
-            iconScale = (1.9, 1.5, 1.5)
-            iconModels.detachNode()
         if pageName == TTLocalizer.OptionsPageTitle:
             pageName = TTLocalizer.OptionsTabTitle
         rightSide = pageIndex < 16

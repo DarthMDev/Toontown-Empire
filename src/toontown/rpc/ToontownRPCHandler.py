@@ -2,7 +2,7 @@ import datetime
 from direct.distributed.MsgTypes import CLIENTAGENT_EJECT
 from direct.distributed.PyDatagram import PyDatagram
 from direct.stdpy import threading2
-import re
+import re, json
 
 from otp.distributed import OtpDoGlobals
 from toontown.distributed.ShardStatusReceiver import ShardStatusReceiver
@@ -437,8 +437,14 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
             On success: 100000000
             On failure: None
         """
-        if str(userId) in self.air.csm.accountDB.dbm:
-            return int(self.air.csm.accountDB.dbm[str(userId)])
+        response = executeHttpRequest('accountid', username=str(userId))
+        if response is not None:
+            response = json.loads(response)
+            if response['success'] is True:
+                return int(response['accountId'])
+            else:
+                print response['error']
+        return False
 
     @rpcmethod(accessLevel=MODERATOR)
     def rpc_getUserAvatars(self, userId):
@@ -626,7 +632,7 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
                 {
                    'name': 'Toon Name',
                    'species': 'cat',
-                   'head-color': 'Red',
+                   'head-color': (1, 0, 0, 1),
                    'max-hp': 15,
                    'online': True
                 }
@@ -642,10 +648,11 @@ class ToontownRPCHandler(ToontownRPCHandlerBase):
             dna.makeFromNetString(fields['setDNAString'][0])
             result['species'] = ToonDNA.getSpeciesName(dna.head)
 
-            result['head-color'] = TTLocalizer.NumToColor[dna.headColor]
-            result['max-hp'] = fields['setMaxHp'][0]
+            result['head_color'] = dna.headColor
+            result['max_hp'] = fields['setMaxHp'][0]
+            result['hp'] = fields['setHp'][0]
             result['online'] = (avId in self.air.friendsManager.onlineToons)
-            result['lastSeen'] = fields['setLastSeen'][0]
+
             return result
 
     @rpcmethod(accessLevel=MODERATOR)

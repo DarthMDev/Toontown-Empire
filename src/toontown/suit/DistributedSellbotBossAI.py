@@ -17,9 +17,9 @@ from otp.ai.MagicWordGlobal import *
 
 class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedSellbotBossAI')
-    limitHitCount = 6
-    hitCountDamage = 35
-    numPies = ToontownGlobals.FullPies
+    limitHitCount = 30
+    hitCountDamage = 90
+    numPies = 50
     BossName = "VP"
 
     def __init__(self, air):
@@ -30,6 +30,7 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         self.bossMaxDamage = ToontownGlobals.SellbotBossMaxDamage
         self.recoverRate = 0
         self.recoverStartTime = 0
+        self.punishedToons = []
 
     def delete(self):
         return DistributedBossCogAI.DistributedBossCogAI.delete(self)
@@ -196,6 +197,13 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
             return self.invokeSuitPlanner(10, 1)
 
     def removeToon(self, avId):
+        av = self.air.doId2do.get(avId)
+        if not av is None:
+            if av.getHp() <= 0:
+                if avId not in self.punishedToons:
+                    self.air.cogSuitMgr.removeParts(av, self.deptIndex)
+                    self.punishedToons.append(avId)
+
         toon = simbase.air.doId2do.get(avId)
         if toon:
             toon.b_setNumPies(0)
@@ -331,7 +339,6 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
          'isSupervisor': 0,
          'isVirtual': 0,
          'activeToons': self.involvedToons[:]})
-        self.addStats()
         self.barrier = self.beginBarrier('Victory', self.involvedToons, 10, self.__doneVictory)
         return
 
@@ -395,32 +402,18 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
     def enterReward(self):
         DistributedBossCogAI.DistributedBossCogAI.enterReward(self)
 
-def getVP(invoker):
-    for do in simbase.air.doId2do.values():
-        if isinstance(do, DistributedSellbotBossAI):
-            if invoker.doId in do.involvedToons:
-                return do
-
-@magicWord(category=CATEGORY_LEADER)
-def secondVP():
-    """
-    Skips to the second round of the VP.
-    """
-    invoker = spellbook.getInvoker()
-    boss = getVP(invoker)
-    if not boss:
-        return "You aren't in a VP!"
-    boss.exitIntroduction()
-    boss.b_setState('RollToBattleTwo')
-    return 'Skipping to the second round...'
-                
 @magicWord(category=CATEGORY_LEADER)
 def skipVP():
     """
     Skips to the final round of the VP.
     """
     invoker = spellbook.getInvoker()
-    boss = getVP(invoker)
+    boss = None
+    for do in simbase.air.doId2do.values():
+        if isinstance(do, DistributedSellbotBossAI):
+            if invoker.doId in do.involvedToons:
+                boss = do
+                break
     if not boss:
         return "You aren't in a VP!"
     if boss.state in ('PrepareBattleThree', 'BattleThree'):
@@ -435,7 +428,12 @@ def killVP():
     Kills the VP.
     """
     invoker = spellbook.getInvoker()
-    boss = getVP(invoker)
+    boss = None
+    for do in simbase.air.doId2do.values():
+        if isinstance(do, DistributedSellbotBossAI):
+            if invoker.doId in do.involvedToons:
+                boss = do
+                break
     if not boss:
         return "You aren't in a VP!"
     boss.b_setState('Victory')

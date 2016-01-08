@@ -1,10 +1,7 @@
 import TTLocalizer
 from otp.otpbase.OTPGlobals import *
 from direct.showbase.PythonUtil import Enum, invertDict
-from panda3d.core import BitMask32, Vec4
-from toontown.estate import HouseGlobals
-MapHotkeyOn = 'alt'
-MapHotkeyOff = 'alt-up'
+from pandac.PandaModules import BitMask32, Vec4
 MapHotkey = 'alt'
 CogHQCameraFov = 60.0
 BossBattleCameraFov = 72.0
@@ -40,14 +37,14 @@ SpeedwayCameraFar = 8000.0
 SpeedwayCameraNear = 1.0
 MaxMailboxContents = 60
 MaxHouseItems = 250
-MaxAccessories = 75
+MaxAccessories = 100
 ExtraDeletedItems = 5
 DeletedItemLifetime = 7 * 24 * 60
 CatalogNumWeeksPerSeries = 13
 CatalogNumWeeks = 78
 PetFloorCollPriority = 5
 PetPanelProximityPriority = 6
-P_NoTrunk = -28
+P_TooFast = -28
 P_AlreadyOwnBiggerCloset = -27
 P_ItemAlreadyRented = -26
 P_OnAwardOrderListFull = -25
@@ -111,18 +108,11 @@ CogSuitHPLevels = (15 - 1,
 setInterfaceFont(TTLocalizer.InterfaceFont)
 setSignFont(TTLocalizer.SignFont)
 from toontown.toontowngui import TTDialog
-from toontown.toontowngui import TTDialog
 setDialogClasses(TTDialog.TTDialog, TTDialog.TTGlobalDialog)
 ToonFont = None
 BuildingNametagFont = None
 MinnieFont = None
 SuitFont = None
-CentralFont = None
-DockFont = None
-GardenFont = None
-MelodyFont = None
-FrostFont = None
-DreamFont = None
 
 def getToonFont():
     global ToonFont
@@ -130,44 +120,6 @@ def getToonFont():
         ToonFont = loader.loadFont(TTLocalizer.ToonFont, lineHeight=1.0)
     return ToonFont
 
-def getCentralFont():
-    global CentralFont
-    if CentralFont == None:
-        CentralFont = loader.loadFont(TTLocalizer.CentralFont, lineHeight=1.0)
-    return CentralFont
-
-
-def getDockFont():
-    global DockFont
-    if DockFont == None:
-        DockFont = loader.loadFont(TTLocalizer.DockFont, lineHeight=1.0)
-    return DockFont
-
-def getGardenFont():
-    global GardenFont
-    if GardenFont == None:
-        GardenFont = loader.loadFont(TTLocalizer.GardenFont, lineHeight=1.0)
-    return GardenFont
-
-def getMelodyFont():
-    global MelodyFont
-    if MelodyFont == None:
-        MelodyFont = loader.loadFont(TTLocalizer.MelodyFont, lineHeight=1.0)
-    return MelodyFont
-    
-    
-def getFrostFont():
-    global FrostFont
-    if FrostFont == None:
-        FrostFont = loader.loadFont(TTLocalizer.FrostFont, lineHeight=1.0)
-    return FrostFont
-    
-    
-def getDreamFont():
-    global DreamFont
-    if DreamFont == None:
-        DreamFont = loader.loadFont(TTLocalizer.DreamFont, lineHeight=1.0)
-    return DreamFont
 
 def getBuildingNametagFont():
     global BuildingNametagFont
@@ -216,16 +168,15 @@ MapleStreet = 5200
 OakStreet = 5300
 LullabyLane = 9100
 PajamaPlace = 9200
-RockAByeRoad = 9300
+BedtimeBoulevard = 9300
 ToonHall = 2513
 HoodHierarchy = {ToontownCentral: (SillyStreet, LoopyLane, PunchlinePlace),
  DonaldsDock: (BarnacleBoulevard, SeaweedStreet, LighthouseLane),
  TheBrrrgh: (WalrusWay, SleetStreet, PolarPlace),
  MinniesMelodyland: (AltoAvenue, BaritoneBoulevard, TenorTerrace),
  DaisyGardens: (ElmStreet, MapleStreet, OakStreet),
- DonaldsDreamland: (LullabyLane, PajamaPlace),
+ DonaldsDreamland: (LullabyLane, PajamaPlace, BedtimeBoulevard),
  GoofySpeedway: ()}
-WelcomeValleyToken = 0
 BossbotHQ = 10000
 BossbotLobby = 10100
 BossbotCountryClubIntA = 10500
@@ -254,9 +205,7 @@ MyEstate = 16000
 GolfZone = 17000
 PartyHood = 18000
 HoodsAlwaysVisited = [17000, 18000]
-WelcomeValleyBegin = 22000
-WelcomeValleyEnd = 61000
-DynamicZonesBegin = 61000
+DynamicZonesBegin = 22000
 DynamicZonesEnd = 1 << 20
 cogDept2index = {'c': 0,
  'l': 1,
@@ -351,7 +300,7 @@ Hoods = (DonaldsDock,
  MinniesMelodyland,
  DaisyGardens,
  OutdoorZone,
- #FunnyFarm,
+ FunnyFarm,
  GoofySpeedway,
  DonaldsDreamland,
  BossbotHQ,
@@ -396,7 +345,7 @@ MinigameNames = {'race': RaceGameId,
  'cannon': CannonGameId,
  'tag': TagGameId,
  'pattern': PatternGameId,
- 'Blinky': PatternGameId,
+ 'jaymo': PatternGameId,
  'match': PatternGameId,
  'matching': PatternGameId,
  'ring': RingGameId,
@@ -439,7 +388,7 @@ phaseMap = {Tutorial: 4,
  GoofySpeedway: 6,
  TheBrrrgh: 8,
  DaisyGardens: 8,
- #FunnyFarm: 8,
+ FunnyFarm: 8,
  DonaldsDreamland: 8,
  OutdoorZone: 6,
  BossbotHQ: 12,
@@ -454,7 +403,7 @@ streetPhaseMap = {ToontownCentral: 5,
  GoofySpeedway: 6,
  TheBrrrgh: 8,
  DaisyGardens: 8,
- #FunnyFarm: 8,
+ FunnyFarm: 8,
  DonaldsDreamland: 8,
  OutdoorZone: 8,
  BossbotHQ: 12,
@@ -469,7 +418,7 @@ dnaMap = {Tutorial: 'toontown_central',
  GoofySpeedway: 'goofy_speedway',
  TheBrrrgh: 'the_burrrgh',
  DaisyGardens: 'daisys_garden',
- #FunnyFarm: 'not done yet',
+ FunnyFarm: 'not done yet',
  DonaldsDreamland: 'donalds_dreamland',
  OutdoorZone: 'outdoor_zone',
  BossbotHQ: 'cog_hq_bossbot',
@@ -483,7 +432,7 @@ hoodNameMap = {DonaldsDock: TTLocalizer.DonaldsDock,
  MinniesMelodyland: TTLocalizer.MinniesMelodyland,
  DaisyGardens: TTLocalizer.DaisyGardens,
  OutdoorZone: TTLocalizer.OutdoorZone,
-# FunnyFarm: TTLocalizer.FunnyFarm,
+ FunnyFarm: TTLocalizer.FunnyFarm,
  GoofySpeedway: TTLocalizer.GoofySpeedway,
  DonaldsDreamland: TTLocalizer.DonaldsDreamland,
  BossbotHQ: TTLocalizer.BossbotHQ,
@@ -502,7 +451,7 @@ safeZoneCountMap = {MyEstate: 8,
  GoofySpeedway: 500,
  TheBrrrgh: 8,
  DaisyGardens: 9,
- #FunnyFarm: 500,
+ FunnyFarm: 500,
  DonaldsDreamland: 5,
  OutdoorZone: 500,
  GolfZone: 500,
@@ -515,7 +464,7 @@ townCountMap = {MyEstate: 8,
  GoofySpeedway: 40,
  TheBrrrgh: 40,
  DaisyGardens: 40,
- #FunnyFarm: 40,
+ FunnyFarm: 40,
  DonaldsDreamland: 40,
  OutdoorZone: 40,
  PartyHood: 20}
@@ -527,7 +476,7 @@ hoodCountMap = {MyEstate: 2,
  GoofySpeedway: 2,
  TheBrrrgh: 2,
  DaisyGardens: 2,
-# FunnyFarm: 2,
+ FunnyFarm: 2,
  DonaldsDreamland: 2,
  OutdoorZone: 2,
  BossbotHQ: 2,
@@ -626,7 +575,7 @@ BossCogOvertimeAttack = 20
 BossCogAttackTimes = {BossCogElectricFence: 0,
  BossCogSwatLeft: 5.5,
  BossCogSwatRight: 5.5,
- BossCogAreaAttack: 4.21,
+ BossCogAreaAttack: 4.5,
  BossCogFrontAttack: 2.65,
  BossCogRecoverDizzyAttack: 5.1,
  BossCogDirectedAttack: 4.84,
@@ -873,34 +822,42 @@ WaiterInvasionBulletin = 9
 V2InvasionBegin = 10
 V2InvasionEnd = 11
 V2InvasionBulletin = 12
-NO_HOLIDAY = 0
-JULY4_FIREWORKS = 1
-NEWYEARS_FIREWORKS = 2
+EndingInvasions = [SuitInvasionEnd, SkelecogInvasionEnd, WaiterInvasionEnd, V2InvasionEnd]
+SuitInvasions = {
+ SuitInvasionBegin: TTLocalizer.SuitInvasionBegin,
+ SuitInvasionEnd: TTLocalizer.SuitInvasionEnd,
+ SuitInvasionUpdate: TTLocalizer.SuitInvasionUpdate,
+ SuitInvasionBulletin: TTLocalizer.SuitInvasionBulletin,
+ SkelecogInvasionBegin: TTLocalizer.SkelecogInvasionBegin,
+ SkelecogInvasionEnd: TTLocalizer.SkelecogInvasionEnd,
+ SkelecogInvasionBulletin: TTLocalizer.SkelecogInvasionBulletin,
+ WaiterInvasionBegin: TTLocalizer.WaiterInvasionBegin,
+ WaiterInvasionEnd: TTLocalizer.WaiterInvasionEnd,
+ WaiterInvasionBulletin: TTLocalizer.WaiterInvasionBulletin,
+ V2InvasionBegin: TTLocalizer.V2InvasionBegin,
+ V2InvasionEnd: TTLocalizer.V2InvasionEnd,
+ V2InvasionBulletin: TTLocalizer.V2InvasionBulletin
+}
+SUMMER_FIREWORKS = 1
+NEW_YEAR_FIREWORKS = 2
 HALLOWEEN = 3
-WINTER_DECORATIONS = 4
+CHRISTMAS = 4
 SKELECOG_INVASION = 5
 MR_HOLLYWOOD_INVASION = 6
-FISH_BINGO_NIGHT = 7
 BLACK_CAT_DAY = 9
 RESISTANCE_EVENT = 10
 KART_RECORD_DAILY_RESET = 11
 KART_RECORD_WEEKLY_RESET = 12
-TRICK_OR_TREAT = 13
 CIRCUIT_RACING = 14
 POLAR_PLACE_EVENT = 15
-CIRCUIT_RACING_EVENT = 16
-TROLLEY_HOLIDAY = 17
-TROLLEY_WEEKEND = 18
-SILLY_SATURDAY_BINGO = 19
-SILLY_SATURDAY_CIRCUIT = 20
-SILLY_SATURDAY_TROLLEY = 21
+GRAND_PRIX = 16
+FISH_BINGO = 17
+SILLY_SATURDAY = 18
 BOSSCOG_INVASION = 23
 MARCH_INVASION = 24
 MORE_XP_HOLIDAY = 25
-HALLOWEEN_PROPS = 26
-HALLOWEEN_COSTUMES = 27
 DECEMBER_INVASION = 28
-APRIL_FOOLS_COSTUMES = 29
+APRIL_TOONS_WEEK = 29
 OCTOBER31_FIREWORKS = 31
 NOVEMBER19_FIREWORKS = 32
 SELLBOT_SURPRISE_1 = 33
@@ -928,13 +885,12 @@ COLD_CALLER_INVASION = 53
 BEAN_COUNTER_INVASION = 54
 DOUBLE_TALKER_INVASION = 55
 DOWNSIZER_INVASION = 56
-WINTER_CAROLING = 57
-VALENTINES_DAY = 59
+HYDRANT_ZERO_HOLIDAY = 58
+VALENTOONS_DAY = 59
 SILLYMETER_HOLIDAY = 60
+MAILBOX_ZERO_HOLIDAY = 61
+TRASHCAN_ZERO_HOLIDAY = 62
 SILLY_SURGE_HOLIDAY = 63
-HYDRANTS_BUFF_BATTLES = 64
-MAILBOXES_BUFF_BATTLES = 65
-TRASHCANS_BUFF_BATTLES = 66
 SILLY_CHATTER_ONE = 67
 SILLY_CHATTER_TWO = 68
 SILLY_CHATTER_THREE = 69
@@ -983,21 +939,6 @@ JELLYBEAN_TROLLEY_HOLIDAY_MONTH = 113
 JELLYBEAN_FISHING_HOLIDAY_MONTH = 114
 JELLYBEAN_PARTIES_HOLIDAY_MONTH = 115
 SILLYMETER_EXT_HOLIDAY = 116
-SPOOKY_BLACK_CAT = 117
-SPOOKY_TRICK_OR_TREAT = 118
-SPOOKY_PROPS = 119
-SPOOKY_COSTUMES = 120
-WACKY_WINTER_DECORATIONS = 121
-WACKY_WINTER_CAROLING = 122
-LAUGHING_MAN = 123
-GRAND_PRIX = 125
-FISH_BINGO = 126
-SILLY_SATURDAY = 127
-APRIL_TOONS_WEEK = 128
-CHRISTMAS = 129
-SUMMER_FIREWORKS = 130
-NEW_YEAR_FIREWORKS = 131
-VALENTOONS_DAY = 132
 TOT_REWARD_JELLYBEAN_AMOUNT = 100
 TOT_REWARD_END_OFFSET_AMOUNT = 0
 LawbotBossMaxDamage = 2700
@@ -1015,12 +956,6 @@ LawbotBossBattleTwoPosHpr = (-2.798,
  0,
  0,
  0)
-LawbotBossTopRampPosA = (-80, -35, 18)
-LawbotBossTopRampTurnPosA = (-80, 10, 18)
-LawbotBossP3PosA = (55, -9, 0)
-LawbotBossTopRampPosB = (80, -35, 18)
-LawbotBossTopRampTurnPosB = (80, 10, 18)
-LawbotBossP3PosB = (55, -9, 0)
 LawbotBossBattleThreePosHpr = LawbotBossBattleTwoPosHpr
 LawbotBossBottomPos = (50, 39, 0)
 LawbotBossDeathPos = (50, 40, 0)
@@ -1488,13 +1423,6 @@ ColorNoChat = (0.8,
  0.5,
  0.1,
  1)
-FactoryLaffMinimums = [(0, 31, 0),
- (0, 66, 71),
- (0,
-  81,
-  86,
-  96),
- (0, 101, 106)]
 PICNIC_COUNTDOWN_TIME = 60
 BossbotRTIntroStartPosHpr = (0,
  -64,
@@ -1679,21 +1607,35 @@ AV_TOUCH_CHECK_DIST_Z = 5.0
 AV_TOUCH_CHECK_TIMELIMIT_CL = 0.002
 AV_TOUCH_COUNT_LIMIT = 5
 AV_TOUCH_COUNT_TIME = 300
-GloveCost = 3000
-ColorCost = 5000
+GloveCost = 2000
 
 BMovementSpeed = 0
 BMovementSpeedMultiplier = 1.3
 
-BGagAccuracy = 1
-BGagAccuracyMultiplier = 1.3
+BugReportSite = 'https://bugs.launchpad.net/toontown-united/+filebug'
+NPCCollisionDelay = 2.5
 
-BugReportSite = 'https://bugs.launchpad.net/toontown-empire/+filebug'
-NPCCollisionDelay = 0.1
-CostPerLaffRestock = 15
-FISHSALE_NONE = 0
-FISHSALE_COMPLETE = 1
-FISHSALE_TROPHY = 2
+CostPerLaffRestock = 3
+
+FISHSALE_COMPLETE = 0
+FISHSALE_TROPHY = 1
+
+CLERK_GOODBYE = 0
+CLERK_GREETING = 1
+CLERK_TOOKTOOLONG = 2
+
+KnockKnockHeal = 12
+KnockKnockCooldown = 600
+
+CRATE_NOT_OWNER = 0
+CRATE_NO_KEYS = 1
+CRATE_BEANS = 2
+CRATE_BUFFS = 3
+CRATE_NAMETAGS = 4
+CRATE_EMOTES = 5
+CRATE_CLOTHING = 6
+CRATE_ACCESSORIES = 7
+
 STAT_COGS = 0
 STAT_V2 = 1
 STAT_SKELE = 2
@@ -1716,65 +1658,12 @@ STAT_SOS = 18
 STAT_UNITES = 19
 STAT_SLIPS = 20
 STAT_GAGS = 21
-CRATE_NOT_OWNER = 0
-CRATE_NO_KEYS = 1
-CRATE_BEANS = 2
-CRATE_BUFFS = 3
-CRATE_NAMETAGS = 4
-CRATE_EMOTES = 5
-CRATE_CLOTHING = 6
-CRATE_ACCESSORIES = 7
-TOONUP_PULSE_ZONES = [ToontownCentral, DonaldsDock, DaisyGardens, MinniesMelodyland, TheBrrrgh, DonaldsDreamland]
-TOONUP_FREQUENCY = 30
+
 CHAIR_START = 0
 CHAIR_STOP = 1
 CHAIR_NONE = 0
 CHAIR_EXIT = 1
 CHAIR_UNEXPECTED_EXIT = 2
-P_TooFast = -28
-CLERK_GOODBYE = 0
-CLERK_GREETING = 1
-CLERK_TOOKTOOLONG = 2
-
-CommonDisplayResolutions = {
-    (25, 16): ((1600, 1024),),
-    (931, 524): ((1862, 1048),),
-    (1707, 1067): ((1707, 1067),),
-    (707, 397): ((1414, 794),),
-    (16, 9): ((1280, 720), (1440, 810), (1536, 864), (1600, 900), (1680, 945),
-              (1824, 1026), (1920, 1080), (2048, 1152), (2560, 1440),
-              (3200, 1800), (3840, 2160), (5568, 3132), (7680, 4320)), 
-    (3, 2): ((1440, 960),),
-    (569, 320): ((1707, 960),),
-    (902, 507): ((1804, 1014),),
-    (8, 5): ((1120, 700), (1152, 720), (1280, 800), (1344, 840), (1440, 900),
-             (1536, 960), (1680, 1050), (1920, 1200), (2560, 1600),
-             (2880, 1800)),
-    (307, 171): ((1842, 1026),),
-    (85, 64): ((1360, 1024),),
-    (64, 27): ((2560, 1080),),
-    (16, 3): ((5760, 1080),),
-    (24, 5): ((5760, 1200),),
-    (128, 75): ((1024, 600),),
-    (222, 125): ((1776, 1000),),
-    (5, 4): ((1280, 1024),),
-    (147, 83): ((1176, 664),),
-    (32, 15): ((1280, 600),),
-    (1024, 819): ((1024, 819),),
-    (43, 18): ((3440, 1440),),
-    (5, 3): ((1280, 768),),
-    (221, 124): ((1768, 992),),
-    (1280, 853): ((1280, 853),),
-    (921, 518): ((1842, 1036),),
-    (683, 384): ((1366, 768),),
-    (57, 32): ((1368, 768),),
-    (85, 48): ((1360, 768),),
-    (1067, 600): ((1067, 600),),
-    (4, 3): ((800, 600), (1024, 768), (1152, 864), (1280, 960), (1400, 1050),
-             (1600, 1200)),
-}
-
-# True Friends coding ~FordTheWriter
 
 MAX_TF_TRIES = 5
 TF_COOLDOWN_SECS = 60 * 60 * 24
@@ -1789,7 +1678,29 @@ TF_ALREADY_FRIENDS = 6
 TF_ALREADY_FRIENDS_NAME = 7
 TF_SUCCESS = 8
 
-# Libary Name change cost ~FordTheWriter
-NameChangeCost = 10000
-
 GROUP_ZONES = [11000, 11100, 11200, 12000, 12100, 13000, 13100, 13200, 10000, 10100]
+
+TOONUP_PULSE_ZONES = [ToontownCentral, DonaldsDock, DaisyGardens, MinniesMelodyland, TheBrrrgh, DonaldsDreamland]
+TOONUP_FREQUENCY = 30
+
+TV_NOT_OWNER = 0
+TV_INVALID_VIDEO = 1
+TV_OK = 2
+
+COLOR_SATURATION_MIN = 0.5
+COLOR_SATURATION_MAX = 0.8
+COLOR_VALUE_MIN = 0.5
+COLOR_VALUE_MAX = 0.8
+
+TELEPORT_BUTTON_DEFAULT_COST = 50
+TELEPORT_BUTTON_COSTS = {
+ ToontownCentral: 5,
+ DonaldsDock: 15,
+ DaisyGardens: 30,
+ MinniesMelodyland: 45,
+ TheBrrrgh: 60,
+ DonaldsDreamland: 75
+}
+
+def getTeleportButtonCost(hoodId):
+    return TELEPORT_BUTTON_COSTS.get(hoodId, TELEPORT_BUTTON_DEFAULT_COST)

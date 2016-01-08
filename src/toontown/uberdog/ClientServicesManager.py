@@ -20,7 +20,7 @@ class ClientServicesManager(DistributedObjectGlobal):
 
         token = self.cr.playToken or 'dev'
 
-        key = 'LRb<pS_sUxxfZhK^Q)BuH@EY.>Xp7yX.#xse*EC.s\Egy$q_HEyB&vHX!yF6g$"us~EnL/\[@cEWsYCV=%{wHP@7b-uSp%;&:Fb;VSSRKFkg\y`K7W;)]$gG\GD5LK}dH~"m>=%cj`2/@"~w.ffbBevkL/2jM#Z4m48xzNv`;E4Tttpk\(r4pJ+m*8MNeJ&[KUf7e]H>y"_At&[MwY\^{!m{ZVeF?nMTGj^/KykfBbha<ss>@<e@@Y(DC*)s54'
+        key = 'c603c5833021ce79f734943f6e662250fd4ecf7432bf85905f71707dc4a9370c6ae15a8716302ead43810e5fba3cf0876bbbfce658e2767b88d916f5d89fd31'
         digest_maker = hmac.new(key)
         digest_maker.update(token)
         clientKey = digest_maker.hexdigest()
@@ -50,7 +50,7 @@ class ClientServicesManager(DistributedObjectGlobal):
 
         self.cr.handleChatSettings(chatSettings)
         self.cr.handleAvatarsList(avList)
-        
+
     # --- AVATAR CREATION/DELETION ---
     def sendCreateAvatar(self, avDNA, _, index):
         self.sendUpdate('createAvatar', [avDNA.makeNetString(), index])

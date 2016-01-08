@@ -81,6 +81,7 @@ class Party(Place.Place):
             self.ignore(self.partyPlannerDoneEvent)
             self.partyPlanner.close()
             del self.partyPlanner
+        self.__removePartyHat()
         self.fog = None
         self.ignoreAll()
         self.parentFSMState.removeChild(self.fsm)
