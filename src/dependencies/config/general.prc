@@ -1,5 +1,5 @@
 # Window settings:
-window-title Toontown Empire [Alpha!]
+window-title Toontown Empire
 win-origin -1 -1
 icon-filename phase_3/etc/icon.ico
 cursor-filename phase_3/etc/toonmono.cur
@@ -14,8 +14,8 @@ aux-display pandadx9
 aux-display p3tinydisplay
 
 # Models:
-model-cache-models #t
-model-cache-textures #t
+model-cache-models #f
+model-cache-textures #f
 default-model-extension .bam
 
 # Textures:
@@ -71,8 +71,6 @@ want-butterflies #t
 
 # Trolley minigames:
 want-minigames #t
-want-pairing-game #t
-want-photo-game #f
 
 # Picnic table board games:
 want-game-tables #t
@@ -101,33 +99,22 @@ want-cogbuildings #t
 # Optional:
 show-total-population #t
 want-mat-all-tailors #t
-want-talkative-tyler #f
 estate-day-night #t
-want-garden-game #t
+want-garden-game #f
 want-language-selection #f
-want-mongo #f
-want-toontorial #f
-want-news-tab #t
-want-news-page #t
 
 # Developer options:
 want-dev #f
 want-pstats 0
 
 # Temporary:
-want-old-fireworks #t
-want-mongo-client #f
-
-# Enhancements for game Performance:
 smooth-lag 0.4
-framebuffer-stencil #f
-textures-power-2 none
-gl-force-no-error #t
-gl-force-no-flush #t
-gl-force-no-scissor #t
-texture-magfilter linear
-texture-minfilter linear
-support-threads #t
-gl-immutable-texture-storage #f
-framebuffer-multisample #f
-multisamples 0
+want-old-fireworks #t
+
+# MongoDB:
+want-mongo #t
+want-mongo-client #t
+
+# In-game News:
+want-news-tab #t
+want-news-page #t
