@@ -291,7 +291,8 @@ EmoteList = ['Wave',
  'Cry',
  'Delighted',
  'Furious',
- 'Laugh']
+ 'Laugh',
+ 'Rage']
 EmoteWhispers = ['%s waves.',
  '%s is happy.',
  '%s is sad.',
@@ -316,7 +317,8 @@ EmoteWhispers = ['%s waves.',
  '%s is crying.',
  '%s is delighted.',
  '%s is furious.',
- '%s is laughing.']
+ '%s is laughing.',
+ '%s is raging.']
 EmoteFuncDict = {'Wave': 0,
  'Happy': 1,
  'Sad': 2,
@@ -341,7 +343,8 @@ EmoteFuncDict = {'Wave': 0,
  'Cry': 21,
  'Delighted': 22,
  'Furious': 23,
- 'Laugh': 24}
+ 'Laugh': 24,
+ 'Rage': 25}
 SuitBrushOffs = {'f': ["I'm late for a meeting."],
  'p': ['Push off.'],
  'ym': ['Yes Man says NO.'],
