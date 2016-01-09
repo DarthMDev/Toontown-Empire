@@ -96,7 +96,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.fishingRod = 0
         self.fishingTrophies = []
         self.trackArray = []
-        self.emoteAccess = [0] * 26
+        self.emoteAccess = [0] * 25
         self.maxMoney = 0
         self.maxBankMoney = 0
         self.bankMoney = 0
@@ -1959,21 +1959,13 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         return anyChanged
 
     def b_setEmoteAccess(self, bits):
-        if bits[26]:
-            bits.remove(bits[26])
-        if self.emoteAccess[26]:
-            self.emoteAccess.remove(self.emoteAccess[26])
         self.setEmoteAccess(bits)
         self.d_setEmoteAccess(bits)
-
+ 
     def d_setEmoteAccess(self, bits):
         self.sendUpdate('setEmoteAccess', [bits])
 
     def setEmoteAccess(self, bits):
-        if bits[26]:
-            bits.remove(bits[26])
-        if self.emoteAccess[26]:
-            self.emoteAccess.remove(self.emoteAccess[26])
         maxBitCount = len(self.emoteAccess)
         bits = bits[:maxBitCount]
         bitCount = len(bits)
