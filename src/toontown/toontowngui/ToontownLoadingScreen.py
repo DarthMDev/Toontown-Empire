@@ -14,11 +14,14 @@ class ToontownLoadingScreen:
         self.banner.setScale(0.4, 0.4, 0.4)
         self.tip = DirectLabel(guiId='ToontownLoadingScreenTip', parent=self.banner, relief=None, text='', text_scale=TTLocalizer.TLStip, textMayChange=1, pos=(-1.2, 0.0, 0.1), text_fg=(0.4, 0.3, 0.2, 1), text_wordwrap=13, text_align=TextNode.ALeft)
         self.title = DirectLabel(guiId='ToontownLoadingScreenTitle', parent=self.gui, relief=None, pos=(-1.06, 0, -0.77), text='', textMayChange=1, text_scale=0.08, text_fg=(0, 0, 0.5, 1), text_align=TextNode.ALeft)
-        self.waitBar = DirectWaitBar(guiId='ToontownLoadingScreenWaitBar', parent=self.gui, frameSize=(-1.06,
-         1.06,
-         -0.03,
-         0.03), pos=(0, 0, -0.85), text='')
-        return
+        self.waitBar = DirectWaitBar(guiId='ToontownLoadingScreenWaitBar', parent=self.gui, frameSize=(-1.06, 1.06, -0.03, 0.03), pos=(0, 0, -0.85), text='')
+
+# Logo on loading screen going to areas. ~FordTheWriter
+        self.logo = OnscreenImage('phase_3/maps/toontown-logo.png')
+        self.logo.reparentTo(self.gui)
+        self.logo.setScale(self.gui, (0.50, 1, 0.35))
+        self.logo.setTransparency(TransparencyAttrib.MAlpha)
+        self.logo.setZ(0.61)
 
     def destroy(self):
         self.tip.destroy()

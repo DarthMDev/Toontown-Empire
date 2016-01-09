@@ -3769,6 +3769,10 @@ OptionsPageTitle = 'Options'
 AdvancedOptionsPageTitle = 'Advanced'
 OptionsTabTitle = 'Options\n& Codes'
 OptionsPageExitToontown = 'Exit Toontown'
+OptionsPageMusicOnLabel = 'Music is on.'
+OptionsPageMusicOffLabel = 'Music is off.'
+OptionsPageSFXOnLabel = 'Sound Effects are on.'
+OptionsPageSFXOffLabel = 'Sound Effects are off.'
 OptionsPageMusic = 'Music Volume:'
 OptionsPageSFX = 'SFX Volume:'
 OptionsPageSFXOnLabel = 'Sound Effects are on.'
@@ -6136,7 +6140,7 @@ NPCToonNames = {20000: 'Tutorial Tom',
  5320: 'April',
  5321: 'Professor Ivy',
  5322: 'Fisherman Rose',
- 6000: 'Fisherman Melville',
+ 6000: 'Fisherman Frisk',
  8001: 'Graham Pree',
  8002: 'Ivona Race',
  8003: 'Anita Winn',
