@@ -1,9 +1,10 @@
 from direct.controls import ControlManager
 from direct.showbase.InputStateGlobal import inputState
 
-
+#This is the new class for Toontown's ControlManager
+#Had to override some functions in order to fix 'want-WASD'
 class ToontownControlManager(ControlManager.ControlManager):
-    wantWASD = base.wantWASD
+    wantWASD = base.wantWASD#Instead of checking config.prc, get wantWASD from ToonBase
     
     def __init__(self, enable=True, passMessagesThrough = False):
         self.passMessagesThrough = passMessagesThrough
@@ -29,6 +30,8 @@ class ToontownControlManager(ControlManager.ControlManager):
         
         self.isEnabled = 1
 
+        # keep track of what we do on the inputState so we can undo it later on
+        #self.inputStateTokens = []
         ist = self.inputStateTokens
         ist.append(inputState.watch("run", 'runningEvent', "running-on", "running-off"))
         
@@ -58,7 +61,7 @@ class ToontownControlManager(ControlManager.ControlManager):
             ist.append(inputState.watch("turnRight", "mouse-look_right", "mouse-look_right-done"))
             ist.append(inputState.watch("turnRight", "force-turnRight", "force-turnRight-stop"))
 
-        
+        # Jump controls
         if self.wantWASD:
             self.istWASD.append(inputState.watchWithModifiers("jump", "shift"))
         else:
@@ -84,7 +87,7 @@ class ToontownControlManager(ControlManager.ControlManager):
         for token in self.WASDTurnTokens:
             token.release()
 
-        if turn:
+        if turn:#If we want toons to be able to turn instead of sliding left to right
             self.WASDTurnTokens = (
                 inputState.watchWithModifiers("turnLeft", "a", inputSource=inputState.WASD),
                 inputState.watchWithModifiers("turnRight", "d", inputSource=inputState.WASD),
@@ -122,7 +125,7 @@ class ToontownControlManager(ControlManager.ControlManager):
         if self.currentControls:
             self.currentControls.disableAvatarControls()
             
-        if self.passMessagesThrough:        
+        if self.passMessagesThrough: # for not breaking toontown          
             if self.wantWASD:
                 print ':(ToontownControlManager) WASD support was enabled.'
                 self.istWASD.append(inputState.watchWithModifiers("forward", "w", inputSource=inputState.WASD))
@@ -136,9 +139,9 @@ class ToontownControlManager(ControlManager.ControlManager):
                 self.istNormal.append(inputState.watchWithModifiers("turnLeft", "arrow_left", inputSource=inputState.ArrowKeys))
                 self.istNormal.append(inputState.watchWithModifiers("turnRight", "arrow_right", inputSource=inputState.ArrowKeys))
             
-    def disableWASD(self):
+    def disableWASD(self):#Disables WASD for when chat is open.
         if self.wantWASD:
-            self.forceTokens=[
+            self.forceTokens=[#Forces all keys to return 0. This won't affect chat input.
                 inputState.force(
                   "jump", 0, 'ControlManager.disableWASD'),
                 inputState.force(
@@ -157,19 +160,19 @@ class ToontownControlManager(ControlManager.ControlManager):
             print 'disableWASD()'
                 
                 
-    def enableWASD(self):
+    def enableWASD(self):#Enables WASD after chat is closed.
         if self.wantWASD:
             if self.forceTokens:
-                for token in self.forceTokens:
+                for token in self.forceTokens:#Release all the forced keys we added earlier.
                     token.release()
                 self.forceTokens = []
                 print 'enableWASD'
                 
-    def reload(self):
-        self.wantWASD = base.wantWASD
+    def reload(self):#Called to reload the ControlManager ingame
+        self.wantWASD = base.wantWASD#Reload wantWASD if it was recently changed.
         if self.wantWASD:       
             for token in self.istNormal:
-                token.release()
+                token.release()#Release arrow key input
             self.istNormal = []
             self.inputStateTokens = []
             self.disable()
