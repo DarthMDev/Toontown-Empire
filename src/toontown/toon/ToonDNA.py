@@ -295,9 +295,7 @@ Shirts = ['phase_3/maps/desat_shirt_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_saveBuilding4.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_saveBuilding05.jpg',
  'phase_4/maps/tt_t_chr_avt_shirt_anniversary.jpg',
- 'phase_4/maps/PinkToberShirt.jpg',	#150 - PinkTober Shirt
- 'phase_4/maps/SplatterShirt.jpg', # 151 - Xentel NPC shirt
- 'phase_4/maps/SherlockHolmes_Shirt.png' # 152 - Sherlock Holmes Shirt
+ 'phase_4/maps/pbn_shirts.jpg'
 ]
 BoyShirts = [(0, 0),
  (1, 1),
@@ -481,9 +479,7 @@ Sleeves = ['phase_3/maps/desat_sleeve_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_saveBuilding4.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_saveBuilding05.jpg',
  'phase_4/maps/tt_t_chr_avt_shirtSleeve_anniversary.jpg',
- 'phase_4/maps/Pinktober_sleeve.jpg', #137 - Pinktober
- 'phase_4/maps/SplatterShirtSleeve.jpg', # 138 - Xentel NPC design
- 'phase_4/maps/SherlockHolmes_Sleeve.png'] # 139 - San's Shirt (Sherlock Holmes)
+ 'phase_4/maps/pbn_sleeve.jpg']
 BoyShorts = ['phase_3/maps/desat_shorts_1.jpg',
  'phase_3/maps/desat_shorts_2.jpg',
  'phase_3/maps/desat_shorts_4.jpg',
@@ -541,7 +537,7 @@ BoyShorts = ['phase_3/maps/desat_shorts_1.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_golf05.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_racing04.jpg',
  'phase_4/maps/tt_t_chr_avt_shorts_racing05.jpg',
- 'phase_4/maps/SplatterShorts.jpg']	# 57  Xentel NPC shorts
+ 'phase_4/maps/pbn_shorts.jpg']
 SHORTS = 0
 SKIRT = 1
 GirlBottoms = [('phase_3/maps/desat_skirt_1.jpg', SKIRT),
@@ -1188,9 +1184,6 @@ ShirtStyles = {'bss1': [0, 0, [(0, 0),
  'sa_ss53': [148, 135, [(27, 27)]],
  'sa_ss54': [149, 136, [(27, 27)]],
  'sa_ss55': [150, 137, [(27, 27)]],
- 'pinktober': [151, 138, [(27, 27)]], # Pinktober Shirt
- 'splat': [152, 139, [(27, 27)]], # Xentel Shirt (Splatter Shirt)
- 'san_1': [153, 140, [(27, 27)]], # San's Shirt (Sherlock Holmes)
  'sc_1': [97, 86, [(27, 27)]],
  'sc_2': [98, 86, [(27, 27)]],
  'sc_3': [99, 86, [(27, 27)]],
@@ -1595,7 +1588,8 @@ BottomStyles = {'bbs1': [0, [0,
  'sa_bs17': [53, [27]],
  'sa_bs18': [54, [27]],
  'sa_bs19': [55, [27]],
- 'splat1': [56, [27]],
+ 'sa_bs20': [56, [27]],
+ 'sa_bs21': [57, [27]],
  'sa_gs1': [29, [27]],
  'sa_gs2': [30, [27]],
  'sa_gs3': [31, [27]],
