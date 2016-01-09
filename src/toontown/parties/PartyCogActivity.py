@@ -72,7 +72,7 @@ class PartyCogActivity(DirectObject):
         self.arrows = []
         self.distanceLabels = []
         self.teamColors = list(PartyGlobals.CogActivityColors) + [PartyGlobals.TeamActivityStatusColor]
-        for i in xrange(3):
+        for i in range(3):
             start = self.arena.find('**/cog%d_start_locator' % (i + 1))
             end = self.arena.find('**/cog%d_end_locator' % (i + 1))
             cog = self.cogManager.generateCog(self.arena)
@@ -107,13 +107,13 @@ class PartyCogActivity(DirectObject):
     def _initArenaDoors(self):
         self._arenaDoors = (self.arena.find('**/doorL'), self.arena.find('**/doorR'))
         arenaDoorLocators = (self.arena.find('**/doorL_locator'), self.arena.find('**/doorR_locator'))
-        for i in xrange(len(arenaDoorLocators)):
+        for i in range(len(arenaDoorLocators)):
             arenaDoorLocators[i].wrtReparentTo(self._arenaDoors[i])
 
         self._arenaDoorTimers = (self.createDoorTimer(PartyGlobals.TeamActivityTeams.LeftTeam), self.createDoorTimer(PartyGlobals.TeamActivityTeams.RightTeam))
         self._arenaDoorIvals = [None, None]
         self._doorStartPos = []
-        for i in xrange(len(self._arenaDoors)):
+        for i in range(len(self._arenaDoors)):
             door = self._arenaDoors[i]
             timer = self._arenaDoorTimers[i]
             timer.reparentTo(arenaDoorLocators[i])
@@ -263,25 +263,25 @@ class PartyCogActivity(DirectObject):
             pos = self._doorStartPos[team]
         else:
             pos = (self._doorStartPos[team] + Point3(0, 0, -7.0),)
-        ival = self._arenaDoors[team].posInterval(0.75, Point3(0, 0, -7.0), blendType='easeIn')
+        ival = self._arenaDoors[team].posInterval(0.75, pos, blendType='easeIn')
         self._arenaDoorIvals[team] = ival
         ival.start()
         return
 
     def openArenaDoorForTeam(self, team):
-        self._playArenaDoorIval(team, opening=False)
+        self._playArenaDoorIval(team, opening=True)
 
     def closeArenaDoorForTeam(self, team):
         self._playArenaDoorIval(team, opening=False)
 
     def openArenaDoors(self):
         self.enableEnterGateCollision()
-        for i in xrange(len(self._arenaDoors)):
+        for i in range(len(self._arenaDoors)):
             self.openArenaDoorForTeam(i)
 
     def closeArenaDoors(self):
         self.disableEnterGateCollision()
-        for i in xrange(len(self._arenaDoors)):
+        for i in range(len(self._arenaDoors)):
             self.closeArenaDoorForTeam(i)
 
     def showArenaDoorTimers(self, duration):
@@ -370,7 +370,7 @@ class PartyCogActivity(DirectObject):
 
     def handleToonShifted(self, toon):
         toonId = toon.doId
-        if toonId in self.players:
+        if self.players.has_key(toonId):
             player = self.players[toonId]
             spot = self.activity.getIndex(toonId, player.team)
             pos = self.getPlayerStartPos(player.team, spot)
@@ -641,7 +641,7 @@ class PartyCogActivity(DirectObject):
         for point in points:
             point.setY(Y)
 
-        for i in xrange(len(arrows)):
+        for i in range(len(arrows)):
             arrow = arrows[i]
             arrow.draw(points[i].getPos(), cog.root.getPos(), animate=False)
             arrow.unstash()

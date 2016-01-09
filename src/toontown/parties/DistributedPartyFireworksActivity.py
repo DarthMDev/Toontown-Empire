@@ -35,7 +35,7 @@ class DistributedPartyFireworksActivity(DistributedPartyActivity, FireworkShowMi
     def setShowStyle(self, showStyle):
         DistributedPartyFireworksActivity.notify.debug('setShowStyle( %d )' % showStyle)
         self.showStyle = showStyle
-
+    
     def setSongId(self, songId):
         self.songId = songId
 
@@ -48,7 +48,7 @@ class DistributedPartyFireworksActivity(DistributedPartyActivity, FireworkShowMi
         self.launchPadModel.setPos(0.0, -18.0, 0.0)
         self.launchPadModel.reparentTo(self.root)
         railingsCollection = self.launchPadModel.findAllMatches('**/launchPad_mesh/*railing*')
-        for i in xrange(railingsCollection.getNumPaths()):
+        for i in range(railingsCollection.getNumPaths()):
             railingsCollection[i].setAttrib(AlphaTestAttrib.make(RenderAttrib.MGreater, 0.75))
 
         leverLocator = self.launchPadModel.find('**/RocketLever_locator')

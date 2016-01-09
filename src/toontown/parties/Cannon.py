@@ -1,5 +1,5 @@
 import math
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.interval.MetaInterval import Sequence, Parallel
 from direct.interval.FunctionInterval import Func
 from direct.interval.LerpInterval import LerpScaleInterval, LerpColorScaleInterval

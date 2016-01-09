@@ -1,9 +1,8 @@
 import math
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from direct.task.Task import Task
-from panda3d.core import PythonTask
 from toontown.toontowngui import TTDialog
 from toontown.toonbase.ToonBaseGlobal import *
 from toontown.toonbase import ToontownGlobals
@@ -245,7 +244,7 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
             self.flyingToonCloudsHit = 0
         cannon.updateModel(zRot, angle)
         toonId = cannon.getToonInside().doId
-        task = PythonTask(self.__fireCannonTask)
+        task = Task(self.__fireCannonTask)
         task.toonId = toonId
         task.cannon = cannon
         taskMgr.add(task, self.taskNameFireCannon)
@@ -268,7 +267,7 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
             self.notify.debug('start velocity: ' + str(startVel))
             self.notify.debug('time of launch: ' + str(launchTime))
         cannon.removeToonReadyToFire()
-        shootTask = PythonTask(self.__shootTask, self.taskNameShoot)
+        shootTask = Task(self.__shootTask, self.taskNameShoot)
         shootTask.info = {'toonId': toonId,
          'cannon': cannon}
         if self.isLocalToonId(toonId):
@@ -301,7 +300,7 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
             info['toon'] = self.localFlyingToon
             info['hRot'] = cannon.getRotation()
             camera.wrtReparentTo(self.localFlyingToon)
-            flyTask = PythonTask(self.__localFlyTask, self.taskNameFly)
+            flyTask = Task(self.__localFlyTask, self.taskNameFly)
             flyTask.info = info
             seqTask = Task.sequence(shootTask, flyTask)
             self.__startCollisionHandler()
@@ -950,5 +949,5 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
 
     def handleToonExited(self, toonId):
         self.notify.debug('DistributedPartyCannonActivity handleToonExited( toonId=%s ) ' % toonId)
-        if toonId in self.cr.doId2do:
+        if self.cr.doId2do.has_key(toonId):
             self.notify.warning('handleToonExited is not defined')
