@@ -1505,8 +1505,8 @@ class CatalogGenerator:
                 weeklyCatalog += self.__selectItem(avatar, nextAvailableCloset, monthlyCatalog, saleItem=0)
 #            if nextAvailableBank not in schedule:
 #                weeklyCatalog += self.__selectItem(avatar, nextAvailableBank, monthlyCatalog, saleItem = 0)
-            if nextAvailableTank not in schedule:
-                weeklyCatalog += self.__selectItem(avatar, nextAvailableTank, monthlyCatalog, saleItem = 0)
+            #if nextAvailableTank not in schedule:
+                #weeklyCatalog += self.__selectItem(avatar, nextAvailableTank, monthlyCatalog, saleItem = 0)
             if nextAvailablePole not in schedule:
                 weeklyCatalog += self.__selectItem(avatar, nextAvailablePole, monthlyCatalog, saleItem = 0)
         
@@ -1745,8 +1745,8 @@ class CatalogGenerator:
                     item = getAllClosets()
 #                elif item == nextAvailableBank:
 #                    item = getAllBanks()
-                elif item == nextAvailableTank:
-                    item == getAllTanks()
+                #elif item == nextAvailableTank:
+                    #item == getAllTanks()
                 elif item == get50ItemCloset:
                     item = getMaxClosets()
                 else:

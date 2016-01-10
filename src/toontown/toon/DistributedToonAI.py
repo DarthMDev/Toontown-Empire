@@ -4449,6 +4449,17 @@ def maxToon(missingTrack=None):
     target.b_setMoney(target.getMaxMoney())
     target.b_setBankMoney(target.getMaxBankMoney())
 
+    # Give them all the summons and pink slips
+    numSuits = len(SuitDNA.suitHeadTypes)
+    fullSetForSuit = 1 | 2 | 4 | 8 | 16 | 32
+    allSummons = numSuits * [fullSetForSuit]
+    target.b_setCogSummonsEarned(allSummons)
+    target.b_setPinkSlips(255)
+
+   # Give them all the Unites
+    uvalue = 32767
+    target.restockAllResistanceMessages(uvalue)
+
     # Finally, unlock all of their pet phrases:
     if simbase.wantPets:
         target.b_setPetTrickPhrases(range(7))
