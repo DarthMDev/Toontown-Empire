@@ -51,7 +51,6 @@ from toontown.toonbase import ToontownGlobals
 from toontown.tutorial.TutorialManagerAI import TutorialManagerAI
 from toontown.uberdog.DistributedPartyManagerAI import DistributedPartyManagerAI
 from toontown.uberdog.TopToonsManagerAI import TopToonsManagerAI
-from toontown.uberdog.TopToonsManagerUD import TopToonsManagerUD
 #from toontown.uberdog.DistributedLobbyManagerAI import DistributedLobbyManagerAI
 import threading
 
@@ -121,8 +120,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.codeRedemptionMgr.generateWithRequired(2)
         self.buildingQueryMgr = DistributedBuildingQueryMgrAI(self)
         self.buildingQueryMgr.generateWithRequired(2)
-        if self.wantTopToons:
-            self.topToonsMgr = TopToonsManagerAI(self)
+        self.topToonsMgr = TopToonsManagerAI(self)
         if self.wantKarts:
             self.leaderboardMgr = LeaderboardMgrAI(self)
         if self.wantFishing:
