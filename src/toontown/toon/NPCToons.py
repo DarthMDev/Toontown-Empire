@@ -57,7 +57,7 @@ NPC_SPECIALQUESTGIVER = 9
 NPC_FLIPPYTOONHALL = 10
 NPC_SCIENTIST = 11
 NPC_GLOVE = 12
-NPC_LAFF_RESTOCK = 13
+# NPC_LAFF_RESTOCK = 13
 QUEST_COUNTDOWN_TIME = 120
 CLERK_COUNTDOWN_TIME = 120
 TAILOR_COUNTDOWN_TIME = 300
@@ -80,7 +80,7 @@ def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
     import DistributedNPCFlippyInToonHallAI
     import DistributedNPCScientistAI
     import DistributedNPCGloveAI
-    import DistributedNPCLaffRestockAI
+    #import DistributedNPCLaffRestockAI
     canonicalZoneId, name, dnaType, gender, protected, type = desc
     if type == NPC_REGULAR:
         npc = DistributedNPCToonAI.DistributedNPCToonAI(air, npcId, questCallback=questCallback)
@@ -108,8 +108,8 @@ def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
         npc = DistributedNPCScientistAI.DistributedNPCScientistAI(air, npcId)
     elif type == NPC_GLOVE:
         npc = DistributedNPCGloveAI.DistributedNPCGloveAI(air, npcId)
-    elif type == NPC_LAFF_RESTOCK:
-        npc = DistributedNPCLaffRestockAI.DistributedNPCLaffRestockAI(air, npcId)
+    #elif type == NPC_LAFF_RESTOCK:
+        #npc = DistributedNPCLaffRestockAI.DistributedNPCLaffRestockAI(air, npcId)
     else:
         print 'Invalid NPC type: %s' % type
     npc.setName(name)
@@ -860,12 +860,12 @@ NPCToonDict = {
  7021: (-1, lnames[7021], ('fsl', 'ls', 'm', 'm', 17, 0, 17, 17, 4, 4, 0, 0, 0, 10), 'm', 0, NPC_REGULAR),
  7022: (-1, lnames[7022], ('mss', 'sd', 's', 'f', 24, 0, 24, 24, 3, 1, 0, 0, 0, 13), 'f', 0, NPC_REGULAR),
  7023: (-1, lnames[7023], ('pss', 'sd', 'l', 'f', 9, 0, 9, 9, 0, 8, 0, 0, 11, 0), 'f', 0, NPC_REGULAR),
- 10001: (10000, lnames[10001], 'r', 'f', 0, NPC_LAFF_RESTOCK),
+ #10001: (10000, lnames[10001], 'r', 'f', 0, NPC_LAFF_RESTOCK),
  10002: (-1, lnames[10002], ('sls', 'ss', 'm', 'm', 15, 0, 15, 15, 111, 27, 97, 27, 41, 27), 'm', 0, NPC_REGULAR),
- 11001: (11000, lnames[11001], 'r', 'm', 0, NPC_LAFF_RESTOCK),
- 12001: (12000, lnames[12001], 'r', 'm', 0, NPC_LAFF_RESTOCK),
+ #11001: (11000, lnames[11001], 'r', 'm', 0, NPC_LAFF_RESTOCK),
+ #12001: (12000, lnames[12001], 'r', 'm', 0, NPC_LAFF_RESTOCK),
  12002: (-1, lnames[12002], ('pls', 'ls', 'l', 'f', 3, 0, 3, 3, 111, 27, 97, 27, 45, 27), 'f', 0, NPC_REGULAR),
- 13001: (13000, lnames[13001], 'r', 'f', 0, NPC_LAFF_RESTOCK),
+ #13001: (13000, lnames[13001], 'r', 'f', 0, NPC_LAFF_RESTOCK),
  13002: (-1, lnames[13002], ('bss', 'ss', 'm', 'm', 19, 0, 19, 19, 0, 3, 0, 3, 1, 16), 'm', 0, NPC_REGULAR)
 }
 
@@ -875,10 +875,10 @@ else:
     NPCToonDict[2001] = (2513, lnames[2001], ('dss', 'ms', 'm', 'm', 17, 0, 17, 17, 3, 3, 3, 3, 7, 2), 'm', 1, NPC_REGULAR)
 
 BlockerPositions = {TTLocalizer.Flippy: (Point3(207.4, 18.81, -0.475), 90.0)}
-LaffRestockPositions = {lnames[11001]: ((-27.0, -170.0, -19.6), 215.0),
-                        lnames[12001]: ((361.9, -394.4, -23.5), 120.0),
-                        lnames[13001]: ((143.7, -381.4, -68.4), 0.0),
-                        lnames[10001]: ((135.0, 128.8, 0.025), -212.8)}
+#LaffRestockPositions = {lnames[11001]: ((-27.0, -170.0, -19.6), 215.0),
+                        #lnames[12001]: ((361.9, -394.4, -23.5), 120.0),
+                        #lnames[13001]: ((143.7, -381.4, -68.4), 0.0),
+                        #lnames[10001]: ((135.0, 128.8, 0.025), -212.8)}
 GlovePositions = {lnames[2021]: ((101, -14, 4), -305)}
 del lnames
 zone2NpcDict = {}
