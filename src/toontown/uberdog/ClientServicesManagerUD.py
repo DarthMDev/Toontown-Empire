@@ -955,7 +955,7 @@ class LoadAvatarFSM(AvatarOperationFSM):
         self.csm.air.send(datagram)
 
         # Tell the GlobalPartyManager as well:
-        self.csm.air.globalPartyMgr.avatarJoined(self.avId)
+        self.csm.air.globalPartyMgr.avatarJoined(self.avId, friendsList=[])
         
         fields = self.avatar
         fields.update({'setAdminAccess': [self.account.get('ACCESS_LEVEL', 100)]})
