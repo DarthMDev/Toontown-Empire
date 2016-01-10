@@ -20,10 +20,7 @@ model-path /
 
 # Server:
 server-version TTE-Alpha-1.0.0
-min-access-level 700
 accountdb-type developer
-shard-low-pop 50
-shard-mid-pop 100
 
 # RPC:
 want-rpc-server #f

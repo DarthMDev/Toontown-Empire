@@ -51,6 +51,7 @@ from toontown.toonbase import ToontownGlobals
 from toontown.tutorial.TutorialManagerAI import TutorialManagerAI
 from toontown.uberdog.DistributedPartyManagerAI import DistributedPartyManagerAI
 from toontown.uberdog.TopToonsManagerAI import TopToonsManagerAI
+from toontown.uberdog.TopToonsManagerUD import TopToonsManagerUD
 #from toontown.uberdog.DistributedLobbyManagerAI import DistributedLobbyManagerAI
 import threading
 

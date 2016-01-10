@@ -68,7 +68,7 @@ if accountDBType == 'remote':
 
     hashSize = len(hashAlgo('').digest())
 
-minAccessLevel = config.GetInt('min-access-level', 100)
+minAccessLevel = config.GetInt('min-access-level', 0)
 
 def executeHttpRequest(url, **extras):
     # TO DO: THIS IS QUITE DISGUSTING
@@ -958,7 +958,7 @@ class LoadAvatarFSM(AvatarOperationFSM):
         self.csm.air.globalPartyMgr.avatarJoined(self.avId, friendsList=[])
         
         fields = self.avatar
-        fields.update({'setAdminAccess': [self.account.get('ACCESS_LEVEL', 100)]})
+        fields.update({'setAdminAccess': [self.account.get('ACCESS_LEVEL', 0)]})
         self.csm.air.friendsManager.addToonData(self.avId, fields)        
 
         self.csm.air.writeServerEvent('avatarChosen', self.avId, self.target)
@@ -987,7 +987,7 @@ class LoadAvatarFSM(AvatarOperationFSM):
         # Activate the avatar on the DBSS:
         self.csm.air.sendActivate(
             self.avId, 0, 0, self.csm.air.dclassesByName['DistributedToonUD'],
-            {'setAdminAccess': [self.account.get('ACCESS_LEVEL', 100)]})
+            {'setAdminAccess': [self.account.get('ACCESS_LEVEL', 0)]})
 
         # Next, add them to the avatar channel:
         datagram = PyDatagram()
