@@ -1612,7 +1612,10 @@ GloveCost = 2000
 BMovementSpeed = 0
 BMovementSpeedMultiplier = 1.3
 
-BugReportSite = 'https://bugs.launchpad.net/toontown-united/+filebug'
+BGagAccuracy = 1
+BGagAccuracyMultiplier = 1.3
+
+BugReportSite = 'https://www.toontownempire.com'
 NPCCollisionDelay = 2.5
 
 CostPerLaffRestock = 3
