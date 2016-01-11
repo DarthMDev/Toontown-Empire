@@ -22,7 +22,7 @@ from direct.showbase import PythonUtil
 from toontown.toon import NPCToons
 from direct.task import Task
 from toontown.makeatoon.TTPickANamePattern import TTPickANamePattern
-from panda3d.core import TextEncoder
+from pandac.PandaModules import TextEncoder
 MAX_NAME_WIDTH = TTLocalizer.NSmaxNameWidth
 ServerDialogTimeout = 3.0
 
@@ -87,7 +87,7 @@ class NameShop(StateData.StateData):
         self.parentFSM.getStateNamed('NameShop').addChild(self.fsm)
         self.nameGen = NameGenerator.NameGenerator()
         self.fsm.enterInitialState()
-        self.requestingSkipTutorial = True
+        self.requestingSkipTutorial = False
         return
 
     def makeLabel(self, te, index, others):
@@ -550,7 +550,7 @@ class NameShop(StateData.StateData):
     def __handleChastised(self):
         self.chastiseDialog.cleanup()
 
-    def __createAvatar(self, skipTutorial=True, *args):
+    def __createAvatar(self, skipTutorial = False, *args):
         self.notify.debug('__createAvatar')
         if self.fsm.getCurrentState().getName() == 'TypeAName':
             self.__typedAName()
@@ -884,7 +884,7 @@ class NameShop(StateData.StateData):
                 self.notify.debug("name typed accepted but didn't fill any return fields")
                 self.rejectName(TTLocalizer.NameError)
 
-    def serverCreateAvatar(self, skipTutorial=True):
+    def serverCreateAvatar(self, skipTutorial = False):
         self.notify.debug('serverCreateAvatar')
         style = self.toon.getStyle()
         self.newDNA = style.makeNetString()
@@ -942,7 +942,7 @@ class NameShop(StateData.StateData):
 
     def __isFirstTime(self):
         if self.makeAToon.warp:
-            self.promptTutorial()
+            self.__createAvatar()
         else:
             self.promptTutorial()
 
@@ -955,6 +955,7 @@ class NameShop(StateData.StateData):
             self.notify.debug('enterTutorial')
             if base.config.GetBool('want-qa-regression', 0):
                 self.notify.info('QA-REGRESSION: ENTERTUTORIAL: Enter Tutorial')
+            self.__createAvatar()
         else:
             self.notify.debug('skipTutorial')
             if base.config.GetBool('want-qa-regression', 0):
