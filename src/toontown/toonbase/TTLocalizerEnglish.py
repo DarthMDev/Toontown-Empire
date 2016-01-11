@@ -601,7 +601,7 @@ QuestDialogDict = {
        LEAVING: QuestsDefaultLeaving},
  400: {GREETING: '',
        QUEST: 'You will need more gags to fight higher level Cogs.\x07When you team up with other Toons against the Cogs, you can combine attacks for even more damage.\x07Try different combinations of gags to see what works best.\x07When you are ready to decide, come back here and choose.',
-       INCOMPLETE_PROGRESS 'Back so soon?  Okay, are you ready to choose?',
+       INCOMPLETE_PROGRESS: 'Back so soon?  Okay, are you ready to choose?',
        INCOMPLETE_WRONG_NPC: 'Think about your decision before choosing.',
        COMPLETE: 'Good decision.  Now before you can use those gags, you must train for them.\x07You must complete a series of ToonTasks for training.\x07Each task will give you a single frame of your gag attack animation.\x07When you collect all 15, you can get the Final Gag Training task that will allow you to use your new gags.\x07You can check your progress in the Shticker Book.',
        LEAVING: QuestsDefaultLeaving},
