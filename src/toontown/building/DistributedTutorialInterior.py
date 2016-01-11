@@ -10,8 +10,6 @@ from direct.distributed import DistributedObject
 import random
 import ToonInteriorColors
 from toontown.hood import ZoneUtil
-from toontown.suit import SuitDNA
-from toontown.suit import Suit
 from toontown.quest import QuestParser
 from toontown.toon import DistributedNPCSpecialQuestGiver
 from toontown.toonbase import TTLocalizer
@@ -34,11 +32,6 @@ class DistributedTutorialInterior(DistributedObject.DistributedObject):
         del self.street
         self.sky.removeNode()
         del self.sky
-        self.suitWalkTrack.finish()
-        del self.suitWalkTrack
-        self.suit.delete()
-        del self.suit
-        self.ignore('enterTutorialInterior')
 
         DistributedObject.DistributedObject.disable(self)
 
@@ -124,34 +117,9 @@ class DistributedTutorialInterior(DistributedObject.DistributedObject):
         if not npcOrigin.isEmpty():
             self.cr.doId2do[self.npcId].reparentTo(npcOrigin)
             self.cr.doId2do[self.npcId].clearMat()
-        self.createSuit()
         base.localAvatar.setPosHpr(-2, 12, 0, -10, 0, 0)
         self.cr.doId2do[self.npcId].setChatAbsolute(TTLocalizer.QuestScript101_0, CFSpeech)
-        place = base.cr.playGame.getPlace()
-        if place and hasattr(place, 'fsm') and place.fsm.getCurrentState().getName():
-            self.notify.info('Tutorial movie: Place ready.')
-            self.playMovie()
-        else:
-            self.notify.info('Tutorial movie: Waiting for place=%s, has fsm=%s' % (place, hasattr(place, 'fsm')))
-            if hasattr(place, 'fsm'):
-                self.notify.info('Tutorial movie: place state=%s' % place.fsm.getCurrentState().getName())
-            self.acceptOnce('enterTutorialInterior', self.playMovie)
 
-    def playMovie(self):
-        self.notify.info('Tutorial movie: Play.')
-
-    def createSuit(self):
-        self.suit = Suit.Suit()
-        suitDNA = SuitDNA.SuitDNA()
-        suitDNA.newSuit('f')
-        self.suit.setDNA(suitDNA)
-        self.suit.nametag3d.stash()
-        self.suit.nametag.destroy()
-        self.suit.loop('neutral')
-        self.suit.setPosHpr(-20, 8, 0, 0, 0, 0)
-        self.suit.reparentTo(self.interior)
-        self.suitWalkTrack = Sequence(self.suit.hprInterval(0.1, Vec3(0, 0, 0)), Func(self.suit.loop, 'walk'), self.suit.posInterval(2, Point3(-20, 20, 0)), Func(self.suit.loop, 'neutral'), Wait(1.0), self.suit.hprInterval(0.1, Vec3(180, 0, 0)), Func(self.suit.loop, 'walk'), self.suit.posInterval(2, Point3(-20, 10, 0)), Func(self.suit.loop, 'neutral'), Wait(1.0))
-        self.suitWalkTrack.loop()
 
     def setZoneIdAndBlock(self, zoneId, block):
         self.zoneId = zoneId

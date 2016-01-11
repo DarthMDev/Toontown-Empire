@@ -8661,6 +8661,7 @@ CEOSpeech = [
  "Wait, what's going on? I can't see but I hear explosions."
 ] # Len of words + 10
 
+TutorialWelcome = 'Welcome to a new\nToontown experience!\nWith Toontown Empire'
 CrateRewardMessage1 = 'Nice! You have earned a crate! It will arrive in your mailbox shortly.'
 CrateRewardMessage2 = 'You can open it with keys from boss battles.'
 CrateRewardMessages = [CrateRewardMessage1, CrateRewardMessage2]
