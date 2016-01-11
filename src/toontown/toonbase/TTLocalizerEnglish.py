@@ -551,12 +551,6 @@ INCOMPLETE_PROGRESS = 3
 INCOMPLETE_WRONG_NPC = 4
 COMPLETE = 5
 LEAVING = 6
-TheBrrrghTrackQuestDict = {GREETING: '',
- QUEST: 'Now you are ready.\x07Go out and walk the earth until you know which track you would like to choose.\x07Choose wisely, because this is your final track.\x07When you are certain, return to me.',
- INCOMPLETE_PROGRESS: 'Choose wisely.',
- INCOMPLETE_WRONG_NPC: 'Choose wisely.',
- COMPLETE: 'Very wise choice!',
- LEAVING: 'Good luck.  Return to me when you have mastered your new skill.'}
 QuestDialog_3225 = {QUEST: "Oh, thanks for coming, _avName_!\x07The Cogs in the neighborhood frightened away my delivery person.\x07I don't have anyone to deliver this salad to _toNpcName_!\x07Can you do it for me? Thanks so much!_where_"}
 QuestDialog_2910 = {QUEST: 'Back so soon?\x07Great job on the spring.\x07The final item is a counter weight.\x07Stop by and see _toNpcName_ and bring back whatever you can get._where_'}
 QuestDialogDict = {
@@ -606,7 +600,7 @@ QuestDialogDict = {
        COMPLETE: 'Hope you have fun ordering things from Clarabelle!\x07I just finished redecorating my house. It looks Toontastic!\x07Keep doing ToonTasks to get more rewards!',
        LEAVING: QuestsDefaultLeaving},
  400: {GREETING: '',
-       QUEST: 'Throw and Squirt are great, but you will need more gags to fight higher level Cogs.\x07When you team up with other Toons against the Cogs, you can combine attacks for even more damage.\x07Try different combinations of gags to see what works best.\x07For your next track, choose between Sound and Toonup.\x07Sound is special because when it hits, it damages all Cogs.\x07Toonup lets you heal other Toons in battle.\x07When you are ready to decide, come back here and choose.',
+       QUEST: 'You will need more gags to fight higher level Cogs.\x07When you team up with other Toons against the Cogs, you can combine attacks for even more damage.\x07Try different combinations of gags to see what works best.\x07When you are ready to decide, come back here and choose.',
        INCOMPLETE_PROGRESS: 'Back so soon?  Okay, are you ready to choose?',
        INCOMPLETE_WRONG_NPC: 'Think about your decision before choosing.',
        COMPLETE: 'Good decision.  Now before you can use those gags, you must train for them.\x07You must complete a series of ToonTasks for training.\x07Each task will give you a single frame of your gag attack animation.\x07When you collect all 15, you can get the Final Gag Training task that will allow you to use your new gags.\x07You can check your progress in the Shticker Book.',
@@ -972,18 +966,22 @@ QuestDialogDict = {
         INCOMPLETE_PROGRESS: 'It seems you may not be so clever with the rod and reel.'},
  5250: {GREETING: '',
         LEAVING: '',
+        COMPLETE: 'Now you are ready.\x07Good luck.  Return to me when you have mastered your new skill.',
         QUEST: 'Aha!  These dice will look great hanging from the rearview mirror of my ox cart!\x07Now, show me that you can tell your enemies from one another.\x07Return when you have restored two of the tallest Lawbot buildings.',
         INCOMPLETE_PROGRESS: 'Do the buildings give you trouble?'},
  5258: {GREETING: '',
         LEAVING: '',
+        COMPLETE: 'Now you are ready.\x07Good luck.  Return to me when you have mastered your new skill.',
         QUEST: 'Aha!  These dice will look great hanging from the rearview mirror of my ox cart!\x07Now, show me that you can tell your enemies from one another.\x07Return when you have restored two of the tallest Bossbot buildings.',
         INCOMPLETE_PROGRESS: 'Do the buildings give you trouble?'},
  5259: {GREETING: '',
         LEAVING: '',
+        COMPLETE: 'Now you are ready.\x07Good luck.  Return to me when you have mastered your new skill.',
         QUEST: 'Aha!  These dice will look great hanging from the rearview mirror of my ox cart!\x07Now, show me that you can tell your enemies from one another.\x07Return when you have restored two of the tallest Cashbot buildings.',
         INCOMPLETE_PROGRESS: 'Do the buildings give you trouble?'},
  5260: {GREETING: '',
         LEAVING: '',
+        COMPLETE: 'Now you are ready.\x07Good luck.  Return to me when you have mastered your new skill.',
         QUEST: 'Aha!  These dice will look great hanging from the rearview mirror of my ox cart!\x07Now, show me that you can tell your enemies from one another.\x07Return when you have restored two of the tallest Sellbot buildings.',
         INCOMPLETE_PROGRESS: 'Do the buildings give you trouble?'},
  5200: {QUEST: 'Those sneaky Cogs are at it again.\x07_toNpcName_ has reported another missing item. Stop by and see if you can straighten it out._where_'},
@@ -8460,6 +8458,9 @@ LanguageSelectorAvailable = 'Available languages:'
 LanguageSelectorBack = 'Back'
 LanguageSelectorConfirm = 'Are you sure you want to change your language to %s? This will close your game.'
 LanguageSelectorSameLanguage = "You're already using that language!"
+PickTrackTitle = 'Pick your third track!'
+PickTrackNotice = 'Choose a track!'
+UnknownTrack = 'None'
 CogLevelLabelOn = 'The cog level GUI is on.'
 CogLevelLabelOff = 'The cog level GUI is off.'
 
@@ -8471,7 +8472,9 @@ BugReportNotice = 'Attention!\n\nThis button will open a browser which will send
 
 buffIdStrings = {
   0: ('Your movement speed will be slightly increased for the next %d %s.',
-      'Reward: Increased movement speed')
+      'Reward: Increased movement speed'),
+  1: ('Your gag accuracy will be slightly increased for the next %d %s.',
+      'Reward: Increased gag accuracy')
 }
 
 def getBuffString(buffId, buffTime):
@@ -8501,6 +8504,11 @@ def getPetName(uniqueID):
     except:
         return PetNameDictionary[0]
 
+
+def getPropNameById(id):
+    if id == 0:
+        return MovieNPCSOSTo
+
 def getRandomPetName(gender = None, seed = None):
     if seed is not None:
         random.seed(seed)
@@ -8521,6 +8529,7 @@ def getPetNameId(name):
 
     return 0
 
+PropIdToName = [InventoryHealString, MovieNPCSOSTrap, MovieNPCSOSLure, MovieNPCSOSSound, MovieNPCSOSThrow, MovieNPCSOSSquirt, MovieNPCSOSDrop]
 DonaldChatter = ["I'm glad you're here today!",
  "You look like you're having fun.",
  "Oh boy, I'm having a good day.",
