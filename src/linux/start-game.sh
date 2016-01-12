@@ -1,6 +1,6 @@
 #!/bin/sh
 cd ..
-
+export PYTHONPATH=dependencies/linux:$PYTHONPATH
 # Get the user input:
 read -p "Username: " tteUsername
 read -p "Gameserver (DEFAULT:  127.0.0.1): " TTE_GAMESERVER
