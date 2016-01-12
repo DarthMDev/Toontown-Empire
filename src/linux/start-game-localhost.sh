@@ -1,6 +1,7 @@
 #!/bin/sh
 cd ..
 cd ..
+export PYTHONPATH=dependencies/linux:$PYTHONPATH
 # Get the user input:
 read -p "Username: " tteUsername
 
