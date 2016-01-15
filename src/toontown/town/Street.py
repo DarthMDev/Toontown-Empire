@@ -72,6 +72,7 @@ class Street(BattlePlace.BattlePlace):
          State.State('elevatorIn', self.enterElevatorIn, self.exitElevatorIn, ['walk']),
          State.State('elevator', self.enterElevator, self.exitElevator, ['walk']),
          State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk',
+          'stopped',
           'teleportOut',
           'quietZone',
           'WaitForBattle',

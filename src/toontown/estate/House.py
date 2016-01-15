@@ -21,7 +21,7 @@ class House(Place.Place):
         self.dnaFile = 'phase_7/models/modules/toon_interior'
         self.isInterior = 1
         self.oldStyle = None
-        self.fsm = ClassicFSM.ClassicFSM('House', [State.State('start', self.enterStart, self.exitStart, ['doorIn', 'teleportIn', 'tutorial']),
+        self.fsm = ClassicFSM.ClassicFSM('House', [State.State('start', self.enterStart, self.exitStart, ['doorIn', 'teleportIn']),
          State.State('walk', self.enterWalk, self.exitWalk, ['sit',
           'stickerBook',
           'doorOut',
@@ -48,7 +48,6 @@ class House(Place.Place):
          State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk']),
          State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn']),
          State.State('quest', self.enterQuest, self.exitQuest, ['walk', 'doorOut']),
-         State.State('tutorial', self.enterTutorial, self.exitTutorial, ['walk', 'quest']),
          State.State('purchase', self.enterPurchase, self.exitPurchase, ['walk', 'doorOut']),
          State.State('closet', self.enterCloset, self.exitCloset, ['walk']),
          State.State('banking', self.enterBanking, self.exitBanking, ['walk']),
@@ -96,15 +95,7 @@ class House(Place.Place):
     def getZoneId(self):
         return self.zoneId
 
-    def enterTutorial(self, requestStatus):
-        self.fsm.request('walk')
-        base.localAvatar.b_setParent(ToontownGlobals.SPRender)
-        globalClock.tick()
-        base.transitions.irisIn()
-        messenger.send('enterTutorialInterior')
 
-    def exitTutorial(self):
-        pass
 
     def enterTeleportIn(self, requestStatus):
         base.localAvatar.setPosHpr(2.5, 11.5, ToontownGlobals.FloorOffset, 45.0, 0.0, 0.0)
