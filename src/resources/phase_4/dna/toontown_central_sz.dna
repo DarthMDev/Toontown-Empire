@@ -851,22 +851,28 @@ group "toontownCentral" [
       width [ 19.1721 ]
       height [ 19.1721 ]
       text [
-       letters [ "m" ]
+       letters [ "f" ]
+      ]
+      text [
+       letters [ "l" ]
       ]
       text [
        letters [ "i" ]
       ]
       text [
-       letters [ "c" ]
+       letters [ "p" ]
       ]
       text [
-       letters [ "k" ]
-      ]
-      text [
-       letters [ "e" ]
+       letters [ "p" ]
       ]
       text [
        letters [ "y" ]
+      ]
+      text [
+       letters [ "'" ]
+      ]
+      text [
+       letters [ "s" ]
       ]
      ]
     ]
