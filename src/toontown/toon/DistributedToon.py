@@ -17,9 +17,9 @@ import Experience
 import InventoryNew
 import TTEmote
 import Toon
+
 from otp.ai.MagicWordGlobal import *
-from otp.avatar import Avatar, DistributedAvatar
-from otp.avatar import DistributedPlayer
+from otp.avatar import Avatar, DistributedAvatar, DistributedPlayer
 from otp.chat import TalkAssistant, ChatUtil
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPLocalizer

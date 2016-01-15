@@ -54,8 +54,3 @@ want-instant-delivery #t
 cogdo-pop-factor 1.5
 cogdo-ratio 0.5
 default-directnotify-level info
-
-# Crates:
-dont-destroy-crate #f
-get-key-reward-always #f
-get-crate-reward-always #f

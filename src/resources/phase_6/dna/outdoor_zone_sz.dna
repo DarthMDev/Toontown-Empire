@@ -241,7 +241,7 @@ group "daisysGarden" [
     code [ "TT_Comedy" ]
     color [ 0.439216 0.247059 0.184314 1 ]
     pos [ 0 0 -1.2 ]
-    scale [ 1.2 1 1.2 ]
+    scale [ 0.9 1 0.9 ]
     wiggle [ 3 ]
     stomp [ 0.0367716 ]
     text [
@@ -276,6 +276,10 @@ group "daisysGarden" [
     ]
     text [
      letters [ "S" ]
+    ]
+    text [
+     letters [ "S" ]
+    ]
     text [
      letters [ "W" ]
     ]
@@ -284,9 +288,8 @@ group "daisysGarden" [
     ]
     text [
      letters [ "Y" ]
-      ]
-     ]
     ]
    ]
   ]
  ]
+]
