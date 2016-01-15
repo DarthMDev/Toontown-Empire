@@ -15,7 +15,7 @@ import random
 import time
 import Experience
 import InventoryNew
-import ttemote
+import TTEmote
 import Toon
 from otp.ai.MagicWordGlobal import *
 from otp.avatar import Avatar, DistributedAvatar
