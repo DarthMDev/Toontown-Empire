@@ -750,7 +750,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.sendUpdate('setEmoteState', [animIndex, animMultiplier, timestamp])
 
     def setEmoteState(self, animIndex, animMultiplier, timestamp = None):
-        if animIndex == ttemote.EmoteClear:
+        if animIndex == TTEmote.EmoteClear:
             return
         if timestamp == None:
             ts = 0.0
