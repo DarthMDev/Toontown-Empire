@@ -56,6 +56,6 @@ cogdo-ratio 0.5
 default-directnotify-level info
 
 # Crates:
-dont-destroy-crate #t
-get-key-reward-always #t
-get-crate-reward-always #t
+dont-destroy-crate #f
+get-key-reward-always #f
+get-crate-reward-always #f

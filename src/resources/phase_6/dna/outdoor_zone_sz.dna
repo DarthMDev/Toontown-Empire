@@ -245,39 +245,48 @@ group "daisysGarden" [
     wiggle [ 3 ]
     stomp [ 0.0367716 ]
     text [
-     letters [ " " ]
+     letters [ "C" ]
+    ]
+    text [
+     letters [ "O" ]
+    ]
+    text [
+     letters [ "M" ]
+    ]
+    text [
+     letters [ "E" ]
+    ]
+    text [
+     letters [ "D" ]
+    ]
+    text [
+     letters [ "Y" ]
     ]
     text [
      letters [ " " ]
     ]
     text [
-     letters [ " " ]
+     letters [ "C" ]
     ]
     text [
-     letters [ " " ]
+     letters [ "R" ]
     ]
     text [
-     letters [ " " ]
+     letters [ "O" ]
     ]
     text [
-     letters [ " " ]
+     letters [ "S" ]
+    text [
+     letters [ "W" ]
     ]
     text [
-     letters [ " " ]
+     letters [ "A" ]
     ]
     text [
-     letters [ " " ]
-    ]
-    text [
-     letters [ " " ]
-    ]
-    text [
-     letters [ " " ]
-    ]
-    text [
-     letters [ " " ]
+     letters [ "Y" ]
+      ]
+     ]
     ]
    ]
   ]
  ]
-]
