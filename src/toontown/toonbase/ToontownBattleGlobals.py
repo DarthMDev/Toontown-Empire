@@ -171,7 +171,7 @@ AvPropDamage = (
   ((45, 45), (Levels[6][3], Levels[6][4])),
   ((60, 60), (Levels[6][4], Levels[6][5])),
   ((80, 170), (Levels[6][5], Levels[6][6])),
-  ((195, 195), (Levels[6][6], MaxSkill))
+  ((180, 180), (Levels[6][6], MaxSkill))
  )
 )
 ATK_SINGLE_TARGET = 0
