@@ -16,7 +16,7 @@ class CatalogPoleItem(CatalogItem.CatalogItem):
         return 1
 
     def reachedPurchaseLimit(self, avatar):
-        return self.rodId or self in avatar.onOrder or self in avatar.mailboxContents
+        return avatar.getMaxFishingRod() >= self.rodId or self in avatar.onOrder or self in avatar.mailboxContents
 
     def saveHistory(self):
         return 1
@@ -91,7 +91,7 @@ class CatalogPoleItem(CatalogItem.CatalogItem):
 
 
 def nextAvailablePole(avatar, duplicateItems):
-    rodId = avatar.getFishingRod() + 1
+    rodId = avatar.getMaxFishingRod() + 1
     if rodId > FishGlobals.MaxRodId:
         return None
     item = CatalogPoleItem(rodId)
