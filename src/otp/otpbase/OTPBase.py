@@ -71,6 +71,11 @@ def wire():
     """
     base.toggleWireframe()
 
+@magicWord(category=CATEGORY_LEADER)
+def fps():
+    'Toggle frame rate meter on or off.'
+    base.setFrameRateMeter(not base.frameRateMeter)
+
 @magicWord(category=CATEGORY_TRIAL)
 def idNametags():
     """
