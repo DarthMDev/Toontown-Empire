@@ -31,7 +31,7 @@ dc-file dependencies/astron/dclass/empire.dc
 
 # Core features:
 want-pets #t
-want-parties #f
+want-parties #t
 want-cogdominiums #t
 want-lawbot-cogdo #t
 want-anim-props #t

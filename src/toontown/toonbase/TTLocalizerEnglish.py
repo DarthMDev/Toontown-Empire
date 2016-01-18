@@ -3376,6 +3376,7 @@ PartyPlannerEditorInstructionsRemoved = '%(removed)s removed since %(added)s was
 PartyPlannerBeans = 'beans'
 PartyPlannerTotalCost = 'Total Cost:\n%d beans'
 PartyPlannerSoldOut = 'SOLD OUT'
+PartyPlannerPurchased = 'PURCHASED'
 PartyPlannerBuy = 'BUY'
 PartyPlannerPartyGrounds = 'PARTY GROUNDS MAP'
 PartyPlannerOkWithGroundsLayout = 'Are you done moving your Party Activities and Decorations around the Party Grounds Map?'

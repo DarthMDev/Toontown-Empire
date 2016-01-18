@@ -156,8 +156,9 @@ dclass DistributedPlayer : DistributedAvatar {
   setWishName(string = "") db ram;
   setWishNameState(string = "OPEN") db ram;
   setAdminAccess(uint16 = 0) required broadcast ownrecv db;
-  setAsGM(bool = 0) required ram broadcast ownrecv airecv;
-  setGM(uint8 = 0) required broadcast ownrecv db;
+  setAsBadge(bool = 0) required ram broadcast ownrecv airecv;
+  setBadge(uint8 = 0) required broadcast ownrecv db;
+  setXmasBadge(uint8 = 0) required broadcast ownrecv db;
 };
 
 dclass MagicWordManager : DistributedObject {

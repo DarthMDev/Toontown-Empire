@@ -3,7 +3,7 @@ import random
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
-from pandac.PandaModules import *
+from panda3d.core import *
 from pandac.PandaModules import NodePath
 from toontown.toonbase.ToontownGlobals import *
 from toontown.safezone import SafeZoneLoader
@@ -20,9 +20,9 @@ class PartyLoader(SafeZoneLoader.SafeZoneLoader):
          State.State('party', self.enterParty, self.exitParty, ['quietZone']),
          State.State('quietZone', self.enterQuietZone, self.exitQuietZone, ['planning', 'party']),
          State.State('final', self.enterFinal, self.exitFinal, ['start'])], 'start', 'final')
-        self.musicFile = 'phase_13/audio/bgm/party_original_theme.mid'
-        self.activityMusicFile = 'phase_13/audio/bgm/party_waltz_dance.mid'
-        self.dnaFile = 'phase_13/dna/party_sz.xml'
+        self.musicFile = 'phase_13/audio/bgm/party_original_theme.ogg'
+        self.activityMusicFile = 'phase_13/audio/bgm/party_waltz_dance.ogg'
+        self.dnaFile = 'phase_13/dna/party_sz.pdna'
         self.safeZoneStorageDNAFile = None
         self.cloudSwitch = 0
         self.id = PartyHood
@@ -43,8 +43,8 @@ class PartyLoader(SafeZoneLoader.SafeZoneLoader):
         self.underwaterSound = base.loadSfx('phase_4/audio/sfx/AV_ambient_water.ogg')
         self.swimSound = base.loadSfx('phase_4/audio/sfx/AV_swim_single_stroke.ogg')
         self.submergeSound = base.loadSfx('phase_5.5/audio/sfx/AV_jump_in_water.ogg')
-        self.birdSound = map(base.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.mp3', 'phase_4/audio/sfx/SZ_TC_bird2.mp3', 'phase_4/audio/sfx/SZ_TC_bird3.ogg'])
-        self.cricketSound = map(base.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.mp3', 'phase_4/audio/sfx/SZ_TC_bird2.mp3', 'phase_4/audio/sfx/SZ_TC_bird3.ogg'])
+        self.birdSound = map(base.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.ogg', 'phase_4/audio/sfx/SZ_TC_bird2.ogg', 'phase_4/audio/sfx/SZ_TC_bird3.ogg'])
+        self.cricketSound = map(base.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.ogg', 'phase_4/audio/sfx/SZ_TC_bird2.ogg', 'phase_4/audio/sfx/SZ_TC_bird3.ogg'])
 
     def unload(self):
         self.ignoreAll()
@@ -113,8 +113,8 @@ class PartyLoader(SafeZoneLoader.SafeZoneLoader):
         self.loadSunMoon()
 
     def loadSunMoon(self):
-        self.sun = loader.loadModel('phase_4/models/props/sun')
-        self.moon = loader.loadModel('phase_5.5/models/props/moon')
+        self.sun = loader.loadModel('phase_4/models/props/sun.bam')
+        self.moon = loader.loadModel('phase_5.5/models/props/moon.bam')
         self.sunMoonNode = self.geom.attachNewNode('sunMoon')
         self.sunMoonNode.setPosHpr(0, 0, 0, 0, 0, 0)
         if self.sun:
@@ -207,12 +207,12 @@ class PartyLoader(SafeZoneLoader.SafeZoneLoader):
 
     def debugGeom(self, decomposed):
         print 'numPrimitives = %d' % decomposed.getNumPrimitives()
-        for primIndex in range(decomposed.getNumPrimitives()):
+        for primIndex in xrange(decomposed.getNumPrimitives()):
             prim = decomposed.getPrimitive(primIndex)
             print 'prim = %s' % prim
             print 'isIndexed = %d' % prim.isIndexed()
             print 'prim.getNumPrimitives = %d' % prim.getNumPrimitives()
-            for basicPrim in range(prim.getNumPrimitives()):
+            for basicPrim in xrange(prim.getNumPrimitives()):
                 print '%d start=%d' % (basicPrim, prim.getPrimitiveStart(basicPrim))
                 print '%d end=%d' % (basicPrim, prim.getPrimitiveEnd(basicPrim))
 
@@ -243,13 +243,13 @@ class PartyLoader(SafeZoneLoader.SafeZoneLoader):
         self.cloudOrigin.setZ(30)
         self.loadSkyCollision()
         self.numClouds = 12
-        for i in range(self.numClouds):
+        for i in xrange(self.numClouds):
             self.loadCloud(i, 50, 0)
 
-        for i in range(self.numClouds):
+        for i in xrange(self.numClouds):
             self.loadCloud(i, 70, 30)
 
-        for i in range(self.numClouds):
+        for i in xrange(self.numClouds):
             self.loadCloud(i, 30, 60)
 
         self.cloudOrigin.stash()

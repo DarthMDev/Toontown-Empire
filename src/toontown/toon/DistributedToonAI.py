@@ -110,8 +110,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.unlimitedGags = 0
         self.numPies = 0
         self.pieType = 0
-        self._isGM = False
-        self._gmType = None
+        self._isBadge = False
+        self._badgeType = None
         self._gmDisabled = False
         self.hpOwnedByBattle = 0
         if simbase.wantPets:
@@ -4247,11 +4247,11 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.stats = [0] * 22
         self.d_setStats(self.stats)
 
-# ~Badge coding:
+# ~Badge coding ~FordTheWriter
 
     def setName(self, name):
          DistributedPlayerAI.DistributedPlayerAI.setName(self, name)
-         self._updateGMName()
+         self._updateBadgeName()
 
     def _nameIsPrefixed(self, prefix):
          if len(self.name) > len(prefix):
@@ -4259,36 +4259,53 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
                  return True
          return False
 
-    def b_setGM(self, type):
-        self.sendUpdate('setGM', [type])
-        self.setGM(type)
+    def b_setTTOBadge(self, type):
+        self.sendUpdate('setBadge', [type])
+        self.setTTOBadge(type)
 
-    def setGM(self, type):
-        wasGM = self._isGM
-        formerType = self._gmType
-        self._isGM = type != 0
-        self._gmType = None
-        if self._isGM:
-            self._gmType = type - 1
-            MaxGMType = 5
-            if self._gmType > MaxGMType:
-                self.notify.warning('toon %s has invalid GM type: %s' % (self.doId, self._gmType))
-                self._gmType = MaxGMType
+    def setTTOBadge(self, type):
+        wasBadge = self._isBadge
+        formerType = self._badgeType
+        self._isBadge = type != 0
+        self._badgeType = None
+        if self._isBadge:
+            self._badgeType = type - 1
+            MaxBadgeType = len(TTLocalizer.GM_NAMES) - 1
+            if self._badgeType > MaxBadgeType:
+                self.notify.warning('toon %s has invalid GM type: %s' % (self.doId, self._badgeType))
+                self._badgeType = MaxBadgeType
         return
 
-    def isGM(self):
-        return self._isGM
+    def b_xmasBadge(self, type):
+        self.sendUpdate('setXmasBadge', [type])
+        self.SetXmasBadge(type)
 
-    def _updateGMName(self, formerType = None):
+    def SetXmasBadge(self, type):
+        wasBadge = self._isBadge
+        formerType = self._badgeType
+        self._isBadge = type != 0
+        self._badgeType = None
+        if self._isBadge:
+            self._badgeType = type - 1
+            MaxBadgeType = 5
+            if self._badgeType > MaxBadgeType:
+                self.notify.warning('toon %s has invalid badge type: %s' % (self.doId, self._badgeType))
+                self._badgeType = MaxBadgeType
+        return
+
+    def isBadge(self):
+        return self._isBadge
+
+    def _updateBadgeName(self, formerType = None):
         if formerType is None:
-            formerType = self._gmType
+            formerType = self._badgeType
         name = self.name
         if formerType is not None:
             gmPrefix = TTLocalizer.GM_NAMES[formerType] + ' '
             if self._nameIsPrefixed(gmPrefix):
                 name = self.name[len(gmPrefix):]
-        if self._isGM:
-            gmPrefix = TTLocalizer.GM_NAMES[self._gmType] + ' '
+        if self._isBadge:
+            gmPrefix = TTLocalizer.GM_NAMES[self._badgeType] + ' '
             newName = gmPrefix + name
         else:
             newName = name
@@ -5220,28 +5237,41 @@ def SetxmasBadge(gmId):
     elif (spellbook.getInvokerAccess() < 701) and (gmId > 5):
         return 'Your Not A Leader, Only Leaders can have this special badge!'
 
-    if spellbook.getTarget().isGM() and gmId != 0:
-        spellbook.getTarget().b_setGM(0)
+    if spellbook.getTarget().isBadge() and gmId != 0:
+        spellbook.getTarget().b_xmasBadge(0)
 
-    spellbook.getTarget().b_setGM(gmId)
+    spellbook.getTarget().b_xmasBadge(gmId)
 
     return 'You have set %s to badge type %s' % (spellbook.getTarget().getName(), gmId)
 
 @magicWord(category=CATEGORY_TRIAL)
 def xmasBadge():
     access = spellbook.getInvokerAccess()
-    if spellbook.getInvoker().isGM():
-        spellbook.getInvoker().b_setGM(0)
-        return 'You have disabled your christmas badge.'
+    if spellbook.getInvoker().isBadge():
+        spellbook.getInvoker().b_xmasBadge(0)
+        return 'You have disabled your Christmas badge.'
     else:
         if access>=701:
-            spellbook.getInvoker().b_setGM(5)
+            spellbook.getInvoker().b_xmasBadge(5)
         elif access>=103:
-            spellbook.getInvoker().b_setGM(1)
+            spellbook.getInvoker().b_xmasBadge(1)
         elif access>=502:
-            spellbook.getInvoker().b_setGM(2)
+            spellbook.getInvoker().b_xmasBadge(2)
         elif access>=504:
-            spellbook.getInvoker().b_setGM(3)
+            spellbook.getInvoker().b_xmasBadge(3)
         elif access>=508:
-            spellbook.getInvoker().b_setGM(4)
+            spellbook.getInvoker().b_xmasBadge(4)
         return 'You have enabled your Christmas badge.'
+
+@magicWord(category=CATEGORY_TRIAL)
+def badge():
+    access = spellbook.getInvokerAccess()
+    if spellbook.getInvoker().isBadge():
+        spellbook.getInvoker().b_setTTOBadge(0)
+        return 'You have disabled your badge icon.'
+    else:
+        if access>=701:
+            spellbook.getInvoker().b_setTTOBadge(2)
+        elif access>=103:
+            spellbook.getInvoker().b_setTTOBadge(3)
+        return 'You have enabled your badge icon.'

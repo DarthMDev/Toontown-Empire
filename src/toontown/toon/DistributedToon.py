@@ -81,8 +81,8 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         DistributedSmoothNode.DistributedSmoothNode.__init__(self, cr)
         self.bFake = bFake
         self.kart = None
-        self._isGM = False
-        self._gmType = None
+        self._isBadge = False
+        self._badgeType = None
         self.gmState = 0
         self.gmNameTagEnabled = 0
         self.gmNameTagColor = 'whiteGM'
@@ -2436,24 +2436,42 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def wipeStats(self):
         self.sendUpdate('wipeStats')
 
-    def setName(self, name = 'unknownDistributedAvatar'):
-         DistributedPlayer.DistributedPlayer.setName(self, name)
-         self._handleGMName()
+# Badge coding ~FordTheWriter
 
-    def _handleGMName(self):
+    def setXmasBadgeName(self, name = 'unknownDistributedAvatar'):
+         DistributedPlayer.DistributedPlayer.setName(self, name)
+         self._handleXmasBadgeName()
+
+    def setTTOBadgeName(self, name = 'unknownDistributedAvatar'):
+         DistributedPlayer.DistributedPlayer.setName(self, name)
+         self._handleTTOBadgeName()
+
+    def _handleTTOBadgeName(self):
         name = self.name
         self.setDisplayName(name)
-        if self._isGM:
-            self.SetxmasBadge(self._gmType)
+        if self._isBadge:
+#            self.setNametagStyle(5)
+            self.setTTOBadges(self._badgeType)
+            self.gmToonLockStyle = True
+        else:
+            self.gmToonLockStyle = False
+            self.removeGMIcon()
+#            self.setNametagStyle(100)
+
+    def _handleXmasBadgeName(self):
+        name = self.name
+        self.setDisplayName(name)
+        if self._isBadge:
+            self.SetxmasBadge(self._badgeType)
             self.gmToonLockStyle = True
         else:
             self.gmToonLockStyle = False
             self.removeGMIcon()
 
-    def d_updateGMNameTag(self):
+    def d_updateBadgeNameTag(self):
         self.refreshName()
 
-    def updateGMNameTag(self, tagString, color, state):
+    def updateBadgeNameTag(self, tagString, color, state):
         try:
             unicode(tagString, 'utf-8')
         except UnicodeDecodeError:
@@ -2462,7 +2480,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def refreshName(self):
         return
-        self.notify.debug('Refreshing GM Nametag String: %s Color: %s State: %s' % (self.gmNameTagString, self.gmNameTagColor, self.gmNameTagEnabled))
+        self.notify.debug('Refreshing badge Nametag String: %s Color: %s State: %s' % (self.gmNameTagString, self.gmNameTagColor, self.gmNameTagEnabled))
         if hasattr(self, 'nametag') and self.gmNameTagEnabled:
             self.setDisplayName(self.gmNameTagString)
             self.setName(self.gmNameTagString)
@@ -2476,24 +2494,34 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         else:
             taskMgr.add(self.__refreshNameCallBack, self.uniqueName('refreshNameCallBack'))
 
-    def setGM(self, type):
-        wasGM = self._isGM
-        self._isGM = type != 0
-        self._gmType = None
-        if self._isGM:
-            self._gmType = type - 1
-        if self._isGM != wasGM:
-            self._handleGMName()
+    def setXmasBadge(self, type):
+        wasBadge = self._isBadge
+        self._isBadge = type != 0
+        self._badgeType = None
+        if self._isBadge:
+            self._badgeType = type - 1
+        if self._isBadge != wasBadge:
+            self._handleXmasBadgeName()
         return
 
-    def SetxmasBadge(self, gmType = None):
+    def setBadge(self, type):
+        wasBadge = self._isBadge
+        self._isBadge = type != 0
+        self._badgeType = None
+        if self._isBadge:
+            self._badgeType = type - 1
+        if self._isBadge != wasBadge:
+            self._handleTTOBadgeName()
+        return
+
+    def SetxmasBadge(self, badgeType = None):
         if hasattr(self, 'gmIcon') and self.gmIcon:
             return
 
         modelName = 'phase_3.5/models/gui/tt_m_gui_gm_accesslvl_%s.bam'
         al = (110, 511, 550, 551, 750)
 
-        access = self._gmType
+        access = self._badgeType
         if access >= len(al):
             return
 
@@ -2511,12 +2539,37 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
         self.gmIcon.find('**/gmPartyHat').removeNode()
 
-    def setGMPartyIcon(self):
-        gmType = self._gmType
-        iconInfo = ('phase_3.5/models/gui/tt_m_gui_gm_toonResistance_fist', 'phase_3.5/models/gui/tt_m_gui_gm_toontroop_whistle', 'phase_3.5/models/gui/tt_m_gui_gm_toonResistance_fist', 'phase_3.5/models/gui/tt_m_gui_gm_toontroop_getConnected')
-        if gmType > len(iconInfo) - 1:
+    def setTTOBadges(self, badgeType = None):
+        if hasattr(self, 'gmIcon') and self.gmIcon:
             return
-        self.gmIcon = loader.loadModel(iconInfo[gmType])
+        if not badgeType:
+            badgeType = self._badgeType
+        iconInfo = (('phase_3.5/models/gui/tt_m_gui_gm_toontroop_whistle', '**/*whistleIcon*', 4),
+         ('phase_3.5/models/gui/tt_m_gui_gm_toontroop_whistle', '**/*whistleIcon*', 4),
+         ('phase_3.5/models/gui/tt_m_gui_gm_toonResistance_fist', '**/*fistIcon*', 4),
+         ('phase_3.5/models/gui/tt_m_gui_gm_toontroop_getConnected', '**/*whistleIcon*', 4))
+        if badgeType > len(iconInfo) - 1:
+            return
+        modelName, searchString, scale = iconInfo[badgeType]
+        icons = loader.loadModel(modelName)
+        self.gmIcon = icons.find(searchString)
+        self.gmIcon.setScale(scale)
+        np = NodePath(self.nametag.getNameIcon())
+        self.gmIcon.reparentTo(np)
+        self.setTrophyScore(self.trophyScore)
+        self.gmIcon.setZ(-2.5)
+        self.gmIcon.setY(0.0)
+        self.gmIcon.setColor(Vec4(1.0, 1.0, 1.0, 1.0))
+        self.gmIcon.setTransparency(1)
+        self.gmIconInterval = LerpHprInterval(self.gmIcon, 3.0, Point3(0, 0, 0), Point3(-360, 0, 0))
+        self.gmIconInterval.loop()
+
+    def setGMPartyIcon(self):
+        badgeType = self._badgeType
+        iconInfo = ('phase_3.5/models/gui/tt_m_gui_gm_toonResistance_fist', 'phase_3.5/models/gui/tt_m_gui_gm_toontroop_whistle', 'phase_3.5/models/gui/tt_m_gui_gm_toonResistance_fist', 'phase_3.5/models/gui/tt_m_gui_gm_toontroop_getConnected')
+        if badgeType > len(iconInfo) - 1:
+            return
+        self.gmIcon = loader.loadModel(iconInfo[badgeType])
         self.gmIcon.reparentTo(NodePath(self.nametag.getNameIcon()))
         self.gmIcon.setScale(3.25)
         self.setTrophyScore(self.trophyScore)
