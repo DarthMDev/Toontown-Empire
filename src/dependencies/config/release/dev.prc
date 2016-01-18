@@ -54,3 +54,7 @@ want-instant-delivery #t
 cogdo-pop-factor 1.5
 cogdo-ratio 0.5
 default-directnotify-level info
+
+# In-game News:
+want-news-tab #t
+want-news-page #t

@@ -2553,7 +2553,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         modelName, searchString, scale = iconInfo[badgeType]
         icons = loader.loadModel(modelName)
         self.gmIcon = icons.find(searchString)
-        self.gmIcon.setScale(scale)
+        self.gmIcon.setScale(5.25)
         np = NodePath(self.nametag.getNameIcon())
         self.gmIcon.reparentTo(np)
         self.setTrophyScore(self.trophyScore)

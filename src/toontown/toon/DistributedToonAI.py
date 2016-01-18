@@ -5268,10 +5268,27 @@ def badge():
     access = spellbook.getInvokerAccess()
     if spellbook.getInvoker().isBadge():
         spellbook.getInvoker().b_setTTOBadge(0)
-        return 'You have disabled your badge icon.'
+        return "You have disabled you're badge."
     else:
         if access>=701:
             spellbook.getInvoker().b_setTTOBadge(2)
         elif access>=103:
+            spellbook.getInvoker().b_setTTOBadge(4)
+        elif access>=502:
+            spellbook.getInvoker().b_setTTOBadge(4)
+        elif access>=504:
             spellbook.getInvoker().b_setTTOBadge(3)
-        return 'You have enabled your badge icon.'
+        elif access>=508:
+            spellbook.getInvoker().b_setTTOBadge(3)
+        return "You have enabled you're badge."
+
+@magicWord(category=CATEGORY_LEADER, types=[int])
+def setBadge(gmId):
+    if gmId == 1:
+        return 'You cannot set a toon to TOON COUNCIL.'
+    if not 0 <= gmId <= 4:
+        return 'Invalid badge type specified.'
+    if spellbook.getTarget().isBadge() and gmId != 0:
+        spellbook.getTarget().b_setTTOBadge(0)
+    spellbook.getTarget().b_setTTOBadge(gmId)
+    return 'You have set %s to badge type %s' % (spellbook.getTarget().getName(), gmId)

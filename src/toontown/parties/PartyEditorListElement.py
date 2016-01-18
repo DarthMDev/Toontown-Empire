@@ -150,7 +150,7 @@ class PartyEditorListElement(DirectButton):
     def setSoldOut(self, value):
         if value:
             self['state'] = DirectGuiGlobals.DISABLED
-            self.partyEditor.partyPlanner.elementBuyButton['text'] = TTLocalizer.PartyPlannerSoldOut
+            self.partyEditor.partyPlanner.elementBuyButton['text'] = TTLocalizer.PartyPlannerPurchased
             self.partyEditor.partyPlanner.elementBuyButton['state'] = DirectGuiGlobals.DISABLED
         else:
             self['state'] = DirectGuiGlobals.NORMAL
