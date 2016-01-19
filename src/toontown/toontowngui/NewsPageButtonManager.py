@@ -2,10 +2,9 @@ from panda3d.core import VBase4, VBase3
 from direct.fsm import FSM
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectButton import DirectButton
-from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals, TTLocalizer
 from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
-from toontown.toonbase import TTLocalizer
 from toontown.coghq import CogHQBossBattle
 
 class NewsPageButtonManager(FSM.FSM):
