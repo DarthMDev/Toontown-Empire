@@ -24,7 +24,7 @@ taskMgr.finalInit()
 
 # The VirtualFileSystem, which has already initialized, doesn't see the mount
 # directives in the config(s) yet. We have to force it to load those manually:
-from panda3d.core import VirtualFileSystem, ConfigVariableList, Filename
+from pandac.PandaModules import VirtualFileSystem, ConfigVariableList, Filename
 vfs = VirtualFileSystem.getGlobalPtr()
 mounts = ConfigVariableList('vfs-mount')
 for mount in mounts:

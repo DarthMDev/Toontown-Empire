@@ -5,7 +5,7 @@ from direct.interval.IntervalGlobal import Sequence, Wait, Func, LerpHprInterval
 from direct.showbase import PythonUtil
 from direct.task import Task
 import math
-from pandac.PandaModules import VBase3, CollisionPlane, CollisionNode, CollisionSphere, CollisionTube, NodePath, Plane, Vec3, Vec2, Point3, BitMask32, CollisionHandlerEvent, TextureStage, VBase4, BoundingSphere
+from panda3d.core import VBase3, CollisionPlane, CollisionNode, CollisionSphere, CollisionTube, NodePath, Plane, Vec3, Vec2, Point3, BitMask32, CollisionHandlerEvent, TextureStage, VBase4, BoundingSphere
 import random
 
 from toontown.battle import MovieToonVictory
@@ -31,6 +31,11 @@ OneBossCog = None
 TTL = TTLocalizer
 
 
+MIN_CHASE_X = -90
+MAX_CHASE_X = 90
+MIN_CHASE_Y = 90
+MAX_CHASE_Y = 380
+
 class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBossbotBoss')
     BallLaunchOffset = Point3(10.5, 8.5, -5)
@@ -53,6 +58,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.servingTimer = None
         self.notDeadList = None
         self.moveTrack = None
+        self.chaseTrack = None
         self.speedDamage = 0
         self.maxSpeedDamage = ToontownGlobals.BossbotMaxSpeedDamage
         self.speedRecoverRate = 0
@@ -61,6 +67,10 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.moveTrack = None
         self.lastZapLocalTime = 0
         self.numAttacks = 0
+        self.chaseTime = 0
+		
+        # Hacky fix for crashing when we run over a table.
+        self.tableIndex = 15
         return
 
     def announceGenerate(self):
@@ -103,13 +113,13 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         (base.cTrav.addCollider(self.closeBubbleNodePath, self.closeHandler),)
         self.accept('closeEnter', self.closeEnter)
         self.accept('closeExit', self.closeExit)
-        self.treads = self.find('**/treads')
+        #self.treads = self.find('**/treads')
         demotedCeo = Suit.Suit()
         demotedCeo.dna = SuitDNA.SuitDNA()
         demotedCeo.dna.newSuit('f')
         demotedCeo.setDNA(demotedCeo.dna)
         demotedCeo.reparentTo(self.geom)
-        demotedCeo.loop('neutral')
+        demotedCeo.loop('neutral') 
         demotedCeo.stash()
         self.demotedCeo = demotedCeo
         self.bossClub = loader.loadModel('phase_12/models/char/bossbotBoss-golfclub')
@@ -146,6 +156,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.phaseTwoMusic.stop()
         self.phaseFourMusic.stop()
         self.interruptMove()
+        taskMgr.remove('chaseTask')
         for ival in self.bossClubIntervals:
             ival.finish()
 
@@ -159,18 +170,25 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         DistributedBossCog.DistributedBossCog.loadEnvironment(self)
         self.geom = loader.loadModel('phase_12/models/bossbotHQ/BanquetInterior_1')
         self.elevatorEntrance = self.geom.find('**/elevator_origin')
+
         elevatorModel = loader.loadModel('phase_12/models/bossbotHQ/BB_Inside_Elevator')
         if not elevatorModel:
             elevatorModel = loader.loadModel('phase_12/models/bossbotHQ/BB_Elevator')
         elevatorModel.reparentTo(self.elevatorEntrance)
+
         self.setupElevator(elevatorModel)
+
         self.banquetDoor = self.geom.find('**/door3')
+        self.banquetDoor.showThrough()
+
         plane = CollisionPlane(Plane(Vec3(0, 0, 1), Point3(0, 0, -50)))
         planeNode = CollisionNode('dropPlane')
         planeNode.addSolid(plane)
         planeNode.setCollideMask(ToontownGlobals.PieBitmask)
+
         self.geom.attachNewNode(planeNode)
         self.geom.reparentTo(render)
+
         self.promotionMusic = base.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
         self.betweenPhaseMusic = base.loadMusic('phase_9/audio/bgm/encntr_toon_winning.ogg')
         self.phaseTwoMusic = base.loadMusic('phase_12/audio/bgm/BossBot_CEO_v1.ogg')
@@ -274,6 +292,8 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
          loseSuitCamHpr[1],
          loseSuitCamHpr[2])), self.toonNormalEyes(self.involvedToons), Wait(2), Func(camera.setPosHpr, closeUpRTCamPos, closeUpRTCamHpr), Func(rToon.setChatAbsolute, TTL.BossbotRTFightWaiter, CFSpeech), Wait(1), LerpHprInterval(camera, 2, Point3(-15, 5, 0)), Sequence(Func(rToon.suit.loop, 'walk'), rToon.hprInterval(1, VBase3(270, 0, 0)), rToon.posInterval(2.5, rToonEndPos), Func(rToon.suit.loop, 'neutral')), Wait(3), Func(rToon.clearChat), Func(self.__hideResistanceToon))
         return track
+
+
 
     def enterFrolic(self):
         self.notify.debug('----- enterFrolic')
@@ -699,6 +719,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.cleanupAttacks()
         self.doAnimate('Ff_neutral', now=1)
         self.stopMoveTask()
+        taskMgr.remove('chaseTask')
         if hasattr(self, 'tableIndex'):
             table = self.tables[self.tableIndex]
             table.tableGroup.hide()
@@ -850,10 +871,6 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
                 speech += TTLocalizer.BossbotRTHPBoost
         else:
             speech += TTLocalizer.BossbotRTMaxed % (ToontownGlobals.MaxCogSuitLevel + 1)
-        
-        if self.keyReward:
-            speech += TTLocalizer.BossRTKeyReward
-
         return speech
 
     def __arrangeToonsAroundResistanceToonForReward(self):
@@ -963,9 +980,77 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.moveTrack.start()
         self.storeInterval(self.moveTrack, 'moveTrack')
 
+    def doChaseToonAttack(self, avId):
+
+        def doChase(toon):
+            self.interruptMove()
+
+            if toon is None:
+                # Toon died or rage quit.
+                self.sendUpdate('finishedChasing', [0, 0])
+                return Task.done
+            if self.chaseTime > 35:
+                # Exceeded time for chasing.
+                self.sendUpdate('finishedChasing', [0, 0])
+                return Task.done
+            if self.dizzy:
+                self.sendUpdate('finishedChasing', [0, 0])
+                return Task.done
+    
+            fromPos, fromHpr = self.getPos(), self.getHpr()
+            toPos = toon.getPos()
+
+            # Check if they are out of our bounds.
+            if MIN_CHASE_X > toPos.getX():
+                toPos.setX(MIN_CHASE_X)
+            if toPos.getX() > MAX_CHASE_X:
+                toPos.setX(MAX_CHASE_X)
+            if MIN_CHASE_Y > toPos.getY():
+                toPos.setY(MIN_CHASE_Y)
+            if toPos.getY() > MAX_CHASE_Y:
+                toPos.setY(MAX_CHASE_Y)
+
+            # If we've reached our boundaries, we should stop the task.
+            if MIN_CHASE_X >= fromPos.getX() or MAX_CHASE_X <= fromPos.getX():
+                self.sendUpdate('finishedChasing', [1, toon.doId])
+                return Task.done
+            if MIN_CHASE_Y >= fromPos.getY() or MAX_CHASE_Y <= fromPos.getY():
+                self.sendUpdate('finishedChasing', [1, toon.doId])
+                return Task.done
+
+            # We don't need flying CEOs.
+            toPos.setZ(fromPos.getZ())
+
+            # Make a temperary node to avoid autistic turning.
+            temp = render.attachNewNode('temp')
+            temp.setPos(self.getPos())
+            temp.setHpr(self.getHpr())
+            temp.lookAt(toon)
+            toHpr = temp.getHpr()
+            toHpr.setX(toHpr.getX() - 180)
+            temp.removeNode()
+
+            chaseTrack, hpr = self.moveBossToPoint(fromPos, fromHpr, toPos, toHpr, False)
+            self.chaseTrack = chaseTrack
+            self.chaseTrack.start()
+            self.storeInterval(self.moveTrack, 'chaseTrack')
+            self.chaseTime += 1
+            return Task.again
+
+        if avId in self.involvedToons:
+            av = self.cr.doId2do.get(avId)
+            if av is not None:
+                self.chaseTime = 0
+
+                # Hacky fix for crashing when we run over a table.
+                self.tableIndex = 15
+                taskMgr.doMethodLater(0.2, doChase, 'chaseTask', extraArgs=[av])
+
     def interruptMove(self):
         if self.moveTrack and self.moveTrack.isPlaying():
             self.moveTrack.pause()
+        if self.chaseTrack and self.chaseTrack.isPlaying():
+            self.chaseTrack.pause()
         self.stopMoveTask()
 
     def setAttackCode(self, attackCode, avId = 0):
@@ -976,18 +1061,26 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.attackCode = attackCode
         self.attackAvId = avId
         if attackCode == ToontownGlobals.BossCogMoveAttack:
+            self.setDizzy(0)
             self.interruptMove()
             self.doMoveAttack(avId)
+        elif attackCode == ToontownGlobals.BossCogChaseAttack:
+            self.setDizzy(0)
+            self.interruptMove()
+            self.doChaseToonAttack(avId)
         elif attackCode == ToontownGlobals.BossCogGolfAttack:
+            self.setDizzy(0)
             self.interruptMove()
             self.cleanupAttacks()
             self.doGolfAttack(avId, attackCode)
         elif attackCode == ToontownGlobals.BossCogDizzy:
             self.setDizzy(1)
+            self.interruptMove()
             self.cleanupAttacks()
             self.doAnimate(None, raised=0, happy=1)
         elif attackCode == ToontownGlobals.BossCogDizzyNow:
             self.setDizzy(1)
+            self.interruptMove()
             self.cleanupAttacks()
             self.doAnimate('hit', happy=1, now=1)
         elif attackCode == ToontownGlobals.BossCogSwatLeft:
@@ -997,6 +1090,8 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             self.setDizzy(0)
             self.doAnimate('rtSwing', now=1)
         elif attackCode == ToontownGlobals.BossCogAreaAttack:
+            self.saySomething(TTLocalizer.BossbotJumpTaunt)
+            base.playSfx(self.warningSfx)
             self.setDizzy(0)
             self.doAnimate('areaAttack', now=1)
         elif attackCode == ToontownGlobals.BossCogFrontAttack:
@@ -1045,7 +1140,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.speedRecoverRate = recoverRate
         self.speedRecoverStartTime = recoverStartTime
         speedFraction = max(1 - speedDamage / self.maxSpeedDamage, 0)
-        self.treads.setColorScale(1, speedFraction, speedFraction, 1)
+        #self.treads.setColorScale(1, speedFraction, speedFraction, 1)
         taskName = 'RecoverSpeedDamage'
         taskMgr.remove(taskName)
         if self.speedRecoverRate:
@@ -1063,7 +1158,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
     def __recoverSpeedDamage(self, task):
         speedDamage = self.getSpeedDamage()
         speedFraction = max(1 - speedDamage / self.maxSpeedDamage, 0)
-        self.treads.setColorScale(1, speedFraction, speedFraction, 1)
+        #self.treads.setColorScale(1, speedFraction, speedFraction, 1)
         return task.cont
 
     def moveBossToPoint(self, fromPos, fromHpr, toPos, toHpr, reverse):
@@ -1098,7 +1193,8 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.fromPos = fromPos
         self.dirVector = self.toPos - self.fromPos
         self.dirVector.normalize()
-        track = Sequence(Func(self.setPos, fromPos), Func(self.headsUp, toPos), Parallel(self.hprInterval(turnTime, toHpr, fromHpr), self.rollLeftTreads(turnTime, leftRate), self.rollRightTreads(turnTime, -leftRate)), Func(self.startMoveTask))
+        #track = Sequence(Func(self.setPos, fromPos), Func(self.headsUp, toPos), Parallel(self.hprInterval(turnTime, toHpr, fromHpr), self.rollLeftTreads(turnTime, leftRate), self.rollRightTreads(turnTime, -leftRate)), Func(self.startMoveTask))
+        track = Sequence(Func(self.setPos, fromPos), Func(self.headsUp, toPos), Parallel(self.hprInterval(turnTime, toHpr, fromHpr)), Func(self.startMoveTask))
         return (track, toHpr)
 
     def getCurTurnSpeed(self):
@@ -1128,10 +1224,10 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         def rollTexMatrix(t, object = object):
             object.setTexOffset(TextureStage.getDefault(), t, 0)
 
-        self.treadsLeftPos += dt * self.getCurTreadSpeed()
-        self.treadsRightPos += dt * self.getCurTreadSpeed()
-        rollTexMatrix(self.treadsLeftPos, self.treadsLeft)
-        rollTexMatrix(self.treadsRightPos, self.treadsRight)
+        #self.treadsLeftPos += dt * self.getCurTreadSpeed()
+        #self.treadsRightPos += dt * self.getCurTreadSpeed()
+        #rollTexMatrix(self.treadsLeftPos, self.treadsLeft)
+        #rollTexMatrix(self.treadsRightPos, self.treadsRight)
         if distanceTravelledThisFrame >= distanceLeft:
             self.setPos(self.toPos)
             self.signalAtTable()

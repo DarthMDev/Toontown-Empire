@@ -3,7 +3,7 @@ from direct.distributed.ClockDelta import *
 from direct.task.Task import Task
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
-from pandac.PandaModules import CollisionSphere, CollisionNode
+from panda3d.core import CollisionSphere, CollisionNode
 from toontown.toonbase import ToontownGlobals
 from toontown.estate import DistributedCannon
 from toontown.estate import CannonGlobals
