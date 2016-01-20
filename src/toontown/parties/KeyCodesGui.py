@@ -1,4 +1,4 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.showbase.DirectObject import DirectObject
 from direct.gui.DirectGui import DirectButton
 from direct.gui.OnscreenText import OnscreenText

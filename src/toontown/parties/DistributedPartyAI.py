@@ -66,7 +66,7 @@ class DistributedPartyAI(DistributedObjectAI):
                     self.cannonActivity.generateWithRequired(self.zoneId)
                 act = DistributedPartyCannonAI(self.air)
                 act.setActivityDoId(self.cannonActivity.doId)
-                x, y, h = activity[1:]
+                x, y, h = activity[1:] # ignore activity ID
                 x = PartyUtils.convertDistanceFromPartyGrid(x, 0)
                 y = PartyUtils.convertDistanceFromPartyGrid(y, 1)
                 h *= PartyGridHeadingConverter
