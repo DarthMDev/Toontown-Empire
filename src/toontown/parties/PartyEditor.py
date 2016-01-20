@@ -1,6 +1,6 @@
 import time
 from sets import Set
-from panda3d.core import Vec3, Vec4, Point3, TextNode, VBase4
+from pandac.PandaModules import Vec3, Vec4, Point3, TextNode, VBase4
 from direct.gui.DirectGui import DirectFrame, DirectButton, DirectLabel, DirectScrolledList, DirectCheckButton
 from direct.gui import DirectGuiGlobals
 from direct.showbase.DirectObject import DirectObject
@@ -47,7 +47,14 @@ class PartyEditor(DirectObject, FSM):
          self.partyPlanner.gui.find('**/activitiesButtonDown_rollover'),
          self.partyPlanner.gui.find('**/activitiesButtonDown_inactive')), incButton_relief=None, incButton_pos=(-0.05, 0.0, -0.94), itemFrame_pos=(pos[0], pos[1], pos[2] + 0.04), itemFrame_relief=None, numItemsVisible=1, items=[])
         isWinter = base.cr.newsManager.isHolidayRunning(ToontownGlobals.CHRISTMAS)
+
+
+
+
         isVictory = base.cr.newsManager.isHolidayRunning(ToontownGlobals.VICTORY_PARTY_HOLIDAY)
+
+
+
         isValentine = base.cr.newsManager.isHolidayRunning(ToontownGlobals.VALENTOONS_DAY)
         for activityId in PartyGlobals.PartyEditorActivityOrder:
             if not isVictory and activityId in PartyGlobals.VictoryPartyActivityIds or not isWinter and activityId in PartyGlobals.WinterPartyActivityIds or not isValentine and activityId in PartyGlobals.ValentinePartyActivityIds:
@@ -65,7 +72,7 @@ class PartyEditor(DirectObject, FSM):
                 pass
             elif isVictory and decorationId in PartyGlobals.VictoryPartyReplacementDecorationIds or isValentine and decorationId in PartyGlobals.ValentinePartyReplacementDecorationIds:
                 pass
-            elif decorationId in PartyGlobals.TTSUnreleasedDecor:
+            elif decorationId in PartyGlobals.tteUnreleasedDecor:
                 pass
             else:
                 pele = PartyEditorListElement(self, decorationId, isDecoration=True)
@@ -73,7 +80,9 @@ class PartyEditor(DirectObject, FSM):
 
         self.elementList.refresh()
         self.elementList['command'] = self.scrollItemChanged
-        return
+
+
+
 
     def initPartyClock(self):
         self.partyClockElement.buyButtonClicked((8, 7))
@@ -121,6 +130,8 @@ class PartyEditor(DirectObject, FSM):
         if self.currentElement:
             self.currentElement.checkSoldOutAndAffordability()
 
+
+
     def buyCurrentElement(self):
         if self.currentElement:
             purchaseSuccessful = self.currentElement.buyButtonClicked()
@@ -151,6 +162,8 @@ class PartyEditor(DirectObject, FSM):
             self.elementList['items'][0].elementSelectedFromList()
             self.currentElement = self.elementList['items'][self.elementList.getSelectedIndex()]
             self.currentElement.checkSoldOutAndAffordability()
+
+
         self.partyPlanner.instructionLabel['text'] = TTLocalizer.PartyPlannerEditorInstructionsIdle
         self.updateCostsAndBank()
         self.handleMutuallyExclusiveActivities()

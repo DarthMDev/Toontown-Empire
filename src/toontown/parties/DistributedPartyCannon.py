@@ -1,4 +1,4 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.distributed.DistributedObject import DistributedObject
 from direct.task.Task import Task
 from toontown.minigame import CannonGameGlobals
@@ -120,8 +120,8 @@ class DistributedPartyCannon(DistributedObject, Cannon):
         self.parentNode.setPosHpr(x, y, z, h, p, r)
 
     def setActivityDoId(self, doId):
-        self.activityDoId = doId
-        self.activity = base.cr.doId2do[doId]
+        self.activityDoId = int(doId)
+        self.activity = base.cr.doId2do.get(int(doId))
 
     def activate(self):
         self.accept(self.getEnterCollisionName(), self.__handleToonCollisionWithCannon)
@@ -176,9 +176,9 @@ class DistributedPartyCannon(DistributedObject, Cannon):
             base.localAvatar.pose('slip-forward', 25)
             base.cr.playGame.getPlace().setState('activity')
             base.localAvatar.collisionsOff()
-            camera.reparentTo(self.barrelNode)
-            camera.setPos(0, -2, 5)
-            camera.setP(-20)
+            base.camera.reparentTo(self.barrelNode)
+            base.camera.setPos(0, -2, 5)
+            base.camera.setP(-20)
             if not self.activity.hasPlayedBefore():
                 self.activity.displayRules()
                 self.acceptOnce(DistributedPartyCannonActivity.RULES_DONE_EVENT, self.__enableCannonControl)
@@ -224,7 +224,7 @@ class DistributedPartyCannon(DistributedObject, Cannon):
             if pos:
                 self.notify.debug('toon setting position to %s' % pos)
                 base.localAvatar.setPos(pos)
-            camera.reparentTo(base.localAvatar)
+            base.camera.reparentTo(base.localAvatar)
             base.localAvatar.collisionsOn()
             base.localAvatar.startPosHprBroadcast()
             base.localAvatar.enableAvatarControls()

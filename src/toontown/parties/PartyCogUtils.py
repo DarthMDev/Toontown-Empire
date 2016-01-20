@@ -1,5 +1,5 @@
 import math
-from panda3d.core import NodePath, Point3
+from pandac.PandaModules import NodePath, Point3
 import PartyGlobals
 inverse_e = 1.0 / math.e
 
@@ -120,7 +120,7 @@ class StrafingControl:
 
     def enable(self):
         self.player._aimMode = False
-        camera.wrtReparentTo(self.player.locator)
+        base.camera.wrtReparentTo(self.player.locator)
         self.player.cameraManager.setEnabled(True)
         activityView = self.player.activity.view
         pos = activityView.teamCamPosLocators[self.player.team].getPos(render)

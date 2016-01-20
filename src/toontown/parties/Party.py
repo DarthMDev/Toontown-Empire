@@ -1,4 +1,3 @@
-
 from panda3d.core import *
 from toontown.toonbase.ToonBaseGlobal import *
 from toontown.toonbase.ToontownGlobals import *
@@ -200,12 +199,13 @@ class Party(Place.Place):
 
     def __setPartyHat(self, doId = None):
         if hasattr(base, 'distributedParty'):
-            if base.distributedParty.partyInfo.hostId in base.cr.doId2do:
+            if base.cr.doId2do.has_key(base.distributedParty.partyInfo.hostId):
+                host = base.cr.doId2do[base.distributedParty.partyInfo.hostId]
                 if hasattr(host, 'gmIcon') and host.gmIcon:
                     host.removeGMIcon()
                     host.setGMPartyIcon()
                 else:
-                    np = NodePath(host.nametag.getIcon())
+                    np = NodePath(host.nametag.getNameIcon())
                     base.distributedParty.partyHat.reparentTo(np)
 
     def __removePartyHat(self):

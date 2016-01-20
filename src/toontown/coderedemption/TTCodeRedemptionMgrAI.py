@@ -85,11 +85,7 @@ class TTCodeRedemptionMgrAI(DistributedObjectAI):
 
     def announceGenerate(self):
         DistributedObjectAI.announceGenerate(self)
-	
-	def get_storm_sellbot_shirt(self):
-		#TODO CatalogClothingItem.CatalogClothingItem(numbers corresponding to shirt , 0)
-		pass
-		
+
     def redeemCode(self, code):
         avId = self.air.getAvatarIdFromSender()
         av = self.air.doId2do.get(avId)
