@@ -1,9 +1,8 @@
 from panda3d.core import *
-from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.language import LanguageSelector
 from direct.fsm import StateData
 from direct.gui.DirectGui import *
-from toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
 import random, AvatarChoice

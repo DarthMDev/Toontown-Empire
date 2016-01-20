@@ -12,17 +12,17 @@ from direct.interval.FunctionInterval import Wait
 from direct.interval.LerpInterval import LerpFunc
 from direct.interval.MetaInterval import Parallel
 from direct.interval.MetaInterval import Sequence
-from pandac.PandaModules import CardMaker
-from pandac.PandaModules import NodePath
-from pandac.PandaModules import TextNode
-from pandac.PandaModules import Point3
-from pandac.PandaModules import Vec3
-from pandac.PandaModules import VBase3
-from pandac.PandaModules import VBase4
-from pandac.PandaModules import CollisionSphere
-from pandac.PandaModules import CollisionTube
-from pandac.PandaModules import CollisionNode
-from pandac.PandaModules import BitMask32
+from panda3d.core import CardMaker
+from panda3d.core import NodePath
+from panda3d.core import TextNode
+from panda3d.core import Point3
+from panda3d.core import Vec3
+from panda3d.core import VBase3
+from panda3d.core import VBase4
+from panda3d.core import CollisionSphere
+from panda3d.core import CollisionTube
+from panda3d.core import CollisionNode
+from panda3d.core import BitMask32
 from otp.otpbase import OTPGlobals
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
@@ -232,7 +232,7 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
             self.leavingTrampoline = True
             self.timer.reset()
             self.trampB = self.leavingTrampB
-            self.ignore(base.JUMP)
+            self.ignore('control')
             self.quitEarlyButton.stash()
             self.gui.hide()
         return
@@ -300,10 +300,10 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
         DistributedPartyTrampolineActivity.notify.debug('startActive')
         if self.toon != None and self.toon.doId == base.localAvatar.doId:
             base.setCellsAvailable(base.bottomCells, True)
-            self.accept(base.Move_Left, self.onLeft)
-            self.accept(base.Move_Left + '-up', self.onLeftUp)
-            self.accept(base.Move_Right, self.onRight)
-            self.accept(base.Move_Right + '-up', self.onRightUp)
+            self.accept('arrow_left', self.onLeft)
+            self.accept('arrow_left-up', self.onLeftUp)
+            self.accept('arrow_right', self.onRight)
+            self.accept('arrow_right-up', self.onRightUp)
             self.beginRoundInterval = Sequence(Func(self._showFlashMessage, TTLocalizer.PartyTrampolineReady), Wait(1.2), Func(self.flashMessage, TTLocalizer.PartyTrampolineGo), Func(self.beginRound))
             self.beginRoundInterval.start()
         return
@@ -366,7 +366,7 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
         self.gui.show()
         self.quitEarlyButton.unstash()
         self.notify.debug('Accepting contorl')
-        self.accept(base.JUMP, self.onJump)
+        self.accept('control', self.onJump)
         self.notify.debug('setting simulate step to true')
         self.doSimulateStep = True
 
@@ -396,10 +396,10 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
 
     def releaseToon(self):
         self._hideFlashMessage()
-        self.ignore(base.Move_Left)
-        self.ignore(base.Move_Left + '-up')
-        self.ignore(base.Move_Right)
-        self.ignore(base.Move_Right + '-up')
+        self.ignore('arrow_left')
+        self.ignore('arrow_left-up')
+        self.ignore('arrow_right')
+        self.ignore('arrow_right-up')
         taskMgr.remove(self.uniqueName('TrampolineActivity.updateTask'))
         self.hopOffAnim = Sequence(self.toon.hprInterval(0.5, VBase3(-90.0, 0.0, 0.0), other=self.tramp), Func(self.toon.b_setAnimState, 'jump', 1.0), Func(self.toon.dropShadow.reparentTo, hidden), Wait(0.4), PartyUtils.arcPosInterval(0.75, self.toon, self.hopOffPos, 5.0, self.tramp), Func(self.postHopOff))
         self.hopOffAnim.start()

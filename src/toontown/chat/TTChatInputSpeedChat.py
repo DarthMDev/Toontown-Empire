@@ -9,12 +9,10 @@ from direct.showbase import DirectObject
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 import string
-from otp.otpbase import OTPLocalizer
-from otp.otpbase import OTPGlobals
+from otp.otpbase import OTPLocalizer, OTPGlobals
 from toontown.shtiker.OptionsPage import speedChatStyles
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.parties.PartyGlobals import ActivityIds, DecorationIds
-from toontown.toonbase import ToontownGlobals
 scStructure = [
  [OTPLocalizer.SCMenuHello,
   {100: 0},

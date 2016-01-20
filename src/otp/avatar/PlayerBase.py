@@ -1,7 +1,7 @@
 class PlayerBase(object):
 
     def __init__(self):
-        self.gmState = False
+        self.badgeState = False
 
     def atLocation(self, locationId):
         return True
@@ -9,8 +9,8 @@ class PlayerBase(object):
     def getLocation(self):
         return []
 
-    def setAsGM(self, state):
-        self.gmState = state
+    def setAsBadge(self, state):
+        self.badgeState = state
 
-    def isGM(self):
-        return self.gmState
+    def isBadge(self):
+        return self.badgeState

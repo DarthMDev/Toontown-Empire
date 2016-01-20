@@ -2,8 +2,9 @@ from direct.gui.DirectGui import DirectFrame, DirectButton, DirectLabel
 from direct.gui.DirectGui import DirectScrolledList, DirectCheckButton
 from direct.gui.DirectCheckBox import DirectCheckBox
 from direct.gui import DirectGuiGlobals
+from toontown.friends.FriendsListPanel import determineFriendName
 from toontown.toonbase import ToontownGlobals
-from pandac.PandaModules import Vec3, Vec4, PlaneNode, Plane, Point3, TextNode, VBase4, NodePath
+from panda3d.core import Vec3, Vec4, PlaneNode, Plane, Point3, TextNode, VBase4, NodePath
 
 class ScrolledFriendList(DirectScrolledList):
 
@@ -22,7 +23,9 @@ class ScrolledFriendList(DirectScrolledList):
     def scrollButtonPressed(self):
         pass
 
-    def addFriend(self, name, id):
+    def addFriend(self, id):
+        name = determineFriendName(id)
+
         if self.makeItemsCheckBoxes:
             checkedImage = self.gui.find('**/inviteButtonChecked')
             uncheckedImage = self.gui.find('**/inviteButtonUnchecked')

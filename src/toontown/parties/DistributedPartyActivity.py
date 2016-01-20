@@ -1,5 +1,5 @@
-from pandac.PandaModules import CollisionSphere, CollisionNode, CollisionTube
-from pandac.PandaModules import TextNode, NodePath, Vec3, Point3
+from panda3d.core import CollisionSphere, CollisionNode, CollisionTube
+from panda3d.core import TextNode, NodePath, Vec3, Point3
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.distributed import DistributedObject
 from direct.showbase import RandomNumGen
@@ -16,8 +16,6 @@ from toontown.parties.JellybeanRewardGui import JellybeanRewardGui
 from toontown.parties.PartyUtils import getPartyActivityIcon, getCenterPosFromGridSize
 
 class DistributedPartyActivity(DistributedObject.DistributedObject):
-    deferFor = 1
-
     def __init__(self, cr, activityId, activityType, wantLever = False, wantRewardGui = False):
         DistributedObject.DistributedObject.__init__(self, cr)
         self.activityId = activityId
@@ -260,6 +258,10 @@ class DistributedPartyActivity(DistributedObject.DistributedObject):
         self.signFlatWithNote.stash()
         self.signTextLocator.stash()
 
+    def unloadSign(self):
+        self.sign.removeNode()
+        del self.sign
+
     def loadLever(self):
         self.lever = self.root.attachNewNode('%sLever' % self.activityName)
         self.leverModel = self.party.defaultLeverModel.copyTo(self.lever)
@@ -411,8 +413,9 @@ class DistributedPartyActivity(DistributedObject.DistributedObject):
         self._disableCollisions()
         self.signModel.removeNode()
         del self.signModel
-        self.sign.removeNode()
-        del self.sign
+        if hasattr(self, 'sign'):
+            self.sign.removeNode()
+            del self.sign
         self.ignoreAll()
         if self.wantLever:
             self.unloadLever()
@@ -465,7 +468,7 @@ class DistributedPartyActivity(DistributedObject.DistributedObject):
                     avatar.stopLookAround()
 
     def getAvatar(self, toonId):
-        if self.cr.doId2do.has_key(toonId):
+        if toonId in self.cr.doId2do:
             return self.cr.doId2do[toonId]
         else:
             self.notify.warning('BASE: getAvatar: No avatar in doId2do with id: ' + str(toonId))

@@ -1,4 +1,4 @@
-from pandac.PandaModules import Vec3
+from panda3d.core import Vec3
 from direct.gui.DirectGui import DirectButton, DirectLabel
 from direct.gui import DirectGuiGlobals
 from toontown.toonbase import TTLocalizer
@@ -73,11 +73,11 @@ class PartyEditorListElement(DirectButton):
         self.partyEditorGridElements = []
         if self.isDecoration:
             for i in range(PartyGlobals.DecorationInformationDict[self.id]['limitPerParty']):
-                self.partyEditorGridElements.append(PartyEditorGridElement(self.partyEditor, self.id, self.isDecoration, self.checkSoldOutAndPaidStatusAndAffordability))
+                self.partyEditorGridElements.append(PartyEditorGridElement(self.partyEditor, self.id, self.isDecoration, self.checkSoldOutAndAffordability))
 
         else:
             for i in range(PartyGlobals.ActivityInformationDict[self.id]['limitPerParty']):
-                self.partyEditorGridElements.append(PartyEditorGridElement(self.partyEditor, self.id, self.isDecoration, self.checkSoldOutAndPaidStatusAndAffordability))
+                self.partyEditorGridElements.append(PartyEditorGridElement(self.partyEditor, self.id, self.isDecoration, self.checkSoldOutAndAffordability))
 
         self.activeGridElementIndex = -1
         self.adjustForUnreleased()
@@ -113,20 +113,17 @@ class PartyEditorListElement(DirectButton):
             self.partyEditor.partyPlanner.elementDescriptionNode.setText(TTLocalizer.PartyActivityNameDict[self.id]['description'])
             self.partyEditor.partyPlanner.elementPriceNode.setText('%d %s' % (PartyGlobals.ActivityInformationDict[self.id]['cost'], TTLocalizer.PartyPlannerBeans))
             self.partyEditor.partyPlanner.elementTitleLabel['text'] = self.name
-        self.checkSoldOutAndPaidStatusAndAffordability()
+        self.checkSoldOutAndAffordability()
 
-    def checkSoldOutAndPaidStatusAndAffordability(self):
+    def checkSoldOutAndAffordability(self):
         if self.partyEditor.currentElement != self:
             if self.partyEditor.currentElement is not None:
-                self.partyEditor.currentElement.checkSoldOutAndPaidStatusAndAffordability()
+                self.partyEditor.currentElement.checkSoldOutAndAffordability()
             return
         if self.isDecoration:
             infoDict = PartyGlobals.DecorationInformationDict
         else:
             infoDict = PartyGlobals.ActivityInformationDict
-        if not base.cr.isPaid() and infoDict[self.id]['paidOnly']:
-            self.setOffLimits()
-            return
         if infoDict[self.id]['cost'] > self.partyEditor.partyPlanner.totalMoney - self.partyEditor.partyPlanner.totalCost:
             self.setTooExpensive(True)
             tooExpensive = True
@@ -140,13 +137,6 @@ class PartyEditorListElement(DirectButton):
                 return
 
         self.setSoldOut(True)
-        return
-
-    def setOffLimits(self):
-        self['state'] = DirectGuiGlobals.DISABLED
-        self.partyEditor.partyPlanner.elementBuyButton['text'] = TTLocalizer.PartyPlannerPaidOnly
-        self.partyEditor.partyPlanner.elementBuyButton['state'] = DirectGuiGlobals.DISABLED
-        self.partyEditor.partyPlanner.elementBuyButton['text_scale'] = 0.04
 
     def setTooExpensive(self, value):
         self.partyEditor.partyPlanner.elementBuyButton['text'] = TTLocalizer.PartyPlannerBuy
@@ -160,7 +150,7 @@ class PartyEditorListElement(DirectButton):
     def setSoldOut(self, value):
         if value:
             self['state'] = DirectGuiGlobals.DISABLED
-            self.partyEditor.partyPlanner.elementBuyButton['text'] = TTLocalizer.PartyPlannerSoldOut
+            self.partyEditor.partyPlanner.elementBuyButton['text'] = TTLocalizer.PartyPlannerPurchased
             self.partyEditor.partyPlanner.elementBuyButton['state'] = DirectGuiGlobals.DISABLED
         else:
             self['state'] = DirectGuiGlobals.NORMAL
@@ -187,7 +177,7 @@ class PartyEditorListElement(DirectButton):
                     self.activeGridElementIndex = i
                     return True
                 else:
-                    self.checkSoldOutAndPaidStatusAndAffordability()
+                    self.checkSoldOutAndAffordability()
                     return False
 
     def released(self, mouseEvent):

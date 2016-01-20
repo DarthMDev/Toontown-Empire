@@ -2,8 +2,7 @@ from direct.interval.IntervalGlobal import *
 from panda3d.core import *
 import random, copy
 
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownBattleGlobals
+from toontown.toonbase import TTLocalizer, ToontownBattleGlobals
 from toontown.suit import SuitDNA
 
 

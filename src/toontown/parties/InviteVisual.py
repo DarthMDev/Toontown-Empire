@@ -6,7 +6,6 @@ from direct.showbase import PythonUtil
 from direct.fsm.FSM import FSM
 from toontown.parties import PartyGlobals
 from toontown.parties import PartyUtils
-from toontown.toonbase.ToontownGlobals import VALENTOONS_DAY
 
 class InviteVisual(DirectFrame):
     notify = directNotify.newCategory('InviteVisual')
@@ -95,7 +94,7 @@ class InviteVisual(DirectFrame):
         desiredNumberOfCharactersInLine = 42
         if len(stringLeft) < desiredNumberOfCharactersInLine:
             return stringDone + '\n' + stringLeft
-        for i in range(desiredNumberOfCharactersInLine - 6, len(stringLeft)):
+        for i in xrange(desiredNumberOfCharactersInLine - 6, len(stringLeft)):
             if stringLeft[i] == ' ':
                 return self.insertCarriageReturn(stringLeft[i:], stringDone + '\n' + stringLeft[:i])
 

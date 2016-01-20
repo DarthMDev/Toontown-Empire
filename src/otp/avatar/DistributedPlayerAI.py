@@ -159,7 +159,7 @@ def maintenance(minutes):
     countdown(minutes)
 
 @magicWord(category=CATEGORY_LEADER, types=[str, str, int])
-def accessLevel(accessLevel, storage='PERSISTENT', showGM=1):
+def accessLevel(accessLevel, storage='PERSISTENT', showBadge=1):
     """
     Modify the target's access level.
     """
@@ -206,8 +206,8 @@ def accessLevel(accessLevel, storage='PERSISTENT', showGM=1):
     if target.getAdminAccess() == accessLevel:
         return "%s's access level is already %d!" % (target.getName(), accessLevel)
     target.b_setAdminAccess(accessLevel)
-    if showGM:
-         target.b_setGM(accessLevel)
+    if showBadge:
+         target.b_setBadge(accessLevel)
     temporary = storage.upper() in ('SESSION', 'TEMP', 'TEMPORARY')
     if not temporary:
         target.air.dbInterface.updateObject(

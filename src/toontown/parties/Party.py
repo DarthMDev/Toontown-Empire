@@ -1,4 +1,5 @@
-from pandac.PandaModules import *
+
+from panda3d.core import *
 from toontown.toonbase.ToonBaseGlobal import *
 from toontown.toonbase.ToontownGlobals import *
 from direct.gui.DirectGui import *
@@ -35,14 +36,13 @@ class Party(Place.Place):
           'quest',
           'fishing',
           'stopped',
-          'DFA',
-          'trialerFA',
           'push',
-          'activity']),
+          'activity',
+          'teleportOut']),
          State.State('stopped', self.enterStopped, self.exitStopped, ['walk', 'teleportOut']),
          State.State('sit', self.enterSit, self.exitSit, ['walk']),
          State.State('push', self.enterPush, self.exitPush, ['walk']),
-         State.State('partyPlanning', self.enterPartyPlanning, self.exitPartyPlanning, ['DFA', 'teleportOut']),
+         State.State('partyPlanning', self.enterPartyPlanning, self.exitPartyPlanning, ['teleportOut']),
          State.State('stickerBook', self.enterStickerBook, self.exitStickerBook, ['walk',
           'sit',
           'quest',
@@ -50,8 +50,7 @@ class Party(Place.Place):
           'stopped',
           'activity',
           'push',
-          'DFA',
-          'trialerFA']),
+          'teleportOut']),
          State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk', 'partyPlanning']),
          State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn', 'walk', 'final']),
          State.State('died', self.enterDied, self.exitDied, ['walk', 'final']),
@@ -59,17 +58,14 @@ class Party(Place.Place):
          State.State('quest', self.enterQuest, self.exitQuest, ['walk']),
          State.State('fishing', self.enterFishing, self.exitFishing, ['walk', 'stopped']),
          State.State('activity', self.enterActivity, self.exitActivity, ['walk', 'stopped']),
-         State.State('stopped', self.enterStopped, self.exitStopped, ['walk']),
-         State.State('trialerFA', self.enterTrialerFA, self.exitTrialerFA, ['trialerFAReject', 'DFA']),
-         State.State('trialerFAReject', self.enterTrialerFAReject, self.exitTrialerFAReject, ['walk']),
-         State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject', 'teleportOut']),
-         State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk'])], 'init', 'final')
+         State.State('stopped', self.enterStopped, self.exitStopped, ['walk'])], 'init', 'final')
         self.fsm.enterInitialState()
         self.doneEvent = doneEvent
         self.parentFSMState = parentFSMState
         self.isPartyEnding = False
         self.accept('partyStateChanged', self.setPartyState)
         return
+
 
     def delete(self):
         self.unload()
@@ -136,8 +132,8 @@ class Party(Place.Place):
     def __setZoneId(self, zoneId):
         self.zoneId = zoneId
 
-    def doRequestLeave(self, requestStatus):
-        self.fsm.request('trialerFA', [requestStatus])
+
+
 
     def enterInit(self):
         pass
@@ -204,18 +200,17 @@ class Party(Place.Place):
 
     def __setPartyHat(self, doId = None):
         if hasattr(base, 'distributedParty'):
-            if base.cr.doId2do.has_key(base.distributedParty.partyInfo.hostId):
-                host = base.cr.doId2do[base.distributedParty.partyInfo.hostId]
+            if base.distributedParty.partyInfo.hostId in base.cr.doId2do:
                 if hasattr(host, 'gmIcon') and host.gmIcon:
                     host.removeGMIcon()
                     host.setGMPartyIcon()
                 else:
-                    np = NodePath(host.nametag.getNameIcon())
+                    np = NodePath(host.nametag.getIcon())
                     base.distributedParty.partyHat.reparentTo(np)
 
     def __removePartyHat(self):
         if hasattr(base, 'distributedParty'):
-            if base.cr.doId2do.has_key(base.distributedParty.partyInfo.hostId):
+            if base.distributedParty.partyInfo.hostId in base.cr.doId2do:
                 host = base.cr.doId2do[base.distributedParty.partyInfo.hostId]
                 if hasattr(host, 'gmIcon') and host.gmIcon:
                     host.removeGMIcon()
@@ -273,13 +268,7 @@ class Party(Place.Place):
         self.isPartyEnding = partyState
 
     def handleTeleportQuery(self, fromAvatar, toAvatar):
-        if self.isPartyEnding:
-            teleportNotify.debug('party ending, sending teleportResponse')
-            fromAvatar.d_teleportResponse(toAvatar.doId, 0, toAvatar.defaultShard, base.cr.playGame.getPlaceId(), self.getZoneId())
-        elif config.GetBool('want-tptrack', False):
-            if toAvatar == localAvatar:
-                localAvatar.doTeleportResponse(fromAvatar, toAvatar, toAvatar.doId, 1, toAvatar.defaultShard, base.cr.playGame.getPlaceId(), self.getZoneId(), fromAvatar.doId)
-            else:
-                self.notify.warning('handleTeleportQuery toAvatar.doId != localAvatar.doId' % (toAvatar.doId, localAvatar.doId))
-        else:
-            fromAvatar.d_teleportResponse(toAvatar.doId, 1, toAvatar.defaultShard, base.cr.playGame.getPlaceId(), self.getZoneId())
+        fromAvatar.d_teleportResponse(toAvatar.doId, int(not self.isPartyEnding),
+            toAvatar.defaultShard, base.cr.playGame.getPlaceId(),
+            self.getZoneId()
+        )

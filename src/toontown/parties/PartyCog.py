@@ -8,8 +8,8 @@ from direct.interval.LerpInterval import LerpScaleInterval, LerpFunc
 from direct.showbase.PythonUtil import bound as clamp
 from direct.task import Task
 from direct.fsm.FSM import FSM
-from pandac.PandaModules import CollisionTube, CollisionNode, CollisionSphere
-from pandac.PandaModules import Point3, Vec4, NodePath, TextNode, Mat4
+from panda3d.core import CollisionTube, CollisionNode, CollisionSphere
+from panda3d.core import Point3, Vec4, NodePath, TextNode, Mat4
 from toontown.toonbase import ToontownGlobals
 from toontown.battle.BattleProps import globalPropPool
 from toontown.battle.BattleSounds import globalBattleSoundCache
@@ -30,7 +30,7 @@ class PartyCogManager:
             cog.unload()
 
     def updateDistances(self, distances):
-        for i in range(len(distances)):
+        for i in xrange(len(distances)):
             self.cogs[i].updateDistance(distances[i])
 
 

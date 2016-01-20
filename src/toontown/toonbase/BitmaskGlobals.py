@@ -1,4 +1,4 @@
-from pandac.PandaModules import BitMask32
+from panda3d.core import BitMask32
 
 WallBitmask = BitMask32(1)
 FloorBitmask = BitMask32(2)
