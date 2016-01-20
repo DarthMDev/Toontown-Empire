@@ -1447,7 +1447,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             self.trophyStarSpeed = 8
             if self.trophyScore >= ToontownGlobals.TrophyStarLevels[1]:
                 taskMgr.add(self.__starSpin, self.uniqueName('starSpin'))
-        self.setHeadPositions()
 
     def __starSpin(self, task):
         now = globalClock.getFrameTime()

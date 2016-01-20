@@ -553,9 +553,7 @@ class Toon(Avatar.Avatar, ToonHead):
             self.motion.delete()
             self.motion = None
 
-            self.removeHeadMeter()
-            self.removeGMIcon()
-            self.removePartyHat()
+#            self.removeGMIcon()
             Avatar.Avatar.delete(self)
             ToonHead.delete(self)
 
@@ -3011,86 +3009,6 @@ class Toon(Avatar.Avatar, ToonHead):
             sequence.append(Func(self.laffMeter.adjustFace, self.hp, self.maxHp))
 
         return sequence
-
-    def createHeadMeter(self):
-        if self.headMeter:
-            return
-
-        nodePath = NodePath(self.nametag.getNameIcon())
-
-        if nodePath.isEmpty():
-            return
-
-        self.headMeter = LaffMeter.LaffMeter(self.style, self.getHp(), self.getMaxHp())
-        self.headMeter.av = self
-        self.headMeter.reparentTo(nodePath)
-        self.headMeter.setScale(1)
-        self.headMeter.setBin("fixed", 40)
-        self.headMeter.setDepthWrite(False)
-        self.headMeter.start()
-        self.setHeadPositions()
-
-    def removeHeadMeter(self):
-        if not self.headMeter:
-            return
-
-        self.headMeter.destroy()
-        self.headMeter = None
-        self.setHeadPositions()
-
-    def removeGMIcon(self):
-        if not self.gmIcon:
-            return
-
-        self.gmIconInterval.finish()
-        self.gmIcon.detachNode()
-        del self.gmIconInterval
-        self.gmIcon = None
-        self.setHeadPositions()
-
-    def setPartyHat(self):
-        if self.partyHat:
-            return
-
-        nodePath = NodePath(self.nametag.getNameIcon())
-
-        if nodePath.isEmpty():
-            return
-
-        model = loader.loadModel('phase_4/models/parties/partyStickerbook')
-        self.partyHat = model.find('**/Stickerbook_PartyIcon')
-        self.partyHat.setHpr(0.0, 0.0, -50.0)
-        self.partyHat.setScale(4)
-        self.partyHat.setBillboardAxis()
-        self.partyHat.reparentTo(nodePath)
-        model.removeNode()
-        self.setHeadPositions()
-
-    def removePartyHat(self):
-        if not self.partyHat:
-            return
-
-        self.partyHat.detachNode()
-        self.partyHat = None
-        self.setHeadPositions()
-
-    def setHeadPositions(self):
-        position = 2.5
-
-        if self.gmIcon:
-            self.gmIcon.setZ(position)
-            position += (2.5 if self.trophyStar else 2.7)
-
-        if self.trophyStar:
-            self.trophyStar.setZ(position)
-            position += 2.7
-
-        if self.headMeter:
-            self.headMeter.setZ(position)
-            position += 3.3
-
-        if self.partyHat:
-            self.partyHat.setZ(position)
 
 loadModels()
 compileGlobalAnimList()

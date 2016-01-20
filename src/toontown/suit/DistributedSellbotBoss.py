@@ -28,7 +28,6 @@ from toontown.toonbase import ToontownBattleGlobals
 from toontown.toonbase import ToontownGlobals
 from otp.nametag.NametagConstants import *
 from otp.nametag import NametagGlobals
-from toontown.coderedemption.TTCodeRedemptionMgrAI import TTCodeRedemptionMgrAI
 
 OneBossCog = None
 
@@ -1100,14 +1099,6 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.unstash()
         self.__removeCageShadow()
         self.epilogueMusic.stop()
-        #TODO  add a dialog about getting the shirt
-        newCogSuitLevel = localAvatar.getCogLevels()[CogDisguiseGlobals.dept2deptIndex(self.style.dept)]
-        if newCogSuitLevel == ToontownGlobals.MaxCogSuitLevel:
-        	TTCodeRedemptionMgrAI.get_storm_sellbot_shirt()
-        else:
-        	pass 
-        	
-
 
     def __arrangeToonsAroundCage(self):
         radius = 15
