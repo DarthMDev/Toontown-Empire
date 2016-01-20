@@ -210,7 +210,7 @@ class Party(Place.Place):
 
     def __removePartyHat(self):
         if hasattr(base, 'distributedParty'):
-            if base.distributedParty.partyInfo.hostId in base.cr.doId2do:
+            if base.cr.doId2do.has_key(base.distributedParty.partyInfo.hostId):
                 host = base.cr.doId2do[base.distributedParty.partyInfo.hostId]
                 if hasattr(host, 'gmIcon') and host.gmIcon:
                     host.removeGMIcon()
