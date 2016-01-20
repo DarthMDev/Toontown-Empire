@@ -31,7 +31,7 @@ dc-file dependencies/astron/dclass/empire.dc
 
 # Core features:
 want-pets #t
-want-parties #f
+want-parties #t
 want-cogdominiums #t
 want-lawbot-cogdo #t
 want-anim-props #t
@@ -55,7 +55,6 @@ cogdo-pop-factor 1.5
 cogdo-ratio 0.5
 default-directnotify-level info
 
-# Crates:
-dont-destroy-crate #t
-get-key-reward-always #t
-get-crate-reward-always #t
+# In-game News:
+want-news-tab #t
+want-news-page #t

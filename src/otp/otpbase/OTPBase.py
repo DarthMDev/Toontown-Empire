@@ -1,7 +1,7 @@
 from direct.showbase.ShowBase import ShowBase
 from otp.ai.MagicWordGlobal import *
 from otp.chat import WhiteList, WhiteListData, SequenceListData
-from pandac.PandaModules import Camera, TPLow, VBase4, ColorWriteAttrib, Filename, getModelPath, NodePath, Vec4
+from panda3d.core import Camera, TPLow, VBase4, ColorWriteAttrib, Filename, getModelPath, NodePath, Vec4
 import OTPGlobals, OTPRender, math
 
 class OTPBase(ShowBase):
@@ -70,6 +70,11 @@ def wire():
     Toggle the 'wireframe' view.
     """
     base.toggleWireframe()
+
+@magicWord(category=CATEGORY_LEADER)
+def fps():
+    'Toggle frame rate meter on or off.'
+    base.setFrameRateMeter(not base.frameRateMeter)
 
 @magicWord(category=CATEGORY_TRIAL)
 def idNametags():

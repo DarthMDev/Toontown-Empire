@@ -3038,24 +3038,6 @@ class Toon(Avatar.Avatar, ToonHead):
         self.headMeter = None
         self.setHeadPositions()
 
-    def setGMIcon(self, access):
-        if self.gmIcon:
-            return
-
-        icons = loader.loadModel('phase_3/models/props/gm_icons')
-        self.gmIcon = icons.find('**/access_level_%s' % access)
-        np = NodePath(self.nametag.getNameIcon())
-
-        if np.isEmpty() or not self.gmIcon:
-            return
-
-        self.gmIcon.flattenStrong()
-        self.gmIcon.reparentTo(np)
-        self.gmIcon.setScale(1.6)
-        self.gmIconInterval = LerpHprInterval(self.gmIcon, 3.0, Point3(0, 0, 0), Point3(-360, 0, 0))
-        self.gmIconInterval.loop()
-        self.setHeadPositions()
-
     def removeGMIcon(self):
         if not self.gmIcon:
             return

@@ -94,7 +94,6 @@ GlobalStreetNames = {20000: ('to', 'on', 'Tutorial Terrace'),
  9000: ('to the', 'in the', 'Playground'),
  9100: ('to', 'on', 'Lullaby Lane'),
  9200: ('to', 'on', 'Pajama Place'),
- 9300: ('to', 'on', 'Bedtime Boulevard'),
  10000: ('to the', 'in the', 'Bossbot HQ Country Club'),
  10100: ('to the', 'in the', 'Bossbot HQ Lobby'),
  10200: ('to', 'in', 'The Clubhouse'),
@@ -1912,8 +1911,8 @@ AvatarPanelGroupMerge = 'Resulting in'
 AvatarPanelGroupRetract = 'Retract Invitation'
 AvatarPanelGroupMember = 'Already In Group'
 AvatarPanelGroupMemberKick = 'Remove'
-AvatarPanelCast = 'Cast Member'
-AvatarPanelCastInfo = '%s is a Toontown Empire Cast Member.'
+AvatarPanelCast = 'Staff Member'
+AvatarPanelCastInfo = '%s is a Toontown Empire Staff Member.'
 ReportPanelTitle = 'Report A Toon'
 ReportPanelBody = 'This feature will send a complete report to a Moderator. Instead of sending a report, you might choose to do one of the following:\n\n  - Teleport to another district\n  - Use "Ignore" on the toon\'s panel\n\nDo you really want to report %s to a Moderator?'
 ReportPanelBodyFriends = 'This feature will send a complete report to a Moderator. Instead of sending a report, you might choose to do one of the following:\n\n  - Teleport to another district\n  - Break your friendship\n\nDo you really want to report %s to a Moderator?\n\n(This will also break your friendship)'
@@ -3289,18 +3288,19 @@ PhotoPageCancel = lCancel
 PhotoPageClose = lClose
 PhotoPageDirectory = 'Open Folder'
 PhotoPageTutorial = 'You haven\'t taken any snapshots yet! Press TAB to change your camera angle, and press F9 to take a snapshot.\n\n Once you\'ve made a snapshot, come here to manage and name them.'
-BuildingPageTitle = 'Buildings\n(Coming Soon)'
 InventoryPageTitle = 'Gags'
 InventoryPageTrackFull = 'You have all the gags in the %s track.'
 InventoryPagePluralPoints = 'You will get a new\n%(trackName)s gag when you\nget %(numPoints)s more %(trackName)s points.'
 InventoryPageSinglePoint = 'You will get a new\n%(trackName)s gag when you\nget %(numPoints)s more %(trackName)s point.'
 InventoryPageNoAccess = 'You do not have access to the %s track yet.'
 NPCFriendPageTitle = 'SOS Toons'
+NPCFriendPageDelete = 'Delete'
+NPCFriendPageDeleteConfirmation = 'Are you sure you want to delete 1 of these SOS cards?'
 PartyDateFormat = '%(mm)s %(dd)d, %(yyyy).4d'
 PartyTimeFormat = '%d:%.2d %s'
 PartyTimeFormatMeridiemAM = 'am'
 PartyTimeFormatMeridiemPM = 'pm'
-PartyCanStart = "It's Party Time, click Start Party in your Shticker Book Hosting page!"
+PartyCanStart = "It's Party Time, click Start Party in your Hosting page!"
 PartyHasStartedAcceptedInvite = '%s party has started! Teleport to the host!'
 PartyHasStartedNotAcceptedInvite = '%s party has started! You can still go to it by teleporting to the host.'
 EventsPageName = 'Events'
@@ -3315,7 +3315,7 @@ EventsPageTooLateToStart = 'Sorry, it is too late to start your party. You can c
 EventsPagePublicPrivateChange = "Changing your party's privacy setting..."
 EventsPagePublicPrivateNoGo = "Sorry, you can't change your party's privacy setting right now."
 EventsPagePublicPrivateAlreadyStarted = "Sorry, your party has already started, so you can't change your party's privacy setting."
-EventsPageHostTabName = 'Hosting'
+EventsPageHostTabName = 'Host'
 EventsPageHostTabTitle = 'My Next Party'
 EventsPageHostTabTitleNoParties = 'No Parties'
 EventsPageHostTabDateTimeLabel = 'You are having a party on %s at %s Toontown Time.'
@@ -3376,6 +3376,7 @@ PartyPlannerEditorInstructionsRemoved = '%(removed)s removed since %(added)s was
 PartyPlannerBeans = 'beans'
 PartyPlannerTotalCost = 'Total Cost:\n%d beans'
 PartyPlannerSoldOut = 'SOLD OUT'
+PartyPlannerPurchased = 'PURCHASED'
 PartyPlannerBuy = 'BUY'
 PartyPlannerPartyGrounds = 'PARTY GROUNDS MAP'
 PartyPlannerOkWithGroundsLayout = 'Are you done moving your Party Activities and Decorations around the Party Grounds Map?'
@@ -4262,7 +4263,7 @@ PetTutorialPage2 = "Use the new 'Pets' area in the SpeedChat menu to get a Doodl
 PetTutorialPage3 = "Purchase new Doodle tricks from Clarabelle's Cattlelog.  Better tricks give better Toon-Ups!"
 
 def getPetGuiAlign():
-    from pandac.PandaModules import TextNode
+    from panda3d.core import TextNode
     return TextNode.ACenter
 
 
@@ -6992,7 +6993,7 @@ TipDict = {TIP_NONE: ('',),
                'Every time you turn in a completed ToonTask your Laff points are automatically refilled.',
                'You can browse the selection at Clothing Stores even without a clothing ticket.',
                'Rewards for some ToonTasks allow you to carry more gags and Jellybeans.',
-               'You can have up to 50 friends on your Friends List.',
+               'You can have up to 200 friends on your Friends List.',
                'Some ToonTask rewards let you teleport to playgrounds in Toontown by using the Map Page in the Shticker Book.',
                'Increase your Laff points in the Playgrounds by collecting treasures like stars and ice cream cones.',
                'To heal quickly after a battle, go to your estate and play with your Doodle.',

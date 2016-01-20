@@ -9,11 +9,11 @@ if cur_version < req_version:
     print 'Your version of python is too old. Please upgrade to 2.7.9.'
     sys.exit()
 
-username = os.environ['ttsUsername']
-password = os.environ['ttsPassword']
+username = os.environ['tteUsername']
+password = os.environ['ttePassword']
 distribution = 'qa'
 
-accountServerEndpoint = 'https://toontownstride.com/api/'
+accountServerEndpoint = 'https://toontownempire.com/api/'
 
 data = urllib.urlencode({'username': username, 'password': password, 'distribution': distribution, 'version': 'dev'})
 cookie_jar = cookielib.LWPCookieJar()
@@ -32,8 +32,8 @@ else:
     if response['status'] != 7:
         print response['message']
     else:
-        os.environ['TTS_PLAYCOOKIE'] = response['token']
-        os.environ['TTS_GAMESERVER'] = response['gameserver']
+        os.environ['TTE_PLAYCOOKIE'] = response['token']
+        os.environ['TTE_GAMESERVER'] = response['gameserver']
 
         # Start the game:
         import toontown.toonbase.ToontownStart

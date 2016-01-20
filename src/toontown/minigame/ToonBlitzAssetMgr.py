@@ -3,7 +3,7 @@ from direct.showbase.DirectObject import DirectObject
 from toontown.toonbase.ToonBaseGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 from toontown.minigame import ToonBlitzGlobals, TwoDBlock
-from pandac.PandaModules import CardMaker
+from panda3d.core import CardMaker
 
 class ToonBlitzAssetMgr(DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedToonBlitzAssets')

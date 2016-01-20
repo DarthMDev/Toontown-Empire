@@ -13,7 +13,7 @@ from CatalogWainscotingItem import CatalogWainscotingItem, getAllWainscotings
 from CatalogWindowItem import CatalogWindowItem
 from CatalogPoleItem import nextAvailablePole, getAllPoles
 from CatalogPetTrickItem import CatalogPetTrickItem, getAllPetTricks
-from CatalogTankItem import nextAvailableTank, getAllTanks
+#from CatalogTankItem import nextAvailableTank, getAllTanks
 from CatalogGardenItem import CatalogGardenItem
 from CatalogToonStatueItem import CatalogToonStatueItem
 from CatalogRentalItem import CatalogRentalItem

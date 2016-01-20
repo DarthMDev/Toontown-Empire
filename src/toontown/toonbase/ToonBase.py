@@ -18,13 +18,11 @@ import time
 
 import ToontownGlobals
 import ToontownLoader
-from otp.otpbase import OTPBase
-from otp.otpbase import OTPGlobals
+from otp.otpbase import OTPBase, OTPGlobals
 from otp.nametag.ChatBalloon import ChatBalloon
 from otp.nametag import NametagGlobals
 from otp.margins.MarginManager import MarginManager
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownBattleGlobals
+from toontown.toonbase import TTLocalizer, ToontownBattleGlobals
 from toontown.toontowngui import TTDialog
 
 tempdir = tempfile.mkdtemp()

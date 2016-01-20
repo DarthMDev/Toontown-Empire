@@ -10,7 +10,10 @@ class DistributedToonUD(DistributedObjectUD):
     def setDNAString(self, todo0):
         pass
 
-    def setGM(self, todo0):
+    def setBadge(self, todo0):
+        pass
+
+    def setXmasBadge(self, todo0):
         pass
 
     def setMaxBankMoney(self, todo0):

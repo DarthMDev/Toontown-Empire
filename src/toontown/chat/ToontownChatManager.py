@@ -1,6 +1,5 @@
 from direct.showbase import DirectObject
-from otp.otpbase import OTPGlobals
-from otp.otpbase import OTPLocalizer
+from otp.otpbase import OTPGlobals, OTPLocalizer
 from toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *

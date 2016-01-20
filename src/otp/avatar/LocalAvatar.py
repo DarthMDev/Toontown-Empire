@@ -1,4 +1,5 @@
 import ToontownControlManager
+from direct.controls import ControlManager
 from direct.controls.GhostWalker import GhostWalker
 from direct.controls.GravityWalker import GravityWalker
 from direct.controls.ObserverWalker import ObserverWalker
@@ -1126,7 +1127,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         DistributedSmoothNode.DistributedSmoothNode.d_setParent(self, parentToken)
 
 
-@magicWord(category=CATEGORY_LEADER)
+@magicWord(category=CATEGORY_STAFF)
 def run():
     """
     Toggles debugging run speed.
@@ -1134,7 +1135,7 @@ def run():
     inputState.set('debugRunning', inputState.isSet('debugRunning') != True)
     return 'Toggled debug run speed.'
 
-@magicWord(category=CATEGORY_LEADER)
+@magicWord(category=CATEGORY_STAFF)
 def collisionsOff():
     """
     Turns collisions off.
@@ -1142,7 +1143,7 @@ def collisionsOff():
     base.localAvatar.collisionsOff()
     return 'Collisions are disabled.'
 
-@magicWord(category=CATEGORY_LEADER)
+@magicWord(category=CATEGORY_STAFF)
 def collisionsOn():
     """
     Turns collisions on.

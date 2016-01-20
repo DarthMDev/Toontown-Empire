@@ -145,7 +145,7 @@ class DistributedPartyManagerAI(DistributedObjectAI):
         party = self._makePartyDict(partyStruct)
         av = self.air.doId2do.get(party['hostId'], None)
         if not av:
-            return # The host isn't on the district... wat do
+            return
         party['inviteeIds'] = inviteeIds
         partyId = party['partyId']
         # This is issued in response to a request for the party to start, essentially. So let's alloc a zone
@@ -189,7 +189,6 @@ class DistributedPartyManagerAI(DistributedObjectAI):
 
     def freeZoneIdFromPlannedParty(self, hostId, zoneId):
         sender = self.air.getAvatarIdFromSender()
-        # Only the host of a party can free its zone
         if sender != hostId:
             self.air.writeServerEvent('suspicious',sender,'Toon tried to free zone for someone else\'s party!')
             return
@@ -230,7 +229,6 @@ class DistributedPartyManagerAI(DistributedObjectAI):
         pass
 
     def partyHasFinishedUdToAllAi(self, partyId):
-        # FIXME I bet i have to do some cleanup
         del self.pubPartyInfo[partyId]
 
     def updateToPublicPartyInfoUdToAllAi(self, shardId, zoneId, partyId, hostId, numGuests, maxGuests, hostName, activities, minLeft):

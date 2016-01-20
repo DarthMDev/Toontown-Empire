@@ -1,6 +1,6 @@
 #!/bin/bash
 cd ..
-
+export PYTHONPATH=dependencies/linux:$PYTHONPATH
 # Get the user input:
 read -p "Username: " tteUsername
 read -s -p "Password: " ttePassword

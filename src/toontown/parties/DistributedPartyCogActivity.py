@@ -1,5 +1,5 @@
 from direct.distributed.ClockDelta import globalClockDelta
-from pandac.PandaModules import Point3
+from panda3d.core import Point3
 from toontown.toonbase import TTLocalizer
 import PartyGlobals
 from DistributedPartyTeamActivity import DistributedPartyTeamActivity
@@ -23,7 +23,7 @@ class DistributedPartyCogActivity(DistributedPartyTeamActivity):
 
     def announceGenerate(self):
         DistributedPartyTeamActivity.announceGenerate(self)
-        for i in range(len(self.toonIds)):
+        for i in xrange(len(self.toonIds)):
             for toonId in self.toonIds[i]:
                 toon = base.cr.doId2do.get(toonId, None)
                 if toon:
