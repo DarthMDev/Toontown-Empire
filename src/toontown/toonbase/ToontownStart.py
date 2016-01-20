@@ -18,7 +18,7 @@ sys.path.append(
 )
 
 # Temporary hack patch:
-__builtin__.__dict__.update(__import__('panda3d.core', fromlist=['*']).__dict__)
+__builtin__.__dict__.update(__import__('pandac.PandaModules', fromlist=['*']).__dict__)
 
 
 from panda3d.core import loadPrcFile
