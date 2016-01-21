@@ -549,9 +549,9 @@ suitIndex = {
 }
 BossCogRollSpeed = 7.5
 BossCogTurnSpeed = 20
-BossCogTreadSpeed = 3.5
+BossCogTreadSpeed = 5
 BossCogDizzy = 0
-BossCogElectricFence = 1
+BossCogElectricFence = 3
 BossCogSwatLeft = 2
 BossCogSwatRight = 3
 BossCogAreaAttack = 4
@@ -566,17 +566,18 @@ BossCogDizzyNow = 12
 BossCogGavelStomp = 13
 BossCogGavelHandle = 14
 BossCogLawyerAttack = 15
-BossCogMoveAttack = 16
-BossCogGolfAttack = 17
-BossCogGolfAreaAttack = 18
-BossCogGearDirectedAttack = 19
-BossCogOvertimeAttack = 20
+BossCogMoveAttack = 20
+BossCogGolfAttack = 19
+BossCogGolfAreaAttack = 21
+BossCogGearDirectedAttack = 22
+BossCogOvertimeAttack = 25
+BossCogChaseAttack = 27
 BossCogAttackTimes = {BossCogElectricFence: 0,
  BossCogSwatLeft: 5.5,
  BossCogSwatRight: 5.5,
- BossCogAreaAttack: 4.5,
+ BossCogAreaAttack: 4.21,
  BossCogFrontAttack: 2.65,
- BossCogRecoverDizzyAttack: 5.1,
+ BossCogRecoverDizzyAttack: 3.6,
  BossCogDirectedAttack: 4.84,
  BossCogNoAttack: 6,
  BossCogSlowDirectedAttack: 7.84,
@@ -584,16 +585,17 @@ BossCogAttackTimes = {BossCogElectricFence: 0,
  BossCogGolfAttack: 6,
  BossCogGolfAreaAttack: 7,
  BossCogGearDirectedAttack: 4.84,
- BossCogOvertimeAttack: 5}
+ BossCogOvertimeAttack: 5,
+ BossCogChaseAttack: 15.1}
 BossCogDamageLevels = {BossCogElectricFence: 1,
  BossCogSwatLeft: 5,
  BossCogSwatRight: 5,
- BossCogAreaAttack: 10,
- BossCogFrontAttack: 3,
- BossCogRecoverDizzyAttack: 3,
- BossCogDirectedAttack: 3,
+ BossCogAreaAttack: 15,
+ BossCogFrontAttack: 5,
+ BossCogRecoverDizzyAttack: 5,
+ BossCogDirectedAttack: 5,
  BossCogStrafeAttack: 2,
- BossCogGoonZap: 5,
+ BossCogGoonZap: 10,
  BossCogSlowDirectedAttack: 10,
  BossCogGavelStomp: 20,
  BossCogGavelHandle: 2,

@@ -44,7 +44,6 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
         self.battleB = None
         self.battleRequest = None
         self.arenaSide = 0
-        self.keyReward = False
         self.toonSphere = None
         self.localToonIsSafe = 0
         self.__toonsStuckToFloor = []
@@ -304,9 +303,6 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
 
     def setArenaSide(self, arenaSide):
         self.arenaSide = arenaSide
-    
-    def setKeyReward(self, reward):
-        self.keyReward = reward
 
     def setState(self, state):
         self.request(state)
@@ -886,10 +882,36 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
             dustCloud.setDepthWrite(0)
             dustCloud.setBin('fixed', 0)
             dustCloud.createTrack()
-            suitsOff.append(Sequence(Func(dustCloud.reparentTo, toon), Parallel(dustCloud.track, Sequence(Wait(0.3), Func(toon.takeOffSuit), Func(toon.sadEyes), Func(toon.blinkEyes), Func(toon.play, 'slip-backward'), Wait(0.7))), Func(dustCloud.detachNode), Func(dustCloud.destroy)))
-
+            suitsOff.append(
+                Sequence(
+                    Func(dustCloud.reparentTo, toon),
+                    Parallel(
+                        dustCloud.track,
+                        Sequence(
+                            Wait(0.3),
+                            Func(toon.takeOffSuit),
+                            Func(toon.sadEyes),
+                            Func(toon.blinkEyes),
+                            Func(toon.play, 'slip-backward'),
+                            Wait(0.7),
+                        )
+                    ),
+                    Func(dustCloud.detachNode),
+                    Func(dustCloud.destroy),
+                    Wait(3),
+                    Func(toon.loop, 'neutral'),
+                )
+            )
         seq.append(suitsOff)
         return seq
+
+
+    def setAttackSpeed(self, speed):
+        self.attackSpeed = speed
+        self.notify.info('Attack speed= %s' % self.attackSpeed)
+
+    def getAttackSpeed():
+        return self.attackSpeed
 
     def doDirectedAttack(self, avId, attackCode):
         toon = base.cr.doId2do.get(avId)
@@ -937,7 +959,8 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
         self.elevatorMusic = base.loadMusic('phase_7/audio/bgm/tt_elevator.ogg')
         self.stingMusic = base.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
         self.battleOneMusic = base.loadMusic('phase_3.5/audio/bgm/encntr_general_bg.ogg')
-        self.battleThreeMusic = base.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
+        self.battleTwoMusic = base.loadMusic('phase_9/audio/bgm/encntr_head_suit_theme.ogg')
+        self.battleThreeMusic = base.loadMusic('phase_9/audio/bgm/encntr_head_suit_theme.ogg')
         self.epilogueMusic = base.loadMusic('phase_9/audio/bgm/encntr_hall_of_fame.ogg')
 
     def unloadEnvironment(self):
