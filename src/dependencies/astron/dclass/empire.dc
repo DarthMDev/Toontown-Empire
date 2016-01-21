@@ -1335,7 +1335,7 @@ dclass DistributedPartyActivity : DistributedObject {
   exitRequestDenied(uint8);
   setToonsPlaying(uint32 []) broadcast ram;
   setState(string, int16) broadcast ram;
-  showJellybeanReward(uint32, uint32, string);
+  showJellybeanReward(uint8, uint32, string);
 };
 
 dclass DistributedPartyTeamActivity : DistributedPartyActivity {
@@ -1345,7 +1345,7 @@ dclass DistributedPartyTeamActivity : DistributedPartyActivity {
   setPlayersPerTeam(uint8, uint8) broadcast required;
   setDuration(uint8) broadcast required;
   setCanSwitchTeams(bool) broadcast required;
-  setState(string, int16, uint32) broadcast ram;
+  setState(string, int16, uint32 []) broadcast ram;
   setToonsPlaying(uint32 [0-8], uint32 [0-8]) required broadcast ram;
   setAdvantage(uint16/100);
   switchTeamRequestDenied(uint8);
@@ -1375,6 +1375,7 @@ dclass DistributedPartyCogActivity : DistributedPartyTeamActivity {
   pieHitsCog(uint32, int32, int8(0-2), int32/100, int32/100, int32/100, int32, bool) clsend broadcast airecv;
   setCogDistances(int8/100 [3]) broadcast ram;
   setHighScore(string, uint16) broadcast ram;
+  awardBeans() clsend airecv;
 };
 
 dclass DistributedPartyWinterCogActivity : DistributedPartyCogActivity {

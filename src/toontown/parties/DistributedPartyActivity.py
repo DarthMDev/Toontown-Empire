@@ -413,6 +413,8 @@ class DistributedPartyActivity(DistributedObject.DistributedObject):
         self._disableCollisions()
         self.signModel.removeNode()
         del self.signModel
+
+
         if hasattr(self, 'sign'):
             self.sign.removeNode()
             del self.sign

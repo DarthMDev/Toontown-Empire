@@ -8,9 +8,11 @@ from direct.gui.DirectGui import DirectFrame, DirectButton, DirectLabel, DirectS
 from direct.showbase import DirectObject
 from direct.showbase import PythonUtil
 from panda3d.core import *
+from panda3d.core import Vec3, Vec4, Point3, TextNode, VBase4
 
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPLocalizer
+from toontown.friends.FriendsListPanel import determineFriendName
 from otp.nametag.NametagGroup import NametagGroup
 from otp.nametag.Nametag import Nametag
 from otp.nametag.NametagFloat2d import *
@@ -25,6 +27,7 @@ from toontown.toon import ToonHead
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from toontown.toontowngui import TTDialog
+from toontown.toontowngui.TeaserPanel import TeaserPanel
 
 
 class PartyPlanner(DirectFrame, FSM):
@@ -36,7 +39,8 @@ class PartyPlanner(DirectFrame, FSM):
         self.doneEvent = doneEvent
         self.stateArray = ['Off',
          'Welcome',
-         'PartyEditor', # 'Guests',  skip over the Guests state.
+         'PartyEditor',
+         'Guests',
          'Date',
          'Time',
          'Invitation',
@@ -60,7 +64,6 @@ class PartyPlanner(DirectFrame, FSM):
         self.asapMinuteRounding = base.config.GetInt('party-asap-minute-rounding', PartyGlobals.PartyPlannerAsapMinuteRounding)
         self.load()
         self.request('Welcome')
-        return
 
     def enterWelcome(self, *args):
         self.prevButton['state'] = DirectGuiGlobals.DISABLED
@@ -113,7 +116,6 @@ class PartyPlanner(DirectFrame, FSM):
             self.nextButton.hide()
             self.makePartyNowButton.show()
         self.datePage.show()
-        return
 
     def exitDate(self):
         self.datePage.hide()
@@ -124,7 +126,6 @@ class PartyPlanner(DirectFrame, FSM):
         else:
             self.partyNowTime = self.calcAsapTime()
             self.partyTime = self.partyNowTime
-        return
 
     def calcAsapTime(self):
         curServerTime = base.cr.toontownTimeManager.getCurServerDateTime()
@@ -154,10 +155,12 @@ class PartyPlanner(DirectFrame, FSM):
         self.prevButton['state'] = DirectGuiGlobals.NORMAL
         self.nextButton.hide()
         defaultInviteTheme = PartyGlobals.InviteTheme.GenericMale
+
         if base.cr.newsManager.isHolidayRunning(ToontownGlobals.VICTORY_PARTY_HOLIDAY):
             defaultInviteTheme = PartyGlobals.InviteTheme.VictoryParty
         elif base.cr.newsManager.isHolidayRunning(ToontownGlobals.KARTING_TICKETS_HOLIDAY) or base.cr.newsManager.isHolidayRunning(ToontownGlobals.GRAND_PRIX):
             defaultInviteTheme = PartyGlobals.InviteTheme.Racing
+
         elif base.cr.newsManager.isHolidayRunning(ToontownGlobals.VALENTOONS_DAY):
             defaultInviteTheme = PartyGlobals.InviteTheme.Valentoons
         if self.partyInfo is not None:
@@ -184,7 +187,6 @@ class PartyPlanner(DirectFrame, FSM):
             self.setInviteTheme(defaultInviteTheme)
         self.inviteVisual.updateInvitation(base.localAvatar.getName(), self.partyInfo)
         self.invitationPage.show()
-        return
 
     def __prevTheme(self):
         self.nextThemeButton.show()
@@ -263,14 +265,12 @@ class PartyPlanner(DirectFrame, FSM):
         self.invitationPage.hide()
         self.farewellPage = self._createFarewellPage()
         self.farewellPage.hide()
-        return
 
     def _createNavButtons(self):
         self.quitButton = DirectButton(parent=self.frame, relief=None, geom=(self.gui.find('**/cancelButton_up'), self.gui.find('**/cancelButton_down'), self.gui.find('**/cancelButton_rollover')), command=self.__acceptExit)
         self.nextButton = DirectButton(parent=self.frame, relief=None, geom=(self.gui.find('**/bottomNext_button/nextButton_up'), self.gui.find('**/bottomNext_button/nextButton_down'), self.gui.find('**/bottomNext_button/nextButton_rollover')), command=self.__nextItem, state=DirectGuiGlobals.DISABLED)
         self.prevButton = DirectButton(parent=self.frame, relief=None, geom=(self.gui.find('**/bottomPrevious_button/previousButton_up'), self.gui.find('**/bottomPrevious_button/previousButton_down'), self.gui.find('**/bottomPrevious_button/previousButton_rollover')), command=self.__prevItem, state=DirectGuiGlobals.DISABLED)
         self.currentItem = None
-        return
 
     def __createNametag(self, parent):
         if self.nametagGroup == None:
@@ -450,8 +450,8 @@ class PartyPlanner(DirectFrame, FSM):
             self.noFriends = True
         else:
             self.noFriends = False
-            for friendId in base.localAvatar.friendsList:
-                self.friendList.addFriend(friendId)
+            for friendPair in base.localAvatar.friendsList:
+                self.friendList.addFriend(determineFriendName(friendPair), friendPair[0])
 
             self.friendList.scrollTo(0)
         pos = self.gui.find('**/step_04_partyWillBe_locator').getPos()
@@ -582,10 +582,14 @@ class PartyPlanner(DirectFrame, FSM):
 
     def __handleHolidays(self):
         self.inviteThemes = range(len(PartyGlobals.InviteTheme))
+
+
+
         if not base.cr.newsManager.isHolidayRunning(ToontownGlobals.VALENTOONS_DAY):
             self.inviteThemes.remove(PartyGlobals.InviteTheme.Valentoons)
         if not base.cr.newsManager.isHolidayRunning(ToontownGlobals.VICTORY_PARTY_HOLIDAY):
             self.inviteThemes.remove(PartyGlobals.InviteTheme.VictoryParty)
+
         if not base.cr.newsManager.isHolidayRunning(ToontownGlobals.CHRISTMAS):
             self.inviteThemes.remove(PartyGlobals.InviteTheme.Winter)
 
@@ -636,7 +640,6 @@ class PartyPlanner(DirectFrame, FSM):
         self.partyEditor = None
         self.destroy()
         del self
-        return
 
     def __handleComplete(self):
         self.inviteButton['state'] = DirectGuiGlobals.DISABLED
@@ -707,7 +710,6 @@ class PartyPlanner(DirectFrame, FSM):
                 self.chooseFutureTimeDialog.show()
                 return
         self.requestNext()
-        return
 
     def okChooseFutureTime(self):
         if hasattr(self, 'chooseFutureTimeDialog'):
@@ -725,7 +727,6 @@ class PartyPlanner(DirectFrame, FSM):
             self.request('Guests')
             return
         self.requestPrev()
-        return
 
     def __moneyChange(self, newMoney):
         if hasattr(self, 'totalMoney'):

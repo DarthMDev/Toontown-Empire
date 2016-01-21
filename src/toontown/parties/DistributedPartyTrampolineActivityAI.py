@@ -35,7 +35,7 @@ class DistributedPartyTrampolineActivityAI(DistributedPartyActivityAI, FSM):
             self.air.writeServerEvent('suspicious',avId,'Toon tried to award beans while not in district!')
             return
         reward = self.collected*2
-        message = TTLocalizer.PartyTrampolineBeanResults % self.collected
+        message = TTLocalizer.PartyTrampolineBeanResults % reward
         if self.collected == PartyGlobals.TrampolineNumJellyBeans:
             reward += PartyGlobals.TrampolineJellyBeanBonus
             message = TTLocalizer.PartyTrampolineBonusBeanResults % (self.collected, PartyGlobals.TrampolineJellyBeanBonus)
@@ -112,6 +112,13 @@ class DistributedPartyTrampolineActivityAI(DistributedPartyActivityAI, FSM):
         self.currentAv = avId
         self.updateToonsPlaying()
         self.demand('Rules')
+        self.acceptOnce(self.air.getAvatarExitEvent(avId), self.handleUnexpectedExit, extraArgs=[avId])
+
+    def handleUnexpectedExit(self, avId):
+        taskMgr.remove('exitTrampoline%d' % self.doId)
+        self.currentAv = 0
+        self.updateToonsPlaying()
+        self.demand('Idle')
 
     def toonExitRequest(self):
         avId = self.air.getAvatarIdFromSender()
@@ -121,7 +128,7 @@ class DistributedPartyTrampolineActivityAI(DistributedPartyActivityAI, FSM):
         if self.currentAv != avId:
             self.air.writeServerEvent('suspicious',avId,'Toon tried to exit trampoline for someone else!')
             return
-        taskMgr.remove('exitTrampoline'%self.doId)
+        taskMgr.remove('exitTrampoline%d' % self.doId)
         self.sendUpdate('leaveTrampoline', [])
 
     def toonExitDemand(self):
