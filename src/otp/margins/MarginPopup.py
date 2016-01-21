@@ -1,4 +1,4 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 
 class MarginPopup:
     def __init__(self):

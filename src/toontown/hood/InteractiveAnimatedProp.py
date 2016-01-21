@@ -1,4 +1,4 @@
-from panda3d.core import TextNode, Vec3
+from pandac.PandaModules import TextNode, Vec3
 from direct.actor import Actor
 from direct.fsm import FSM
 from direct.interval.IntervalGlobal import Sequence, ActorInterval, Wait, Func, SoundInterval, Parallel

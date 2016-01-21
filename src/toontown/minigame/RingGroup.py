@@ -1,6 +1,6 @@
 from panda3d.core import *
 from toontown.toonbase.ToonBaseGlobal import *
-from panda3d.core import NodePath
+from pandac.PandaModules import NodePath
 import Ring
 import RingTrack
 import RingTrackGroup

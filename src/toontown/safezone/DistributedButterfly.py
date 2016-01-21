@@ -5,7 +5,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from panda3d.core import NodePath
+from pandac.PandaModules import NodePath
 from direct.directutil import Mopath
 from toontown.toonbase import ToontownGlobals
 from direct.actor import Actor

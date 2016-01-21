@@ -1,4 +1,4 @@
-from panda3d.core import NodePath
+from pandac.PandaModules import NodePath
 from direct.interval.MetaInterval import Sequence
 from direct.interval.FunctionInterval import Func
 from toontown.toonbase.ToontownTimer import ToontownTimer

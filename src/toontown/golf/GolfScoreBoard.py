@@ -6,7 +6,7 @@ from direct.task import Task
 from math import *
 from direct.distributed.ClockDelta import *
 from toontown.golf import GolfGlobals
-from panda3d.core import LineSegs
+from pandac.PandaModules import LineSegs
 AUTO_HIDE_TIMEOUT = 3
 
 class GolfScoreBoard:

@@ -1,4 +1,4 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 from NametagConstants import *
 from Nametag3d import *
 from Nametag2d import *
