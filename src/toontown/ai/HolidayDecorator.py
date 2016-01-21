@@ -1,5 +1,5 @@
 from direct.interval.IntervalGlobal import Parallel, Sequence, Func, Wait
-from pandac.PandaModules import Vec4, TransformState, NodePath, TransparencyAttrib
+from panda3d.core import Vec4, TransformState, NodePath, TransparencyAttrib
 
 class HolidayDecorator:
 

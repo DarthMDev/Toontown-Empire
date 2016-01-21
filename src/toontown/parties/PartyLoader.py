@@ -4,7 +4,6 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
 from pandac.PandaModules import *
-from panda3d.core import *
 from pandac.PandaModules import NodePath
 from toontown.toonbase.ToontownGlobals import *
 from toontown.safezone import SafeZoneLoader

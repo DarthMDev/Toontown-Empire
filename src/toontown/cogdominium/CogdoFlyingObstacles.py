@@ -192,7 +192,7 @@ class CogdoFlyingObstacle(DirectObject):
         messenger.send(CogdoFlyingObstacle.ExitEventName, [self, collEntry])
 
 
-from pandac.PandaModules import TransformState
+from panda3d.core import TransformState
 
 class CogdoFlyingWhirlwind(CogdoFlyingObstacle):
 
