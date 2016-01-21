@@ -1,7 +1,5 @@
 from pandac.PandaModules import Point3, VBase4, BitMask32
-
 from direct.showbase import PythonUtil
-
 from toontown.toonbase import TTLocalizer
 
 
