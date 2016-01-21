@@ -6,7 +6,6 @@ from toontown.effects import FireworkShows
 import PartyGlobals
 import random
 
-
 class DistributedPartyFireworksActivityAI(DistributedPartyActivityAI, FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory("DistributedPartyFireworksActivityAI")
     

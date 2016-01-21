@@ -18,7 +18,8 @@ from toontown.effects import DustCloud
 from toontown.suit import DistributedBossCog
 from toontown.suit import Suit
 from toontown.suit import SuitDNA
-from toontown.toon import Toon, NPCToons
+from toontown.toon import Toon
+from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import ToontownTimer
@@ -189,9 +190,10 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.geom.attachNewNode(planeNode)
         self.geom.reparentTo(render)
 
-        self.promotionMusic = base.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
+        self.promotionMusic = base.loadMusic('phase_12/audio/bgm/BossBot_CEO_v1.ogg')
         self.betweenPhaseMusic = base.loadMusic('phase_9/audio/bgm/encntr_toon_winning.ogg')
         self.phaseTwoMusic = base.loadMusic('phase_12/audio/bgm/BossBot_CEO_v1.ogg')
+        self.DinnerMusic = base.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
         self.phaseFourMusic = base.loadMusic('phase_12/audio/bgm/BossBot_CEO_v2.ogg')
         self.pickupFoodSfx = loader.loadSfx('phase_6/audio/sfx/SZ_MM_gliss.ogg')
         self.explodeSfx = loader.loadSfx('phase_4/audio/sfx/firework_distance_02.ogg')
@@ -263,7 +265,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         if not self.resistanceToonOnstage:
             self.__showResistanceToon(True)
         DistributedBossCog.DistributedBossCog.enterIntroduction(self)
-        base.playMusic(self.promotionMusic, looping=1, volume=0.9)
+        base.playMusic(self.promotionMusic, looping=1, volume=1.8)
 
     def exitIntroduction(self):
         DistributedBossCog.DistributedBossCog.exitIntroduction(self)
@@ -621,11 +623,11 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.toonsToBattlePosition(self.toonsA, self.battleANode)
         self.toonsToBattlePosition(self.toonsB, self.battleBNode)
         self.releaseToons()
-        base.playMusic(self.battleOneMusic, looping=1, volume=0.9)
+        base.playMusic(self.DinnerMusic, looping=1, volume=0.9)
 
     def exitBattleThree(self):
         self.cleanupBattles()
-        self.battleOneMusic.stop()
+        self.DinnerMusic.stop()
         localAvatar.inventory.setBattleCreditMultiplier(1)
 
     def claimOneChair(self):
@@ -981,7 +983,6 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.storeInterval(self.moveTrack, 'moveTrack')
 
     def doChaseToonAttack(self, avId):
-
         def doChase(toon):
             self.interruptMove()
 
@@ -1041,7 +1042,6 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             av = self.cr.doId2do.get(avId)
             if av is not None:
                 self.chaseTime = 0
-
                 # Hacky fix for crashing when we run over a table.
                 self.tableIndex = 15
                 taskMgr.doMethodLater(0.2, doChase, 'chaseTask', extraArgs=[av])
@@ -1056,6 +1056,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
     def setAttackCode(self, attackCode, avId = 0):
         if self.state != 'BattleFour':
             return
+        print 'Client setAttackCode: %s %s' % (attackCode, avId)
         self.numAttacks += 1
         self.notify.debug('numAttacks=%d' % self.numAttacks)
         self.attackCode = attackCode
@@ -1193,8 +1194,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.fromPos = fromPos
         self.dirVector = self.toPos - self.fromPos
         self.dirVector.normalize()
-        #track = Sequence(Func(self.setPos, fromPos), Func(self.headsUp, toPos), Parallel(self.hprInterval(turnTime, toHpr, fromHpr), self.rollLeftTreads(turnTime, leftRate), self.rollRightTreads(turnTime, -leftRate)), Func(self.startMoveTask))
-        track = Sequence(Func(self.setPos, fromPos), Func(self.headsUp, toPos), Parallel(self.hprInterval(turnTime, toHpr, fromHpr)), Func(self.startMoveTask))
+        track = Sequence(Func(self.setPos, fromPos), Func(self.headsUp, toPos), Parallel(self.hprInterval(turnTime, toHpr, fromHpr), self.rollLeftTreads(turnTime, leftRate), self.rollRightTreads(turnTime, -leftRate)), Func(self.startMoveTask))
         return (track, toHpr)
 
     def getCurTurnSpeed(self):
