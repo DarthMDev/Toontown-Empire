@@ -1803,6 +1803,8 @@ class Toon(Avatar.Avatar, ToonHead):
         self.getGeomNode().setClipPlane(self.holeClipPath)
         self.nametag3d.setClipPlane(self.holeClipPath)
         avHeight = max(self.getHeight(), 3)
+        self.track.start(ts)
+        self.setActiveShadow(0)
 
     def finishTeleportOut(self, callback = None, extraArgs = []):
         name = self.name
