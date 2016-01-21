@@ -553,7 +553,9 @@ class Toon(Avatar.Avatar, ToonHead):
             self.motion.delete()
             self.motion = None
 
-#            self.removeGMIcon()
+            self.removeHeadMeter()
+            self.removeGMIcon()
+            self.removePartyHat()
             Avatar.Avatar.delete(self)
             ToonHead.delete(self)
 
@@ -1801,6 +1803,20 @@ class Toon(Avatar.Avatar, ToonHead):
         self.getGeomNode().setClipPlane(self.holeClipPath)
         self.nametag3d.setClipPlane(self.holeClipPath)
         avHeight = max(self.getHeight(), 3)
+        
+        if self == base.localAvatar and settings['tpTransition'] and not ZoneUtil.isDynamicZone(self.zoneId):
+            def lerpCam(task):
+                degrees = task.time * 52.941
+                radians = degrees * (math.pi / 180.0)
+                x = -12 * math.sin(radians)
+                y = -12 * math.cos(radians)
+                z = base.localAvatar.getHeight()
+                camera.setPos(x, y, z)
+                camera.setH(-degrees)
+                return task.done if task.time > 3.4 else task.cont
+            
+            taskMgr.add(lerpCam, 'lerpCam')
+
         self.track.start(ts)
         self.setActiveShadow(0)
 
@@ -3010,6 +3026,104 @@ class Toon(Avatar.Avatar, ToonHead):
 
         return sequence
 
+    def createHeadMeter(self):
+        if self.headMeter:
+            return
+
+        nodePath = NodePath(self.nametag.getNameIcon())
+
+        if nodePath.isEmpty():
+            return
+
+        self.headMeter = LaffMeter.LaffMeter(self.style, self.getHp(), self.getMaxHp())
+        self.headMeter.av = self
+        self.headMeter.reparentTo(nodePath)
+        self.headMeter.setScale(1)
+        self.headMeter.setBin("fixed", 40)
+        self.headMeter.setDepthWrite(False)
+        self.headMeter.start()
+        self.setHeadPositions()
+
+    def removeHeadMeter(self):
+        if not self.headMeter:
+            return
+
+        self.headMeter.destroy()
+        self.headMeter = None
+        self.setHeadPositions()
+
+    def setGMIcon(self, access):
+        if self.gmIcon:
+            return
+
+        icons = loader.loadModel('phase_3/models/props/gm_icons')
+        self.gmIcon = icons.find('**/access_level_%s' % access)
+        np = NodePath(self.nametag.getNameIcon())
+
+        if np.isEmpty() or not self.gmIcon:
+            return
+
+        self.gmIcon.flattenStrong()
+        self.gmIcon.reparentTo(np)
+        self.gmIcon.setScale(1.6)
+        self.gmIconInterval = LerpHprInterval(self.gmIcon, 3.0, Point3(0, 0, 0), Point3(-360, 0, 0))
+        self.gmIconInterval.loop()
+        self.setHeadPositions()
+
+    def removeGMIcon(self):
+        if not self.gmIcon:
+            return
+
+        self.gmIconInterval.finish()
+        self.gmIcon.detachNode()
+        del self.gmIconInterval
+        self.gmIcon = None
+        self.setHeadPositions()
+
+    def setPartyHat(self):
+        if self.partyHat:
+            return
+
+        nodePath = NodePath(self.nametag.getNameIcon())
+
+        if nodePath.isEmpty():
+            return
+
+        model = loader.loadModel('phase_4/models/parties/partyStickerbook')
+        self.partyHat = model.find('**/Stickerbook_PartyIcon')
+        self.partyHat.setHpr(0.0, 0.0, -50.0)
+        self.partyHat.setScale(4)
+        self.partyHat.setBillboardAxis()
+        self.partyHat.reparentTo(nodePath)
+        model.removeNode()
+        self.setHeadPositions()
+
+    def removePartyHat(self):
+        if not self.partyHat:
+            return
+
+        self.partyHat.detachNode()
+        self.partyHat = None
+        self.setHeadPositions()
+
+    def setHeadPositions(self):
+        position = 2.5
+
+        if self.gmIcon:
+            self.gmIcon.setZ(position)
+            position += (2.5 if self.trophyStar else 2.7)
+
+        if self.trophyStar:
+            self.trophyStar.setZ(position)
+            position += 2.7
+
+        if self.headMeter:
+            self.headMeter.setZ(position)
+            position += 3.3
+
+        if self.partyHat:
+            self.partyHat.setZ(position)
+
 loadModels()
 compileGlobalAnimList()
 
@@ -3022,7 +3136,7 @@ def headMeter(create=True):
         if isinstance(av, Toon):
             av.createHeadMeter() if create else av.removeHeadMeter()
 
-@magicWord(category=CATEGORY_STAFF, types=[int])
+@magicWord(category=CATEGORY_LEADER, types=[int])
 def partyHat(create=True):
     """
     Create or remove the party hat.
