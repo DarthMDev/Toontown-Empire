@@ -265,7 +265,7 @@ QuestsBuildingQuestFloorNumbers = ('',
  'two+',
  'three+',
  'four+',
- 'five+')
+ 'five')
 QuestsBuildingQuestHeadline = 'DEFEAT'
 QuestsBuildingQuestProgressString = '%(progress)s of %(num)s defeated'
 QuestsBuildingQuestString = 'Defeat %s'
