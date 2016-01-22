@@ -8,7 +8,11 @@ class DNAInteractiveProp(DNAAnimProp.DNAAnimProp):
 
         self.cellId = -1
         
-    def getCellId(self):
+    def getCellId(self, cellId):
+        if cellId == None:
+        	self.cellId = -1
+        else:
+        	self.cellId = cellId
         return self.cellId
         
     def makeFromDGI(self, dgi):
