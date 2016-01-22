@@ -265,7 +265,7 @@ QuestsBuildingQuestFloorNumbers = ('',
  'two+',
  'three+',
  'four+',
- 'five+')
+ 'five')
 QuestsBuildingQuestHeadline = 'DEFEAT'
 QuestsBuildingQuestProgressString = '%(progress)s of %(num)s defeated'
 QuestsBuildingQuestString = 'Defeat %s'
@@ -3547,7 +3547,7 @@ PartyActivityNameDict = {0: {'generic': 'Jukebox',
  8: {'generic': 'Deluxe Jukebox',
      'invite': 'a deluxe jukebox',
      'editor': 'Deluxe Jukebox',
-     'description': 'Your own deluxe jukebox with double the tunes for double the deal!'},
+     'description': 'Your own deluxe jukebox with double the tunes!'},
  9: {'generic': 'Dance Floor\n20 moves',
      'invite': 'a 20 move Dance Floor',
      'editor': 'Dance Floor - 20',
@@ -4619,6 +4619,7 @@ NCCommaUsage = 'That name does not use commas properly. Commas must join two wor
 NCPeriodUsage = 'That name does not use periods properly. Periods are only allowed in words like "Mr.", "Mrs.", "J.T.", etc.'
 NCApostrophes = 'That name has too many apostrophes.'
 RemoveTrophy = lToonHQ + ': ' + TheCogs + ' took over one of the buildings you rescued!'
+Remove2Trophy = lToonHQ + ': Thanks for helping save the building from the Cogs!'
 STOREOWNER_TOOKTOOLONG = 'Need more time to think?'
 STOREOWNER_GOODBYE = 'See you later!'
 STOREOWNER_NEEDJELLYBEANS = 'You need to ride the Trolley to get some Jellybeans.'
