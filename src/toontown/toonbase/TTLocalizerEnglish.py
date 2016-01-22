@@ -4534,61 +4534,61 @@ PeriodOnlyAfterLetter = 'You can use a period in your name, but only after a let
 ApostropheOnlyAfterLetter = 'You can use an apostrophe in your name, but only after a letter.'
 NoNumbersInTheMiddle = 'Numeric digits may not appear in the middle of a word.'
 ThreeWordsOrLess = 'Your name must be three words or fewer.'
-NumToColor = ['White',
- 'Peach',
- 'Bright Red',
- 'Red',
- 'Maroon',
- 'Sienna',
- 'Brown',
- 'Tan',
- 'Coral',
- 'Orange',
- 'Yellow',
- 'Cream',
- 'Citrine',
- 'Lime',
- 'Sea Green',
- 'Green',
- 'Light Blue',
- 'Aqua',
- 'Blue',
- 'Periwinkle',
- 'Royal Blue',
- 'Slate Blue',
- 'Purple',
- 'Lavender',
- 'Pink',
- 'Plum',
- 'Black',
- 'Mountain Green',
- 'Icy Blue',
- 'Desert Sand',
- 'Mint',
- 'Charcoal',
- 'Hot Pink',
- 'Honey Mustard',
- 'Gray',
- 'Neon Orange',
- 'Sapphire',
- 'Crimson',
- 'Emerald',
- 'Bronze',
- 'African Violet',
- 'Magenta',
- 'Medium Purple',
- 'Ivory',
- 'Thistle',
- 'Spring Green',
- 'Goldenrod',
- 'Cadium Yellow',
- 'Peach Puff',
- 'Toony Teal',
- 'Salmon',
- 'Banana Yellow',
- 'Dim Gray',
- 'Turquoise',
- 'Forest Green']
+NumToColor = ['White', # 0
+ 'Peach',  #1
+ 'Bright Red', #2
+ 'Red', #3
+ 'Maroon', #4
+ 'Sienna', #5
+ 'Brown', #6
+ 'Tan', #7 
+ 'Coral', #8
+ 'Orange', #9
+ 'Yellow',#10
+ 'Cream', #11
+ 'Citrine',#12
+ 'Lime',#13
+ 'Sea Green',#14
+ 'Green',#15
+ 'Light Blue',#16
+ 'Aqua',#17
+ 'Blue',#18
+ 'Periwinkle',#19
+ 'Royal Blue',#20
+ 'Slate Blue',#21
+ 'Purple',#22
+ 'Lavender',#23
+ 'Pink',#24
+ 'Plum',#25
+ 'Black',#26
+ 'Mountain Green',#27
+ 'Icy Blue',#28
+ 'Desert Sand',#29
+ 'Mint',#30
+ 'Charcoal', #31
+ 'Hot Pink', #32
+ 'Honey Mustard', #33
+ 'Gray',#34
+ 'Neon Orange',#35
+ 'Sapphire',#36
+ 'Crimson',#37
+ 'Emerald',#38
+ 'Bronze',#39
+ 'African Violet',#40
+ 'Magenta',#41
+ 'Medium Purple',#42
+ 'Ivory',#43
+ 'Thistle',#44
+ 'Spring Green',#45
+ 'Goldenrod',#46
+ 'Cadium Yellow',#47
+ 'Peach Puff',#48
+ 'Toony Teal',#49
+ 'Salmon',#50
+ 'Banana Yellow',#51
+ 'Dim Gray',#52
+ 'Turquoise',#53
+ 'Forest Green']#54
 AnimalToSpecies = {'dog': 'Dog',
  'cat': 'Cat',
  'mouse': 'Mouse',
