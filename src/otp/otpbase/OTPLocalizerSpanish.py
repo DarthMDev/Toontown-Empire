@@ -1,3 +1,5 @@
+#coding: latin-1
+
 import string
 from otp.otpbase.OTPLocalizerSpanishProperty import *
 lTheBrrrgh = 'El Brrrgh'
@@ -12,10 +14,10 @@ lGolfZone = "Viruta 'n el Minigolf del Valle"
 lCancel = 'Cancelar'
 lClose = 'Cerca'
 lOK = 'OKAY'
-lNext = 'próximo'
+lNext = "xc3\próximo"
 lNo = 'No'
 lQuit = 'Dejar'
-lYes = 'sI'
+lYes = 'Si'
 Cog = 'Cog'
 Cogs = 'Cogs'
 DialogOK = lOK
@@ -2334,4 +2336,4 @@ def timeElapsedString(timeDelta):
     else:
         return '%s minutes ago' % (timeDelta.seconds / 60)
 
-AsciiNotSupported = 'Sorry, but Toontown Empire does not support non-ASCII characters.'
+AsciiNotSupported = 'Lo sentimos , pero Empire Toontown no es compatible con caracteres no ASCII .'

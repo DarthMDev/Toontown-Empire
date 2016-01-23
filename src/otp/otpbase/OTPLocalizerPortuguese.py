@@ -1,7 +1,7 @@
 #coding: latin-1
 
 import string
-from otp.otpbase.OTPLocalizer_portuguese_Property import *
+from otp.otpbase.OTPLocalizerPortugueseProperty import *
 lTheBrrrgh = 'O Brrrgh'
 lDaisyGardens = 'Jardim da Margarida'
 lDonaldsDock = 'Porto do Donald'
@@ -189,21 +189,14 @@ CRMissingGameRootObject = 'H\xc3\xa1 alguns objetos do jogo principal ausentes. 
 CRNoDistrictsTryAgain = 'N\xc3\xa3o h\xc3\xa1 Regi\xc3\xb5es de Toontown dispon\xc3\xadveis. Tentar novamente?'
 CRRejectRemoveAvatar = 'O Toon n\xc3\xa3o p\xc3\xb4de ser exclu\xc3\xaddo, tente novamente mais tarde.'
 CRLostConnection = 'A sua conex\xc3\xa3o de Internet com Toontown foi interrompida inesperadamente.'
-CRBootedReasons = {
-    1: 'Houve um problema inesperado. A conex\xc3\xa3o falhou, e voc\xc3\xaa precisa se conectar novamente para voltar ao jogo.',
-    100: 'Voc\xc3\xaa foi desconectado porque outra pessoa acabou de fazer login usando a sua conta em outro computador.',
-    120: 'Voc\xc3\xaa foi desconectado porque houve um problema com sua autoriza\xc3\xa7\xc3\xa3o para usar o chat.',
-    122: 'Houve um problema inesperado quando voc\xc3\xaa fez login em Toontown. Entre em contato com o Suporte ao Cliente de Toontown.',
-    124: 'Os arquivos de Toontown que voc\xc3\xaa tem instalados parecem ser inv\xc3\xa1lidos.',
-    125: 'Os arquivos de Toontown que voc\xc3\xaa tem instalados parecem ser inv\xc3\xa1lidos.',
-    126: 'Voc\xc3\xaa n\xc3\xa3o est\xc3\xa1 autorizado a usar privil\xc3\xa9gios administrativos.',
-    127: 'A problem has occurred with your Toon.  Please contact Member Services via phone, email or  live chat and reference Error Code 127.  Thank you.',
-    151: 'O administrador respons\xc3\xa1vel pelos servidores de Toontown fez logout na sua conta.',
-    152: "Foi relatada uma viola\xc3\xa7\xc3\xa3o dos nossos termos de uso, com rela\xc3\xa7\xc3\xa3o a '%(name)s'. Por seguran\xc3\xa7a, colocamos uma restri\xc3\xa7\xc3\xa3o tempor\xc3\xa1ria na conta. Para obter mais detalhes, leia a mensagem enviada ao endere\xc3\xa7o de e-mail associado a '%(name)s'.",
-    153: 'A regi\xc3\xa3o de Toontown onde voc\xc3\xaa estava jogando foi reiniciada. Todas as pessoas que estavam jogando nessa regi\xc3\xa3o foram desconectadas. Entretanto, voc\xc3\xaa poder\xc3\xa1 conectar-se novamente e voltar direto ao jogo.',
-    154: 'O jogo está fechando para manutenção. Todos foram desconectados.',
-    155: 'Você foi desconectado por um moderador.',
-    166: 'Você foi desconectado para evitar que o distrito resetasse.'}
+CRBootedReasons = {100: 'Você foi desconectado porque alguém acabou logado com sua conta em outro computador.',
+ 101: 'Por favor, relançar o jogo a partir do lançador oficial.',
+ 102: 'Você não está autorizado a usar os privilégios de administrador.',
+ 103: 'Você foi banido por um moderador. \N\nBehave próxima vez!',
+ 105: 'Toontown Empire agora está temporariamente fechada para manutenção. Todo mundo que estava jogando foi desconectado do jogo. \N\nPara obter mais informações, visite o site da Toontown Empire.',
+ 124: 'Seus arquivos instalados estão desatualizados ! Use o lançador oficial para baixar a versão mais recente , ou entre em contato Toontown Empire suporte se o problema persistir .',
+ 153: 'O distrito você estava jogando no foi redefinida. Todo mundo que estava jogando em que o distrito foi desconectado. No entanto , você deve ser capaz de se conectar novamente e vá para a direita de volta para o jogo.',
+ 166: 'Você foi desconectado para evitar uma reinicialização do distrito.'}
 CRBootedReasonUnknownCode = 'Houve um problema inesperado (c\xc3\xb3digo de erro %s). A conex\xc3\xa3o falhou, e voc\xc3\xaa precisa se conectar novamente para voltar ao jogo.'
 CRTryConnectAgain = '\n\nTentar conectar-se novamente?'
 CRToontownUnavailable = 'Toontown parece estar temporariamente indispon\xc3\xadvel, ainda tentando...'
@@ -216,6 +209,8 @@ CRServerConstantsTryAgain = 'N\xc3\xa3o foi poss\xc3\xadvel contatar %s.\n\nO se
 CRServerDateTryAgain = 'N\xc3\xa3o foi poss\xc3\xadvel obter a data do servidor de %s. Tentar novamente?'
 AfkForceAcknowledgeMessage = 'O seu Toon ficou com sono e foi para a cama.'
 PeriodTimerWarning = 'O seu limite de tempo em Toontown neste m\xc3\xaas est\xc3\xa1 quase no fim!'
+CRMaintenanceCountdownMessage = 'Atenção Toons! Toontown Empire estará indo para baixo para manutenção em % d minutos.'
+CRMaintenanceMessage = 'Atenção Toons! Toontown Empire está indo agora em manutenção.'
 PeriodForceAcknowledgeMessage = 'Voc\xc3\xaa usou todos os seus minutos dispon\xc3\xadveis em Toontown neste m\xc3\xaas. Volte e jogue mais no pr\xc3\xb3ximo m\xc3\xaas!'
 CREnteringToontown = 'Entrando em Toontown...'
 DownloadWatcherUpdate = 'Fazendo o download de %s'
@@ -2975,16 +2970,18 @@ def timeElapsedString(timeDelta):
     timeDelta = abs(timeDelta)
     if timeDelta.days > 0:
         if timeDelta.days == 1:
-            return '1 dia atr\xc3\xa1s'
+            return '1 day ago'
         else:
-            return '%s dias atr\xc3\xa1s' % timeDelta.days
+            return '%s days ago' % timeDelta.days
     elif timeDelta.seconds / 3600 > 0:
         if timeDelta.seconds / 3600 == 1:
-            return '1 hora atr\xc3\xa1s'
+            return '1 hour ago'
         else:
-            return '%s horas atr\xc3\xa1s' % timeDelta.seconds / 3600
+            return '%s hours ago' % (timeDelta.seconds / 3600)
     elif timeDelta.seconds / 60 < 2:
-        return '1 minuto atr\xc3\xa1s'
+        return '1 minute ago'
     else:
-        return '%s minutos atr\xc3\xa1s' % timeDelta.seconds / 60
+        return '%s minutes ago' % (timeDelta.seconds / 60)
+
+AsciiNotSupported = 'Desculpe, mas Toontown Empire não suporta caracteres não-ASCII .'
 
