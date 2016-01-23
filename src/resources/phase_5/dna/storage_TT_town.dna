@@ -192,23 +192,6 @@ place_model "phase_4/models/modules/TT_pond" [
 	store_node [ "street" "street_TT_pond" "" ]
 	]
 
-
-hood_model "phase_5/models/char/tt_r_ara_ttc_hydrant" [
-	store_node [ "anim_prop" "animated_prop_HydrantZeroAnimatedProp_phase_5_models_char__ttc_hydrant" ""]
-	]
-
-hood_model "phase_5/models/char/tt_r_ara_ttc_hydrant" [
-	store_node [ "anim_prop" "animated_prop_HydrantOneAnimatedProp_phase_5_models_char__ttc_hydrant" ""]
-	]
-
-hood_model "phase_5/models/char/tt_r_ara_ttc_hydrant" [
-	store_node [ "anim_prop" "animated_prop_HydrantTwoAnimatedProp_phase_5_models_char__ttc_hydrant" ""]
-	]
-
-hood_model "phase_5/models/char/tt_r_ara_ttc_B2" [
-	store_node [ "anim_building" "animated_building_phase_5_models_char__ttc_B2" ""]
-	]
-
 hood_model "phase_5/models/char/tt_r_ara_ttc_hydrant" [
 	store_node [ "anim_prop" "animated_prop_generic_phase_5_models_char__ttc_hydrant" ""]
 	]
