@@ -1,7 +1,6 @@
 from direct.directnotify.DirectNotifyGlobal import *
 from toontown.building import DistributedBuildingMgrAI
-#from toontown.dna.DNAParser import DNAStorage, DNAGroup, DNAVisGroup
-from toontown.dna import DNAStorage, DNAGroup, DNAVisGroup
+from toontown.dna.DNAParser import DNAStorage, DNAGroup, DNAVisGroup
 from toontown.fishing.DistributedFishingPondAI import DistributedFishingPondAI
 from toontown.hood import ZoneUtil
 from toontown.safezone import TreasureGlobals
@@ -32,7 +31,7 @@ class HoodAI:
         for zoneId in self.getZoneTable():
             self.notify.info('Creating objects... ' + self.getLocationName(zoneId))
             dnaFileName = self.air.lookupDNAFileName(zoneId)
-            dnaStore = DNAStorage.DNAStorage()
+            dnaStore = DNAStorage()
             dnaData = simbase.air.loadDNAFileAI(dnaStore, dnaFileName)
             self.air.dnaStoreMap[zoneId] = dnaStore
             self.air.dnaDataMap[zoneId] = dnaData
