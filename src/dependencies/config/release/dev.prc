@@ -35,10 +35,10 @@ want-parties #t
 want-cogdominiums #t
 want-lawbot-cogdo #t
 want-anim-props #t
-want-game-tables #t
-want-find-four #t
-want-chinese-checkers #t
-want-checkers #t
+want-game-tables #f
+want-find-four #f
+want-chinese-checkers #f
+want-checkers #f
 want-house-types #t
 want-gifting #t
 want-top-toons #f
