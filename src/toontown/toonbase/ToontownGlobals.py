@@ -1,7 +1,7 @@
 import TTLocalizer
 from otp.otpbase.OTPGlobals import *
 from direct.showbase.PythonUtil import Enum, invertDict
-from pandac.PandaModules import BitMask32, Vec4
+from panda3d.core import BitMask32, Vec4
 MapHotkey = 'alt'
 CogHQCameraFov = 60.0
 BossBattleCameraFov = 72.0
@@ -168,14 +168,13 @@ MapleStreet = 5200
 OakStreet = 5300
 LullabyLane = 9100
 PajamaPlace = 9200
-BedtimeBoulevard = 9300
 ToonHall = 2513
 HoodHierarchy = {ToontownCentral: (SillyStreet, LoopyLane, PunchlinePlace),
  DonaldsDock: (BarnacleBoulevard, SeaweedStreet, LighthouseLane),
  TheBrrrgh: (WalrusWay, SleetStreet, PolarPlace),
  MinniesMelodyland: (AltoAvenue, BaritoneBoulevard, TenorTerrace),
  DaisyGardens: (ElmStreet, MapleStreet, OakStreet),
- DonaldsDreamland: (LullabyLane, PajamaPlace, BedtimeBoulevard),
+ DonaldsDreamland: (LullabyLane, PajamaPlace),
  GoofySpeedway: ()}
 BossbotHQ = 10000
 BossbotLobby = 10100
