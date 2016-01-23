@@ -3082,6 +3082,7 @@ FADoorCodes_BB_DISGUISE_INCOMPLETE = "You'll get caught going in there as a Toon
 KnockKnockJokes = [['Who', "Bad echo in here, isn't there?"],
  ['Dozen', 'Dozen anybody want to let me in?'],
  ['Freddie', 'Freddie or not, here I come.'],
+ ['Doctor', 'Doctor Who you know from that tv show.'],
  ['Dishes', 'Dishes your friend, let me in.'],
  ['Wooden shoe', 'Wooden shoe like to know.'],
  ['Kent', 'Kent you tell?'],

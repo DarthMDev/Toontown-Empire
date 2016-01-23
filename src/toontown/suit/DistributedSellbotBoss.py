@@ -11,6 +11,7 @@ from direct.task import Task
 import math
 from panda3d.core import *
 import random
+from toontown.catalog import CatalogClothingItem
 
 import DistributedBossCog
 import SuitDNA
@@ -462,6 +463,9 @@ class DistributedSellbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             newCogSuitLevel = localAvatar.getCogLevels()[CogDisguiseGlobals.dept2deptIndex(self.style.dept)]
             if newCogSuitLevel == ToontownGlobals.MaxCogSuitLevel:
                 speech += TTLocalizer.CagedToonLastPromotion % (ToontownGlobals.MaxCogSuitLevel + 1)
+                #TODO > shirt = CatalogClothingItem.CatalogClothingItem(0,0) >> put proper numbers for clothing item for storm sellbot shirt
+                #shorts =  CatalogClothingItem.CatalogClothingItem(0,0)
+               # return [shirt, shorts]
             if newCogSuitLevel in ToontownGlobals.CogSuitHPLevels:
                 speech += TTLocalizer.CagedToonHPBoost
         else:

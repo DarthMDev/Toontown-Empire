@@ -6,13 +6,13 @@ try:
 except:
     language = 'English'
 #    language = 'Spanish'
-    language = 'Portuguese'
+#    language = 'Portuguese'
 
 print 'OTPLocalizer: Running in language: %s' % language
 
 from otp.otpbase.OTPLocalizerEnglish import *
 #from otp.otpbase.OTPLocalizerSpanish import *
-from otp.otpbase.OTPLocalizerPortuguese import *
+#from otp.otpbase.OTPLocalizerPortuguese import *
 
 if language != 'English':
     l = {}
@@ -65,8 +65,6 @@ if language != 'Spanish':
         if key not in spanishModule.__dict__:
             print 'WARNING: Foreign module: %s extra key: %s' % (module, key)
 
-'''
-
 if language != 'Portuguese':
     l = {}
     g = {}
@@ -95,4 +93,4 @@ if language != 'Portuguese':
     for key in foreignModule.__dict__.keys():
         if key not in portugueseModule.__dict__:
             print 'WARNING: Foreign module: %s extra key: %s' % (module, key)
-
+'''

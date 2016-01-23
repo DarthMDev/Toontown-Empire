@@ -6,7 +6,7 @@ try:
 except:
     language = 'English'
 #    language = 'Spanish'
-    language = 'Portuguese'
+#    language = 'Portuguese'
 
 def getLanguage():
     return language
@@ -14,7 +14,7 @@ def getLanguage():
 print 'TTLocalizer: Running in language: %s' % language
 from toontown.toonbase.TTLocalizerEnglish import *
 #from toontown.toonbase.TTLocalizerSpanish import *
-from toontown.toonbase.TTLocalizerPortuguese import *
+#from toontown.toonbase.TTLocalizerPortuguese import *
 
 if language != 'English':
     l = {}
@@ -67,7 +67,6 @@ if language != 'Spanish':
         if key not in spanishModule.__dict__:
             print 'WARNING: Foreign module: %s extra key: %s' % (module, key)
 
-'''
 
 if language != 'Portuguese':
     l = {}
@@ -93,3 +92,4 @@ if language != 'Portuguese':
     for key in foreignModule.__dict__.keys():
         if key not in portugueseModule.__dict__:
             print 'WARNING: Foreign module: %s extra key: %s' % (module, key)
+'''

@@ -5041,33 +5041,23 @@ def track(command, track, value=None):
         return 'Set the experience of the %s track to: %d!' % (track, value)
     return 'Invalid command.'
 
-@magicWord(category=CATEGORY_STAFF, types=[str, int, int, int, int, int])
-def suit(command, suitIndex, cogType=0, isSkelecog=0, isV2=0, isWaiter=0):
+@magicWord(category=CATEGORY_STAFF, types=[str, str])
+def suit(command, suitName):
     invoker = spellbook.getInvoker()
     command = command.lower()
+    if suitName not in SuitDNA.suitHeadTypes:
+        return 'Invalid suit name: ' + suitName
+    suitFullName = SuitBattleGlobals.SuitAttributes[suitName]['name']
     if command == 'spawn':
-        returnCode = invoker.doSummonSingleCog(int(suitIndex))
+        returnCode = invoker.doSummonSingleCog(SuitDNA.suitHeadTypes.index(suitName))
         if returnCode[0] == 'success':
-            return 'Successfully spawned suit with index {0}!'.format(suitIndex)
-        return "Couldn't spawn suit with index {0}.".format(suitIndex)
+            return 'Successfully spawned: ' + suitFullName
+        return "Couldn't spawn: " + suitFullName
     elif command == 'building':
-        returnCode = invoker.doBuildingTakeover(suitIndex)
+        returnCode = invoker.doBuildingTakeover(SuitDNA.suitHeadTypes.index(suitName))
         if returnCode[0] == 'success':
-            return 'Successfully spawned building with index {0}!'.format(suitIndex)
-        return "Couldn't spawn building with index {0}.".format(suitIndex)
-    elif command == 'do':
-        returnCode = invoker.doCogdoTakeOver(suitIndex, 1)
-        if returnCode[0] == 'success':
-            return 'Successfully spawned Cogdo with difficulty {0}!'.format(suitIndex)
-        return "Couldn't spawn Cogdo with difficulty {0}.".format(suitIndex)
-    elif command == 'invasion':
-        returnCode = invoker.doCogInvasion(suitIndex, cogType, isSkelecog, isV2, isWaiter)
-        return returnCode
-    elif command == 'invasionend':
-        returnCode = 'Ending Invasion..'
-        simbase.air.suitInvasionManager.cleanupTasks()
-        simbase.air.suitInvasionManager.cleanupInvasion()
-        return returnCode
+            return 'Successfully spawned a Cog building with: ' + suitFullName
+        return "Couldn't spawn a Cog building with: " + suitFullName
     else:
         return 'Invalid command.'
 
@@ -5118,7 +5108,7 @@ def disguise(command, suitIndex, value):
 @magicWord(category=CATEGORY_LEADER)
 def unlimitedGags():
     """ Restock avatar's gags at the start of each round. """
-    av = spellbook.getTarget() if spellbook.getInvokerAccess() >= 500 else spellbook.getInvoker()
+    av = spellbook.getInvoker() if spellbook.getInvokerAccess() >= 500 else spellbook.getInvoker()
     av.setUnlimitedGags(not av.unlimitedGags)
     return 'Toggled unlimited gags %s for %s' % ('ON' if av.unlimitedGags else 'OFF', av.getName())
 
@@ -5222,7 +5212,7 @@ def maxGarden():
 
 # FordTheWriter new commands added:
 
-@magicWord(category=CATEGORY_LEADER, types=[int], access=103)
+@magicWord(category=CATEGORY_TRIAL, types=[int], access=103)
 def SetxmasBadge(gmId):
     if not 0 <= gmId <= 5:
         return 'Staff-Badges: 0=off, 1=Trial, 2=Staff, 3=Lead-Staff, 4=Developers, 5=Leaders'
@@ -5242,12 +5232,12 @@ def SetxmasBadge(gmId):
     elif (spellbook.getInvokerAccess() < 701) and (gmId > 5):
         return 'Your Not A Leader, Only Leaders can have this special badge!'
 
-    if spellbook.getTarget().isBadge() and gmId != 0:
-        spellbook.getTarget().b_xmasBadge(0)
+    if spellbook.getInvoker().isBadge() and gmId != 0:
+        spellbook.getInvoker().b_xmasBadge(0)
 
-    spellbook.getTarget().b_xmasBadge(gmId)
+    spellbook.getInvoker().b_xmasBadge(gmId)
 
-    return 'You have set %s to badge type %s' % (spellbook.getTarget().getName(), gmId)
+    return 'You have set %s to badge type %s' % (spellbook.getInvoker().getName(), gmId)
 
 @magicWord(category=CATEGORY_TRIAL)
 def xmasBadge():
@@ -5287,13 +5277,13 @@ def badge():
             spellbook.getInvoker().b_setTTOBadge(3)
         return "You have enabled your badge."
 
-@magicWord(category=CATEGORY_LEADER, types=[int])
+@magicWord(category=CATEGORY_TRIAL, types=[int])
 def setBadge(gmId):
     if gmId == 1:
         return 'You cannot set a toon to TOON COUNCIL.'
     if not 0 <= gmId <= 4:
         return 'Invalid badge type specified.'
-    if spellbook.getTarget().isBadge() and gmId != 0:
-        spellbook.getTarget().b_setTTOBadge(0)
-    spellbook.getTarget().b_setTTOBadge(gmId)
-    return 'You have set %s to badge type %s' % (spellbook.getTarget().getName(), gmId)
+    if spellbook.getInvoker().isBadge() and gmId != 0:
+        spellbook.getInvoker().b_setTTOBadge(0)
+    spellbook.getInvoker().b_setTTOBadge(gmId)
+    return 'You have set %s to badge type %s' % (spellbook.getInvoker().getName(), gmId)
