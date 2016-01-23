@@ -1,5 +1,6 @@
 import DNAProp
 from DNAUtil import *
+from panda3d.core import ModelNode
 
 class DNAAnimProp(DNAProp.DNAProp):
     COMPONENT_CODE = 14
@@ -34,3 +35,4 @@ class DNAAnimProp(DNAProp.DNAProp):
         node.flattenStrong()
         for child in self.children:
             child.traverse(node, dnaStorage)
+#        self.traverseChildren(_np, store)

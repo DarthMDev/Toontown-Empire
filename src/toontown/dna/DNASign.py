@@ -1,44 +1,37 @@
-from panda3d.core import LVector4f, NodePath, DecalEffect
-import DNANode
-import DNAUtil
+import DNAProp
 
-class DNASign(DNANode.DNANode):
+from common import *
+
+class DNASign(DNAProp.DNAProp):
     COMPONENT_CODE = 5
 
     def __init__(self):
-        DNANode.DNANode.__init__(self, '')
-        self.code = ''
-        self.color = LVector4f(1, 1, 1, 1)
+        DNAProp.DNAProp.__init__(self, '')
 
-    def getCode(self):
-        return self.code
+    def traverse(self, np, store):
+        decalNode = np.find('**/sign_decal')
+        
+        if decalNode.isEmpty():
+            decalNode = np.find('**/*_front')
+            
+        if decalNode.isEmpty() or not decalNode.getNode(0).isGeomNode():
+            decalNode = np.find('**/+GeomNode')
+            
+        if self.code:
+            node = store.findNode(self.code)
+            node = node.copyTo(decalNode)
+            node.setName('sign')
+            
+        else:
+            node = decalNode.attachNewNode(ModelNode('sign'))
 
-    def setCode(self, code):
-        self.code = code
-
-    def getColor(self):
-        return self.color
-
-    def setColor(self, color):
-        self.color = color
-
-    def makeFromDGI(self, dgi):
-        DNANode.DNANode.makeFromDGI(self, dgi)
-        self.code = DNAUtil.dgiExtractString8(dgi)
-        self.color = DNAUtil.dgiExtractColor(dgi)
-
-    def traverse(self, nodePath, dnaStorage):
-        sign = dnaStorage.findNode(self.code)
-        if not sign:
-            sign = NodePath(self.name)
-        signOrigin = nodePath.find('**/*sign_origin')
-        if not signOrigin:
-            signOrigin = nodePath
-        node = sign.copyTo(signOrigin)
-        #node.setDepthOffset(50)
-        node.setPosHprScale(signOrigin, self.pos, self.hpr, self.scale)
-        node.setPos(node, 0, -0.1, 0)
-        node.setColor(self.color)
-        for child in self.children:
-            child.traverse(node, dnaStorage)
+        node.setDepthOffset(50)
+        
+        origin = np.find('**/*sign_origin')
+        node.setPosHprScale(origin, self.pos, self.hpr, self.scale)
+        node.wrtReparentTo(origin, 0) #added to fix some building signs rotating with door opening
+        
+        self.traverseChildren(node, store)
+        
         node.flattenStrong()
+        
