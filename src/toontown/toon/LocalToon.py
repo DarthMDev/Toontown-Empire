@@ -59,7 +59,7 @@ from toontown.toontowngui import NewsPageButtonManager
 if WantNewsPage:
     from toontown.shtiker import NewsPage
 AdjustmentForNewsButton = -0.255
-ClaraBaseXPos = 0.08
+ClaraBaseXPos = 0.08 if WantNewsPage else 0.12
 if (__debug__):
     import pdb
 

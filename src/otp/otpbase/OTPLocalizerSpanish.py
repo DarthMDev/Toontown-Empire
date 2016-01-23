@@ -1,150 +1,152 @@
+#coding: latin-1
+
 import string
-from otp.otpbase.OTPLocalizerEnglishProperty import *
-lTheBrrrgh = 'The Brrrgh'
-lDaisyGardens = 'Daisy Gardens'
-lDonaldsDock = "Donald's Dock"
-lDonaldsDreamland = "Donald's Dreamland"
-lMinniesMelodyland = "Minnie's Melodyland"
+from otp.otpbase.OTPLocalizerSpanishProperty import *
+lTheBrrrgh = 'El Brrrgh'
+lDaisyGardens = 'Daisy Jardines'
+lDonaldsDock = "Muelle de Donald"
+lDonaldsDreamland = "Dreamland de Donald"
+lMinniesMelodyland = "Melodyland Minnie"
 lToontownCentral = 'Toontown Central'
-lGoofySpeedway = 'Goofy Speedway'
-lOutdoorZone = "Chip 'n Dale's Acorn Acres"
-lGolfZone = "Chip 'n Dale's MiniGolf"
-lCancel = 'Cancel'
-lClose = 'Close'
-lOK = 'OK'
-lNext = 'Next'
+lGoofySpeedway = 'Pista de carreras Boba'
+lOutdoorZone = "Viruta 'n los Acres de la Bellota del Valle"
+lGolfZone = "Viruta 'n el Minigolf del Valle"
+lCancel = 'Cancelar'
+lClose = 'Cerca'
+lOK = 'OKAY'
+lNext = "xc3\próximo"
 lNo = 'No'
-lQuit = 'Quit'
-lYes = 'Yes'
+lQuit = 'Dejar'
+lYes = 'Si'
 Cog = 'Cog'
 Cogs = 'Cogs'
 DialogOK = lOK
 DialogCancel = lCancel
 DialogYes = lYes
 DialogNo = lNo
-DialogDoNotShowAgain = 'Do Not\nShow Again'
-WhisperNoLongerFriend = '%s left your friends list.'
-WhisperNowSpecialFriend = '%s is now your True Friend!'
-WhisperComingToVisit = '%s is coming to visit you.'
-WhisperFailedVisit = '%s tried to visit you.'
-WhisperTargetLeftVisit = '%s has gone somewhere else. Try again!'
-WhisperGiveupVisit = "%s couldn't find you because you're moving around!"
-TeleportGreeting = 'Hi, %s.'
-WhisperFriendComingOnline = '%s is coming online!'
-WhisperFriendLoggedOut = '%s has logged out.'
+DialogDoNotShowAgain = 'No \Nshow nuevo'
+WhisperNoLongerFriend = '%s dejado tu lista de amigos.'
+WhisperNowSpecialFriend = "%s ahora es su verdadero amigo!"
+WhisperComingToVisit = '%s que viene a visitarte .'
+WhisperFailedVisit = '%s tratado de visitarlo .'
+WhisperTargetLeftVisit = '%s ha ido a otro lugar . ¡Inténtalo de nuevo!'
+WhisperGiveupVisit = "%s No podría encontrar porque usted se está moviendo alrededor!"
+TeleportGreeting = 'Hola, %s.'
+WhisperFriendComingOnline = '%s que viene en línea!'
+WhisperFriendLoggedOut = '%s ha cerrado la sesión.'
 DialogSpecial = 'ooo'
 DialogExclamation = '!'
 DialogQuestion = '?'
-ChatInputNormalSayIt = 'Say It'
+ChatInputNormalSayIt = 'Dilo'
 ChatInputNormalCancel = lCancel
-ChatInputNormalWhisper = 'Whisper'
-ChatInputWhisperLabel = 'To %s'
-SCEmoteNoAccessMsg = 'You do not have access\nto this emotion yet.'
+ChatInputNormalWhisper = 'Susurro'
+ChatInputWhisperLabel = 'A %s'
+SCEmoteNoAccessMsg = 'Usted no tiene acceso\na esta emoción todavía.'
 SCEmoteNoAccessOK = lOK
-ChatGarblerDefault = ['blah']
-ChatManagerChat = 'Chat'
-ChatManagerWhisperTo = 'Whisper to:'
-ChatManagerWhisperToName = 'Whisper To:\n%s'
+ChatGarblerDefault = ['paja']
+ChatManagerChat = 'Charla'
+ChatManagerWhisperTo = 'En voz baja a:'
+ChatManagerWhisperToName = 'En voz baja a:\n%s'
 ChatManagerCancel = lCancel
-ChatManagerWhisperOffline = '%s is offline.'
+ChatManagerWhisperOffline = '%s fuera de linea.'
 # True Friends
-NoTrueFriendsTitle = 'Open Chat With True Friends'
-NoTrueFriends = 'Open Chat with True Friends allows real-life friends to chat openly with each other by means of a True Friend Code that must be shared outside of the game.\n\nTo activate these features or to learn more, exit Toontown and then click on Membership and select Manage Account. Log in to edit your "Community Settings."'
+NoTrueFriendsTitle = 'Abrir Chat con amigos verdaderos'
+NoTrueFriends = 'Charla abierta con los amigos verdaderos permite a los amigos de la vida real para charlar abiertamente entre sí por medio de una verdadera Código de Amigo que deben ser compartidos fuera del juego. \N\nPara activar estas funciones o para aprender más , salida Toontown y luego haga clic en Composición y seleccione Administrar cuenta . Entre para editar sus " ámbitos comunitarios"'
 # Speedchat Plus
-NoSpeedchatPlusTitle = 'Chat Button'
-NoSpeedchatPlus = 'You can use the blue Chat button to communicate with other Toons by using Speechat Plus or Open Chat with True Friends.\n\nSpeedchat Plus is a form of type chat that allows users to communicate by using the SpeedChat Plus dictionary.\n\nOpen Chat with True Friends allows real-life friends to chat openly with each other by means of a True Friend Code that must be shared outside of the game.\n\nTo activate these features or to learn more, exit Toontown and then click on Membership and select Manage Account.  Log in to edit your "Community Settings."'
+NoSpeedchatPlusTitle = 'Botón de Chat'
+NoSpeedchatPlus = 'Usted puede utilizar el botón azul de chat para comunicarse con otros Toons utilizando Speechat Plus o Abrir Chatear con los amigos verdaderos.\N\nSpeedchat Plus es una forma de tipo de chat que permite a los usuarios comunicarse utilizando el diccionario SpeedChat Plus. \N\nAbrir Chatea con amigos verdaderos permite a los amigos de la vida real para charlar abiertamente entre sí por medio de una verdadera Código de Amigo que deben ser compartidos fuera del juego.\n\nPara activar estas funciones o para aprender más , salida Toontown y luego haga clic en la Afiliación y seleccione Administrar cuenta. Entre para editar sus "ámbitos comunitarios."'
 NoTrueFriendsOK = lOK
-WhisperToFormat = 'To %s %s'
-WhisperToFormatName = 'To %s'
-WhisperFromFormatName = '%s whispers'
-ThoughtOtherFormatName = '%s thinks'
-ThoughtSelfFormatName = 'You think'
+WhisperToFormat = 'A %s %s'
+WhisperToFormatName = 'A %s'
+WhisperFromFormatName = '%s susurros'
+ThoughtOtherFormatName = '%s piensa'
+ThoughtSelfFormatName = 'You pensar'
 from panda3d.core import TextProperties
 from panda3d.core import TextPropertiesManager
 shadow = TextProperties()
 shadow.setShadow(-0.025, -0.025)
 shadow.setShadowColor(0, 0, 0, 1)
-TextPropertiesManager.getGlobalPtr().setProperties('shadow', shadow)
+TextPropertiesManager.getGlobalPtr().setProperties('sombra', shadow)
 red = TextProperties()
 red.setTextColor(1, 0, 0, 1)
-TextPropertiesManager.getGlobalPtr().setProperties('red', red)
+TextPropertiesManager.getGlobalPtr().setProperties('rojo', red)
 green = TextProperties()
 green.setTextColor(0, 1, 0, 1)
-TextPropertiesManager.getGlobalPtr().setProperties('green', green)
+TextPropertiesManager.getGlobalPtr().setProperties('verde', green)
 yellow = TextProperties()
 yellow.setTextColor(1, 1, 0, 1)
-TextPropertiesManager.getGlobalPtr().setProperties('yellow', yellow)
+TextPropertiesManager.getGlobalPtr().setProperties('amarillo', yellow)
 midgreen = TextProperties()
 midgreen.setTextColor(0.2, 1, 0.2, 1)
-TextPropertiesManager.getGlobalPtr().setProperties('midgreen', midgreen)
+TextPropertiesManager.getGlobalPtr().setProperties('el verde intermedio', midgreen)
 blue = TextProperties()
 blue.setTextColor(0, 0, 1, 1)
-TextPropertiesManager.getGlobalPtr().setProperties('blue', blue)
+TextPropertiesManager.getGlobalPtr().setProperties('azul', blue)
 white = TextProperties()
 white.setTextColor(1, 1, 1, 1)
-TextPropertiesManager.getGlobalPtr().setProperties('white', white)
+TextPropertiesManager.getGlobalPtr().setProperties('blanco', white)
 black = TextProperties()
 black.setTextColor(0, 0, 0, 1)
-TextPropertiesManager.getGlobalPtr().setProperties('black', black)
+TextPropertiesManager.getGlobalPtr().setProperties('negro', black)
 grey = TextProperties()
 grey.setTextColor(0.5, 0.5, 0.5, 1)
-TextPropertiesManager.getGlobalPtr().setProperties('grey', grey)
+TextPropertiesManager.getGlobalPtr().setProperties('gris', grey)
 
 # New colors:
 # Orange
 amber = TextProperties()
 amber.setTextColor(1, 0.75, 0, 1)
-TextPropertiesManager.getGlobalPtr().setProperties('amber', amber)
+TextPropertiesManager.getGlobalPtr().setProperties('ámbar', amber)
 
 # Pink
 amaranth = TextProperties()
 amaranth.setTextColor(0.9, 0.17, 0.31, 1)
-TextPropertiesManager.getGlobalPtr().setProperties('amaranth', amaranth)
+TextPropertiesManager.getGlobalPtr().setProperties('amaranto', amaranth)
 
 # Green
 androidGreen = TextProperties()
 androidGreen.setTextColor(0.64, 0.78, 0.22, 1)
-TextPropertiesManager.getGlobalPtr().setProperties('androidGreen', androidGreen)
+TextPropertiesManager.getGlobalPtr().setProperties('androideVerde', androidGreen)
 
 # Turquoise-green
 caribbeanGreen = TextProperties()
 caribbeanGreen.setTextColor(0, 0.8, 0.6, 1)
-TextPropertiesManager.getGlobalPtr().setProperties('caribbeanGreen', caribbeanGreen)
+TextPropertiesManager.getGlobalPtr().setProperties('caribeVerde', caribbeanGreen)
 
 # Blue
 azure = TextProperties()
 azure.setTextColor(0, 0.5, 1, 1)
-TextPropertiesManager.getGlobalPtr().setProperties('azure', azure)
+TextPropertiesManager.getGlobalPtr().setProperties('azur', azure)
 
 # Cobalt-blue
 cobalt = TextProperties()
 cobalt.setTextColor(0, 0.28, 0.67, 1)
-TextPropertiesManager.getGlobalPtr().setProperties('cobalt', cobalt)
+TextPropertiesManager.getGlobalPtr().setProperties('cobalto', cobalt)
 
-CRConnecting = 'Connecting...'
-CRNoConnectTryAgain = 'Could not connect to %s:%s. Try again?'
-CRNoConnectProxyNoPort = 'Could not connect to %s:%s.\n\nYou are communicating to the internet via a proxy, but your proxy does not permit connections on port %s.\n\nYou must open up this port, or disable your proxy, in order to play.  If your proxy has been provided by your ISP, you must contact your ISP to request them to open up this port.'
-CRNoDistrictsTryAgain = 'No Districts are available. Try again?'
-CRRejectRemoveAvatar = 'The avatar was not able to be deleted, try again another time.'
-CRLostConnection = 'Your internet connection to the servers has been unexpectedly broken.'
-CRBootedReasons = {100: 'You have been disconnected because someone else just logged in using your account on another computer.',
- 101: 'Please relaunch the game from the official launcher.',
- 102: 'You are not authorized to use administrator privileges.',
- 103: 'You were banned by a moderator.\n\nBehave next time!',
- 105: 'Toontown Empire is now temporarily closed for maintenance. Everyone who was playing has been disconnected from the game.\n\nFor more information, please visit the Toontown Empire website.',
- 124: 'Your installed files are out of date! Use the official launcher to download the newest version, or contact Toontown Empire Support if the problem persists.',
- 153: 'The district you were playing on has been reset.  Everyone who was playing on that district has been disconnected.  However, you should be able to connect again and go right back into the game.',
- 166: 'You were disconnected to prevent a district reset.'}
-CRBootedReasonUnknownCode = 'An unexpected problem has occurred (error code %s).  Your connection has been lost, but you should be able to connect again and go right back into the game.'
-CRTryConnectAgain = '\n\nTry to connect again?'
-CRToontownUnavailable = 'The server appears to be temporarily unavailable, still trying...'
+CRConnecting = 'Conexión...'
+CRNoConnectTryAgain = 'No pudo conectarse a %s:%s. ¿Inténtalo de nuevo?'
+CRNoConnectProxyNoPort = 'No se pudo conectar a%s: . . %S \n\nNo se comunican a Internet a través de un proxy, pero su poder no permite conexiones en el puerto %s \n\nNo debe abrir este puerto, o deshabilitar el proxy, para poder jugar . Si su proxy ha sido proporcionada por el ISP, debe ponerse en contacto con su ISP para solicitarlos para abrir este puerto.'
+CRNoDistrictsTryAgain = 'No hay distritos están disponibles . ¿Inténtalo de nuevo?'
+CRRejectRemoveAvatar = 'El avatar no era capaz de ser eliminado, vuelva a intentarlo otra vez.'
+CRLostConnection = 'El avatar no era capaz de ser eliminado, vuelva a intentarlo otra vez.'
+CRBootedReasons = {100: 'Ha sido desconectado porque alguien acaba de iniciar sesión en el uso de su cuenta en otro equipo.',
+ 101: 'Por favor, relanzar el juego desde el lanzador oficial.',
+ 102: 'Usted no está autorizado a utilizar los privilegios de administrador .',
+ 103: 'Usted fue prohibido por un moderador.\n\nComportarse la próxima vez!',
+ 105: 'Empire Toontown se ha cerrado temporalmente por mantenimiento . Todo el mundo que estaba jugando se ha desconectado del juego. \ N \ nPara obtener más información, por favor visite el sitio web de Empire Toontown .',
+ 124: 'Sus archivos instalados están desactualizados! Utilice el lanzador oficial para descargar la versión más reciente , o póngase en contacto Toontown Imperio apoyo si el problema persiste',
+ 153: 'El distrito que estabas jugando en se ha restablecido. Todo el mundo que estaba jugando en ese distrito se ha desconectado . Sin embargo , usted debería ser capaz de conectar de nuevo y vaya a la derecha de nuevo en el juego.',
+ 166: 'Usted fue desconectado para evitar un reinicio del distrito.'}
+CRBootedReasonUnknownCode = 'Se ha producido un problema inesperado (código de error %s). Su conexión se ha perdido, pero usted debería ser capaz de conectar de nuevo y vaya a la derecha de nuevo en el juego.'
+CRTryConnectAgain = '\n\nTrate de conectarse de nuevo ?'
+CRToontownUnavailable = 'El servidor parece estar temporalmente fuera de servicio, todavía tratando de...'
 CRToontownUnavailableCancel = lCancel
-CRNameCongratulations = 'CONGRATULATIONS!!'
-CRNameAccepted = 'Your name has been\napproved by the Toon Council.\n\nFrom this day forth\nyou will be named\n"%s"'
-CRMaintenanceCountdownMessage = 'Attention Toons! Toontown Empire will be going down for maintenance in %d minutes.'
-CRMaintenanceMessage = 'Attention Toons! Toontown Empire is now going down for maintenance.'
-AfkForceAcknowledgeMessage = 'Your toon got sleepy and went to bed.'
-CREnteringToontown = 'Entering...'
+CRNameCongratulations = '¡¡FELICITACIONES!!'
+CRNameAccepted = 'Su nombre ha sido\napproved por el Consejo de Toon.\N\Nfrom este día en adelante\nyou se llamará\n"%s"'
+CRMaintenanceCountdownMessage = 'Atención Toons! Empire Toontown se va por mantenimiento en %d minutos .'
+CRMaintenanceMessage = 'Atención Toons! Empire Toontown ahora va por mantenimiento.'
+AfkForceAcknowledgeMessage = 'Su toon tiene sueño y se fue a la cama.'
+CREnteringToontown = 'Introducción...'
 DialogSpecial = 'ooo'
 DialogExclamation = '!'
 DialogQuestion = '?'
@@ -152,171 +154,172 @@ DialogLength1 = 6
 DialogLength2 = 12
 DialogLength3 = 20
 GlobalSpeedChatName = 'SpeedChat'
-SCMenuPromotion = 'PROMOTIONAL'
-SCMenuEmotions = 'EMOTIONS'
-SCMenuCustom = 'MY PHRASES'
-SCMenuResistance = 'UNITE!'
-SCMenuPets = 'PETS'
-SCMenuPetTricks = 'TRICKS'
-SCMenuCog = 'COG SPEAK'
-SCMenuHello = 'HELLO'
-SCMenuBye = 'GOODBYE'
-SCMenuConvo = 'CHIT CHAT'
-SCMenuEmoticons = 'EMOTICONS'
-SCMenuResponse="REPLIES"
-SCMenuGood = 'GOOD'
-SCMenuBad = 'BAD'
-SCMenuHappy = 'HAPPY'
-SCMenuSad = 'SAD'
-SCMenuFriendly = 'FRIENDLY'
-SCMenuSorry = 'SORRY'
-SCMenuBusy = "I'M BUSY..."
+SCMenuPromotion = 'PROMOCIONAL'
+SCMenuEmotions = 'EMOCIONES'
+SCMenuCustom = 'MIS FRASES'
+SCMenuResistance = 'UNIR!'
+SCMenuPets = 'MASCOTAS'
+SCMenuPetTricks = 'TRUCOS'
+SCMenuCog = 'COG HABLAR'
+SCMenuHello = 'HOLA'
+SCMenuBye = 'ADIÓS'
+SCMenuConvo = 'CHARLA'
+SCMenuEmoticons = 'EMOTICONOS'
+SCMenuResponse="RESPUESTAS"
+SCMenuGood = 'BIEN'
+SCMenuBad = 'MALO'
+SCMenuHappy = 'FELIZ'
+SCMenuSad = 'TRISTE'
+SCMenuFriendly = 'AMISTOSO'
+SCMenuSorry = 'LO LAMENTO'
+SCMenuBusy = "ESTOY OCUPADO..."
 SCMenuStinky = 'STINKY'
-SCMenuPlaces = 'PLACES'
-SCMenuToontasks = 'TOONTASKS'
-SCMenuBattle = 'BATTLE'
-SCMenuBattleUse = 'YOU SHOULD USE...'
-SCMenuBattleToonUp = 'TOON-UP'
+SCMenuPlaces = 'LUGARES'
+SCMenuToontasks = 'TOONTAREAS'
+SCMenuBattle = 'BATALLA'
+SCMenuBattleUse = 'DEBERÍAS USAR...'
+SCMenuBattleToonUp = 'TOON-ARRIBA'
 SCMenuBattleTrap = 'TRAP'
 SCMenuBattleLure = 'LURE'
-SCMenuBattleSound = 'SOUND'
-SCMenuBattleThrow = 'THROW'
-SCMenuBattleSquirt = 'SQUIRT'
-SCMenuBattleDrop = 'DROP'
-SCMenuGagShop = 'TROLLEY'
-SCMenuFactory = 'FACTORY'
-SCMenuKartRacing = 'RACING'
-SCMenuFactoryMeet = 'MEET'
+SCMenuBattleSound = 'SONAR'
+SCMenuBattleThrow = 'LANZAR'
+SCMenuBattleSquirt = 'CHORRO'
+SCMenuBattleDrop = 'SOLTAR'
+SCMenuGagShop = 'CARRETILLA'
+SCMenuFactory = 'FÁBRICA'
+SCMenuKartRacing = 'CARRERAS'
+SCMenuFactoryMeet = 'REUNIRSE'
 SCMenuCFOBattle = 'C.F.O.'
-SCMenuCFOBattleCranes = 'CRANES'
-SCMenuCFOBattleGoons = 'GOONS'
-SCMenuCJBattle = 'CHIEF JUSTICE'
+SCMenuCFOBattleCranes = 'GRÚAS'
+SCMenuCFOBattleGoons = 'MATONES'
+SCMenuCJBattle = 'JEFE DE JUSTICIA'
 SCMenuCEOBattle = 'C.E.O.'
 SCMenuGolf = 'GOLF'
-SCMenuWhiteList = 'WHITELIST'
-SCMenuPlacesPlayground = 'PLAYGROUND'
-SCMenuPlacesEstate = 'ESTATE'
+SCMenuWhiteList = 'LISTAS BLANCAS'
+SCMenuPlacesPlayground = 'PATIO DE RECREO'
+SCMenuPlacesEstate = 'INMUEBLES'
 SCMenuPlacesCogs = 'COGS'
-SCMenuPlacesWait = 'WAIT'
-SCMenuFriendlyYou = 'YOU...'
-SCMenuFriendlyILike = 'I LIKE YOUR...'
-SCMenuPlacesLetsGo = "LET'S GO..."
-SCMenuToontasksMyTasks = 'MY TASKS'
-SCMenuToontasksYouShouldChoose = 'I THINK YOU SHOULD...'
-SCMenuToontasksINeedMore = 'I NEED MORE...'
+SCMenuPlacesWait = 'ESPERA'
+SCMenuFriendlyYou = 'TU...'
+SCMenuFriendlyILike = 'ME GUSTA TU...'
+SCMenuPlacesLetsGo = "VAMONOS..."
+SCMenuToontasksMyTasks = 'MIS TAREAS'
+SCMenuToontasksYouShouldChoose = 'CREO QUE DEBERÍAS...'
+SCMenuToontasksINeedMore = 'NECESITO MÁS...'
 SCMenuBattleGags = 'GAGS'
-SCMenuBattleTaunts = 'TAUNTS'
-SCMenuBattleStrategy = 'STRATEGY'
-SCMenuBoardingGroup = 'BOARDING'
-SCMenuParties = 'PARTIES'
-SCMenuAprilToons = "APRIL TOONS'"
+SCMenuBattleTaunts = 'BURLAS'
+SCMenuBattleStrategy = 'ESTRATEGIA'
+SCMenuBoardingGroup = 'EMBARQUE'
+SCMenuParties = 'FIESTAS'
+SCMenuAprilToons = "ABRIL TOONS'"
 SCMenuCarol = 'CAROLING'
-SCMenuSillyHoliday = 'SILLY METER'
-SCMenuVictoryParties = 'VICTORY PARTIES'
-SCMenuSellbotNerf = 'STORM SELLBOT'
-SCMenuJellybeanJam = 'JELLYBEAN WEEK'
-SCMenuHalloween = 'HALLOWEEN'
-SCMenuWinter = 'WINTER'
-SCMenuSellbotInvasion = 'SELLBOT INVASION'
-SCMenuFieldOffice = 'FIELD OFFICES'
-SCMenuIdesOfMarch = 'GREEN'
-ScMenuBugs = 'Bugs'
-FriendInviteeTooManyFriends = '%s would like to be your friend, but you already have too many friends on your list!'
-FriendInviteeInvitation = '%s would like to be your friend.'
+SCMenuSillyHoliday = 'TONTO METER'
+SCMenuVictoryParties = 'PARTES DE VICTORIA'
+SCMenuSellbotNerf = 'SELLBOT TORMENTA'
+SCMenuJellybeanJam = 'SEMANA JELLYBEAN'
+SCMenuHalloween = 'VÍSPERA DE TODOS LOS SANTOS'
+SCMenuWinter = 'INVIERNO'
+SCMenuSellbotInvasion = 'INVASIÓN SELLBOT'
+SCMenuFieldOffice = 'OFICINAS DE CAMPO'
+SCMenuIdesOfMarch = 'VERDE'
+ScMenuBugs = 'Loco'
+FriendInviteeTooManyFriends = '%s le gustaría ser tu amigo, pero ya tiene muchos amigos en su lista!'
+FriendInviteeInvitation = '%s le gustaría ser su amigo.'
 FriendInviteeOK = lOK
 FriendInviteeNo = lNo
-FriendOnline = 'has come online.'
-FriendOffline = 'has gone offline.'
+FriendOnline = 'ha llegado en línea.'
+FriendOffline = 'ha ido fuera de línea.'
 FriendInviterOK = lOK
 FriendInviterCancel = lCancel
-FriendInviterStopBeingFriends = 'Stop being friends'
-FriendInviterConfirmRemove = 'Remove'
+FriendInviterStopBeingFriends = 'Deja de ser amigos'
+FriendInviterConfirmRemove = 'Eliminar'
 FriendInviterYes = lYes
 FriendInviterNo = lNo
-FriendInviterClickToon = 'Click on the toon you would like to make friends with.'
-FriendInviterTooMany = 'You have too many friends on your list to add another one now. You will have to remove some friends if you want to make friends with %s.'
-FriendInviterToonTooMany = 'You have too many toon friends on your list to add another one now. You will have to remove some toon friends if you want to make friends with %s.'
-FriendInviterNotYet = 'Would you like to make friends with %s?'
-FriendInviterCheckAvailability = 'Seeing if %s is available.'
-FriendInviterNotAvailable = '%s is busy right now; try again later.'
-FriendInviterWentAway = '%s went away.'
-FriendInviterAlready = '%s is already your friend.'
-FriendInviterAlreadyInvited = '%s has already been invited.'
-FriendInviterAskingCog = 'Asking %s to be your friend.'
-FriendInviterAskingPet = '%s jumps around, runs in circles and licks your face.'
-FriendInviterAskingMyPet = '%s is already your BEST friend.'
-FriendInviterEndFriendship = 'Are you sure you want to stop being friends with %s?'
-FriendInviterFriendsNoMore = '%s is no longer your friend.'
-FriendInviterSelf = "You are already 'friends' with yourself!"
-FriendInviterIgnored = '%s is ignoring you.'
-FriendInviterAsking = 'Asking %s to be your friend.'
-FriendInviterFriendSaidYes = 'You are now friends with %s!'
-FriendInviterFriendSaidNo = '%s said no, thank you.'
-FriendInviterFriendSaidNoNewFriends = "%s isn't looking for new friends right now."
-FriendInviterOtherTooMany = '%s has too many friends already!'
-FriendInviterMaybe = '%s was unable to answer.'
-FriendInviterDown = 'Cannot make friends now.'
-AntiSpamInChat = '***Spamming***'
+FriendInviterClickToon = 'Haga clic en el batallón que le gustaría hacer amigos.'
+FriendInviterTooMany = 'Usted tiene muchos amigos en su lista para añadir otro ahora. Usted tendrá que quitar algunos amigos si quieres hacer amigos con %s.'
+FriendInviterToonTooMany = 'Usted tiene demasiados amigos toon en su lista para añadir otro ahora. Usted tendrá que quitar algunos amigos toon si quieres hacer amigos con %s.'
+FriendInviterNotYet = '¿Quieres hacer amigos %s?'
+FriendInviterCheckAvailability = 'Al ver si %s está disponible.'
+FriendInviterNotAvailable = '%s está ocupado en este momento ; inténtelo de nuevo más tarde.'
+FriendInviterWentAway = '%s se fue.'
+FriendInviterAlready = '%s ya es tu amigo.'
+FriendInviterAlreadyInvited = '%s ya ha sido invitado .'
+FriendInviterAskingCog = 'Preguntar %s para ser su amigo.'
+FriendInviterAskingPet = 'El %s brinca alrededor, carreras en círculos y lame su cara.'
+FriendInviterAskingMyPet = 'El %s es ya su MEJOR amigo.'
+FriendInviterEndFriendship = 'Están usted seguro que usted quiere dejar de ser amigos con %s?'
+FriendInviterFriendsNoMore = 'El %s es ya no su amigo.'
+FriendInviterSelf = "¡Ustedes son ya 'amigos' con usted!"
+FriendInviterIgnored = 'El %s no hace caso de usted.'
+FriendInviterAsking = 'La petición %s para ser su amigo.'
+FriendInviterFriendSaidYes = '¡Ustedes son ahora amigos con %s!'
+FriendInviterFriendSaidNo = '%s no dijo, gracias.'
+FriendInviterFriendSaidNoNewFriends = "El %s no busca a nuevos amigos ahora mismo."
+FriendInviterOtherTooMany = '¡El %s tiene a demasiados amigos ya!'
+FriendInviterMaybe = 'El %s era incapaz de contestar.'
+FriendInviterDown = 'No puede hacer amigos ahora.'
+AntiSpamInChat = '*** Bombardeo publicitario ***'
 IgnoreConfirmOK = lOK
 IgnoreConfirmCancel = lCancel
 IgnoreConfirmYes = lYes
 IgnoreConfirmNo = lNo
-IgnoreConfirmNotYet = 'Would you like to Ignore %s?'
-IgnoreConfirmAlready = 'You are already ignoring %s.'
-IgnoreConfirmSelf = 'You cannot ignore yourself!'
-IgnoreConfirmNewIgnore = 'You are ignoring %s.'
-IgnoreConfirmEndIgnore = 'You are no longer ignoring %s.'
-IgnoreConfirmRemoveIgnore = 'Stop ignoring %s?'
-EmoteList = ['Wave',
- 'Happy',
- 'Sad',
- 'Angry',
- 'Sleepy',
- 'Shrug',
- 'Dance',
- 'Think',
- 'Bored',
- 'Applause',
- 'Cringe',
- 'Confused',
- 'Belly Flop',
- 'Bow',
- 'Banana Peel',
- 'Resistance Salute',
- 'Laugh',
+IgnoreConfirmNotYet = '¿Quisiera usted no Hacer caso de %s?'
+IgnoreConfirmAlready = 'Usted no hace caso ya de %s.'
+IgnoreConfirmSelf = '¡Usted no puede hacer caso de usted!'
+IgnoreConfirmNewIgnore = 'Usted no hace caso de %s.'
+IgnoreConfirmEndIgnore = 'Usted no hace caso ya no de %s.'
+IgnoreConfirmRemoveIgnore = '¿Deje no de hacer caso de %s?'
+EmoteList = ['Onda',
+ 'Feliz',
+ 'Triste',
+ 'Enojado',
+ 'Soñoliento',
+ 'Encogimiento',
+ 'Baile',
+ 'Pensar',
+ 'Aburrido',
+ 'Aplausos',
+ 'Agachar',
+ 'Confuso',
+ 'Fracaso de Vientre',
+ 'Arco',
+ 'Piel de Banano',
+ 'Saludo de Resistencia',
+ 'Risa',
  lYes,
  lNo,
  lOK,
- 'Surprise',
- 'Cry',
- 'Delighted',
- 'Furious',
- 'Laugh']
-EmoteWhispers = ['%s waves.',
- '%s is happy.',
- '%s is sad.',
- '%s is angry.',
- '%s is sleepy.',
- '%s shrugs.',
- '%s dances.',
- '%s thinks.',
- '%s is bored.',
- '%s applauds.',
- '%s cringes.',
- '%s is confused.',
- '%s does a belly flop.',
- '%s bows to you.',
- '%s slips on a banana peel.',
- '%s gives the resistance salute.',
- '%s laughs.',
- "%s says '" + lYes + "'.",
- "%s says '" + lNo + "'.",
- "%s says '" + lOK + "'.",
- '%s is surprised.',
- '%s is crying.',
- '%s is delighted.',
- '%s is furious.',
- '%s is laughing.']
+ 'Sorpresa',
+ 'Grito',
+ 'Encantado',
+ 'Furioso',
+ 'Risa']
+EmoteWhispers = ['Ondas de %s.',
+ 'El %s es feliz.',
+ 'El %s está triste.',
+ 'El %s es enojado.',
+ 'El %s tiene sueño.',
+ 'Encogimientos de %s.',
+ 'Bailes de %s.',
+ '%s piensa.',
+ 'El %s se aburre.',
+ '%s aplaude.',
+ 'El %s se agacha.',
+ 'El %s es aturdido.',
+ '%s hace un fracaso de vientre.',
+ 'El %s se dobla a usted.',
+ 'El %s resbala en una piel de banano.',
+ 'El %s da el saludo de resistencia.',
+ 'Risas de %s.',
+ "%s dice '" + lYes + "'.",
+ "%s dice '" + lNo + "'.",
+ "%s dice '" + lOK + "'.",
+ '%s está sorprendido.',
+ 'El %s grita.',
+ '%s está encantado.',
+ 'El %s está furioso.',
+ 'El %s se ríe.']
+ #TODO- Translate below in Spanish (FordTheWriter)
 EmoteFuncDict = {'Wave': 0,
  'Happy': 1,
  'Sad': 2,
@@ -2332,4 +2335,4 @@ def timeElapsedString(timeDelta):
     else:
         return '%s minutes ago' % (timeDelta.seconds / 60)
 
-AsciiNotSupported = 'Sorry, but Toontown Empire does not support non-ASCII characters.'
+AsciiNotSupported = 'Lo sentimos , pero Empire Toontown no es compatible con caracteres no ASCII .'

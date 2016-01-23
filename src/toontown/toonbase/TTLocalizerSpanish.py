@@ -1,4 +1,10 @@
-from toontown.toonbase.TTLocalizerEnglishProperty import *
+from __future__ import unicode_literals
+
+import sys
+reload(sys)
+sys.setdefaultencoding("latin-1")
+
+from toontown.toonbase.TTLocalizerSpanishProperty import *
 from toontown.catalog import CatalogAccessoryItemGlobals
 from otp.otpbase import OTPLocalizer as OL
 import random

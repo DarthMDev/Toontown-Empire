@@ -1,3 +1,5 @@
+from TTLocalizerEnglishProperty import *
+
 PBPTonscreenText = 0.2
 RPdirectFrame = (1.75, 1, 0.75)
 RPtrackLabels = 0.05

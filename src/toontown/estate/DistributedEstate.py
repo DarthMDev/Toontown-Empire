@@ -59,6 +59,11 @@ class DistributedEstate(DistributedObject.DistributedObject):
         self.loadFishSellBox()
         self.oldClear = base.win.getClearColor()
         base.win.setClearColor(Vec4(0.09, 0.55, 0.21, 1.0))
+        if base.musicManagerIsValid:
+            music = base.loadMusic('phase_5.5/audio/bgm/EE_Ov_1.ogg')
+            if music:
+                music.setLoop(1)
+                music.play()
 
     def unload(self):
         self.ignoreAll()

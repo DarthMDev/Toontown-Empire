@@ -339,10 +339,36 @@ def chooseNPCExitShot(exits, exitsDuration):
 
 
 def chooseSuitShot(attack, attackDuration):
+    duration = attackDuration
+    if duration < 0:
+        duration = 1e-06
+    diedTrack = None
     groupStatus = attack['group']
     target = attack['target']
     if groupStatus == ATK_TGT_SINGLE:
         toon = target['toon']
+        died = attack['target']['died']
+        if died != 0:
+            pbpText = attack['playByPlayText']
+            diedText = toon.getName() + ' was defeated!'
+            diedTextList = [diedText]
+            diedTrack = pbpText.getToonsDiedInterval(diedTextList, duration)
+    elif groupStatus == ATK_TGT_GROUP:
+        deadToons = []
+        targetDicts = attack['target']
+        for targetDict in targetDicts:
+            died = targetDict['died']
+            if died != 0:
+                deadToons.append(targetDict['toon'])
+
+        if len(deadToons) > 0:
+            pbpText = attack['playByPlayText']
+            diedTextList = []
+            for toon in deadToons:
+                pbpText = attack['playByPlayText']
+                diedTextList.append(toon.getName() + ' was defeated!')
+
+            diedTrack = pbpText.getToonsDiedInterval(diedTextList, duration)
     suit = attack['suit']
     name = attack['id']
     battle = attack['battle']
