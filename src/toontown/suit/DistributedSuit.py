@@ -23,7 +23,7 @@ from toontown.battle import DistributedBattle
 from toontown.distributed.DelayDeletable import DelayDeletable
 from otp.nametag.NametagConstants import *
 from otp.nametag import NametagGlobals
-from toontown.libpandadna import *
+from toontown.dna import *
 from toontown.toonbase import ToontownGlobals
 
 

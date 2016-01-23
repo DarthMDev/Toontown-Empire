@@ -1,6 +1,6 @@
 from direct.stdpy import threading
 
-from toontown.libpandadna import *
+from toontown.dna import *
 
 class DNABulkLoader:
     def __init__(self, storage, files):
