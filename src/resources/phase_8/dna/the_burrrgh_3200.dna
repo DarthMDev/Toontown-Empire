@@ -556,11 +556,6 @@ group "theBurrrgh" [
    pos [ 193.97 353.221 7.62939e-006 ]
    nhpr [ -90 0 0 ]
   ]
-  prop "prop_tt_m_ara_gen_tunnelAheadSign_DNARoot" [
-   code [ "prop_tt_m_ara_gen_tunnelAheadSign" ]
-   pos [ 161.29 378.271 -0.500015 ]
-   nhpr [ 75 0 0 ]
-  ]
  ]
  visgroup "3202" [
   vis [   "3201"   "3202"   "3203"   "3204"   "3205"   "3206"   "3207"   "3225"   "3226"   ]
@@ -8722,11 +8717,6 @@ group "theBurrrgh" [
      ]
     ]
    ]
-  ]
-  prop "prop_tt_m_ara_gen_tunnelAheadSign_DNARoot" [
-   code [ "prop_tt_m_ara_gen_tunnelAheadSign" ]
-   pos [ 91.4296 154.28 -0.499992 ]
-   nhpr [ 165 0 0 ]
   ]
   interactive_prop "interactive_prop_phase_8_models_char__tbr_trashcan_DNARoot" [
    code [ "interactive_prop_phase_8_models_char__tbr_trashcan" ]

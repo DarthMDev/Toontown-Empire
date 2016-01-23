@@ -537,11 +537,6 @@ group "donaldsDock" [
     ]
    ]
   ]
-  prop "prop_tt_m_ara_gen_tunnelAheadSign_DNARoot" [
-   code [ "prop_tt_m_ara_gen_tunnelAheadSign" ]
-   pos [ 5.06166 27.9831 -0.500006 ]
-   nhpr [ 75 0 -0 ]
-  ]
   interactive_prop "interactive_prop_phase_6_models_char__dod_mailbox_DNARoot" [
    code [ "interactive_prop_phase_6_models_char__dod_mailbox" ]
    anim [ "tt_a_ara_dod_mailbox_fightBoost" ]
@@ -10828,11 +10823,6 @@ group "donaldsDock" [
      ]
     ]
    ]
-  ]
-  prop "prop_tt_m_ara_gen_tunnelAheadSign_DNARoot" [
-   code [ "prop_tt_m_ara_gen_tunnelAheadSign" ]
-   pos [ 624.279 -58.0312 -0.500015 ]
-   nhpr [ -105 0 0 ]
   ]
  ]
  visgroup "1330" [
