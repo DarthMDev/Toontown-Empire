@@ -101,7 +101,7 @@ show-total-population #t
 want-mat-all-tailors #t
 estate-day-night #t
 want-garden-game #f
-want-language-selection #f
+want-language-selection #t
 
 # Developer options:
 want-dev #f
