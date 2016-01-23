@@ -2,8 +2,9 @@
 cd ..
 cd ..
 export DYLD_LIBRARY_PATH=`pwd`/Libraries.bundle
-export PYTHONPATH=dependencies/mac/lib:$PYTHONPATH
+export PYTHONPATH=/Developer/Panda3D/lib:$PYTHONPATH
 export DYLD_FRAMEWORK_PATH="Frameworks"
+export PYTHONPATH=dependencies/mac:$PYTHONPATH
 # Get the user input:
 read -p "Username: " tteUsername
 
