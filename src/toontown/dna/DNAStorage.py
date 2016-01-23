@@ -29,7 +29,7 @@ def loadsOnDemand(f):
         
     return wrapper
 
-class DNAStorage:
+class DNAStorage(object):
     def __init__(self):
         self.suitPoints = []
         self.suitPointMap = {}

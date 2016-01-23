@@ -15,7 +15,7 @@ class DNABulkLoader:
         del self.dnaFiles
 
 def loadDNABulk(dnaStorage, file):
-    dnaLoader = DNALoader()
+    dnaLoader = DNALoader.DNALoader()
     file = '/' + file
     dnaLoader.loadDNAFile(dnaStorage, file)
 
@@ -28,7 +28,7 @@ def loadDNAFile(dnaStorage, file):
         return node.node()
 
 def loadDNAFileAI(dnaStorage, file):
-    dnaLoader = DNALoader()
+    dnaLoader = DNALoader.DNALoader()
     file = '/' + file
     data = dnaLoader.loadDNAFileAI(dnaStorage, file)
     return data
