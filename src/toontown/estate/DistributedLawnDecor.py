@@ -1,10 +1,10 @@
-from panda3d.core import *
+from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
 from direct.distributed import ClockDelta
 from direct.showbase.PythonUtil import lerp
 import math
 from direct.directnotify import DirectNotifyGlobal
-from panda3d.core import NodePath
+from pandac.PandaModules import NodePath
 from direct.task import Task
 from toontown.toonbase import ToontownGlobals
 from direct.distributed import DistributedObject

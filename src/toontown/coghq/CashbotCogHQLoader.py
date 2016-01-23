@@ -8,7 +8,7 @@ from toontown.toon import Toon
 from direct.fsm import State
 import CashbotHQExterior
 import CashbotHQBossBattle
-from panda3d.core import DecalEffect
+from pandac.PandaModules import DecalEffect
 
 class CashbotCogHQLoader(CogHQLoader.CogHQLoader):
     notify = DirectNotifyGlobal.directNotify.newCategory('CashbotCogHQLoader')

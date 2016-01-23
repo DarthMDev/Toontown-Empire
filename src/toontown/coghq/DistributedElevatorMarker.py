@@ -6,7 +6,7 @@ from direct.showbase.PythonUtil import lerp
 import math
 from otp.level import DistributedEntity
 from direct.directnotify import DirectNotifyGlobal
-from panda3d.core import NodePath
+from pandac.PandaModules import NodePath
 from otp.level import BasicEntities
 from direct.task import Task
 from toontown.toonbase import ToontownGlobals

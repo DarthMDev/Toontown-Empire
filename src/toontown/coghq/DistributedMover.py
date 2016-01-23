@@ -10,7 +10,7 @@ from direct.showbase.PythonUtil import lerp
 from direct.task import Task
 from otp.level import BasicEntities
 from panda3d.core import *
-from panda3d.core import NodePath
+from pandac.PandaModules import NodePath
 
 
 class DistributedMover(BasicEntities.DistributedNodePathEntity):

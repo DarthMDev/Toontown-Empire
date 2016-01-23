@@ -15,7 +15,7 @@ from toontown.racing.RaceHeadFrame import RaceHeadFrame
 from toontown.racing.RaceGag import RaceGag
 from toontown.racing.RaceEndPanels import RaceEndPanel
 from toontown.racing import RaceGlobals
-from panda3d.core import CardMaker, OrthographicLens, LineSegs
+from pandac.PandaModules import CardMaker, OrthographicLens, LineSegs
 from direct.particles.ParticleEffect import *
 from math import fmod
 from math import sqrt
