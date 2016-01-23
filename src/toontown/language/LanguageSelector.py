@@ -13,6 +13,7 @@ class LanguageSelector:
         self.french = None
         self.portuguese = None
         self.german = None
+        self.spanish = None
         self.backButton = None
         self.confirmDialog = None
         self.leaveFunction = leaveFunction
@@ -51,13 +52,17 @@ class LanguageSelector:
                       text_fg=(1, 0.549, 0, 1), text_scale=0.09, text_font=ToontownGlobals.getSuitFont(),
                       pos=(0, 0, -0.45), text_shadow=(1, 0.27, 0, 1), command=self.switchLanguage, extraArgs=['German'])
 
+        self.spanish = DirectButton(aspect2d, relief=None, text='Spanish',
+                      text_fg=(1, 0.549, 0, 1), text_scale=0.09, text_font=ToontownGlobals.getSuitFont(),
+                      pos=(0, 0, -0.55), text_shadow=(1, 0.27, 0, 1), command=self.switchLanguage, extraArgs=['Spanish'])
+
         self.backButton = DirectButton(aspect2d, relief=None, image=(self.shuffleUp, self.shuffleDown),
                           text=TTLocalizer.LanguageSelectorBack, text_font=ToontownGlobals.getInterfaceFont(),
                           text_scale=0.11, text_pos=(0, -0.02), pos=(0, 0, -0.75), text_fg=(1, 1, 1, 1),
                           text_shadow=(0, 0, 0, 1), command=self.destroy)
 
     def destroy(self):
-        for element in [self.background, self.title, self.current, self.available, self.english, self.french, self.portuguese, self.german, self.backButton, self.confirmDialog]:
+        for element in [self.background, self.title, self.current, self.available, self.english, self.french, self.portuguese, self.german, self.spanish, self.backButton, self.confirmDialog]:
             if element:
                 element.destroy()
                 element = None
