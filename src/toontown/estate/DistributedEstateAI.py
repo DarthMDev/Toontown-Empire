@@ -532,13 +532,17 @@ class DistributedEstateAI(DistributedObjectAI):
         spot.setPosHpr(46.8254, -113.682, 0.46015, 135, 0, 0)
         spot.generateWithRequired(self.zoneId)
         self.spots.append(spot)
-        
-        self.jukebox = DistributedPartyJukeboxActivityAI(self.air, self.doId, (0, 0, 0, 0))
-        self.jukebox.generateWithRequired(self.zoneId)
-        self.jukebox.sendUpdate('setX', [-21.8630])
-        self.jukebox.sendUpdate('setY', [-154.669])
-        self.jukebox.sendUpdate('setH', [148.7050])
-        self.jukebox.sendUpdate('unloadSign')
+ 
+
+# Jukebox at estate
+
+#        self.jukebox = DistributedPartyJukeboxActivityAI(self.air, self.doId, (0, 0, 0, 0))
+#        self.jukebox.generateWithRequired(self.zoneId)
+#        self.jukebox.sendUpdate('setX', [-21.8630])
+#        self.jukebox.sendUpdate('setY', [-154.669])
+#        self.jukebox.sendUpdate('setH', [148.7050])
+#        self.jukebox.sendUpdate('unloadSign')
+
 
         ButterflyGlobals.generateIndexes(self.zoneId, ButterflyGlobals.ESTATE)
         for i in xrange(0, ButterflyGlobals.NUM_BUTTERFLY_AREAS[ButterflyGlobals.ESTATE]):

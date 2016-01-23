@@ -1,7 +1,6 @@
 from ElevatorConstants import *
 from toontown.toonbase import ToontownGlobals
 
-
 try:
     config = base.config
 except:
@@ -14,7 +13,7 @@ SuitBuildingInfo = (
                     # (boss, boss), should be equal
                     # (mult1, mult2, mult3, mult4, mult5), multiplier per floor (increasing level pool)
                     # (1,) at the end means vs 2.0 cogs
-                    
+
                     # normal buildings
                     ((1, 1),  (1, 3),  (4, 4),  (8, 10),  (1,)),
                     ((1, 2),  (2, 4),  (5, 5),  (8, 10),  (1, 1.2)),
@@ -25,7 +24,7 @@ SuitBuildingInfo = (
                     ((3, 5),  (7, 9),  (10, 10),  (10, 14),  (1, 1.6, 1.8, 2.2, 2.4)),
                     ((4, 5),  (8, 10),  (11, 11),  (12, 16),  (1, 1.8, 2.4, 3, 3.2)),
                     ((5, 5),  (9, 11),  (12, 12),  (14, 20),  (1.4, 1.8, 2.6, 3.4, 4)),
-                    
+
                     # bosses
                     ((1, 1),  (1, 15),  (12, 12),  (67, 67),  (1, 1, 1, 1, 1)), # vp
                     ((1, 1),  (8, 15),  (12, 12),  (100, 100),  (1, 1, 1, 1, 1)), # vp skel
@@ -34,7 +33,7 @@ SuitBuildingInfo = (
                     ((1, 1),  (8, 15),  (12, 12),  (275, 275),  (1, 1, 1, 1, 1)), # cj
                     ((1, 1),  (9, 15),  (12, 12),  (206, 206),  (1, 1, 1, 1, 1), (1,)), # ceo
                     )
-        
+
 SUIT_BLDG_INFO_FLOORS = 0
 SUIT_BLDG_INFO_SUIT_LVLS = 1
 SUIT_BLDG_INFO_BOSS_LVLS = 2

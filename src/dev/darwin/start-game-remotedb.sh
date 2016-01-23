@@ -1,7 +1,8 @@
 #!/bin/sh
 cd ..
 cd ..
-export PYTHONPATH=dependencies/mac/lib:$PYTHONPATH
+export PYTHONPATH=dependencies/mac:$PYTHONPATH
+export PYTHONPATH=/Developer/Panda3D/lib:$PYTHONPATH
 export DYLD_LIBRARY_PATH=`pwd`/Libraries.bundle
 export DYLD_FRAMEWORK_PATH="Frameworks"
 
