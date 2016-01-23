@@ -1,6 +1,5 @@
 from panda3d.core import PandaNode
 import DNAUtil
-from common import *
 
 class DNAGroup:
     COMPONENT_CODE = 1
@@ -10,7 +9,6 @@ class DNAGroup:
         self.children = []
         self.parent = None
         self.visGroup = None
-#        _np = np.attachNewNode(self.name)
 
     def add(self, child):
         self.children += [child]
@@ -53,3 +51,4 @@ class DNAGroup:
         node = PandaNode(self.name)
         nodePath = nodePath.attachNewNode(node, 0)
         for child in self.children:
+            child.traverse(nodePath, dnaStorage)

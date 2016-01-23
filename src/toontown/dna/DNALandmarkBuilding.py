@@ -77,4 +77,3 @@ class DNALandmarkBuilding(DNANode.DNANode):
         for child in self.children:
             child.traverse(nodePath, dnaStorage)
         nodePath.flattenStrong()
-#        self.traverseChildren(_np, store)

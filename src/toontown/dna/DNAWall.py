@@ -50,4 +50,3 @@ class DNAWall(DNANode.DNANode):
             child.traverse(node, dnaStorage)
         node.flattenStrong()
         DNAFlatBuilding.DNAFlatBuilding.currentWallHeight += self.height
-#        self.traverseChildren(_np, store)
