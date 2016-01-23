@@ -265,7 +265,7 @@ QuestsBuildingQuestFloorNumbers = ('',
  'two+',
  'three+',
  'four+',
- 'five+')
+ 'five')
 QuestsBuildingQuestHeadline = 'DEFEAT'
 QuestsBuildingQuestProgressString = '%(progress)s of %(num)s defeated'
 QuestsBuildingQuestString = 'Defeat %s'
@@ -3084,14 +3084,12 @@ KnockKnockJokes = [['Who', "Bad echo in here, isn't there?"],
  ['Freddie', 'Freddie or not, here I come.'],
  ['Dishes', 'Dishes your friend, let me in.'],
  ['Wooden shoe', 'Wooden shoe like to know.'],
- ['Betty', "Betty doesn't know who I am."],
  ['Kent', 'Kent you tell?'],
  ['Noah', "Noah don't know who either."],
  ["I don't know", 'Neither do I, I keep telling you that.'],
  ['Howard', 'Howard I know?'],
  ['Emma', 'Emma so glad you asked me that.'],
  ['Auto', "Auto know, but I've forgotten."],
- ['Jess', 'Jess me and my shadow.'],
  ['One', 'One-der why you keep asking that?'],
  ['Alma', 'Alma not going to tell you!'],
  ['Zoom', 'Zoom do you expect?'],
@@ -3106,7 +3104,6 @@ KnockKnockJokes = [['Who', "Bad echo in here, isn't there?"],
  ['N.E.', 'N.E. body you like, let me in.'],
  ['Amos', 'Amos-quito bit me.'],
  ['Alma', "Alma candy's gone."],
- ['Bruce', "I Bruce very easily, don't hit me."],
  ['Colleen', "Colleen up your room, it's filthy."],
  ['Elsie', 'Elsie you later.'],
  ['Hugh', 'Hugh is going to let me in?'],
@@ -3114,10 +3111,8 @@ KnockKnockJokes = [['Who', "Bad echo in here, isn't there?"],
  ['Ida', 'Ida know.  Sorry!'],
  ['Isabel', 'Isabel on a bike really necessary?'],
  ['Joan', "Joan call us, we'll call you."],
- ['Kay', 'Kay, L, M, N, O, P.'],
  ['Justin', 'Justin time for dinner.'],
  ['Liza', 'Liza wrong to tell.'],
- ['Luke', 'Luke and see who it is.'],
  ['Mandy', "Mandy the lifeboats, we're sinking."],
  ['Max', 'Max no difference - just open the door!'],
  ['Nettie', 'Nettie as a fruitcake.'],
@@ -3134,8 +3129,6 @@ KnockKnockJokes = [['Who', "Bad echo in here, isn't there?"],
  ['Ocelot', "Ocelot of questions, don't you?"],
  ['Thermos', 'Thermos be a better knock knock joke than this.'],
  ['Sultan', 'Sultan Pepper.'],
- ['Vaughan', 'Vaughan day my prince will come.'],
- ['Donald', 'Donald come baby, cradle and all.'],
  ['Lettuce', "Lettuce in, won't you?"],
  ['Ivor', 'Ivor sore hand from knocking on your door!'],
  ['Isabel', 'Isabel broken, because I had to knock.'],
@@ -3195,7 +3188,6 @@ KnockKnockJokes = [['Who', "Bad echo in here, isn't there?"],
  ['Stan', "Stan back, I'm going to sneeze."],
  ['Hatch', 'Bless you.'],
  ['Ida', "It's not Ida who, it's Idaho."],
- ['Zippy', 'Mrs. Zippy.'],
  ['Yukon', 'Yukon go away and come back another time.']]
 ScientistPhase1Dialogue = ['Fellow Toons, this is the Silly Meter!',
                            "It is tracking Toontown's rising silly levels...",
@@ -3547,7 +3539,7 @@ PartyActivityNameDict = {0: {'generic': 'Jukebox',
  8: {'generic': 'Deluxe Jukebox',
      'invite': 'a deluxe jukebox',
      'editor': 'Deluxe Jukebox',
-     'description': 'Your own deluxe jukebox with double the tunes for double the deal!'},
+     'description': 'Your own deluxe jukebox with double the tunes!'},
  9: {'generic': 'Dance Floor\n20 moves',
      'invite': 'a 20 move Dance Floor',
      'editor': 'Dance Floor - 20',
@@ -4534,61 +4526,61 @@ PeriodOnlyAfterLetter = 'You can use a period in your name, but only after a let
 ApostropheOnlyAfterLetter = 'You can use an apostrophe in your name, but only after a letter.'
 NoNumbersInTheMiddle = 'Numeric digits may not appear in the middle of a word.'
 ThreeWordsOrLess = 'Your name must be three words or fewer.'
-NumToColor = ['White',
- 'Peach',
- 'Bright Red',
- 'Red',
- 'Maroon',
- 'Sienna',
- 'Brown',
- 'Tan',
- 'Coral',
- 'Orange',
- 'Yellow',
- 'Cream',
- 'Citrine',
- 'Lime',
- 'Sea Green',
- 'Green',
- 'Light Blue',
- 'Aqua',
- 'Blue',
- 'Periwinkle',
- 'Royal Blue',
- 'Slate Blue',
- 'Purple',
- 'Lavender',
- 'Pink',
- 'Plum',
- 'Black',
- 'Mountain Green',
- 'Icy Blue',
- 'Desert Sand',
- 'Mint',
- 'Charcoal',
- 'Hot Pink',
- 'Honey Mustard',
- 'Gray',
- 'Neon Orange',
- 'Sapphire',
- 'Crimson',
- 'Emerald',
- 'Bronze',
- 'African Violet',
- 'Magenta',
- 'Medium Purple',
- 'Ivory',
- 'Thistle',
- 'Spring Green',
- 'Goldenrod',
- 'Cadium Yellow',
- 'Peach Puff',
- 'Toony Teal',
- 'Salmon',
- 'Banana Yellow',
- 'Dim Gray',
- 'Turquoise',
- 'Forest Green']
+NumToColor = ['White', # 0
+ 'Peach',  #1
+ 'Bright Red', #2
+ 'Red', #3
+ 'Maroon', #4
+ 'Sienna', #5
+ 'Brown', #6
+ 'Tan', #7 
+ 'Coral', #8
+ 'Orange', #9
+ 'Yellow',#10
+ 'Cream', #11
+ 'Citrine',#12
+ 'Lime',#13
+ 'Sea Green',#14
+ 'Green',#15
+ 'Light Blue',#16
+ 'Aqua',#17
+ 'Blue',#18
+ 'Periwinkle',#19
+ 'Royal Blue',#20
+ 'Slate Blue',#21
+ 'Purple',#22
+ 'Lavender',#23
+ 'Pink',#24
+ 'Plum',#25
+ 'Black',#26
+ 'Mountain Green',#27
+ 'Icy Blue',#28
+ 'Desert Sand',#29
+ 'Mint',#30
+ 'Charcoal', #31
+ 'Hot Pink', #32
+ 'Honey Mustard', #33
+ 'Gray',#34
+ 'Neon Orange',#35
+ 'Sapphire',#36
+ 'Crimson',#37
+ 'Emerald',#38
+ 'Bronze',#39
+ 'African Violet',#40
+ 'Magenta',#41
+ 'Medium Purple',#42
+ 'Ivory',#43
+ 'Thistle',#44
+ 'Spring Green',#45
+ 'Goldenrod',#46
+ 'Cadium Yellow',#47
+ 'Peach Puff',#48
+ 'Toony Teal',#49
+ 'Salmon',#50
+ 'Banana Yellow',#51
+ 'Dim Gray',#52
+ 'Turquoise',#53
+ 'Forest Green']#54
 AnimalToSpecies = {'dog': 'Dog',
  'cat': 'Cat',
  'mouse': 'Mouse',
@@ -4619,6 +4611,7 @@ NCCommaUsage = 'That name does not use commas properly. Commas must join two wor
 NCPeriodUsage = 'That name does not use periods properly. Periods are only allowed in words like "Mr.", "Mrs.", "J.T.", etc.'
 NCApostrophes = 'That name has too many apostrophes.'
 RemoveTrophy = lToonHQ + ': ' + TheCogs + ' took over one of the buildings you rescued!'
+Remove2Trophy = lToonHQ + ': Thanks for helping save the building from the Cogs!'
 STOREOWNER_TOOKTOOLONG = 'Need more time to think?'
 STOREOWNER_GOODBYE = 'See you later!'
 STOREOWNER_NEEDJELLYBEANS = 'You need to ride the Trolley to get some Jellybeans.'

@@ -17,11 +17,13 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
     positions = ((-45, 100, GolfGlobals.GOLF_BALL_RADIUS),
      (-15, 100, GolfGlobals.GOLF_BALL_RADIUS),
      (15, 100, GolfGlobals.GOLF_BALL_RADIUS),
-     (45, 100, GolfGlobals.GOLF_BALL_RADIUS))
+     (45, 100, GolfGlobals.GOLF_BALL_RADIUS),
+     (90, 380, GolfGlobals.GOLF_BALL_RADIUS),
+     (-90, 380, GolfGlobals.GOLF_BALL_RADIUS))
     toonGolfOffsetPos = Point3(-2, 0, -GolfGlobals.GOLF_BALL_RADIUS)
     toonGolfOffsetHpr = Point3(-90, 0, 0)
-    rotateSpeed = 20
-    golfPowerSpeed = base.config.GetDouble('golf-power-speed', 3)
+    rotateSpeed = 22
+    golfPowerSpeed = base.config.GetDouble('golf-power-speed', 2)
     golfPowerExponent = base.config.GetDouble('golf-power-exponent', 0.75)
 
     def __init__(self, cr):
@@ -293,7 +295,7 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
          gui.find('**/CloseBtn_Rllvr'),
          gui.find('**/CloseBtn_UP')), relief=None, scale=2, text=TTLocalizer.BossbotGolfSpotLeave, text_scale=0.04, text_pos=(0, -0.07), text_fg=VBase4(1, 1, 1, 1), pos=(1.05, 0, -0.82), command=self.__exitGolfSpot)
         self.accept('escape', self.__exitGolfSpot)
-        self.accept('control', self.__controlPressed)
+        self.accept(base.JUMP, self.__controlPressed)
         self.accept('control-up', self.__controlReleased)
         self.accept('InputState-forward', self.__upArrow)
         self.accept('InputState-reverse', self.__downArrow)
@@ -313,7 +315,7 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
             self.closeButton = None
         self.__cleanupGolfSpotAdvice()
         self.ignore('escape')
-        self.ignore('control')
+        self.ignore(base.JUMP)
         self.ignore('control-up')
         self.ignore('InputState-forward')
         self.ignore('InputState-reverse')
@@ -548,7 +550,7 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
         else:
             grabIval = Sequence(Func(self.detachClub))
             if not toon.isEmpty():
-                toonIval = Sequence(Parallel(ActorInterval(toon, 'walk', duration=1.0, playRate=-1.0), LerpPosInterval(toon, duration=1.0, pos=Point3(-10, 0, 0))), Func(toon.wrtReparentTo, render))
+                toonIval = Sequence(LerpPosInterval(toon, duration=1.0, pos=Point3(-10, 0, 0)), Func(toon.wrtReparentTo, render))
                 grabIval.append(toonIval)
         if localAvatar.doId == toon.doId:
             if not self.goingToReward and toon.hp > 0:

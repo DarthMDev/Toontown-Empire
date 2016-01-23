@@ -3,7 +3,7 @@ from direct.distributed.PyDatagram import *
 from direct.task import Task
 from PartyGlobals import *
 from datetime import datetime, timedelta
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.toonbase.ToontownGlobals import P_InvalidIndex, P_ItemAvailable
 from ToontownTimeZone import ToontownTimeZone
 
