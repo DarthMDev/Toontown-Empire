@@ -10,30 +10,30 @@ from direct.distributed.PyDatagramIterator import PyDatagramIterator
 from common import *
 import DNAError
 
-import DNAAnimBuilding
-import DNAAnimProp
-import DNACornice
-import DNADoor
-import DNAFlatBuilding
-import DNAFlatDoor
-import DNAGroup
-import DNAInteractiveProp
-import DNALandmarkBuilding
-import DNANode
-import DNAProp
-import DNASign
-import DNASignBaseline
-import DNASignGraphic
-import DNASignText
-import DNAStreet
-import DNAVisGroup
-import DNAWall
-import DNAWindows
+from toontown.libpandadna import DNAAnimBuilding
+from toontown.libpandadna import DNAAnimProp
+from toontown.libpandadna import DNACornice
+from toontown.libpandadna import DNADoor
+from toontown.libpandadna import DNAFlatBuilding
+from toontown.libpandadna import DNAFlatDoor
+from toontown.libpandadna import DNAGroup
+from toontown.libpandadna import DNAInteractiveProp
+from toontown.libpandadna import DNALandmarkBuilding
+from toontown.libpandadna import DNANode
+from toontown.libpandadna import DNAProp
+from toontown.libpandadna import DNASign
+from toontown.libpandadna import DNASignBaseline
+from toontown.libpandadna import DNASignGraphic
+from toontown.libpandadna import DNASignText
+from toontown.libpandadna import DNAStreet
+from toontown.libpandadna import DNAVisGroup
+from toontown.libpandadna import DNAWall
+from toontown.libpandadna import DNAWindows
 
-import DNABattleCell
-import DNASuitPoint
+from toontown.libpandadna import DNABattleCell
+from toontown.libpandadna import DNASuitPoint
 
-from DNAStorage import LOAD_ON_DEMAND
+from toontown.libpandadna.DNAStorage import LOAD_ON_DEMAND
 
 compClassTable = {
 
