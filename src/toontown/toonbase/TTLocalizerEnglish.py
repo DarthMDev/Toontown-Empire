@@ -8841,6 +8841,8 @@ InventoryDeleteConfirm = "Are you sure you want to delete all your gags? Don't w
 
 ClothesGUICount = '%s/%s'
 
+MATenterClothesShop = '???'
+
 FpsMeterLabelOn = 'The frame rate meter is on.'
 FpsMeterLabelOff = 'The frame rate meter is off.'
 
