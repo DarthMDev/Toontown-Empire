@@ -490,9 +490,9 @@ class LoginAccountFSM(OperationFSM):
 class CreateAvatarFSM(OperationFSM):
     notify = directNotify.newCategory('CreateAvatarFSM')
 
-    def enterStart(self, dna, thirdTrack, index):
+    def enterStart(self, dna, index):
         # Basic sanity-checking:
-        if index < 0 or index >= 6:
+        if index >= 6:
             self.demand('Kill', 'Invalid index specified!')
             return
 
@@ -500,13 +500,8 @@ class CreateAvatarFSM(OperationFSM):
             self.demand('Kill', 'Invalid DNA specified!')
             return
 
-        if thirdTrack < 0 or thirdTrack == 4 or thirdTrack == 5 or thirdTrack >= 7:
-            self.demand('Kill', 'Invalid third track specified!')
-            return
-
         self.index = index
         self.dna = dna
-        self.thirdTrack = thirdTrack
 
         # Okay, we're good to go, let's query their account.
         self.demand('RetrieveAccount')
@@ -544,15 +539,12 @@ class CreateAvatarFSM(OperationFSM):
         colorString = TTLocalizer.ColorfulToon
         animalType = TTLocalizer.AnimalToSpecies[dna.getAnimal()]
         name = ' '.join((colorString, animalType))
-        trackAccess = [0, 0, 0, 0, 1, 1, 0]
-        trackAccess[self.thirdTrack] = 1
         toonFields = {
             'setName': (name,),
             'setWishNameState': ('OPEN',),
             'setWishName': ('',),
             'setDNAString': (self.dna,),
             'setDISLid': (self.target,),
-            'setTrackAccess': (trackAccess,)
         }
         self.csm.air.dbInterface.createObject(
             self.csm.air.dbId,
@@ -1177,8 +1169,8 @@ class ClientServicesManagerUD(DistributedObjectGlobalUD):
         self.notify.debug('Received avatar list request from %d' % (self.air.getMsgSender()))
         self.runAccountFSM(GetAvatarsFSM)
 
-    def createAvatar(self, dna, thirdTrack, index):
-        self.runAccountFSM(CreateAvatarFSM, dna, thirdTrack, index)
+    def createAvatar(self, dna, index):
+        self.runAccountFSM(CreateAvatarFSM, dna, index)
 
     def deleteAvatar(self, avId):
         self.runAccountFSM(DeleteAvatarFSM, avId)

@@ -74,7 +74,7 @@ class SuitInvasionManagerAI:
 
         # How many suits do we want?
         if type == INVASION_TYPE_NORMAL:
-            self.total = random.randint(1000, 10000)
+            self.total = random.randint(1000, 3000)
         elif type == INVASION_TYPE_MEGA:
             self.total = 5000
         elif type == INVASION_TYPE_BRUTAL:
