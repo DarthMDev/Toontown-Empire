@@ -444,17 +444,13 @@ class QuestPoster(DirectFrame):
             frameBgColor = 'green'
             invModel = loader.loadModel('phase_3.5/models/gui/inventory_icons')
 
-            track1, track2 = quest.getChoices(base.localAvatar)
-            
-            if track1 is not None:
-                lIconGeom = invModel.find('**/' + AvPropsNew[track1][1])
+            track1, track2 = quest.getChoices()
+            lIconGeom = invModel.find('**/' + AvPropsNew[track1][1])
 
             if not fComplete:
                 auxText = TTLocalizer.QuestPosterAuxOr
                 lPos.setX(-0.18)
-                
-                if track2 is not None:
-                    rIconGeom = invModel.find('**/' + AvPropsNew[track2][1])
+                rIconGeom = invModel.find('**/' + AvPropsNew[track2][1])
 
                 infoText = TTLocalizer.QuestPageNameAndDestination % (toNpcName,
                  toNpcBuildingName,
