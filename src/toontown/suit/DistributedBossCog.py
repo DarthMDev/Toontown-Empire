@@ -122,6 +122,10 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
 
     def disable(self):
         DistributedAvatar.DistributedAvatar.disable(self)
+        try:
+         self.resetBadges()
+        else:
+          pass
         self.removeHeadMeters()
         self.battleAId = None
         self.battleBId = None
@@ -435,6 +439,15 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
 
             if toon:
                 toon.removeHeadMeter()
+	try:			
+     def resetBadges(self):
+       for toonId in self.involvedToons:
+           toon = self.cr.doId2do.get(toonId)
+
+           if toon:
+            toon.d_updateBadgeNameTag()
+    else:
+	 pass
 
     def stickToonsToFloor(self):
         self.unstickToons()
