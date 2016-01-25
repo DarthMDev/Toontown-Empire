@@ -51,3 +51,5 @@ def loadDNAFileAI(dnaStorage, file):
     dnaLoader.destroy()
     return data
 
+def setupDoor(doorNodePath, parentNode, doorOrigin, dnaStore, block, color):
+    DNADoor.setupDoor(doorNodePath, parentNode, doorOrigin, dnaStore, block, color)
