@@ -63,8 +63,7 @@ class GlobalPartyManagerUD(DistributedObjectGlobalUD):
             self.air.backups.save('parties', ('host2PartyId',), self.host2PartyId)
             self.air.backups.save('parties', ('id2Party',), self.id2Party)
         except Exception as e:
-#            self.notify.warning('Party dats saving failed!\n%s' % e.message)
-            pass
+            self.notify.warning('Party dats saving failed!\n%s' % e.message)
 
     def load(self):
         # JSON doesn't allow ints as dictionary keys so we have to convert them.
@@ -96,8 +95,7 @@ class GlobalPartyManagerUD(DistributedObjectGlobalUD):
                     self.checkForDeletion(partyId, refund=True)
 
         except Exception as e:
-#            self.notify.warning('Party backup loading failed!\n%s' % e.message)
-            pass
+            self.notify.warning('Party backup loading failed!\n%s' % e.message)
 
     def checkForDeletion(self, partyId, refund=False):
         party = self.id2Party.get(partyId)
