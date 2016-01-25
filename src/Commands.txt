@@ -5,7 +5,6 @@ NEW MAGIC WORDS:
 GENERAL COMMANDS:
 ~skipTut = Skips Tutorial
 ~hp -1 = Loses All Your Laff
-~sos 99 trap cat = 99 Trap Cat SOS
 ~badge = Shows/Hides Your Badge
 ~xmasBadge = Shows/Hides Your Christmas Badge
 ~setBadge 2 = Sets target badge to the badge assigned to 2
