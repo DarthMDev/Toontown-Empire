@@ -2283,6 +2283,10 @@ QuestDict = {
     5006: (BR_TIER, Cont, (TrackChoiceQuest, ToontownBattleGlobals.TRAP_TRACK, ToontownBattleGlobals.HEAL_TRACK), Same, Same, 400, NA, TTLocalizer.TheBrrrghTrackQuestDict),
     5007: (BR_TIER, Cont, (TrackChoiceQuest, ToontownBattleGlobals.TRAP_TRACK, ToontownBattleGlobals.DROP_TRACK), Same, Same, 400, NA, TTLocalizer.TheBrrrghTrackQuestDict),
     5008: (BR_TIER, Cont, (TrackChoiceQuest, ToontownBattleGlobals.TRAP_TRACK, ToontownBattleGlobals.LURE_TRACK), Same, Same, 400, NA, TTLocalizer.TheBrrrghTrackQuestDict),
+    5250: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'l', 4), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5250]),
+    5258: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'c', 4), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5258]),
+    5259: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'm', 4), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5259]),
+    5260: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 's', 4), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5260]),
     5020: (BR_TIER, Start, (CogQuest, Anywhere, 36, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     5021: (BR_TIER, Start, (CogQuest, Anywhere, 38, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     5022: (BR_TIER, Start, (CogQuest, Anywhere, 40, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -3832,21 +3836,21 @@ class TrackTrainingReward(Reward):
     def __init__(self, id, reward):
         Reward.__init__(self, id, reward)
 
-    def getTrack(self):
+    def getTrack(self, av):
         track = self.reward[0]
         if track == None:
             track = 0
         return track
 
     def sendRewardAI(self, av):
-        av.b_setTrackProgress(self.getTrack(), 0)
+        av.b_setTrackProgress(self.getTrack(av), 0)
 
     def countReward(self, qrc):
-        qrc.trackProgressId = self.getTrack()
+        qrc.trackProgressId = self.getTrack(base.localAvatar)
         qrc.trackProgress = 0
 
     def getString(self):
-        trackName = ToontownBattleGlobals.Tracks[self.getTrack()].capitalize()
+        trackName = ToontownBattleGlobals.Tracks[self.getTrack(base.localAvatar)].capitalize()
         return TTLocalizer.QuestsTrackTrainingReward % trackName
 
     def getPosterString(self):
@@ -4197,6 +4201,7 @@ RewardDict = {
     405: (TrackTrainingReward, ToontownBattleGlobals.THROW_TRACK),
     406: (TrackTrainingReward, ToontownBattleGlobals.SQUIRT_TRACK),
     407: (TrackTrainingReward, ToontownBattleGlobals.DROP_TRACK),
+    408: (TrackTrainingReward, None),
     500: (MaxQuestCarryReward, 2),
     501: (MaxQuestCarryReward, 3),
     502: (MaxQuestCarryReward, 4),
