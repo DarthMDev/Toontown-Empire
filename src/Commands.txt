@@ -8,7 +8,7 @@ GENERAL COMMANDS:
 ~sos 99 trap cat = 99 Trap Cat SOS
 ~badge = Shows/Hides Your Badge
 ~xmasBadge = Shows/Hides Your Christmas Badge
-~setBadge 2 = Set's up badge to the badge assigned to 2
+~setBadge 2 = Sets target badge to the badge assigned to 2
 ~fishingRod 0 = Twig Rod
 ~fishingRod 1 = Bamboo Rod
 ~fishingRod 2 = Hardwood Rod
