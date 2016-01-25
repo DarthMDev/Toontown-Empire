@@ -412,6 +412,10 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.loadSosPages()
         return
 
+    def loadNewsPageButton(self):
+     self.newsPage = NewsPageButtonManager.NewsPageButtonManager()
+     self.newsPage.load()
+
     def loadSosPages(self):
         if self.sosPage != None:
             return
