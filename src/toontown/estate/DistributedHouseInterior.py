@@ -65,7 +65,7 @@ class DistributedHouseInterior(DistributedObject.DistributedObject):
         doorNP = door.copyTo(door_origin)
         houseColor = HouseGlobals.atticWood
         color = Vec4(houseColor[0], houseColor[1], houseColor[2], 1)
-        setupDoor(doorNP, door_origin, door_origin, dnaStore, str(self.houseId), color)
+        DNADoor.setupDoor(doorNP, door_origin, door_origin, dnaStore, str(self.houseId), color)
         doorFrame = doorNP.find('door_*_flat')
         doorFrame.setColor(color)
         self.interior.flattenMedium()
