@@ -22,7 +22,8 @@ from toontown.battle import BattleProps
 from toontown.battle import DistributedBattle
 from otp.chat.ChatGlobals import *
 from toontown.distributed.DelayDeletable import DelayDeletable
-from otp.nametag import NametagGlobals
+from otp.nametag.NametagConstants import *
+from otp.chat.ChatGlobals import *
 from otp.nametag.NametagGlobals import *
 from toontown.suit.SuitLegList import *
 from toontown.toonbase import ToontownGlobals
@@ -634,7 +635,7 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
             base.playSfx(dialogue, node=self)
         elif chatFlags & CFSpeech != 0:
             if self.nametag.getNumChatPages() > 0:
-                self.playDialogueForString(self.nametag.getChatText())
+                self.playDialogueForString(self.nametag.getChat())
                 if self.soundChatBubble != None:
                     base.playSfx(self.soundChatBubble, node=self)
             elif self.nametag.getStompChatText():
