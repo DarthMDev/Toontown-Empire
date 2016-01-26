@@ -65,7 +65,6 @@ if language != 'Spanish':
         if key not in spanishModule.__dict__:
             print 'WARNING: Foreign module: %s extra key: %s' % (module, key)
 
-
 if language != 'Portuguese':
     l = {}
     g = {}

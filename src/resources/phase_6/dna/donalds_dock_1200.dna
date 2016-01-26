@@ -437,6 +437,11 @@ group "donaldsDock" [
     ]
    ]
   ]
+  prop "prop_tt_m_ara_gen_tunnelAheadSign_DNARoot" [
+   code [ "prop_tt_m_ara_gen_tunnelAheadSign" ]
+   pos [ -298.209 -438.448 -0.510909 ]
+   nhpr [ -105.628 0 -0 ]
+  ]
  ]
  visgroup "1202" [
   vis [   "1201"   "1202"   "1203"   "1204"   "1205"   "1226"   "1227"   "1236"   ]
@@ -7428,6 +7433,11 @@ group "donaldsDock" [
    cell_id [ 0 ]
    pos [ -154.598 -166.009 2.28882e-005 ]
    nhpr [ 180 0 -0 ]
+  ]
+  prop "prop_tt_m_ara_gen_tunnelAheadSign_DNARoot" [
+   code [ "prop_tt_m_ara_gen_tunnelAheadSign" ]
+   pos [ -172.972 -129.785 -0.511329 ]
+   nhpr [ 28.7613 0 -0 ]
   ]
  ]
  visgroup "1226" [

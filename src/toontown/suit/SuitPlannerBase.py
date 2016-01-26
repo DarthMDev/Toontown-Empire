@@ -4,6 +4,7 @@ from toontown.hood import ZoneUtil, HoodUtil
 from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
 from toontown.building import SuitBuildingGlobals
 from toontown.dna.DNAParser import *
+from toontown.dna.DNAInteractiveProp import DNAInteractiveProp
 
 class SuitPlannerBase:
     notify = directNotify.newCategory('SuitPlannerBase')

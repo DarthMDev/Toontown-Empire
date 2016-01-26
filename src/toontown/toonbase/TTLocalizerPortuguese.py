@@ -887,6 +887,13 @@ QuestDialog_3225 = {
 QuestDialog_2910 = {
     QUEST: 'De volta tão rápido assim?\x07Ótimo trabalho com aquela mola.\x07O último item é um contrapeso.\x07Passe lá, veja com _toNpcName_ e traga o que você conseguir._where_' }
 QuestDialogDict = {
+    120: {QUEST: "Good job finding the trolley!\x07By the way, have you met Banker Bob?\x07He has quite a sweet tooth.\x07Why don't you introduce yourself by taking him this candy bar as a gift._where_"},
+    121: {QUEST: "Yum, thank you for the Candy Bar.\x07Say, if you can help me, I'll give you a reward.\x07Those Cogs stole the keys to my safe. Defeat Cogs to find a stolen key.\x07When you find a key, bring it back to me."},
+    130: {QUEST: 'Good job finding the trolley!\x07By the way, I received a package for Professor Pete today.\x07It must be his new chalk he ordered.\x07Can you please take it to him?_where_'},
+    131: {QUEST: 'Oh, thanks for the chalk.\x07What?!?\x07Those Cogs stole my blackboard. Defeat Cogs to find my stolen blackboard.\x07When you find it, bring it back to me.'},
+    140: {QUEST: 'Good job finding the trolley!\x07By the way, I have this friend, Librarian Larry, who is quite a book worm.\x07I picked this book up for him last time I was over in ' + lDonaldsDock + '.\x07Could you take it over to him?_where_'},
+    141: {QUEST: 'Oh, yes, this book almost completes my collection.\x07Let me see...\x07Uh oh...\x07Now where did I put my glasses?\x07I had them just before those Cogs took over my building.\x07Defeat Cogs to find my stolen glasses.'},
+    142: {QUEST: "Thank you! I have a feeling you will be a great help to everyone around here.\x07By the way, I just received a message from Toon HQ.\x07They forgot to mention a few important concepts. You're needed there!"},
     160: {
         GREETING: '',
         QUEST: 'Ok, agora acho que você está pronto para um desafio maior.\x07Derrote 3 Robôs-chefe.',
@@ -7090,7 +7097,7 @@ ClothesShopShortsStyle = 'Shorts Estilo'
 ClothesShopShortsColor = 'Shorts Cor'
 ClothesShopBottomsStyle = 'Saias Estilo'
 ClothesShopBottomsColor = 'Saias Cor'
-PromptTutorial = 'Parabéns!! \nVocê são o mais novo cidadão Toontown Empire! \N\nGostaria de continuar para a Toontorial ou teleportar diretamente para Toontown Central?'
+PromptTutorial = 'Parabéns!! \nVocê são o mais novo cidadão Toontown Empire! \nGostaria de continuar para a Toontorial ou teleportar diretamente para Toontown Central?'
 MakeAToonSkipTutorial = 'Pular Toontorial'
 MakeAToonEnterTutorial = 'Acessar Toontorial'
 MakeAToonDone = lOK
@@ -7127,7 +7134,7 @@ PickAName = 'Tente usar o jogo Escolha um nome!\nClique aqui -->'
 PickANameButton = 'Escolha um nome'
 RejectNameText = 'Este nome não é permitido. Tente novamente.'
 WaitingForNameSubmission = 'Enviando o seu nome...'
-PetNameMaster = 'PetNameMaster_portuguese.txt'
+PetNameMaster = 'PetNameMasterPortuguese'
 PetshopUnknownName = 'Nome: ???'
 PetshopDescGender = 'Sexo:\t%s'
 PetshopDescCost = 'Custo:\t%s balinhas'
@@ -7144,7 +7151,7 @@ PetshopReturnConfirm = 'Devolver %s?'
 PetshopReturn = 'Devolver'
 PetshopChooserTitle = 'RABISCOS DE HOJE'
 PetshopGoHomeText = 'Deseja ir à sua propriedade para brincar com seu novo Rabisco?'
-NameShopNameMaster = 'NameMaster_portuguese.txt'
+NameShopNameMaster = 'NameMasterPortuguese'
 NameShopPay = 'Assine já!'
 NameShopPlay = 'Avaliação gratuita'
 NameShopOnlyPaid = 'Somente usuários pagantes\npodem dar nomes aos seus Toons.\nAté que você se inscreva,\nseu nome será\n'
@@ -9229,6 +9236,7 @@ NPCToonNames = {
     5320: 'Márcia',
     5321: 'Professora Uva',
     5322: 'Rose Pescadora',
+    6000: 'Fisherman Frisk',
     8001: 'Grandep Rêmio',
     8002: 'Keruk Orrê',
     8003: 'Precisuv Encer',
@@ -9324,52 +9332,60 @@ NPCToonNames = {
     9237: 'Jung Pescador',
     
     9301: 'Phil Bettur',
- 9302: 'Emma Phatic',
- 9303: 'GiggleMesh',
- 9304: 'Anne Ville',
- 9305: 'Bud Erfingerz',
- 9306: 'J.S. Bark',
- 9307: 'Bea Sharpe',
- 9308: 'Otto Toon',
- 9309: 'Al Capella',
- 9310: 'Des Traction',
- 9311: 'Dee Version',
- 9312: 'Bo Nanapeel',
- 7001: 'N. Prisoned',
- 7002: 'R.E. Leaseme',
- 7003: 'Lemmy Owte',
- 7004: 'T. Rapped',
- 7005: 'Little Helphere',
- 7006: 'Gimmy Ahand',
- 7007: 'Dewin Tymme',
- 7008: 'Ima Cagedtoon',
- 7009: 'Jimmy Thelock',
- 
- # some TTH devs (SHOULD MATCH EXACT ENGLISH NAME)
- 10001: 'Loblao',
- 10002: 'Unior',
- 10003: 'Flappy',
- 10004: 'Kalus',
- 10005: 'POTCO House',
- 10006: 'Little Cat',
- 10007: 'Simon',
- 10008: 'Super Googlefish',
- 10009: 'Sheriff Reggie',
- 10010: 'Ned',
- 10011: 'Spyro',
- 
- # FF
- 7110: 'Custoreiro Bond',
- 7111: 'Vendedor Arno',
- 7112: 'Vendedor Jorge',
- 7113: lHQOfficerM,
- 7114: lHQOfficerM,
- 7115: lHQOfficerF,
- 7116: lHQOfficerF,
- 7117: 'Vendedor Meow',
- 7118: 'Vendedor Macaco',
- 7119: 'Vendedor Alyssa',
-}
+    9302: 'Emma Phatic',
+    9303: 'GiggleMesh',
+    9304: 'Anne Ville',
+    9305: 'Bud Erfingerz',
+    9306: 'J.S. Bark',
+    9307: 'Bea Sharpe',
+    9308: 'Otto Toon',
+    9309: 'Al Capella',
+    9310: 'Des Traction',
+    9311: 'Dee Version',
+    9312: 'Bo Nanapeel',
+    9313: 'Frekly Fred',
+    9314: 'Robby',
+    9315: 'Baker Penelope',
+    9316: 'Angie Lerr',
+    9317: 'Nocturnal Nattie',
+    9318: 'Los Carlos',
+    9319: 'Psyche',
+    9320: 'Toony Bob',
+    9321: 'Sir Biscuit',
+    9322: 'Glower',
+    9323: 'Zedd',
+    9324: 'Nacib',
+    7001: 'N. Prisoned',
+    7002: 'R.E. Leaseme',
+    7003: 'Lemmy Owte',
+    7004: 'T. Rapped',
+    7005: 'Little Helphere',
+    7006: 'Gimmy Ahand',
+    7007: 'Dewin Tymme',
+    7008: 'Ima Cagedtoon',
+    7009: 'Jimmy Thelock',
+    7010: 'Jaymo',
+    
+    7011: 'Donald',
+    7012: 'Phil Bettur',
+    7013: 'Emma Phatic',
+    7014: 'GiggleMesh',
+    7015: 'Anne Ville',
+    7016: 'Bud Erfingerz',
+    7017: 'J.S. Bark',
+    7018: 'Bea Sharpe',
+    7019: 'Otto Toon',
+    7020: 'Al Capella',
+    7021: 'Des Traction',
+    7022: 'Dee Version',
+    7023: 'Bo Nanapeel',
+    10001: 'Healer Sara',
+    10002: "Good ol' Gil Giggles",
+    11001: 'Healer Gabriel',
+    12001: 'Healer Bill',
+    12002: 'Mata Hairy',
+    13001: 'Healer Clover',
+    13002: 'Bumpy Bumblebehr'}
 
 zone2TitleDict = {
     2513: ('PrefeiToona', ''),
