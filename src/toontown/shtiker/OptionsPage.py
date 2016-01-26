@@ -825,7 +825,7 @@ class AdvancedOptionsTabPage(DirectFrame):
             settings['want-WASD'] = False
             base.localAvatar.controlManager.reload()
             base.localAvatar.chatMgr.reloadWASD()
-            base.localAvatar.setSystemMessage(0, 'WASD controls disabled.')
+            base.localAvatar.setSystemMessage(0, 'WASD disabled.')
         else:
             base.wantWASD = True
             base.Move_Up = 'w'
@@ -838,13 +838,13 @@ class AdvancedOptionsTabPage(DirectFrame):
 
             base.localAvatar.controlManager.reload()
             base.localAvatar.chatMgr.reloadWASD()
-            base.localAvatar.setSystemMessage(0, 'WASD controls enabled.')
+            base.localAvatar.setSystemMessage(0, 'WASD enabled.')
 
         self.settingsChanged = 1
         self.__setWASDButton()
 
     def __setWASDButton(self):
-        self.WASD_Label['text'] = 'WASD Support:'
+        self.WASD_Label['text'] = 'WASD:'
         if base.wantWASD:
 
             self.WASD_toggleButton['text'] = 'On'
