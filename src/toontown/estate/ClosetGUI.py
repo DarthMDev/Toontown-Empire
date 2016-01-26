@@ -28,7 +28,7 @@ class ClosetGUI(ClothesGUI.ClothesGUI):
         self.gui = loader.loadModel('phase_3/models/gui/create_a_toon_gui')
         self.cancelButton = DirectButton(relief=None, image=(self.gui.find('**/CrtAtoon_Btn2_UP'), self.gui.find('**/CrtAtoon_Btn2_DOWN'), self.gui.find('**/CrtAtoon_Btn2_RLLVR')), pos=(0.15, 0, -0.85), command=self.__handleCancel, text=('', TTLocalizer.MakeAToonCancel, TTLocalizer.MakeAToonCancel), text_font=ToontownGlobals.getInterfaceFont(), text_scale=0.08, text_pos=(0, -0.03), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1))
         self.cancelButton.hide()
-        self.countFrame = DirectFrame(parent=self.parentFrame, image=self.shuffleFrame, image_scale=(-0.6, 0.6, 0.6), relief=None, pos=(0, 0, -0.125), scale=1.2, frameColor=(1, 1, 1, 1), text=TTLocalizer.ClothesGUICount % (0, 0), text_scale=0.0575, text_pos=(-0.001, -0.015), text_fg=(1, 1, 1, 1))
+        #self.countFrame = DirectFrame(parent=self.parentFrame, image=self.shuffleFrame, image_scale=(-0.6, 0.6, 0.6), relief=None, pos=(0, 0, -0.125), scale=1.2, frameColor=(1, 1, 1, 1), text=TTLocalizer.ClothesGUICount % (0, 0), text_scale=0.0575, text_pos=(-0.001, -0.015), text_fg=(1, 1, 1, 1))
         if self.isOwner:
             trashcanGui = loader.loadModel('phase_3/models/gui/trashcan_gui')
             trashImage = (trashcanGui.find('**/TrashCan_CLSD'), trashcanGui.find('**/TrashCan_OPEN'), trashcanGui.find('**/TrashCan_RLVR'))
@@ -43,8 +43,8 @@ class ClosetGUI(ClothesGUI.ClothesGUI):
         ClothesGUI.ClothesGUI.unload(self)
         self.cancelButton.destroy()
         del self.cancelButton
-        self.countFrame.destroy()
-        del self.countFrame
+        #self.countFrame.destroy()
+        #del self.countFrame
         if self.isOwner:
             self.topTrashButton.destroy()
             self.bottomTrashButton.destroy()
@@ -133,7 +133,7 @@ class ClosetGUI(ClothesGUI.ClothesGUI):
     
     def updateCount(self):
         clothes = (len(self.tops) + len(self.bottoms)) - 2
-        self.countFrame['text'] = TTLocalizer.ClothesGUICount % (clothes, self.maxClothes)
+        #self.countFrame['text'] = TTLocalizer.ClothesGUICount % (clothes, self.maxClothes)
 
     def setGender(self, gender):
         self.ownerGender = gender
