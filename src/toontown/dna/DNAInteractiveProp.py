@@ -8,6 +8,10 @@ class DNAInteractiveProp(DNAAnimProp.DNAAnimProp):
 
         self.cellId = -1
 
+    def setCellId(self, id):
+         self.cellId = id
+  
+
     def getCellId(self):
         return self.cellId
 
