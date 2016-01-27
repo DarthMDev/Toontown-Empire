@@ -20,7 +20,7 @@ class DistributedInGameNewsMgr(DistributedObject):
         return
 
     def disable(self):
-        self.notify.debug("i'm disabling InGameNewsMgr  rightnow.")
+        self.notify.debug("i'm disabling InGameNewsMgr  right now.")
         DistributedObject.disable(self)
 
     def generate(self):
