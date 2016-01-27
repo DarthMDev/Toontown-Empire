@@ -104,6 +104,8 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.__lerpFurnitureButton = None
             self.__clarabelleButton = None
             self.__clarabelleFlash = None
+            self.__newsButton = None
+            self.__newsManager = None
             self.furnitureManager = None
             self.furnitureDirector = None
             self.gotCatalogNotify = 0

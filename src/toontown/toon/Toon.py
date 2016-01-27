@@ -48,6 +48,7 @@ MonkeyDialogueArray = []
 BearDialogueArray = []
 PigDialogueArray = []
 LegsAnimDict = {}
+localAvatar = None
 TorsoAnimDict = {}
 HeadAnimDict = {}
 Preloaded = {}
@@ -571,6 +572,7 @@ class Toon(Avatar.Avatar, ToonHead):
             self.swapToonLegs(newDNA.legs)
         self.swapToonColor(newDNA)
         self.__swapToonClothes(newDNA)
+		
 
     def setDNAString(self, dnaString):
         newDNA = ToonDNA.ToonDNA()

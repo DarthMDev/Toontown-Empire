@@ -5,7 +5,13 @@ from direct.gui.DirectButton import DirectButton
 from toontown.toonbase import ToontownGlobals, TTLocalizer
 from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
-from toontown.coghq import CogHQBossBattle
+
+try: 
+ from toontown.coghq import CogHQBossBattle
+except:
+ pass
+
+news = True
 
 class NewsPageButtonManager(FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('NewsPageButtonManager')
@@ -94,11 +100,17 @@ class NewsPageButtonManager(FSM.FSM):
     def hideNewIssueButton(self):
         if hasattr(self, 'newIssueButton') and self.newIssueButton:
             self.newIssueButton.hide()
-            localAvatar.clarabelleNewsPageCollision(False)
+            try:
+             localAvatar.clarabelleNewsPageCollision(False)
+            except:
+             pass
 
     def __showNewIssueButton(self):
         self.newIssueButton.show()
-        localAvatar.clarabelleNewsPageCollision(True)
+        try:
+         localAvatar.clarabelleNewsPageCollision(True)
+        except:
+         pass
 
     def hideAllButtons(self):
         if not self.buttonsLoaded:
@@ -111,7 +123,7 @@ class NewsPageButtonManager(FSM.FSM):
     def isNewIssueButtonShown(self):
         if not config.GetBool('want-news-tab', 1):
             return False
-        if localAvatar.getLastTimeReadNews():
+        if news == True:
             return True
         return False
 
@@ -124,10 +136,11 @@ class NewsPageButtonManager(FSM.FSM):
     def enterNormalWalk(self):
         if not self.buttonsLoaded:
             return
-        if localAvatar.getLastTimeReadNews():
+        if news == True:
             self.__showNewIssueButton()
             self.__blinkIval.resume()
         else:
+            print('Button was hidden')
             self.hideNewIssueButton()
         self.gotoPrevPageButton.hide()
         self.goto3dWorldButton.hide()
