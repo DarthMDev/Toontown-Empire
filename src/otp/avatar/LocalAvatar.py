@@ -25,6 +25,7 @@ from otp.nametag.NametagConstants import *
 from otp.margins.WhisperPopup import *
 from toontown.toonbase import ToontownGlobals
 
+
 class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.DistributedSmoothNode):
     notify = DirectNotifyGlobal.directNotify.newCategory('LocalAvatar')
     wantDevCameraPositions = base.config.GetBool('want-dev-camera-positions', 0)
