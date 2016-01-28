@@ -402,7 +402,7 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
     def enterReward(self):
         DistributedBossCogAI.DistributedBossCogAI.enterReward(self)
 
-@magicWord(category=CATEGORY_DEVELOPER)
+@magicWord(category=CATEGORY_LEADER)
 def skipVP():
     """
     Skips to the final round of the VP.
@@ -422,7 +422,7 @@ def skipVP():
     boss.b_setState('PrepareBattleThree')
     return 'Skipping the first round...'
 
-@magicWord(category=CATEGORY_DEVELOPER)
+@magicWord(category=CATEGORY_LEADER)
 def killVP():
     """
     Kills the VP.
