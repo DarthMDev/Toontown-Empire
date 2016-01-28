@@ -20,7 +20,12 @@ class DNAInteractiveProp(DNAAnimProp.DNAAnimProp):
         self.cellId = dgi.getInt16()
 
     def traverse(self, np, store):
-        if self.code == "DCS":
+        if self.getCode() == 'DCS':
+            node = ModelNode(self.getName())
+            node.setPreserveTransform(ModelNode.PTNet)
+            node = nodePath.attachNewNode(node, 0)
+
+        elif self.code == "DCS":
             node = ModelNode(self.name)
             node.setPreserveTransform(ModelNode.PTNet)
             _np = np.attachNewNode(np)
