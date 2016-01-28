@@ -5297,3 +5297,9 @@ def goto(avIdShort):
         return "Unable to teleport to target, they are not currently on this district."
     spellbook.getInvoker().magicWordTeleportRequests.append(avId)
     toon.sendUpdate('magicTeleportRequest', [spellbook.getInvoker().getDoId()])
+	
+@magicWord(category=CATEGORY_STAFF, types=[int])
+def pouch(value):
+    invoker = spellbook.getInvoker()
+    invoker.b_setMaxCarry(value)
+    return 'Gag pouch set.'
