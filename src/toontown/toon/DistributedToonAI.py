@@ -5239,7 +5239,7 @@ def SetxmasBadge(gmId):
 
     return 'You have set %s to badge type %s' % (spellbook.getInvoker().getName(), gmId)
 
-@magicWord(category=CATEGORY_TRIAL)
+@magicWord(category=CATEGORY_LEADER)
 def xmasBadge():
     access = spellbook.getInvokerAccess()
     if spellbook.getInvoker().isBadge():
@@ -5277,7 +5277,7 @@ def badge():
             spellbook.getInvoker().b_setTTOBadge(3)
         return "You have enabled your badge."
 
-@magicWord(category=CATEGORY_TRIAL, types=[int])
+@magicWord(category=CATEGORY_LEADER, types=[int])
 def setBadge(gmId):
     if gmId == 1:
         return 'You cannot set a toon to TOON COUNCIL.'

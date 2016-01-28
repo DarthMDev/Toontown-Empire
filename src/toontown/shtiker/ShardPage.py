@@ -2,14 +2,13 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
 from direct.task.Task import Task
 from panda3d.core import *
+
+from toontown.coghq import CogDisguiseGlobals
 from toontown.distributed import ToontownDistrictStats
 from toontown.hood import ZoneUtil
 from toontown.shtiker import ShtikerPage
-from toontown.coghq import CogDisguiseGlobals
-from toontown.suit import SuitDNA
-from toontown.suit import Suit
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from toontown.suit import SuitDNA, Suit
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.toontowngui import TTDialog
 
 
@@ -97,7 +96,6 @@ class ShardPage(ShtikerPage.ShtikerPage):
         totalPop_ycoord = shardPop_ycoord - 0.44
         self.districtInfo = NodePath('Selected-Shard-Info')
         self.districtInfo.reparentTo(self)
-        self.preferredButton = DirectButton(parent=self, relief=None, image=matchGui.find('**/minnieCircle'), pos=(0.1, 0, -0.575), scale=0.35, text=TTLocalizer.ShardPagePreferred, text_scale=0.11, text_pos=(0, -0.2), command=self.setPreferredShard)
         self.totalPopulationText = DirectLabel(parent=self.districtInfo, relief=None, text=TTLocalizer.ShardPagePopulationTotal % 1, text_scale=main_text_scale, text_wordwrap=8, textMayChange=1, text_align=TextNode.ACenter, pos=(0.4247, 0, totalPop_ycoord))
         if self.showTotalPop:
             self.totalPopulationText.show()
@@ -275,7 +273,6 @@ class ShardPage(ShtikerPage.ShtikerPage):
         self.currentO = [shardPop, shardName, shardId]
         self.currentBTL['state'] = DGG.DISABLED
         self.currentBTR['state'] = DGG.DISABLED
-        self.preferredButton.setColor((0, 1, 0, 1) if settings.get('preferredShard') == shardName else (1, 0, 0, 1))
 
         if shardId == base.localAvatar.defaultShard:
             self.shardTeleportButton['state'] = DGG.DISABLED
@@ -478,10 +475,9 @@ class ShardPage(ShtikerPage.ShtikerPage):
     def choseShard(self, shardId):
         if not base.localAvatar.defaultShard == shardId:
             self.requestTeleport(base.localAvatar.lastHood, shardId)
-        
+
     def requestTeleport(self, hood, shardId):
         canonicalHoodId = ZoneUtil.getCanonicalHoodId(hood)
-
         try:
             place = base.cr.playGame.getPlace()
         except:
@@ -491,11 +487,3 @@ class ShardPage(ShtikerPage.ShtikerPage):
                 place = base.cr.playGame.hood.place
 
         place.requestTeleport(canonicalHoodId, canonicalHoodId, shardId, -1)
-    
-    def setPreferredShard(self):
-        if settings.get('preferredShard', '') == self.currentO[1]:
-            self.preferredButton.setColor(1, 0, 0, 1)
-            del settings['preferredShard']
-        else:
-            self.preferredButton.setColor(0, 1, 0, 1)
-            settings['preferredShard'] = self.currentO[1]
