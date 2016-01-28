@@ -5212,7 +5212,7 @@ def maxGarden():
 
 # FordTheWriter new commands added:
 
-@magicWord(category=CATEGORY_TRIAL, types=[int], access=103)
+@magicWord(category=CATEGORY_LEADER, types=[int], access=103)
 def SetxmasBadge(gmId):
     if not 0 <= gmId <= 5:
         return 'Staff-Badges: 0=off, 1=Trial, 2=Staff, 3=Lead-Staff, 4=Developers, 5=Leaders'
@@ -5239,7 +5239,7 @@ def SetxmasBadge(gmId):
 
     return 'You have set %s to badge type %s' % (spellbook.getInvoker().getName(), gmId)
 
-@magicWord(category=CATEGORY_LEADER)
+@magicWord(category=CATEGORY_TRIAL)
 def xmasBadge():
     access = spellbook.getInvokerAccess()
     if spellbook.getInvoker().isBadge():
