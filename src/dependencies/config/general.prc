@@ -5,7 +5,7 @@ icon-filename phase_3/etc/icon.ico
 cursor-filename phase_3/etc/toonmono.cur
 
 # Audio:
-audio-library-name p3openal_audio
+audio-library-name p3fmod_audio
 video-library-name p3ffmpeg
 
 # Graphics:
