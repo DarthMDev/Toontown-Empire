@@ -11,6 +11,12 @@ class DNAProp(DNANode.DNANode):
         self.code = ''
         self.color = (1, 1, 1, 1)
 
+    def getCode(self):
+        return self.code
+
+    def setCode(self, code):
+        self.code = code
+
     def makeFromDGI(self, dgi):
         DNANode.DNANode.makeFromDGI(self, dgi)
 
