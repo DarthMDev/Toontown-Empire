@@ -5274,7 +5274,7 @@ def badge():
         elif access>=504:
             spellbook.getInvoker().b_setTTOBadge(3)
         elif access>=508:
-            spellbook.getInvoker().b_setTTOBadge(3)
+            spellbook.getInvoker().b_setTTOBadge(2)
         return "You have enabled your badge."
 
 @magicWord(category=CATEGORY_LEADER, types=[int])
