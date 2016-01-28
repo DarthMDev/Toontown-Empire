@@ -4556,7 +4556,7 @@ def fires(count):
     target.b_setPinkSlips(count)
     return '%s was given %d fires.' % (target.getName(), count)
 
-@magicWord(category=CATEGORY_LEADER, types=[int])
+@magicWord(category=CATEGORY_DEVELOPER, types=[int])
 def crateKeys(count):
     """
     Modifies the invoker's crate key count.
@@ -5105,7 +5105,7 @@ def disguise(command, suitIndex, value):
     else:
         return 'Unknow command: %s' % command
 
-@magicWord(category=CATEGORY_LEADER)
+@magicWord(category=CATEGORY_DEVELOPER)
 def unlimitedGags():
     """ Restock avatar's gags at the start of each round. """
     av = spellbook.getInvoker() if spellbook.getInvokerAccess() >= 500 else spellbook.getInvoker()
@@ -5124,7 +5124,7 @@ def maxCogPage():
     target.b_setBuildingRadar([1, 1, 1, 1])
     return 'Maxed %s\'s discovered cogs!' % (target.getName())
 
-@magicWord(category=CATEGORY_LEADER)
+@magicWord(category=CATEGORY_DEVELOPER)
 def immortal():
     """ Make target (if 500+) or self (if 499-) immortal. """
     av = spellbook.getTarget() if spellbook.getInvokerAccess() >= 500 else spellbook.getInvoker()

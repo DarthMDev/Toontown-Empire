@@ -1015,7 +1015,7 @@ def getCEO(toon):
     
     return None
 
-@magicWord(category=CATEGORY_LEADER)
+@magicWord(category=CATEGORY_DEVELOPER)
 def skipCEOBanquet():
     """
     Skips to the banquet stage of the CEO.
@@ -1028,7 +1028,7 @@ def skipCEOBanquet():
     boss.exitIntroduction()
     boss.b_setState('PrepareBattleTwo')
 
-@magicWord(category=CATEGORY_LEADER, types=[str])
+@magicWord(category=CATEGORY_DEVELOPER, types=[str])
 def skipCEO(battle='next'):
     """
     Skips to the indicated round of the CEO.
@@ -1078,7 +1078,7 @@ def skipCEO(battle='next'):
 
     boss.exitIntroduction()
 
-@magicWord(category=CATEGORY_LEADER)
+@magicWord(category=CATEGORY_DEVELOPER)
 def skipWaiters():
     """
     Skips to the final round of the CEO.
@@ -1097,7 +1097,7 @@ def skipWaiters():
     boss.exitIntroduction()
     boss.b_setState('PrepareBattleTwo')
 
-@magicWord(category=CATEGORY_LEADER)
+@magicWord(category=CATEGORY_DEVELOPER)
 def skipCEOFinal():
     """
     Skips to the final round of the CEO.
@@ -1110,7 +1110,7 @@ def skipCEOFinal():
     boss.exitIntroduction()
     boss.b_setState('PrepareBattleFour')
 
-@magicWord(category=CATEGORY_LEADER)
+@magicWord(category=CATEGORY_DEVELOPER)
 def killCEO():
     """
     Kills the CEO.
