@@ -62,3 +62,4 @@ src/dependencies/MongoDB/GardeningDatabase/
 src/user/preferences.json
 *.mp
 settings.json
+*.pyc
