@@ -27,7 +27,7 @@ class TalkAssistant(DirectObject.DirectObject):
             messenger.send('chatUpdate', [message, chatFlags])
 
     def sendWhisperTalk(self, message, receiverAvId):
-        base.cr.tteFriendsManager.sendUpdate('sendTalkWhisper', [receiverAvId, message])
+        base.cr.TTEFriendsManager.sendUpdate('sendTalkWhisper', [receiverAvId, message])
 
     def sendOpenSpeedChat(self, type, messageIndex):
         if type == SPEEDCHAT_NORMAL:
