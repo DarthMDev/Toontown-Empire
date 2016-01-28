@@ -5287,3 +5287,13 @@ def setBadge(gmId):
         spellbook.getInvoker().b_setTTOBadge(0)
     spellbook.getInvoker().b_setTTOBadge(gmId)
     return 'You have set %s to badge type %s' % (spellbook.getInvoker().getName(), gmId)
+
+@magicWord(category=CATEGORY_STAFF, types=[int])
+def goto(avIdShort):
+    """ Teleport to the avId specified. """
+    avId = 100000000+avIdShort # To get target doId.
+    toon = simbase.air.doId2do.get(avId)
+    if not toon:
+        return "Unable to teleport to target, they are not currently on this district."
+    spellbook.getInvoker().magicWordTeleportRequests.append(avId)
+    toon.sendUpdate('magicTeleportRequest', [spellbook.getInvoker().getDoId()])
