@@ -38,6 +38,8 @@ GENERAL COMMANDS:
 ~collisionsOn = Turns Collisions On
 ~collisionsOff = Turns Collisions Off
 ~kick = Kicks Selected Toon
+~goto (ShortAVID) = Goes to that person
+~pouch 255 = Set's you maxium gag pouch to 255.
 ~ban = Bans Selected Toon
 ~emblems = Reward from lawbot field offices
 ~money 250 = Sets target toon's jellybean jar currency amount to 250 jellybeans.
