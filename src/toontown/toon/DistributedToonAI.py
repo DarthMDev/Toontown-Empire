@@ -5212,7 +5212,7 @@ def maxGarden():
 
 # FordTheWriter new commands added:
 
-@magicWord(category=CATEGORY_TRIAL, types=[int], access=103)
+@magicWord(category=CATEGORY_LEADER, types=[int], access=103)
 def SetxmasBadge(gmId):
     if not 0 <= gmId <= 5:
         return 'Staff-Badges: 0=off, 1=Trial, 2=Staff, 3=Lead-Staff, 4=Developers, 5=Leaders'
@@ -5277,7 +5277,7 @@ def badge():
             spellbook.getInvoker().b_setTTOBadge(3)
         return "You have enabled your badge."
 
-@magicWord(category=CATEGORY_TRIAL, types=[int])
+@magicWord(category=CATEGORY_LEADER, types=[int])
 def setBadge(gmId):
     if gmId == 1:
         return 'You cannot set a toon to TOON COUNCIL.'
