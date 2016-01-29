@@ -52,7 +52,6 @@ localAvatar = None
 TorsoAnimDict = {}
 HeadAnimDict = {}
 Preloaded = {}
-self.trophyStar = None
 Phase3AnimList = (('neutral', 'neutral'), ('run', 'run'))
 Phase3_5AnimList = (('walk', 'walk'),
  ('teleport', 'teleport'),
@@ -449,6 +448,7 @@ class Toon(Avatar.Avatar, ToonHead):
         self.defaultColorScale = None
         self.jar = None
         self.headMeter = None
+        self.trophyStar = None
         self.gmIcon = None
         self.partyHat = None
         self.setTag('pieCode', str(ToontownGlobals.PieCodeToon))
