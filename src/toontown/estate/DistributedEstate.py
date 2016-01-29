@@ -12,10 +12,14 @@ import random
 import cPickle
 import time
 import HouseGlobals
-from toontown.estate import GardenGlobals
-from toontown.estate import FlowerSellGUI
+from toontown.estate import GardenGlobals, FlowerSellGUI
+from toontown.estate.EstateGlobals import *
 from toontown.toontowngui import TTDialog
 from toontown.fishing import FishSellGUI
+
+#Left this here because it wouldn't load it from EstateGlobals
+EstateWheelBarrel = 'phase_5.5/models/estate/wheelbarrel.bam'
+
 
 class DistributedEstate(DistributedObject.DistributedObject):
     notify = directNotify.newCategory('DistributedEstate')
@@ -27,7 +31,7 @@ class DistributedEstate(DistributedObject.DistributedObject):
         self.dayTrack = None
         self.sunTrack = None
         self.airplane = None
-        self.musicFile = 'phase_5.5/audio/bgm/EE_Ov_1.ogg'
+        self.musicFile = EstateMusicFile
         self.flowerSellBox = None
         self.estateDoneEvent = 'estateDone'
         self.load()
@@ -50,8 +54,8 @@ class DistributedEstate(DistributedObject.DistributedObject):
         DistributedObject.DistributedObject.delete(self)
 
     def load(self):
-        self.defaultSignModel = loader.loadModel('phase_13/models/parties/eventSign')
-        self.activityIconsModel = loader.loadModel('phase_4/models/parties/eventSignIcons')
+        self.defaultSignModel = loader.loadModel(EstateDefaultSign)
+        self.activityIconsModel = loader.loadModel(EstateActivityIcons)
         if base.cr.newsManager.isHolidayRunning(ToontownGlobals.HALLOWEEN):
             self.loadWitch()
         else:
@@ -60,7 +64,7 @@ class DistributedEstate(DistributedObject.DistributedObject):
         self.loadFishSellBox()
         self.oldClear = base.win.getClearColor()
         base.win.setClearColor(Vec4(0.09, 0.55, 0.21, 1.0))
-        self.music = base.loadMusic('phase_5.5/audio/bgm/EE_Ov_1.ogg')
+        self.music = base.loadMusic(EstateMusicFile)
         self.music.setLoop(1)
         self.music.play()
 
@@ -101,7 +105,7 @@ class DistributedEstate(DistributedObject.DistributedObject):
         DistributedObject.DistributedObject.announceGenerate(self)
 
     def loadAirplane(self):
-        self.airplane = loader.loadModel('phase_4/models/props/airplane.bam')
+        self.airplane = loader.loadModel(EstateAirplane)
         self.airplane.setScale(4)
         self.airplane.setPos(0, 0, 1)
         self.banner = self.airplane.find('**/*banner')
@@ -120,12 +124,12 @@ class DistributedEstate(DistributedObject.DistributedObject):
 
     def loadWitch(self):
         if not self.airplane:
-            self.airplane = loader.loadModel('phase_4/models/props/tt_m_prp_ext_flyingWitch.bam')
+            self.airplane = loader.loadModel(EstateWitch)
 
         def __replaceAirplane__():
             self.airplane.reparentTo(hidden)
             del self.airplane
-            self.airplane = loader.loadModel('phase_4/models/props/tt_m_prp_ext_flyingWitch.bam')
+            self.airplane = loader.loadModel(EstateWitch)
             self.airplane.setScale(2)
             self.airplane.setPos(0, 0, 1)
             self.airplane.find('**/').setH(180)
@@ -151,7 +155,7 @@ class DistributedEstate(DistributedObject.DistributedObject):
             self.airplane.reparentTo(hidden)
             del self.airplane
             del self.bn
-            self.airplane = loader.loadModel('phase_4/models/props/airplane.bam')
+            self.airplane = loader.loadModel(EstateAirplane)
             self.airplane.setScale(4)
             self.airplane.setPos(0, 0, 1)
             self.banner = self.airplane.find('**/*banner')
@@ -352,7 +356,7 @@ class DistributedEstate(DistributedObject.DistributedObject):
         self.idList = idList
 
     def loadFlowerSellBox(self):
-        self.flowerSellBox = loader.loadModel('phase_5.5/models/estate/wheelbarrel.bam')
+        self.flowerSellBox = loader.loadModel(EstateWheelBarrel)
         self.flowerSellBox.setPos(-142.586, 4.353, 0.025)
         self.flowerSellBox.reparentTo(render)
         colNode = self.flowerSellBox.find('**/collision')
@@ -377,7 +381,7 @@ class DistributedEstate(DistributedObject.DistributedObject):
         self.accept('stoppedAsleep', self.__handleSaleDone)
     
     def loadFishSellBox(self):
-        self.fishSellBox = loader.loadModel('phase_4/models/minigames/treasure_chest.bam')
+        self.fishSellBox = loader.loadModel(EstateTreasureChest)
         self.fishSellBox.setPos(45, -165.75, 0.025)
         self.fishSellBox.setH(210)
         self.fishSellBox.reparentTo(render)

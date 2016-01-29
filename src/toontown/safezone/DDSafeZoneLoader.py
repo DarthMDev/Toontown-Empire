@@ -52,10 +52,10 @@ class DDSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
         SafeZoneLoader.SafeZoneLoader.unload(self)
 
         if hasattr(self, 'donald'):
-            self.donaldSpeech.pause()
-            self.donald.delete()
-            del self.donaldSpeech
-            del self.donald
+         self.donaldSpeech.pause()
+         self.donald.delete()
+         del self.donaldSpeech
+         del self.donald
 
         del self.seagullSound
         del self.underwaterSound
