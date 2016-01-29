@@ -991,7 +991,7 @@ TOON EFFECTS:
 ~cheesyEffect 14 = Snow Man Head Toon
 ~cheesyEffect 15 = St. Patrick's Day Green Toon
  
-#TODO: Make all cog varients work, And fix of versions of the ~start invasion commmand.
+#TODO: Make all cog varients work. Add a way to do v2.0 invasions
 
 COG INVASIONS:
 ~suit invasionend 1 = End Invasion
@@ -1021,77 +1021,79 @@ COG INVASIONS:
 ~suit invasion 0 7 2 = The Big Cheese Waiter Invasion
 --------------------------------------------
 ~suit invasion 1 0 0 = Bottom Feeder Invasion
-~suit invasion 1 0 0 = Bottom Feeder v2.0 Invasion
 ~suit invasion 1 0 1 = Bottom Feeder Skelecog Invasion
+~suit invasion 1 0 2 = Bottom Feeder Waiter Invasion
 ~suit invasion 1 1 0 = Bloodsucker Invasion
-~suit invasion 1 1 0 = Bloodsucker v2.0 Invasion
 ~suit invasion 1 1 1 = Bloodsucker Skelecog Invasion
+~suit invasion 1 1 2 = Bloodsucker Waiter Invasion
 ~suit invasion 1 2 0 = Double Talker Invasion
-~suit invasion 1 2 0 = Double Talker v2.0 Invasion
 ~suit invasion 1 2 1 = Double Talker Skelecog Invasion
+~suit invasion 1 2 2 = Double Talker Waiter Invasion
 ~suit invasion 1 3 0 = Ambulance Chaser Invasion
-~suit invasion 1 3 0 = Ambulance Chaser v2.0 Invasion
 ~suit invasion 1 3 1 = Ambulance Chaser Skelecog Invasion
+~suit invasion 1 3 2 = Ambulance Chaser Waiter Invasion
 ~suit invasion 1 4 0 = Backstabber Invasion
-~suit invasion 1 4 0 = Backstabber v2.0 Invasion
 ~suit invasion 1 4 1 = Backstabber Skelecog Invasion
+~suit invasion 1 4 2 = Backstabber Waiter Invasion
 ~suit invasion 1 5 0 = Spin Doctor Invasion
-~suit invasion 1 5 0 = Spin Doctor v2.0 Invasion
 ~suit invasion 1 5 1 = Spin Doctor Skelecog Invasion
+~suit invasion 1 5 2 = Spin Doctor Waiter Invasion
 ~suit invasion 1 6 0 = Legal Eagle Invasion
-~suit invasion 1 6 0 = Legal Eagle v2.0 Invasion
 ~suit invasion 1 6 1 = Legal Eagle Skelecog Invasion
+~suit invasion 1 6 2 = Legal Eagle Waiter Invasion
 ~suit invasion 1 7 0 = Big Wig Invasion
-~suit invasion 1 7 0 = Big Wig v2.0 Invasion
 ~suit invasion 1 7 1 = Big Wig Skelecog Invasion
+~suit invasion 1 7 2 = Big Wig Waiter Invasion
 --------------------------------------------
 ~suit invasion 2 0 0 = Short Change Invasion
-~suit invasion 2 0 0 = Short Change v2.0 Invasion
 ~suit invasion 2 0 1 = Short Change Skelecog Invasion
+~suit invasion 2 0 2 = Short Change Waiter Invasion
 ~suit invasion 2 1 0 = Penny Pincher Invasion
-~suit invaison 2 1 0 = Penny Pincher v2.0 Invasion
 ~suit invasion 2 1 1 = Penny Pincher Skelecog Invasion
+~suit invasion 2 1 2 = Penny Pincher Waiter Invasion
 ~suit invasion 2 2 0 = Tightwad Invasion
-~suit invasion 2 2 0 = Tightwad v2.0 Invasion
 ~suit invasion 2 2 1 = Tightwad Skelecog Invasion
+~suit invasion 2 2 2 = Tightwad Waiter Invasion
 ~suit invasion 2 3 0 = Bean Counter Invasion
-~suit invasion 2 3 0 = Bean Counter v2.0 Invasion
 ~suit invasion 2 3 1 = Bean Counter Skelecog Invasion
+~suit invasion 2 3 2 = Bean Counter Waiter Invasion
 ~suit invasion 2 4 0 = Number Cruncher Invasion
-~suit invasion 2 4 0 = Number Cruncher v2.0 Invasion
 ~suit invasion 2 4 1 = Number Cruncher Skelecog Invasion
+~suit invasion 2 4 2 = Number Cruncher Waiter Invasion
 ~suit invasion 2 5 0 = Money Bags Invasion
-~suit invasion 2 5 0 = Money Bags v2.0 Invasion
 ~suit invasion 2 5 1 = Money Bags Skelecog Invasion
+~suit invasion 2 5 2 = Money Bags Waiter Invasion
 ~suit invasion 2 6 0 = Loan Shark Invasion
-~suit invasion 2 6 0 = Loan Shark v2.0 Invasion
 ~suit invasion 2 6 1 = Loan Shark Skelecog Invasion
+~suit invasion 2 6 2 = Loan Shark Waiter Invasion
 ~suit invasion 2 7 0 = Robber Baron Invasion
-~suit invasion 2 7 0 = Robber Baron v2.0 Invasion
 ~suit invasion 2 7 1 = Robber Baron Skelecog Invasion
+~suit invasion 2 7 2 = Robber Baron Waiter Invasion
 --------------------------------------------
 ~suit invasion 3 0 0 = Cold Caller Invasion
-~suit invasion 3 0 0 = Cold Caller v2.0 Invasion
 ~suit invasion 3 0 1 = Cold Caller Skelecog Invasion
+~suit invasion 3 0 2 = Cold Caller Waiter Invasion
 ~suit invasion 3 1 0 = Telemarketer Invasion
-~suit invasion 3 1 0 = Telemarketer v2.0 Invasion
 ~suit invasion 3 1 1 = Telemarketer Skelecog Invasion
+~suit invasion 3 1 2 = Telemarketer Waiter Invasion
 ~suit invasion 3 2 0 = Name Dropper Invasion
-~suit invasion 3 2 0 = Name Dropper v2.0 Invasion
 ~suit invasion 3 2 1 = Name Dropper Skelecog Invasion
+~suit invasion 3 2 2 = Name Dropper Waiter Invasion
 ~suit invasion 3 3 0 = Glad Hander Invasion
-~suit invasion 3 3 0 = Glad Hander v2.0 Invasion
 ~suit invasion 3 3 1 = Glad Hander Skelecog Invasion
+~suit invasion 3 3 2 = Glad Hander Waiter Invasion
 ~suit invasion 3 4 0 = Mover & Shaker Invasion
-~suit invasion 3 4 0 = Mover & Shaker v2.0 Invasion
 ~suit invasion 3 4 1 = Mover & Shaker Skelecog Invasion
+~suit invasion 3 4 2 = Mover & Shaker Waiter Invasion
 ~suit invasion 3 5 0 = Two-Face Invasion
-~suit invasion 3 5 0 = Two-Face v2.0 Invasion
 ~suit invasion 3 5 1 = Two-Face Skelecog Invasion
+~suit invasion 3 5 2 = Two-Face Waiter Invasion
 ~suit invasion 3 6 0 = The Mingler Invasion
-~suit invasion 3 6 0 = The Mingler v2.0 Invasion
 ~suit invasion 3 6 1 = The Mingler Skelecog Invasion
+~suit invasion 3 6 2 = The Mingler Waiter Invasion
 ~suit invasion 3 7 0 = Mr. Hollywood Invasion
-~suit invasion 3 7 0 = Mr. Hollywood v2.0 Invasion
 ~suit invasion 3 7 1 = Mr. Hollywood Skelecog Invasion
-"""
+~suit invasion 3 7 2 = Mr. Hollywood Waiter Invasion
+
+~suit do 0 = Sellbot Field Office
+~suit do 1 = Lawbot Field Office
