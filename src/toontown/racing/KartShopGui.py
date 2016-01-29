@@ -4,9 +4,7 @@ from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
 from direct.showbase import DirectObject, PythonUtil
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownTimer
+from toontown.toonbase import ToontownGlobals, TTLocalizer, ToontownTimer
 from KartShopGlobals import *
 from toontown.racing.Kart import Kart
 from toontown.shtiker.KartPage import KartViewer
@@ -30,7 +28,7 @@ class KartShopGuiMgr(object, DirectObject.DirectObject):
         notify = DirectNotifyGlobal.directNotify.newCategory('KartShopGuiMgr.MainMenuDlg')
 
         def __init__(self, doneEvent):
-            model = loader.loadModel('phase_6/models/gui/Kart_MainMenuPanel')
+            model = loader.loadModel(KartMenuModel)
             self.modelScale = 0.75
             DirectFrame.__init__(self, relief=None, state='normal', geom=model, text_scale=0.1, geom_scale=self.modelScale, pos=(0, 0, -.01), frameSize=(-1, 1, -1, 1))
             self.initialiseoptions(KartShopGuiMgr.MainMenuDlg)
@@ -83,7 +81,7 @@ class KartShopGuiMgr(object, DirectObject.DirectObject):
 
         def __init__(self, doneEvent):
             self.modelScale = 1
-            model = loader.loadModel('phase_6/models/gui/BuyKartPanel')
+            model = loader.loadModel(BuyKartPanelModel)
             self.unownedKartList = KartDict.keys()
             if base.localAvatar.hasKart():
                 k = base.localAvatar.getKartBodyType()
@@ -221,7 +219,7 @@ class KartShopGuiMgr(object, DirectObject.DirectObject):
 
         def __init__(self, doneEvent):
             self.modelScale = 1
-            model = loader.loadModel('phase_6/models/gui/ReturnKartPanel')
+            model = loader.loadModel(ReturnKartPanelMode)
             DirectFrame.__init__(
                 self,
                 relief=None,
@@ -278,7 +276,7 @@ class KartShopGuiMgr(object, DirectObject.DirectObject):
 
         def __init__(self, doneEvent, kartID):
             self.modelScale = 1
-            model = loader.loadModel('phase_6/models/gui/BoughtKartPanel')
+            model = loader.loadModel(BoughtKartPanelModel)
             kartInfo = getKartTypeInfo(kartID)
             name = kartInfo[KartInfo.name]
             DirectFrame.__init__(
@@ -332,7 +330,7 @@ class KartShopGuiMgr(object, DirectObject.DirectObject):
         def __init__(self, doneEvent, kartNum):
             self.kartNum = kartNum
             self.modelScale = 1
-            model = loader.loadModel('phase_6/models/gui/ConfirmBuyKartPanel')
+            model = loader.loadModel(ConfirmBuyKartPanelModel)
             kartInfo = getKartTypeInfo(kartNum)
             name = kartInfo[KartInfo.name]
             cost = kartInfo[KartInfo.cost]
@@ -394,7 +392,7 @@ class KartShopGuiMgr(object, DirectObject.DirectObject):
 
         def __init__(self, doneEvent):
             self.modelScale = 1
-            model = loader.loadModel('phase_6/models/gui/BuyAccessoryPanel')
+            model = loader.loadModel(BuyAccessoryPanelModel)
             self.doneEvent = doneEvent
             DirectFrame.__init__(self, relief=None, state='normal', geom=model, geom_scale=self.modelScale, frameSize=(-1, 1, -1, 1), pos=(0, 0, -0.01), text_wordwrap=26, text_scale=0.1, text_fg=Vec4(0.36, 0.94, 0.93, 1.0), text_pos=(0, 0))
             self.initialiseoptions(KartShopGuiMgr.BuyAccessoryDlg)
@@ -653,7 +651,7 @@ class KartShopGuiMgr(object, DirectObject.DirectObject):
 
         def __init__(self, doneEvent, accID):
             self.modelScale = 1
-            model = loader.loadModel('phase_6/models/gui/BoughtAccessoryPanel')
+            model = loader.loadModel(BoughtAccessoryPanelModel)
             accInfo = getAccessoryInfo(accID)
             name = accInfo[AccInfo.name]
             DirectFrame.__init__(self, relief=None, state='normal', geom=model, geom_scale=self.modelScale, frameSize=(-1, 1, -1, 1), pos=(0, 0, -0.01), text=TTLocalizer.KartShop_ConfirmBoughtTitle, text_wordwrap=26, text_scale=KS_TEXT_SIZE_SMALL, text_pos=(0, -0.28))
@@ -711,7 +709,7 @@ class KartShopGuiMgr(object, DirectObject.DirectObject):
         def __init__(self, doneEvent, accID):
             self.accID = accID
             self.modelScale = 1
-            model = loader.loadModel('phase_6/models/gui/ConfirmBuyAccessory')
+            model = loader.loadModel(ConfirmBuyAccessoryModel)
             accInfo = getAccessoryInfo(accID)
             cost = accInfo[AccInfo.cost]
             name = accInfo[AccInfo.name]

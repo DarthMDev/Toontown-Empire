@@ -5054,23 +5054,39 @@ def track(command, track, value=None):
         return 'Set the experience of the %s track to: %d!' % (track, value)
     return 'Invalid command.'
 
-@magicWord(category=CATEGORY_STAFF, types=[str, str])
-def suit(command, suitName):
+@magicWord(category=CATEGORY_STAFF, types=[str, int, int, int])
+def suit(command, suitIndex, cogType=0, cogAbilities=0):
     invoker = spellbook.getInvoker()
+    suitName = SuitDNA.suitHeadTypes[suitIndex]
     command = command.lower()
-    if suitName not in SuitDNA.suitHeadTypes:
-        return 'Invalid suit name: ' + suitName
-    suitFullName = SuitBattleGlobals.SuitAttributes[suitName]['name']
     if command == 'spawn':
-        returnCode = invoker.doSummonSingleCog(SuitDNA.suitHeadTypes.index(suitName))
+        returnCode = invoker.doSummonSingleCog(int(suitIndex))
         if returnCode[0] == 'success':
-            return 'Successfully spawned: ' + suitFullName
-        return "Couldn't spawn: " + suitFullName
+            return 'Successfully spawned suit with index {0}!'.format(suitIndex)
+        return "Couldn't spawn suit with index {0}.".format(suitIndex)
     elif command == 'building':
         returnCode = invoker.doBuildingTakeover(SuitDNA.suitHeadTypes.index(suitName))
         if returnCode[0] == 'success':
-            return 'Successfully spawned a Cog building with: ' + suitFullName
-        return "Couldn't spawn a Cog building with: " + suitFullName
+            return 'Successfully spawned building with index {0}!'.format(suitName)
+        return "Couldn't spawn building with index {0}.".format(suitName)
+    elif command == 'do':
+        if suitIndex == 0:
+		 suitResult = 31
+        elif suitIndex == 1:
+		 suitResult = 13
+        else:
+		 return "Usage is ~suit do [0/1] with just 1 number and without the [] or /!"
+        returnCode = invoker.doCogdoTakeOver(suitResult)
+        if returnCode[0] == 'success':
+            return 'Successfully spawned Cogdo!'.format(suitResult)
+        return "Couldn't spawn Cogdo.".format(suitResult)
+    elif command == 'invasion':
+        returnCode = invoker.doCogInvasion(suitIndex, cogType, cogAbilities)
+        return returnCode
+    elif command == 'invasionend':
+        returnCode = 'Ending Invasion..'
+        simbase.air.suitInvasionManager.stopInvasion()
+        return returnCode
     else:
         return 'Invalid command.'
 
