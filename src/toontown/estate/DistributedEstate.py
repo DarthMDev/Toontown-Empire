@@ -27,6 +27,7 @@ class DistributedEstate(DistributedObject.DistributedObject):
         self.dayTrack = None
         self.sunTrack = None
         self.airplane = None
+        self.musicFile = 'phase_5.5/audio/bgm/EE_Ov_1.ogg'
         self.flowerSellBox = None
         self.estateDoneEvent = 'estateDone'
         self.load()
@@ -59,11 +60,9 @@ class DistributedEstate(DistributedObject.DistributedObject):
         self.loadFishSellBox()
         self.oldClear = base.win.getClearColor()
         base.win.setClearColor(Vec4(0.09, 0.55, 0.21, 1.0))
-        if base.musicManagerIsValid:
-            music = base.loadMusic('phase_5.5/audio/bgm/EE_Ov_1.ogg')
-            if music:
-                music.setLoop(1)
-                music.play()
+        self.music = base.loadMusic('phase_5.5/audio/bgm/EE_Ov_1.ogg')
+        self.music.setLoop(1)
+        self.music.play()
 
     def unload(self):
         self.ignoreAll()
@@ -72,6 +71,9 @@ class DistributedEstate(DistributedObject.DistributedObject):
         self.__killDaytimeTask()
         self.__stopBirds()
         self.__stopCrickets()
+        if self.music:
+          self.music.stop()
+          self.music = None
         if self.dayTrack:
             self.dayTrack.pause()
             self.dayTrack = None
