@@ -50,6 +50,7 @@ want-sequence-list #t
 # Developer options:
 show-population #t
 want-instant-parties #t
+gl-check-errors #t
 want-instant-delivery #t
 cogdo-pop-factor 1.5
 cogdo-ratio 0.5
