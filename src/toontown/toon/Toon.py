@@ -52,6 +52,7 @@ localAvatar = None
 TorsoAnimDict = {}
 HeadAnimDict = {}
 Preloaded = {}
+self.trophyStar = None
 Phase3AnimList = (('neutral', 'neutral'), ('run', 'run'))
 Phase3_5AnimList = (('walk', 'walk'),
  ('teleport', 'teleport'),
