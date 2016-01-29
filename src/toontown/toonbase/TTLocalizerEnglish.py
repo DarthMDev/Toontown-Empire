@@ -2185,7 +2185,8 @@ ToonHealJokes = [['What goes TICK-TICK-TICK-WOOF?', 'A watchdog! '],
  ['What do you get if you cross a hyena with a mynah bird?', 'An animal that laughs at its own jokes.'],
  ['What do you get if you cross a railway engine with a stick of gum?', 'A chew-chew train.'],
  ['What would you get if you crossed an elephant with a computer?', 'A big know-it-all.'],
- ['What would you get if you crossed an elephant with a skunk?', 'A big stinker.']]
+ ['What would you get if you crossed an elephant with a skunk?', 'A big stinker.'],
+ ['What do you call a SUV that codes Python?', 'FordTheWriter.']]
 MovieHealLaughterMisses = ('hmm',
  'heh',
  'ha',
@@ -2221,6 +2222,10 @@ RewardPanelMissedItems = 'Items Not Recovered'
 RewardPanelQuestLabel = 'Quest %s'
 RewardPanelCongratsStrings = ['Yeah!',
  'Congratulations!',
+ 'Amazing!',
+ 'Spectacular!',
+ 'Ultimate!',
+ 'Superior!',
  'Wow!',
  'Cool!',
  'Awesome!',
@@ -2965,6 +2970,15 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
            "We don't want this to fall into the wrong hands.",
            'Easy come, easy go.',
            "Isn't this your last shred of hope?"],
+ 'SongAndDance': ['Oh, whoa whoa whoa...',
+                  'You know you love me, I know you care.',
+                  "Just shout whenever, and I'll be there.",
+                  "We're just friends - what are you saying?",
+                  'Baby, baby, baby, oh...',
+                  "It's like dreaming with your feet.",
+                  'Never miss a chance to dance!',
+                  'When you feel sad, dance!',
+                  'I never dance to forget.'],
  'Spin': ['What do you say we go for a little spin?',
           'Do you use the spin cycle?',
           "This'll really make your head spin!",
@@ -8489,8 +8503,8 @@ LanguageSelectorSameLanguage = "You're already using that language!"
 PickTrackTitle = 'Pick your third track!'
 PickTrackNotice = 'Choose a track!'
 UnknownTrack = 'None'
-CogLevelLabelOn = 'The cog level GUI is on.'
-CogLevelLabelOff = 'The cog level GUI is off.'
+CogLevelLabelOn = 'Cog Level GUI:'
+CogLevelLabelOff = 'Cog Level GUI:'
 
 HouseNames = ("Bungalow", "Tiki", "Teepee", "Castle", "Cupcake", "Cabin")
 CatalogPurchaseHouseType = "When you buy a new house type, the current one is replaced by it. To recover the old type, you'll need to buy it back. Continue?"
@@ -8838,8 +8852,8 @@ BattleSOSPopupHP = '%s %s HP\n'
 
 DetailPanelSOS = 'SOS Cards'
 
-TeleportLabelOn = 'Accepting teleports.'
-TeleportLabelOff = 'Not accepting teleports.'
+TeleportLabelOn = 'Teleports Accepted:'
+TeleportLabelOff = 'Teleports Accepted:'
 TeleportPanelNoTeleport = '%s needs some time alone right now.'
 
 InventoryDeleteAll = 'DELETE ALL'
