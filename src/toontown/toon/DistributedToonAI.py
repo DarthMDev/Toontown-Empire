@@ -5054,9 +5054,10 @@ def track(command, track, value=None):
         return 'Set the experience of the %s track to: %d!' % (track, value)
     return 'Invalid command.'
 
-@magicWord(category=CATEGORY_STAFF, types=[str, int, int, int, int, int])
-def suit(command, suitIndex, cogType=0, isSkelecog=0, isV2=0, isWaiter=0):
+@magicWord(category=CATEGORY_STAFF, types=[str, int, int, int])
+def suit(command, suitIndex, cogType=0, cogAbilities=0):
     invoker = spellbook.getInvoker()
+    suitName = SuitDNA.suitHeadTypes[suitIndex]
     command = command.lower()
     if command == 'spawn':
         returnCode = invoker.doSummonSingleCog(int(suitIndex))
@@ -5064,22 +5065,27 @@ def suit(command, suitIndex, cogType=0, isSkelecog=0, isV2=0, isWaiter=0):
             return 'Successfully spawned suit with index {0}!'.format(suitIndex)
         return "Couldn't spawn suit with index {0}.".format(suitIndex)
     elif command == 'building':
-        returnCode = invoker.doBuildingTakeover(suitIndex)
+        returnCode = invoker.doBuildingTakeover(SuitDNA.suitHeadTypes.index(suitName))
         if returnCode[0] == 'success':
-            return 'Successfully spawned building with index {0}!'.format(suitIndex)
+            return 'Successfully spawned building with index {0}!'.format(suitName)
         return "Couldn't spawn building with index {0}.".format(suitIndex)
     elif command == 'do':
-        returnCode = invoker.doCogdoTakeOver(suitIndex, 1)
+        if suitIndex == 0:
+		 suitResult = 31
+        elif suitIndex == 1:
+		 suitResult = 13
+        else:
+		 return "Usage is ~suit do [0/1] with just 1 number and without the [] or /!"
+        returnCode = invoker.doCogdoTakeOver(suitResult)
         if returnCode[0] == 'success':
-            return 'Successfully spawned Cogdo with difficulty {0}!'.format(suitIndex)
-        return "Couldn't spawn Cogdo with difficulty {0}.".format(suitIndex)
+            return 'Successfully spawned Cogdo!'.format(suitResult)
+        return "Couldn't spawn Cogdo.".format(suitIndex)
     elif command == 'invasion':
-        returnCode = invoker.doCogInvasion(suitIndex, cogType, isSkelecog, isV2, isWaiter)
+        returnCode = invoker.doCogInvasion(suitIndex, cogType, cogAbilities)
         return returnCode
     elif command == 'invasionend':
         returnCode = 'Ending Invasion..'
-        simbase.air.suitInvasionManager.cleanupTasks()
-        simbase.air.suitInvasionManager.cleanupInvasion()
+        simbase.air.suitInvasionManager.stopInvasion()
         return returnCode
     else:
         return 'Invalid command.'
