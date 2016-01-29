@@ -5068,7 +5068,7 @@ def suit(command, suitIndex, cogType=0, cogAbilities=0):
         returnCode = invoker.doBuildingTakeover(SuitDNA.suitHeadTypes.index(suitName))
         if returnCode[0] == 'success':
             return 'Successfully spawned building with index {0}!'.format(suitName)
-        return "Couldn't spawn building with index {0}.".format(suitIndex)
+        return "Couldn't spawn building with index {0}.".format(suitName)
     elif command == 'do':
         if suitIndex == 0:
 		 suitResult = 31
@@ -5079,7 +5079,7 @@ def suit(command, suitIndex, cogType=0, cogAbilities=0):
         returnCode = invoker.doCogdoTakeOver(suitResult)
         if returnCode[0] == 'success':
             return 'Successfully spawned Cogdo!'.format(suitResult)
-        return "Couldn't spawn Cogdo.".format(suitIndex)
+        return "Couldn't spawn Cogdo.".format(suitResult)
     elif command == 'invasion':
         returnCode = invoker.doCogInvasion(suitIndex, cogType, cogAbilities)
         return returnCode
