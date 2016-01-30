@@ -116,7 +116,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
         curShardTuples.sort(compareShardTuples)
         actualShardId = base.localAvatar.defaultShard
         for i in xrange(len(curShardTuples)):
-            shardId, name, pop, invasionStatus = curShardTuples[i]
+            shardId, name, pop, WVPop, invasionStatus = curShardTuples[i]
             if shardId == actualShardId:
                 self.currentBTP = buttonTuple[0]
                 self.currentBTL = buttonTuple[1]
@@ -373,6 +373,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
         if buttonTuple:
             i = self.shardButtons.index(buttonTuple[0])
             self.scrollList.scrollTo(i, centered=1)
+            self.firstLoadShard(buttonTuple)
         ShtikerPage.ShtikerPage.enter(self)
         self.accept('shardInfoUpdated', self.updateScrollList)
 
