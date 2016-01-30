@@ -123,7 +123,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
 
     def whisperSCTo(self, msgIndex, sendToId):
         messenger.send('wakeup')
-        base.cr.tteFriendsManager.d_whisperSCTo(sendToId, msgIndex)
+        base.cr.TTEFriendsManager.d_whisperSCTo(sendToId, msgIndex)
 
     def setWhisperSCFrom(self, fromId, msgIndex):
         handle = base.cr.identifyAvatar(fromId)
@@ -136,7 +136,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
 
     def whisperSCCustomTo(self, msgIndex, sendToId):
         messenger.send('wakeup')
-        base.cr.tteFriendsManager.d_whisperSCCustomTo(sendToId, msgIndex)
+        base.cr.TTEFriendsManager.d_whisperSCCustomTo(sendToId, msgIndex)
 
     def _isValidWhisperSource(self, source):
         return True
@@ -156,7 +156,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
 
     def whisperSCEmoteTo(self, emoteId, sendToId):
         messenger.send('wakeup')
-        base.cr.tteFriendsManager.d_whisperSCEmoteTo(sendToId, emoteId)
+        base.cr.TTEFriendsManager.d_whisperSCEmoteTo(sendToId, emoteId)
 
     def setWhisperSCEmoteFrom(self, fromId, emoteId):
         handle = base.cr.identifyAvatar(fromId)
@@ -255,7 +255,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
 
         self.lastTeleportQuery = time.time()
 
-        base.cr.tteFriendsManager.d_teleportQuery(sendToId)
+        base.cr.TTEFriendsManager.d_teleportQuery(sendToId)
 
     def teleportQuery(self, requesterId):
         avatar = base.cr.identifyFriend(requesterId)
@@ -278,7 +278,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
             shardId, hoodId, zoneId, sendToId),)
         )
 
-        base.cr.tteFriendsManager.d_teleportResponse(sendToId, available,
+        base.cr.TTEFriendsManager.d_teleportResponse(sendToId, available,
             shardId, hoodId, zoneId
         )
 
@@ -292,7 +292,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
     def d_teleportGiveup(self, requesterId, sendToId):
         teleportNotify.debug('sending teleportGiveup(%s) to %s' % (requesterId, sendToId))
 
-        base.cr.tteFriendsManager.d_teleportGiveup(sendToId)
+        base.cr.TTEFriendsManager.d_teleportGiveup(sendToId)
 
     def teleportGiveup(self, requesterId):
         teleportNotify.debug('received teleportGiveup(%s)' % (requesterId,))
