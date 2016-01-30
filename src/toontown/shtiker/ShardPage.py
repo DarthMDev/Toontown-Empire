@@ -299,8 +299,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
         self.shardButtons = []
 
         for i in xrange(len(curShardTuples)):
-
-            shardId, name, pop, invasionStatus
+            shardId, name, pop, invasionStatus = curShardTuples[i]
 
             if shardId == actualShardId:
                 actualShardName = name

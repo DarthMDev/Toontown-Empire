@@ -1,7 +1,7 @@
 import os
 os.chdir('../../../')
 
-from dependencies.astron.config import *
+#from dependencies.astron.config import * - this doesnt have any python files so removing import
 #TODO make version equal to end of TTE- try using indexes we also need to get it from qa.prc. We also need to use write so it doesnt add new line more like overwrites version at end of tte prefix
 if version is None:
     version = 1.0
