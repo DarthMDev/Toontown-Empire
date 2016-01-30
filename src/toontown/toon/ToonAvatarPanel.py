@@ -1,18 +1,15 @@
 from panda3d.core import *
 from direct.gui.DirectGui import *
 from direct.showbase import DirectObject
-try:
- import ToonHead
- import LaffMeter
- import ToonAvatarDetailPanel
-except:
- pass
+import ToonHead
+import LaffMeter
 from otp.avatar import Avatar
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 from toontown.friends import ToontownFriendSecret
+import ToonAvatarDetailPanel
 import AvatarPanelBase
 from toontown.toontowngui import TTDialog
 from otp.otpbase import OTPGlobals
