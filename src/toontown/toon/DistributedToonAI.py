@@ -31,7 +31,11 @@ from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer, ToontownBattleGlobals, ToontownGlobals
 from toontown.toonbase.ToontownGlobals import *
 from NPCToons import npcFriends
-import Experience, InventoryBase, ToonDNA, ToonAvatarPanel, random, time
+import Experience, InventoryBase, ToonDNA, random, time
+try:
+ from ToonAvatarPanel import *
+except:
+ pass
 from toontown.uberdog import TopToonsGlobals
 
 if simbase.wantPets:
@@ -5354,8 +5358,8 @@ def exp(track, amt):
     av.b_setExperience(av.experience.makeNetString())
     return "Set %s exp to %d successfully." % (track, amt)
 
-# TODO: Not completed because of some stupid syntax error! 
-# Dan should have it done tomorrow I hope
+# TODO: Not completed because of ToonAvatarPanel error! 
+
 """
 @magicWord(category=CATEGORY_STAFF, types=[int])
 def staffButton(switch):
