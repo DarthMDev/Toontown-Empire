@@ -1,9 +1,7 @@
 import ShtikerPage, DisguisePage
-from toontown.toonbase import ToontownBattleGlobals
 from direct.gui.DirectGui import *
 from panda3d.core import *
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals, TTLocalizer, ToontownBattleGlobals
 from toontown.coghq import CogDisguiseGlobals
 from toontown.suit import SuitDNA
 

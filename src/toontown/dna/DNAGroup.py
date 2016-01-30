@@ -1,4 +1,4 @@
-from panda3d.core import PandaNode
+from common import *
 import DNAUtil
 
 class DNAGroup:
@@ -47,8 +47,10 @@ class DNAGroup:
         DNAUtil.dgiExtractString8(dgi)
         DNAUtil.dgiExtractString8(dgi)
 
-    def traverse(self, nodePath, dnaStorage):
-        node = PandaNode(self.name)
-        nodePath = nodePath.attachNewNode(node, 0)
+    def traverse(self, np, store):
+        _np = np.attachNewNode(self.name)
+        self.traverseChildren(_np, store)
+
+    def traverseChildren(self, np, store):
         for child in self.children:
-            child.traverse(nodePath, dnaStorage)
+            child.traverse(np, store)

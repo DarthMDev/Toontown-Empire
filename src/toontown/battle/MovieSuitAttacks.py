@@ -3,7 +3,6 @@ from direct.interval.IntervalGlobal import *
 from direct.particles import ParticleEffect
 
 from BattleBase import *
-from BattleBase import *
 import BattleParticles
 from BattleProps import *
 from BattleSounds import *
@@ -13,9 +12,7 @@ from SuitBattleGlobals import *
 from otp.nametag.NametagConstants import *
 from otp.nametag import NametagGlobals
 from toontown.suit.SuitDNA import *
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase.ToontownGlobals import *
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 
 
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieSuitAttacks')
@@ -233,7 +230,7 @@ def doSuitAttack(attack):
     elif name == SHRED:
         suitTrack = doShred(attack)
     elif name == SONG_AND_DANCE:
-        suitTrack = doDefault(attack)
+        suitTrack = doSongAndDance(attack)
     elif name == SPIN:
         suitTrack = doSpin(attack)
     elif name == SYNERGY:
@@ -852,7 +849,20 @@ def doShred(attack):
     soundTrack = getSoundTrack('SA_shred.ogg', delay=3.4, node=suit)
     return Parallel(suitTrack, paperPropTrack, shredderPropTrack, partTrack, toonTrack, soundTrack)
 
-
+def doSongAndDance(attack):
+    suit = attack['suit']
+    battle = attack['battle']
+    suitTrack = getSuitTrack(attack)
+    club = globalPropPool.getProp('golf-club')
+    club2 = globalPropPool.getProp('golf-club')
+    clubPosPoints = [MovieUtil.PNT3_ZERO, VBase3(63.097, 43.988, -18.435)]
+    clubPropTrack = getPropTrack(club, suit.getLeftHand(), clubPosPoints, 0.0, 5.5, Point3(1.1, 1.1, 1.1))
+    club2PropTrack = getPropTrack(club2, suit.getRightHand(), clubPosPoints, 0.0, 5.5, Point3(1.1, 1.1, 1.1))
+    soundTrack = getSoundTrack('AA_heal_happydance.ogg', node=suit)
+    toonTrack = getToonTrack(attack, suitTrack.getDuration() - 1.8, ['cringe'], suitTrack.getDuration() - 1.8, ['applause'])
+     
+    return Parallel(suitTrack, clubPropTrack, club2PropTrack, toonTrack, soundTrack)
+ 
 def doFillWithLead(attack):
     suit = attack['suit']
     battle = attack['battle']

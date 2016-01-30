@@ -1,36 +1,31 @@
 import DNAProp
-from DNAUtil import *
+from common import *
+
+from panda3d.core import ModelNode
 
 class DNAAnimProp(DNAProp.DNAProp):
     COMPONENT_CODE = 14
 
     def __init__(self, name):
         DNAProp.DNAProp.__init__(self, name)
+
         self.animName = ''
-
-    def setAnim(self, anim):
-        self.animName = anim
-
-    def getAnim(self):
-        return self.animName
 
     def makeFromDGI(self, dgi):
         DNAProp.DNAProp.makeFromDGI(self, dgi)
-        self.animName = dgiExtractString8(dgi)
+        self.animName = dgi_extract_string8(dgi)
 
-    def traverse(self, nodePath, dnaStorage):
-        node = None
-        if self.getCode() == 'DCS':
-            node = ModelNode(self.getName())
+    def traverse(self, np, store):
+        if self.code == "DCS":
+            node = ModelNode(self.name)
             node.setPreserveTransform(ModelNode.PTNet)
-            node = nodePath.attachNewNode(node, 0)
+            _np = np.attachNewNode(np)
         else:
-            node = dnaStorage.findNode(self.getCode())
-            node = node.copyTo(nodePath, 0)
-            node.setName(self.getName())
-        node.setTag('DNAAnim', self.getAnim())
-        node.setPosHprScale(self.getPos(), self.getHpr(), self.getScale())
-        node.setColorScale(self.getColor(), 0)
-        node.flattenStrong()
-        for child in self.children:
-            child.traverse(node, dnaStorage)
+            _np = store.findNode(self.code).copyTo(np)
+            _np.setName(self.name)
+
+        _np.setTag("DNAAnim", self.animName)
+        _np.setPosHprScale(self.pos, self.hpr, self.scale)
+        _np.setColorScale(self.color)
+
+        self.traverseChildren(_np, store)

@@ -6,9 +6,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--build-dir', default='build',
                     help='The directory in which to store the build files.')
 parser.add_argument('--src-dir', default='..',
-                    help='The directory of the Toontown Offline source code.')
+                    help='The directory of the Toontown Empire source code.')
 parser.add_argument('modules', nargs='*', default=['otp', 'toontown'],
-                    help='The Toontown Offline modules to be included in the build.')
+                    help='The Toontown Empire modules to be included in the build.')
 args = parser.parse_args()
 
 print 'Preparing the client...'

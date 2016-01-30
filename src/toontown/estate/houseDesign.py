@@ -4,15 +4,14 @@ from direct.directtools.DirectGeometry import LineNodePath
 from direct.gui.DirectGui import *
 from panda3d.core import *
 from direct.showbase.DirectObject import DirectObject
-from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals, TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
 from direct.task import Task
-from toontown.catalog import CatalogFurnitureItem
-from toontown.catalog import CatalogItemTypes
+from toontown.catalog import CatalogFurnitureItem, CatalogItemTypes
 from direct.showbase import PythonUtil
 from toontown.toontowngui import TTDialog
-from toontown.toonbase import TTLocalizer
 from otp.otpbase import OTPLocalizer
+
 camPos50 = (Point3(0.0, -10.0, 50.0),
  Point3(0.0, -9.66, 49.06),
  Point3(0.0, 1.5, 12.38),

@@ -1,4 +1,3 @@
-from panda3d.core import ModelNode
 import DNAAnimProp
 
 class DNAInteractiveProp(DNAAnimProp.DNAAnimProp):
@@ -6,10 +5,12 @@ class DNAInteractiveProp(DNAAnimProp.DNAAnimProp):
 
     def __init__(self, name):
         DNAAnimProp.DNAAnimProp.__init__(self, name)
+
         self.cellId = -1
 
     def setCellId(self, id):
-        self.cellId = id
+         self.cellId = id
+  
 
     def getCellId(self):
         return self.cellId
@@ -18,20 +19,25 @@ class DNAInteractiveProp(DNAAnimProp.DNAAnimProp):
         DNAAnimProp.DNAAnimProp.makeFromDGI(self, dgi)
         self.cellId = dgi.getInt16()
 
-    def traverse(self, nodePath, dnaStorage):
-        node = None
+    def traverse(self, np, store):
         if self.getCode() == 'DCS':
             node = ModelNode(self.getName())
             node.setPreserveTransform(ModelNode.PTNet)
             node = nodePath.attachNewNode(node, 0)
+
+        elif self.code == "DCS":
+            node = ModelNode(self.name)
+            node.setPreserveTransform(ModelNode.PTNet)
+            _np = np.attachNewNode(np)
+            
         else:
-            node = dnaStorage.findNode(self.getCode())
-            node = node.copyTo(nodePath, 0)
-            node.setName(self.getName())
-        node.setTag('DNAAnim', self.getAnim())
-        node.setTag('DNACellIndex', str(self.cellId))
-        node.setPosHprScale(self.getPos(), self.getHpr(), self.getScale())
-        node.setColorScale(self.getColor(), 0)
-        node.flattenStrong()
-        for child in self.children:
-            child.traverse(node, dnaStorage)
+            _np = store.findNode(self.code).copyTo(np)
+            _np.setName(self.name)
+
+        _np.setTag("DNAAnim", self.animName)
+        _np.setTag("DNACellIndex", str(self.cellId))
+
+        _np.setPosHprScale(self.pos, self.hpr, self.scale)
+        _np.setColorScale(self.color)
+
+        self.traverseChildren(_np, store)

@@ -77,11 +77,6 @@ class GloveShopGui:
 
         taskMgr.remove('runGloveCounter-%s' % self.id)
 
-    def setClientGlove(self, color):
-        dna = base.localAvatar.style
-
-        dna.gloveColor = color
-        base.localAvatar.setDNA(dna)
 
     def __exit(self, state):
         self.destroy()
@@ -116,6 +111,11 @@ class GloveShopGui:
         self.color['text_fg'] = color
         self.setClientGlove(color)
         return hitLimit
+	
+    def setClientGlove(self, color):
+        dna = base.localAvatar.style
+        dna.gloveColor = color
+        base.localAvatar.setDNA(dna)
 
     def __runTask(self, task):
         if task.time - task.prevTime < task.delayTime:
