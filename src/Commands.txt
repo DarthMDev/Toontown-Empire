@@ -1097,3 +1097,4 @@ COG INVASIONS:
 
 ~suit do 0 = Sellbot Field Office
 ~suit do 1 = Lawbot Field Office
+~exp throw 10000 = changes xp of throw to 10000 
