@@ -16,10 +16,8 @@ class ToontownDistrictStatsAI(DistributedObjectAI):
         # We want to handle shard status queries so that a ShardStatusReceiver
         # being created after we're generated will know where we're at:
         self.air.accept('queryShardStatus', self.handleShardStatusQuery)
-        taskMgr.doMethodLater(15, self.__countGroups, self.uniqueName('countGroups'))
     
     def delete(self):
-        taskMgr.remove(self.uniqueName('countGroups'))
         DistributedObjectAI.delete(self)
 
     def handleShardStatusQuery(self):
