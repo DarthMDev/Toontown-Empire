@@ -326,8 +326,10 @@ class ShardPage(ShtikerPage.ShtikerPage):
             else:
                 buttonTuple[1]['image_color'] = self.getPopColor(pop)
                 buttonTuple[1]['text'] = self.getPopText(pop)
+                buttonTuple[1]['extraArgs'] = [pop, name, shardId, buttonTuple]
                 buttonTuple[1]['command'] = self.getPopChoiceHandler(pop)
                 buttonTuple[2]['command'] = self.getPopChoiceHandler(pop)
+                buttonTuple[2]['extraArgs'] = [pop, name, shardId, buttonTuple]
 
             self.shardButtons.append(buttonTuple[0])
 
