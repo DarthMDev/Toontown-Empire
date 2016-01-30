@@ -83,7 +83,6 @@ class ShardPage(ShtikerPage.ShtikerPage):
         self.noTeleport = config.GetBool('shard-page-disable', 0)
         self.shardGroups = []
         self.shardText = []
-        self.groupDialog = None
 
     def load(self):
         matchGui = loader.loadModel('phase_3.5/models/gui/matching_game_gui')
@@ -198,53 +197,6 @@ class ShardPage(ShtikerPage.ShtikerPage):
 
         return buttonTuple
 
-    def makeGroupButton(self, shardId, group, population):
-        groupButtonParent = DirectFrame()
-        groupButtonL = DirectButton(parent=groupButtonParent, relief=None, text=TTLocalizer.GlobalStreetNames[group][-1], text_pos=(0.0, -0.0225), text_scale=0.048, text_align=TextNode.ALeft, text_fg=Vec4(0, 0, 0, 1), text3_fg=self.textDisabledColor, text1_bg=self.textDownColor, text2_bg=self.textRolloverColor, command=self.joinGroup, extraArgs=[group, shardId])
-
-        groupButtonR = DirectButton(parent=groupButtonParent, relief=None,
-                                    pos=(0.58, 0, -0.0125),
-                                    text=str(population),
-                                    text_scale=0.055,
-                                    text_align=TextNode.ACenter,
-                                    command=self.joinGroup,
-                                    extraArgs=[group, shardId],
-                                    text_pos=(-0.00575, -0.0125), text_fg=Vec4(0, 0, 0, 1), text3_fg=Vec4(0, 0, 0, 1), text1_bg=self.textRolloverColor, text2_bg=self.textRolloverColor)
-
-        return (groupButtonParent, groupButtonL, groupButtonR)
-    
-    def joinGroup(self, group, shardId):
-        canonicalHoodId = ZoneUtil.getCanonicalHoodId(group)
-        shardName = base.cr.activeDistrictMap[shardId].name
-        hoodName = TTLocalizer.GlobalStreetNames[canonicalHoodId]
-        teleportAccess = base.localAvatar.hasTeleportAccess(canonicalHoodId)
-
-        if teleportAccess:
-            message = TTLocalizer.GroupAskAccess
-        elif base.localAvatar.defaultShard == shardId:
-            self.acceptOnce('groupDialogDone', self.cleanupGroupDialog)
-            self.groupDialog = TTDialog.TTGlobalDialog(style=TTDialog.Acknowledge, text=TTLocalizer.GroupAskNoAccessSame % (hoodName[0], hoodName[-1]), doneEvent='groupDialogDone')
-            self.groupDialog.show()
-            return
-        else:
-            message = TTLocalizer.GroupAskNoAccess
-        
-        self.acceptOnce('groupDialogDone', self.__handleGroupDialog, extraArgs=[canonicalHoodId if teleportAccess else base.localAvatar.lastHood, shardId])
-        self.groupDialog = TTDialog.TTGlobalDialog(style=TTDialog.TwoChoice, text=message % (hoodName[0], hoodName[-1], shardName), doneEvent='groupDialogDone')
-        self.groupDialog.show()
-    
-    def cleanupGroupDialog(self):
-        self.ignore('groupDialogDone')
-        self.groupDialog.cleanup()
-        del self.groupDialog
-    
-    def __handleGroupDialog(self, canonicalHoodId, shardId):
-        response = self.groupDialog.doneStatus
-        self.cleanupGroupDialog()
-
-        if response == 'ok':
-            self.requestTeleport(canonicalHoodId, shardId)
-
     def removeRightBrain(self):
         self.districtInfo.find('**/*district-info').removeNode()
 
@@ -280,46 +232,10 @@ class ShardPage(ShtikerPage.ShtikerPage):
         for button in self.shardGroups + self.shardText:
             button.removeNode()
         
-        self.shardGroups = []
         self.shardText = []
 
-        for i, group in enumerate(ToontownGlobals.GROUP_ZONES):
-            btuple = self.makeGroupButton(shardId, group, groupAvCount[i])
-            if ZoneUtil.getCanonicalHoodId(base.localAvatar.zoneId) == ZoneUtil.getCanonicalHoodId(group):
-                btuple[1]['state'] = DGG.DISABLED
-                btuple[2]['state'] = DGG.DISABLED
-            self.shardGroups.append(btuple[0])
-            self.shardText.append(btuple[2])
 
         buttonImage = (self.gui.find('**/FndsLst_ScrollUp'), self.gui.find('**/FndsLst_ScrollDN'), self.gui.find('**/FndsLst_ScrollUp_Rllvr'), self.gui.find('**/FndsLst_ScrollUp'))
-        self.districtGroups = DirectScrolledList(parent=districtInfoNode, relief=None,
-                                                 pos=(0.38, 0, -0.34),
-                                                 incButton_image=buttonImage,
-                                                 incButton_relief=None,
-                                                 incButton_scale=(self.arrowButtonScale,
-                                                                  self.arrowButtonScale,
-                                                                  -self.arrowButtonScale),
-                                                 incButton_pos=(self.buttonXstart + 0.005, 0, -0.125),
-                                                 incButton_image3_color=Vec4(1, 1, 1, 0.2),
-                                                 decButton_image=buttonImage,
-                                                 decButton_relief=None,
-                                                 decButton_scale=(self.arrowButtonScale,
-                                                                  self.arrowButtonScale,
-                                                                  self.arrowButtonScale),
-                                                 decButton_pos=(self.buttonXstart, 0.0025, 0.445),
-                                                 decButton_image3_color=Vec4(1, 1, 1, 0.2),
-                                                 itemFrame_pos=(self.itemFrameXorigin, 0, self.itemFrameZorigin),
-                                                 itemFrame_scale=1.0,
-                                                 itemFrame_relief=DGG.SUNKEN,
-                                                 itemFrame_frameSize=(self.listXorigin,
-                                                                      (self.listXorigin + self.listFrameSizeX),
-                                                                      self.listZorigin/2.1,
-                                                                      (self.listZorigin + self.listFrameSizeZ)/2.1),
-                                                 itemFrame_frameColor=(0.85, 0.95, 1, 1),
-                                                 itemFrame_borderWidth=(0.01, 0.01),
-                                                 numItemsVisible=7,
-                                                 forceHeight=0.065,
-                                                 items=self.shardGroups)
 
     def getPopColor(self, pop):
         if pop <= self.lowPop:
