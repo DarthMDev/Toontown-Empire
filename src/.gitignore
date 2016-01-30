@@ -63,3 +63,4 @@ src/user/preferences.json
 *.mp
 settings.json
 *.pyc
+news/
