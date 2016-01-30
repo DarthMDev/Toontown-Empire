@@ -81,8 +81,6 @@ class ShardPage(ShtikerPage.ShtikerPage):
         self.showPop = config.GetBool('show-population', 0)
         self.showTotalPop = config.GetBool('show-total-population', 0)
         self.noTeleport = config.GetBool('shard-page-disable', 0)
-        self.shardGroups = []
-        self.shardText = []
 
     def load(self):
         matchGui = loader.loadModel('phase_3.5/models/gui/matching_game_gui')
@@ -118,7 +116,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
         curShardTuples.sort(compareShardTuples)
         actualShardId = base.localAvatar.defaultShard
         for i in xrange(len(curShardTuples)):
-            shardId, name, pop, invasionStatus, groupAvCount = curShardTuples[i]
+            shardId, name, pop, invasionStatus
             if shardId == actualShardId:
                 self.currentBTP = buttonTuple[0]
                 self.currentBTL = buttonTuple[1]
@@ -127,7 +125,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
                 self.currentO = [pop, name, shardId]
                 self.currentBTL['state'] = DGG.DISABLED
                 self.currentBTR['state'] = DGG.DISABLED
-                self.reloadRightBrain(pop, name, groupAvCount, shardId, buttonTuple)
+                self.reloadRightBrain(pop, name, shardId, buttonTuple)
 
     def unload(self):
         self.gui.removeNode()
@@ -166,7 +164,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
         taskMgr.doMethodLater(self.ShardInfoUpdateInterval, self.askForShardInfoUpdate, 'ShardPageUpdateTask-doLater')
         return Task.done
 
-    def makeShardButton(self, shardId, groupAvCount, shardName, shardPop):
+    def makeShardButton(self, shardId, shardName, shardPop):
         shardButtonParent = DirectFrame()
         shardButtonL = DirectButton(parent=shardButtonParent, relief=None, text=shardName, text_scale=0.06, text_align=TextNode.ALeft, text_fg=Vec4(0, 0, 0, 1), text3_fg=self.textDisabledColor, text1_bg=self.textDownColor, text2_bg=self.textRolloverColor, textMayChange=0, command=self.reloadRightBrain)
         popText = str(shardPop)
@@ -192,15 +190,15 @@ class ShardPage(ShtikerPage.ShtikerPage):
         invasionMarker.reparentTo(shardButtonParent)
 
         buttonTuple = (shardButtonParent, shardButtonR, shardButtonL, invasionMarker)
-        shardButtonL['extraArgs'] = extraArgs=[shardPop, shardName, groupAvCount, shardId, buttonTuple]
-        shardButtonR['extraArgs'] = extraArgs=[shardPop, shardName, groupAvCount, shardId, buttonTuple]
+        shardButtonL['extraArgs'] = extraArgs=[shardPop, shardName, shardId, buttonTuple]
+        shardButtonR['extraArgs'] = extraArgs=[shardPop, shardName, shardId, buttonTuple]
 
         return buttonTuple
 
     def removeRightBrain(self):
         self.districtInfo.find('**/*district-info').removeNode()
 
-    def reloadRightBrain(self, shardPop, shardName, groupAvCount, shardId, buttonTuple):
+    def reloadRightBrain(self, shardPop, shardName, shardId, buttonTuple):
         self.currentRightBrain = (shardPop, shardName, shardId, buttonTuple)
         if self.districtInfo.find('**/*district-info'):
             self.removeRightBrain()
@@ -227,11 +225,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
         self.currentBTR['state'] = DGG.DISABLED
 
         if shardId == base.localAvatar.defaultShard:
-            self.shardTeleportButton['state'] = DGG.DISABLED
-
-        for button in self.shardGroups + self.shardText:
-            button.removeNode()
-        
+            self.shardTeleportButton['state'] = DGG.DISABLED        
         self.shardText = []
 
 
@@ -306,7 +300,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
 
         for i in xrange(len(curShardTuples)):
 
-            shardId, name, pop, invasionStatus, groupAvCount = curShardTuples[i]
+            shardId, name, pop, invasionStatus
 
             if shardId == actualShardId:
                 actualShardName = name
@@ -316,20 +310,16 @@ class ShardPage(ShtikerPage.ShtikerPage):
             buttonTuple = self.shardButtonMap.get(shardId)
 
             if buttonTuple == None:
-                buttonTuple = self.makeShardButton(shardId, groupAvCount, name, pop)
+                buttonTuple = self.makeShardButton(shardId, name, pop)
                 self.shardButtonMap[shardId] = buttonTuple
                 anyChanges = 1
             else:
                 buttonTuple[1]['image_color'] = self.getPopColor(pop)
                 buttonTuple[1]['text'] = str(pop)
                 buttonTuple[1]['command'] = self.reloadRightBrain
-                buttonTuple[1]['extraArgs'] = [pop, name, groupAvCount, shardId, buttonTuple]
+                buttonTuple[1]['extraArgs'] = [pop, name, shardId, buttonTuple]
                 buttonTuple[2]['command'] = self.reloadRightBrain
-                buttonTuple[2]['extraArgs'] = [pop, name, groupAvCount, shardId, buttonTuple]
-            
-            for i, button in enumerate(self.shardText):
-                button['text'] = str(groupAvCount[i])
-
+                buttonTuple[2]['extraArgs'] = [pop, name, shardId, buttonTuple]
             self.shardButtons.append(buttonTuple[0])
 
             if invasionStatus:
