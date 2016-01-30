@@ -1,5 +1,3 @@
-# I added this here for future projects, And convience while editing some Estate Stuff.
-
 HouseMusicFile = "phase_5.5/audio/bgm/EE_Ov_1.ogg"
 EstateMusicFile = "phase_5.5/audio/bgm/EE_Ov_1.ogg"
 EstateDefaultSign = 'phase_13/models/parties/eventSign'
