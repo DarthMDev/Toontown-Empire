@@ -31,7 +31,7 @@ from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer, ToontownBattleGlobals, ToontownGlobals
 from toontown.toonbase.ToontownGlobals import *
 from NPCToons import npcFriends
-import Experience, InventoryBase, ToonDNA, random, time
+import Experience, InventoryBase, ToonDNA, ToonAvatarPanel, random, time
 from toontown.uberdog import TopToonsGlobals
 
 if simbase.wantPets:
@@ -4326,6 +4326,19 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.b_setName(newName)
         return
 
+    def b_setExperience(self, experience):
+        self.d_setExperience(experience)
+        self.setExperience(experience)
+
+    def d_setExperience(self, experience):
+        self.sendUpdate('setExperience', [experience])
+
+    def setExperience(self, experience):
+        self.experience = Experience.Experience(experience, self)
+
+    def getExperience(self):
+        return self.experience.makeNetString()
+
 @magicWord(category=CATEGORY_STAFF, types=[str, int, int])
 def cheesyEffect(value, hood=0, expire=0):
     """
@@ -5332,3 +5345,27 @@ def pouch(value):
     invoker = spellbook.getInvoker()
     invoker.b_setMaxCarry(value)
     return 'Gag pouch set.'
+
+@magicWord(category=CATEGORY_STAFF, types=[str, int])
+def exp(track, amt):
+    trackIndex = TTLocalizer.BattleGlobalTracks.index(track)
+    av = spellbook.getTarget()
+    av.experience.setExp(trackIndex, amt)
+    av.b_setExperience(av.experience.makeNetString())
+    return "Set %s exp to %d successfully." % (track, amt)
+
+# TODO: Not completed because of some stupid syntax error! 
+# Dan should have it done tomorrow I hope
+"""
+@magicWord(category=CATEGORY_STAFF, types=[int])
+def staffButton(switch):
+    invoker = spellbook.getInvoker()
+    if switch == 1:
+     invoker.__handleStaffDialog()
+     return "You have enabled your staff button!"
+    elif switch == 2:
+     invoker.hidePetButton()
+     return "You have disabled your staff button!"
+    else:
+     return("You must have 1 for enable or 2 for disable in your Magic Word.")
+"""

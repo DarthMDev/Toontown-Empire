@@ -506,9 +506,9 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
         if self.avatar.isAdmin():
             helpGui = loader.loadModel('phase_3.5/models/gui/tt_m_gui_brd_help')
             image = (helpGui.find('**/tt_t_gui_brd_helpUp'), helpGui.find('**/tt_t_gui_brd_helpDown'), helpGui.find('**/tt_t_gui_brd_helpHover'), helpGui.find('**/tt_t_gui_brd_helpDown'))
-            text = ('', TTLocalizer.AvatarPanelCast, TTLocalizer.AvatarPanelCast, '')
+            text = ('', TTLocalizer.AvatarPanelStaff, TTLocalizer.AvatarPanelStaff, '')
             self.petButton = DirectButton(parent=self.frame, image=image, relief=None, pos=(0.02, -0.2, -0.385), text=text, text_fg=self.text2Color, scale=0.8,
-                             text_shadow=(0, 0, 0, 1), text_scale=0.07, text_pos=(0, -0.125), text_align=TextNode.ACenter, command=self.__handleCastDialog)
+                             text_shadow=(0, 0, 0, 1), text_scale=0.07, text_pos=(0, -0.125), text_align=TextNode.ACenter, command=self.__handleStaffDialog)
             helpGui.removeNode()
             return
 
@@ -523,10 +523,10 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
             self.petButton.hide()
         petGui.removeNode()
 
-    def __handleCastDialog(self):
+    def __handleStaffDialog(self):
         self.cleanupDialog()
         base.cr.playGame.getPlace().setState('stopped')
-        self.dialog = TTDialog.TTDialog(style=TTDialog.Acknowledge, text=TTLocalizer.AvatarPanelCastInfo % self.avatar.getName(), text_wordwrap=20, command=self.__cleanupDialogAndWalk)
+        self.dialog = TTDialog.TTDialog(style=TTDialog.Acknowledge, text=TTLocalizer.AvatarPanelStaffInfo % self.avatar.getName(), text_wordwrap=20, command=self.__cleanupDialogAndWalk)
         self.dialog.show()
     
     def __cleanupDialogAndWalk(self, extra=None):
