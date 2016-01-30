@@ -48,6 +48,7 @@ MonkeyDialogueArray = []
 BearDialogueArray = []
 PigDialogueArray = []
 LegsAnimDict = {}
+localAvatar = None
 TorsoAnimDict = {}
 HeadAnimDict = {}
 Preloaded = {}
@@ -447,6 +448,7 @@ class Toon(Avatar.Avatar, ToonHead):
         self.defaultColorScale = None
         self.jar = None
         self.headMeter = None
+        self.trophyStar = None
         self.gmIcon = None
         self.partyHat = None
         self.setTag('pieCode', str(ToontownGlobals.PieCodeToon))
@@ -571,6 +573,7 @@ class Toon(Avatar.Avatar, ToonHead):
             self.swapToonLegs(newDNA.legs)
         self.swapToonColor(newDNA)
         self.__swapToonClothes(newDNA)
+		
 
     def setDNAString(self, dnaString):
         newDNA = ToonDNA.ToonDNA()
@@ -3038,32 +3041,61 @@ class Toon(Avatar.Avatar, ToonHead):
         self.headMeter = None
         self.setHeadPositions()
 
-    def setGMIcon(self, access):
-        if self.gmIcon:
+    def SetxmasBadge(self, badgeType = None):
+        if hasattr(self, 'gmIcon') and self.gmIcon:
             return
 
-        icons = loader.loadModel('phase_3/models/props/gm_icons')
-        self.gmIcon = icons.find('**/access_level_%s' % access)
+        modelName = 'phase_3.5/models/gui/tt_m_gui_gm_accesslvl_%s.bam'
+        al = (110, 511, 550, 551, 750)
+
+        access = self._badgeType
+        if access >= len(al):
+            return
+
+        self.gmIcon = loader.loadModel(modelName % al[access])
+        self.gmIcon.setScale(5.25)
         np = NodePath(self.nametag.getNameIcon())
-
-        if np.isEmpty() or not self.gmIcon:
-            return
-
-        self.gmIcon.flattenStrong()
         self.gmIcon.reparentTo(np)
-        self.gmIcon.setScale(1.6)
+        self.setTrophyScore(self.trophyScore)
+        self.gmIcon.setZ(-2.5)
+        self.gmIcon.setY(0.0)
+        self.gmIcon.setColor(Vec4(1.0, 1.0, 1.0, 1.0))
+        self.gmIcon.setTransparency(1)
         self.gmIconInterval = LerpHprInterval(self.gmIcon, 3.0, Point3(0, 0, 0), Point3(-360, 0, 0))
         self.gmIconInterval.loop()
-        self.setHeadPositions()
+
+    def setTTOBadges(self, badgeType = None):
+        if hasattr(self, 'gmIcon') and self.gmIcon:
+            return
+        if not badgeType:
+            badgeType = self._badgeType
+        iconInfo = (('phase_3.5/models/gui/tt_m_gui_gm_toontroop_whistle', '**/*whistleIcon*', 4),
+         ('phase_3.5/models/gui/tt_m_gui_gm_toontroop_whistle', '**/*whistleIcon*', 4),
+         ('phase_3.5/models/gui/tt_m_gui_gm_toonResistance_fist', '**/*fistIcon*', 4),
+         ('phase_3.5/models/gui/tt_m_gui_gm_toontroop_getConnected', '**/*whistleIcon*', 4))
+        if badgeType > len(iconInfo) - 1:
+            return
+        modelName, searchString, scale = iconInfo[badgeType]
+        icons = loader.loadModel(modelName)
+        self.gmIcon = icons.find(searchString)
+        self.gmIcon.setScale(5.25)
+        np = NodePath(self.nametag.getNameIcon())
+        self.gmIcon.reparentTo(np)
+        self.setTrophyScore(self.trophyScore)
+        self.gmIcon.setZ(-2.5)
+        self.gmIcon.setY(0.0)
+        self.gmIcon.setColor(Vec4(1.0, 1.0, 1.0, 1.0))
+        self.gmIcon.setTransparency(1)
+        self.gmIconInterval = LerpHprInterval(self.gmIcon, 3.0, Point3(0, 0, 0), Point3(-360, 0, 0))
+        self.gmIconInterval.loop()
 
     def removeGMIcon(self):
-        if not self.gmIcon:
-            return
-
-        self.gmIconInterval.finish()
-        self.gmIcon.detachNode()
-        del self.gmIconInterval
-        self.gmIcon = None
+        if hasattr(self, 'gmIconInterval') and self.gmIconInterval:
+            self.gmIconInterval.finish()
+            del self.gmIconInterval
+        if hasattr(self, 'gmIcon') and self.gmIcon:
+            self.gmIcon.detachNode()
+            del self.gmIcon
         self.setHeadPositions()
 
     def setPartyHat(self):

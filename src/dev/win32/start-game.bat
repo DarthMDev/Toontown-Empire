@@ -34,7 +34,7 @@ if %INPUT%==1 (
 echo.
 
 if %INPUT%==2 (
-    set /P tteUsername="Username: "
+    set /P TTE_PLAYCOOKIE="Username: "
 ) else if %INPUT%==4 (
     set /P tteUsername="Username: "
     set /P ttePassword="Password: "
@@ -49,7 +49,7 @@ echo Starting Toontown Empire...
 echo ppython: "dependencies/panda/python/ppython.exe"
 
 if %INPUT%==2 (
-    echo Username: %tteUsername%
+    echo Username: %TTE_PLAYCOOKIE%
 ) else if %INPUT%==4 (
     echo Username: %tteUsername%
 ) else (

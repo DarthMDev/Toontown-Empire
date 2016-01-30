@@ -1,8 +1,7 @@
 import ShtikerPage
 from direct.gui.DirectGui import *
 from panda3d.core import *
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.suit import SuitDNA
 from toontown.battle import SuitBattleGlobals
 from toontown.minigame import MinigamePowerMeter

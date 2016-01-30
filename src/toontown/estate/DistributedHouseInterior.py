@@ -13,6 +13,7 @@ from toontown.catalog import CatalogWallpaperItem
 from toontown.catalog import CatalogFlooringItem
 from toontown.catalog import CatalogMouldingItem
 from toontown.catalog import CatalogWainscotingItem
+from toontown.estate.EstateGlobals import *
 from toontown.dna.DNAParser import *
 WindowPlugNames = ['**/windowcut_%s*' % x for x in ('b', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i')]
 RoomNames = ['**/group%s' % x for x in ( 4, 3, 2, 1)]
@@ -31,10 +32,21 @@ class DistributedHouseInterior(DistributedObject.DistributedObject):
 
     def __init__(self, cr):
         DistributedObject.DistributedObject.__init__(self, cr)
+        self.load()
         self.houseId = 0
         self.houseIndex = 0
         self.interior = None
         self.exteriorWindowsHidden = 0
+
+    def load(self):
+     self.music = base.loadMusic(HouseMusicFile)
+     self.music.setLoop(1)
+     self.music.play()
+
+    def unload(self):
+     if self.music:
+       self.music.stop()
+       self.music = None
 
     def generate(self):
         DistributedObject.DistributedObject.generate(self)
@@ -50,6 +62,7 @@ class DistributedHouseInterior(DistributedObject.DistributedObject):
 
     def delete(self):
         self.ignore(self.uniqueName('enterclosetSphere'))
+        self.unload()
         DistributedObject.DistributedObject.delete(self)
 
     def setup(self):

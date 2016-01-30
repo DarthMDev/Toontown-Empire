@@ -32,6 +32,10 @@ from toontown.toonbase import TTLocalizer, ToontownBattleGlobals, ToontownGlobal
 from toontown.toonbase.ToontownGlobals import *
 from NPCToons import npcFriends
 import Experience, InventoryBase, ToonDNA, random, time
+try:
+ from ToonAvatarPanel import *
+except:
+ pass
 from toontown.uberdog import TopToonsGlobals
 
 if simbase.wantPets:
@@ -105,6 +109,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.savedCheesyEffect = ToontownGlobals.CENormal
         self.savedCheesyHoodId = 0
         self.savedCheesyExpireTime = 0
+        self.magicWordTeleportRequests = []
         self.ghostMode = 0
         self.immortalMode = 0
         self.unlimitedGags = 0
@@ -3349,6 +3354,18 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
         return None
 
+    def magicTeleportResponse(self, requesterId, hoodId):
+        toon = self.air.doId2do.get(requesterId)
+        if toon:
+            toon.magicTeleportInitiate(self.getDoId(), hoodId, self.getLocation()[1])
+
+    def magicTeleportInitiate(self, targetId, hoodId, zoneId):
+        if targetId not in self.magicWordTeleportRequests:
+            return
+        self.magicWordTeleportRequests.remove(targetId)
+        self.sendUpdate('magicTeleportInitiate', [hoodId, zoneId])
+
+
     def b_setGardenTrophies(self, trophyList):
         self.setGardenTrophies(trophyList)
         self.d_setGardenTrophies(trophyList)
@@ -4313,6 +4330,19 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.b_setName(newName)
         return
 
+    def b_setExperience(self, experience):
+        self.d_setExperience(experience)
+        self.setExperience(experience)
+
+    def d_setExperience(self, experience):
+        self.sendUpdate('setExperience', [experience])
+
+    def setExperience(self, experience):
+        self.experience = Experience.Experience(experience, self)
+
+    def getExperience(self):
+        return self.experience.makeNetString()
+
 @magicWord(category=CATEGORY_STAFF, types=[str, int, int])
 def cheesyEffect(value, hood=0, expire=0):
     """
@@ -5041,23 +5071,39 @@ def track(command, track, value=None):
         return 'Set the experience of the %s track to: %d!' % (track, value)
     return 'Invalid command.'
 
-@magicWord(category=CATEGORY_STAFF, types=[str, str])
-def suit(command, suitName):
+@magicWord(category=CATEGORY_STAFF, types=[str, int, int, int])
+def suit(command, suitIndex, cogType=0, cogAbilities=0):
     invoker = spellbook.getInvoker()
+    suitName = SuitDNA.suitHeadTypes[suitIndex]
     command = command.lower()
-    if suitName not in SuitDNA.suitHeadTypes:
-        return 'Invalid suit name: ' + suitName
-    suitFullName = SuitBattleGlobals.SuitAttributes[suitName]['name']
     if command == 'spawn':
-        returnCode = invoker.doSummonSingleCog(SuitDNA.suitHeadTypes.index(suitName))
+        returnCode = invoker.doSummonSingleCog(int(suitIndex))
         if returnCode[0] == 'success':
-            return 'Successfully spawned: ' + suitFullName
-        return "Couldn't spawn: " + suitFullName
+            return 'Successfully spawned suit with index {0}!'.format(suitIndex)
+        return "Couldn't spawn suit with index {0}.".format(suitIndex)
     elif command == 'building':
         returnCode = invoker.doBuildingTakeover(SuitDNA.suitHeadTypes.index(suitName))
         if returnCode[0] == 'success':
-            return 'Successfully spawned a Cog building with: ' + suitFullName
-        return "Couldn't spawn a Cog building with: " + suitFullName
+            return 'Successfully spawned building with index {0}!'.format(suitName)
+        return "Couldn't spawn building with index {0}.".format(suitName)
+    elif command == 'do':
+        if suitIndex == 0:
+		 suitResult = 31
+        elif suitIndex == 1:
+		 suitResult = 13
+        else:
+		 return "Usage is ~suit do [0/1] with just 1 number and without the [] or /!"
+        returnCode = invoker.doCogdoTakeOver(suitResult)
+        if returnCode[0] == 'success':
+            return 'Successfully spawned Cogdo!'.format(suitResult)
+        return "Couldn't spawn Cogdo.".format(suitResult)
+    elif command == 'invasion':
+        returnCode = invoker.doCogInvasion(suitIndex, cogType, cogAbilities)
+        return returnCode
+    elif command == 'invasionend':
+        returnCode = 'Ending Invasion..'
+        simbase.air.suitInvasionManager.stopInvasion()
+        return returnCode
     else:
         return 'Invalid command.'
 
@@ -5212,7 +5258,7 @@ def maxGarden():
 
 # FordTheWriter new commands added:
 
-@magicWord(category=CATEGORY_TRIAL, types=[int], access=103)
+@magicWord(category=CATEGORY_LEADER, types=[int], access=103)
 def SetxmasBadge(gmId):
     if not 0 <= gmId <= 5:
         return 'Staff-Badges: 0=off, 1=Trial, 2=Staff, 3=Lead-Staff, 4=Developers, 5=Leaders'
@@ -5274,10 +5320,10 @@ def badge():
         elif access>=504:
             spellbook.getInvoker().b_setTTOBadge(3)
         elif access>=508:
-            spellbook.getInvoker().b_setTTOBadge(3)
+            spellbook.getInvoker().b_setTTOBadge(2)
         return "You have enabled your badge."
 
-@magicWord(category=CATEGORY_TRIAL, types=[int])
+@magicWord(category=CATEGORY_LEADER, types=[int])
 def setBadge(gmId):
     if gmId == 1:
         return 'You cannot set a toon to TOON COUNCIL.'
@@ -5287,3 +5333,43 @@ def setBadge(gmId):
         spellbook.getInvoker().b_setTTOBadge(0)
     spellbook.getInvoker().b_setTTOBadge(gmId)
     return 'You have set %s to badge type %s' % (spellbook.getInvoker().getName(), gmId)
+
+@magicWord(category=CATEGORY_STAFF, types=[int])
+def goto(avIdShort):
+    """ Teleport to the avId specified. """
+    avId = 100000000+avIdShort # To get target doId.
+    toon = simbase.air.doId2do.get(avId)
+    if not toon:
+        return "Unable to teleport to target, they are not currently on this district."
+    spellbook.getInvoker().magicWordTeleportRequests.append(avId)
+    toon.sendUpdate('magicTeleportRequest', [spellbook.getInvoker().getDoId()])
+	
+@magicWord(category=CATEGORY_STAFF, types=[int])
+def pouch(value):
+    invoker = spellbook.getInvoker()
+    invoker.b_setMaxCarry(value)
+    return 'Gag pouch set.'
+
+@magicWord(category=CATEGORY_STAFF, types=[str, int])
+def exp(track, amt):
+    trackIndex = TTLocalizer.BattleGlobalTracks.index(track)
+    av = spellbook.getTarget()
+    av.experience.setExp(trackIndex, amt)
+    av.b_setExperience(av.experience.makeNetString())
+    return "Set %s exp to %d successfully." % (track, amt)
+
+# TODO: Not completed because of ToonAvatarPanel error! 
+
+"""
+@magicWord(category=CATEGORY_STAFF, types=[int])
+def staffButton(switch):
+    invoker = spellbook.getInvoker()
+    if switch == 1:
+     invoker.__handleStaffDialog()
+     return "You have enabled your staff button!"
+    elif switch == 2:
+     invoker.hidePetButton()
+     return "You have disabled your staff button!"
+    else:
+     return("You must have 1 for enable or 2 for disable in your Magic Word.")
+"""
