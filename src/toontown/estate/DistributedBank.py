@@ -1,12 +1,10 @@
 from direct.gui.DirectGui import *
 from panda3d.core import *
-from toontown.toonbase.ToontownGlobals import *
 from toontown.toonbase.ToonBaseGlobal import *
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
-from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals, TTLocalizer
 import DistributedFurnitureItem
-from toontown.toonbase import TTLocalizer
 import BankGUI
 from BankGlobals import *
 from toontown.toontowngui import TTDialog
