@@ -10,8 +10,8 @@ ask = str(ask)
 ask = ask.lower()
 if ask == 'yes':
     version += 0.1
-os.chdir('dependencies/config/release')
-with open('qa.prc', 'w') as config:
-     config.write(version)
+    os.chdir('dependencies/config/release')
+    with open('qa.prc', 'w') as config:
+         config.write(version)
 elif ask == 'no':
     exit()
