@@ -5,18 +5,9 @@ from direct.fsm import FSM
 from direct.gui.DirectGui import *
 from panda3d.core import *
 from direct.task import Task
-from toontown.fishing import BingoGlobals
-from toontown.fishing import BingoCardGui
-from toontown.fishing import FishGlobals
-from toontown.fishing import NormalBingo
-from toontown.fishing import FourCornerBingo
-from toontown.fishing import DiagonalBingo
-from toontown.fishing import ThreewayBingo
-from toontown.fishing import BlockoutBingo
+from toontown.fishing import BingoGlobals, BingoCardGui, FishGlobals, NormalBingo, FourCornerBingo, DiagonalBingo, ThreewayBingo, BlockoutBingo
 from direct.showbase import RandomNumGen
-from toontown.toonbase import ToontownTimer
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownTimer, ToontownGlobals, TTLocalizer
 import time
 
 class DistributedPondBingoManager(DistributedObject.DistributedObject, FSM.FSM):
