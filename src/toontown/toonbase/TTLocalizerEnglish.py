@@ -2976,6 +2976,7 @@ SuitAttackTaunts = {'Audit': ["I believe your books don't balance.",
                   "We're just friends - what are you saying?",
                   'Baby, baby, baby, oh...',
                   'Let it go, let it go...'
+                  "Can't hold it back anymore..."
                   "It's like dreaming with your feet.",
                   'Never miss a chance to dance!',
                   'When you feel sad, dance!',
