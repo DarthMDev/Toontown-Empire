@@ -3,8 +3,11 @@ os.chdir('../../../')
 
 #from dependencies.astron.config import * - this doesnt have any python files so removing import
 #TODO make version equal to end of TTE- try using indexes we also need to get it from qa.prc. We also need to use write so it doesnt add new line more like overwrites version at end of tte prefix
-if version is None:
-    version = 1.0
+try:
+ if version is None:
+     version = 1.0
+except:
+ pass
 ask = raw_input('Are you sure you want to change version number by .1? Type yes or no: ')
 ask = str(ask)
 ask = ask.lower()
