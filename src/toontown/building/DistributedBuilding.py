@@ -20,6 +20,7 @@ import sys
 FO_DICT = {'s': 'tt_m_ara_cbe_fieldOfficeMoverShaker',
  'l': 'tt_m_ara_cbe_fieldOfficeLegalEagle',
  'm': 'tt_m_ara_cbe_fieldOfficeMoverShaker',
+ 'g': 'tt_m_ara_cbe_fieldOfficeMoverShaker',
  'c': 'tt_m_ara_cbe_fieldOfficeMoverShaker'}
 
 class DistributedBuilding(DistributedObject.DistributedObject):
@@ -328,6 +329,8 @@ class DistributedBuilding(DistributedObject.DistributedObject):
                 corpIcon = cogIcons.find('**/LegalIcon').copyTo(self.cab)
             elif dept == 'm':
                 corpIcon = cogIcons.find('**/MoneyIcon').copyTo(self.cab)
+            elif dept == 'g':
+                corpIcon = cogIcons.find('**/MoneyIcon').copyTo(self.cab)
             corpIcon.setPos(0, 6.79, 6.8)
             corpIcon.setScale(3)
             from toontown.suit import Suit
@@ -450,7 +453,10 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         suitNP = dnaStore.findNode('suit_landmark_' + chr(self.track) + str(min(level, 5)))
         zoneId = dnaStore.getZoneFromBlockNumber(self.block)
         newParentNP = base.cr.playGame.hood.loader.zoneDict[zoneId]
-        suitBuildingNP = suitNP.copyTo(newParentNP)
+        try:
+         suitBuildingNP = suitNP.copyTo(newParentNP)
+        except:
+         pass
         buildingTitle = dnaStore.getTitleFromBlockNumber(self.block)
         if not buildingTitle:
             buildingTitle = TTLocalizer.CogsInc
@@ -465,22 +471,25 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         textNode.setText(buildingTitle)
         textHeight = textNode.getHeight()
         zScale = (textHeight + 2) / 3.0
-        signOrigin = suitBuildingNP.find('**/sign_origin;+s')
-        backgroundNP = loader.loadModel('phase_5/models/modules/suit_sign')
-        backgroundNP.reparentTo(signOrigin)
-        backgroundNP.setPosHprScale(0.0, 0.0, textHeight * 0.8 / zScale, 0.0, 0.0, 0.0, 8.0, 8.0, 8.0 * zScale)
-        signTextNodePath = backgroundNP.attachNewNode(textNode.generate())
-        signTextNodePath.setPosHprScale(0.0, 0.0, -0.21 + textHeight * 0.1 / zScale, 0.0, 0.0, 0.0, 0.1, 0.1, 0.1 / zScale)
-        signTextNodePath.setColor(1.0, 1.0, 1.0, 1.0)
-        frontNP = suitBuildingNP.find('**/*_front/+GeomNode;+s')
-        backgroundNP.wrtReparentTo(frontNP)
-        frontNP.node().setEffect(DecalEffect.make())
-        signTextNodePath.setAttrib(DepthOffsetAttrib.make(1))
-        suitBuildingNP.setName('sb' + str(self.block) + ':_landmark__DNARoot')
-        suitBuildingNP.setPosHprScale(nodePath, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
-        suitBuildingNP.flattenMedium()
-        self.loadElevator(suitBuildingNP)
-        return suitBuildingNP
+        try:
+         signOrigin = suitBuildingNP.find('**/sign_origin;+s')
+         backgroundNP = loader.loadModel('phase_5/models/modules/suit_sign')
+         backgroundNP.reparentTo(signOrigin)
+         backgroundNP.setPosHprScale(0.0, 0.0, textHeight * 0.8 / zScale, 0.0, 0.0, 0.0, 8.0, 8.0, 8.0 * zScale)
+         signTextNodePath = backgroundNP.attachNewNode(textNode.generate())
+         signTextNodePath.setPosHprScale(0.0, 0.0, -0.21 + textHeight * 0.1 / zScale, 0.0, 0.0, 0.0, 0.1, 0.1, 0.1 / zScale)
+         signTextNodePath.setColor(1.0, 1.0, 1.0, 1.0)
+         frontNP = suitBuildingNP.find('**/*_front/+GeomNode;+s')
+         backgroundNP.wrtReparentTo(frontNP)
+         frontNP.node().setEffect(DecalEffect.make())
+         signTextNodePath.setAttrib(DepthOffsetAttrib.make(1))
+         suitBuildingNP.setName('sb' + str(self.block) + ':_landmark__DNARoot')
+         suitBuildingNP.setPosHprScale(nodePath, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
+         suitBuildingNP.flattenMedium()
+         self.loadElevator(suitBuildingNP)
+         return suitBuildingNP
+        except:
+         pass
 
     def cleanupSuitBuilding(self):
         if hasattr(self, 'floorIndicator'):
