@@ -232,9 +232,9 @@ class NonPhysicsWalker(DirectObject.DirectObject):
         if __debug__:
             debugRunning = inputState.isSet("debugRunning")
             if debugRunning:
-                self.speed*=100.0
-                self.slideSpeed*=40.0
-                self.rotationSpeed*=40.25
+                self.speed*=6.0
+                self.slideSpeed*=6.0
+                self.rotationSpeed*=2.25
 
         if self.wantDebugIndicator:
             self.displayDebugInfo()
