@@ -151,6 +151,41 @@ bw = (('finger-wag', 'fingerwag', 5),
  ('magic1', 'magic1', 5),
  ('throw-object', 'throw-object', 5),
  ('throw-paper', 'throw-paper', 5))
+m1 = (('pickpocket', 'pickpocket', 5),
+ ('rubber-stamp', 'rubber-stamp', 5),
+ ('shredder', 'shredder', 3.5),
+ ('watercooler', 'watercooler', 5))
+m2 = (('effort', 'effort', 5),
+ ('throw-paper', 'throw-paper', 5),
+ ('throw-object', 'throw-object', 5),
+ ('magic1', 'magic1', 5))
+m3 = (('rubber-stamp', 'rubber-stamp', 5),
+ ('throw-paper', 'throw-paper', 5),
+ ('speak', 'speak', 5),
+ ('finger-wag', 'fingerwag', 5),
+ ('throw-paper', 'throw-paper', 5))
+m4 = (('throw-object', 'throw-object', 5),
+ ('roll-o-dex', 'roll-o-dex', 5),
+ ('stomp', 'stomp', 5),
+ ('phone', 'phone', 5),
+ ('throw-paper', 'throw-paper', 5))
+m5 = (('magic1', 'magic1', 5), ('throw-paper', 'throw-paper', 5), ('finger-wag', 'fingerwag', 5))
+m6 = (('magic2', 'magic2', 5),
+ ('quick-jump', 'jump', 6),
+ ('stomp', 'stomp', 5),
+ ('magic3', 'magic3', 5),
+ ('hold-pencil', 'hold-pencil', 5),
+ ('throw-paper', 'throw-paper', 5))
+m7 = (('speak', 'speak', 5),
+ ('throw-object', 'throw-object', 5),
+ ('glower', 'glower', 5),
+ ('throw-paper', 'throw-paper', 5))
+m8 = (('finger-wag', 'fingerwag', 5),
+ ('cigar-smoke', 'cigar-smoke', 8),
+ ('gavel', 'gavel', 8),
+ ('magic1', 'magic1', 5),
+ ('throw-object', 'throw-object', 5),
+ ('throw-paper', 'throw-paper', 5))
 if not base.config.GetBool('want-new-cogs', 0):
     ModelDict = {'a': ('/models/char/suitA-', 4),
      'b': ('/models/char/suitB-', 4),
@@ -320,7 +355,8 @@ class Suit(Avatar.Avatar):
     medallionColors = {'c': Vec4(0.863, 0.776, 0.769, 1.0),
      's': Vec4(0.843, 0.745, 0.745, 1.0),
      'l': Vec4(0.749, 0.776, 0.824, 1.0),
-     'm': Vec4(0.749, 0.769, 0.749, 1.0)}
+     'm': Vec4(0.749, 0.769, 0.749, 1.0),
+     'g': Vec4(0.957, 0.560, 0.518, 1.0)}
 
     def __init__(self):
         try:
@@ -569,6 +605,8 @@ class Suit(Avatar.Avatar):
             tieTex = loader.loadTexture('phase_5/maps/cog_robot_tie_legal.jpg')
         elif dept == 'm':
             tieTex = loader.loadTexture('phase_5/maps/cog_robot_tie_money.jpg')
+        elif dept == 'g':
+            tieTex = loader.loadTexture('phase_5/maps/cog_robot_tie_mono.jpg')
         tieTex.setMinfilter(Texture.FTLinearMipmapLinear)
         tieTex.setMagfilter(Texture.FTLinear)
         tie.setTexture(tieTex, 1)

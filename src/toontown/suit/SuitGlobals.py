@@ -50,4 +50,13 @@ suitProperties = {'f': (4.0 / cSize, SuitDNA.corpPolyColor, ['flunky', 'glasses'
                   'tf': (5.25 / aSize, SuitDNA.salesPolyColor, ['twoface'], '', 6.95),
                   'm': (5.75 / aSize, SuitDNA.salesPolyColor, ['twoface'], 'mingler.jpg', 7.61),
                   'mh': (7.0 / aSize, SuitDNA.salesPolyColor, ['yesman'], '', 8.95),
+                  # Monobots
+                  'm1': (4.0 / cSize, SuitDNA.monoPolyColor, ['tightwad'], 'bottom-feeder.jpg', 4.81),
+                  'm2': (4.375 / bSize, VBase4(0.95, 0.95, 1.0, 1.0), ['movershaker'], 'blood-sucker.jpg', 6.17),
+                  'm3': (4.25 / aSize, SuitDNA.monoPolyColor, ['twoface'], 'double-talker.jpg', 5.63),
+                  'm4': (4.35 / bSize, SuitDNA.monoPolyColor, ['ambulancechaser'], '', 6.39),
+                  'm5': (4.5 / aSize, SuitDNA.monoPolyColor, ['backstabber'], '', 6.71),
+                  'm6': (5.65 / bSize, VBase4(0.5, 0.8, 0.75, 1.0), ['telemarketer'], 'spin-doctor.jpg', 7.9),
+                  'm7': (7.125 / aSize, VBase4(0.25, 0.25, 0.5, 1.0), ['legaleagle'], '', 8.27),
+                  'm8': (7.0 / aSize, SuitDNA.monoPolyColor, ['bigwig'], '', 8.69),
                   }
