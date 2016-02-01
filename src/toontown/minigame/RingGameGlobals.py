@@ -13,7 +13,9 @@ ringColors = ((TTLocalizer.ColorRed, VBase4(1.0, 0.4, 0.2, 1.0)),
  (TTLocalizer.ColorPurple, VBase4(1.0, 0.0, 1.0, 1.0)),
  (TTLocalizer.ColorWhite, VBase4(1.0, 1.0, 1.0, 1.0)),
  (TTLocalizer.ColorBlack, VBase4(0.0, 0.0, 0.0, 1.0)),
- (TTLocalizer.ColorYellow, VBase4(1.0, 1.0, 0.2, 1.0)))
+ (TTLocalizer.ColorYellow, VBase4(1.0, 1.0, 0.2, 1.0)),
+ (TTLocalizer.ColorTeal, VBase4(0.2196, 0.5568, 0.5568, 1.0)),
+ (TTLocalizer.ColorGray,  VBase4(0.4117, 0.4117, 0.4117, 1.0)))
 ringColorSelection = [(0, 1, 2),
  3,
  4,

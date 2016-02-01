@@ -79,7 +79,7 @@ class ShowBase(DirectObject.DirectObject):
         self.appRunner = AppRunnerGlobal.appRunner
 
         #debug running multiplier
-        self.debugRunningMultiplier = 4
+        self.debugRunningMultiplier = 100
 
         # Setup wantVerifyPdb as soon as reasonable:
         Verify.wantVerifyPdb = self.config.GetBool('want-verify-pdb', 0)
