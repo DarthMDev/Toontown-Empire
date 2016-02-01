@@ -4,17 +4,13 @@ from toontown.battle.BattleProps import *
 from GoonGlobals import *
 from direct.fsm import FSM
 from direct.distributed import ClockDelta
-from otp.level import BasicEntities
-from otp.level import DistributedEntity
+from otp.level import BasicEntities, DistributedEntity
 from direct.directnotify import DirectNotifyGlobal
-from toontown.coghq import DistributedCrushableEntity
+from toontown.coghq import DistributedCrushableEntity, MovingPlatform
 from toontown.toonbase import ToontownGlobals
-from toontown.coghq import MovingPlatform
-import Goon
+import Goon, GoonDeath, random
 from direct.task.Task import Task
 from otp.level import PathEntity
-import GoonDeath
-import random
 
 class DistributedGoon(DistributedCrushableEntity.DistributedCrushableEntity, Goon.Goon, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedGoon')
