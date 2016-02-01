@@ -116,7 +116,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
         curShardTuples.sort(compareShardTuples)
         actualShardId = base.localAvatar.defaultShard
         for i in xrange(len(curShardTuples)):
-            shardId, name, pop, invasionStatus
+            shardId, name, pop, WVPop, invasionStatus = curShardTuples[i]
             if shardId == actualShardId:
                 self.currentBTP = buttonTuple[0]
                 self.currentBTL = buttonTuple[1]
@@ -287,25 +287,33 @@ class ShardPage(ShtikerPage.ShtikerPage):
         suit = None
         return head
 
+
+    def getCurrentShardId(self):
+        return base.localAvatar.defaultShard
+
+
     def updateScrollList(self):
         curShardTuples = base.cr.listActiveShards()
         curShardTuples.sort(compareShardTuples)
 
+        currentShardId = self.getCurrentShardId()
         actualShardId = base.localAvatar.defaultShard
         actualShardName = None
         anyChanges = 0
         totalPop = 0
+        totalWVPop = 0
         currentMap = {}
         self.shardButtons = []
 
         for i in xrange(len(curShardTuples)):
 
-            shardId, name, pop, invasionStatus
+            shardId, name, pop, WVPop, invasionStatus = curShardTuples[i]
 
             if shardId == actualShardId:
                 actualShardName = name
 
             totalPop += pop
+            totalWVPop += WVPop
             currentMap[shardId] = 1
             buttonTuple = self.shardButtonMap.get(shardId)
 
@@ -313,14 +321,24 @@ class ShardPage(ShtikerPage.ShtikerPage):
                 buttonTuple = self.makeShardButton(shardId, name, pop)
                 self.shardButtonMap[shardId] = buttonTuple
                 anyChanges = 1
+            elif self.showPop:
+                buttonTuple[1]['text'] = str(pop)
             else:
                 buttonTuple[1]['image_color'] = self.getPopColor(pop)
-                buttonTuple[1]['text'] = str(pop)
-                buttonTuple[1]['command'] = self.reloadRightBrain
+                buttonTuple[1]['text'] = self.getPopText(pop)
                 buttonTuple[1]['extraArgs'] = [pop, name, shardId, buttonTuple]
-                buttonTuple[2]['command'] = self.reloadRightBrain
+                buttonTuple[1]['command'] = self.getPopChoiceHandler(pop)
+                buttonTuple[2]['command'] = self.getPopChoiceHandler(pop)
                 buttonTuple[2]['extraArgs'] = [pop, name, shardId, buttonTuple]
+
             self.shardButtons.append(buttonTuple[0])
+
+            if shardId == currentShardId or self.book.safeMode:
+                buttonTuple[1]['state'] = DGG.DISABLED
+                buttonTuple[2]['state'] = DGG.DISABLED
+            else:
+                buttonTuple[1]['state'] = DGG.NORMAL
+                buttonTuple[2]['state'] = DGG.NORMAL
 
             if invasionStatus:
                 setupInvasionMarker(buttonTuple[3], invasionStatus)

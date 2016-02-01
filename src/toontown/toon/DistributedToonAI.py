@@ -4330,19 +4330,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.b_setName(newName)
         return
 
-    def b_setExperience(self, experience):
-        self.d_setExperience(experience)
-        self.setExperience(experience)
-
-    def d_setExperience(self, experience):
-        self.sendUpdate('setExperience', [experience])
-
-    def setExperience(self, experience):
-        self.experience = Experience.Experience(experience, self)
-
-    def getExperience(self):
-        return self.experience.makeNetString()
-
 @magicWord(category=CATEGORY_STAFF, types=[str, int, int])
 def cheesyEffect(value, hood=0, expire=0):
     """

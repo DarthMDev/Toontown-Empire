@@ -139,6 +139,7 @@ class NPCFriendCard(DirectFrame):
         self.sosDeleteButton = DirectButton(parent=self.front, relief=None, text=('', TTLocalizer.NPCFriendPageDelete, TTLocalizer.NPCFriendPageDelete, ''), text_fg=self.normalTextColor, text_scale=0.28, text_align=TextNode.ACenter, image=(trashClosedButton, trashOpenedButton, trashRolloverButton), image_pos=(Vec3(0, 0, 0.08)), pos=(1.25, 0, 0.6), scale=2, command=self.__handleDeleteNPCFriend)
         self.sosCountInfo = DirectLabel(parent=self.front, relief=None, text='', text_fg=self.normalTextColor, text_scale=0.75, text_align=TextNode.ALeft, textMayChange=1, pos=(0.0, 0, -1.0))
         star = loader.loadModel('phase_3.5/models/gui/name_star')
+
         self.rarityStars = []
 
         for i in xrange(self.maxRarity):
@@ -147,7 +148,7 @@ class NPCFriendCard(DirectFrame):
             self.rarityStars.append(label)
 
         self.confirmationDialog = None
-
+		
     def __chooseNPCFriend(self):
         if self['NPCID'] and self['doneEvent']:
             doneStatus = {}
@@ -255,3 +256,6 @@ class NPCFriendCard(DirectFrame):
     def showBack(self):
         self.front.hide()
         self.back.show()
+	
+    def hideDeleteButton(self):
+        self.sosDeleteButton.hide()
