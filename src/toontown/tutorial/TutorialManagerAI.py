@@ -7,9 +7,7 @@ from toontown.building.TutorialBuildingAI import TutorialBuildingAI
 from toontown.quest import Quests
 from toontown.suit.DistributedTutorialSuitAI import DistributedTutorialSuitAI
 from toontown.toon import NPCToons
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.toonbase import ToontownGlobals
-
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals
 
 class TutorialFSM(FSM):
     def __init__(self, air, zones, avId):

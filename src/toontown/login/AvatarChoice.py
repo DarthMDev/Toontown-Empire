@@ -5,6 +5,7 @@ from toontown.toon import ToonDNA, ToonHead
 from toontown.toontowngui import TTDialog
 from direct.gui.DirectGui import *
 from direct.directnotify import DirectNotifyGlobal
+
 NAME_ROTATIONS = (7, -11, 1, -5, 3.5, -5)
 NAME_POSITIONS = ((0, 0, 0.26),
  (-0.03, 0, 0.25),
