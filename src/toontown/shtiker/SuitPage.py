@@ -340,7 +340,7 @@ class SuitPage(ShtikerPage.ShtikerPage):
         self.rolloverFrame.setBin('gui-popup', 0)
         self.rolloverFrame.hide()
         gui.removeNode()
-        for dept in xrange(0, len(SuitDNA.suitDepts)):
+        for dept in xrange(0, len(SuitDNA.suitDepts) - 1):
             row = []
             color = PANEL_COLORS[dept]
             for type in xrange(0, SuitDNA.suitsPerDept):
@@ -505,7 +505,7 @@ class SuitPage(ShtikerPage.ShtikerPage):
     def updatePage(self):
         index = 0
         cogs = base.localAvatar.cogs
-        for dept in xrange(0, len(SuitDNA.suitDepts)):
+        for dept in xrange(0, len(SuitDNA.suitDepts)-1):
             for type in xrange(0, SuitDNA.suitsPerDept):
                 self.updateCogStatus(dept, type, cogs[index])
                 index += 1
