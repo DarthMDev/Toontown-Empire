@@ -89,10 +89,10 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.glasses = (0, 0, 0)
         self.backpack = (0, 0, 0)
         self.shoes = (0, 0, 0)
-        self.cogTypes = [0, 0, 0, 0]
-        self.cogLevel = [0, 0, 0, 0]
-        self.cogParts = [0, 0, 0, 0]
-        self.cogRadar = [0, 0, 0, 0]
+        self.cogTypes = [0, 0, 0, 0, 0]
+        self.cogLevel = [0, 0, 0, 0, 0]
+        self.cogParts = [0, 0, 0, 0, 0]
+        self.cogRadar = [0, 0, 0, 0, 0]
         self.cogIndex = -1
         self.disguisePageFlag = 0
         self.sosPageFlag = 0
@@ -1062,11 +1062,12 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def setCogRadar(self, radar):
         if not radar:
-            self.notify.warning('cogRadar set to bad value: %s. Resetting to [0,0,0,0]' % radar)
+            self.notify.warning('cogRadar set to bad value: %s. Resetting to [0,0,0,0,0]' % radar)
             self.cogRadar = [0,
              0,
              0,
-             0]
+             0,
+			 0]
         else:
             self.cogRadar = radar
 
@@ -1086,7 +1087,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.buildingRadar = [0,
              0,
              0,
-             0]
+             0,
+			 0]
         else:
             self.buildingRadar = radar
 
@@ -1106,7 +1108,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.cogTypes = [0,
              0,
              0,
-             0]
+             0,
+			 0]
         else:
             for i in xrange(len(types)):
                 if types[i] == SuitDNA.suitsPerDept - 1:
@@ -1130,11 +1133,12 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def setCogLevels(self, levels):
         if not levels:
-            self.notify.warning('cogLevels set to bad value: %s. Resetting to [0,0,0,0]' % levels)
+            self.notify.warning('cogLevels set to bad value: %s. Resetting to [0,0,0,0,0]' % levels)
             self.cogLevels = [0,
              0,
              0,
-             0]
+             0,
+			 0]
         else:
             self.cogLevels = levels
 
@@ -1189,11 +1193,12 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def setCogParts(self, parts):
         if not parts:
-            self.notify.warning('cogParts set to bad value: %s. Resetting to [0,0,0,0]' % parts)
+            self.notify.warning('cogParts set to bad value: %s. Resetting to [0,0,0,0,0]' % parts)
             self.cogParts = [0,
              0,
              0,
-             0]
+             0,
+			 0]
         else:
             self.cogParts = parts
 
@@ -1254,11 +1259,12 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def setCogMerits(self, merits):
         if not merits:
-            self.notify.warning('cogMerits set to bad value: %s. Resetting to [0,0,0,0]' % merits)
+            self.notify.warning('cogMerits set to bad value: %s. Resetting to [0,0,0,0,0]' % merits)
             self.cogMerits = [0,
              0,
              0,
-             0]
+             0,
+			 0]
         else:
             self.cogMerits = merits
 
@@ -4449,18 +4455,19 @@ def maxToon(missingTrack=None):
             CogDisguiseGlobals.PartsPerSuitBitmasks[1],  # Lawbot
             CogDisguiseGlobals.PartsPerSuitBitmasks[2],  # Cashbot
             CogDisguiseGlobals.PartsPerSuitBitmasks[3]   # Sellbot
+            CogDisguiseGlobals.PartsPerSuitBitmasks[4]   # Monobot
         ]
     )
-    target.b_setCogLevels([49] * 4)
-    target.b_setCogTypes([7, 7, 7, 7])
+    target.b_setCogLevels([49] * 5)
+    target.b_setCogTypes([7, 7, 7, 7, 7])
 
     # Max their Cog gallery:
     deptCount = len(SuitDNA.suitDepts)
     target.b_setCogCount(list(CogPageGlobals.COG_QUOTAS[1]) * deptCount)
     cogStatus = [CogPageGlobals.COG_COMPLETE2] * SuitDNA.suitsPerDept
     target.b_setCogStatus(cogStatus * deptCount)
-    target.b_setCogRadar([1, 1, 1, 1])
-    target.b_setBuildingRadar([1, 1, 1, 1])
+    target.b_setCogRadar([1, 1, 1, 1, 1])
+    target.b_setBuildingRadar([1, 1, 1, 1, 1])
 
     # Max out their racing tickets:
     target.b_setTickets(99999)
@@ -4771,7 +4778,7 @@ def cogIndex(index):
     """
     Modifies the invoker's Cog index.
     """
-    if not -1 <= index <= 3:
+    if not -1 <= index <= 4:
         return 'Invalid Cog index.'
     invoker = spellbook.getInvoker()
     invoker.b_setCogIndex(index)
@@ -5153,8 +5160,8 @@ def maxCogPage():
     target.b_setCogCount(list(CogPageGlobals.COG_QUOTAS[1]) * deptCount)
     cogStatus = [CogPageGlobals.COG_COMPLETE2] * SuitDNA.suitsPerDept
     target.b_setCogStatus(cogStatus * deptCount)
-    target.b_setCogRadar([1, 1, 1, 1])
-    target.b_setBuildingRadar([1, 1, 1, 1])
+    target.b_setCogRadar([1, 1, 1, 1, 1])
+    target.b_setBuildingRadar([1, 1, 1, 1, 1])
     return 'Maxed %s\'s discovered cogs!' % (target.getName())
 
 @magicWord(category=CATEGORY_LEADER)
