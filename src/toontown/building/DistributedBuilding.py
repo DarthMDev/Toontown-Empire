@@ -381,9 +381,9 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         self.stopTransition()
         if self.mode != 'toon':
             self.setToToon()
-        self.loadAnimToSuitSfx()
         if self.track == 'g':
             return
+        self.loadAnimToSuitSfx()
         sideBldgNodes = self.getNodePaths()
         nodePath = hidden.find(self.getSbSearchString())
         newNP = self.setupSuitBuilding(nodePath)
@@ -830,6 +830,8 @@ class DistributedBuilding(DistributedObject.DistributedObject):
     def setToSuit(self):
         self.stopTransition()
         if self.mode == 'suit':
+            return
+        if self.track == 'g':
             return
         self.mode = 'suit'
         nodes = self.getNodePaths()
