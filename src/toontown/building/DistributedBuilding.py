@@ -433,8 +433,6 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         return
 
     def setupSuitBuilding(self, nodePath):
-        if self.track = 'g':
-            return None # no monobot that's illegal
         if nodePath.isEmpty():
             return
         dnaStore = self.cr.playGame.dnaStore
@@ -487,6 +485,8 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         self.stopTransition()
         if self.mode != 'toon':
             self.setToToon()
+        if self.track == 'g':
+            return
         self.loadAnimToSuitSfx()
         sideBldgNodes = self.getNodePaths()
         nodePath = hidden.find(self.getSbSearchString())
@@ -827,8 +827,6 @@ class DistributedBuilding(DistributedObject.DistributedObject):
     def setToSuit(self):
         self.stopTransition()
         if self.mode == 'suit':
-            return
-        if self.track == 'g':
             return
         self.mode = 'suit'
         nodes = self.getNodePaths()
