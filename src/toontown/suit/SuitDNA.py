@@ -89,7 +89,8 @@ suitCTypes = ['f',
 suitDepts = ['c',
  'l',
  'm',
- 's']
+ 's',
+ 'g']
 suitDeptZones = [ToontownGlobals.BossbotHQ,
  ToontownGlobals.LawbotHQ,
  ToontownGlobals.CashbotHQ,
