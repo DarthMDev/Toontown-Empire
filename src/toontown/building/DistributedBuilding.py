@@ -436,8 +436,6 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         return
 
     def setupSuitBuilding(self, nodePath):
-        if nodePath.isEmpty():
-            return
         if self.track == 'g':
             return None # no monobot that's illegal
         dnaStore = self.cr.playGame.dnaStore
