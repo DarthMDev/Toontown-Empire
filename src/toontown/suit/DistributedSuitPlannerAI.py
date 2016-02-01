@@ -37,7 +37,7 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
     notify = directNotify.newCategory('DistributedSuitPlannerAI')
     CogdoPopFactor = config.GetFloat('cogdo-pop-factor', 1.5)
     CogdoRatio = min(1.0, max(0.0, config.GetFloat('cogdo-ratio', DEFAULT_COGDO_RATIO)))
-    MAX_SUIT_TYPES = 8
+    MAX_SUIT_TYPES = 6
     POP_UPKEEP_DELAY = 10
     POP_ADJUST_DELAY = 300
     PATH_COLLISION_BUFFER = 5
@@ -957,56 +957,14 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
         self.sendUpdateToAvatarId(self.air.getAvatarIdFromSender(), 'buildingListResponse', [buildingList])
 
     def pickLevelTypeAndTrack(self, level=None, type=None, track=None):
-        maxLevel = typeChoices = 1
-        misMatch = missingArg = found = testLvl = False
-        if any(arg is None for arg in (level, type, track)):
-            missingArg = True
-        else:
-            found = True
-            name = SuitDNA.suitHeadTypes[type - 1]
-            maxLevel = SuitBattleGlobals.SuitAttributes[name]['level'] + 5
-        if track is None:
-            track = SuitDNA.suitDepts[SuitBattleGlobals.pickFromFreqList(self.SuitHoodInfo[
-                                        self.hoodInfoIdx][self.SUIT_HOOD_INFO_TRACK])]
         if level is None:
             level = random.choice(self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_LVL])
-            if type and track:
-                trackIndex = SuitDNA.suitDepts.index(track)
-                name = SuitDNA.getSuitsInDept(trackIndex)[type - 1]
-                baseLvl = SuitBattleGlobals.SuitAttributes[name]['level']
-                upper = baseLvl + len(SuitBattleGlobals.SuitAttributes[name]['hp'])
-                choices = range(baseLvl + 1, upper + 1)
-                level = random.choice(choices)
-            else:
-                level = random.choice(self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_LVL])
         if type is None:
-            typeChoices = range(1, self.MAX_SUIT_TYPES + 1)
-            if typeChoices:
-                type = random.choice(typeChoices)
-        if missingArg:
-            trackIndex = SuitDNA.suitDepts.index(track)
-            name = SuitDNA.getSuitsInDept(trackIndex)[type - 1]
-            try:
-                baseLvl = SuitBattleGlobals.SuitAttributes[name]['level']
-                testLvl = level - baseLvl - 1
-                maxLevel = baseLvl + 5
-                SuitBattleGlobals.SuitAttributes[name]['hp'][testLvl]
-            except:
-                misMatch = True
-        if not typeChoices or misMatch or testLvl < 0:
-            for key, value in SuitBattleGlobals.SuitAttributes.items():
-                if SuitDNA.getSuitDept(key) == track:
-                    testLvl = level - value['level'] - 1
-                    try:
-                        value['hp'][testLvl]
-                        found = type = value['level'] + 1
-                        track = SuitDNA.getSuitDept(key)
-                        maxLevel = value['level'] + 5
-                        break
-                    except:
-                        continue
-        if maxLevel > 1 and level > maxLevel and found:
-            pass
+            typeChoices = range(max(level - 4, 1), min(level, self.MAX_SUIT_TYPES) + 1)
+            type = random.choice(typeChoices)
         else:
             level = min(max(level, type), type + 4)
+        if track is None:
+            track = SuitDNA.suitDepts[SuitBattleGlobals.pickFromFreqList(self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_TRACK])]
+        self.notify.debug('pickLevelTypeAndTrack: %s %s %s' % (level, type, track))
         return (level, type, track)
