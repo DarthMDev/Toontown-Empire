@@ -154,36 +154,31 @@ bw = (('finger-wag', 'fingerwag', 5),
 m1 = (('pickpocket', 'pickpocket', 5),
  ('rubber-stamp', 'rubber-stamp', 5),
  ('shredder', 'shredder', 3.5),
- ('watercooler', 'watercooler', 5))
+ ('magic2', 'magic2', 5),
+ ('glower', 'glower', 5))
 m2 = (('effort', 'effort', 5),
  ('throw-paper', 'throw-paper', 5),
  ('throw-object', 'throw-object', 5),
+ ('magic3', 'magic3', 5),
+ ('pencil-sharpener', 'pencil-sharpener', 5),
  ('magic1', 'magic1', 5))
 m3 = (('rubber-stamp', 'rubber-stamp', 5),
- ('throw-paper', 'throw-paper', 5),
  ('speak', 'speak', 5),
+ ('pickpocket', 'pickpocket', 5),
  ('finger-wag', 'fingerwag', 5),
  ('throw-paper', 'throw-paper', 5))
-m4 = (('throw-object', 'throw-object', 5),
- ('roll-o-dex', 'roll-o-dex', 5),
- ('stomp', 'stomp', 5),
- ('phone', 'phone', 5),
- ('throw-paper', 'throw-paper', 5))
+m4 = (('glower', 'glower', 5), ('magic1', 'magic1', 5), ('magic3', 'magic3', 5), ('golf-club-swing', 'golf-club-swing', 5))
 m5 = (('magic1', 'magic1', 5), ('throw-paper', 'throw-paper', 5), ('finger-wag', 'fingerwag', 5))
 m6 = (('magic2', 'magic2', 5),
- ('quick-jump', 'jump', 6),
- ('stomp', 'stomp', 5),
+ ('effort', 'effort', 5),
+ ('pencil-sharpener', 'pencil-sharpener', 5),
  ('magic3', 'magic3', 5),
- ('hold-pencil', 'hold-pencil', 5),
+ ('hold-eraser', 'hold-eraser', 5),
  ('throw-paper', 'throw-paper', 5))
-m7 = (('speak', 'speak', 5),
- ('throw-object', 'throw-object', 5),
- ('glower', 'glower', 5),
- ('throw-paper', 'throw-paper', 5))
+m7 = (('pickpocket', 'pickpocket', 5), ('throw-paper', 'throw-paper', 3.5), ('glower', 'glower', 5))
 m8 = (('finger-wag', 'fingerwag', 5),
- ('cigar-smoke', 'cigar-smoke', 8),
- ('gavel', 'gavel', 8),
  ('magic1', 'magic1', 5),
+ ('magic3', 'magic3', 5),
  ('throw-object', 'throw-object', 5),
  ('throw-paper', 'throw-paper', 5))
 if not base.config.GetBool('want-new-cogs', 0):

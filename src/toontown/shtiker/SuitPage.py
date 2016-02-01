@@ -554,7 +554,10 @@ class SuitPage(ShtikerPage.ShtikerPage):
         for panel in panels:
             panel.count = 0
         for cog in cogList:
-            self.panels[cog].count += 1
+            if cog - ((len(SuitDNA.suitDepts)-1) * SuitDNA.suitsPerDept - 1) > 0: # any cog with id 33-1 or over...
+                pass # monobot go away
+            else:
+                self.panels[cog].count += 1
         for panel in panels:
             panel.cogRadarLabel['text'] = TTLocalizer.SuitPageCogRadar % panel.count
             if self.radarOn[deptNum]:

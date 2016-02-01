@@ -387,6 +387,9 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         sideBldgNodes = self.getNodePaths()
         nodePath = hidden.find(self.getSbSearchString())
         newNP = self.setupSuitBuilding(nodePath)
+        if not newNP:
+            self.setToToon()
+            return # Monobots
         if not self.leftDoor:
             return
         closeDoors(self.leftDoor, self.rightDoor)
@@ -435,6 +438,8 @@ class DistributedBuilding(DistributedObject.DistributedObject):
     def setupSuitBuilding(self, nodePath):
         if nodePath.isEmpty():
             return
+        if self.track == 'g':
+            return None # no monobot that's illegal
         dnaStore = self.cr.playGame.dnaStore
         level = int(self.difficulty / 2) + 1
         if level > 5:

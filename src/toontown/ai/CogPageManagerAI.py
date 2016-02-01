@@ -21,7 +21,7 @@ class CogPageManagerAI:
                 continue
             if toon.getDoId() in cog['activeToons']:
                 deptIndex = SuitDNA.suitDepts.index(cog['track'])
-                if toon.buildingRadar[deptIndex] == 1:
+                if toon.buildingRadar[deptIndex-1] == 1:
                     continue
                 cogIndex = SuitDNA.suitHeadTypes.index(cog['type'])
                 buildingQuota = COG_QUOTAS[1][cogIndex % SuitDNA.suitsPerDept]
@@ -39,7 +39,7 @@ class CogPageManagerAI:
         toon.b_setCogStatus(cogs)
         newCogRadar = toon.cogRadar
         newBuildingRadar = toon.buildingRadar
-        for dept in xrange(len(SuitDNA.suitDepts)):
+        for dept in xrange(len(SuitDNA.suitDepts)-1):
             if newBuildingRadar[dept] == 1:
                 continue
             cogRadar = 1
