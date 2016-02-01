@@ -200,7 +200,7 @@ class SuitPage(ShtikerPage.ShtikerPage):
         gui = loader.loadModel('phase_3.5/models/gui/suitpage_gui')
         self.panelModel = gui.find('**/card')
         self.shadowModels = []
-        for index in xrange(1, len(SuitDNA.suitHeadTypes) + -7):
+        for index in xrange(1, len(SuitDNA.suitHeadTypes) + 1):
             self.shadowModels.append(gui.find('**/shadow' + str(index)))
         del gui
         self.makePanels()
@@ -340,7 +340,7 @@ class SuitPage(ShtikerPage.ShtikerPage):
         self.rolloverFrame.setBin('gui-popup', 0)
         self.rolloverFrame.hide()
         gui.removeNode()
-        for dept in xrange(0, len(SuitDNA.suitDepts) - 1):
+        for dept in xrange(0, len(SuitDNA.suitDepts)):
             row = []
             color = PANEL_COLORS[dept]
             for type in xrange(0, SuitDNA.suitsPerDept):
@@ -505,7 +505,7 @@ class SuitPage(ShtikerPage.ShtikerPage):
     def updatePage(self):
         index = 0
         cogs = base.localAvatar.cogs
-        for dept in xrange(0, len(SuitDNA.suitDepts)-1):
+        for dept in xrange(0, len(SuitDNA.suitDepts)):
             for type in xrange(0, SuitDNA.suitsPerDept):
                 self.updateCogStatus(dept, type, cogs[index])
                 index += 1
