@@ -4462,9 +4462,9 @@ def maxToon(missingTrack=None):
     # Max their Cog gallery:
     deptCount = len(SuitDNA.suitDepts)
     target.b_setCogCount(list(CogPageGlobals.COG_QUOTAS[1]) * deptCount)
-    cogStatus = [CogPageGlobals.COG_COMPLETE2] * SuitDNA.suitsPerDept
+    target.b_setCogStatus([CogPageGlobals.COG_COMPLETE2] * 40)
     target.b_setCogStatus(cogStatus * deptCount)
-    target.b_setCogRadar([1, 1, 1, 1, 1])
+    target.b_setCogRadar([1, 1, 1, 1])
     target.b_setBuildingRadar([1, 1, 1, 1])
 
     # Max out their racing tickets:
@@ -5159,7 +5159,7 @@ def maxCogPage():
     cogStatus = [CogPageGlobals.COG_COMPLETE2] * SuitDNA.suitsPerDept
     target.b_setCogStatus(cogStatus * deptCount)
     target.b_setCogRadar([1, 1, 1, 1])
-    target.b_setBuildingRadar([1, 1, 1, 1, 1])
+    target.b_setBuildingRadar([1, 1, 1, 1])
     return 'Maxed %s\'s discovered cogs!' % (target.getName())
 
 @magicWord(category=CATEGORY_LEADER)

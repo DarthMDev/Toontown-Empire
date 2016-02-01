@@ -4,6 +4,7 @@ from toontown.shtiker.CogPageGlobals import *
 class CogPageManagerAI:
 
     def toonEncounteredCogs(self, toon, encounteredCogs, zoneId):
+        #encountered cogs: list of map 'type'->suit.dna.name 'activeToons'-> list of active avs
         cogs = toon.cogs
         for cog in encounteredCogs:
             if toon.getDoId() in cog['activeToons']:
@@ -14,6 +15,18 @@ class CogPageManagerAI:
         toon.b_setCogStatus(cogs)
 
     def toonKilledCogs(self, toon, killedCogs, zoneId):
+        #killedCogs - list of encounters
+        # 'type'-> suit.dna.name
+        # 'level'
+        # 'track' -> suit.dna.dept
+        # 'isSkelecog'
+        # 'isForeman'
+        # 'isVP'
+        # 'isCFO'
+        # 'isSupervisor'
+        # 'isVirtual'
+        # 'hasRevives'
+        # 'activeToons'
         cogCounts = toon.cogCounts
         cogs = toon.cogs
         for cog in killedCogs:
@@ -37,6 +50,8 @@ class CogPageManagerAI:
                     cogs[cogIndex] = COG_COMPLETE2
         toon.b_setCogCount(cogCounts)
         toon.b_setCogStatus(cogs)
+		
+        #time to recount radar
         newCogRadar = toon.cogRadar
         newBuildingRadar = toon.buildingRadar
         for dept in xrange(len(SuitDNA.suitDepts)-1):
