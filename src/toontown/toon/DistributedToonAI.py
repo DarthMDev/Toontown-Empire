@@ -1111,14 +1111,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
              0,
 			 0]
         else:
-            for i in xrange(len(types)):
-                if types[i] == SuitDNA.suitsPerDept - 1:
-                    zoneId = SuitDNA.suitDeptZones[i]
-                    tpAccess = self.getTeleportAccess()
-
-                    if zoneId not in tpAccess:
-                        tpAccess.append(zoneId)
-                        self.b_setTeleportAccess(tpAccess)
             self.cogTypes = types
 
     def d_setCogTypes(self, types):
@@ -4462,12 +4454,12 @@ def maxToon(missingTrack=None):
     target.b_setCogTypes([7, 7, 7, 7, 7])
 
     # Max their Cog gallery:
-    deptCount = len(SuitDNA.suitDepts)
+    '''deptCount = len(SuitDNA.suitDepts)
     target.b_setCogCount(list(CogPageGlobals.COG_QUOTAS[1]) * deptCount)
     target.b_setCogStatus([CogPageGlobals.COG_COMPLETE2] * 40)
     target.b_setCogStatus(cogStatus * deptCount)
-    target.b_setCogRadar([1, 1, 1, 1])
-    target.b_setBuildingRadar([1, 1, 1, 1])
+    target.b_setCogRadar([1, 1, 1, 1, 1])
+    target.b_setBuildingRadar([1, 1, 1, 1])'''
 
     # Max out their racing tickets:
     target.b_setTickets(99999)
