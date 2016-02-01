@@ -185,7 +185,7 @@ class RewardPanel(DirectFrame):
         self.missedItemFrame.hide()
         trackBarOffset = 0
         self.skipButton['state'] = choice(noSkip, DGG.DISABLED, DGG.NORMAL)
-        for i in xrange(len(SuitDNA.suitDepts)-1):
+        for i in range(len(SuitDNA.suitDepts)-1):
             meritBar = self.meritBars[i]
             meritLabel = self.meritLabels[i]
             totalMerits = CogDisguiseGlobals.getTotalMerits(toon, i)
@@ -471,9 +471,9 @@ class RewardPanel(DirectFrame):
                 t = (i + 1) / float(numTicks)
                 newValue = int(currentSkill - t * skillDiff + 0.5)
                 intervalList.append(Func(self.incrementExp, track, newValue, toon))
-                intervalList.append(Wait(tickDelay * 0.5))
+                intervalList.append(Wait(tickDelay * 0.7))
 
-            intervalList.append(Wait(0.3))
+            intervalList.append(Wait(0.1))
         return intervalList
 
     def getMeritIntervalList(self, toon, dept, origMerits, earnedMerits):
@@ -493,10 +493,10 @@ class RewardPanel(DirectFrame):
             intervalList.append(Wait(tickDelay))
 
         intervalList.append(Func(self.resetMeritBarColor, dept))
-        intervalList.append(Wait(0.3))
+        intervalList.append(Wait(0.1))
         if toon.cogLevels[dept] < ToontownGlobals.MaxCogSuitLevel:
             if neededMerits and toon.readyForPromotion(dept):
-                intervalList.append(Wait(0.3))
+                intervalList.append(Wait(0.4))
                 intervalList += self.getPromotionIntervalList(toon, dept)
         return intervalList
 
@@ -511,8 +511,14 @@ class RewardPanel(DirectFrame):
         name = SuitDNA.suitDepts[dept]
         self.promotionFrame['text'] = TTLocalizer.RewardPanelPromotion % SuitDNA.suitDeptFullnames[name]
         icons = loader.loadModel('phase_3/models/gui/cog_icons')
-        if dept in SuitDNA.suitDeptModelPaths:
-            self.deptIcon = icons.find(SuitDNA.suitDeptModelPaths[dept]).copyTo(self.promotionFrame)
+        if dept == 0:
+            self.deptIcon = icons.find('**/CorpIcon').copyTo(self.promotionFrame)
+        elif dept == 1:
+            self.deptIcon = icons.find('**/LegalIcon').copyTo(self.promotionFrame)
+        elif dept == 2:
+            self.deptIcon = icons.find('**/MoneyIcon').copyTo(self.promotionFrame)
+        elif dept == 3:
+            self.deptIcon = icons.find('**/SalesIcon').copyTo(self.promotionFrame)
         icons.removeNode()
         self.deptIcon.setPos(0, 0, -0.225)
         self.deptIcon.setScale(0.33)
@@ -675,23 +681,23 @@ class RewardPanel(DirectFrame):
                     endTracks[trackIndex] = 1
                     trackEnded = 1
 
-        for dept in xrange(len(SuitDNA.suitDepts)):
+        for dept in xrange(len(SuitDNA.suitDepts)-1):
             if meritList[dept]:
                 track += self.getMeritIntervalList(toon, dept, origMeritList[dept], meritList[dept])
 
-        track.append(Wait(1.0))
+        track.append(Wait(0.75))
         itemInterval = self.getItemIntervalList(toon, itemList)
         if itemInterval:
             track.append(Func(self.initItemFrame, toon))
-            track.append(Wait(1.0))
+            track.append(Wait(0.25))
             track += itemInterval
-            track.append(Wait(1.0))
+            track.append(Wait(0.5))
         missedItemInterval = self.getMissedItemIntervalList(toon, missedItemList)
         if missedItemInterval:
             track.append(Func(self.initMissedItemFrame, toon))
-            track.append(Wait(1.0))
+            track.append(Wait(0.25))
             track += missedItemInterval
-            track.append(Wait(1.0))
+            track.append(Wait(0.25))
         self.notify.debug('partList = %s' % partList)
         newPart = 0
         for part in partList:
@@ -703,9 +709,9 @@ class RewardPanel(DirectFrame):
             partList = self.getCogPartIntervalList(toon, partList)
             if partList:
                 track.append(Func(self.initCogPartFrame, toon))
-                track.append(Wait(1.0))
+                track.append(Wait(0.25))
                 track += partList
-                track.append(Wait(1.0))
+                track.append(Wait(0.25))
         questList = self.getQuestIntervalList(toon, deathList, toonList, origQuestsList, itemList, helpfulToonsList)
         if questList:
             avQuests = []
@@ -713,9 +719,9 @@ class RewardPanel(DirectFrame):
                 avQuests.append(origQuestsList[i:i + 5])
 
             track.append(Func(self.initQuestFrame, toon, copy.deepcopy(avQuests)))
-            track.append(Wait(1.0))
+            track.append(Wait(0.25))
             track += questList
-            track.append(Wait(2.0))
+            track.append(Wait(0.5))
         track.append(Wait(0.25))
         if trackEnded:
             track.append(Func(self.vanishFrames))
@@ -756,7 +762,9 @@ class RewardPanel(DirectFrame):
          0], [], [], [], [0,
          0,
          0,
+         0,
          0], [0,
+         0,
          0,
          0,
          0], [], [base.localAvatar] + otherToons)
