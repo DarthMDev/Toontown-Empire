@@ -18,7 +18,6 @@ class BRHood(ToonHood):
       ToontownGlobals.CHRISTMAS: ['phase_8/dna/winter_storage_BR.pdna'],
       ToontownGlobals.HALLOWEEN: ['phase_8/dna/halloween_props_storage_BR.pdna']}
 
-
     def load(self):
         ToonHood.load(self)
 
