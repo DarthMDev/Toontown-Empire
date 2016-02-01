@@ -1,7 +1,8 @@
 import os
+os.chdir('../../../')
 data = []
 #TODO: Add the correct path and make it edit the cluster files. ~FordTheWriter
-with open('C:\Users\mar_h_000\Desktop\qa.prc', 'r+') as config:
+with open('dependencies/config/release/qa.prc', 'r+') as config:
 	data = config.readlines()
 	line = data[7].split()
 	x = line[1]
@@ -19,9 +20,9 @@ with open('C:\Users\mar_h_000\Desktop\qa.prc', 'r+') as config:
 		data[7] = "server-version TTE-Alpha-"+ str(ver[0]) + "." + str(ver[1]) + "." + str(ver[2]) + "\n"
 		
 		
-os.remove('C:\Users\mar_h_000\Desktop\qa.prc')
+os.remove('dependencies/config/release/qa.prc')
 
-with open('C:\Users\mar_h_000\Desktop\qa.prc', "a+") as newfile:
+with open('dependencies/config/release/qa.prc', "a+") as newfile:
 	newfile.writelines(data)
 			
 	print(ver)
