@@ -185,13 +185,13 @@ class RewardPanel(DirectFrame):
         self.missedItemFrame.hide()
         trackBarOffset = 0
         self.skipButton['state'] = choice(noSkip, DGG.DISABLED, DGG.NORMAL)
-        for i in xrange(len(SuitDNA.suitDepts)):
+        for i in xrange(len(SuitDNA.suitDepts)-1):
             meritBar = self.meritBars[i]
             meritLabel = self.meritLabels[i]
             totalMerits = CogDisguiseGlobals.getTotalMerits(toon, i)
             merits = meritList[i]
             self.meritIncLabels[i].hide()
-            if CogDisguiseGlobals.isSuitComplete(toon.cogParts, i):
+            if CogDisguiseGlobals.isSuitComplete(toon.cogParts, i) and i != 4:
                 if not self.trackBarsOffset:
                     trackBarOffset = 0.47
                     self.trackBarsOffset = 1

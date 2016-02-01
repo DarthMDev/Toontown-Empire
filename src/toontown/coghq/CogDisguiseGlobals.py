@@ -530,6 +530,8 @@ suitTypes = PythonUtil.Enum(('NoSuit', 'NoMerits', 'FullSuit'))
 
 def getNextPart(parts, partIndex, dept):
     dept = dept2deptIndex(dept)
+    if dept == 4:
+        return 1
     needMask = PartsPerSuitBitmasks[dept] & PartsQueryMasks[partIndex]
     haveMask = parts[dept] & PartsQueryMasks[partIndex]
     nextPart = ~needMask | haveMask
@@ -556,6 +558,8 @@ def isSuitComplete(parts, dept):
 
 def getTotalMerits(toon, index):
     from toontown.battle import SuitBattleGlobals
+    if index == 4:
+        return 0
     cogIndex = toon.cogTypes[index] + SuitDNA.suitsPerDept * index
     cogTypeStr = SuitDNA.suitHeadTypes[cogIndex]
     cogBaseLevel = SuitBattleGlobals.SuitAttributes[cogTypeStr]['level']
