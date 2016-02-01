@@ -1107,6 +1107,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
              0,
              0,
              0,
+			 0,
 			 0]
         else:
             for i in xrange(len(types)):
@@ -5074,10 +5075,13 @@ def suit(command, suitIndex, cogType=0, cogAbilities=0):
             return 'Successfully spawned suit with index {0}!'.format(suitIndex)
         return "Couldn't spawn suit with index {0}.".format(suitIndex)
     elif command == 'building':
-        returnCode = invoker.doBuildingTakeover(SuitDNA.suitHeadTypes.index(suitName))
-        if returnCode[0] == 'success':
-            return 'Successfully spawned building with index {0}!'.format(suitName)
-        return "Couldn't spawn building with index {0}.".format(suitName)
+		if suitIndex >= 32:
+			# you stop with the monobots
+			return "Couldn't spawn building with cog {0}.".format(suitName)
+			returnCode = invoker.doBuildingTakeover(SuitDNA.suitHeadTypes.index(suitName))
+			if returnCode[0] == 'success':
+				return 'Successfully spawned building with index {0}!'.format(suitName)
+			return "Couldn't spawn building with index {0}.".format(suitName)
     elif command == 'do':
         if suitIndex == 0:
 		 suitResult = 31
