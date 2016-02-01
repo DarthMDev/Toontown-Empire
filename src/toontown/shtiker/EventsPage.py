@@ -8,6 +8,7 @@ from otp.otpbase import OTPLocalizer
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.toontowngui import TTDialog
 from toontown.parties import PartyGlobals, PartyUtils, Party
+from toontown.parties.Party import Party
 from toontown.parties.ServerTimeGui import ServerTimeGui
 from toontown.parties.CalendarGuiMonth import CalendarGuiMonth
 from toontown.parties.PartyUtils import getPartyActivityIcon
