@@ -1,10 +1,8 @@
 from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
-from toontown.coghq import DistributedCashbotBossCraneAI
-from toontown.coghq import DistributedCashbotBossSafeAI
+from toontown.coghq import DistributedCashbotBossCraneAI, DistributedCashbotBossSafeAI, DistributedCashbotBossTreasureAI
 from toontown.suit import DistributedCashbotBossGoonAI
-from toontown.coghq import DistributedCashbotBossTreasureAI
 from toontown.battle import BattleExperienceAI
 from toontown.chat import ResistanceChat
 from direct.fsm import FSM
