@@ -92,7 +92,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.cogTypes = [0, 0, 0, 0, 0]
         self.cogLevel = [0, 0, 0, 0, 0]
         self.cogParts = [0, 0, 0, 0, 0]
-        self.cogRadar = [0, 0, 0, 0, 0]
+        self.cogRadar = [0, 0, 0, 0]
         self.cogIndex = -1
         self.disguisePageFlag = 0
         self.sosPageFlag = 0
@@ -1066,7 +1066,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.cogRadar = [0,
              0,
              0,
-             0,
 			 0]
         else:
             self.cogRadar = radar
@@ -1085,7 +1084,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         if not radar:
             self.notify.warning('buildingRadar set to bad value: %s. Resetting to [0,0,0,0]' % radar)
             self.buildingRadar = [0,
-             0,
              0,
              0,
 			 0]
@@ -4467,7 +4465,7 @@ def maxToon(missingTrack=None):
     cogStatus = [CogPageGlobals.COG_COMPLETE2] * SuitDNA.suitsPerDept
     target.b_setCogStatus(cogStatus * deptCount)
     target.b_setCogRadar([1, 1, 1, 1, 1])
-    target.b_setBuildingRadar([1, 1, 1, 1, 1])
+    target.b_setBuildingRadar([1, 1, 1, 1])
 
     # Max out their racing tickets:
     target.b_setTickets(99999)
@@ -5160,7 +5158,7 @@ def maxCogPage():
     target.b_setCogCount(list(CogPageGlobals.COG_QUOTAS[1]) * deptCount)
     cogStatus = [CogPageGlobals.COG_COMPLETE2] * SuitDNA.suitsPerDept
     target.b_setCogStatus(cogStatus * deptCount)
-    target.b_setCogRadar([1, 1, 1, 1, 1])
+    target.b_setCogRadar([1, 1, 1, 1])
     target.b_setBuildingRadar([1, 1, 1, 1, 1])
     return 'Maxed %s\'s discovered cogs!' % (target.getName())
 
