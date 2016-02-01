@@ -4440,16 +4440,16 @@ def maxToon(missingTrack=None):
         emotes[emoteId] = 1
     target.b_setEmoteAccess(emotes)
 
-    # Max out their Cog suits:
-    target.b_setCogParts(
-        [
-            CogDisguiseGlobals.PartsPerSuitBitmasks[0],  # Bossbot
-            CogDisguiseGlobals.PartsPerSuitBitmasks[1],  # Lawbot
-            CogDisguiseGlobals.PartsPerSuitBitmasks[2],  # Cashbot
-            CogDisguiseGlobals.PartsPerSuitBitmasks[3],   # Sellbot
-            CogDisguiseGlobals.PartsPerSuitBitmasks[4]   # Monobot
-        ]
-    )
+    # Max out cog suits (ORDER: Bossbot, Lawbot, Cashbot, Sellbot)
+    target.b_setCogParts([
+        CogDisguiseGlobals.PartsPerSuitBitmasks[0], # Bossbot
+        CogDisguiseGlobals.PartsPerSuitBitmasks[1], # Lawbot
+        CogDisguiseGlobals.PartsPerSuitBitmasks[2], # Cashbot
+        CogDisguiseGlobals.PartsPerSuitBitmasks[3]  # Sellbot
+    ])
+    target.b_setCogLevels([ToontownGlobals.MaxCogSuitLevel] * 4)
+    target.b_setCogTypes([SuitDNA.suitsPerDept-1] * 4)
+
     target.b_setCogLevels([49] * 5)
     target.b_setCogTypes([7, 7, 7, 7, 7])
 
