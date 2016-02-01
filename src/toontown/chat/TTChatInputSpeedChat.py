@@ -7,7 +7,6 @@ from otp.speedchat import SpeedChatGlobals
 from toontown.speedchat import TTSpeedChatGlobals
 from direct.showbase import DirectObject
 from direct.fsm import ClassicFSM, State
-from direct.fsm import State
 import string
 from otp.otpbase import OTPLocalizer, OTPGlobals
 from toontown.shtiker.OptionsPage import speedChatStyles

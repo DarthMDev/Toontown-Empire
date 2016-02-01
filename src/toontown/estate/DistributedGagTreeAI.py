@@ -183,7 +183,7 @@ class DistributedGagTreeAI(DistributedPlantBaseAI):
         return newGL - oldGrowthLevel
         
 @magicWord(category=CATEGORY_STAFF, types=[int, int, int])
-def satanGrow(track, index, grown=21):
+def treeGrow(track, index, grown=21):
     av = spellbook.getTarget()
     estate = av.air.estateManager._lookupEstate(av)
     
@@ -199,10 +199,10 @@ def satanGrow(track, index, grown=21):
         return 'Tree not found!'
         
     result = tree.doGrow(grown)
-    return 'Satan has grown %d units!' % result
+    return 'Tree has grown %d units!' % result
     
 @magicWord(category=CATEGORY_STAFF, types=[int, int])
-def satanFruit(track, index):
+def treeFruit(track, index):
     av = spellbook.getTarget()
     estate = av.air.estateManager._lookupEstate(av)
     
@@ -219,5 +219,5 @@ def satanFruit(track, index):
 
     tree.calculate(0, tree.lastCheck)
     tree.sendUpdate('setFruiting', [tree.getFruiting()])
-    return 'Satan is now fruiting!'
+    return 'Tree is now fruiting!'
     

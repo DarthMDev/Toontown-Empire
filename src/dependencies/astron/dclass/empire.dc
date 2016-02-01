@@ -569,7 +569,6 @@ dclass ToontownDistrictStats : DistributedObject {
   setDistrictId(uint32) broadcast required ram;
   setAvatarCount(uint32) broadcast required ram;
   setInvasionStatus(uint8) broadcast required ram;
-  setGroupAvCount(uint32[]) broadcast required ram;
 };
 
 dclass DistributedAnimatedProp : DistributedObject {

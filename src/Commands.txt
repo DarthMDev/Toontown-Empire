@@ -29,6 +29,7 @@ GENERAL COMMANDS:
 ~givePies 3 -1 = Unlimited Whole Fruit Pies
 ~givePies 4 -1 = Unlimited Whole Cream Pies
 ~givePies 5 -1 = Unlimited Birthday Cakes
+~givePies 6 -1 = Unlimited Wedding Cakes
 ~ghost = Go Ghost
 ~cogIndex 0 = Turn Into Big Cheese
 ~cogIndex 1 = Turn Into Big Wig

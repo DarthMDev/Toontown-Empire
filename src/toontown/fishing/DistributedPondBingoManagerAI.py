@@ -1,13 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from direct.distributed.ClockDelta import *
-from toontown.fishing import BingoGlobals
-from toontown.fishing import FishGlobals
-from toontown.fishing.NormalBingo import NormalBingo
-from toontown.fishing.ThreewayBingo import ThreewayBingo
-from toontown.fishing.DiagonalBingo import DiagonalBingo
-from toontown.fishing.BlockoutBingo import BlockoutBingo
-from toontown.fishing.FourCornerBingo import FourCornerBingo
+from toontown.fishing import BingoGlobals, FishGlobals, NormalBingo, FourCornerBingo, DiagonalBingo, ThreewayBingo, BlockoutBingo
 import random
 
 RequestCard = {}

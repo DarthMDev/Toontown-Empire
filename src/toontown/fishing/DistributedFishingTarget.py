@@ -3,15 +3,13 @@ from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedNode
-from direct.fsm import ClassicFSM
-from direct.fsm import State
+from direct.fsm import ClassicFSM, State
 from direct.directutil import Mopath
 from toontown.toonbase import ToontownGlobals
 from toontown.hood import FishAnimatedProp
 from direct.actor import Actor
 import FishingTargetGlobals
-import random
-import math
+import random, math
 from toontown.effects import Bubbles
 
 class DistributedFishingTarget(DistributedNode.DistributedNode):
