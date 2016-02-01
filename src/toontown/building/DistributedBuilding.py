@@ -320,8 +320,14 @@ class DistributedBuilding(DistributedObject.DistributedObject):
             self.cab = self.elevatorModel.find('**/elevator')
             cogIcons = loader.loadModel('phase_3/models/gui/cog_icons')
             dept = chr(self.track)
-            if dept in SuitDNA.suitDeptModelPaths:
-                corpIcon = cogIcons.find(SuitDNA.suitDeptModelPaths[dept]).copyTo(self.cab)
+            if dept == 'c':
+                corpIcon = cogIcons.find('**/CorpIcon').copyTo(self.cab)
+            elif dept == 's':
+                corpIcon = cogIcons.find('**/SalesIcon').copyTo(self.cab)
+            elif dept == 'l':
+                corpIcon = cogIcons.find('**/LegalIcon').copyTo(self.cab)
+            elif dept == 'm':
+                corpIcon = cogIcons.find('**/MoneyIcon').copyTo(self.cab)
             corpIcon.setPos(0, 6.79, 6.8)
             corpIcon.setScale(3)
             from toontown.suit import Suit
@@ -390,8 +396,7 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         if not newNP:
             self.setToToon()
             return # Monobots
-        if not self.leftDoor:
-            return
+
         closeDoors(self.leftDoor, self.rightDoor)
         newNP.stash()
         sideBldgNodes.append(newNP)

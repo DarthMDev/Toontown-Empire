@@ -92,11 +92,11 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.cogTypes = [0, 0, 0, 0, 0]
         self.cogLevel = [0, 0, 0, 0, 0]
         self.cogParts = [0, 0, 0, 0, 0]
-        self.cogRadar = [0, 0, 0, 0]
+        self.cogRadar = [0, 0, 0, 0, 0]
         self.cogIndex = -1
         self.disguisePageFlag = 0
         self.sosPageFlag = 0
-        self.buildingRadar = [0, 0, 0, 0]
+        self.buildingRadar = [0, 0, 0, 0, 0]
         self.fishingRod = 0
         self.fishingTrophies = []
         self.trackArray = []
@@ -1066,6 +1066,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.cogRadar = [0,
              0,
              0,
+			 0,
 			 0]
         else:
             self.cogRadar = radar
@@ -1086,6 +1087,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.buildingRadar = [0,
              0,
              0,
+			 0,
 			 0]
         else:
             self.buildingRadar = radar
@@ -1107,7 +1109,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
              0,
              0,
              0,
-			 0,
 			 0]
         else:
             for i in xrange(len(types)):
