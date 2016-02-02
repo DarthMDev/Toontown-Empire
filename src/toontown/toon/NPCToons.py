@@ -860,6 +860,7 @@ NPCToonDict = {
  7021: (-1, lnames[7021], ('fsl', 'ls', 'm', 'm', 17, 0, 17, 17, 4, 4, 0, 0, 0, 10), 'm', 0, NPC_REGULAR),
  7022: (-1, lnames[7022], ('mss', 'sd', 's', 'f', 24, 0, 24, 24, 3, 1, 0, 0, 0, 13), 'f', 0, NPC_REGULAR),
  7023: (-1, lnames[7023], ('pss', 'sd', 'l', 'f', 9, 0, 9, 9, 0, 8, 0, 0, 11, 0), 'f', 0, NPC_REGULAR),
+ 7024: (-1, lnames[7025], ('cll', 'ls', 'l', 'm', 2, 0, 2, 2, 14, 9, 10, 9, 1, 14), 'm', 0, NPC_REGULAR),
  #10001: (10000, lnames[10001], 'r', 'f', 0, NPC_LAFF_RESTOCK),
  10002: (-1, lnames[10002], ('sls', 'ss', 'm', 'm', 15, 0, 15, 15, 111, 27, 97, 27, 41, 27), 'm', 0, NPC_REGULAR),
  #11001: (11000, lnames[11001], 'r', 'm', 0, NPC_LAFF_RESTOCK),
@@ -943,7 +944,8 @@ HQnpcFriends = {
  5207: (ToontownBattleGlobals.NPC_RESTOCK_GAGS, ToontownBattleGlobals.SQUIRT_TRACK, 0, 3),
  3129: (ToontownBattleGlobals.NPC_RESTOCK_GAGS, ToontownBattleGlobals.THROW_TRACK, 0, 3),
  4125: (ToontownBattleGlobals.NPC_RESTOCK_GAGS, ToontownBattleGlobals.SOUND_TRACK, 0, 3),
- 1329: (ToontownBattleGlobals.NPC_RESTOCK_GAGS, ToontownBattleGlobals.DROP_TRACK, 0, 3)
+ 1329: (ToontownBattleGlobals.NPC_RESTOCK_GAGS, ToontownBattleGlobals.DROP_TRACK, 0, 3),
+ 7024: (ToontownBattleGlobals.DROP_TRACK, 5, 300, 5)
 }
 
 FOnpcFriends = {
@@ -958,7 +960,8 @@ FOnpcFriends = {
  7020: (ToontownBattleGlobals.SOUND_TRACK, 4, 30, 2),
  7021: (ToontownBattleGlobals.LURE_TRACK, 1, 0, 0),
  7022: (ToontownBattleGlobals.LURE_TRACK, 1, 0, 1),
- 7023: (ToontownBattleGlobals.LURE_TRACK, 3, 0, 2)
+ 7023: (ToontownBattleGlobals.LURE_TRACK, 3, 0, 2),
+ 7024: (ToontownBattleGlobals.DROP_TRACK, 5, 300, 5)
 }
 
 disabledSosCards = ConfigVariableList('disable-sos-card')
