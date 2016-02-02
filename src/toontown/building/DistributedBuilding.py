@@ -496,8 +496,6 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         self.stopTransition()
         if self.mode != 'toon':
             self.setToToon()
-        if self.track == 'g':
-            return
         self.loadAnimToSuitSfx()
         sideBldgNodes = self.getNodePaths()
         nodePath = hidden.find(self.getSbSearchString())
