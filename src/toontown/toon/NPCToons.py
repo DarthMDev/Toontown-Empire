@@ -860,7 +860,7 @@ NPCToonDict = {
  7021: (-1, lnames[7021], ('fsl', 'ls', 'm', 'm', 17, 0, 17, 17, 4, 4, 0, 0, 0, 10), 'm', 0, NPC_REGULAR),
  7022: (-1, lnames[7022], ('mss', 'sd', 's', 'f', 24, 0, 24, 24, 3, 1, 0, 0, 0, 13), 'f', 0, NPC_REGULAR),
  7023: (-1, lnames[7023], ('pss', 'sd', 'l', 'f', 9, 0, 9, 9, 0, 8, 0, 0, 11, 0), 'f', 0, NPC_REGULAR),
-#7024: (-1, lnames[7024], ('cll', 'ls', 'l', 'm', 2, 0, 2, 2, 14, 9, 10, 9, 1, 14), 'm', 0, NPC_REGULAR),
+ 7024: (-1, lnames[7024], ('dls', 'ms', 'm', 'm', 6, 0, 6, 6, 3, 5, 3, 5, 0, 14), 'm', 1, NPC_REGULAR),
  #10001: (10000, lnames[10001], 'r', 'f', 0, NPC_LAFF_RESTOCK),
  10002: (-1, lnames[10002], ('sls', 'ss', 'm', 'm', 15, 0, 15, 15, 111, 27, 97, 27, 41, 27), 'm', 0, NPC_REGULAR),
  #11001: (11000, lnames[11001], 'r', 'm', 0, NPC_LAFF_RESTOCK),
@@ -869,6 +869,7 @@ NPCToonDict = {
  #13001: (13000, lnames[13001], 'r', 'f', 0, NPC_LAFF_RESTOCK),
  13002: (-1, lnames[13002], ('bss', 'ss', 'm', 'm', 19, 0, 19, 19, 0, 3, 0, 3, 1, 16), 'm', 0, NPC_REGULAR)
 }
+
 
 if config.GetBool('want-new-toonhall', 1):
     NPCToonDict[2001] = (2513, lnames[2001], ('dss', 'ms', 'm', 'm', 17, 0, 17, 17, 3, 3, 3, 3, 7, 2), 'm', 1, NPC_FLIPPYTOONHALL)
