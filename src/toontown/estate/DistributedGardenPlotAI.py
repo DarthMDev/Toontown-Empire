@@ -36,8 +36,8 @@ class DistributedGardenPlotAI(DistributedLawnDecorAI):
             
         return av
 
-    def plantFlower(self, species, variety, usingSatanFlowerAll=0):
-        av = self.__initialSanityCheck(GardenGlobals.FLOWER_TYPE if not usingSatanFlowerAll else None, usingSatanFlowerAll)
+    def plantFlower(self, species, variety, usingPlotFlowerAll=0):
+        av = self.__initialSanityCheck(GardenGlobals.FLOWER_TYPE if not usingPlotFlowerAll else None, usingPlotFlowerAll)
         if not av:
             return
             
@@ -45,7 +45,7 @@ class DistributedGardenPlotAI(DistributedLawnDecorAI):
             msg = 'tried to plant flower but something went wrong: %s' % problem
             self.notify.warning('%d %s' % (av.doId, msg))
             self.air.writeServerEvent('suspicious', av.doId, msg)
-            if not usingSatanFlowerAll:
+            if not usingPlotFlowerAll:
                 return self.d_setMovie(GardenGlobals.MOVIE_PLANT_REJECTED)
             
         attr = GardenGlobals.PlantAttributes.get(species, {})
@@ -55,7 +55,7 @@ class DistributedGardenPlotAI(DistributedLawnDecorAI):
         if variety >= len(attr['varieties']):
             return invalid('invalid variety: %d' % variety)
             
-        if not usingSatanFlowerAll:
+        if not usingPlotFlowerAll:
             cost = len(GardenGlobals.Recipes[attr['varieties'][variety][0]]['beans'])
             av.takeMoney(cost)
             
@@ -69,16 +69,16 @@ class DistributedGardenPlotAI(DistributedLawnDecorAI):
             idx = (0, 0, 0, 1, 2, 0, 1, 2, 0, 1)[self.flowerIndex]
             flower.sendUpdate('setBoxDoId', [self.mgr._boxes[index].doId, idx])
             
-            if not usingSatanFlowerAll:
+            if not usingPlotFlowerAll:
                 flower.d_setMovie(GardenGlobals.MOVIE_FINISHPLANTING, self.__plantingAvId)
                 flower.d_setMovie(GardenGlobals.MOVIE_CLEAR, self.__plantingAvId)
                 
             self.air.writeServerEvent('plant-flower', self.__plantingAvId, species=species, variety=variety,
-                                      plot=self.plot, name=attr.get('name', 'unknown satan flower'))
+                                      plot=self.plot, name=attr.get('name', 'unknown plot flower'))
             if task:
                 return task.done
         
-        if usingSatanFlowerAll:
+        if usingplotFlowerAll:
             _plant(None)
        
         else:
@@ -209,7 +209,7 @@ class DistributedGardenPlotAI(DistributedLawnDecorAI):
             av.takeMoney(burntBeans)
    
 @magicWord(category=CATEGORY_STAFF, types=[int, int])
-def satanFlowerAll(species=49, variety=0):
+def plotFlowerAll(species=49, variety=0):
     invoker = spellbook.getInvoker()
     av = spellbook.getTarget()
     estate = av.air.estateManager._lookupEstate(av)
