@@ -860,7 +860,7 @@ NPCToonDict = {
  7021: (-1, lnames[7021], ('fsl', 'ls', 'm', 'm', 17, 0, 17, 17, 4, 4, 0, 0, 0, 10), 'm', 0, NPC_REGULAR),
  7022: (-1, lnames[7022], ('mss', 'sd', 's', 'f', 24, 0, 24, 24, 3, 1, 0, 0, 0, 13), 'f', 0, NPC_REGULAR),
  7023: (-1, lnames[7023], ('pss', 'sd', 'l', 'f', 9, 0, 9, 9, 0, 8, 0, 0, 11, 0), 'f', 0, NPC_REGULAR),
- 7024: (-1, lnames[7024], ('dls', 'ms', 'm', 'm', 6, 0, 6, 6, 3, 5, 3, 5, 0, 14), 'm', 1, NPC_REGULAR),
+ 7024: (-1, lnames[7024], ('dls', 'ms', 'm', 'm', 6, 0, 6, 6, 3, 5, 3, 5, 0, 14), 'm', 0, NPC_REGULAR),
  #10001: (10000, lnames[10001], 'r', 'f', 0, NPC_LAFF_RESTOCK),
  10002: (-1, lnames[10002], ('sls', 'ss', 'm', 'm', 15, 0, 15, 15, 111, 27, 97, 27, 41, 27), 'm', 0, NPC_REGULAR),
  #11001: (11000, lnames[11001], 'r', 'm', 0, NPC_LAFF_RESTOCK),
