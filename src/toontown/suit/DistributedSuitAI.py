@@ -352,7 +352,10 @@ class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
             door.requestSuitExit(self.getDoId())
 
     def startTakeOver(self):
+        dept = SuitDNA.getSuitDept(self.dna.name)
         if not self.SUIT_BUILDINGS:
+            return
+        if dept == 'g':
             return
         blockNumber = self.buildingDestination
         if self.sp.buildingMgr is None:
@@ -360,18 +363,5 @@ class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
         if not self.sp.buildingMgr.isSuitBlock(blockNumber):
             self.notify.debug('Suit %s taking over building %s in %s' % (self.getDoId(), blockNumber, self.zoneId))
             difficulty = self.getActualLevel() - 1
-            if difficulty > 8 :
-                 difficulty	= 8
-            dept = SuitDNA.getSuitDept(self.dna.name)
             if self.buildingDestinationIsCogdo:
                 self.sp.cogdoTakeOver(blockNumber, difficulty, self.buildingHeight, dept)
-                
-            else:
-                self.sp.suitTakeOver(blockNumber, dept, difficulty, self.buildingHeight)
-
-    def __repr__(self):
-        try:
-            return "%s level %s" % (self.getStyleName(), self.getActualLevel())
-            
-        except:
-            return "SuitAI %s" % id(self)
