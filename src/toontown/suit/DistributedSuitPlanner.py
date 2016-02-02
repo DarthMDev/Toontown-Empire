@@ -12,7 +12,7 @@ class DistributedSuitPlanner(DistributedObject.DistributedObject, SuitPlannerBas
         DistributedObject.DistributedObject.__init__(self, cr)
         SuitPlannerBase.SuitPlannerBase.__init__(self)
         self.suitList = []
-        self.buildingList = [0, 0, 0, 0]
+        self.buildingList = [0, 0, 0, 0, 0]
         self.pathViz = None
         self.debugText = {}
 
