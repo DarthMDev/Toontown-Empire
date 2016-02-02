@@ -1,5 +1,12 @@
 from toontown.coghq import CogDisguiseGlobals
 from toontown.suit import SuitDNA
+suitTrackIndex = {
+'g' : 4,
+'s' : 3,
+'c' : 2,
+'l' : 1,
+'b' : 0
+}
 
 class CogSuitManagerAI:
 
@@ -7,7 +14,7 @@ class CogSuitManagerAI:
         if suitTrack not in SuitDNA.suitDepts:
             return
 
-        recoveredParts = [0, 0, 0, 0]
+        recoveredParts = [0, 0, 0, 0, 0]
         parts = toon.getCogParts()
         suitTrack = SuitDNA.suitDepts.index(suitTrack)
 
