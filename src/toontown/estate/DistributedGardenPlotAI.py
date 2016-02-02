@@ -78,9 +78,8 @@ class DistributedGardenPlotAI(DistributedLawnDecorAI):
             if task:
                 return task.done
         
-        if usingplotFlowerAll:
+        if usingPlotFlowerAll:
             _plant(None)
-       
         else:
             taskMgr.doMethodLater(7, _plant, self.uniqueName('do-plant'))
             
