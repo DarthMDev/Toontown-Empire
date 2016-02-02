@@ -4,8 +4,7 @@ from direct.gui.DirectScrolledList import *
 from toontown.toonbase import ToontownGlobals
 import FireworkItemPanel
 from direct.directnotify import DirectNotifyGlobal
-from toontown.effects import FireworkGlobals
-from toontown.effects import Fireworks
+from toontown.effects import Fireworks, FireworkGlobals
 NUM_ITEMS_SHOWN = 4
 
 class FireworksGui(DirectFrame):
