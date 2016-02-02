@@ -390,15 +390,10 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         self.stopTransition()
         if self.mode != 'toon':
             self.setToToon()
-        if self.track == 'g':
-            return
         self.loadAnimToSuitSfx()
         sideBldgNodes = self.getNodePaths()
         nodePath = hidden.find(self.getSbSearchString())
         newNP = self.setupSuitBuilding(nodePath)
-        if not newNP:
-            self.setToToon()
-            return # Monobots
 
         closeDoors(self.leftDoor, self.rightDoor)
         newNP.stash()
@@ -444,8 +439,6 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         return
 
     def setupSuitBuilding(self, nodePath):
-        if self.track == 'g':
-            return None # no monobot that's illegal
         dnaStore = self.cr.playGame.dnaStore
         level = int(self.difficulty / 2) + 1
         if level > 5:
@@ -849,8 +842,6 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         self.stopTransition()
         if self.mode == 'suit':
             return
-        if self.track == 'g':
-            return
         self.mode = 'suit'
         nodes = self.getNodePaths()
         for i in nodes:
@@ -870,6 +861,11 @@ class DistributedBuilding(DistributedObject.DistributedObject):
                     i.removeNode()
                 else:
                     i.stash()
+            if name[0] == 'g':
+                if name.find('_landmark_') != -1:
+                    i.removeNode()
+                else:
+                    i.unstash()
 
         npc = hidden.findAllMatches(self.getSbSearchString())
         for i in xrange(npc.getNumPaths()):
@@ -897,6 +893,11 @@ class DistributedBuilding(DistributedObject.DistributedObject):
                 else:
                     i.stash()
             elif name[0] == 's':
+                if name.find('_landmark_') != -1:
+                    i.removeNode()
+                else:
+                    i.stash()
+            elif name[0] == 'g':
                 if name.find('_landmark_') != -1:
                     i.removeNode()
                 else:
@@ -934,6 +935,11 @@ class DistributedBuilding(DistributedObject.DistributedObject):
                 else:
                     i.unstash()
             elif name[0] == 'c':
+                if name.find('_landmark_') != -1:
+                    i.removeNode()
+                else:
+                    i.stash()
+            if name[0] == 'g':
                 if name.find('_landmark_') != -1:
                     i.removeNode()
                 else:
