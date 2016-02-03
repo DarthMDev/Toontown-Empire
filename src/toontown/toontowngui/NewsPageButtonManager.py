@@ -49,7 +49,7 @@ class NewsPageButtonManager(FSM.FSM):
         self.gotoPrevPageButton.hide()
         self.goto3dWorldButton.hide()
         self.accept('newIssueOut', self.handleNewIssueOut)
-        self.__bookCheck = Sequence(Func(self.__checkButton), Wait(0.001), Func(self.__checkButton), Wait(0.001), Func(self.__checkButton), Wait(0.001), Func(self.__checkButton), Wait(0.001))
+        self.__bookCheck = Sequence(Func(self.__checkButton), Wait(0.0001), Func(self.__checkButton), Wait(0.0001), Func(self.__checkButton), Wait(0.0001), Func(self.__checkButton), Wait(0.0001))
         self.__bookCheck.loop()
         self.__blinkIval = Sequence(Func(self.__showOpenEyes), Wait(2), Func(self.__showClosedEyes), Wait(0.1), Func(self.__showOpenEyes), Wait(0.1), Func(self.__showClosedEyes), Wait(0.1))
         self.__blinkIval.loop()
@@ -66,6 +66,10 @@ class NewsPageButtonManager(FSM.FSM):
     def __checkButton(self):
      if base.localAvatar.book.entered:
       self.hideNewIssueButton()
+     elif base.localAvatar.friendsListButtonObscured == 1:
+      self.hideNewIssueButton()
+     elif base.localAvatar.friendsListButtonObscured == 0:
+      self.__showNewIssueButton()
      else:
       pass
 
