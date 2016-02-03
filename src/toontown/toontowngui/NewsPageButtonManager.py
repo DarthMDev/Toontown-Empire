@@ -13,6 +13,11 @@ except:
 
 news = True
 
+
+#TODO: Make FriendsListButton hide if News is opened for book, Make more reliable
+#book checker, Add old news button for after reading the news, Fix news button refusing
+#to disappear in some areas.
+
 class NewsPageButtonManager(FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('NewsPageButtonManager')
 
