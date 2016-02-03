@@ -13,6 +13,11 @@ except:
 
 news = True
 
+
+#TODO: Make FriendsListButton hide if News is opened for book, Make more reliable
+#book checker, Add old news button for after reading the news, Fix news button refusing
+#to disappear in some areas.
+
 class NewsPageButtonManager(FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('NewsPageButtonManager')
 
@@ -49,7 +54,7 @@ class NewsPageButtonManager(FSM.FSM):
         self.gotoPrevPageButton.hide()
         self.goto3dWorldButton.hide()
         self.accept('newIssueOut', self.handleNewIssueOut)
-        self.__bookCheck = Sequence(Func(self.__checkButton), Wait(0.001), Func(self.__checkButton), Wait(0.001), Func(self.__checkButton), Wait(0.001), Func(self.__checkButton), Wait(0.001))
+        self.__bookCheck = Sequence(Func(self.__checkButton), Wait(0.0001), Func(self.__checkButton), Wait(0.0001), Func(self.__checkButton), Wait(0.0001), Func(self.__checkButton), Wait(0.0001))
         self.__bookCheck.loop()
         self.__blinkIval = Sequence(Func(self.__showOpenEyes), Wait(2), Func(self.__showClosedEyes), Wait(0.1), Func(self.__showOpenEyes), Wait(0.1), Func(self.__showClosedEyes), Wait(0.1))
         self.__blinkIval.loop()
@@ -66,11 +71,16 @@ class NewsPageButtonManager(FSM.FSM):
     def __checkButton(self):
      if base.localAvatar.book.entered:
       self.hideNewIssueButton()
+     elif base.localAvatar.friendsListButtonObscured == 1:
+      self.hideNewIssueButton()
+     elif base.localAvatar.friendsListButtonObscured == 0:
+      self.__showNewIssueButton()
      else:
       pass
 
     def clearGoingToNewsInfo(self):
         self.goingToNewsPageFrom3dWorld = False
+        base.localAvatar.friendsListButtonObscured = 0
         self.setGoingToNewsPageFromStickerBook(False)
 
     def __handleGotoNewsButton(self):
@@ -87,11 +97,13 @@ class NewsPageButtonManager(FSM.FSM):
                 if hasattr(localAvatar, 'newsPage'):
                     print('news gotoNewsButton clicked')
                     localAvatar.book.setPage(localAvatar.newsPage)
+                    base.localAvatar.friendsListButtonObscured = 1
                     fsm.request('stickerBook')
                     self.goingToNewsPageFrom3dWorld = True
             elif curState == 'stickerBook':
                 if hasattr(localAvatar, 'newsPage'):
                     print('news gotoNewsButton clicked')
+                    base.localAvatar.friendsListButtonObscured = 1
                     fsm.request('stickerBook')
                     if hasattr(localAvatar, 'newsPage') and localAvatar.newsPage:
                         localAvatar.book.goToNewsPage(localAvatar.newsPage)
