@@ -1,48 +1,30 @@
-import copy
 from direct.controls.GravityWalker import GravityWalker
 from direct.directnotify import DirectNotifyGlobal
-from direct.distributed import DistributedObject
-from direct.distributed import DistributedSmoothNode
+from direct.distributed import DistributedObject, DistributedSmoothNode
 from direct.distributed.ClockDelta import *
 from direct.distributed.MsgTypes import *
 from direct.fsm import ClassicFSM
 from direct.interval.IntervalGlobal import Sequence, Wait, Func, Parallel, SoundInterval
 from direct.showbase import PythonUtil
 from direct.task.Task import Task
-import operator
+import operator, random, time, Experience, InventoryNew, TTEmote, Toon, copy
 from panda3d.core import *
-import random
-import time
-import Experience
-import InventoryNew
-import TTEmote
-import Toon
 
 from otp.ai.MagicWordGlobal import *
 from otp.avatar import Avatar, DistributedAvatar, DistributedPlayer
 from otp.chat import TalkAssistant, ChatUtil
-from otp.otpbase import OTPGlobals
-from otp.otpbase import OTPLocalizer
+from otp.otpbase import OTPGlobals, OTPLocalizer
 from otp.speedchat import SCDecoders
-from toontown.catalog import CatalogItem
-from toontown.catalog import CatalogItemList
-from toontown.chat import ResistanceChat
-from toontown.chat import ToonChatGarbler
+from toontown.catalog import CatalogItem, CatalogItemList
+from toontown.chat import ResistanceChat, ToonChatGarbler
 from otp.nametag.NametagConstants import *
 from otp.margins.WhisperPopup import *
 from toontown.coghq import CogDisguiseGlobals
 from toontown.distributed import DelayDelete
-from toontown.distributed import DelayDelete
 from toontown.distributed.DelayDeletable import DelayDeletable
 from toontown.effects.ScavengerHuntEffects import *
-from toontown.estate import DistributedGagTree
-from toontown.estate import FlowerBasket
-from toontown.estate import FlowerCollection
-from toontown.estate import GardenDropGame
-from toontown.estate import GardenGlobals
-from toontown.fishing import FishCollection
-from toontown.fishing import FishTank
-from toontown.friends import FriendHandle
+from toontown.estate import DistributedGagTree, GardenGlobals, FlowerBasket, FlowerCollection, GardenDropGame
+from toontown.fishing import FishCollection, FishTank, FriendHandle
 from toontown.golf import GolfGlobals
 from toontown.hood import ZoneUtil
 from otp.nametag import NametagGroup
@@ -56,8 +38,7 @@ from toontown.parties.SimpleMailBase import SimpleMailBase
 from toontown.shtiker.OptionsPage import speedChatStyles
 from toontown.speedchat import TTSCDecoders
 from toontown.suit import SuitDNA
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.battle import BattleParticles
 
 if base.wantKarts:

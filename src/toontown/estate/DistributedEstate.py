@@ -53,7 +53,7 @@ class DistributedEstate(DistributedObject.DistributedObject):
     def load(self):
         self.defaultSignModel = loader.loadModel(EstateDefaultSign)
         if config.GetBool('want-extra-logs', True):
-         print("Loaded a Estate")
+         print("extlog: Loaded a Estate")
         self.activityIconsModel = loader.loadModel(EstateActivityIcons)
         if base.cr.newsManager.isHolidayRunning(ToontownGlobals.HALLOWEEN):
             self.loadWitch()
@@ -70,7 +70,7 @@ class DistributedEstate(DistributedObject.DistributedObject):
     def unload(self):
         self.ignoreAll()
         if config.GetBool('want-extra-logs', True):
-         print("Unloaded a Estate")
+         print("extlog: Unloaded a Estate")
         base.win.setClearColor(self.oldClear)
         self.__killAirplaneTask()
         self.__killDaytimeTask()
@@ -104,7 +104,7 @@ class DistributedEstate(DistributedObject.DistributedObject):
 
     def announceGenerate(self):
         if config.GetBool('want-extra-logs', True):
-         print("Generating a Estate.")
+         print("extlog: Generating a Estate.")
         DistributedObject.DistributedObject.announceGenerate(self)
 
     def loadAirplane(self):
@@ -247,7 +247,7 @@ class DistributedEstate(DistributedObject.DistributedObject):
     def setServerTime(self, ts):
         self.notify.debug('setServerTime')
         if config.GetBool('want-extra-logs', True):
-         print("Setting Server Time.")
+         print("extlog: Setting Server Time.")
         self.serverTime = ts
         self.clientTime = time.time() % HouseGlobals.DAY_NIGHT_PERIOD
         self.deltaTime = self.clientTime - self.serverTime
@@ -259,7 +259,7 @@ class DistributedEstate(DistributedObject.DistributedObject):
     def getDeltaTime(self):
         curTime = time.time() % HouseGlobals.DAY_NIGHT_PERIOD
         if config.GetBool('want-extra-logs', True):
-         print("Getting Delta Time.")
+         print("extlog: Getting Delta Time.")
         dawnTime = self.dawnTime
         dT = (curTime - dawnTime - self.deltaTime) % HouseGlobals.DAY_NIGHT_PERIOD
         self.notify.debug(
