@@ -1,17 +1,27 @@
+# TODO: Add correct paths + add astron cluster files! ~FordTheWriter
 import os
-os.chdir('../../../')
+data = []
+with open('C:\path\math\path\qa.prc', 'r+') as config:
+	data = config.readlines()
+	line = data[7].split()
+	x = line[1]
+	y = x.split("-")
+	ver = y[2]
+	ver = ver.split(".")
+	if str(ver[2]) == "9":
+		ver[1] = int(ver[1]) + 1
+		ver[2] = 0
+	if str(ver[1]) == "9":
+		ver[0] = int(ver[0]) + 1
+		ver[1] = 0
+	else:
+		ver[2] = int(ver[2]) + 1
+		data[7] = "server-version TTE-Alpha-"+ str(ver[0]) + "." + str(ver[1]) + "." + str(ver[2]) + "\n"
+		
+		
+os.remove('C:\path\math\path\qa.prc')
 
-#from dependencies.astron.config import * - this doesnt have any python files so removing import
-#TODO make version equal to end of TTE- try using indexes we also need to get it from qa.prc. We also need to use write so it doesnt add new line more like overwrites version at end of tte prefix
-if version is None:
-     version = 1.0
-ask = raw_input('Are you sure you want to change version number by .1? Type yes or no: ')
-ask = str(ask)
-ask = ask.lower()
-if ask == 'yes':
-    version += 0.1
-    os.chdir('dependencies/config/release')
-    with open('qa.prc', 'w') as config:
-         config.write(version)
-elif ask == 'no':
-    exit()
+with open('C:\path\math\path\qa.prc', "a+") as newfile:
+	newfile.writelines(data)
+			
+	print(ver)
