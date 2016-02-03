@@ -2608,7 +2608,7 @@ def showParticle(name):
 
     return 'Particle %s does not exist.' % name
     
- @magicWord(category=CATEGORY_STAFF, types=[str])
+@magicWord(category=CATEGORY_STAFF, types=[str])
 def hideParticles():
     """
     Hides the particles.
