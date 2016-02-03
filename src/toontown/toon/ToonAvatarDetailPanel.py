@@ -266,7 +266,7 @@ class ToonAvatarDetailPanel(DirectFrame):
     
     def __toggleSOSGui(self):
         self.sosButton['state'] = DGG.DISABLED
-        #NPCFriendPanel..hideDeleteButton()
+        self.sosPage.hideDeleteButton
         if self.sosFrame.getScale() == 0.5:
             pos = (-0.4, 0, -1.88)
             scale = 1.0
