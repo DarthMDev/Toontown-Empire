@@ -2607,3 +2607,16 @@ def showParticle(name):
         return 'Successfully started particle!'
 
     return 'Particle %s does not exist.' % name
+    
+ @magicWord(category=CATEGORY_STAFF, types=[str])
+def hideParticles():
+    """
+    Hides the particles.
+    """
+
+    particle = BattleParticles.unloadParticles()
+
+    if particle:
+        return 'Successfully stopped particles!'
+
+    return 'Failed to stop particles.' 

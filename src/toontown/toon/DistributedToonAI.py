@@ -3046,7 +3046,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def setHatePets(self, hate):
         if config.GetBool('want-extra-logs', True):
-         print("extlog: Setting Hate Pets? Are you sure we're supossed to get here?")
+         print("extlog: Setting Hate Pets? Are you sure we're supposed to get here?")
         self.hatePets = hate
 
     def takeOutKart(self, zoneId = None):
