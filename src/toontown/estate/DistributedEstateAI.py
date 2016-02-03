@@ -6,11 +6,8 @@ import time, random
 
 from toontown.fishing.DistributedFishingPondAI import DistributedFishingPondAI
 from toontown.fishing import FishingTargetGlobals, FishGlobals
-from toontown.safezone import TreasureGlobals
+from toontown.safezone import TreasureGlobals, DistributedButterflyAI, ButterflyGlobals, DistributedEFlyingTreasureAI
 from toontown.safezone.SZTreasurePlannerAI import SZTreasurePlannerAI
-from toontown.safezone import DistributedEFlyingTreasureAI
-from toontown.safezone import ButterflyGlobals
-from toontown.safezone import DistributedButterflyAI
 from toontown.safezone.DistributedFishingSpotAI import DistributedFishingSpotAI
 from toontown.parties.DistributedPartyJukeboxActivityAI import DistributedPartyJukeboxActivityAI
 
@@ -22,11 +19,9 @@ from DistributedStatuaryAI import *
 from DistributedToonStatuaryAI import *
 from DistributedAnimatedStatuaryAI import *
 from DistributedChangingStatuaryAI import *
-import GardenGlobals
-
 from DistributedCannonAI import *
 from DistributedTargetAI import *
-import CannonGlobals
+import CannonGlobals, GardenGlobals
 
 # planted, waterLevel, lastCheck, growthLevel, optional
 NULL_PLANT = [-1, -1, 0, 0, 0]

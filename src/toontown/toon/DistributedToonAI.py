@@ -3043,9 +3043,13 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             PetObserve.send(self.zoneId, PetObserve.getSCObserve(msgId, self.doId))
 
     def setHatePets(self, hate):
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Setting Hate Pets? Are you sure we're supposed to get here?")
         self.hatePets = hate
 
     def takeOutKart(self, zoneId = None):
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Taking out Kart.")
         if not self.kart:
             from toontown.racing import DistributedVehicleAI
             self.kart = DistributedVehicleAI.DistributedVehicleAI(self.air, self.doId)
@@ -3156,6 +3160,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         return ['success', building.doId]
 
     def doCogdoTakeOver(self, suitIndex):
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Starting doCogTakeOver.")
         if suitIndex >= len(SuitDNA.suitHeadTypes):
             self.notify.warning('Bad suit index: %s' % suitIndex)
             return ['badIndex', suitIndex, 0]
@@ -3250,6 +3256,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         return False
 
     def hasCogSummons(self, suitIndex, type = None):
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Checking if Toon has Cog Summons.")
         summons = self.getCogSummonsEarned()
         curSetting = summons[suitIndex]
         if type == 'building':
@@ -3353,11 +3361,15 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         return None
 
     def magicTeleportResponse(self, requesterId, hoodId):
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Responding to magicTeleportResponse.")
         toon = self.air.doId2do.get(requesterId)
         if toon:
             toon.magicTeleportInitiate(self.getDoId(), hoodId, self.getLocation()[1])
 
     def magicTeleportInitiate(self, targetId, hoodId, zoneId):
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Initiating magicTeleportInitiate.")
         if targetId not in self.magicWordTeleportRequests:
             return
         self.magicWordTeleportRequests.remove(targetId)
@@ -3589,6 +3601,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         return
 
     def checkGagBonus(self, track, level):
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Checking Gag Bonuses.")
         trackBonus = self.getTrackBonusLevel(track)
         return trackBonus >= level
 
@@ -3645,6 +3659,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.gardenStarted = bStarted
 
     def d_setGardenStarted(self, bStarted):
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Garden Started.")
         self.sendUpdate('setGardenStarted', [bStarted])
 
     def b_setGardenStarted(self, bStarted):
@@ -3655,6 +3671,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         return self.gardenStarted
 
     def logSuspiciousEvent(self, eventName):
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Logging Suspicious Event.")
         senderId = self.air.getAvatarIdFromSender()
         eventStr = 'senderId=%s ' % senderId
         eventStr += eventName
@@ -3818,6 +3836,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.b_setNametagStyle(nametagStyle)
 
     def b_setMail(self, mail):
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Setting Mail.")
         self.d_setMail(mail)
         self.setMail(mail)
 
@@ -4069,6 +4089,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         return 'DOLogicalChangeZone-all'
 
     def handleHacking(self, response, comment, coconspirators = []):
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Handling Hacker/Hackers.")
         if response == 'quietzone':
             self.b_setLocation(self.parentId, ToontownGlobals.QuietZone)
         elif response == 'disconnect':
@@ -5335,9 +5357,9 @@ def goto(avIdShort):
 	
 @magicWord(category=CATEGORY_STAFF, types=[int])
 def pouch(value):
-    invoker = spellbook.getInvoker()
-    invoker.b_setMaxCarry(value)
-    return 'Gag pouch set.'
+    target = spellbook.getTarget()
+    target.b_setMaxCarry(value)
+    return "Target's Gag Pouch set."
 
 @magicWord(category=CATEGORY_STAFF, types=[str, int])
 def exp(track, amt):

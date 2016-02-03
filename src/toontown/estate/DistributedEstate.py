@@ -3,14 +3,11 @@ from toontown.toonbase.ToonBaseGlobal import *
 from direct.gui.DirectGui import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
-import math
+import math, time, cPickle, random
 from toontown.toonbase import ToontownGlobals
 from direct.distributed import DistributedObject
 from direct.task.Task import Task
 from toontown.toonbase import TTLocalizer
-import random
-import cPickle
-import time
 import HouseGlobals
 from toontown.estate import GardenGlobals, FlowerSellGUI
 from toontown.estate.EstateGlobals import *
@@ -55,6 +52,8 @@ class DistributedEstate(DistributedObject.DistributedObject):
 
     def load(self):
         self.defaultSignModel = loader.loadModel(EstateDefaultSign)
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Loaded a Estate")
         self.activityIconsModel = loader.loadModel(EstateActivityIcons)
         if base.cr.newsManager.isHolidayRunning(ToontownGlobals.HALLOWEEN):
             self.loadWitch()
@@ -70,6 +69,8 @@ class DistributedEstate(DistributedObject.DistributedObject):
 
     def unload(self):
         self.ignoreAll()
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Unloaded a Estate")
         base.win.setClearColor(self.oldClear)
         self.__killAirplaneTask()
         self.__killDaytimeTask()
@@ -102,6 +103,8 @@ class DistributedEstate(DistributedObject.DistributedObject):
             self.fishSellBox = None
 
     def announceGenerate(self):
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Generating a Estate.")
         DistributedObject.DistributedObject.announceGenerate(self)
 
     def loadAirplane(self):
@@ -243,6 +246,8 @@ class DistributedEstate(DistributedObject.DistributedObject):
 
     def setServerTime(self, ts):
         self.notify.debug('setServerTime')
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Setting Server Time.")
         self.serverTime = ts
         self.clientTime = time.time() % HouseGlobals.DAY_NIGHT_PERIOD
         self.deltaTime = self.clientTime - self.serverTime
@@ -253,6 +258,8 @@ class DistributedEstate(DistributedObject.DistributedObject):
 
     def getDeltaTime(self):
         curTime = time.time() % HouseGlobals.DAY_NIGHT_PERIOD
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Getting Delta Time.")
         dawnTime = self.dawnTime
         dT = (curTime - dawnTime - self.deltaTime) % HouseGlobals.DAY_NIGHT_PERIOD
         self.notify.debug(

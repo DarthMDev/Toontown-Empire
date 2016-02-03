@@ -9,35 +9,25 @@ from direct.distributed import DistributedSmoothNode
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
 from direct.task import Task
-from direct.fsm import ClassicFSM
-from direct.fsm import State
+from direct.fsm import ClassicFSM, State
 from direct.showbase.PythonUtil import Functor, ScratchPad
 from direct.showbase.InputStateGlobal import inputState
-from otp.avatar import Avatar
-from otp.avatar import DistributedAvatar
+from otp.avatar import Avatar, DistributedAvatar
 from otp.friends import FriendManager
-from otp.distributed import OTPClientRepository
-from otp.distributed import PotentialAvatar
-from otp.distributed import PotentialShard
-from otp.distributed import DistributedDistrict
+from otp.distributed import OTPClientRepository, PotentialAvatar, PotentialShard, DistributedDistrict, OtpDoGlobals
 from otp.distributed.OtpDoGlobals import *
-from otp.distributed import OtpDoGlobals
-from otp.otpbase import OTPGlobals
-from otp.otpbase import OTPLocalizer
+from otp.otpbase import OTPGlobals, OTPLocalizer
 from otp.avatar.Avatar import teleportNotify
 from toontown.toonbase.ToonBaseGlobal import *
 from toontown.toonbase.ToontownGlobals import *
 from toontown.distributed import DelayDelete
-from toontown.friends import FriendHandle
-from toontown.friends import FriendsListPanel
-from toontown.friends import ToontownFriendSecret
+from toontown.friends import FriendHandle, FriendsListPanel, ToontownFriendSecret
 from toontown.login import AvatarChooser
 from toontown.makeatoon import MakeAToon
 from toontown.pets import DistributedPet, PetDetail, PetHandle
 from toontown.toonbase import TTLocalizer
 from toontown.toontowngui import TTDialog
-from toontown.toon import LocalToon
-from toontown.toon import ToonDNA
+from toontown.toon import LocalToon, ToonDNA
 from toontown.distributed import ToontownDistrictStats
 from toontown.makeatoon import TTPickANamePattern
 from toontown.parties import ToontownTimeManager
