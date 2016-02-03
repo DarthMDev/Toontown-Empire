@@ -2,8 +2,7 @@ from direct.interval.IntervalGlobal import *
 import CatalogAtticItem
 import CatalogItem
 import random, glob
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 from panda3d.core import *
 FTModelName = 0
 FTColor = 1
@@ -44,15 +43,13 @@ woodColors = [
 BankToMoney = {
  1300: 10000,
  1310: 15000,
- 1320: 20000,
- 1330: 25000,
- 1340: 30000
+ 1320: 20000
 }
 MoneyToBank = {}
 for bankId, maxMoney in BankToMoney.items():
     MoneyToBank[maxMoney] = bankId
 
-MaxBankId = 1340
+MaxBankId = 1320
 ClosetToClothes = {
  500: 10,
  502: 15,
@@ -656,22 +653,10 @@ FurnitureTypes = {
         7500,
         FLBank,
         1.0),
- 1320: ('phase_5.5/models/estate/jellybeanBank',
+ 1320: ('phase_5.5/models/estate/jellybeanBank_g',
         None,
         None,
         10000,
-        FLBank,
-        1.0),
- 1330: ('phase_5.5/models/estate/jellybeanBank',
-        None,
-        None,
-        12500,
-        FLBank,
-        1.0),
- 1340: ('phase_5.5/models/estate/jellybeanBank',
-        None,
-        None,
-        15000,
         FLBank,
         1.0),
  1399: ('phase_5.5/models/estate/prop_phone-mod',

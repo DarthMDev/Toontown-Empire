@@ -21,8 +21,7 @@ from CatalogGardenStarterItem import CatalogGardenStarterItem
 from CatalogNametagItem import CatalogNametagItem
 from CatalogAccessoryItem import CatalogAccessoryItem
 from direct.actor import Actor
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 import types
 import random
 import time
@@ -74,7 +73,6 @@ def getAllChatItemsSold():
         result += MetaItems[key]
 
     return result
-
 
 class Sale:
 
@@ -280,6 +278,8 @@ MonthlySchedule = ((7,
    CatalogWallpaperItem(10200),
    CatalogFurnitureItem(10000),
    CatalogFurnitureItem(10010),
+   CatalogFurnitureItem(1310, 7,500, True),
+   CatalogFurnitureItem(1320, 10,000, True),
    CatalogNametagItem(9))),
  (10,
   3,
@@ -1503,8 +1503,8 @@ class CatalogGenerator:
 
             if nextAvailableCloset not in schedule:
                 weeklyCatalog += self.__selectItem(avatar, nextAvailableCloset, monthlyCatalog, saleItem=0)
-#            if nextAvailableBank not in schedule:
-#                weeklyCatalog += self.__selectItem(avatar, nextAvailableBank, monthlyCatalog, saleItem = 0)
+            if nextAvailableBank not in schedule:
+                weeklyCatalog += self.__selectItem(avatar, nextAvailableBank, monthlyCatalog, saleItem = 0)
             #if nextAvailableTank not in schedule:
                 #weeklyCatalog += self.__selectItem(avatar, nextAvailableTank, monthlyCatalog, saleItem = 0)
             if nextAvailablePole not in schedule:
@@ -1743,8 +1743,8 @@ class CatalogGenerator:
                     item = getAllPoles()
                 elif item == nextAvailableCloset:
                     item = getAllClosets()
-#                elif item == nextAvailableBank:
-#                    item = getAllBanks()
+                elif item == nextAvailableBank:
+                    item = getAllBanks()
                 #elif item == nextAvailableTank:
                     #item == getAllTanks()
                 elif item == get50ItemCloset:
