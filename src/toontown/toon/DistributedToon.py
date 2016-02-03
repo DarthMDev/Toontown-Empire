@@ -24,7 +24,8 @@ from toontown.distributed import DelayDelete
 from toontown.distributed.DelayDeletable import DelayDeletable
 from toontown.effects.ScavengerHuntEffects import *
 from toontown.estate import DistributedGagTree, GardenGlobals, FlowerBasket, FlowerCollection, GardenDropGame
-from toontown.fishing import FishCollection, FishTank, FriendHandle
+from toontown.fishing import FishCollection, FishTank
+from toontown.friends import FriendHandle
 from toontown.golf import GolfGlobals
 from toontown.hood import ZoneUtil
 from otp.nametag import NametagGroup
