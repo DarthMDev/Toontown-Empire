@@ -13,6 +13,7 @@ from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.hood import ZoneUtil
 from toontown.toonbase.ToontownBattleGlobals import Tracks, Levels, getAvPropDamage
 import Toon, NPCFriendPanel
+from NPCFriendPanel import NPCFriendCard
 globalAvatarDetail = None
 
 def showAvatarDetail(avId, avName):
@@ -266,7 +267,7 @@ class ToonAvatarDetailPanel(DirectFrame):
     
     def __toggleSOSGui(self):
         self.sosButton['state'] = DGG.DISABLED
-        self.sosPage.hideDeleteButton()
+        #NPCFriendCard().hideDeleteButton()
         if self.sosFrame.getScale() == 0.5:
             pos = (-0.4, 0, -1.88)
             scale = 1.0

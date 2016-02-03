@@ -171,17 +171,19 @@ class NPCFriendCard(DirectFrame):
 
     def __deleteNPCFriend(self):
         self.__closeConfirmationDialog()
-        npcId = self['NPCID']
-        text = self.sosCountInfo['text']
-        npcCount = int(text.split(' ')[0])
-        base.localAvatar.sendUpdate('attemptSubtractNPCFriend', [npcId])
-        if npcCount > 1:
-            npcCount -= 1
-        else:
-            self.front.hide()
-            self.back.show()
-        text = str(npcCount) + ' ' + text.split(' ')[1]
-        self.sosCountInfo['text'] = text
+        if hasattr(self, '_optionInfo'):
+        
+        	npcId = self['NPCID']
+        	text = self.sosCountInfo['text']
+        	npcCount = int(text.split(' ')[0])
+        	base.localAvatar.sendUpdate('attemptSubtractNPCFriend', [npcId])
+        	if npcCount > 1:
+            	 npcCount -= 1
+        	else:
+            	 self.front.hide()
+            	 self.back.show()
+        	text = str(npcCount) + ' ' + text.split(' ')[1]
+        	self.sosCountInfo['text'] = text
 
     def __closeConfirmationDialog(self):
         if self.confirmationDialog is not None:
