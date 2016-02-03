@@ -75,6 +75,7 @@ class NewsPageButtonManager(FSM.FSM):
 
     def clearGoingToNewsInfo(self):
         self.goingToNewsPageFrom3dWorld = False
+        base.localAvatar.friendsListButtonObscured = 0
         self.setGoingToNewsPageFromStickerBook(False)
 
     def __handleGotoNewsButton(self):
@@ -91,11 +92,13 @@ class NewsPageButtonManager(FSM.FSM):
                 if hasattr(localAvatar, 'newsPage'):
                     print('news gotoNewsButton clicked')
                     localAvatar.book.setPage(localAvatar.newsPage)
+                    base.localAvatar.friendsListButtonObscured = 1
                     fsm.request('stickerBook')
                     self.goingToNewsPageFrom3dWorld = True
             elif curState == 'stickerBook':
                 if hasattr(localAvatar, 'newsPage'):
                     print('news gotoNewsButton clicked')
+                    base.localAvatar.friendsListButtonObscured = 1
                     fsm.request('stickerBook')
                     if hasattr(localAvatar, 'newsPage') and localAvatar.newsPage:
                         localAvatar.book.goToNewsPage(localAvatar.newsPage)
