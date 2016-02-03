@@ -1,7 +1,8 @@
 # TODO: Add correct paths + add astron cluster files! ~FordTheWriter
 import os
+os.chdir('../../../')
 data = []
-with open('C:\path\math\path\qa.prc', 'r+') as config:
+with open('dependencies/config/release/qa.prc', 'r+') as config:
 	data = config.readlines()
 	line = data[7].split()
 	x = line[1]
@@ -19,9 +20,9 @@ with open('C:\path\math\path\qa.prc', 'r+') as config:
 		data[7] = "server-version TTE-Alpha-"+ str(ver[0]) + "." + str(ver[1]) + "." + str(ver[2]) + "\n"
 		
 		
-os.remove('C:\path\math\path\qa.prc')
+os.remove('dependencies/config/release/qa.prc')
 
-with open('C:\path\math\path\qa.prc', "a+") as newfile:
+with open('dependencies/config/release/qa.prc', "a+") as newfile:
 	newfile.writelines(data)
 			
 	print(ver)
