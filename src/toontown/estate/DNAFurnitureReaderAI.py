@@ -38,6 +38,8 @@ DNA2Furniture = {
     'bookcase_low': 1130,
     'ending_table': 1200,
     'jellybeanBank': 1300,
+    'jellybeanBank_s': 1310,
+    'jellybeanBank_g': 1320,
     'trunkBoy': (4000, 4010)
 }
 

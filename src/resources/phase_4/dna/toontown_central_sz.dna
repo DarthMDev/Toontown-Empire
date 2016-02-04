@@ -529,7 +529,6 @@ group "toontownCentral" [
    ]
    landmark_building "sz18:toon_landmark_TT_library_DNARoot" [
     code [ "toon_landmark_TT_library" ]
-    building_type [ "library" ]
     title [ "Toontown Library" ]
     pos [ 91.4475 -44.9255 4 ]
     nhpr [ 180 0 0 ]
@@ -607,10 +606,13 @@ group "toontownCentral" [
    ]
    landmark_building "sz14:toon_landmark_TT_bank_DNARoot" [
     code [ "toon_landmark_TT_bank" ]
-    building_type [ "bank" ]
     title [ "Toontown Bank" ]
     pos [ 57.1796 38.6656 4 ]
     nhpr [ 0 0 0 ]
+    door [
+     code [ "door_double_round_ur" ]
+     color [ 0.88 0.45 0.38 1 ]
+    ]
     sign [
      color [ 1 1 0.776471 1 ]
      pos [ 0 0 -0.64 ]
@@ -637,10 +639,6 @@ group "toontownCentral" [
        letters [ "k" ]
       ]
      ]
-    ]
-    door [
-     code [ "door_double_round_ur" ]
-     color [ 0.88 0.45 0.38 1 ]
     ]
    ]
    landmark_building "sz16:toon_landmark_TT_school_house_DNARoot" [
@@ -741,6 +739,10 @@ group "toontownCentral" [
     title [ "Clothing Shop" ]
     pos [ 106.265 160.831 3 ]
     nhpr [ -30 0 0 ]
+    door [
+     code [ "door_double_clothesshop_ur" ]
+     color [ 0.88 0.45 0.38 1 ]
+    ]
     sign [
      baseline [
       code [ "mickey" ]
@@ -788,24 +790,24 @@ group "toontownCentral" [
       ]
      ]
     ]
-    door [
-     code [ "door_double_clothesshop_ur" ]
-     color [ 0.88 0.45 0.38 1 ]
-    ]	
    ]
    landmark_building "sz13:toon_landmark_TT_toonhall_DNARoot" [
     code [ "toon_landmark_TT_toonhall" ]
     title [ "Toon Hall" ]
     pos [ 116.66 24.29 4 ]
     nhpr [ -90 0 -0 ]
+    door [
+     code [ "door_double_round_ur" ]
+     color [ 0.88 0.45 0.38 1 ]
+    ]
     sign [
-     pos [ 0 0 -1.15 ]
-     scale [ 1.1 1 1.1 ]
+     pos [ 0 0 -1.13 ]
+     scale [ 1.2 1 1.2 ]
      baseline [
       code [ "mickey" ]
       color [ 1 1 0 1 ]
-      pos [ 0.3 0 -0.6 ]
-      scale [ 2.1 1 2.1 ]
+      pos [ 0.3 0 -1.4 ]
+      scale [ 2.2 1 2.3 ]
       kern [ -0.099751 ]
       width [ 134.553 ]
       height [ 134.553 ]
@@ -840,11 +842,34 @@ group "toontownCentral" [
        letters [ "L" ]
       ]
      ]
+     baseline [
+      code [ "mickey" ]
+      color [ 1 1 0 1 ]
+      pos [ 0 0 1.08 ]
+      scale [ 1.7 1 1.7 ]
+      kern [ -0.108469 ]
+      width [ 19.1721 ]
+      height [ 19.1721 ]
+      text [
+       letters [ "f" ]
+      ]
+      text [
+       letters [ "l" ]
+      ]
+      text [
+       letters [ "i" ]
+      ]
+      text [
+       letters [ "p" ]
+      ]
+      text [
+       letters [ "p" ]
+      ]
+      text [
+       letters [ "y" ]
+      ]
+     ]
     ]
-     door [
-      code [ "door_double_round_ur" ]
-      color [ 0.88 0.45 0.38 1 ]
-    ]    
    ]
   ]
   prop "toontown_central_DNARoot" [
@@ -872,22 +897,6 @@ group "toontownCentral" [
    pos [ -60.94 -8.8 -2 ]
    nhpr [ -178 0 0 ]
   ]
-  prop "prop_blockade_DNARoot" [
-   code [ "prop_blockade" ]
-   pos [ -120.49 70.90 4.14 ]
-   nhpr [ 48.81 0 0 ]
-   scale [ 0.42 0.42 0.42 ]
-  ]
-   prop "prop_barrier_cone_DNARoot" [
-    code [ "prop_barrier_cone" ]
-    pos [ -115 72 0.525 ]
-    nhpr [ 112 0 0 ]
-   ]
-   prop "prop_barrier_cone_DNARoot" [
-    code [ "prop_barrier_cone" ]
-    pos [ -123.265 65.770 0.525 ]
-    nhpr [ 54 0 0 ]
-   ]
   prop "prop_tree_small_ur_DNARoot" [
    code [ "prop_tree_small_ur" ]
    pos [ 119.621 -127.865 2.49998 ]
@@ -1082,20 +1091,20 @@ group "toontownCentral" [
    code [ "toon_landmark_hqTT" ]
    building_type [ "hq" ]
    title [ "Toon HQ" ]
-   pos [ 23.6425 24.8587 4.00001 ]
+   pos [ 24.6425 24.8587 4.00001 ]
    nhpr [ 135 0 0 ]
+   prop "animated_prop_HQPeriscopeAnimatedProp_DNARoot" [
+    code [ "animated_prop_HQPeriscopeAnimatedProp" ]
+    pos [ 7.17 -7.67 19.07 ]
+    nhpr [ 110 0 0 ]
+    scale [ 4 4 4 ]
+   ]
    prop "animated_prop_HQTelescopeAnimatedProp_DNARoot" [
     code [ "animated_prop_HQTelescopeAnimatedProp" ]
     pos [ 7.003 0 13.191 ]
     nhpr [ 168 81 0 ]
     scale [ 4 4 4 ]
    ]
-  ]
-  prop "animated_prop_HQPeriscopeAnimatedProp_DNARoot" [
-    code [ "animated_prop_HQPeriscopeAnimatedProp" ]
-    pos [ 23.69 36.75 20.48 ]
-    nhpr [ 273.58 0 0 ]
-    scale [ 4 4 4 ]
   ]
   flat_building "sz0:random_DNARoot" [
    pos [ -148.706 -25.452 -0.18 ]
@@ -1150,6 +1159,16 @@ group "toontownCentral" [
      count [ 1 ]
     ]
    ]
+  ]
+  prop "prop_toontown_central_fountain_DNARoot" [
+   code [ "prop_toontown_central_fountain" ]
+   pos [ 93.2057 -106.482 2.50002 ]
+   nhpr [ 0 0 0 ]
+  ]
+  prop "prop_mickey_on_horse_DNARoot" [
+   code [ "prop_mickey_on_horse" ]
+   pos [ 73.6829 121.026 2.49996 ]
+   nhpr [ 0 0 0 ]
   ]
   prop "prop_post_one_light_DNARoot" [
    code [ "prop_post_one_light" ]

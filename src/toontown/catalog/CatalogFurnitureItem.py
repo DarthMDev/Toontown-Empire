@@ -647,7 +647,7 @@ FurnitureTypes = {
         5000,
         FLBank,
         1.0),
- 1310: ('phase_5.5/models/estate/jellybeanBank',
+ 1310: ('phase_5.5/models/estate/jellybeanBank_s',
         None,
         None,
         7500,
