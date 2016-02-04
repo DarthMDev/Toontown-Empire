@@ -7,6 +7,22 @@ data = []
 
 class VersionUpdater(self):
 
+ def OpenFileQA(self):
+  with open('dependencies/config/release/qa.prc', "a+") as newfile:
+	newfile.writelines(data)		
+	print(ver)
+        
+ def OpenFileDevQA(self):
+  with open('dependencies/config/release/dev.prc', "a+") as newfile:
+	newfile.writelines(data)		
+	print(ver)
+        
+ def RemoveQAFile(self):
+  os.remove('dependencies/config/release/qa.prc')
+
+ def RemoveDevQAFile(self):
+  os.remove('dependencies/config/release/dev.prc')
+  
  def ResetData(self):
   data = None
  
@@ -56,6 +72,10 @@ def update():
  seq = Sequence()
  seq.append(Func(VersionUpdater.ReleaseQA))
  seq.append(Wait(0.1))
+ seq.append(Func(VersionUpdater.RemoveQAFile)
+ seq.append(Wait(0.1))
+ seq.append(Func(VersionUpdater.OpenFileQA)
+ seq.append(Wait(0.1))
  seq.append(Func(VersionUpdater.ResetData)
  seq.append(Wait(0.1))
  seq.append(Func(VersionUpdater.NewData)
@@ -63,11 +83,3 @@ def update():
  seq.append(Func(VersionUpdater.DevQA))
  seq.start()
 update()
-   
-   
-os.remove('dependencies/config/release/qa.prc')
-
-with open('dependencies/config/release/qa.prc', "a+") as newfile:
-	newfile.writelines(data)
-			
-	print(ver)
