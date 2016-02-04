@@ -8,7 +8,7 @@ echo ppython: "dependencies/panda/python/ppython.exe"
 
 :start
 echo --------------------------------------------
-"dependencies/panda/python/ppython.exe" -m dev.tools.VersionUpdater.VersionUpdater
+"dependencies/panda/python/ppython.exe" -m dev.tools.VersionUpdater.DansVersionUpdater
 
 pause
 goto start
