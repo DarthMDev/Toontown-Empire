@@ -19,6 +19,11 @@ node "interior" [
   pos [ -21.4932 5.76027 0 ]
   hpr [ 120 -0.0501863 -0.0440521 ]
  ]
+ prop "trunkBoy_DNARoot" [
+  code [ "trunkBoy" ]
+  pos [ -22.5 11.5 0 ]
+  hpr [ 90 0 0 ]
+ ]
  prop "rugB_DNARoot" [
   code [ "rugB" ]
   pos [ -20.6508 6.52406 0 ]
@@ -27,7 +32,7 @@ node "interior" [
  ]
  prop "FireplaceSq_DNARoot" [
   code [ "FireplaceSq" ]
-  pos [ -20 -13 0 ]
+  pos [ -18.8 -13 0 ]
   hpr [ 90 0 0 ]
  ]
  prop "chairA_DNARoot" [
@@ -40,12 +45,6 @@ node "interior" [
   code [ "chairA" ]
   pos [ -6.36842 24.5659 0 ]
   hpr [ -15 -4.42376 -8.56704e-009 ]
-  scale [ 10 10 10 ]
- ]
- prop "chairA_DNARoot" [
-  code [ "chairA" ]
-  pos [ -17.9124 0.933506 0 ]
-  hpr [ 45 0 0 ]
   scale [ 10 10 10 ]
  ]
  prop "GardenA_DNARoot" [
@@ -63,11 +62,6 @@ node "interior" [
  prop "couch_2person_DNARoot" [
   code [ "couch_2person" ]
   pos [ -1.99999 -23 0 ]
-  hpr [ 180 0 0 ]
- ]
- prop "cabinetYwood_DNARoot" [
-  code [ "cabinetYwood" ]
-  pos [ -20 -1.74846e-006 0 ]
   hpr [ 180 0 0 ]
  ]
  prop "ending_table_DNARoot" [

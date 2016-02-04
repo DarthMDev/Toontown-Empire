@@ -7,6 +7,8 @@ from DNAGroup import DNAGroup
 from DNAVisGroup import DNAVisGroup
 from DNADoor import DNADoor
 
+from libpandadna import *
+
 class DNABulkLoader:
     def __init__(self, storage, files):
         self.dnaStorage = storage
@@ -20,35 +22,22 @@ class DNABulkLoader:
         del self.dnaFiles
 
 def loadDNABulk(dnaStorage, file):
-    dnaLoader = DNALoader.DNALoader()
-    if __debug__:
-        file = 'resources/' + file
-    else:
-        file = '/' + file
+    dnaLoader = DNALoader()
+    file = '/' + file
     dnaLoader.loadDNAFile(dnaStorage, file)
-    dnaLoader.destroy()
 
 def loadDNAFile(dnaStorage, file):
     print 'Reading DNA file...', file
-    dnaLoader = DNALoader.DNALoader()
-    if __debug__:
-        file = 'resources/' + file
-    else:
-        file = '/' + file
+    dnaLoader = DNALoader()
+    file = '/' + file
     node = dnaLoader.loadDNAFile(dnaStorage, file)
-    dnaLoader.destroy()
     if node.node().getNumChildren() > 0:
         return node.node()
-    return None
 
 def loadDNAFileAI(dnaStorage, file):
-    dnaLoader = DNALoader.DNALoader()
-    if __debug__:
-        file = 'resources/' + file
-    else:
-        file = '/' + file
+    dnaLoader = DNALoader()
+    file = '/' + file
     data = dnaLoader.loadDNAFileAI(dnaStorage, file)
-    dnaLoader.destroy()
     return data
 
 def setupDoor(doorNodePath, parentNode, doorOrigin, dnaStore, block, color):

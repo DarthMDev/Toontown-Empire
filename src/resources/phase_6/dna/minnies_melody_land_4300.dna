@@ -677,11 +677,6 @@ group "minniesMelodyLand" [
    pos [ 76.4128 24.8235 2.28882e-005 ]
    nhpr [ -90 0 0 ]
   ]
-  prop "prop_tt_m_ara_gen_tunnelAheadSign_DNARoot" [
-   code [ "prop_tt_m_ara_gen_tunnelAheadSign" ]
-   pos [ 51.4409 4.68143 -0.500046 ]
-   nhpr [ 180 0 0 ]
-  ]
  ]
  visgroup "4302" [
   vis [   "4302"   "4301"   "4303"   "4304"   "4305"   "4306"   ]
@@ -10984,11 +10979,6 @@ group "minniesMelodyLand" [
    cell_id [ 0 ]
    pos [ 663.038 177.827 0 ]
    nhpr [ 180 0 0 ]
-  ]
-  prop "prop_tt_m_ara_gen_tunnelAheadSign_DNARoot" [
-   code [ "prop_tt_m_ara_gen_tunnelAheadSign" ]
-   pos [ 689.764 186.368 -0.500015 ]
-   nhpr [ -90 0 0 ]
   ]
  ]
  visgroup "4341" [
