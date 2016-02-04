@@ -1,10 +1,20 @@
 # TODO: Add correct paths + add astron cluster files! ~FordTheWriter
-import os
+import os, sys, math, random
+from direct.interval.IntervalGlobal import *
 os.chdir('../../../')
 data = []
 
-def ReleaseQA(self):
- with open('dependencies/config/release/qa.prc', 'r+') as config:
+
+class VersionUpdater(self):
+
+ def ResetData(self):
+  data = None
+ 
+ def NewData(self):
+  data = []
+
+ def ReleaseQA(self):
+  with open('dependencies/config/release/qa.prc', 'r+') as config:
 	data = config.readlines()
 	line = data[7].split()
 	x = line[1]
@@ -22,8 +32,8 @@ def ReleaseQA(self):
 		data[7] = "server-version TTE-Alpha-"+ str(ver[0]) + "." + str(ver[1]) + "." + str(ver[2]) + "\n"
 		
  
-def DevQA(self):
- with open('dependencies/config/release/dev.prc', 'r+') as config:
+ def DevQA(self):
+  with open('dependencies/config/release/dev.prc', 'r+') as config:
 	data = config.readlines()
 	line = data[21].split()
 	x = line[1]
@@ -40,10 +50,22 @@ def DevQA(self):
 		ver[2] = int(ver[2]) + 1
 		data[7] = "server-version TTE-Alpha-"+ str(ver[0]) + "." + str(ver[1]) + "." + str(ver[2]) + "\n"
 
-		
-   
 
-#os.remove('dependencies/config/release/qa.prc')
+   
+def update():
+ seq = Sequence()
+ seq.append(Func(VersionUpdater.ReleaseQA))
+ seq.append(Wait(0.1))
+ seq.append(Func(VersionUpdater.ResetData)
+ seq.append(Wait(0.1))
+ seq.append(Func(VersionUpdater.NewData)
+ seq.append(Wait(0.1))
+ seq.append(Func(VersionUpdater.DevQA))
+ seq.start()
+update()
+   
+   
+os.remove('dependencies/config/release/qa.prc')
 
 with open('dependencies/config/release/qa.prc', "a+") as newfile:
 	newfile.writelines(data)
