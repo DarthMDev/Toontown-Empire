@@ -1314,7 +1314,12 @@ group "toontownCentral" [
    code [ "prop_post_one_light" ]
    pos [ -125 60 0 ]
    nhpr [ 150 0 0 ]
-  ]
+  ] 
+  prop "animated_prop_CakeAnimatedProp_DNARoot" [
+   code [ "animated_prop_CakeAnimatedProp" ]
+   pos [ 800 0 0 ]
+   nhpr [ 0 0 0 ]
+   ]
   landmark_building "sz22:toon_landmark_TT_pet_shop_DNARoot" [
    code [ "toon_landmark_TT_pet_shop" ]
    building_type [ "petshop" ]
