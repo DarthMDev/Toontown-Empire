@@ -4,12 +4,10 @@ from toontown.toonbase.ToonBaseGlobal import *
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
 from toontown.toonbase import ToontownGlobals, TTLocalizer
-import DistributedFurnitureItem
-import BankGUI
+import DistributedFurnitureItem, BankGUI
 from BankGlobals import *
 from toontown.toontowngui import TTDialog
-from toontown.catalog.CatalogFurnitureItem import FurnitureTypes
-from toontown.catalog.CatalogFurnitureItem import FTScale
+from toontown.catalog.CatalogFurnitureItem import FurnitureTypes, FTScale
 
 class DistributedBank(DistributedFurnitureItem.DistributedFurnitureItem):
     notify = directNotify.newCategory('DistributedBank')

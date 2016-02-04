@@ -641,7 +641,7 @@ FurnitureTypes = {
          5: (('**/Bedroom_Table', woodColors[5]),)},
         220,
         FLIsTable),
- 1300: ('phase_5.5/models/estate/jellybeanBank_s',
+ 1300: ('phase_5.5/models/estate/jellybeanBank',
         None,
         None,
         5000,
