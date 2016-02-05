@@ -7,8 +7,10 @@ from DNAGroup import DNAGroup
 from DNAVisGroup import DNAVisGroup
 from DNADoor import DNADoor
 import sys
-
-from libpandadna import *
+if sys.platform == 'win32':
+ from libpandadna import *
+else:
+ from linac.libpandadna import *
 
 class DNABulkLoader:
     def __init__(self, storage, files):
