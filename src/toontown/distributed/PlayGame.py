@@ -9,7 +9,8 @@ from toontown.hood import TTHood, DDHood, MMHood, BRHood, DGHood, DLHood, GSHood
 from direct.task import TaskManagerGlobal
 from toontown.parties.PartyGlobals import GoToPartyStatus
 from toontown.dna.DNAParser import *
-import sys
+
+
 class PlayGame(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('PlayGame')
     Hood2ClassDict = {ToontownGlobals.ToontownCentral: TTHood.TTHood,

@@ -42,6 +42,9 @@ class DNAVisGroup(DNAGroup.DNAGroup):
     def getVisibleName(self, i):
         return self.visibles[i]
 
+    def getVisibles(self):
+        return self.visibles
+
     def removeBattleCell(self, cell):
         self.battleCells.remove(cell)
 

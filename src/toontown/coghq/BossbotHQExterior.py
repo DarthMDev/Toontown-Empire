@@ -16,6 +16,7 @@ class BossbotHQExterior(CogHQExterior.CogHQExterior):
 
     def __init__(self, loader, parentFSM, doneEvent):
         CogHQExterior.CogHQExterior.__init__(self, loader, parentFSM, doneEvent)
+        self.visibles = []
 
         self.elevatorDoneEvent = 'elevatorDone'
         self.trains = None
