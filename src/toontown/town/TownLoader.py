@@ -73,6 +73,7 @@ class TownLoader(StateData.StateData):
         del self.hood
         del self.nodeDict
         del self.zoneDict
+        del self.nodeToZone
         del self.fadeInDict
         del self.fadeOutDict
         del self.nodeList
@@ -220,7 +221,7 @@ class TownLoader(StateData.StateData):
     def makeDictionaries(self, dnaStore):
         self.nodeDict = {}
         self.zoneDict = {}
-        self.zoneVisDict = {}
+        self.nodeToZone = {}
         self.nodeList = []
         self.fadeInDict = {}
         self.fadeOutDict = {}
@@ -229,9 +230,9 @@ class TownLoader(StateData.StateData):
         numVisGroups = dnaStore.getNumDNAVisGroupsAI()
         for i in xrange(numVisGroups):
             groupFullName = dnaStore.getDNAVisGroupName(i)
-            visGroup = dnaStore.getDNAVisGroupAI(i)
             groupName = base.cr.hoodMgr.extractGroupName(groupFullName)
             zoneId = int(groupName)
+            zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
             groupNode = self.geom.find('**/' + groupFullName)
             if groupNode.isEmpty():
                 self.notify.error('Could not find visgroup')
@@ -241,15 +242,11 @@ class TownLoader(StateData.StateData):
                 else:
                     groupName = '%s' % zoneId
                 groupNode.setName(groupName)
-            groupNode.flattenMedium()
+
             self.nodeDict[zoneId] = []
             self.nodeList.append(groupNode)
             self.zoneDict[zoneId] = groupNode
-            visibles = []
-            for i in xrange(visGroup.getNumVisibles()):
-                visibles.append(int(visGroup.visibles[i]))
-            visibles.append(ZoneUtil.getBranchZone(zoneId))
-            self.zoneVisDict[zoneId] = visibles
+            self.nodeToZone[groupNode] = zoneId
             fadeDuration = 0.5
             self.fadeOutDict[groupNode] = Sequence(Func(groupNode.setTransparency, 1), LerpColorScaleInterval(groupNode, fadeDuration, a0, startColorScale=a1), Func(groupNode.clearColorScale), Func(groupNode.clearTransparency), Func(groupNode.stash), name='fadeZone-' + str(zoneId), autoPause=1)
             self.fadeInDict[groupNode] = Sequence(Func(groupNode.unstash), Func(groupNode.setTransparency, 1), LerpColorScaleInterval(groupNode, fadeDuration, a1, startColorScale=a0), Func(groupNode.clearColorScale), Func(groupNode.clearTransparency), name='fadeZone-' + str(zoneId), autoPause=1)
@@ -257,10 +254,12 @@ class TownLoader(StateData.StateData):
         for i in xrange(numVisGroups):
             groupFullName = dnaStore.getDNAVisGroupName(i)
             zoneId = int(base.cr.hoodMgr.extractGroupName(groupFullName))
+            zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
             for j in xrange(dnaStore.getNumVisiblesInDNAVisGroup(i)):
                 visName = dnaStore.getVisibleName(i, j)
                 groupName = base.cr.hoodMgr.extractGroupName(visName)
                 nextZoneId = int(groupName)
+                nextZoneId = ZoneUtil.getTrueZoneId(nextZoneId, self.zoneId)
                 visNode = self.zoneDict[nextZoneId]
                 self.nodeDict[zoneId].append(visNode)
 
