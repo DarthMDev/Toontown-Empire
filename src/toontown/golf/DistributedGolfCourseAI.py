@@ -1003,9 +1003,9 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
         if avId in self.aimTimes:
             self.aimTimes[avId] += aimTime
             
-'''@magicWord(category=CATEGORY_STAFF, types=[str, int])
-def skipCourse(self):
- av = spellbook.getInvoker()
- golfcourse = 
+#@magicWord(category=CATEGORY_STAFF, types=[str, int])
+#def skipCourse(self):
+# av = spellbook.getInvoker()
+# golfcourse = 
 
 
