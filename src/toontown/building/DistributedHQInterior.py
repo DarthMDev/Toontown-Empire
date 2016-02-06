@@ -155,7 +155,7 @@ class DistributedHQInterior(DistributedObject.DistributedObject):
             doorOrigin.setScale(0.8, 0.8, 0.8)
             doorOrigin.setPos(doorOrigin, 0, -0.025, 0)
             doorColor = self.randomGenerator.choice(self.colors['TI_door'])
-            triggerId = self.block + '_' + doorOriginIndexStr
+            triggerId = str(self.block) + '_' + doorOriginIndexStr
             DNADoor.setupDoor(doorNP, newNodePath, doorOrigin, self.dnaStore, triggerId, doorColor)
             doorFrame = doorNP.find('door_*_flat')
             doorFrame.setColor(doorColor)
