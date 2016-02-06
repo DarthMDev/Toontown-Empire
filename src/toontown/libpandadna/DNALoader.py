@@ -272,8 +272,8 @@ class DNALoader:
         assert self.curProp.getName() == "root"
         
         return self.curProp
-        #TODO dan fix this v
-if __debug__ and False: #config.GetBool('libpandadna-profile-loader', False):
+        
+if __debug__ and config.GetBool('libpandadna-profile-loader', False):
     import time
     
     def timed(f):

@@ -4,8 +4,8 @@ from DNASuitPath import DNASuitPath
 from DNASuitEdge import DNASuitEdge
 
 from panda3d.core import NodePath
-#TODO fix this dan v
-LOAD_ON_DEMAND = True #config.GetBool('libpandadna-load-ondemand', True)
+
+LOAD_ON_DEMAND = config.GetBool('libpandadna-load-ondemand', True)
         
 def loadsOnDemand(f):
     if not LOAD_ON_DEMAND:
