@@ -6,11 +6,8 @@ from DNASuitPoint import DNASuitPoint
 from DNAGroup import DNAGroup
 from DNAVisGroup import DNAVisGroup
 from DNADoor import DNADoor
-import sys
-if sys.platform == 'darwin' or sys.platform == 'linux2':
-	from toontown.libpandadna import *
-else:
-	from libpandadna import *
+
+from libpandadna import *
 
 class DNABulkLoader:
     def __init__(self, storage, files):
