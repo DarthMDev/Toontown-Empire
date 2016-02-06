@@ -1917,15 +1917,13 @@ group "toontownCentral" [
      nhpr [ 90 0 -0 ]
     ]
    ]
-   landmark_building "tb5:toon_landmark_TT_B2_DNARoot" [
-    code [ "toon_landmark_TT_B2" ]
+   anim_building "tb5:animated_building_phase_5_models_char__ttc_B2_DNARoot" [
+    code [ "animated_building_phase_5_models_char__ttc_B2" ]
+    building_type [ "animbldg" ]
     title [ "Toontown Sign Factory" ]
-    pos [ -330 -170 0 ]
-    hpr [ 90 0 0 ]
-    door [
-     code [ "door_double_square_ur" ]
-     color [ 1 0.87 0.38 1 ]
-    ]
+    anim [ "tt_a_ara_ttc_B2_dance" ]
+    pos [ -331.374 -162 0 ]
+    nhpr [ 90 0 -0 ]
     sign [
      code [ "TTC_sign2" ]
      color [ 1 0.88 0.56 1 ]
@@ -9933,6 +9931,11 @@ group "toontownCentral" [
   ]
   group "props" [
   ]
+  prop "prop_tt_m_ara_gen_tunnelAheadSign_DNARoot" [
+   code [ "prop_tt_m_ara_gen_tunnelAheadSign" ]
+   pos [ -368.577 -395.45 -0.499989 ]
+   nhpr [ 180 0 -0 ]
+  ]
   interactive_prop "interactive_prop_phase_5_models_char__ttc_hydrant_DNARoot" [
    code [ "interactive_prop_phase_5_models_char__ttc_hydrant" ]
    anim [ "tt_a_ara_ttc_hydrant_fightBoost" ]
@@ -10418,6 +10421,11 @@ group "toontownCentral" [
      nhpr [ 90 0 -0 ]
     ]
    ]
+  ]
+  prop "prop_tt_m_ara_gen_tunnelAheadSign_DNARoot" [
+   code [ "prop_tt_m_ara_gen_tunnelAheadSign" ]
+   pos [ -93.9915 -108.692 -0.500011 ]
+   nhpr [ -90.4703 0 -0 ]
   ]
   interactive_prop "interactive_prop_phase_5_models_char__ttc_hydrant_DNARoot" [
    code [ "interactive_prop_phase_5_models_char__ttc_hydrant" ]
