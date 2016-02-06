@@ -7,6 +7,12 @@ from direct.fsm.FSM import FSM
 from toontown.ai.ToonBarrier import *
 from toontown.golf import GolfGlobals
 from toontown.uberdog import TopToonsGlobals
+
+#Magic Word Imports
+from otp.ai.MagicWordGlobal import *
+from direct.distributed.PyDatagram import PyDatagram
+from direct.distributed.MsgTypes import *
+
 INITIAL = 0
 EXITED = 1
 EXPECTED = 2
@@ -996,3 +1002,10 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
     def addAimTime(self, avId, aimTime):
         if avId in self.aimTimes:
             self.aimTimes[avId] += aimTime
+            
+'''@magicWord(category=CATEGORY_STAFF, types=[str, int])
+def skipCourse(self):
+ av = spellbook.getInvoker()
+ golfcourse = 
+
+

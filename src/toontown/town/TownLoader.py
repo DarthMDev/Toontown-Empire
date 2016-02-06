@@ -7,9 +7,7 @@ from direct.gui.DirectGui import cleanupDialog
 from direct.directnotify import DirectNotifyGlobal
 from toontown.hood import Place
 from direct.showbase import DirectObject
-from direct.fsm import StateData
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
+from direct.fsm import ClassicFSM, State, StateData
 from direct.task import Task
 import TownBattle
 from toontown.toon import Toon
