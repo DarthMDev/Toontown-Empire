@@ -93,9 +93,6 @@ class Street(BattlePlace.BattlePlace):
         self.elevatorDoneEvent = 'elevatorDone'
         self.halloweenLights = []
         self.zone = 0
-        self.visInterestHandle = None
-        self.visZones = []
-        self.visInterestChanged = False
 
     def enter(self, requestStatus, visibilityFlag = 1, arrowsOn = 1):
         teleportDebug(requestStatus, 'Street.enter(%s)' % (requestStatus,))
@@ -128,14 +125,9 @@ class Street(BattlePlace.BattlePlace):
             lightsOn.start()
         self.accept('doorDoneEvent', self.handleDoorDoneEvent)
         self.accept('DistributedDoor_doorTrigger', self.handleDoorTrigger)
-        
-        # add street branch interest
-        self.branchInterest = base.cr.addInterest(localAvatar.defaultShard, ZoneUtil.getBranchZone(requestStatus['zoneId']), "")
-        
         self.enterZone(requestStatus['zoneId'])
         self.tunnelOriginList = base.cr.hoodMgr.addLinkTunnelHooks(self, self.loader.nodeList)
         self.fsm.request(requestStatus['how'], [requestStatus])
-        self.replaceStreetSignTextures()
 
     def exit(self, visibilityFlag = 1):
         if visibilityFlag:
@@ -148,16 +140,11 @@ class Street(BattlePlace.BattlePlace):
             for light in self.halloweenLights:
                 light.reparentTo(hidden)
 
-        newsManager = base.cr.newsManager
         NametagGlobals.setMasterArrowsOn(0)
         self.loader.hood.stopSky()
         self.loader.music.stop()
         base.localAvatar.setGeom(render)
         base.localAvatar.setOnLevelGround(0)
-        if not self.visInterestHandle is None:
-            base.cr.removeInterest(self.visInterestHandle)
-            
-        base.cr.removeInterest(self.branchInterest)
 
     def load(self):
         BattlePlace.BattlePlace.load(self)
@@ -328,29 +315,6 @@ class Street(BattlePlace.BattlePlace):
         self.ignore('on-floor')
         self.showAllVisibles()
 
-
-    def addVisInterest(self, zone):
-        self.notify.debug('addVisInterest zone=%i'%zone)
-        self.visZones.append(zone)
-        self.visInterestChanged = True
-
-    def removeVisInterest(self, zone):
-        self.notify.debug('removeVisInterest zone=%i'%zone)
-        try:
-            self.visZones.remove(zone)
-            self.visInterestChanged = True
-        except ValueError: #item was not in the list
-            self.notify.warning('Street.removeVisInterest called on zone %i that isn\'t in interest' % zone)
-    
-    def updateVisInterest(self):
-        if self.visInterestChanged:
-            self.notify.debug('updateVisInterest zones=' + str(self.visZones) + ' handle=' +str(self.visInterestHandle))
-            self.visInterestChanged = False
-            if self.visInterestHandle is None:
-                if len(self.visZones) > 0:
-                    self.visInterestHandle = base.cr.addInterest(base.localAvatar.defaultShard, self.visZones, 'streetVis')
-            else:
-                base.cr.alterInterest(self.visInterestHandle, base.localAvatar.defaultShard, self.visZones)
     def doEnterZone(self, newZoneId):
         if self.zoneId != None:
             for i in self.loader.nodeDict[self.zoneId]:
@@ -358,9 +322,7 @@ class Street(BattlePlace.BattlePlace):
                     if i not in self.loader.nodeDict[newZoneId]:
                         self.loader.fadeOutDict[i].start()
                         self.loader.exitAnimatedProps(i)
-                        self.removeVisInterest(self.loader.nodeToZone[i])
                 else:
-                    self.removeVisInterest(self.loader.nodeToZone[i])
                     i.stash()
                     self.loader.exitAnimatedProps(i)
 
@@ -370,7 +332,6 @@ class Street(BattlePlace.BattlePlace):
                     if i not in self.loader.nodeDict[self.zoneId]:
                         self.loader.fadeInDict[i].start()
                         self.loader.enterAnimatedProps(i)
-                        self.addVisInterest(self.loader.nodeToZone[i])
                 else:
                     if self.loader.fadeOutDict[i].isPlaying():
                         self.loader.fadeOutDict[i].finish()
@@ -378,9 +339,6 @@ class Street(BattlePlace.BattlePlace):
                         self.loader.fadeInDict[i].finish()
                     self.loader.enterAnimatedProps(i)
                     i.unstash()
-                    self.addVisInterest(self.loader.nodeToZone[i])
-
-        self.updateVisInterest()
 
         if newZoneId != self.zoneId:
             if visualizeZones:
@@ -388,9 +346,13 @@ class Street(BattlePlace.BattlePlace):
                     self.loader.zoneDict[self.zoneId].clearColor()
                 if newZoneId != None:
                     self.loader.zoneDict[newZoneId].setColor(0, 0, 1, 1, 100)
-
-                base.cr.sendSetZoneMsg(newZoneId)
-                self.notify.debug('Entering Zone %d' % newZoneId)
+            if newZoneId is not None:
+                loader = base.cr.playGame.getPlace().loader
+                if newZoneId in loader.zoneVisDict:
+                    base.cr.sendSetZoneMsg(newZoneId, loader.zoneVisDict[newZoneId])
+                else:
+                    visList = [newZoneId] + loader.zoneVisDict.values()[0]
+                    base.cr.sendSetZoneMsg(newZoneId, visList)
             self.zoneId = newZoneId
         geom = base.cr.playGame.getPlace().loader.geom
         self.halloweenLights = geom.findAllMatches('**/*light*')
@@ -398,29 +360,3 @@ class Street(BattlePlace.BattlePlace):
         self.halloweenLights += geom.findAllMatches('**/prop_snow_tree*')
         for light in self.halloweenLights:
             light.setColorScaleOff(1)
-    def replaceStreetSignTextures(self):
-        if not hasattr(base.cr, 'playGame'):
-            return
-        place = base.cr.playGame.getPlace()
-        if place is None:
-            return
-        geom = base.cr.playGame.getPlace().loader.geom
-        signs = geom.findAllMatches('**/*tunnelAheadSign*;+s')
-        if signs.getNumPaths() > 0:
-            streetSign = base.cr.streetSign
-            signTexturePath = streetSign.StreetSignBaseDir + '/' + streetSign.StreetSignFileName
-            loaderTexturePath = Filename(str(signTexturePath))
-            alphaPath = 'phase_4/maps/tt_t_ara_gen_tunnelAheadSign_a.rgb'
-            inDreamland = False
-            if place.zoneId and ZoneUtil.getCanonicalHoodId(place.zoneId) == ToontownGlobals.DonaldsDreamland:
-                inDreamland = True
-            alphaPath = 'phase_4/maps/tt_t_ara_gen_tunnelAheadSign_a.rgb'
-            if Filename(signTexturePath).exists():
-                signTexture = loader.loadTexture(loaderTexturePath, alphaPath)
-            for sign in signs:
-                if Filename(signTexturePath).exists():
-                    sign.setTexture(signTexture, 1)
-                if inDreamland:
-                    sign.setColorScale(0.525, 0.525, 0.525, 1)
-
-        return
