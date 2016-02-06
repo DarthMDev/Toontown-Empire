@@ -145,19 +145,7 @@ def getCanonicalBranchZone(zoneId):
 
 
 def getCanonicalZoneId(zoneId):
-
     return zoneId
-def getTrueZoneId(zoneId, currentZoneId):
-        zoneId = getCanonicalZoneId(zoneId)
-        hoodId = getHoodId(zoneId)
-        offset = currentZoneId - currentZoneId % 2000
-        if hoodId == ToontownCentral:
-            return zoneId - ToontownCentral + offset
-        elif hoodId == GoofySpeedway:
-            return zoneId - GoofySpeedway + offset + 1000
-        elif hoodId == OutdoorZone:
-            return zoneId - OutdoorZone + offset + 1000		
-    	return zoneId
 
 
 def getHoodId(zoneId):
