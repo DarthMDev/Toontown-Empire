@@ -7,27 +7,26 @@ from direct.task import Task
 from direct.fsm import FSM
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
-data = None
-os.chdir('../../../')
-QAFilePath = 'dependencies/config/release/qa.prc'
-DevQAFilePath= 'dependencies/config/release/dev.prc'
+data = []
 WaitTime = 1
 
+
+
 def OpenFileQA():
- with open(QAFilePath, "a+") as newfile:
+ with open('dependencies/config/release/qa.prc', "a+") as newfile:
 	newfile.writelines(data)		
 	print(ver)
         
 def OpenFileDevQA():
- with open(DevQAFilePath, "a+") as newfile:
+ with open('dependencies/config/release/dev.prc', "a+") as newfile:
 	newfile.writelines(data)		
 	print(ver)
         
 def RemoveQAFile():
- os.remove(QAFilePath)
+ os.remove('dependencies/config/release/qa.prc')
 
 def RemoveDevQAFile():
- os.remove(DevQAFilePath)
+ os.remove('dependencies/config/release/dev.prc')
   
 def ResetData():
  data = None
@@ -36,7 +35,7 @@ def NewData():
  data = []
 
 def ReleaseQA():
- with open(QAFilePath, 'r+') as config:
+ with open('dependencies/config/release/qa.prc', 'r+') as config:
 	data = config.readlines()
 	line = data[7].split()
 	x = line[1]
@@ -54,7 +53,7 @@ def ReleaseQA():
 		data[7] = "server-version TTE-Alpha-"+ str(ver[0]) + "." + str(ver[1]) + "." + str(ver[2]) + "\n"
 		
 def DevQA():
- with open(DevQAFilePath, 'r+') as config:
+ with open('dependencies/config/release/dev.prc', 'r+') as config:
 	data = config.readlines()
 	line = data[21].split()
 	x = line[1]
@@ -75,9 +74,8 @@ def DevQA():
 class Update(ShowBase):
  def __init__(self):
   ShowBase.__init__(self)
+  os.chdir('../../../')
   seq = Sequence()
-  seq.append(Func(NewData))
-  seq.append(Wait(WaitTime))
   seq.append(Func(ReleaseQA))
   seq.append(Wait(WaitTime))
   seq.append(Func(RemoveQAFile))
