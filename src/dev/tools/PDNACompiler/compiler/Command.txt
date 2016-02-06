@@ -1,2 +1,0 @@
-C:/path/path: 
-Type: "python compile.py filename.dna"
