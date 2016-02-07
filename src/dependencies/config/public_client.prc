@@ -1,7 +1,10 @@
-# Distribution:
-distribution dev
+# This is the PRC configuration file for public releases of the game.
+# It's rather similar to the dev PRC, but w/ some unneeded options removed.
 
-# Art assets:
+# VFS for resources.
+model-path resources
+model-cache-models #f
+model-cache-textures #f
 vfs-mount resources/phase_3 /phase_3
 vfs-mount resources/phase_3.5 /phase_3.5
 vfs-mount resources/phase_4 /phase_4
@@ -15,13 +18,7 @@ vfs-mount resources/phase_10 /phase_10
 vfs-mount resources/phase_11 /phase_11
 vfs-mount resources/phase_12 /phase_12
 vfs-mount resources/phase_13 /phase_13
-vfs-mount resources/server /server
-model-path /
-
-# Server:
-server-version Toontown Empire
-build-version dev
-accountdb-type developer
+default-model-extension .bam
 
 # RPC:
 want-rpc-server #f
@@ -29,6 +26,19 @@ rpc-server-endpoint http://localhost:8080/
 
 # DClass file:
 dc-file dependencies/astron/dclass/empire.dc
+
+# Client settings
+window-title Toontown Empire
+server-version Toontown Empire
+build-version BUILD_VERSION
+sync-video #f
+want-dev #f
+preload-avatars #t
+texture-anisotropic-degree 16
+icon-filename phase_3/etc/icon.ico
+audio-library-name p3openal_audio
+default-directnotify-level info
+smooth-lag 0.4
 
 # Core features:
 want-pets #t
