@@ -15,7 +15,7 @@ from sys import platform
 import sys
 import tempfile
 import time
-
+from DisplayOptions import DisplayOptions
 import ToontownGlobals
 import ToontownLoader
 from otp.otpbase import OTPBase, OTPGlobals
@@ -45,6 +45,7 @@ class ToonBase(OTPBase.OTPBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonBase')
 
     def __init__(self):
+        self.display = DisplayOptions()
         OTPBase.OTPBase.__init__(self)
         self.disableShowbaseMouse()
         self.addCullBins()
@@ -52,6 +53,8 @@ class ToonBase(OTPBase.OTPBase):
         self.lightspeed =   3.00 * 10 ** 8
         self.baseXpMultiplier = self.config.GetFloat('base-xp-multiplier', 1.0)
         self.toonChatSounds = self.config.GetBool('toon-chat-sounds', 1)
+
+        self.textToSpeech = self.display.settings.getBool('game', 'textToSpeech', False)
         self.placeBeforeObjects = self.config.GetBool('place-before-objects', 1)
         self.endlessQuietZone = False
         self.wantDynamicShadows = 0
