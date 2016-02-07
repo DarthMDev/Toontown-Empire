@@ -1,4 +1,6 @@
 from direct.controls.GravityWalker import GravityWalker
+from subprocess import Popen
+import os
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject, DistributedSmoothNode
 from direct.distributed.ClockDelta import *
@@ -2028,33 +2030,58 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             length = 3
         else:
             length = 4
-        self.playDialogue(type, length, delay)
+        self.playDialogue(type, length, delay, chatString)
 
-    def playDialogue(self, type, length, delay = 0.0):
-        dialogueArray = self.getDialogueArray()
-        if dialogueArray == None:
-            return
-        sfxIndex = None
-        if type == 'statementA' or type == 'statementB':
-            if length == 1:
-                sfxIndex = 0
-            elif length == 2:
-                sfxIndex = 1
-            elif length >= 3:
-                sfxIndex = 2
-        elif type == 'question':
-            sfxIndex = 3
-        elif type == 'exclamation':
-            sfxIndex = 4
-        elif type == 'special':
-            sfxIndex = 5
+    def playDialogue(self, type, length, delay = 0.0, chatString = ''):
+        if base.textToSpeech:
+            animalType = self.style.getType()
+            if animalType == 'dog':
+                pitch = '-p50'
+            elif animalType == 'cat':
+                pitch = '-p80'
+            elif animalType == 'horse':
+                pitch = '-p30'
+            elif animalType == 'mouse':
+                pitch = '-p99'
+            elif animalType == 'rabbit':
+                pitch = '-p95'
+            elif animalType == 'duck':
+                pitch = '-p35'
+            elif animalType == 'monkey':
+                pitch = '-p85'
+            elif animalType == 'bear':
+                pitch = '-p20'
+            elif animalType == 'pig':
+                pitch = '-p25'
+            else:
+                pitch = '-p50'
+
+            Popen([os.environ['PROGRAMFILES'] + '\\eSpeak\\command_line\\espeak', pitch + ' -ven+m1' ,chatString])
         else:
-            self.notify.error('unrecognized dialogue type: ', type)
-        if sfxIndex != None and sfxIndex < len(dialogueArray) and dialogueArray[sfxIndex] != None:
-            soundSequence = Sequence(Wait(delay), SoundInterval(dialogueArray[sfxIndex], node=None, listenerNode=base.localAvatar, loop=0, volume=1.0))
-            self.soundSequenceList.append(soundSequence)
-            soundSequence.start()
-            self.cleanUpSoundList()
+            dialogueArray = self.getDialogueArray()
+            if dialogueArray == None:
+                return
+            sfxIndex = None
+            if type == 'statementA' or type == 'statementB':
+                if length == 1:
+                    sfxIndex = 0
+                elif length == 2:
+                    sfxIndex = 1
+                elif length >= 3:
+                    sfxIndex = 2
+            elif type == 'question':
+                sfxIndex = 3
+            elif type == 'exclamation':
+                sfxIndex = 4
+            elif type == 'special':
+                sfxIndex = 5
+            else:
+                self.notify.error('unrecognized dialogue type: ', type)
+            if sfxIndex != None and sfxIndex < len(dialogueArray) and dialogueArray[sfxIndex] != None:
+                soundSequence = Sequence(Wait(delay), SoundInterval(dialogueArray[sfxIndex], node=None, listenerNode=base.localAvatar, loop=0, volume=1.0))
+                self.soundSequenceList.append(soundSequence)
+                soundSequence.start()
+                self.cleanUpSoundList()
         return
 
     def cleanUpSoundList(self):
