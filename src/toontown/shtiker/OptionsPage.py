@@ -1,4 +1,9 @@
 from direct.directnotify.DirectNotifyGlobal import directNotify
+import os
+import webbrowser
+from sys import platform
+from subprocess import call
+from pandac.PandaModules import *
 from direct.gui.DirectGui import *
 from direct.showbase import PythonUtil
 from direct.task import Task
@@ -338,6 +343,8 @@ class OptionsTabPage(DirectFrame):
         self.speedChatStyleText.setScale(self.speed_chat_scale)
         self.speedChatStyleText.setPos(0.37, 0, buttonbase_ycoord - textRowHeight * 6 + 0.03)
         self.speedChatStyleText.reparentTo(self, DGG.FOREGROUND_SORT_INDEX)
+        self.TextToSpeech_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image3_color=Vec4(0.5, 0.5, 0.5, 0.5), image_scale=button_image_scale, text='', text3_fg=(0.5, 0.5, 0.5, 0.75), text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight * 6), command=self.__doToggleTextToSpeech)
+        self.TextToSpeech_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=10, pos=(leftMargin, 0, textStartHeight - 6 * textRowHeight))
         self.exitButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=1.15, text=TTLocalizer.OptionsPageExitToontown, text_scale=options_text_scale, text_pos=button_textpos, textMayChange=0, pos=(0.45, 0, -0.6), command=self.__handleExitShowWithConfirm)
         guiButton.removeNode()
         gui.removeNode()
@@ -350,6 +357,7 @@ class OptionsTabPage(DirectFrame):
         self.__setAcceptWhispersButton()
         self.__setDisplaySettings()
         self.__setToonChatSoundsButton()
+        self.__setTextToSpeechButton()
         self.speedChatStyleText.enter()
         self.speedChatStyleIndex = base.localAvatar.getSpeedChatStyleIndex()
         self.updateSpeedChatStyle()
@@ -388,8 +396,10 @@ class OptionsTabPage(DirectFrame):
         del self.SpeedChatStyle_Label
         del self.SoundFX_toggleSlider
         del self.Music_toggleSlider
+        del self.TextToSpeech_Label
         del self.Friends_toggleButton
         del self.Whispers_toggleButton
+        del self.TextToSpeech_toggleButton
         del self.speedChatStyleLeftArrow
         del self.speedChatStyleRightArrow
         self.speedChatStyleText.exit()
@@ -421,7 +431,27 @@ class OptionsTabPage(DirectFrame):
         else:
             base.toonChatSounds = 1
             settings['toonChatSounds'] = True
+
+    def __doToggleTextToSpeech(self):
+        messenger.send('wakeup')
+        if self.TextToSpeech_Label['text'] == TTLocalizer.OptionsPageTextToSpeechNotInstalledLabel:
+            # neigh gear don't have no espeak, send them to the ~brig~ website
+            webbrowser.open('http://sourceforge.net/projects/espeak/files/latest/download', new = 2)
+        if base.textToSpeech:
+            base.textToSpeech = 0
+            base.display.settings.updateSetting('game', 'textToSpeech', False)
+        else:
+            base.textToSpeech = 1
+            base.display.settings.updateSetting('game', 'textToSpeech', True)
         self.settingsChanged = 1
+
+    def __setSoundFXButton(self):
+        if base.sfxActive:
+            self.SoundFX_Label['text'] = TTLocalizer.OptionsPageSFXOnLabel
+            self.SoundFX_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff
+        else:
+            self.SoundFX_Label['text'] = TTLocalizer.OptionsPageSFXOffLabel
+            self.SoundFX_toggleButton['text'] = TTLocalizer.OptionsPageToggleOn
         self.__setToonChatSoundsButton()
 
     def __setToonChatSoundsButton(self):
@@ -438,6 +468,25 @@ class OptionsTabPage(DirectFrame):
             self.ToonChatSounds_Label.setColorScale(0.5, 0.5, 0.5, 0.5)
             self.ToonChatSounds_toggleButton['state'] = DGG.DISABLED
 
+    def __setTextToSpeechButton(self):
+        if platform == "darwin":
+            # Not available on MacOS
+            self.TextToSpeech_Label['text'] = TTLocalizer.OptionsPageTextToSpeechNotAvailableMacLabel
+            self.TextToSpeech_Label.setColorScale(0.5, 0.5, 0.5, 0.5)
+            self.TextToSpeech_toggleButton['state'] = DGG.DISABLED
+        else:
+            try:
+                call([os.environ['PROGRAMFILES'] + '\\eSpeak\\command_line\\espeak', '']) # This calls eSpeak to say nothing, basically making sure it's installed
+                if base.textToSpeech:
+                    self.TextToSpeech_Label['text'] = TTLocalizer.OptionsPageTextToSpeechOnLabel
+                    self.TextToSpeech_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff
+                else:
+                    self.TextToSpeech_Label['text'] = TTLocalizer.OptionsPageTextToSpeechOffLabel
+                    self.TextToSpeech_toggleButton['text'] = TTLocalizer.OptionsPageToggleOn
+            except:
+                # Not installed
+                self.TextToSpeech_Label['text'] = TTLocalizer.OptionsPageTextToSpeechNotInstalledLabel
+                self.TextToSpeech_toggleButton['text'] = TTLocalizer.OptionsPageGetEspeak
     def __doToggleAcceptFriends(self):
         messenger.send('wakeup')
         acceptingNewFriends = settings.get('acceptingNewFriends', {})
