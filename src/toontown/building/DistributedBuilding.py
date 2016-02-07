@@ -20,7 +20,6 @@ import sys
 FO_DICT = {'s': 'tt_m_ara_cbe_fieldOfficeMoverShaker',
  'l': 'tt_m_ara_cbe_fieldOfficeLegalEagle',
  'm': 'tt_m_ara_cbe_fieldOfficeMoverShaker',
- 'g': 'tt_m_ara_cbe_fieldOfficeMoverShaker',
  'c': 'tt_m_ara_cbe_fieldOfficeMoverShaker'}
 
 class DistributedBuilding(DistributedObject.DistributedObject):
@@ -474,13 +473,16 @@ class DistributedBuilding(DistributedObject.DistributedObject):
          signTextNodePath.setPosHprScale(0.0, 0.0, -0.21 + textHeight * 0.1 / zScale, 0.0, 0.0, 0.0, 0.1, 0.1, 0.1 / zScale)
          signTextNodePath.setColor(1.0, 1.0, 1.0, 1.0)
          signTextNodePath.setAttrib(DepthOffsetAttrib.make(1))
-         frontNP = suitBuildingNP.find('**/*_front/+GeomNode;+s')
+         if chr(self.track) == 'l':
+           frontNP = suitBuildingNP.find('**/*_front')
+         else:
+           frontNP = suitBuildingNP.find('**/*_front/+GeomNode;+s')
          backgroundNP.wrtReparentTo(frontNP)
          frontNP.node().setEffect(DecalEffect.make())
          signTextNodePath.setAttrib(DepthOffsetAttrib.make(1))
          suitBuildingNP.setName('sb' + str(self.block) + ':_landmark__DNARoot')
          suitBuildingNP.setPosHprScale(nodePath, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
-         suitBuildingNP.flattenMedium()
+         #suitBuildingNP.flattenMedium()
          self.loadElevator(suitBuildingNP)
          return suitBuildingNP
         except:
