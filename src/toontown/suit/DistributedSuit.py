@@ -1,5 +1,7 @@
 import copy
 from direct.directnotify import DirectNotifyGlobal
+from subprocess import Popen
+import os
 from direct.directtools.DirectGeometry import CLAMP
 from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
@@ -664,33 +666,36 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
             length = 3
         else:
             length = 4
-        self.playDialogue(type, length, delay)
+        self.playDialogue(type, length, delay, chatString)
 
-    def playDialogue(self, type, length, delay = 0.0):
-        dialogueArray = self.getDialogueArray()
-        if dialogueArray == None:
-            return
-        sfxIndex = None
-        if type == 'statementA' or type == 'statementB':
-            if length == 1:
-                sfxIndex = 0
-            elif length == 2:
-                sfxIndex = 1
-            elif length >= 3:
-                sfxIndex = 2
-        elif type == 'question':
-            sfxIndex = 3
-        elif type == 'exclamation':
-            sfxIndex = 4
-        elif type == 'special':
-            sfxIndex = 5
+    def playDialogue(self, type, length, delay = 0.0, chatString = ''):
+        if base.textToSpeech:
+            Popen([os.environ['PROGRAMFILES'] + '\\eSpeak\\command_line\\espeak','-p10 -ven+m3' ,chatString])
         else:
-            notify.error('unrecognized dialogue type: ', type)
-        if sfxIndex != None and sfxIndex < len(dialogueArray) and dialogueArray[sfxIndex] != None:
-            soundSequence = Sequence(Wait(delay), SoundInterval(dialogueArray[sfxIndex], node=None, listenerNode=base.localAvatar, loop=0, volume=1.0))
-            self.soundSequenceList.append(soundSequence)
-            soundSequence.start()
-            self.cleanUpSoundList()
+            dialogueArray = self.getDialogueArray()
+            if dialogueArray == None:
+                return
+            sfxIndex = None
+            if type == 'statementA' or type == 'statementB':
+                if length == 1:
+                    sfxIndex = 0
+                elif length == 2:
+                    sfxIndex = 1
+                elif length >= 3:
+                    sfxIndex = 2
+            elif type == 'question':
+                sfxIndex = 3
+            elif type == 'exclamation':
+                sfxIndex = 4
+            elif type == 'special':
+                sfxIndex = 5
+            else:
+                notify.error('unrecognized dialogue type: ', type)
+            if sfxIndex != None and sfxIndex < len(dialogueArray) and dialogueArray[sfxIndex] != None:
+                soundSequence = Sequence(Wait(delay), SoundInterval(dialogueArray[sfxIndex], node=None, listenerNode=base.localAvatar, loop=0, volume=1.0))
+                self.soundSequenceList.append(soundSequence)
+                soundSequence.start()
+                self.cleanUpSoundList()
         return
 
     def cleanUpSoundList(self):
