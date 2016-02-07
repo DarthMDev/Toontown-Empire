@@ -2620,3 +2620,8 @@ def hideParticles():
         return 'Successfully stopped particles!'
 
     return 'Failed to stop particles.' 
+
+@magicWord(category=CATEGORY_TRIAL)
+def FordTheWriter():
+    return "FordTheWriter is the ceator of this project, Toontown Empire. He also Lead-Developer, Game-Developer, Server-Administrator, and Launcher Developer."
+
