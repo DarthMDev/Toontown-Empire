@@ -61,3 +61,5 @@ default-directnotify-level info
 # In-game News:
 want-news-tab #t
 want-news-page #t
+
+#want-mongo #t
