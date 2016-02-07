@@ -20,7 +20,7 @@ print 'Build directory = {0}'.format(args.build_dir)
 
 # Set the build version.
 buildVersion = ''
-buildVer = raw_input('Build Version: cv.')
+buildVer = raw_input('Build Version: tte.')
 if buildVer:
     buildVersion = buildVer
 else:

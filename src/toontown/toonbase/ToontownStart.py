@@ -153,7 +153,7 @@ else:
 import ToontownLoader
 from direct.gui.DirectGui import *
 serverVersion = config.GetString('server-version', 'no_version_set')
-buildVersion = 'cv.%s' % config.GetString('build-version', 'no_version_set')
+buildVersion = 'tte.%s' % config.GetString('build-version', 'no_version_set')
 print 'ToontownStart: Build Version:', buildVersion
 credit = OnscreenText(text='Powered by Toontown Empire', pos=(1.3, 0.935), scale=0.06, fg=Vec4(0, 0, 1, 0.6), align=TextNode.ARight)
 credit.setPos(-0.033,-0.065)
@@ -181,8 +181,6 @@ backgroundNodePath.removeNode()
 del backgroundNodePath
 del backgroundNode
 del tempLoader
-credit.cleanup()
-del credit
 build.cleanup()
 del build
 base.loader = base.loader
