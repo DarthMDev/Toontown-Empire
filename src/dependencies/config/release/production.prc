@@ -5,19 +5,19 @@
 model-path resources
 model-cache-models #f
 model-cache-textures #f
-vfs-mount resources/phase_3 /phase_3
-vfs-mount resources/phase_3.5 /phase_3.5
-vfs-mount resources/phase_4 /phase_4
-vfs-mount resources/phase_5 /phase_5
-vfs-mount resources/phase_5.5 /phase_5.5
-vfs-mount resources/phase_6 /phase_6
-vfs-mount resources/phase_7 /phase_7
-vfs-mount resources/phase_8 /phase_8
-vfs-mount resources/phase_9 /phase_9
-vfs-mount resources/phase_10 /phase_10
-vfs-mount resources/phase_11 /phase_11
-vfs-mount resources/phase_12 /phase_12
-vfs-mount resources/phase_13 /phase_13
+vfs-mount phase/phase_3.mf /
+vfs-mount phase/phase_3.5.mf /
+vfs-mount phase/phase_4.mf /
+vfs-mount phase/phase_5.mf /
+vfs-mount phase/phase_5.5.mf /
+vfs-mount phase/phase_6.mf /
+vfs-mount phase/phase_7.mf /
+vfs-mount phase/phase_8.mf /
+vfs-mount phase/phase_9.mf /
+vfs-mount phase/phase_10.mf /
+vfs-mount phase/phase_11.mf /
+vfs-mount phase/phase_12.mf /
+vfs-mount phase/phase_13.mf /
 default-model-extension .bam
 
 # RPC:
@@ -30,7 +30,7 @@ dc-file dependencies/astron/dclass/empire.dc
 # Client settings
 window-title Toontown Empire
 server-version Toontown Empire
-build-version BUILD_VERSION
+build-version production
 sync-video #f
 want-dev #f
 preload-avatars #t
@@ -60,9 +60,9 @@ want-sequence-list #t
 
 # Developer options:
 show-population #t
-want-instant-parties #t
+want-instant-parties #f
 gl-check-errors #t
-want-extra-logs #t
+want-extra-logs #f
 want-instant-delivery #t
 cogdo-pop-factor 1.5
 cogdo-ratio 0.5
