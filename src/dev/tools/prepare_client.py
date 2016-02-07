@@ -19,12 +19,12 @@ if not os.path.exists(args.build_dir):
 print 'Build directory = {0}'.format(args.build_dir)
 
 # Set the build version.
-buildVersion = 'TTE-Version-1.0'
-buildVer = 'TTE-Version-1.0'
+buildVersion = ''
+buildVer = raw_input('Build Version: cv.')
 if buildVer:
     buildVersion = buildVer
 else:
-    buildVersion = 'TTE-Version-1.0'
+    buildVersion = 'dev'
 print 'buildVersion = {0}'.format(buildVersion)
 
 # Copy the provided Toontown modules:
