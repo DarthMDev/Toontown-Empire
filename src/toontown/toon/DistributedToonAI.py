@@ -5269,6 +5269,7 @@ def maxGarden():
 
 @magicWord(category=CATEGORY_LEADER, types=[int], access=103)
 def SetxmasBadge(gmId):
+    av = spellbook.getTarget()
     if not 0 <= gmId <= 5:
         return 'Staff-Badges: 0=off, 1=Trial, 2=Staff, 3=Lead-Staff, 4=Developers, 5=Leaders'
 
@@ -5296,6 +5297,7 @@ def SetxmasBadge(gmId):
 
 @magicWord(category=CATEGORY_TRIAL)
 def xmasBadge():
+    av = spellbook.getTarget()
     access = spellbook.getInvokerAccess()
     if spellbook.getInvoker().isBadge():
         spellbook.getInvoker().b_xmasBadge(0)
@@ -5316,6 +5318,7 @@ def xmasBadge():
 @magicWord(category=CATEGORY_TRIAL)
 def badge():
     access = spellbook.getInvokerAccess()
+    av = spellbook.getTarget()
     if spellbook.getInvoker().isBadge():
         spellbook.getInvoker().b_setTTOBadge(0)
         return "You have disabled your badge."
@@ -5334,6 +5337,7 @@ def badge():
 
 @magicWord(category=CATEGORY_LEADER, types=[int])
 def setBadge(gmId):
+    av = spellbook.getTarget()
     if gmId == 1:
         return 'You cannot set a toon to TOON COUNCIL.'
     if not 0 <= gmId <= 4:
