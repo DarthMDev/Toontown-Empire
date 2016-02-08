@@ -5274,19 +5274,19 @@ def SetxmasBadge(gmId):
     if not 0 <= gmId <= 5:
         return 'Staff-Badges: 0=off, 1=Trial, 2=Staff, 3=Lead-Staff, 4=Developers, 5=Leaders'
 
-    if (access < 103) and (gmId > 1):
+    if (access < 701) and (gmId > 5):
         return 'This badge is for trial-staff only!'
 
-    elif (access < 502) and (gmId > 2):
+    elif (access < 508) and (gmId > 4):
         return 'This badge is for staff only!'
 
     elif (access < 504) and (gmId > 3):
         return 'This badge is for lead-staff only!'
 
-    elif (access < 508) and (gmId > 4):
+    elif (access < 502) and (gmId > 2):
         return 'This badge is for developers only!'
 
-    elif (access < 701) and (gmId > 5):
+    elif (access < 103) and (gmId > 1):
         return 'Your Not A Leader, Only Leaders can have this special badge!'
 
     if av.isBadge() and gmId != 0:

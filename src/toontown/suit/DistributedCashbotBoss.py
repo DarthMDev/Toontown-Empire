@@ -11,20 +11,15 @@ import DistributedBossCog
 import DistributedCashbotBossGoon
 import SuitDNA
 from otp.otpbase import OTPGlobals
-from toontown.battle import MovieToonVictory
-from toontown.battle import RewardPanel
-from toontown.battle import SuitBattleGlobals
-from toontown.building import ElevatorConstants
-from toontown.building import ElevatorUtils
+from toontown.battle import MovieToonVictory, RewardPanel, SuitBattleGlobals
+from toontown.building import ElevatorConstants, ElevatorUtils
 from toontown.chat import ResistanceChat
 from toontown.coghq import CogDisguiseGlobals
 from toontown.distributed import DelayDelete
 from toontown.toon import Toon, NPCToons
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
-from otp.nametag import NametagGroup
+from toontown.toonbase import ToontownGlobals, TTLocalizer
 from otp.nametag.NametagConstants import *
-from otp.nametag import NametagGlobals
+from otp.nametag import NametagGroup, NametagGlobals
 
 
 OneBossCog = None
@@ -766,7 +761,7 @@ class DistributedCashbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         base.playMusic(self.battleThreeMusic, looping=1, volume=0.9)
         taskMgr.add(self.__doPhysics, self.uniqueName('physics'), priority=25)
 
-    def exitBattleThree(self):
+    def exitBattleThree(self, delayDeletes):
         DistributedBossCog.DistributedBossCog.exitBattleThree(self)
         bossDoneEventName = self.uniqueName('DestroyedBoss')
         self.ignore(bossDoneEventName)
