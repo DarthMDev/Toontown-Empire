@@ -3321,12 +3321,11 @@ def chooseTrackChoiceQuest(tier, av, fixed = 0):
     else:
         return seededRandomChoice(Tier2Reward2QuestsDict[tier][400])
 
-
 def chooseMatchingQuest(tier, validQuestPool, rewardId, npc, av):
     questsMatchingReward = Tier2Reward2QuestsDict[tier].get(rewardId, [])
     if notify.getDebug():
         notify.debug('questsMatchingReward: %s tier: %s = %s' % (rewardId, tier, questsMatchingReward))
-    if rewardId == 400 and QuestDict[questsMatchingReward[0]][QuestDictNextQuestIndex] == NA:
+    if rewardId == 400:
         bestQuest = chooseTrackChoiceQuest(tier, av)
         if notify.getDebug():
             notify.debug('single part track choice quest: %s tier: %s avId: %s trackAccess: %s bestQuest: %s' % (rewardId,
