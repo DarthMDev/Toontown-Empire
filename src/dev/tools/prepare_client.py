@@ -100,7 +100,7 @@ for module in args.modules:
 # the PRC file data and the stripped DC file for the client side.
 
 # First, we need the PRC file data:
-configFileName = 'public_client.prc'
+configFileName = 'production.prc'
 configData = []
 with open(os.path.join(args.src_dir, 'dependencies/config/release', configFileName)) as f:
     data = f.read()
