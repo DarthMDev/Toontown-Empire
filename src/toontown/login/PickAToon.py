@@ -87,7 +87,7 @@ class NewPickAToon:
         self.patNode = render.attachNewNode('patNode')
         self.pat2dNode = aspect2d.attachNewNode('pat2dNode')
         
-        self.background = loader.loadModel('phase_3/models/newpat/terrain.bam')
+        self.background = loader.loadModel('phase_5.5/models/estate/terrainHouse.bam')
         self.background.reparentTo(self.patNode)
         self.sky = loader.loadModel('phase_3.5/models/props/TT_sky')
 
