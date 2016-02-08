@@ -56,6 +56,7 @@ class NewsPageButtonManager(FSM.FSM):
         self.accept('newIssueOut', self.handleNewIssueOut)
         self.__bookCheck = Sequence(Func(self.__checkButton), Wait(0.0001), Func(self.__checkButton), Wait(0.0001), Func(self.__checkButton), Wait(0.0001), Func(self.__checkButton), Wait(0.0001))
         self.__bookCheck.loop()
+        self.__bookCheck.pause()
         self.__blinkIval = Sequence(Func(self.__showOpenEyes), Wait(2), Func(self.__showClosedEyes), Wait(0.1), Func(self.__showOpenEyes), Wait(0.1), Func(self.__showClosedEyes), Wait(0.1))
         self.__blinkIval.loop()
         self.__blinkIval.pause()
@@ -139,12 +140,13 @@ class NewsPageButtonManager(FSM.FSM):
         self.goto3dWorldButton.hide()
         self.hideNewIssueButton()
         self.__blinkIval.pause()
+        self.__bookCheck.pause()
 
     def isNewIssueButtonShown(self):
         from toontown.toon import LocalToon
         if not config.GetBool('want-news-tab', 1):
          return False
-        if news == True:
+        if config.GetBool('want-news-tab', 1):
 	     return True
         return False
 
@@ -157,7 +159,7 @@ class NewsPageButtonManager(FSM.FSM):
     def enterNormalWalk(self):
         if not self.buttonsLoaded:
             return
-        if news == True:
+        if config.GetBool('want-news-tab', 1):
             self.__showNewIssueButton()
             self.__blinkIval.resume()
         else:
@@ -209,8 +211,10 @@ class NewsPageButtonManager(FSM.FSM):
             if curState == 'walk':
                 if localAvatar.tutorialAck and not localAvatar.isDisguised and not isinstance(base.cr.playGame.getPlace(), CogHQBossBattle.CogHQBossBattle):
                     self.request('NormalWalk')
+                    self.__bookCheck.resume()
                 else:
                     self.request('Hidden')
+                    self.__bookCheck.pause()
             elif curState == 'stickerBook':
                 if self.goingToNewsPageFrom3dWorld:
                     if localAvatar.tutorialAck:
@@ -224,8 +228,10 @@ class NewsPageButtonManager(FSM.FSM):
                         self.request('Hidden')
                 elif localAvatar.tutorialAck:
                     self.request('NormalWalk')
+                    self.__bookCheck.resume()
                 else:
                     self.request('Hidden')
+                    self.__bookCheck.pause()
 
     def setGoingToNewsPageFromStickerBook(self, newVal):
         self.goingToNewsPageFromStickerBook = newVal
