@@ -170,7 +170,14 @@ def getCanonicalSafeZoneId(zoneId):
     return getSafeZoneId(getCanonicalZoneId(zoneId))
 
 def isInterior(zoneId):
-    return zoneId in tutorialDict['interiors'] if tutorialDict else zoneId % 1000 >= 500
+    if tutorialDict:
+        if zoneId in tutorialDict['interiors']:
+            r = 1
+        else:
+            r = 0
+    else:
+        r = zoneId % 1000 >= 500
+    return r
 
 def overrideOn(branch, exteriorList, interiorList):
     global tutorialDict

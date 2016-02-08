@@ -187,7 +187,7 @@ class QuestPoster(DirectFrame):
         if npcZone in (-1, 0, None):
             zoneId = base.localAvatar.getZoneId()
             if ZoneUtil.isDynamicZone(zoneId) or ZoneUtil.isCogHQZone(zoneId):
-                zoneId = 2000
+                zoneId = 2000 
             npcHood = ZoneUtil.getCanonicalHoodId(zoneId)
             npcZone = hqZone.get(npcHood, 2520)
         
@@ -443,6 +443,7 @@ class QuestPoster(DirectFrame):
         elif quest.getType() == Quests.TrackChoiceQuest:
             frameBgColor = 'green'
             invModel = loader.loadModel('phase_3.5/models/gui/inventory_icons')
+
             lIconGeom = invModel.find('**/' + AvPropsNew[track1][1])
 
             if not fComplete:
