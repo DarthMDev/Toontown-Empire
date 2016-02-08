@@ -6,28 +6,25 @@ from panda3d.core import *
 import random
 import types
 import math
-import AccessoryGlobals
 import Motion
+
+import AccessoryGlobals
 import TTEmote
 import ToonDNA
 import LaffMeter
 from ToonHead import *
 from otp.ai.MagicWordGlobal import *
-from otp.avatar import Avatar
-from otp.avatar import Emote
+from otp.avatar import Avatar, Emote
 from otp.avatar.Avatar import teleportNotify
-from otp.otpbase import OTPGlobals
-from otp.otpbase import OTPLocalizer
-from toontown.battle import SuitBattleGlobals
 from otp.nametag.NametagConstants import *
-from toontown.distributed import DelayDelete
-from toontown.effects import DustCloud
-from toontown.effects import Wake
-from toontown.hood import ZoneUtil
 from otp.nametag.NametagGroup import *
+from otp.otpbase import OTPGlobals, OTPLocalizer
+from toontown.battle import SuitBattleGlobals
+from toontown.distributed import DelayDelete
+from toontown.effects import DustCloud, Wake
+from toontown.hood import ZoneUtil
 from toontown.suit import SuitDNA
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 
 def teleportDebug(requestStatus, msg, onlyIfToAv = True):
     if teleportNotify.getDebug():
@@ -35,7 +32,6 @@ def teleportDebug(requestStatus, msg, onlyIfToAv = True):
         if 'how' in requestStatus and requestStatus['how'][:len(teleport)] == teleport:
             if not onlyIfToAv or 'avId' in requestStatus and requestStatus['avId'] > 0:
                 teleportNotify.debug(msg)
-
 
 SLEEP_STRING = TTLocalizer.ToonSleepString
 DogDialogueArray = []

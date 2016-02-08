@@ -11,6 +11,7 @@ parser.add_argument('modules', nargs='*', default=['otp', 'toontown'],
                     help='The Toontown Empire modules to be included in the build.')
 args = parser.parse_args()
 
+os.chdir('../../../')
 print 'Preparing the client...'
 
 # Create a clean build directory for us to store our build material:
@@ -19,12 +20,12 @@ if not os.path.exists(args.build_dir):
 print 'Build directory = {0}'.format(args.build_dir)
 
 # Set the build version.
-buildVersion = 'TTE-Version-1.0'
-buildVer = 'TTE-Version-1.0'
+buildVersion = ''
+buildVer = raw_input('Build Version: TTE.')
 if buildVer:
     buildVersion = buildVer
 else:
-    buildVersion = 'TTE-Version-1.0'
+    buildVersion = 'dev'
 print 'buildVersion = {0}'.format(buildVersion)
 
 # Copy the provided Toontown modules:
@@ -99,7 +100,7 @@ for module in args.modules:
 # the PRC file data and the stripped DC file for the client side.
 
 # First, we need the PRC file data:
-configFileName = 'test.prc'
+configFileName = 'public_client.prc'
 configData = []
 with open(os.path.join(args.src_dir, 'dependencies/config/release', configFileName)) as f:
     data = f.read()

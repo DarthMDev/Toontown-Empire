@@ -7979,7 +7979,10 @@ GolfHoleNames = {0: 'Whole In Won',
  32: 'At The Drive In-2',
  33: 'Swing Time-2',
  34: 'Hole On The Range-2',
- 35: 'Second Wind-2'}
+ 35: 'Second Wind-2',
+ 36: 'Pink Tober',
+ 37: 'Pink Tober-2',
+ 38: 'Pink Tober-3'}
 GolfHoleInOne = 'Hole In One'
 GolfCondor = 'Condor'
 GolfAlbatross = 'Albatross'

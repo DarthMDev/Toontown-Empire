@@ -289,7 +289,6 @@ class Quest:
         elif holderType == 'track':
             self.check(holder in self._cogTracks, 'invalid recovery item holder: %s for holderType: %s' % (holder, holderType))
 
-
     def checkNumFriends(self, num):
         self.check(1, 'invalid number of friends: %s' % num)
 
@@ -1711,19 +1710,18 @@ def isQuestJustForFun(questId, rewardId):
     else:
         return False
 
-NoRewardTierZeroQuests = (101, 110, 120, 121, 130, 131, 140, 141, 142, 145, 150, 160, 161, 162, 163)
+NoRewardTierZeroQuests = (101, 110, 121, 131, 141, 145, 150, 160, 161, 162, 163)
 RewardTierZeroQuests = ()
 PreClarabelleQuestIds = NoRewardTierZeroQuests + RewardTierZeroQuests
 QuestDict = {
     101: (TT_TIER, Start, (CogQuest, Anywhere, 1, 'f'), Any, ToonHQ, NA, 110, DefaultDialog),
-    110: (TT_TIER, Cont, (TrolleyQuest,), Any, ToonHQ, NA, (120, 130, 140, 145), DefaultDialog),
-    120: (TT_TIER, Cont, (DeliverItemQuest, 5), ToonHQ, 2002, NA, 121, TTLocalizer.QuestDialogDict[120]),
-    121: (TT_TIER, Cont, (RecoverItemQuest, ToontownGlobals.ToontownCentral, 1, 2, VeryEasy, Any, 'type'), Same, 2002, NA, 142, TTLocalizer.QuestDialogDict[121]),
-    130: (TT_TIER, Cont, (DeliverItemQuest, 6), ToonHQ, 2003, NA, 131, TTLocalizer.QuestDialogDict[130]),
-    131: (TT_TIER, Cont, (RecoverItemQuest, ToontownGlobals.ToontownCentral, 1, 3, VeryEasy, Any, 'type'), Same, 2003, NA, 142, TTLocalizer.QuestDialogDict[131]),
-    140: (TT_TIER, Cont, (DeliverItemQuest, 4), ToonHQ, 2005, NA, 141, TTLocalizer.QuestDialogDict[140]),
-    141: (TT_TIER, Cont, (RecoverItemQuest, ToontownGlobals.ToontownCentral, 1, 1, VeryEasy, Any, 'type'), Same, 2005, NA, 142, TTLocalizer.QuestDialogDict[141]),
-    142: (TT_TIER, Cont, (VisitQuest,), Same, ToonHQ, NA, 150, TTLocalizer.QuestDialogDict[142]),
+    110: (TT_TIER, Cont, (TrolleyQuest,), Any, ToonHQ, NA, 145, DefaultDialog),
+    120: (TT_TIER, OBSOLETE, (DeliverItemQuest, 5), ToonHQ, 2002, NA, 121, DefaultDialog),
+    121: (TT_TIER, OBSOLETE, (RecoverItemQuest, ToontownGlobals.ToontownCentral, 1, 2, VeryEasy, Any, 'type'), 2002, 2002, NA, 150, DefaultDialog),
+    130: (TT_TIER, OBSOLETE, (DeliverItemQuest, 6), ToonHQ, 2003, NA, 131, DefaultDialog),
+    131: (TT_TIER, OBSOLETE, (RecoverItemQuest, ToontownGlobals.ToontownCentral, 1, 3, VeryEasy, Any, 'type'), 2003, 2003, NA, 150, DefaultDialog),
+    140: (TT_TIER, OBSOLETE, (DeliverItemQuest, 4), ToonHQ, 2005, NA, 141, DefaultDialog),
+    141: (TT_TIER, OBSOLETE, (RecoverItemQuest, ToontownGlobals.ToontownCentral, 1, 1, VeryEasy, Any, 'type'), 2005, 2005, NA, 150, DefaultDialog),
     145: (TT_TIER, Cont, (RecoverItemQuest, ToontownGlobals.ToontownCentral, 1, 20, VeryEasy, Any, 'type'), ToonHQ, ToonHQ, NA, 150, DefaultDialog),
     150: (TT_TIER, Cont, (FriendQuest,), Same, Same, NA, 175, DefaultDialog),
     160: (TT_TIER, OBSOLETE, (CogTrackQuest, ToontownGlobals.ToontownCentral, 3, 'c'), Same, ToonHQ, NA, 175, TTLocalizer.QuestDialogDict[160]),
@@ -2280,11 +2278,10 @@ QuestDict = {
     5247: (BR_TIER, Start, (VisitQuest,), Any, 3112, NA, 5248, TTLocalizer.QuestDialogDict[5247]),
     5248: (BR_TIER, Start, (CogLevelQuest, Anywhere, 10, 8), 3112, Same, NA, 5249, TTLocalizer.QuestDialogDict[5248]),
     5249: (BR_TIER, Cont, (RecoverItemQuest, Anywhere, 3, 3018, VeryHard, AnyFish), Same, Same, NA, (5250, 5258, 5259, 5260), TTLocalizer.QuestDialogDict[5249]),
-    5250: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'l', 4), Same, Same, NA, 5001, TTLocalizer.QuestDialogDict[5250]),
-    5258: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'c', 4), Same, Same, NA, 5001, TTLocalizer.QuestDialogDict[5258]),
-    5259: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'm', 4), Same, Same, NA, 5001, TTLocalizer.QuestDialogDict[5259]),
-    5260: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 's', 4), Same, Same, NA, 5001, TTLocalizer.QuestDialogDict[5260]),
-    5001: (BR_TIER, Cont, (TrackChoiceQuest,), Same, Same, 400, NA, TTLocalizer.TheBrrrghTrackQuestDict),
+    5250: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'l', 4), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5250]),
+    5258: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'c', 4), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5258]),
+    5259: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 'm', 4), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5259]),
+    5260: (BR_TIER, Cont, (BuildingQuest, Anywhere, 2, 's', 4), Same, Same, 408, NA, TTLocalizer.QuestDialogDict[5260]),
     5020: (BR_TIER, Start, (CogQuest, Anywhere, 36, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     5021: (BR_TIER, Start, (CogQuest, Anywhere, 38, Any), Any, ToonHQ, Any, NA, DefaultDialog),
     5022: (BR_TIER, Start, (CogQuest, Anywhere, 40, Any), Any, ToonHQ, Any, NA, DefaultDialog),
@@ -3319,6 +3316,16 @@ def filterQuests(entireQuestPool, currentNpc, av):
 
 def chooseTrackChoiceQuest(tier, av, fixed = 0):
 
+    def fixAndCallAgain():
+        if not fixed and av.fixTrackAccess():
+            notify.info('av %s trackAccess fixed: %s' % (av.getDoId(), trackAccess))
+            return chooseTrackChoiceQuest(tier, av, fixed=1)
+        else:
+            return None
+        return None
+
+    bestQuest = None
+    trackAccess = av.getTrackAccess()
     if tier == MM_TIER:
         return 4001
     elif tier == BR_TIER:
@@ -3331,7 +3338,7 @@ def chooseMatchingQuest(tier, validQuestPool, rewardId, npc, av):
     questsMatchingReward = Tier2Reward2QuestsDict[tier].get(rewardId, [])
     if notify.getDebug():
         notify.debug('questsMatchingReward: %s tier: %s = %s' % (rewardId, tier, questsMatchingReward))
-    if rewardId == 400:
+    if rewardId == 400 and QuestDict[questsMatchingReward[0]][QuestDictNextQuestIndex] == NA:
         bestQuest = chooseTrackChoiceQuest(tier, av)
         if notify.getDebug():
             notify.debug('single part track choice quest: %s tier: %s avId: %s trackAccess: %s bestQuest: %s' % (rewardId,
@@ -3434,10 +3441,7 @@ def chooseBestQuests(tier, currentNpc, av):
         bestQuestId = chooseMatchingQuest(tier, validQuestPool, rewardId, currentNpc, av)
         if bestQuestId is None:
             continue
-        try:
-         validQuestPool.remove(bestQuestId)
-        except:
-		 print("Failed to remove bestQuestId in Quests! Could a vaild task be missing?")
+        validQuestPool.remove(bestQuestId)
         bestQuestToNpcId = getQuestToNpcId(bestQuestId)
         if bestQuestToNpcId == Any:
             bestQuestToNpcId = 2003
@@ -4431,11 +4435,6 @@ RewardDict = {
     3002: (BuffReward, ToontownGlobals.BMovementSpeed, 60),
     3003: (BuffReward, ToontownGlobals.BMovementSpeed, 180),
     3004: (BuffReward, ToontownGlobals.BMovementSpeed, 360),
-    # Gag Accuracy Increase Works
-    3005: (BuffReward, ToontownGlobals.BGagAccuracy, 30),
-    3006: (BuffReward, ToontownGlobals.BGagAccuracy, 60),
-    3007: (BuffReward, ToontownGlobals.BGagAccuracy, 180),
-    3008: (BuffReward, ToontownGlobals.BGagAccuracy, 360),
     10000: (EPPReward, 0), # Bossbot
     10001: (EPPReward, 1), # Lawbot
     10002: (EPPReward, 2), # Cashbot
@@ -4475,22 +4474,22 @@ def getRewardIdFromTrackId(trackId):
 RequiredRewardTrackDict = {
     TT_TIER: (100,),
     TT_TIER + 1: (400,),
-    TT_TIER + 2: (1000, 601, 601, 602, 602, 2205, 2206, 2205, 2206, 3001, 3001, 3001, 3001, 3005, 3005, 3005, 3005),
-    TT_TIER + 3: (601, 601, 602, 602, 2205, 2206, 2205, 2206, 3002, 3001, 3001, 3001, 3006, 3005, 3005, 3005),
-    DD_TIER: (1000, 602, 602, 603, 603, 2101, 2102, 2105, 2106, 3002, 3002, 3002, 3001, 3006, 3006, 3006, 3005),
-    DD_TIER + 1: (1000, 602, 602, 603, 603, 2101, 2102, 2105, 2106, 3002, 3002, 3002, 3001, 3006, 3006, 3006, 3005),
-    DD_TIER + 2: (1000, 602, 602, 603, 603, 2101, 2102, 2105, 2106, 3002, 3002, 3002, 3002, 3006, 3006, 3006, 3006),
-    DG_TIER: (1000, 603, 603, 604, 604, 2501, 2502, 2503, 2504, 2505, 2506, 3002, 3002, 3002, 3002, 3006, 3006, 3006, 3006),
-    MM_TIER: (1000, 604, 604, 605, 605, 2403, 2404, 2405, 2406, 2407, 2408, 2409, 3002, 3002, 3002, 3002, 3006, 3006, 3006, 3006),
-    MM_TIER + 1: (1000, 604, 604, 605, 605, 2403, 2404, 2405, 2406, 2407, 2408, 2409, 3003, 3003, 3002, 3002, 3007, 3007, 3007, 3006),
-    MM_TIER + 2: (1000, 604, 604, 605, 605, 2403, 2404, 2405, 2406, 2407, 2408, 2409, 3003, 3003, 3002, 3002, 3007, 3007, 3007, 3006),
-    BR_TIER: (1000, 606, 606, 606, 606, 606, 607, 607, 607, 607, 607, 2305, 2306, 2307, 2308, 2309, 2310, 2311, 3003, 3003, 3003, 3003, 3007, 3007, 3007, 3007),
-    BR_TIER + 1: (1000, 606, 606, 606, 606, 606, 607, 607, 607, 607, 607, 2305, 2306, 2307, 2308, 2309, 2310, 2311, 3003, 3003, 3003, 3003, 3007, 3007, 3007, 3007),
-    BR_TIER + 2: (1000, 606, 606, 606, 606, 606, 607, 607, 607, 607, 607, 2305, 2306, 2307, 2308, 2309, 2310, 2311, 3003, 3003, 3003, 3003, 3007, 3007, 3007, 3007),
-    DL_TIER: (607, 607, 607, 607, 608, 608, 608, 608, 2901, 2902, 2907, 2908, 2909, 2910, 2911, 3003, 3003, 3004, 3004, 3007, 3007, 3008, 3008),
-    DL_TIER + 1: (1000, 607, 607, 607, 607, 608, 608, 608, 608, 2923, 2924, 2927, 2928, 2929, 2930, 2931, 3003, 3003, 3004, 3004, 3007, 3007, 3008, 3008),
-    DL_TIER + 2: (608, 608, 608, 608, 609, 609, 609, 609, 2941, 2942, 2943, 2944, 2947, 2948, 2949, 2950, 2951, 3004, 3004, 3004, 3004, 3008, 3008, 3008, 3008),
-    DL_TIER + 3: (1000, 609, 609, 609, 609, 609, 609, 2961, 2962, 2963, 2964, 2965, 2966, 2967, 2968, 2969, 2970, 2971, 3004, 3004, 3004, 3004, 3008, 3008, 3008, 3008),
+    TT_TIER + 2: (100, 801, 200, 802, 803, 101, 804, 805, 102, 806, 807, 100, 808, 809, 101, 810, 811, 500, 812, 813, 700, 814, 815, 300),
+    TT_TIER + 3: (900,),
+    DD_TIER: (400,),
+    DD_TIER + 1: (100, 801, 802, 201, 803, 804, 101, 805, 806, 102, 807, 808, 100, 809, 810, 101, 811, 812, 701, 813, 814, 815, 301),
+    DD_TIER + 2: (900,),
+    DG_TIER: (100, 202, 101, 102, 100, 101, 501, 702, 302),
+    MM_TIER: (400,),
+    MM_TIER + 1: (100, 801, 802, 203, 803, 804, 101, 805, 806, 102, 807, 808, 100, 809, 810, 101, 811, 812, 703, 813, 814, 815, 303),
+    MM_TIER + 2: (900,),
+    BR_TIER: (400,),
+    BR_TIER + 1: (100, 801, 802, 704, 803, 804, 101, 805, 806, 502, 807, 808, 102, 809, 810, 204, 811, 812, 100, 813, 814, 101, 815, 304, 10003),
+    BR_TIER + 2: (900,),
+    DL_TIER: (4000, 100, 205, 101, 102, 705, 103, 305, 4001, 4002),
+    DL_TIER + 1: (100, 206, 101, 4003, 4004, 4005, 102, 4006, 4007, 4008, 706, 103, 4009, 4010, 4011, 4000, 4001, 4002),
+    DL_TIER + 2: (4006, 4007, 4008, 100, 4000, 4001, 4002, 4003, 101, 4004, 4005, 4009, 102, 103, 4010, 4011),
+    DL_TIER + 3: (4009, 4010, 4011, 100, 4000, 4001, 101, 4002, 4003, 102, 4004, 4005, 102, 4006, 4007, 707, 207, 4008, 10002),
     LAWBOT_HQ_TIER: (4100,),
     LAWBOT_HQ_TIER + 1: (4101,),
     LAWBOT_HQ_TIER + 2: (4102,),
@@ -4528,23 +4527,23 @@ RequiredRewardTrackDict = {
 OptionalRewardTrackDict = {
     TT_TIER: (),
     TT_TIER + 1: (),
-    TT_TIER + 2: (1000, 601, 601, 602, 602, 2205, 2206, 2205, 2206, 3001, 3001, 3001, 3001, 3005, 3005, 3005, 3005),
-    TT_TIER + 3: (601, 601, 602, 602, 2205, 2206, 2205, 2206, 3002, 3001, 3001, 3001, 3006, 3005, 3005, 3005),
-    DD_TIER: (1000, 602, 602, 603, 603, 2101, 2102, 2105, 2106, 3002, 3002, 3002, 3001, 3006, 3006, 3006, 3005),
-    DD_TIER + 1: (1000, 602, 602, 603, 603, 2101, 2102, 2105, 2106, 3002, 3002, 3002, 3001, 3006, 3006, 3006, 3005),
-    DD_TIER + 2: (1000, 602, 602, 603, 603, 2101, 2102, 2105, 2106, 3002, 3002, 3002, 3002, 3006, 3006, 3006, 3006),
-    DG_TIER: (1000, 603, 603, 604, 604, 2501, 2502, 2503, 2504, 2505, 2506, 3002, 3002, 3002, 3002, 3006, 3006, 3006, 3006),
-    MM_TIER: (1000, 604, 604, 605, 605, 2403, 2404, 2405, 2406, 2407, 2408, 2409, 3002, 3002, 3002, 3002, 3006, 3006, 3006, 3006),
-    MM_TIER + 1: (1000, 604, 604, 605, 605, 2403, 2404, 2405, 2406, 2407, 2408, 2409, 3003, 3003, 3002, 3002, 3007, 3007, 3007, 3006),
-    MM_TIER + 2: (1000, 604, 604, 605, 605, 2403, 2404, 2405, 2406, 2407, 2408, 2409, 3003, 3003, 3002, 3002, 3007, 3007, 3007, 3006),
-    BR_TIER: (1000, 606, 606, 606, 606, 606, 607, 607, 607, 607, 607, 2305, 2306, 2307, 2308, 2309, 2310, 2311, 3003, 3003, 3003, 3003, 3007, 3007, 3007, 3007),
-    BR_TIER + 1: (1000, 606, 606, 606, 606, 606, 607, 607, 607, 607, 607, 2305, 2306, 2307, 2308, 2309, 2310, 2311, 3003, 3003, 3003, 3003, 3007, 3007, 3007, 3007),
-    BR_TIER + 2: (1000, 606, 606, 606, 606, 606, 607, 607, 607, 607, 607, 2305, 2306, 2307, 2308, 2309, 2310, 2311, 3003, 3003, 3003, 3003, 3007, 3007, 3007, 3007),
-    DL_TIER: (607, 607, 607, 607, 608, 608, 608, 608, 2901, 2902, 2907, 2908, 2909, 2910, 2911, 3003, 3003, 3004, 3004, 3007, 3007, 3008, 3008),
-    DL_TIER + 1: (1000, 607, 607, 607, 607, 608, 608, 608, 608, 2923, 2924, 2927, 2928, 2929, 2930, 2931, 3003, 3003, 3004, 3004, 3007, 3007, 3008, 3008),
-    DL_TIER + 2: (608, 608, 608, 608, 609, 609, 609, 609, 2941, 2942, 2943, 2944, 2947, 2948, 2949, 2950, 2951, 3004, 3004, 3004, 3004, 3008, 3008, 3008, 3008),
-    DL_TIER + 3: (1000, 609, 609, 609, 609, 609, 609, 2961, 2962, 2963, 2964, 2965, 2966, 2967, 2968, 2969, 2970, 2971, 3004, 3004, 3004, 3004, 3008, 3008, 3008, 3008),
-    ELDER_TIER: (1000, 1000, 613, 614, 615, 616, 617, 618, 2961, 2962, 2963, 2964, 2965, 2966, 2967, 2968, 2969, 2970, 2971, 3004, 3004, 3004, 3008, 3008, 3008, 3008)
+    TT_TIER + 2: (1000, 601, 601, 602, 602, 2205, 2206, 2205, 2206, 3001, 3001, 3001, 3001),
+    TT_TIER + 3: (601, 601, 602, 602, 2205, 2206, 2205, 2206, 3002, 3001, 3001, 3001),
+    DD_TIER: (1000, 602, 602, 603, 603, 2101, 2102, 2105, 2106, 3002, 3002, 3002, 3001),
+    DD_TIER + 1: (1000, 602, 602, 603, 603, 2101, 2102, 2105, 2106, 3002, 3002, 3002, 3001),
+    DD_TIER + 2: (1000, 602, 602, 603, 603, 2101, 2102, 2105, 2106, 3002, 3002, 3002, 3002),
+    DG_TIER: (1000, 603, 603, 604, 604, 2501, 2502, 2503, 2504, 2505, 2506, 3002, 3002, 3002, 3002),
+    MM_TIER: (1000, 604, 604, 605, 605, 2403, 2404, 2405, 2406, 2407, 2408, 2409, 3002, 3002, 3002, 3002),
+    MM_TIER + 1: (1000, 604, 604, 605, 605, 2403, 2404, 2405, 2406, 2407, 2408, 2409, 3003, 3003, 3002, 3002),
+    MM_TIER + 2: (1000, 604, 604, 605, 605, 2403, 2404, 2405, 2406, 2407, 2408, 2409, 3003, 3003, 3002, 3002),
+    BR_TIER: (1000, 2305, 2306, 2307, 2308, 2309, 2310, 2311, 3003, 3003, 3003, 3003),
+    BR_TIER + 1: (1000, 2305, 2306, 2307, 2308, 2309, 2310, 2311, 3003, 3003, 3003, 3003),
+    BR_TIER + 2: (1000, 2305, 2306, 2307, 2308, 2309, 2310, 2311, 3003, 3003, 3003, 3003),
+    DL_TIER: (2901, 2902, 2907, 2908, 2909, 2910, 2911, 3003, 3003, 3004, 3004),
+    DL_TIER + 1: (1000, 2923, 2924, 2927, 2928, 2929, 2930, 2931, 3003, 3003, 3004, 3004),
+    DL_TIER + 2: (2941, 2942, 2943, 2944, 2947, 2948, 2949, 2950, 2951, 3004, 3004, 3004, 3004),
+    DL_TIER + 3: (1000, 2961, 2962, 2963, 2964, 2965, 2966, 2967, 2968, 2969, 2970, 2971, 3004, 3004, 3004, 3004),
+    ELDER_TIER: (1000, 1000, 613, 614, 615, 616, 617, 618, 2961, 2962, 2963, 2964, 2965, 2966, 2967, 2968, 2969, 2970, 2971, 3004, 3004, 3004)
 }
 
 def isRewardOptional(tier, rewardId):

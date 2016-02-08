@@ -3,6 +3,8 @@ window-title Toontown Empire
 win-origin -1 -1
 icon-filename phase_3/etc/icon.ico
 cursor-filename phase_3/etc/toonmono.cur
+server-version Toontown Empire
+build-version BUILD_VERSION
 
 # Audio:
 audio-library-name p3fmod_audio

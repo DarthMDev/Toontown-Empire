@@ -5,7 +5,8 @@ distribution qa
 model-path /
 
 # Server:
-server-version TTE-Alpha-1.0.0
+server-version Toontown Empire
+build-version BUILD_VERSION
 min-access-level 100
 accountdb-type remote
 shard-low-pop 50
