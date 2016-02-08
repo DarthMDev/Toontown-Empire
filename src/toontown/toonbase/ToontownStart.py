@@ -154,8 +154,6 @@ import ToontownLoader
 from direct.gui.DirectGui import *
 serverVersion = config.GetString('server-version', 'no_version_set')
 buildVersion = 'TTE.%s' % config.GetString('build-version', 'no_version_set')
-from toontown.suit import Suit
-Suit.loadModels()
 print 'ToontownStart: Build Version:', buildVersion
 build = OnscreenText(buildVersion, pos=(-1.3, -0.975), scale=0.06, fg=Vec4(0, 0, 1, 0.6), align=TextNode.ALeft)
 build.setPos(0.033,0.025)
