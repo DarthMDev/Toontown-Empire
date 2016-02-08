@@ -49,5 +49,3 @@ default-directnotify-level info
 dont-destroy-crate #f
 get-key-reward-always #f
 get-crate-reward-always #f
-
-#want-mongo #t

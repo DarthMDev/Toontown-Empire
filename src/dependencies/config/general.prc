@@ -114,8 +114,8 @@ smooth-lag 0.4
 want-old-fireworks #t
 
 # MongoDB:
-want-mongo #t
-want-mongo-client #t
+want-mongo #f
+want-mongo-client #f
 
 # In-game News:
 want-news-tab #t
