@@ -821,7 +821,6 @@ class AdvancedOptionsTabPage(DirectFrame):
             base.Move_Right = 'arrow_right'
             base.JUMP = 'control'
 
-
             settings['want-WASD'] = False
             base.localAvatar.controlManager.reload()
             base.localAvatar.chatMgr.reloadWASD()
@@ -835,7 +834,6 @@ class AdvancedOptionsTabPage(DirectFrame):
             base.JUMP = 'shift'
 
             settings['want-WASD'] = True
-
             base.localAvatar.controlManager.reload()
             base.localAvatar.chatMgr.reloadWASD()
             base.localAvatar.setSystemMessage(0, 'WASD enabled.')
