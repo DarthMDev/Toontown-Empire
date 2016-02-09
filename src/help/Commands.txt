@@ -15,7 +15,7 @@ GENERAL COMMANDS:
 ~fishingRod 4 = Gold Rod
 ~maxToon = Max Your Toon
 ~quests clear = Clear Toontasks
-~quest progress % % = Modify Quest Progress
+~quests progress % % = Modify Quest Progress
 ~run = Run Faster
 ~sos 99 (SOS NPC) = 99 SOS Of Your Selected NPC
 ~tickets 99999 = 99999 tickets for racing.

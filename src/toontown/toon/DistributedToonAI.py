@@ -5364,6 +5364,7 @@ def pouch(value):
     target.b_setMaxCarry(value)
     return "Target's Gag Pouch set."
 
+#This command broke?
 @magicWord(category=CATEGORY_STAFF, types=[str, int])
 def exp(track, amt):
     trackIndex = TTLocalizer.BattleGlobalTracks.index(track)
