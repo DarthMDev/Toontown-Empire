@@ -3,15 +3,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
 from direct.task.Task import Task
 from panda3d.core import *
-import random
-import types
-import math
-import Motion
-
-import AccessoryGlobals
-import TTEmote
-import ToonDNA
-import LaffMeter
+import random, Motion, math, types, AccessoryGlobals, TTEmote, ToonDNA, LaffMeter
 from ToonHead import *
 from otp.ai.MagicWordGlobal import *
 from otp.avatar import Avatar, Emote

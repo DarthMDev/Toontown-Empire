@@ -158,7 +158,7 @@ class ToonBase(OTPBase.OTPBase):
         self.wantantialiasing = settings.get('antialiasing', 1)
 
 	self.wantWASD = settings.get('want-WASD', False)
-	self.wantNews = settings.get('want-News', False)
+	self.wantNews = settings.get('want-News', True)
 
         self.Move_Up = 'arrow_up'
         self.Move_Left = 'arrow_left'
