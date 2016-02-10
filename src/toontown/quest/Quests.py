@@ -3325,7 +3325,7 @@ def chooseTrackChoiceQuest(tier, av, fixed = 0):
     if tier == MM_TIER:
         return 4001
     elif tier == BR_TIER:
-        bestQuest = 5001
+        return  5001
     else:
         return seededRandomChoice(Tier2Reward2QuestsDict[tier][400])
 

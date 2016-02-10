@@ -30,9 +30,6 @@ class QuestMap(DirectFrame):
         self.cogInfoFrame.setPos(0, 0, 0.6)
         self.buildingMarkers = []
         self.av = av
-        self.wantToggle = False
-        if base.config.GetBool('want-toggle-quest-map', True):
-            self.wantToggle = True
         self.updateMarker = True
         self.cornerPosInfo = None
         self.hqPosInfo = None
@@ -288,15 +285,9 @@ class QuestMap(DirectFrame):
             self.updateMarker = True
 
     def acceptOnscreenHooks(self):
-        if self.wantToggle:
-            self.accept(ToontownGlobals.MapHotkey, self.toggle)
-        else:
-            self.accept(ToontownGlobals.MapHotkeyOn, self.show)
-            self.accept(ToontownGlobals.MapHotkeyOff, self.hide)
+        self.accept(ToontownGlobals.MapHotkey, self.toggle)
         self.updateMap()
 
     def ignoreOnscreenHooks(self):
         self.ignore(ToontownGlobals.MapHotkey)
-        self.ignore(ToontownGlobals.MapHotkeyOn)
-        self.ignore(ToontownGlobals.MapHotkeyOff)
         self.obscureButton()
