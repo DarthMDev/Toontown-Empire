@@ -8865,6 +8865,11 @@ TeleportLabelOn = 'Teleports Accepted:'
 TeleportLabelOff = 'Teleports Accepted:'
 TeleportPanelNoTeleport = '%s needs some time alone right now.'
 
+NewsLabelOn = 'News is Active:'
+NewsLabelOff = 'News is Inactive:'
+NewsButtonToggleOff = 'Turn Off'
+NewsButtonToggleOn = 'Turn On'
+
 InventoryDeleteAll = 'DELETE ALL'
 InventoryDeleteConfirm = "Are you sure you want to delete all your gags? Don't worry, your level 7 gags are safe!"
 

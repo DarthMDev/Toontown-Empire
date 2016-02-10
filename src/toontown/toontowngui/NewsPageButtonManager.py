@@ -54,7 +54,7 @@ class NewsPageButtonManager(FSM.FSM):
         self.gotoPrevPageButton.hide()
         self.goto3dWorldButton.hide()
         self.accept('newIssueOut', self.handleNewIssueOut)
-        self.__bookCheck = Sequence(Func(self.__checkButton), Wait(0.0001), Func(self.__checkButton), Wait(0.0001), Func(self.__checkButton), Wait(0.0001), Func(self.__checkButton), Wait(0.0001))
+        self.__bookCheck = Sequence(Func(self.__checkButton), Wait(0.00001), Func(self.__checkButton), Wait(0.00001), Func(self.__checkButton), Wait(0.00001), Func(self.__checkButton), Wait(0.0001))
         self.__bookCheck.loop()
         self.__bookCheck.pause()
         self.__blinkIval = Sequence(Func(self.__showOpenEyes), Wait(2), Func(self.__showClosedEyes), Wait(0.1), Func(self.__showOpenEyes), Wait(0.1), Func(self.__showClosedEyes), Wait(0.1))
@@ -74,6 +74,10 @@ class NewsPageButtonManager(FSM.FSM):
       self.hideNewIssueButton()
      elif base.localAvatar.friendsListButtonObscured == 1:
       self.hideNewIssueButton()
+     elif not base.wantNews:
+      self.hideNewIssueButton()
+     elif base.wantNews:
+      self.__showNewIssueButton()
      elif base.localAvatar.friendsListButtonObscured == 0:
       self.__showNewIssueButton()
      else:
@@ -90,6 +94,8 @@ class NewsPageButtonManager(FSM.FSM):
             return
         from toontown.toon import LocalToon
         if not LocalToon.WantNewsPage:
+            return
+        if not base.wantNews:
             return
         if base.cr and base.cr.playGame and base.cr.playGame.getPlace() and base.cr.playGame.getPlace().fsm:
             fsm = base.cr.playGame.getPlace().fsm
@@ -114,9 +120,11 @@ class NewsPageButtonManager(FSM.FSM):
         localAvatar.book.setPageBeforeNews()
         self.hideNewIssueButton()
         self.ignoreEscapeKeyPress()
+        self.gotoPrevPageButton.hide()
 
     def __handleGoto3dWorldButton(self):
         localAvatar.book.closeBook()
+        self.gotoPrevPageButton.hide()
 
     def hideNewIssueButton(self):
         if hasattr(self, 'newIssueButton') and self.newIssueButton:
@@ -144,7 +152,7 @@ class NewsPageButtonManager(FSM.FSM):
 
     def isNewIssueButtonShown(self):
         from toontown.toon import LocalToon
-        if not config.GetBool('want-news-tab', 1):
+        if not config.GetBool('want-news-tab', 1) or not base.wantNews:
          return False
         if config.GetBool('want-news-tab', 1):
 	     return True
@@ -202,6 +210,8 @@ class NewsPageButtonManager(FSM.FSM):
         from toontown.toon import LocalToon
         if not LocalToon.WantNewsPage:
             return
+        if not base.wantNews:
+            return 
         if not self.buttonsLoaded:
             return
         if base.cr and base.cr.playGame and base.cr.playGame.getPlace() and hasattr(base.cr.playGame.getPlace(), 'fsm') and base.cr.playGame.getPlace().fsm:
@@ -269,6 +279,8 @@ class NewsPageButtonManager(FSM.FSM):
 
     def handleNewIssueOut(self):
         if localAvatar.isReadingNews():
+            pass
+        elif not base.wantNews:
             pass
         else:
             self.showAppropriateButton()
