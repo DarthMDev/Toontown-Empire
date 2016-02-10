@@ -548,6 +548,12 @@ INCOMPLETE_PROGRESS = 3
 INCOMPLETE_WRONG_NPC = 4
 COMPLETE = 5
 LEAVING = 6
+TheBrrrghTrackQuestDict = {GREETING: '',
+ QUEST: 'Now you are ready.\x07Go out and walk the earth until you know which track you would like to choose.\x07When you are certain, return to me.',
+ INCOMPLETE_PROGRESS: 'Choose wisely.',
+ INCOMPLETE_WRONG_NPC: 'Choose wisely.',
+ COMPLETE: 'Very wise choice!\x07Good luck.  Return to me when you have mastered your new skill.',
+ LEAVING: ''}
 QuestDialog_3225 = {QUEST: "Oh, thanks for coming, _avName_!\x07The Cogs in the neighborhood frightened away my delivery person.\x07I don't have anyone to deliver this salad to _toNpcName_!\x07Can you do it for me? Thanks so much!_where_"}
 QuestDialog_2910 = {QUEST: 'Back so soon?\x07Great job on the spring.\x07The final item is a counter weight.\x07Stop by and see _toNpcName_ and bring back whatever you can get._where_'}
 QuestDialogDict = {
