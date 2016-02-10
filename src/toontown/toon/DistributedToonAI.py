@@ -1267,14 +1267,14 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def getCogMerits(self):
         return self.cogMerits
 
-	def readyForPromotion(self, dept):
+    def readyForPromotion(self, dept):
         merits = self.cogMerits[dept]
         totalMerits = CogDisguiseGlobals.getTotalMerits(self, dept)
         if merits >= totalMerits:
             return 1
         else:
             return 0
-			
+
     def b_setCogIndex(self, index):
         self.setCogIndex(index)
         if simbase.config.GetBool('cogsuit-hack-prevent', False):
