@@ -178,15 +178,18 @@ class CalendarGuiDay(DirectFrame):
             self.scrollList.decButton.show()
 
     def collectTimedEvents(self):
-
+        self.timedEvents = []
         if self.filter == ToontownGlobals.CalendarFilterShowAll or self.filter == ToontownGlobals.CalendarFilterShowOnlyParties:
             for party in localAvatar.partiesInvitedTo:
                 if party.startTime.date() == self.myDate.date():
-                    self.addPartyToScrollList(party)
+                    self.partiesInvitedToToday.append(party)
+                    self.timedEvents.append((party.startTime.time(), party))
 
             for party in localAvatar.hostedParties:
                 if party.startTime.date() == self.myDate.date():
-                    self.addPartyToScrollList(party)
+                    self.hostedPartiesToday.append(party)
+                    self.timedEvents.append((party.startTime.time(), party))
+
 
         if self.filter == ToontownGlobals.CalendarFilterShowAll or self.filter == ToontownGlobals.CalendarFilterShowOnlyHolidays:
             for id, holiday in HolidayGlobals.Holidays.iteritems():
