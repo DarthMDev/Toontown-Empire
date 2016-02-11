@@ -113,10 +113,6 @@ want-pstats 0
 smooth-lag 0.4
 want-old-fireworks #t
 
-# MongoDB:
-want-mongo #f
-want-mongo-client #f
-
 # In-game News:
 want-news-tab #t
 want-news-page #t

@@ -1,19 +1,12 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase import PythonUtil
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals, TTLocalizer
 from toontown.battle import SuitBattleGlobals
 from toontown.coghq import CogDisguiseGlobals
 from toontown.toon import NPCToons
 from toontown.hood import ZoneUtil
 from otp.otpbase import OTPGlobals
-import random
-import copy
-import string
-import time
-import types
-import random
+import random, copy, string, time, types
 
 notify = DirectNotifyGlobal.directNotify.newCategory('Quests')
 ItemDict = TTLocalizer.QuestsItemDict
