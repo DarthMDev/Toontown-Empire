@@ -5,6 +5,7 @@ from direct.gui.DirectButton import DirectButton
 from toontown.toonbase import ToontownGlobals, TTLocalizer
 from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
+from toontown.coghq import CogHQBossBattle
 
 try: 
  from toontown.coghq import CogHQBossBattle
