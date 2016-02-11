@@ -7,7 +7,7 @@ from otp.distributed.PotentialAvatar import PotentialAvatar
 from otp.otpbase import OTPGlobals
 from otp.nametag.NametagConstants import WTSystem
 from otp.margins.WhisperPopup import WhisperPopup
-
+import hashlib
 
 class ClientServicesManager(DistributedObjectGlobal):
     notify = directNotify.newCategory('ClientServicesManager')
@@ -37,7 +37,7 @@ class ClientServicesManager(DistributedObjectGlobal):
 
     def setAvatars(self, chatSettings, avatars):
         avList = []
-        for avNum, avName, avDNA, avPosition, nameState in avatars:
+        for avNum, avName, avDNA, avPosition, nameState, hp, maxHp, lastHood in avatars:
             nameOpen = int(nameState == 1)
             names = [avName, '', '', '']
             if nameState == 2: # PENDING
@@ -46,14 +46,20 @@ class ClientServicesManager(DistributedObjectGlobal):
                 names[2] = avName
             elif nameState == 4: # REJECTED
                 names[3] = avName
-            avList.append(PotentialAvatar(avNum, names, avDNA, avPosition, nameOpen))
+            av = PotentialAvatar(avNum, names, avDNA, avPosition, nameOpen)
+            av.hp = maxHp
+            av.maxHp = maxHp
+            av.lastHood = lastHood
+            avList.append(av)
 
         self.cr.handleChatSettings(chatSettings)
         self.cr.handleAvatarsList(avList)
 
     # --- AVATAR CREATION/DELETION ---
-    def sendCreateAvatar(self, avDNA, thirdTrack, index):
-        self.sendUpdate('createAvatar', [avDNA.makeNetString(), thirdTrack, index])
+    def sendCreateAvatar(self, avDNA, name, tf, hood, thirdTrack, index):
+#        self.sendUpdate('createAvatar', [avDNA.makeNetString(), thirdTrack, index])
+        self.notify.info('sendChooseAvatar: %s' % tf)
+        self.sendUpdate('createAvatar', [avDNA.makeNetString(), name, index, tf, hood, thirdTrack])
 
     def createAvatarResp(self, avId):
         messenger.send('nameShopCreateAvatarDone', [avId])

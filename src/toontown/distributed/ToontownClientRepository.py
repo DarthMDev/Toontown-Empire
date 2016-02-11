@@ -23,6 +23,7 @@ from toontown.toonbase.ToontownGlobals import *
 from toontown.distributed import DelayDelete
 from toontown.friends import FriendHandle, FriendsListPanel, ToontownFriendSecret
 from toontown.login import AvatarChooser
+from toontown.login import PickAToon
 from toontown.makeatoon import MakeAToon
 from toontown.pets import DistributedPet, PetDetail, PetHandle
 from toontown.toonbase import TTLocalizer
@@ -185,7 +186,8 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         base.playMusic(self.music, looping=1, volume=0.9, interrupt=None)
         self.handler = self.handleMessageType
         self.avChoiceDoneEvent = 'avatarChooserDone'
-        self.avChoice = AvatarChooser.AvatarChooser(avList, self.avChoiceDoneEvent)
+        ToonPicker = PickAToon.PickAToon if config.GetBool('want-new-pat', True) else AvatarChooser.AvatarChooser
+        self.avChoice = ToonPicker(avList, self.loginFSM, self.avChoiceDoneEvent)
         self.avChoice.load()
         self.avChoice.enter()
         self.accept(self.avChoiceDoneEvent, self.__handleAvatarChooserDone, [avList])

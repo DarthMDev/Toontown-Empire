@@ -75,7 +75,7 @@ class DeleteFrame(DirectLabel):
         self.removeNode()
         messenger.send(self._ctpScr.doneEvent, [{"mode": "delete"}])
 
-class NewPickAToon:
+class PickAToon:
     def __init__(self, avList, parentFSM, doneEvent):
         self.toonsList = {i: (i in [x.position for x in avList]) for i in xrange(6)}
         self.avList = avList
@@ -286,7 +286,6 @@ class NewPickAToon:
         self.laffmeter.reparentTo(self.pat2dNode)
         
         self.name.setText(av.name.decode("latin-1"))
-
         lastAreaName = ToontownGlobals.hoodNameMap.get(av.lastHood, [""])[-1]
         self.area.setText(lastAreaName)
 
