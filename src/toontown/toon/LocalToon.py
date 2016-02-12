@@ -160,8 +160,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.systemMsgAckGui = None
             self.createSystemMsgAckGui()
             if not hasattr(base.cr, 'lastLoggedIn'):
-                base.cr.lastLoggedIn = self.cr.toontownTimeManager.convertStrToToontownTime('')
-            self.setLastTimeReadNews(base.cr.lastLoggedIn)    
+                base.cr.lastLoggedIn = self.cr.toontownTimeManager.convertStrToToontownTime('') 
             self.acceptingNewFriends = True
             self.acceptingNonFriendWhispers = True
             self.acceptingTeleport = True
@@ -230,6 +229,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         acceptingNewFriends = settings.get('acceptingNewFriends', {})
         acceptingNonFriendWhispers = settings.get('acceptingNonFriendWhispers', {})
         acceptingTeleport = settings.get('acceptingTeleport', {})
+        #acceptingNews = settings.get('acceptingNews', {})
         if str(self.doId) not in acceptingNewFriends:
             acceptingNewFriends[str(self.doId)] = True
             settings['acceptingNewFriends'] = acceptingNewFriends
@@ -239,9 +239,14 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         if str(self.doId) not in acceptingTeleport:
             acceptingTeleport[str(self.doId)] = True
             settings['acceptingTeleport'] = acceptingTeleport
+        #if str(self.doId) not in acceptingNews:
+            #acceptingNews[str(self.doId)] = True
+            #settings['acceptingNews'] = acceptingNews
         self.acceptingNewFriends = acceptingNewFriends[str(self.doId)]
         self.acceptingNonFriendWhispers = acceptingNonFriendWhispers[str(self.doId)]
         self.acceptingTeleport = acceptingTeleport[str(self.doId)]
+        #self.acceptingNews = acceptingNews[str(self.doId)]
+
 
     def disable(self):
         self.laffMeter.destroy()
@@ -258,6 +263,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         del self.mapPage
         del self.invPage
         del self.questPage
+        del self.newsPage
         del self.suitPage
         del self.sosPage
         del self.disguisePage
@@ -413,10 +419,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.book.addPage(self.disguisePage, pageName=TTLocalizer.DisguisePageTitle)
         self.loadSosPages()
         return
-
-    def loadNewsPageButton(self):
-     self.newsPage = NewsPageButtonManager.NewsPageButtonManager()
-     self.newsPage.load()
 
     def loadSosPages(self):
         if self.sosPage != None:

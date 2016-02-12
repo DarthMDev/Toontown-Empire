@@ -19,7 +19,8 @@ vfs-mount resources/server /server
 model-path /
 
 # Server:
-server-version TTE-Alpha-1.0.0
+server-version Toontown Empire
+build-version dev
 accountdb-type developer
 
 # RPC:
@@ -50,7 +51,7 @@ want-sequence-list #t
 # Developer options:
 show-population #t
 want-instant-parties #t
-gl-check-errors #f
+gl-check-errors #t
 want-extra-logs #t
 want-instant-delivery #t
 cogdo-pop-factor 1.5

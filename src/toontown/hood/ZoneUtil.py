@@ -87,7 +87,7 @@ def getWhereName(zoneId, isToon):
             where = 'toonInterior'
         elif zoneId in tutorialDict['exteriors']:
             where = 'street'
-        elif zoneId == ToontownCentral:
+        elif zoneId == ToontownCentral or zoneId == WelcomeValleyToken:
             where = 'playground'
         else:
             zoneUtilNotify.error('No known zone: ' + str(zoneId))
@@ -145,19 +145,7 @@ def getCanonicalBranchZone(zoneId):
 
 
 def getCanonicalZoneId(zoneId):
-
     return zoneId
-def getTrueZoneId(zoneId, currentZoneId):
-        zoneId = getCanonicalZoneId(zoneId)
-        hoodId = getHoodId(zoneId)
-        offset = currentZoneId - currentZoneId % 2000
-        if hoodId == ToontownCentral:
-            return zoneId - ToontownCentral + offset
-        elif hoodId == GoofySpeedway:
-            return zoneId - GoofySpeedway + offset + 1000
-        elif hoodId == OutdoorZone:
-            return zoneId - OutdoorZone + offset + 1000		
-    	return zoneId
 
 
 def getHoodId(zoneId):
@@ -182,7 +170,14 @@ def getCanonicalSafeZoneId(zoneId):
     return getSafeZoneId(getCanonicalZoneId(zoneId))
 
 def isInterior(zoneId):
-    return zoneId in tutorialDict['interiors'] if tutorialDict else zoneId % 1000 >= 500
+    if tutorialDict:
+        if zoneId in tutorialDict['interiors']:
+            r = 1
+        else:
+            r = 0
+    else:
+        r = zoneId % 1000 >= 500
+    return r
 
 def overrideOn(branch, exteriorList, interiorList):
     global tutorialDict

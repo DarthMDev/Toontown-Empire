@@ -726,6 +726,11 @@ group "daisysGarden" [
     ]
    ]
   ]
+  prop "prop_tt_m_ara_gen_tunnelAheadSign_DNARoot" [
+   code [ "prop_tt_m_ara_gen_tunnelAheadSign" ]
+   pos [ -55.0779 36.6589 -0.5 ]
+   nhpr [ 90 0 0 ]
+  ]
  ]
  visgroup "5103" [
   vis [   "5103"   "5102"   "5104"   "5105"   "5106"   "5107"   "5108"   "5109"   "5110"   ]
@@ -11191,6 +11196,11 @@ group "daisysGarden" [
      color [ 1 1 1 1 ]
     ]
    ]
+  ]
+  prop "prop_tt_m_ara_gen_tunnelAheadSign_DNARoot" [
+   code [ "prop_tt_m_ara_gen_tunnelAheadSign" ]
+   pos [ 672.727 89.7658 -0.499995 ]
+   nhpr [ -90 0 -0 ]
   ]
  ]
  visgroup "5139" [

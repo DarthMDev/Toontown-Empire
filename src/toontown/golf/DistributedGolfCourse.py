@@ -16,6 +16,11 @@ from toontown.golf import GolfScoreBoard
 from toontown.golf import GolfRewardDialog
 from toontown.toon import ToonHeadFrame
 
+#Magic Word Imports
+from otp.ai.MagicWordGlobal import *
+from direct.distributed.PyDatagram import PyDatagram
+from direct.distributed.MsgTypes import *
+
 class DistributedGolfCourse(DistributedObject.DistributedObject, FSM, DelayDeletable):
     notify = directNotify.newCategory('DistributedGolfCourse')
     defaultTransitions = {'Off': ['Join'],
@@ -410,3 +415,26 @@ class DistributedGolfCourse(DistributedObject.DistributedObject, FSM, DelayDelet
     def canDrive(self, avId):
         retval = avId in self.drivingToons
         return retval
+
+        
+@magicWord(category=CATEGORY_STAFF)
+def skipCourse():
+ av = spellbook.getInvoker()
+ golfCourse = base.cr.doFind('DistributedGolfHole')
+ golfCourse.sendUpdate('ballInHole', [])
+ return "Your golf ball now is in the hole. Skipped your turns."
+ 
+'''@magicWord(category=CATEGORY_STAFF, types=[int])
+def Course(id):
+ golfCourse = base.cr.doFind('DistributedGolfCourse')
+ golfHole = base.cr.doFind('DistributedGolfHole')
+ golfHole.sendUpdate('ballInHole', [])
+ golfCourse.sendUpdate('setCourseId', [id])'''
+ 
+@magicWord(category=CATEGORY_STAFF)
+def exitGolf():
+ av = spellbook.getInvoker()
+ golfCourse = base.cr.doFind('DistributedGolfCourse')
+ golfCourse.sendUpdate('setAvatarExited', [])
+ golfCourse.sendUpdate('setDoneReward', [])
+ return "Exited Golf."

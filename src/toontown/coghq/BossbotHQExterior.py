@@ -16,7 +16,6 @@ class BossbotHQExterior(CogHQExterior.CogHQExterior):
 
     def __init__(self, loader, parentFSM, doneEvent):
         CogHQExterior.CogHQExterior.__init__(self, loader, parentFSM, doneEvent)
-        self.visibles = []
 
         self.elevatorDoneEvent = 'elevatorDone'
         self.trains = None
@@ -76,7 +75,7 @@ class BossbotHQExterior(CogHQExterior.CogHQExterior):
             visZoneId = int(base.cr.hoodMgr.extractGroupName(groupFullName))
             visibles = []
             for i in xrange(visGroup.getNumVisibles()):
-                visibles.append(int(visGroup.visibles(i)))
+                visibles.append(int(visGroup.getVisibleName(i)))
             visibles.append(ZoneUtil.getBranchZone(visZoneId))
             self.zoneVisDict[visZoneId] = visibles
 

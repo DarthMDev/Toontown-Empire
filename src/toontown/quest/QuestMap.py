@@ -1,5 +1,5 @@
 import math
-from panda3d.core import CardMaker, TextNode
+from pandac.PandaModules import CardMaker, TextNode
 from direct.gui.DirectGui import DirectFrame, DirectLabel, DirectButton
 from direct.task import Task
 from toontown.toon import NPCToons
@@ -43,6 +43,8 @@ class QuestMap(DirectFrame):
         for currHoodInfo in SuitPlannerBase.SuitPlannerBase.SuitHoodInfo:
             tracks = currHoodInfo[SuitPlannerBase.SuitPlannerBase.SUIT_HOOD_INFO_TRACK]
             self.suitPercentage[currHoodInfo[SuitPlannerBase.SuitPlannerBase.SUIT_HOOD_INFO_ZONE]] = tracks
+
+        return
 
     def load(self):
         gui = loader.loadModel('phase_4/models/questmap/questmap_gui')
@@ -274,6 +276,7 @@ class QuestMap(DirectFrame):
         self.obscureButton()
         self.ignore('questPageUpdated')
         taskMgr.remove('questMapUpdate')
+        return
 
     def handleMarker(self):
         if hasattr(base.cr.playGame.getPlace(), 'isInterior') and base.cr.playGame.getPlace().isInterior:

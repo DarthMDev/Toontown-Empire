@@ -3,6 +3,8 @@ window-title Toontown Empire
 win-origin -1 -1
 icon-filename phase_3/etc/icon.ico
 cursor-filename phase_3/etc/toonmono.cur
+server-version Toontown Empire
+build-version BUILD_VERSION
 
 # Audio:
 audio-library-name p3fmod_audio
@@ -110,10 +112,6 @@ want-pstats 0
 # Temporary:
 smooth-lag 0.4
 want-old-fireworks #t
-
-# MongoDB:
-want-mongo #f
-want-mongo-client #f
 
 # In-game News:
 want-news-tab #t

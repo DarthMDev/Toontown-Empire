@@ -396,8 +396,6 @@ TIPQuestsClothingTicketRewardPoster = 'Reward: TIP Clothing Ticket'
 QuestsCheesyEffectRewardPoster = 'Reward: %s'
 QuestsCogSuitPartReward = 'You now have a %(cogTrack)s %(part)s Cog Suit Part.'
 QuestsCogSuitPartRewardPoster = 'Reward: %(cogTrack)s %(part)s Part'
-QuestsEPPReward = 'You now have %s Easy Promotion Papers.'
-QuestsEPPRewardPoster = 'Reward: %s Easy Promotion Papers'
 QuestsStreetLocationThisPlayground = 'in this playground'
 QuestsStreetLocationThisStreet = 'on this street'
 QuestsStreetLocationNamedPlayground = 'in the %s playground'
@@ -3273,7 +3271,8 @@ AvatarChoiceNameRejected = 'Name\nRejected'
 AvatarChoiceNameApproved = 'Name\nApproved!'
 AvatarChoiceNameReview = 'Under\nReview'
 AvatarChoiceNameYourToon = 'Name\nYour Toon!'
-AvatarChoiceDeleteConfirmText = "Careful! This will delete %(name)s forever.  If you are sure you want to do this, type your toon's name and click OK."
+AvatarChoiceDeleteConfirmText = 'Careful! This will delete %(name)s forever.  If you are sure you want to do this, type "%(confirm)s" and click OK.'
+AvatarChoiceDeleteConfirmUserTypes = 'delete'
 AvatarChoiceDeletePasswordTitle = 'Delete Toon?'
 AvatarChoiceDeletePasswordOK = lOK
 AvatarChoiceDeletePasswordCancel = lCancel
@@ -3303,6 +3302,7 @@ PhotoPageCancel = lCancel
 PhotoPageClose = lClose
 PhotoPageDirectory = 'Open Folder'
 PhotoPageTutorial = 'You haven\'t taken any snapshots yet! Press TAB to change your camera angle, and press F9 to take a snapshot.\n\n Once you\'ve made a snapshot, come here to manage and name them.'
+BuildingPageTitle = 'Buildings\n(Coming Soon)'
 InventoryPageTitle = 'Gags'
 InventoryPageTrackFull = 'You have all the gags in the %s track.'
 InventoryPagePluralPoints = 'You will get a new\n%(trackName)s gag when you\nget %(numPoints)s more %(trackName)s points.'
@@ -3380,6 +3380,8 @@ EventsPageInvitedTabInvitationListTitle = 'Invitations'
 EventsPageInvitedTabActivityListTitle = 'Activities'
 EventsPageInvitedTabTime = '%s %s Toontown Time'
 SelectedInvitationInformation = '%s is having a party on %s at %s Toontown Time.'
+PartyPlannerComingSoon = 'Coming Soon'
+PartyPlannerCantBuy = "Out Of Stock"
 PartyPlannerNextButton = 'Continue'
 PartyPlannerPreviousButton = 'Back'
 PartyPlannerWelcomeTitle = 'Toontown Party Planner'
@@ -7974,7 +7976,10 @@ GolfHoleNames = {0: 'Whole In Won',
  32: 'At The Drive In-2',
  33: 'Swing Time-2',
  34: 'Hole On The Range-2',
- 35: 'Second Wind-2'}
+ 35: 'Second Wind-2',
+ 36: 'Pink Tober',
+ 37: 'Pink Tober-2',
+ 38: 'Pink Tober-3'}
 GolfHoleInOne = 'Hole In One'
 GolfCondor = 'Condor'
 GolfAlbatross = 'Albatross'
@@ -8859,6 +8864,11 @@ DetailPanelSOS = 'SOS Cards'
 TeleportLabelOn = 'Teleports Accepted:'
 TeleportLabelOff = 'Teleports Accepted:'
 TeleportPanelNoTeleport = '%s needs some time alone right now.'
+
+NewsLabelOn = 'News is Active:'
+NewsLabelOff = 'News is Inactive:'
+NewsButtonToggleOff = 'Turn Off'
+NewsButtonToggleOn = 'Turn On'
 
 InventoryDeleteAll = 'DELETE ALL'
 InventoryDeleteConfirm = "Are you sure you want to delete all your gags? Don't worry, your level 7 gags are safe!"

@@ -15,14 +15,12 @@ GAME_TIED = 2
 
 class DistributedPartyCogActivityAI(DistributedPartyTeamActivityAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPartyCogActivityAI')
-
     def __init__(self, air, party, activityInfo):
         DistributedPartyTeamActivityAI.__init__(self, air, party, activityInfo)
         self.scores = {}
-        self.highScore = 0
-        self.cogDistances = [0, 0, 0]  # Using integers for accuracy
 
-    # For some reason we need these here.
+        self.highScore = 0
+        self.cogDistances = [0, 0, 0]  # Using inttegers for accuracy
     def pieThrow(self, todo0, todo1, todo2, todo3, todo4, todo5, todo6):
         pass
 

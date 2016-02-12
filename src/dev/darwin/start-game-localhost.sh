@@ -1,7 +1,7 @@
 #!/bin/sh
 cd ..
 cd ..
-export DYLD_LIBRARY_PATH=`pwd`/Libraries.bundle
+
 export PYTHONPATH=dependencies/mac/lib:$PYTHONPATH
 export DYLD_FRAMEWORK_PATH="Frameworks"
 # Get the user input:

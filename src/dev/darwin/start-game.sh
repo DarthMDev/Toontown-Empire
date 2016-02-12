@@ -1,13 +1,13 @@
 #!/bin/sh
 cd ../..
-export PYTHONPATH=dependencies/mac/lib:$PYTHONPATH
+
 export DYLD_LIBRARY_PATH=`pwd`/Libraries.bundle
 export DYLD_FRAMEWORK_PATH="Frameworks"
 
 # Get the user input:
 read -p "Username: " tteUsername
-read -p "Gameserver (DEFAULT:  167.114.28.238): " TTE_GAMESERVER
-TTE_GAMESERVER=${TTE_GAMESERVER:-"167.114.28.238"}
+read -p "Gameserver (DEFAULT:  45.55.208.151): " TTE_GAMESERVER
+TTE_GAMESERVER=${TTE_GAMESERVER:-"45.55.208.151"}
 
 # Export the environment variables:
 export tteUsername=$tteUsername
