@@ -16,6 +16,8 @@ from toontown.toon import NPCForceAcknowledge
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase.ToonBaseGlobal import *
+from direct.gui import OnscreenText, OnscreenImage
+from direct.interval.IntervalGlobal import *
 
 ##[x, y, h]
 InteriorTypes = {'toon_interior':[1.0, 13.0, 8.0],
@@ -33,7 +35,7 @@ class ToonInterior(Place.Place):
         self.isInterior = 1
         self.hfaDoneEvent = 'hfaDoneEvent'
         self.npcfaDoneEvent = 'npcfaDoneEvent'
-        self.fsm = ClassicFSM.ClassicFSM('ToonInterior', [State.State('start', self.enterStart, self.exitStart, ['doorIn', 'teleportIn']),
+        self.fsm = ClassicFSM.ClassicFSM('ToonInterior', [State.State('start', self.enterStart, self.exitStart, ['doorIn', 'teleportIn', 'tutorial']),
          State.State('walk', self.enterWalk, self.exitWalk, ['sit',
           'stickerBook',
           'doorOut',
@@ -64,6 +66,7 @@ class ToonInterior(Place.Place):
          State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk']),
          State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn']),
          State.State('quest', self.enterQuest, self.exitQuest, ['walk', 'doorOut']),
+         State.State('tutorial', self.enterTutorial, self.exitTutorial, ['walk', 'quest']),
          State.State('purchase', self.enterPurchase, self.exitPurchase, ['walk', 'doorOut']),
          State.State('pet', self.enterPet, self.exitPet, ['walk']),
          State.State('phone', self.enterPhone, self.exitPhone, ['walk', 'doorOut']),
@@ -94,6 +97,47 @@ class ToonInterior(Place.Place):
         self._telemLimiter = TLGatherAllAvs('ToonInterior', RotationLimitToH)
         NametagGlobals.setMasterArrowsOn(1)
         self.fsm.request(requestStatus['how'], [requestStatus])
+        if requestStatus['how'] == 'teleportIn':
+            self.startWelcomeCutscene()
+    
+    def startWelcomeCutscene(self):
+        cells = base.bottomCells + base.leftCells + base.rightCells
+        
+        base.localAvatar.initCameraPositions()
+        base.cam.setPosHpr(-79.5, 160, 105, 60, 0, 0)
+        base.cam.reparentTo(render)
+        base.setCellsAvailable(cells, 0)
+        
+        welcomeText = OnscreenText.OnscreenText(TTLocalizer.TutorialWelcome, fg=(1, 1, 1, 1), shadow=(0, 0, 0, 1), font=ToontownGlobals.getToonFont(), pos=(0, 0.8), scale=0.16, mayChange=1, wordwrap=16)
+        gameLogo = OnscreenImage.OnscreenImage('phase_3/maps/toontown-logo.png', scale=(1.2, 0, 0.6), pos=(-0.05, 0, -0.15))
+        gameLogo.setTransparency(TransparencyAttrib.MAlpha)
+        gameLogo.setBin('fixed', 20)
+        gameLogo.hide()
+        
+        cutscene = Sequence(
+            Wait(0.1),
+            Func(self.fsm.request, 'stopped'),
+            Func(base.localAvatar.setPosHpr, 49.5, 16.5, -0.475, 90, 0, 0),
+            welcomeText.colorScaleInterval(1.5, (1, 1, 1, 1), (1, 1, 1, 0)),
+            Wait(2),
+            Func(gameLogo.show),
+            gameLogo.colorScaleInterval(1.5, (1, 1, 1, 1), (1, 1, 1, 0)),
+            Wait(2),
+            Parallel(welcomeText.colorScaleInterval(1.5, (1, 1, 1, 0)), gameLogo.colorScaleInterval(1.5, (1, 1, 1, 0))),
+            Func(welcomeText.removeNode),
+            Func(gameLogo.removeNode),
+            Wait(1),
+            Func(base.transitions.irisOut, 0.5),
+            Wait(0.6),
+            Func(base.cam.setPosHpr, base.localAvatar.cameraPositions[0][0], (0, 0, 0)),
+            Func(base.cam.reparentTo, base.localAvatar),
+            Wait(0.4),
+            Func(base.transitions.irisIn, 0.5),
+            Wait(0.5),
+            Func(base.setCellsAvailable, cells, 1),
+            Func(self.fsm.request, 'walk'))
+        
+        cutscene.start()
 
     def exit(self):
         self.ignoreAll()
@@ -106,6 +150,15 @@ class ToonInterior(Place.Place):
     def setState(self, state):
         self.fsm.request(state)
 
+    def enterTutorial(self, requestStatus):
+        self.fsm.request('walk')
+        base.localAvatar.b_setParent(ToontownGlobals.SPRender)
+        globalClock.tick()
+        base.transitions.irisIn()
+        messenger.send('enterTutorialInterior')
+
+    def exitTutorial(self):
+        pass
 
     def doRequestLeave(self, requestStatus):
         self.fsm.request('NPCFA', [requestStatus])

@@ -110,7 +110,7 @@ class PlayGame(StateData.StateData):
     def enter(self, hoodId, zoneId, avId):
         if hoodId == ToontownGlobals.Tutorial:
             loaderName = 'townLoader'
-            whereName = 'street'
+            whereName = 'toonInterior'
         elif hoodId == ToontownGlobals.MyEstate:
             self.getEstateZoneAndGoHome(avId, zoneId)
             return
