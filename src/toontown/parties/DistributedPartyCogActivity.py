@@ -196,3 +196,4 @@ class DistributedPartyCogActivity(DistributedPartyTeamActivity):
         self.view.hideResults()
         DistributedPartyTeamActivity.finishConclusion(self)
         self.view.hideArenaDoorTimers()
+
