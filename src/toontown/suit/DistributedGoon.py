@@ -176,6 +176,7 @@ class DistributedGoon(DistributedCrushableEntity.DistributedCrushableEntity, Goo
             del self.collapseSound
             del self.recoverSound
             DistributedCrushableEntity.DistributedCrushableEntity.delete(self)
+            Goon.Goon.cleanup(self)
             Goon.Goon.delete(self)
 
     def enterOff(self, *args):

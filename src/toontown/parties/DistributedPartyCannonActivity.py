@@ -72,7 +72,7 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
         self.flyColNode = None
         self.flyColNodePath = None
         self._flyingCollisionTaskName = None
-
+        return
 
     def generateInit(self):
         DistributedPartyActivity.generateInit(self)
@@ -387,6 +387,7 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
         return Task.done
 
     def d_setLanded(self, toonId):
+        printStack()
         self.notify.debug('d_setLanded %s' % toonId)
         if self.isLocalToonId(toonId):
             if self.cr:

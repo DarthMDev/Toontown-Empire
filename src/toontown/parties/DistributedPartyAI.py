@@ -3,7 +3,7 @@ from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from PartyGlobals import *
 import PartyUtils
 import time
-
+#Activites
 from toontown.parties.DistributedPartyJukeboxActivityAI import DistributedPartyJukeboxActivityAI
 from toontown.parties.DistributedPartyDanceActivityAI import DistributedPartyDanceActivityAI
 from toontown.parties.DistributedPartyJukebox40ActivityAI import DistributedPartyJukebox40ActivityAI

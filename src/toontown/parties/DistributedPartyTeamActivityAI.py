@@ -1,6 +1,7 @@
 from direct.distributed.ClockDelta import globalClockDelta
 
 from toontown.parties.DistributedPartyActivityAI import DistributedPartyActivityAI
+from toontown.parties.activityFSMs import TeamActivityAIFSM
 from toontown.parties import PartyGlobals
 
 import random
@@ -8,7 +9,7 @@ import random
 
 class DistributedPartyTeamActivityAI(DistributedPartyActivityAI):
     notify = directNotify.newCategory('DistributedPartyTeamActivityAI')
-
+    forbidTeamChanges = False
     MAX_PLAYERS = 8
     MIN_PLAYERS_PER_TEAM = 1
     MAX_PLAYERS_PER_TEAM = 4
@@ -23,7 +24,7 @@ class DistributedPartyTeamActivityAI(DistributedPartyActivityAI):
 
         self.leftTeam = []
         self.rightTeam = []
-
+        self.fsm = TeamActivityAIFSM(self)
         self.teamDict = {
             PartyGlobals.TeamActivityTeams.LeftTeam: self.leftTeam,
             PartyGlobals.TeamActivityTeams.RightTeam: self.rightTeam
@@ -134,7 +135,8 @@ class DistributedPartyTeamActivityAI(DistributedPartyActivityAI):
         return self.DURATION
 
     def getCanSwitchTeams(self):
-        return self.CAN_SWITCH_TEAMS
+        #return self.CAN_SWITCH_TEAMS
+        return self.fsm.state in ('Off', 'WaitForEnough', 'WaitToStart') and not self.forbidTeamChanges
 
     def setState(self, state, data=[0]):
         self.state = state
@@ -151,6 +153,48 @@ class DistributedPartyTeamActivityAI(DistributedPartyActivityAI):
 
     def updateToonsPlaying(self):
         self.sendUpdate('setToonsPlaying', [self.leftTeam, self.rightTeam])
+    def b_setState(self, state, data=0):
+        self.fsm.request(state, data)
+        self.d_setState(state, data)
+
+    def d_setState(self, state, data=0):
+        self.sendUpdate('setState', [state, globalClockDelta.getRealNetworkTime(), data])
+
+    def _getCaller(self):
+        avId = self.air.getAvatarIdFromSender()
+        if avId not in self.air.doId2do:
+            self.air.writeServerEvent('suspicious', avId, 'called some DistributedPartyActivityAI method outside shard')
+            return None
+
+        return self.air.doId2do[avId]
+
+    def __update(self):
+        self.updateToonsPlaying()
+
+        if self.fsm.state == 'WaitForEnough':
+            if self.__areTeamsCorrect():
+                self.b_setState('WaitToStart')
+
+        elif self.fsm.state == 'WaitToStart':
+            if not self.__areTeamsCorrect():
+                self.b_setState('WaitForEnough')
+
+    def startWaitForEnough(self, data):
+        pass
+
+    def finishWaitForEnough(self):
+        pass
+
+    def startWaitToStart(self, data):
+        def advance(task):
+            self.fsm.request('WaitClientsReady')
+            self.d_setState('Rules')
+            return task.done
+
+        taskMgr.doMethodLater(self.startDelay, advance, self.taskName('dostart'))
+
+    def finishWaitToStart(self):
+        taskMgr.remove(self.taskName('dostart'))
 
     def balancePlayers(self):
         lowTeam = self.leftTeam if len(self.leftTeam) < len(self.rightTeam) else self.rightTeam

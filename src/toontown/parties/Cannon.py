@@ -11,8 +11,8 @@ from toontown.parties.PartyUtils import toRadians, calcVelocity
 from direct.showbase.PythonUtil import StackTrace
 from otp.nametag.NametagFloat3d import NametagFloat3d
 from otp.nametag.Nametag import Nametag
-CANNON_ROTATION_MIN = -70
-CANNON_ROTATION_MAX = 70
+CANNON_ROTATION_MIN = -80
+CANNON_ROTATION_MAX = 80
 INITIAL_VELOCITY = 80.0
 CANNON_BARREL_TOONHEAD_Y = 6.0
 

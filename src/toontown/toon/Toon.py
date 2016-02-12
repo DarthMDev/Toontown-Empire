@@ -2240,9 +2240,13 @@ class Toon(Avatar.Avatar, ToonHead):
     def doToonColorScale(self, scale, lerpTime, keepDefault = 0):
         if keepDefault:
             self.defaultColorScale = scale
-        if scale == None:
+        if scale is None:
             scale = VBase4(1, 1, 1, 1)
         node = self.getGeomNode()
+
+        if not node or node.isEmpty():
+            return
+        
         caps = self.getPieces(('torso', 'torso-bot-cap'))
         track = Sequence()
         track.append(Func(node.setTransparency, 1))
@@ -2527,16 +2531,19 @@ class Toon(Avatar.Avatar, ToonHead):
 
     def restoreDefaultColorScale(self):
         node = self.getGeomNode()
-        if node:
-            if self.defaultColorScale:
-                node.setColorScale(self.defaultColorScale)
-                if self.defaultColorScale[3] != 1:
-                    node.setTransparency(1)
-                else:
-                    node.clearTransparency()
+        if not node or node.isEmpty():
+            return
+
+        if self.defaultColorScale:
+            node.setColorScale(self.defaultColorScale)
+            if self.defaultColorScale[3] != 1:
+                node.setTransparency(1)
             else:
-                node.clearColorScale()
                 node.clearTransparency()
+        else:
+            node.clearColorScale()
+            node.clearTransparency()
+
 
     def __doToonColor(self, color, lerpTime):
         node = self.getGeomNode()
