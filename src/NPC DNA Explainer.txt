@@ -1,4 +1,5 @@
 """
+# Organization 1:
 1000: (-1,
      lnames[1000], must be the same as the start!
      ('dss', head type
@@ -7,16 +8,19 @@
       'm', gender
       18, head color
       0, glove
-      18, torso color
       18, leg color
+      18, torso color
       111, shirt texture
       27, shirt color
       98,  sleeve texture
       27, sleeve color
       41, bottom texture
       27), bottom color
-     'm', gender gender
+     'm', gender
      1,
-     NPC_REGULAR) LEAVE!
+     NPC_REGULAR), NPC type
 
+# Organization 2:
+1000: (-1, lnames[1000], ('head type', 'body size', 'leg size', 'gender', head color, glove color, leg color, torso color, shirt texture, shirt color, sleeve texture,  sleeve color, bottex texture, bottom color), 'Gender', Leave at 0, NPC TYPE)
+1000: (-1, lnames[1000], ('dss', 'ms', 'm', 'm', 8, 0, 18, 18, 111, 27, 98, 27, 41, 27), 'm', 0, NPC_REGULAR),
 """

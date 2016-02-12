@@ -2,7 +2,7 @@ from toontown.safezone import SafeZoneLoader, DDPlayground
 from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer
 import random
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.fsm import State
 from direct.interval.IntervalGlobal import *
 
