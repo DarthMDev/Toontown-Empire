@@ -70,7 +70,7 @@ class ToontownLoader(Loader.Loader):
 
     def loadModel(self, *args, **kw):
         ret = Loader.Loader.loadModel(self, *args, **kw)
-        if ret:
+        if ret and (not isinstance(ret, Loader.Loader.Callback)):
             gsg = base.win.getGsg()
             if gsg:
                 ret.prepareScene(gsg)

@@ -169,22 +169,21 @@ HeadModelDict = {'a': ('/models/char/suitA-', 4),
  'b': ('/models/char/suitB-', 4),
  'c': ('/models/char/suitC-', 3.5)}
 
-SuitParts = ['phase_3.5/models/char/suitA-mod',
-            'phase_3.5/models/char/suitB-mod',
-            'phase_3.5/models/char/suitC-mod',
-            'phase_4/models/char/suitA-heads',
-            'phase_4/models/char/suitB-heads',
-            'phase_3.5/models/char/suitC-heads']
+PreloadModels = (
+    'phase_3.5/models/char/suitA-mod.bam',
+    'phase_3.5/models/char/suitB-mod.bam',
+    'phase_3.5/models/char/suitC-mod.bam',
+    'phase_4/models/char/suitA-heads.bam',
+    'phase_4/models/char/suitB-heads.bam',
+    'phase_3.5/models/char/suitC-heads.bam'
+)
 
-Preloaded = {}
+def preload():
 
-def loadModels():
-    global Preloaded
-    if not Preloaded:
-        print 'Preloading suits...'
-        for filepath in SuitParts:
-            Preloaded[filepath] = loader.loadModel(filepath)
-            Preloaded[filepath].flattenMedium()
+    print 'Preloading Cog models...'
+
+    for modelPath in PreloadModels:
+        preloader.loadModel(modelPath)
 
 def loadTutorialSuit():
     loader.loadModel('phase_3.5/models/char/suitC-mod')
@@ -194,17 +193,8 @@ def loadSuits(level):
     loadDialog(level)
 
 def unloadSuits(level):
-    #loadSuitModelsAndAnims(level, flag=0)
     unloadDialog(level)
 
-def loadSuitModelsAndAnims(level, flag = 0):
-    for key in ModelDict.keys():
-        model, phase = ModelDict[key]
-        if flag:
-            filepath = 'phase_3.5' + model + 'mod'
-            Preloaded[filepath] = loader.loadModel(filepath)
-            filepath = 'phase_' + str(phase) + model + 'heads'
-            Preloaded[filepath] = loader.loadModel(filepath)
 
 def loadSuitAnims(suit, flag = 1):
     if suit in SuitDNA.suitHeadTypes:
@@ -421,11 +411,10 @@ class Suit(Avatar.Avatar):
         self.generateCorporateMedallion()
 
     def generateBody(self):
-        global Preloaded
         animDict = self.generateAnimDict()
         filePrefix, bodyPhase = ModelDict[self.style.body]
-        filepath = 'phase_3.5' + filePrefix + 'mod'
-        self.loadModel(Preloaded[filepath], copy = True)
+        filepath = 'phase_3.5' + filePrefix + 'mod' + '.bam'
+        self.loadModel(preloader.getModel(filepath), copy=True)
         self.loadAnims(animDict)
         self.setSuitClothes()
 
@@ -534,9 +523,9 @@ class Suit(Avatar.Avatar):
 
     def generateHead(self, headType):
         filePrefix, phase = ModelDict[self.style.body]
-        filepath = 'phase_' + str(phase) + filePrefix + 'heads'
+        filepath = 'phase_' + str(phase) + filePrefix + 'heads' + '.bam'
         headModel = NodePath('cog_head')
-        Preloaded[filepath].copyTo(headModel)
+        preloader.getModel(filepath).copyTo(headModel)
         headReferences = headModel.findAllMatches('**/' + headType)
         for i in xrange(0, headReferences.getNumPaths()):
             headPart = self.instance(headReferences.getPath(i), 'modelRoot', 'to_head')
