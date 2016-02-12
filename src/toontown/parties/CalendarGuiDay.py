@@ -162,6 +162,7 @@ class CalendarGuiDay(DirectFrame):
         self.scrollList.destroy()
         self.dayButton.destroy()
         DirectFrame.destroy(self)
+        return
 
     def updateArrowButtons(self):
         numItems = 0
