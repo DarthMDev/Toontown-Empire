@@ -258,8 +258,6 @@ def __createThrownTrapMultiTrack(trap, propList, propName, propPos = None, propH
     dustNode = hidden.attachNewNode('DustNode')
 
     def placeDustExplosion(dustNode = dustNode, thrownProp = thrownProp, battle = battle):
-        if dustNode.isEmpty() or thrownProp.isEmpty():
-            return
         dustNode.reparentTo(battle)
         dustNode.setPos(thrownProp.getPos(battle))
 
@@ -292,8 +290,6 @@ def __createPlacedTrapMultiTrack(trap, prop, propName, propPos = None, propHpr =
     hands = toon.getLeftHands()
 
     def placeDustExplosion(dustNode, trapProp, battle):
-        if dustNode.isEmpty() or trapProp.isEmpty():
-            return
         dustNode.reparentTo(battle)
         dustNode.setPos(trapProp.getPos(battle))
 
@@ -439,9 +435,7 @@ def createThrowingTrack(object, target, duration = 1.0, parent = render, gravity
     values['velocity'] = None
 
     def calcOriginAndVelocity(object = object, target = target, values = values, duration = duration, parent = parent, gravity = gravity):
-        if not object or object.isEmpty():
-            return
-	object.wrtReparentTo(parent)
+        object.wrtReparentTo(parent)
         values['origin'] = object.getPos(parent)
         origin = object.getPos(parent)
         values['velocity'] = (target[2] - origin[2] - 0.5 * gravity * duration * duration) / duration
