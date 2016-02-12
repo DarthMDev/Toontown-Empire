@@ -10,23 +10,13 @@ from toontown.pets import PetTricks
 from toontown.hood import ZoneUtil
 from direct.showbase.PythonUtil import lerp
 import sys
+import random
 
 class BattleCalculatorAI:
-    AccuracyBonuses = [0,
-     20,
-     40,
-     60]
-    DamageBonuses = [0,
-     20,
-     20,
-     20]
-    AttackExpPerTrack = [0,
-     10,
-     20,
-     30,
-     40,
-     50,
-     60]
+    AccuracyBonuses = [0, 20, 40, 60] # Stun
+    DamageBonuses = [0, 20, 20, 20]
+    MasteryAccBonus = [0, 10, 20, 30, 40, 50, 60] # Accuracy bonus per level of track
+
     TRAP_CONFLICT = -2
     APPLY_HEALTH_ADJUSTMENTS = 1
     TOONS_TAKE_NO_DAMAGE = 0
@@ -39,7 +29,6 @@ class BattleCalculatorAI:
     notify = DirectNotifyGlobal.directNotify.newCategory('BattleCalculatorAI')
     toonsAlwaysHit = simbase.config.GetBool('toons-always-hit', 0)
     toonsAlwaysMiss = simbase.config.GetBool('toons-always-miss', 0)
-    toonsAlways5050 = simbase.config.GetBool('toons-always-5050', 0)
     suitsAlwaysHit = simbase.config.GetBool('suits-always-hit', 0)
     suitsAlwaysMiss = simbase.config.GetBool('suits-always-miss', 0)
     immortalSuits = simbase.config.GetBool('immortal-suits', 0)
@@ -78,20 +67,28 @@ class BattleCalculatorAI:
             return (0, 0)
         if self.tutorialFlag:
             return (1, 95)
-        if self.toonsAlways5050:
-            roll = random.randint(0, 99)
-            if roll < 50:
-                return (1, 95)
-            else:
-                return (0, 0)
+
         if self.toonsAlwaysHit:
             return (1, 95)
-        elif self.toonsAlwaysMiss:
+        if self.toonsAlwaysMiss:
             return (0, 0)
         debug = self.notify.getDebug()
         attack = self.battle.toonAttacks[attackIndex]
         atkTrack, atkLevel = self.__getActualTrackLevel(attack)
         
+
+
+        if atkTrack == NPCSOS:
+            return (1, 95)
+        if atkTrack == FIRE:
+            return (1, 95)
+        if atkTrack == TRAP:
+            attack[TOON_ACCBONUS_COL] = 0
+            return (1, 100)
+        if atkTrack == PETSOS:
+            return self.__calculatePetTrickSuccess(attack)
+
+            
         hasAccuracyBuff = False
         toon = simbase.air.doId2do.get(attack[TOON_ID_COL])
         if toon:
@@ -100,73 +97,48 @@ class BattleCalculatorAI:
                     if ZoneUtil.getWhereName(toon.zoneId, True) in ('street', 'factoryExterior', 'cogHQExterior'):
                         hasAccuracyBuff = True
 
-        if atkTrack == NPCSOS:
-            return (1, 95)
-        if atkTrack == FIRE:
-            return (1, 95)
-        if atkTrack == TRAP:
-            if debug:
-                self.notify.debug('Attack is a trap, so it hits regardless')
-            attack[TOON_ACCBONUS_COL] = 0
-            return (1, 100)
-        elif atkTrack == DROP and attack[TOON_TRACK_COL] == NPCSOS:
-            unluredSuits = 0
-            for tgt in atkTargets:
-                if not self.__suitIsLured(tgt.getDoId()):
-                    unluredSuits = 1
-
-            if unluredSuits == 0:
-                attack[TOON_ACCBONUS_COL] = 1
-                return (0, 0)
-        elif atkTrack == DROP:
-            allLured = True
-            for i in xrange(len(atkTargets)):
-                if self.__suitIsLured(atkTargets[i].getDoId()):
-                    pass
-                else:
-                    allLured = False
-
-            if allLured:
-                attack[TOON_ACCBONUS_COL] = 1
-                return (0, 0)
-        elif atkTrack == PETSOS:
-            return self.__calculatePetTrickSuccess(attack)
-        tgtDef = 0
-        numLured = 0
-        if atkTrack != HEAL:
-            for currTarget in atkTargets:
-                thisSuitDef = self.__targetDefense(currTarget, atkTrack)
-                if debug:
-                    self.notify.debug('Examining suit def for toon attack: ' + str(thisSuitDef))
-                tgtDef = min(thisSuitDef, tgtDef)
-                if self.__suitIsLured(currTarget.getDoId()):
-                    numLured += 1
-
-        trackExp = self.__toonTrackExp(attack[TOON_ID_COL], atkTrack)
-        for currOtherAtk in self.toonAtkOrder:
-            if currOtherAtk != attack[TOON_ID_COL]:
-                nextAttack = self.battle.toonAttacks[currOtherAtk]
-                nextAtkTrack = self.__getActualTrack(nextAttack)
-                if atkTrack == nextAtkTrack and attack[TOON_TGT_COL] == nextAttack[TOON_TGT_COL]:
-                    currTrackExp = self.__toonTrackExp(nextAttack[TOON_ID_COL], atkTrack)
-                    if debug:
-                        self.notify.debug('Examining toon track exp bonus: ' + str(currTrackExp))
-                    trackExp = max(currTrackExp, trackExp)
-
-        if debug:
-            if atkTrack == HEAL:
-                self.notify.debug('Toon attack is a heal, no target def used')
-            else:
-                self.notify.debug('Suit defense used for toon attack: ' + str(tgtDef))
-            self.notify.debug('Toon track exp bonus used for toon attack: ' + str(trackExp))
-        if attack[TOON_TRACK_COL] == NPCSOS:
-            randChoice = 0
-        else:
-            randChoice = random.randint(0, 99)
+        luredSuitCount = 0 # Amount of cogs lured
+        targetLured = [] # Each cog's lure status (that we are attacking)
+        targetDefence = [] # Each cog's defence (negated) (that we are attacking)
+        masteryAccBonus = self.__getMasteryAccBonus(attack[TOON_ID_COL], atkTrack) # Bonus applied by mastering a track
+        randChoice = random.randint(0, 99)
         propAcc = AvPropAccuracy[atkTrack][atkLevel]
-        propAcc = min(propAcc * 1.3, 100)
+        
         if hasAccuracyBuff:
             propAcc *= BGagAccuracyMultiplier
+        
+        for otherAtk in self.toonAtkOrder:
+            if otherAtk != attack[TOON_ID_COL]:
+                nextAttack = self.battle.toonAttacks[otherAtk]
+                nextAtkTrack = self.__getActualTrack(nextAttack)
+                if atkTrack == nextAtkTrack and attack[TOON_TGT_COL] == nextAttack[TOON_TGT_COL]:
+                    otherMasteryAccBonus = self.__getMasteryAccBonus(nextAttack[TOON_ID_COL], atkTrack)
+                    self.notify.debug('Examining toon track exp bonus: ' + str(otherMasteryAccBonus))
+                    masteryAccBonus = max(otherMasteryAccBonus, masteryAccBonus)
+        for target in atkTargets:
+            # Get Lured Status
+            if self.__suitIsLured(target.getDoId()):
+                luredSuitCount += 1
+            targetLured.append(self.__suitIsLured(target.getDoId()))
+            
+            # Get all cog defences
+            targetDefence.append(self.__targetDefense(target, atkTrack))
+               
+        if atkTrack == DROP and attack[TOON_TRACK_COL] == NPCSOS:
+            if luredSuitCount == len(atkTargets):
+                return (0, 0)
+
+        if atkTrack == DROP:
+            if luredSuitCount == len(atkTargets):
+                # TOON_ACCBONUS_COL tells the next attack if this attack hit or not, 1 being miss
+                attack[TOON_ACCBONUS_COL] = 1
+                return (0, 0)
+
+        if atkTrack == HEAL:
+            self.notify.debug('Toon attack is a heal, no target def used')
+        else:
+            self.notify.debug('Suit defense used for toon attack: ' + str(min(targetDefence)))
+        self.notify.debug('Toon track exp bonus used for toon attack: ' + str(masteryAccBonus))
         if atkTrack == LURE:
             treebonus = self.__toonCheckGagBonus(attack[TOON_ID_COL], atkTrack, atkLevel)
             propBonus = self.__checkPropBonus(atkTrack)
@@ -181,7 +153,7 @@ class BattleCalculatorAI:
             elif treebonus or propBonus:
                 self.notify.debug('using oragnic OR prop bonus lure accuracy')
                 propAcc = AvLureBonusAccuracy[atkLevel]
-        attackAcc = propAcc + trackExp + tgtDef
+        attackAcc = propAcc + masteryAccBonus + min(targetDefence)
         currAtk = self.toonAtkOrder.index(attackIndex)
         if currAtk > 0 and atkTrack != HEAL:
             prevAtkId = self.toonAtkOrder[currAtk - 1]
@@ -191,67 +163,51 @@ class BattleCalculatorAI:
              attack[TOON_TRACK_COL]) and attack[TOON_TGT_COL] in self.successfulLures or attackAffectsGroup(atkTrack, atkLevel, attack[TOON_TRACK_COL]))
             if atkTrack == prevAtkTrack and (attack[TOON_TGT_COL] == prevAttack[TOON_TGT_COL] or lure):
                 if prevAttack[TOON_ACCBONUS_COL] == 1:
-                    if debug:
-                        self.notify.debug('DODGE: Toon attack track dodged')
+                    self.notify.debug('DODGE: Toon attack track dodged')
                 elif prevAttack[TOON_ACCBONUS_COL] == 0:
-                    if debug:
-                        self.notify.debug('HIT: Toon attack track hit')
+                    self.notify.debug('HIT: Toon attack track hit')
                 attack[TOON_ACCBONUS_COL] = prevAttack[TOON_ACCBONUS_COL]
                 return (not attack[TOON_ACCBONUS_COL], attackAcc)
-        atkAccResult = attackAcc
-        if debug:
-            self.notify.debug('setting atkAccResult to %d' % atkAccResult)
-        acc = attackAcc + self.__calcToonAccBonus(attackIndex)
+        attackAcc += self.__calcToonAccBonus(attackIndex)
         if atkTrack != LURE and atkTrack != HEAL:
             if atkTrack != DROP:
-                if numLured == len(atkTargets):
-                    if debug:
-                        self.notify.debug('all targets are lured, attack hits')
+                if luredSuitCount == len(atkTargets):
+                    self.notify.debug('all targets are lured, attack hits')
                     attack[TOON_ACCBONUS_COL] = 0
                     return (1, 100)
                 else:
-                    luredRatio = float(numLured) / float(len(atkTargets))
+                    luredRatio = float(luredSuitCount) / float(len(atkTargets))
                     accAdjust = 100 * luredRatio
-                    if accAdjust > 0 and debug:
-                        self.notify.debug(str(numLured) + ' out of ' + str(len(atkTargets)) + ' targets are lured, so adding ' + str(accAdjust) + ' to attack accuracy')
-                    acc += accAdjust
-            elif numLured == len(atkTargets):
-                if debug:
-                    self.notify.debug('all targets are lured, attack misses')
-                attack[TOON_ACCBONUS_COL] = 0
-                return (0, 0)
-        if acc > MaxToonAcc:
-            acc = MaxToonAcc
-        if randChoice < acc:
-            if debug:
-                self.notify.debug('HIT: Toon attack rolled' + str(randChoice) + 'to hit with an accuracy of' + str(acc))
+                        self.notify.debug(str(luredSuitCount) + ' out of ' + str(len(atkTargets)) + ' targets are lured, so adding ' + str(accAdjust) + ' to attack accuracy')
+                    attackAcc += accAdjust
+        if attackAcc > MaxToonAcc:
+            attackAcc = MaxToonAcc
+        if randChoice < attackAcc:
+            self.notify.debug('HIT: Toon attack rolled' + str(randChoice) + 'to hit with an accuracy of' + str(attackAcc))
             attack[TOON_ACCBONUS_COL] = 0
         else:
-            if debug:
-                self.notify.debug('MISS: Toon attack rolled' + str(randChoice) + 'to hit with an accuracy of' + str(acc))
+            self.notify.debug('MISS: Toon attack rolled' + str(randChoice) + 'to hit with an accuracy of' + str(attackAcc))
             attack[TOON_ACCBONUS_COL] = 1
-        return (not attack[TOON_ACCBONUS_COL], atkAccResult)
+        return (not attack[TOON_ACCBONUS_COL], attackAcc)
 
-    def __toonTrackExp(self, toonId, track):
+    def __getMasteryAccBonus(self, toonId, track):
+        ''' This will return accuracy bonus based on this toon's gag level'''
         toon = self.battle.getToon(toonId)
-        if toon != None:
+        accBonus = 0
+        if toon is not None:
             toonExpLvl = toon.experience.getExpLevel(track)
-            exp = self.AttackExpPerTrack[toonExpLvl]
+            accBonus = self.MasteryAccBonus[toonExpLvl]
             if track == HEAL:
-                exp = exp * 0.5
-            self.notify.debug('Toon track exp: ' + str(toonExpLvl) + ' and resulting acc bonus: ' + str(exp))
-            return exp
-        else:
-            return 0
-        return
+                accBonus *= 0.5
+            self.notify.debug('Toon track exp: ' + str(toonExpLvl) + ' and resulting acc bonus: ' + str(accBonus))
+        return accBonus
 
     def __toonCheckGagBonus(self, toonId, track, level):
         toon = self.battle.getToon(toonId)
-        if toon != None:
+        if toon is not None:
             return toon.checkGagBonus(track, level)
         else:
             return False
-        return
 
     def __checkPropBonus(self, track):
         return self.battle.getInteractivePropTrackBonus() == track
@@ -273,7 +229,7 @@ class BattleCalculatorAI:
                 target = attack[TOON_TGT_COL]
             else:
                 target = self.battle.findSuit(attack[TOON_TGT_COL])
-            if target != None:
+            if target is not None:
                 targetList.append(target)
         elif atkTrack == HEAL or atkTrack == PETSOS:
             if attack[TOON_TRACK_COL] == NPCSOS or atkTrack == PETSOS:
@@ -324,7 +280,6 @@ class BattleCalculatorAI:
             self.traps[suitId] = trapInfoToUse
         else:
             self.notify.warning('huh we did not find a train trap?')
-        return
 
     def __addSuitGroupTrap(self, suitId, trapLvl, attackerId, allSuits, npcDamage = 0):
         if npcDamage == 0:
@@ -391,7 +346,6 @@ class BattleCalculatorAI:
 
         elif suitId in self.traps:
             self.traps[suitId][1] = 0
-        return
 
     def __trapCreator(self, suitId):
         if suitId in self.traps:
@@ -577,7 +531,6 @@ class BattleCalculatorAI:
                 self.__addAttackExp(attack)
         if not validTargetAvail and self.__prevAtkTrack(toonId) != atkTrack:
             self.__clearAttack(toonId)
-        return
 
     def __getToonTargets(self, attack):
         track = self.__getActualTrack(attack)
@@ -733,7 +686,6 @@ class BattleCalculatorAI:
                  0]
                 self.toonSkillPtsGained[id] = expList
             expList[trk] = min(ExperienceCap, expList[trk] + (lvl + 1) * self.__skillCreditMultiplier)
-        return
 
     def __clearTgtDied(self, tgt, lastAtk, currAtk):
         position = self.battle.activeSuits.index(tgt)
@@ -1048,7 +1000,7 @@ class BattleCalculatorAI:
         self.__processBonuses(hp=0)
         self.__processBonuses(hp=1)
         self.__postProcessToonAttacks()
-        return
+
 
     def __knockBackAtk(self, attackIndex, toon = 1):
         if toon and (self.battle.toonAttacks[attackIndex][TOON_TRACK_COL] == THROW or self.battle.toonAttacks[attackIndex][TOON_TRACK_COL] == SQUIRT):
@@ -1095,7 +1047,7 @@ class BattleCalculatorAI:
             return self.battle.activeToons.index(toonId)
         else:
             return self.__pickRandomToon(suitId)
-        return
+
 
     def __pickRandomToon(self, suitId):
         liveToons = []
@@ -1140,17 +1092,13 @@ class BattleCalculatorAI:
         if attack[SUIT_ATK_COL] == NO_ATTACK:
             self.notify.debug('No attack, no targets')
             return targetList
-        debug = self.notify.getDebug()
         if not self.__suitAtkAffectsGroup(attack):
             targetList.append(self.battle.activeToons[attack[SUIT_TGT_COL]])
-            if debug:
-                self.notify.debug('Suit attack is single target')
+            self.notify.debug('Suit attack is single target')
         else:
-            if debug:
-                self.notify.debug('Suit attack is group target')
+            self.notify.debug('Suit attack is group target')
             for currToon in self.battle.activeToons:
-                if debug:
-                    self.notify.debug('Suit attack will target toon' + str(currToon))
+                self.notify.debug('Suit attack will target toon' + str(currToon))
                 targetList.append(currToon)
 
         return targetList
@@ -1178,7 +1126,7 @@ class BattleCalculatorAI:
             return handle.hp + self.toonHPAdjusts[toonDoId]
         else:
             return 0
-        return
+
 
     def __getToonMaxHp(self, toonDoId):
         handle = self.battle.getToon(toonDoId)
@@ -1186,7 +1134,7 @@ class BattleCalculatorAI:
             return handle.maxHp
         else:
             return 0
-        return
+
 
     def __applySuitAttackDamages(self, attackIndex):
         attack = self.battle.suitAttacks[attackIndex]
