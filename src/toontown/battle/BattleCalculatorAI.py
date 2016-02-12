@@ -178,6 +178,7 @@ class BattleCalculatorAI:
                 else:
                     luredRatio = float(luredSuitCount) / float(len(atkTargets))
                     accAdjust = 100 * luredRatio
+                    if accAdjust > 0:
                         self.notify.debug(str(luredSuitCount) + ' out of ' + str(len(atkTargets)) + ' targets are lured, so adding ' + str(accAdjust) + ' to attack accuracy')
                     attackAcc += accAdjust
         if attackAcc > MaxToonAcc:
