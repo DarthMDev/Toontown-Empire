@@ -15,14 +15,17 @@ GAME_TIED = 2
 
 class DistributedPartyCogActivityAI(DistributedPartyTeamActivityAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPartyCogActivityAI')
-
     def __init__(self, air, party, activityInfo):
         DistributedPartyTeamActivityAI.__init__(self, air, party, activityInfo)
         self.scores = {}
-        # you freeze when you try to switch teams in this activity.
-        #forbidTeamChanges = True causes a AI crash
+
         self.highScore = 0
         self.cogDistances = [0, 0, 0]  # Using inttegers for accuracy
+    def pieThrow(self, todo0, todo1, todo2, todo3, todo4, todo5, todo6):
+        pass
+
+    def pieHitsToon(self, todo0, todo1, todo2, todo3, todo4):
+        pass
 
     def pieHitsCog(self, toonId, timestamp, hitCogNum, x, y, z, direction, hitHead):
         if self.state != 'Active':
