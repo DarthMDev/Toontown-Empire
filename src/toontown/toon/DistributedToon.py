@@ -953,6 +953,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def setGhostMode(self, flag):
         if self.ghostMode != flag:
+            self.lastGhostMode = self.ghostMode
             self.ghostMode = flag
             if not hasattr(self, 'cr'):
                 return

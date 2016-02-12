@@ -2622,8 +2622,18 @@ class Toon(Avatar.Avatar, ToonHead):
             alpha = 0.25
             if base.localAvatar.getAdminAccess() < self.adminAccess:
                 alpha = 0
-            return Sequence(self.__doToonGhostColorScale(VBase4(1, 1, 1, alpha), lerpTime, keepDefault=1), Func(self.nametag3d.hide))
-        return Sequence()
+            if self.ghostMode == OTPGlobals.GhostEffectName2Id['none']:
+                return Sequence(self.__doToonGhostColorScale(VBase4(1, 1, 1, alpha), 0, keepDefault=1), Func(self.nametag3d.hide))
+            elif self.ghostMode == OTPGlobals.GhostEffectName2Id['poof']:
+                dustCloud = DustCloud.DustCloud(fBillboard=0, wantSound=1)
+                dustCloud.setBillboardAxis(2.0)
+                dustCloud.setZ(3)
+                dustCloud.setScale(0.4)
+                dustCloud.createTrack()
+                dustCloudTrack = Sequence(Func(dustCloud.reparentTo, self), dustCloud.track, Func(dustCloud.destroy))
+                return Sequence(Parallel(dustCloudTrack, self.__doToonGhostColorScale(VBase4(1, 1, 1, alpha), 0, keepDefault=1)), Func(self.nametag3d.hide))
+            else:
+                return Sequence(self.__doToonGhostColorScale(VBase4(1, 1, 1, alpha), lerpTime, keepDefault=1), Func(self.nametag3d.hide))
 
     def __undoCheesyEffect(self, effect, lerpTime):
         if effect == ToontownGlobals.CEBigHead:
@@ -2659,7 +2669,18 @@ class Toon(Avatar.Avatar, ToonHead):
         elif effect == ToontownGlobals.CEVirtual:
             return self.__doUnVirtual()
         elif effect == ToontownGlobals.CEGhost:
-            return Sequence(Func(self.nametag3d.show), self.__doToonGhostColorScale(None, lerpTime, keepDefault=1))
+            if self.lastGhostMode == OTPGlobals.GhostEffectName2Id['none']:
+                return Sequence(Func(self.nametag3d.show), self.__doToonGhostColorScale(None, 0, keepDefault=1))
+            elif self.lastGhostMode == OTPGlobals.GhostEffectName2Id['poof']:
+                dustCloud = DustCloud.DustCloud(fBillboard=0, wantSound=1)
+                dustCloud.setBillboardAxis(2.0)
+                dustCloud.setZ(3)
+                dustCloud.setScale(0.4)
+                dustCloud.createTrack()
+                dustCloudTrack = Sequence(Func(dustCloud.reparentTo, self), dustCloud.track, Func(dustCloud.destroy))
+                return Sequence(Func(self.nametag3d.show), Parallel(dustCloudTrack, self.__doToonGhostColorScale(None, 0, keepDefault=1)))
+            else:
+                return Sequence(Func(self.nametag3d.show), self.__doToonGhostColorScale(None, lerpTime, keepDefault=1))
         return Sequence()
 
     def putOnSuit(self, suitType, setDisplayName = True, rental = False):
