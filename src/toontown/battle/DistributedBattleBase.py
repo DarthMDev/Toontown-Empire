@@ -153,7 +153,7 @@ class DistributedBattleBase(DistributedNode.DistributedNode, BattleBase):
                 self.notify.debug('250 calling self.removeTrap, suit=%d' % suit.doId)
                 self.removeTrap(suit)
             suit.battleTrap = NO_TRAP
-            suit.battleTrapProp = None
+        if suit.battleTrapProp is None or suit.battleTrapProp.isEmpty():
             self.notify.debug('253 suit.battleTrapProp = None')
             suit.battleTrapIsFresh = 0
 
