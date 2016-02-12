@@ -8,6 +8,7 @@ class TutorialStreet(TTStreet.TTStreet):
 
     def enter(self, requestStatus):
         TTStreet.TTStreet.enter(self, requestStatus, visibilityFlag=0, arrowsOn=0)
+        print('TutorialStreet(debug): %s' % requestStatus['how'])
         if requestStatus['how'] == 'teleportIn':
             self.startWelcomeCutscene()
     

@@ -5,17 +5,11 @@ from direct.interval.IntervalGlobal import *
 from direct.task import Task
 from toontown.toontowngui import TTDialog
 from toontown.toonbase.ToonBaseGlobal import *
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.effects import Splash, DustCloud, Wake
-from toontown.minigame import Trajectory
-from toontown.minigame import CannonGameGlobals
+from toontown.minigame import Trajectory, CannonGameGlobals
 from toontown.parties import PartyGlobals
-from toontown.parties.PartyGlobals import ActivityIds
-from toontown.parties.PartyGlobals import ActivityTypes
-from toontown.parties.PartyGlobals import FireworksStartedEvent
-from toontown.parties.PartyGlobals import FireworksFinishedEvent
-from toontown.parties.PartyGlobals import PartyCannonCollisions
+from toontown.parties.PartyGlobals import ActivityIds, PartyCannonCollisions, FireworksFinishedEvent, FireworksStartedEvent, ActivityTypes
 from toontown.parties.DistributedPartyActivity import DistributedPartyActivity
 from toontown.parties.CannonGui import CannonGui
 from toontown.parties.PartyUtils import toRadians, toDegrees
@@ -78,7 +72,7 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
         self.flyColNode = None
         self.flyColNodePath = None
         self._flyingCollisionTaskName = None
-
+        return
 
     def generateInit(self):
         DistributedPartyActivity.generateInit(self)
@@ -393,6 +387,7 @@ class DistributedPartyCannonActivity(DistributedPartyActivity):
         return Task.done
 
     def d_setLanded(self, toonId):
+        printStack()
         self.notify.debug('d_setLanded %s' % toonId)
         if self.isLocalToonId(toonId):
             if self.cr:

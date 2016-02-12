@@ -761,7 +761,6 @@ dclass DistributedToon : DistributedPlayer {
   setTrueFriends(uint32[] = []) required ownrecv db;
   setNextKnockHeal(uint32) ram airecv;
   setTFRequest(uint32[] = [0, 0]) ram airecv;
-  setEPP(uint8[] = []) required ownrecv db;
   setStats(uint32[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) required ownrecv db;
   requestNametagStyle(uint8) airecv ownsend;
   requestFishingRod(uint8) airecv ownsend;

@@ -93,7 +93,7 @@ class PlayGame(StateData.StateData):
     def enter(self, hoodId, zoneId, avId):
         if hoodId == ToontownGlobals.Tutorial:
             loaderName = 'townLoader'
-            whereName = 'street'
+            whereName = 'toonInterior'
         elif hoodId == ToontownGlobals.MyEstate:
             self.getEstateZoneAndGoHome(avId, zoneId)
             return
@@ -375,6 +375,7 @@ class PlayGame(StateData.StateData):
         base.localAvatar.laffMeter.obscure(1)
         base.localAvatar.chatMgr.obscure(1, 1)
         base.localAvatar.obscureFriendsListButton(1)
+        requestStatus['how'] = 'tutorial'
         self.hood.enter(requestStatus)
 
     def exitTutorialHood(self):

@@ -79,7 +79,7 @@ class QuestPoster(DirectFrame):
         self._deleteGeoms()
         self.destroyDialog()
         DirectFrame.destroy(self)
-    
+
     def destroyDialog(self, extra=None):
         if self.dialog:
             self.dialog.destroy()
@@ -160,7 +160,11 @@ class QuestPoster(DirectFrame):
     def loadElevator(self, building, numFloors):
         elevatorNodePath = hidden.attachNewNode('elevatorNodePath')
         elevatorModel = loader.loadModel('phase_4/models/modules/elevator')
-        floorIndicator = [None] * 5
+        floorIndicator = [None,
+         None,
+         None,
+         None,
+         None]
         npc = elevatorModel.findAllMatches('**/floor_light_?;+s')
         for i in xrange(npc.getNumPaths()):
             np = npc.getPath(i)
@@ -175,11 +179,11 @@ class QuestPoster(DirectFrame):
         suitDoorOrigin = building.find('**/*_door_origin')
         elevatorNodePath.reparentTo(suitDoorOrigin)
         elevatorNodePath.setPosHpr(0, 0, 0, 0, 0, 0)
+        return
 
     def teleportToShop(self, npcId):
         if base.cr.playGame.getPlace().getState() != 'walk':
             return
-
         npcZone = NPCToons.getNPCZone(npcId)
         npcHood = ZoneUtil.getCanonicalHoodId(npcZone)
         hqZone = {2000:2520, 1000:1507, 3000:3508, 4000:4504, 5000:5502, 7000:7503, 9000:9505}
@@ -187,7 +191,7 @@ class QuestPoster(DirectFrame):
         if npcZone in (-1, 0, None):
             zoneId = base.localAvatar.getZoneId()
             if ZoneUtil.isDynamicZone(zoneId) or ZoneUtil.isCogHQZone(zoneId):
-                zoneId = 2000
+                zoneId = 2000 
             npcHood = ZoneUtil.getCanonicalHoodId(zoneId)
             npcZone = hqZone.get(npcHood, 2520)
         
@@ -214,7 +218,7 @@ class QuestPoster(DirectFrame):
             self.dialog = TTDialog.TTDialog(style=TTDialog.Acknowledge, text=TTLocalizer.TeleportButtonTakenOver, command=self.destroyDialog)
             self.dialog.show()
             return
-        
+       
         base.localAvatar.takeMoney(cost)
         base.cr.playGame.getPlace().requestTeleport(npcHood, npcZone, base.localAvatar.defaultShard, -1)
 
@@ -325,6 +329,13 @@ class QuestPoster(DirectFrame):
 
         fComplete = quest.getCompletionStatus(base.localAvatar, questDesc) == Quests.COMPLETE
 
+        if Quests.isQuestJustForFun(questId, rewardId):
+            if fComplete:
+                self.funQuest.hide()
+                self.teleportButton.show()
+            else:
+                self.teleportButton.hide()
+
         if toNpcId == Quests.ToonHQ:
             toNpcName = TTLocalizer.QuestPosterHQOfficer
             toNpcBuildingName = TTLocalizer.QuestPosterHQBuildingName
@@ -356,13 +367,12 @@ class QuestPoster(DirectFrame):
         objectiveStrings = quest.getObjectiveStrings()
         captions = map(string.capwords, quest.getObjectiveStrings())
         imageColor = Vec4(*self.colors['white'])
-        self.teleportButton.hide()
         
         if base.localAvatar.tutorialAck and (fComplete or quest.getType() in (Quests.DeliverGagQuest, Quests.DeliverItemQuest, Quests.VisitQuest, Quests.TrackChoiceQuest)):
             self.teleportButton.show()
             self.teleportButton.setPos(0.3, 0, -0.15)
-        
         if isinstance(quest, Quests.TexturedQuest) and quest.hasFrame():
+            self.teleportButton.hide()
             frame = quest.getFrame()
             frameBgColor = frame[1]
             lIconGeom = frame[0]
@@ -443,6 +453,8 @@ class QuestPoster(DirectFrame):
         elif quest.getType() == Quests.TrackChoiceQuest:
             frameBgColor = 'green'
             invModel = loader.loadModel('phase_3.5/models/gui/inventory_icons')
+            track1, track2 = quest.getChoices(base.localAvatar)
+
             lIconGeom = invModel.find('**/' + AvPropsNew[track1][1])
 
             if not fComplete:
@@ -610,6 +622,7 @@ class QuestPoster(DirectFrame):
                 if infoText == '':
                     infoText = TTLocalizer.QuestPosterAnywhere
         if fComplete:
+            self.teleportButton.show()
             textColor = (0, 0.3, 0, 1)
             imageColor = Vec4(*self.colors['lightGreen'])
             lPos.setX(-0.18)

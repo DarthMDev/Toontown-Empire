@@ -9,6 +9,7 @@ MOVEMENT_MULTIPLIER = 0.04
 
 class DistributedPartyTugOfWarActivityAI(DistributedPartyTeamActivityAI):
     notify = directNotify.newCategory("DistributedPartyTugOfWarActivityAI")
+    forbidTeamChanges = True
     DURATION = 40
     COUNTDOWN_TIME = 8
 
