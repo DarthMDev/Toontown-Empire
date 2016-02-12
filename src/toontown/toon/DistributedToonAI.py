@@ -170,7 +170,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.fishBingoTutorialDone = False
         self.nextKnockHeal = 0
         self.tfRequest = (0, 0)
-        self.epp = []
 
     def generate(self):
         DistributedPlayerAI.DistributedPlayerAI.generate(self)
@@ -1268,28 +1267,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def getCogMerits(self):
         return self.cogMerits
 
-    def b_promote(self, dept):
-        oldMerits = CogDisguiseGlobals.getTotalMerits(self, dept)
-        self.incCogLevel(dept)
-        
-        if self.cogLevels[dept] < ToontownGlobals.MaxCogSuitLevel:
-            merits = self.getCogMerits()
-            
-            if not self.hasEPP(dept):
-                merits[dept] = 0
-            
-            else:
-                # If we have EPP, check if the merit count is too much (i.e. enough to promote again)
-                if oldMerits >= CogDisguiseGlobals.getTotalMerits(self, dept):
-                    # We have more merits than needed (i.e. promoting to another cog or earning laff)
-                    # Therefore:
-                    merits[dept] = 0
-                
-                else:
-                    merits[dept] = oldMerits
-            
-            self.d_setCogMerits(merits)
-                    
     def readyForPromotion(self, dept):
         merits = self.cogMerits[dept]
         totalMerits = CogDisguiseGlobals.getTotalMerits(self, dept)
@@ -1311,7 +1288,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
                 self.notify.warning('%s setCogIndex invalid: %s' % (self.doId, index))
                 if simbase.config.GetBool('want-ban-wrong-suit-place', False):
                     commentStr = 'Toon %s trying to set cog index to %s in Zone: %s' % (self.doId, index, self.zoneId)
-                    #simbase.air.banManager.ban(self.doId, self.DISLid, commentStr)
         else:
             self.cogIndex = index
 
@@ -4235,29 +4211,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getTFRequest(self):
         return self.tfRequest
-
-    def setEPP(self, epp):
-        self.epp = epp
-    
-    def d_setEPP(self, epp):
-        self.sendUpdate("setEPP", [epp])
-    
-    def b_setEPP(self, epp):
-        self.setEPP(epp)
-        self.d_setEPP(epp)
-    
-    def addEPP(self, dept):
-        self.epp.append(dept)
-        self.d_setEPP(self.epp)
-    
-    def removeEPP(self, dept):
-        if dept in self.epp:
-            self.epp.remove(dept)
-        
-        self.d_setEPP(self.epp)
-    
-    def hasEPP(self, dept):
-        return dept in self.epp
     
     def b_setStats(self, stats):
         self.d_setStats(stats)
@@ -5235,31 +5188,9 @@ def canSkill(skill):
     av = spellbook.getTarget()
     av.b_setWateringCanSkill(skill)
 
-@magicWord(category=CATEGORY_LEADER, types=[int, str])
-def epp(dept, command="add"):
-    av = spellbook.getTarget()
-    if command == "add":
-        av.addEPP(dept)
-    
-    elif command == "remove":
-        av.removeEPP(dept)
-    
-    elif command == "get":
-        if dept == -1:
-            return av.epp
-        
-        return av.hasEPP(dept)
-        
-    else:
-        return "Unknown command!"
-
-@magicWord(category=CATEGORY_STAFF, types=[int])
-def promote(dept):
-    spellbook.getTarget().b_promote(dept)
-
 @magicWord(category=CATEGORY_STAFF)
 def maxGarden():
-    av = spellbook.getInvoker()
+    av = spellbook.getTarget()
     av.b_setShovel(3)
     av.b_setWateringCan(3)
     av.b_setShovelSkill(639)
@@ -5267,81 +5198,86 @@ def maxGarden():
 
 # FordTheWriter new commands added:
 
-@magicWord(category=CATEGORY_LEADER, types=[int], access=103)
+@magicWord(category=CATEGORY_LEADER, types=[int])
 def SetxmasBadge(gmId):
+    av = spellbook.getTarget()
+    access = spellbook.getTargetAccess()
     if not 0 <= gmId <= 5:
         return 'Staff-Badges: 0=off, 1=Trial, 2=Staff, 3=Lead-Staff, 4=Developers, 5=Leaders'
 
-    if (spellbook.getInvokerAccess() < 103) and (gmId > 1):
+    if (access < 701) and (gmId > 5):
         return 'This badge is for trial-staff only!'
 
-    elif (spellbook.getInvokerAccess() < 502) and (gmId > 2):
+    elif (access < 508) and (gmId > 4):
         return 'This badge is for staff only!'
 
-    elif (spellbook.getInvokerAccess() < 504) and (gmId > 3):
+    elif (access < 504) and (gmId > 3):
         return 'This badge is for lead-staff only!'
 
-    elif (spellbook.getInvokerAccess() < 508) and (gmId > 4):
+    elif (access < 502) and (gmId > 2):
         return 'This badge is for developers only!'
 
-    elif (spellbook.getInvokerAccess() < 701) and (gmId > 5):
+    elif (access < 103) and (gmId > 1):
         return 'Your Not A Leader, Only Leaders can have this special badge!'
 
-    if spellbook.getInvoker().isBadge() and gmId != 0:
-        spellbook.getInvoker().b_xmasBadge(0)
+    if av.isBadge() and gmId != 0:
+        av.b_xmasBadge(0)
 
-    spellbook.getInvoker().b_xmasBadge(gmId)
+    av.b_xmasBadge(gmId)
 
-    return 'You have set %s to badge type %s' % (spellbook.getInvoker().getName(), gmId)
+    return 'You have set %s to badge type %s' % (av.getName(), gmId)
 
 @magicWord(category=CATEGORY_TRIAL)
 def xmasBadge():
-    access = spellbook.getInvokerAccess()
-    if spellbook.getInvoker().isBadge():
-        spellbook.getInvoker().b_xmasBadge(0)
-        return 'You have disabled your Christmas badge.'
+    av = spellbook.getTarget()
+    access = spellbook.getTargetAccess()
+    if av.isBadge():
+        av.b_xmasBadge(0)
+        return 'You have disabled your or their Christmas badge.'
     else:
         if access>=701:
-            spellbook.getInvoker().b_xmasBadge(5)
+            av.b_xmasBadge(5)
         elif access>=103:
-            spellbook.getInvoker().b_xmasBadge(1)
+            av.b_xmasBadge(1)
         elif access>=502:
-            spellbook.getInvoker().b_xmasBadge(2)
+            av.b_xmasBadge(2)
         elif access>=504:
-            spellbook.getInvoker().b_xmasBadge(3)
+            av.b_xmasBadge(3)
         elif access>=508:
-            spellbook.getInvoker().b_xmasBadge(4)
-        return 'You have enabled your Christmas badge.'
+            av.b_xmasBadge(4)
+        return 'You have enabled your or their Christmas badge.'
 
 @magicWord(category=CATEGORY_TRIAL)
 def badge():
-    access = spellbook.getInvokerAccess()
-    if spellbook.getInvoker().isBadge():
-        spellbook.getInvoker().b_setTTOBadge(0)
-        return "You have disabled your badge."
+    access = spellbook.getTargetAccess()
+    av = spellbook.getTarget()
+    if av.isBadge():
+        av.b_setTTOBadge(0)
+        return "You have disabled your or their badge."
     else:
         if access>=701:
-            spellbook.getInvoker().b_setTTOBadge(2)
+           av.b_setTTOBadge(2)
         elif access>=103:
-            spellbook.getInvoker().b_setTTOBadge(4)
+            av.b_setTTOBadge(4)
         elif access>=502:
-            spellbook.getInvoker().b_setTTOBadge(4)
+            av.b_setTTOBadge(4)
         elif access>=504:
-            spellbook.getInvoker().b_setTTOBadge(3)
+            av.b_setTTOBadge(3)
         elif access>=508:
-            spellbook.getInvoker().b_setTTOBadge(2)
-        return "You have enabled your badge."
+            av.b_setTTOBadge(2)
+        return "You have enabled your or their badge."
 
 @magicWord(category=CATEGORY_LEADER, types=[int])
 def setBadge(gmId):
+    av = spellbook.getTarget()
     if gmId == 1:
         return 'You cannot set a toon to TOON COUNCIL.'
     if not 0 <= gmId <= 4:
         return 'Invalid badge type specified.'
-    if spellbook.getInvoker().isBadge() and gmId != 0:
-        spellbook.getInvoker().b_setTTOBadge(0)
-    spellbook.getInvoker().b_setTTOBadge(gmId)
-    return 'You have set %s to badge type %s' % (spellbook.getInvoker().getName(), gmId)
+    if av.isBadge() and gmId != 0:
+        av.b_setTTOBadge(0)
+    av.b_setTTOBadge(gmId)
+    return 'You have set %s to badge type %s' % (av.getName(), gmId)
 
 @magicWord(category=CATEGORY_STAFF, types=[int])
 def goto(avIdShort):
@@ -5359,6 +5295,7 @@ def pouch(value):
     target.b_setMaxCarry(value)
     return "Target's Gag Pouch set."
 
+#This command broke?
 @magicWord(category=CATEGORY_STAFF, types=[str, int])
 def exp(track, amt):
     trackIndex = TTLocalizer.BattleGlobalTracks.index(track)

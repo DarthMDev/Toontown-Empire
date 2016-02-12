@@ -3,31 +3,20 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
 from direct.task.Task import Task
 from panda3d.core import *
-import random
-import types
-import math
-import AccessoryGlobals
-import Motion
-import TTEmote
-import ToonDNA
-import LaffMeter
+import random, Motion, math, types, AccessoryGlobals, TTEmote, ToonDNA, LaffMeter
 from ToonHead import *
 from otp.ai.MagicWordGlobal import *
-from otp.avatar import Avatar
-from otp.avatar import Emote
+from otp.avatar import Avatar, Emote
 from otp.avatar.Avatar import teleportNotify
-from otp.otpbase import OTPGlobals
-from otp.otpbase import OTPLocalizer
-from toontown.battle import SuitBattleGlobals
 from otp.nametag.NametagConstants import *
-from toontown.distributed import DelayDelete
-from toontown.effects import DustCloud
-from toontown.effects import Wake
-from toontown.hood import ZoneUtil
 from otp.nametag.NametagGroup import *
+from otp.otpbase import OTPGlobals, OTPLocalizer
+from toontown.battle import SuitBattleGlobals
+from toontown.distributed import DelayDelete
+from toontown.effects import DustCloud, Wake
+from toontown.hood import ZoneUtil
 from toontown.suit import SuitDNA
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 
 def teleportDebug(requestStatus, msg, onlyIfToAv = True):
     if teleportNotify.getDebug():
@@ -35,7 +24,6 @@ def teleportDebug(requestStatus, msg, onlyIfToAv = True):
         if 'how' in requestStatus and requestStatus['how'][:len(teleport)] == teleport:
             if not onlyIfToAv or 'avId' in requestStatus and requestStatus['avId'] > 0:
                 teleportNotify.debug(msg)
-
 
 SLEEP_STRING = TTLocalizer.ToonSleepString
 DogDialogueArray = []
@@ -2252,9 +2240,13 @@ class Toon(Avatar.Avatar, ToonHead):
     def doToonColorScale(self, scale, lerpTime, keepDefault = 0):
         if keepDefault:
             self.defaultColorScale = scale
-        if scale == None:
+        if scale is None:
             scale = VBase4(1, 1, 1, 1)
         node = self.getGeomNode()
+
+        if not node or node.isEmpty():
+            return
+        
         caps = self.getPieces(('torso', 'torso-bot-cap'))
         track = Sequence()
         track.append(Func(node.setTransparency, 1))
@@ -2539,16 +2531,19 @@ class Toon(Avatar.Avatar, ToonHead):
 
     def restoreDefaultColorScale(self):
         node = self.getGeomNode()
-        if node:
-            if self.defaultColorScale:
-                node.setColorScale(self.defaultColorScale)
-                if self.defaultColorScale[3] != 1:
-                    node.setTransparency(1)
-                else:
-                    node.clearTransparency()
+        if not node or node.isEmpty():
+            return
+
+        if self.defaultColorScale:
+            node.setColorScale(self.defaultColorScale)
+            if self.defaultColorScale[3] != 1:
+                node.setTransparency(1)
             else:
-                node.clearColorScale()
                 node.clearTransparency()
+        else:
+            node.clearColorScale()
+            node.clearTransparency()
+
 
     def __doToonColor(self, color, lerpTime):
         node = self.getGeomNode()

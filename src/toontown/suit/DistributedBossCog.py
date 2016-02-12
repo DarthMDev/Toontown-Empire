@@ -152,9 +152,13 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
         BossCog.BossCog.setDNAString(self, dnaString)
 
     def getDNAString(self):
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Returning DNA String from DistributedBossCog.")
         return self.dna.makeNetString()
 
     def setDNA(self, dna):
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Setting Boss Cog DNA.")
         BossCog.BossCog.setDNA(self, dna)
 
     def setToonIds(self, involvedToons, toonsA, toonsB):

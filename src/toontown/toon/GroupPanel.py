@@ -120,6 +120,8 @@ class GroupPanel(DirectObject.DirectObject):
         self.textBgDisabledColor = Vec4(0.4, 0.8, 0.4, 1)
 
     def __handleLeaveButton(self):
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Handling Leave Button for Boarding Group")
         messenger.send('wakeup')
         if not base.cr.playGame.getPlace().getState() == 'elevator':
             self.confirmQuitDialog = TTDialog.TTDialog(style=TTDialog.YesNo, text=TTLocalizer.QuitBoardingPartyConfirm, command=self.__confirmQuitCallback)
@@ -145,6 +147,8 @@ class GroupPanel(DirectObject.DirectObject):
     def __checkGroupStatus(self):
         if not self.boardingParty:
             return
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Checking Boarding Group Stats.")
         self.notify.debug('__checkGroupStatus %s' % self.boardingParty.getGroupMemberList(localAvatar.doId))
         myMemberList = self.boardingParty.getGroupMemberList(localAvatar.doId)
         self.scrollList.removeAndDestroyAllItems(refresh=0)

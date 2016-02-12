@@ -164,7 +164,6 @@ def accessLevel(accessLevel, storage='PERSISTENT', showBadge=1):
     Modify the target's access level.
     """
     accessName2Id = {
-        'user': CATEGORY_USER.defaultAccess,
         'u': CATEGORY_USER.defaultAccess,
         'communitymanager': CATEGORY_COMMUNITY_MANAGER.defaultAccess,
         'community': CATEGORY_COMMUNITY_MANAGER.defaultAccess,

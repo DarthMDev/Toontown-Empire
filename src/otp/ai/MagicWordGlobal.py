@@ -71,6 +71,11 @@ class Spellbook:
             return 0
         return self.currentInvoker.getAdminAccess()
 
+    def getTargetAccess(self):
+        if not self.currentTarget:
+            return 0
+        return self.currentTarget.getAdminAccess()
+
 spellbook = Spellbook()
 
 

@@ -33,7 +33,7 @@ class ToonInterior(Place.Place):
         self.isInterior = 1
         self.hfaDoneEvent = 'hfaDoneEvent'
         self.npcfaDoneEvent = 'npcfaDoneEvent'
-        self.fsm = ClassicFSM.ClassicFSM('ToonInterior', [State.State('start', self.enterStart, self.exitStart, ['doorIn', 'teleportIn']),
+        self.fsm = ClassicFSM.ClassicFSM('ToonInterior', [State.State('start', self.enterStart, self.exitStart, ['doorIn', 'teleportIn', 'tutorial']),
          State.State('walk', self.enterWalk, self.exitWalk, ['sit',
           'stickerBook',
           'doorOut',
@@ -64,6 +64,7 @@ class ToonInterior(Place.Place):
          State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk']),
          State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn']),
          State.State('quest', self.enterQuest, self.exitQuest, ['walk', 'doorOut']),
+         State.State('tutorial', self.enterTutorial, self.exitTutorial, ['walk', 'quest']),
          State.State('purchase', self.enterPurchase, self.exitPurchase, ['walk', 'doorOut']),
          State.State('pet', self.enterPet, self.exitPet, ['walk']),
          State.State('phone', self.enterPhone, self.exitPhone, ['walk', 'doorOut']),
@@ -106,6 +107,15 @@ class ToonInterior(Place.Place):
     def setState(self, state):
         self.fsm.request(state)
 
+    def enterTutorial(self, requestStatus):
+        self.fsm.request('walk')
+        base.localAvatar.b_setParent(ToontownGlobals.SPRender)
+        globalClock.tick()
+        base.transitions.irisIn()
+        messenger.send('enterTutorialInterior')
+
+    def exitTutorial(self):
+        pass
 
     def doRequestLeave(self, requestStatus):
         self.fsm.request('NPCFA', [requestStatus])

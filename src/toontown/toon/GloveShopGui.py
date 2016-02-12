@@ -1,6 +1,6 @@
 from direct.gui.DirectGui import DirectButton, DirectLabel, DGG
 from direct.task.Task import Task
-from toontown.toon import ToonDNA
+from toontown.toon import ToonDNA, LocalToon
 from toontown.toonbase import ToontownGlobals, TTLocalizer, ToontownTimer
 import GloveNPCGlobals, time
 
@@ -113,6 +113,8 @@ class GloveShopGui:
         return hitLimit
 	
     def setClientGlove(self, color):
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Setting LocalAvater's glove color!")
         dna = base.localAvatar.style
         dna.gloveColor = color
         base.localAvatar.setDNA(dna)

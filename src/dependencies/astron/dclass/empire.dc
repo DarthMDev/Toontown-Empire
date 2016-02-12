@@ -732,8 +732,8 @@ dclass DistributedToon : DistributedPlayer {
   useSpecialResponse(string) ownrecv;
   setGardenStarted(uint8 = 0) required ownrecv db;
   sendToGolfCourse(uint32) ownrecv;
-  setGolfHistory(uint16 [18] = [0*18]) required ownrecv db;
-  setPackedGolfHoleBest(uint8 [18] = [0*18]) required ownrecv db;
+  setGolfHistory(uint16 [21] = [0*21]) required ownrecv db;
+  setPackedGolfHoleBest(uint8 [21] = [0*21]) required ownrecv db;
   setGolfCourseBest(uint8 [3] = [0*3]) required ownrecv db;
   setUnlimitedSwing(uint8) broadcast ownrecv ram;
   logSuspiciousEvent(char [0-1024]) ownsend airecv;
@@ -761,7 +761,6 @@ dclass DistributedToon : DistributedPlayer {
   setTrueFriends(uint32[] = []) required ownrecv db;
   setNextKnockHeal(uint32) ram airecv;
   setTFRequest(uint32[] = [0, 0]) ram airecv;
-  setEPP(uint8[] = []) required ownrecv db;
   setStats(uint32[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) required ownrecv db;
   requestNametagStyle(uint8) airecv ownsend;
   requestFishingRod(uint8) airecv ownsend;

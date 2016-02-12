@@ -152,10 +152,12 @@ else:
     music = None
 import ToontownLoader
 from direct.gui.DirectGui import *
-serverVersion = base.config.GetString('server-version', 'no_version_set')
-version = OnscreenText(serverVersion, pos=(-1.3, -0.975), scale=0.06, fg=Vec4(0, 0, 1, 0.6), align=TextNode.ALeft)
-version.setPos(0.03,0.03)
-version.reparentTo(base.a2dBottomLeft)
+serverVersion = config.GetString('server-version', 'no_version_set')
+buildVersion = 'TTE.%s' % config.GetString('build-version', 'no_version_set')
+print 'ToontownStart: Build Version:', buildVersion
+build = OnscreenText(buildVersion, pos=(-1.3, -0.975), scale=0.06, fg=Vec4(0, 0, 1, 0.6), align=TextNode.ALeft)
+build.setPos(0.033,0.025)
+build.reparentTo(base.a2dBottomLeft)
 from toontown.suit import Suit
 Suit.loadModels()
 loader.beginBulkLoad('init', TTLocalizer.LoaderLabel, 138, 0, TTLocalizer.TIP_NONE)
@@ -178,8 +180,8 @@ backgroundNodePath.removeNode()
 del backgroundNodePath
 del backgroundNode
 del tempLoader
-version.cleanup()
-del version
+build.cleanup()
+del build
 base.loader = base.loader
 __builtin__.loader = base.loader
 autoRun = ConfigVariableBool('toontown-auto-run', 1)

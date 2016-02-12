@@ -299,3 +299,4 @@ class PartyLoader(SafeZoneLoader.SafeZoneLoader):
 
     def __handleFireworksFinished(self):
         self.sunMoonNode.show()
+        self.loadClouds()

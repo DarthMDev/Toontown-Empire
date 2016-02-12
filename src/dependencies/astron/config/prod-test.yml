@@ -33,7 +33,7 @@ uberdogs:
 roles:
     - type: clientagent
       bind: 0.0.0.0:7199
-      version: "TTE-Alpha-1.0.0"
+      version: "Toontown Empire"
       client:
        relocate: true
        add_interest: enabled

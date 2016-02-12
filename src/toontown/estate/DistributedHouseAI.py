@@ -270,7 +270,8 @@ class DistributedHouseAI(DistributedObjectAI):
         elif item.replacesExisting() and item.hasExisting():
             if item.getFlags() & FLCloset:
                 items = ClosetToClothes.keys() if item.getFlags() & FLCloset else BankToMoney.keys()
-                
+            elif item.getFlags() & FLBank:
+            	items = BankToMoney.keys()
                 for itItem in self.interiorItems:
                     if itItem.furnitureType in items:
                         posHpr = itItem.posHpr

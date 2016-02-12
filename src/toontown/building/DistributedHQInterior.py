@@ -8,7 +8,7 @@ from panda3d.core import *
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase.ToonBaseGlobal import *
 from toontown.toonbase.ToontownGlobals import *
-from toontown.dna.DNAParser import DNADoor
+from toontown.dna.DNAParser import *
 from toontown.toon.DistributedNPCToonBase import DistributedNPCToonBase
 
 
@@ -27,7 +27,6 @@ class DistributedHQInterior(DistributedObject.DistributedObject):
         self.interior = loader.loadModel('phase_3.5/models/modules/HQ_interior')
         self.interior.reparentTo(render)
         self.interior.find('**/cream').hide()
-        self.interior.find('**/crashed_piano').hide()
         self.buildLeaderBoard()
 
     def announceGenerate(self):
@@ -155,8 +154,8 @@ class DistributedHQInterior(DistributedObject.DistributedObject):
             doorOrigin.setScale(0.8, 0.8, 0.8)
             doorOrigin.setPos(doorOrigin, 0, -0.025, 0)
             doorColor = self.randomGenerator.choice(self.colors['TI_door'])
-            triggerId = self.block + '_' + doorOriginIndexStr
-            DNADoor.setupDoor(doorNP, newNodePath, doorOrigin, self.dnaStore, triggerId, doorColor)
+            triggerId = str(self.block) + '_' + doorOriginIndexStr
+            setupDoor(doorNP, newNodePath, doorOrigin, self.dnaStore, triggerId, doorColor)
             doorFrame = doorNP.find('door_*_flat')
             doorFrame.setColor(doorColor)
         del self.dnaStore

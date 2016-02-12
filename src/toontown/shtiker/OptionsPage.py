@@ -728,6 +728,7 @@ class AdvancedOptionsTabPage(DirectFrame):
         button_image_scale = (0.7, 1, 1)
         button_textpos = (0, -0.02)
         options_text_scale = 0.052
+        news_text_scale = 0.050
         disabled_arrow_color = Vec4(0.6, 0.6, 0.6, 1.0)
         button_image = (guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR'))
         self.speed_chat_scale = 0.055
@@ -739,6 +740,8 @@ class AdvancedOptionsTabPage(DirectFrame):
         self.WASD_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight), command=self.__doToggleWASD)
         self.teleport_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - 2 * textRowHeight))
         self.teleport_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - 2 * textRowHeight), command=self.__doToggleTeleport)
+        self.news_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - 3 * textRowHeight))
+        self.news_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=news_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - 3 * textRowHeight), command=self.__doToggleNews)
         gui.removeNode()
         guiButton.removeNode()
 
@@ -748,6 +751,7 @@ class AdvancedOptionsTabPage(DirectFrame):
         self.settingsChanged = 0
         self.__setCogLevelGuiButton()
         self.__setTeleportButton()
+        self.__setNewsButton()
 
     def exit(self):
         self.ignore('confirmDone')
@@ -758,7 +762,7 @@ class AdvancedOptionsTabPage(DirectFrame):
         del self.cogLevel_label
         self.cogLevel_toggleButton.destroy()
         del self.cogLevel_toggleButton
-#        del self.destroyReportNotice
+#       del self.destroyReportNotice
         self.WASD_Label.destroy()
         del self.WASD_Label
         self.WASD_toggleButton.destroy()
@@ -767,6 +771,8 @@ class AdvancedOptionsTabPage(DirectFrame):
         del self.teleport_label
         self.teleport_toggleButton.destroy()
         del self.teleport_toggleButton
+        self.news_toggleButton.destory()
+        del self.news_label
 
     def __doToggleCogLevelGui(self):
         messenger.send('wakeup')
@@ -821,7 +827,6 @@ class AdvancedOptionsTabPage(DirectFrame):
             base.Move_Right = 'arrow_right'
             base.JUMP = 'control'
 
-
             settings['want-WASD'] = False
             base.localAvatar.controlManager.reload()
             base.localAvatar.chatMgr.reloadWASD()
@@ -835,7 +840,6 @@ class AdvancedOptionsTabPage(DirectFrame):
             base.JUMP = 'shift'
 
             settings['want-WASD'] = True
-
             base.localAvatar.controlManager.reload()
             base.localAvatar.chatMgr.reloadWASD()
             base.localAvatar.setSystemMessage(0, 'WASD enabled.')
@@ -862,8 +866,27 @@ class AdvancedOptionsTabPage(DirectFrame):
             acceptingTeleport[str(base.localAvatar.doId)] = True
         settings['acceptingTeleport'] = acceptingTeleport
         self.settingsChanged = 1
-        self.__setTeleportButton()
+        self.__setTeleportButton()    
     
     def __setTeleportButton(self):
         self.teleport_label['text'] = TTLocalizer.TeleportLabelOn if base.localAvatar.acceptingTeleport else TTLocalizer.TeleportLabelOff
         self.teleport_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff if base.localAvatar.acceptingTeleport else TTLocalizer.OptionsPageToggleOn
+        
+    def __doToggleNews(self):
+        messenger.send('wakeup')
+        if base.wantNews:
+            base.wantNews = False
+            settings['want-News'] = False
+            base.localAvatar.setSystemMessage(0, 'News disabled.')
+        else:
+            base.wantNews = True
+            settings['want-News'] = True
+            base.localAvatar.setSystemMessage(0, 'News enabled.')
+
+        self.settingsChanged = 1
+        self.__setNewsButton()
+             
+    def __setNewsButton(self):
+     self.news_label['text'] = TTLocalizer.NewsLabelOn if base.wantNews else TTLocalizer.NewsLabelOff
+     self.news_toggleButton['text'] = TTLocalizer.NewsButtonToggleOff if base.wantNews else TTLocalizer.NewsButtonToggleOn
+       

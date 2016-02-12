@@ -1063,7 +1063,7 @@ group "donaldsDreamland" [
    code [ "toon_landmark_hqDL" ]
    building_type [ "hq" ]
    title [ "Toon HQ" ]
-   pos [ -30.875 -1.37841 -15 ]
+   pos [ -40.875 -1.37841 -15 ]
    nhpr [ 180 0 0 ]
   ]
   landmark_building "tb8:toon_landmark_DL_pet_shop_DNARoot" [

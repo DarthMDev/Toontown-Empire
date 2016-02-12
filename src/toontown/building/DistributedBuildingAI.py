@@ -205,7 +205,6 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
         blockNumber = self.block
         dnaStore = self.air.dnaStoreMap[self.canonicalZoneId]
         zoneId = dnaStore.getZoneFromBlockNumber(blockNumber)
-        zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
         interiorZoneId = (zoneId - (zoneId%100)) + 500 + blockNumber
         return (zoneId, interiorZoneId)
 
