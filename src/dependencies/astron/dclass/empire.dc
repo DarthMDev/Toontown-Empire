@@ -780,6 +780,8 @@ dclass DistributedToon : DistributedPlayer {
   requestGroupsResponse(uint32 [], BoardingGroup []) ownrecv;
   updateGroup(uint32 avId, uint8 category, uint32 [], string [], uint8 show) ownrecv;
   setWantGroupTracker(uint8) clsend airecv;
+  freezeToon() ownrecv;
+  unfreezeToon() ownrecv;
 };
 
 dclass DistributedPartyGate : DistributedObject {

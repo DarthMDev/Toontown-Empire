@@ -4322,7 +4322,7 @@ def cheesyEffect(value, hood=0, expire=0):
         if value not in OTPGlobals.CEName2Id:
             return 'Invalid cheesy effect value: %s' % value
         value = OTPGlobals.CEName2Id[value]
-    elif not 0 <= value <= 15:
+    elif not 0 <= value <= 17:
         return 'Invalid cheesy effect value: %d' % value
     if (hood != 0) and (not 1000 <= hood < ToontownGlobals.DynamicZonesBegin):
         return 'Invalid hood ID: %d' % hood
@@ -5326,3 +5326,20 @@ def staffButton(switch):
     else:
      return("You must have 1 for enable or 2 for disable in your Magic Word.")
 """
+@magicWord(category=CATEGORY_STAFF)
+def freezeToon():
+    target = spellbook.getTarget()
+    if target == spellbook.getInvoker():
+        return 'You can\'t freeze yourself!'
+
+    target.sendUpdate('freezeToon', [])
+    return 'Froze %s.' % target.getName()
+
+@magicWord(category=CATEGORY_STAFF)
+def unfreezeToon():
+    target = spellbook.getTarget()
+    if target == spellbook.getInvoker():
+        return 'You can\'t unfreeze yourself!'
+
+    target.sendUpdate('unfreezeToon', [])
+    return 'Unfroze %s.' % target.getName()
