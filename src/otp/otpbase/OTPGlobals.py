@@ -61,6 +61,11 @@ CEName2Id = {
 }
 BigToonScale = 1.5
 SmallToonScale = 0.5
+GhostEffectName2Id = {
+    'none': 3,
+    'fade': 4,
+    'poof': 5
+}
 DisconnectNone = 0
 DisconnectBookExit = 1
 DisconnectCloseWindow = 2

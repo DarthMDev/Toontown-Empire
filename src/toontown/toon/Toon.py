@@ -39,7 +39,6 @@ LegsAnimDict = {}
 localAvatar = None
 TorsoAnimDict = {}
 HeadAnimDict = {}
-Preloaded = {}
 Phase3AnimList = (('neutral', 'neutral'), ('run', 'run'))
 Phase3_5AnimList = (('walk', 'walk'),
  ('teleport', 'teleport'),
@@ -165,26 +164,13 @@ TorsoDict = {
     'md': '/models/char/tt_a_chr_dgm_skirt_torso_',
     'ld': '/models/char/tt_a_chr_dgl_skirt_torso_'}
 
-def loadModels():
-    global Preloaded
-    if not Preloaded:
-        print 'Preloading avatars...'
+def preload():
 
-        for key in LegDict.keys():
-            fileRoot = LegDict[key]
+    print 'Preloading Toon models...'
 
-            Preloaded[fileRoot+'-1000'] = loader.loadModel('phase_3' + fileRoot + '1000')
-            Preloaded[fileRoot+'-500'] = loader.loadModel('phase_3' + fileRoot + '500')
-            Preloaded[fileRoot+'-250'] = loader.loadModel('phase_3' + fileRoot + '250')
-
-        for key in TorsoDict.keys():
-            fileRoot = TorsoDict[key]
-
-            Preloaded[fileRoot+'-1000'] = loader.loadModel('phase_3' + fileRoot + '1000')
-
-            if len(key) > 1:
-                Preloaded[fileRoot+'-500'] = loader.loadModel('phase_3' + fileRoot + '500')
-                Preloaded[fileRoot+'-250'] = loader.loadModel('phase_3' + fileRoot + '250')
+    for fileRoot in (LegDict.values() + TorsoDict.values()):
+        for lodName in ('1000', '500', '250'):
+            preloader.loadModel('phase_3' + fileRoot + lodName + '.bam')
 
 def loadBasicAnims():
     loadPhaseAnims()
@@ -730,26 +716,25 @@ class Toon(Avatar.Avatar, ToonHead):
                 height *= ToontownGlobals.SmallToonScale
             self.setHeight(height)
 
-    def generateToonLegs(self, copy = 1):
-        global Preloaded
+    def generateToonLegs(self, copy=1):
         legStyle = self.style.legs
         filePrefix = LegDict.get(legStyle)
         if filePrefix is None:
-            self.notify.error('unknown leg style: %s' % legStyle)
-        self.loadModel(Preloaded[filePrefix+'-1000'], 'legs', '1000', True)
-        self.loadModel(Preloaded[filePrefix+'-500'], 'legs', '500', True)
-        self.loadModel(Preloaded[filePrefix+'-250'], 'legs', '250', True)
+            self.notify.error('unknown leg style: ' + legStyle)
+        for lodName in ('1000', '500', '250'):
+            modelPath = 'phase_3' + filePrefix + lodName + '.bam'
+            self.loadModel(
+                preloader.getModel(modelPath), 'legs', lodName, True)
         if not copy:
-            self.showPart('legs', '1000')
-            self.showPart('legs', '500')
-            self.showPart('legs', '250')
-        self.loadAnims(LegsAnimDict[legStyle], 'legs', '1000')
-        self.loadAnims(LegsAnimDict[legStyle], 'legs', '500')
-        self.loadAnims(LegsAnimDict[legStyle], 'legs', '250')
+			self.loadAnims(LegsAnimDict[legStyle], 'legs', '250')
+        for lodName in ('1000', '500', '250'):
+                self.showPart('legs', lodName)
+        for lodName in ('1000', '500', '250'):
+            self.loadAnims(LegsAnimDict[legStyle], 'legs', lodName)
         self.findAllMatches('**/boots_short').stash()
         self.findAllMatches('**/boots_long').stash()
         self.findAllMatches('**/shoes').stash()
-        return
+
 
     def swapToonLegs(self, legStyle, copy = 1):
         self.unparentToonParts()
@@ -769,29 +754,23 @@ class Toon(Avatar.Avatar, ToonHead):
         self.initializeDropShadow()
         self.initializeNametag3d()
 
-    def generateToonTorso(self, copy = 1, genClothes = 1):
+    def generateToonTorso(self, copy=1, genClothes=1):
         global Preloaded
         torsoStyle = self.style.torso
         filePrefix = TorsoDict.get(torsoStyle)
         if filePrefix is None:
-            self.notify.error('unknown torso style: %s' % torsoStyle)
-        self.loadModel(Preloaded[filePrefix+'-1000'], 'torso', '1000', True)
-        if len(torsoStyle) == 1:
-            self.loadModel(Preloaded[filePrefix+'-1000'], 'torso', '500', True)
-            self.loadModel(Preloaded[filePrefix+'-1000'], 'torso', '250', True)
-        else:
-            self.loadModel(Preloaded[filePrefix+'-500'], 'torso', '500', True)
-            self.loadModel(Preloaded[filePrefix+'-250'], 'torso', '250', True)
+            self.notify.error('unknown torso style: ' + torsoStyle)
+        for lodName in ('1000', '500', '250'):
+            modelPath = 'phase_3' + filePrefix + lodName + '.bam'
+            self.loadModel(
+                preloader.getModel(modelPath), 'torso', lodName, True)
         if not copy:
-            self.showPart('torso', '1000')
-            self.showPart('torso', '500')
-            self.showPart('torso', '250')
-        self.loadAnims(TorsoAnimDict[torsoStyle], 'torso', '1000')
-        self.loadAnims(TorsoAnimDict[torsoStyle], 'torso', '500')
-        self.loadAnims(TorsoAnimDict[torsoStyle], 'torso', '250')
-        if genClothes == 1 and not len(torsoStyle) == 1:
+            for lodName in ('1000', '500', '250'):
+                self.showPart('torso', lodName)
+        for lodName in ('1000', '500', '250'):
+            self.loadAnims(TorsoAnimDict[torsoStyle], 'torso', lodName)
+        if genClothes:
             self.generateToonClothes()
-        return
 
     def swapToonTorso(self, torsoStyle, copy = 1, genClothes = 1):
         self.unparentToonParts()
@@ -2622,8 +2601,18 @@ class Toon(Avatar.Avatar, ToonHead):
             alpha = 0.25
             if base.localAvatar.getAdminAccess() < self.adminAccess:
                 alpha = 0
-            return Sequence(self.__doToonGhostColorScale(VBase4(1, 1, 1, alpha), lerpTime, keepDefault=1), Func(self.nametag3d.hide))
-        return Sequence()
+            if self.ghostMode == OTPGlobals.GhostEffectName2Id['none']:
+                return Sequence(self.__doToonGhostColorScale(VBase4(1, 1, 1, alpha), 0, keepDefault=1), Func(self.nametag3d.hide))
+            elif self.ghostMode == OTPGlobals.GhostEffectName2Id['poof']:
+                dustCloud = DustCloud.DustCloud(fBillboard=0, wantSound=1)
+                dustCloud.setBillboardAxis(2.0)
+                dustCloud.setZ(3)
+                dustCloud.setScale(0.4)
+                dustCloud.createTrack()
+                dustCloudTrack = Sequence(Func(dustCloud.reparentTo, self), dustCloud.track, Func(dustCloud.destroy))
+                return Sequence(Parallel(dustCloudTrack, self.__doToonGhostColorScale(VBase4(1, 1, 1, alpha), 0, keepDefault=1)), Func(self.nametag3d.hide))
+            else:
+                return Sequence(self.__doToonGhostColorScale(VBase4(1, 1, 1, alpha), lerpTime, keepDefault=1), Func(self.nametag3d.hide))
 
     def __undoCheesyEffect(self, effect, lerpTime):
         if effect == ToontownGlobals.CEBigHead:
@@ -2659,7 +2648,18 @@ class Toon(Avatar.Avatar, ToonHead):
         elif effect == ToontownGlobals.CEVirtual:
             return self.__doUnVirtual()
         elif effect == ToontownGlobals.CEGhost:
-            return Sequence(Func(self.nametag3d.show), self.__doToonGhostColorScale(None, lerpTime, keepDefault=1))
+            if self.lastGhostMode == OTPGlobals.GhostEffectName2Id['none']:
+                return Sequence(Func(self.nametag3d.show), self.__doToonGhostColorScale(None, 0, keepDefault=1))
+            elif self.lastGhostMode == OTPGlobals.GhostEffectName2Id['poof']:
+                dustCloud = DustCloud.DustCloud(fBillboard=0, wantSound=1)
+                dustCloud.setBillboardAxis(2.0)
+                dustCloud.setZ(3)
+                dustCloud.setScale(0.4)
+                dustCloud.createTrack()
+                dustCloudTrack = Sequence(Func(dustCloud.reparentTo, self), dustCloud.track, Func(dustCloud.destroy))
+                return Sequence(Func(self.nametag3d.show), Parallel(dustCloudTrack, self.__doToonGhostColorScale(None, 0, keepDefault=1)))
+            else:
+                return Sequence(Func(self.nametag3d.show), self.__doToonGhostColorScale(None, lerpTime, keepDefault=1))
         return Sequence()
 
     def putOnSuit(self, suitType, setDisplayName = True, rental = False):
@@ -3137,7 +3137,6 @@ class Toon(Avatar.Avatar, ToonHead):
         if self.partyHat:
             self.partyHat.setZ(position)
 
-loadModels()
 compileGlobalAnimList()
 
 @magicWord(category=CATEGORY_LEADER, types=[int])

@@ -4703,15 +4703,18 @@ def shoes(shoesIndex, shoesTex=0):
     target.b_setShoes(shoesIndex, shoesTex, 0)
     return "Set %s's shoes to %d, %d!" % (target.getName(), shoesIndex, shoesTex)
 
-@magicWord(category=CATEGORY_STAFF)
-def ghost():
+@magicWord(category=CATEGORY_STAFF, types=[str])
+def ghost(effectName='none'):
     """
     Toggles invisibility on the invoker. Anyone with an access level below the
     invoker will not be able to see him or her.
     """
     invoker = spellbook.getInvoker()
+    effectName = effectName.lower()
+    if effectName not in OTPGlobals.GhostEffectName2Id:
+        return 'Invalid effect name: ' + effectName
     if invoker.ghostMode == 0:
-        invoker.b_setGhostMode(2)
+        invoker.b_setGhostMode(OTPGlobals.GhostEffectName2Id[effectName])
         return 'Ghost mode is enabled.'
     else:
         invoker.b_setGhostMode(0)
