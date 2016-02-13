@@ -239,10 +239,8 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             self.music.stop()
             self.music = None
         if newDNA != None:
-            self.newPotAv = PotentialAvatar.PotentialAvatar('deleteMe', ['',
-             '',
-             '',
-             ''], newDNA.makeNetString(), index, 1)
+            self.newPotAv = PotentialAvatar.PotentialAvatar('deleteMe', ['', '', '', ''], 
+            newDNA.makeNetString(), index, 1)
             avList.append(self.newPotAv)
         base.transitions.noFade()
         self.avCreate = MakeAToon.MakeAToon(self.loginFSM, avList, 'makeAToonComplete', index)
