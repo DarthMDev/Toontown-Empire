@@ -35,6 +35,10 @@ uberdogs:
       id: 4477
       anonymous: false
 
+    - class: GlobalGroupTracker
+      id: 4479
+      anonymous: false
+
 roles:
     - type: clientagent
       bind: 0.0.0.0:7199

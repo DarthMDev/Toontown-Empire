@@ -50,7 +50,8 @@ class ShtikerBook(DirectFrame, StateData.StateData):
          TTLocalizer.GolfPageTitle,
          TTLocalizer.PhotoPageTitle,
          TTLocalizer.EventsPageName,
-         TTLocalizer.NewsPageName]
+         TTLocalizer.NewsPageName,
+         TTLocalizer.GroupTrackerPageTitle]
     
     def createPageTabFrame(self, x):
         frame = DirectFrame(parent=self, relief=None, pos=(x, 0, 0.66), scale=1.25)
@@ -174,19 +175,23 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         if pageName not in self.pageOrder:
             self.notify.error('Trying to add page %s in the ShtickerBook. Page not listed in the order.' % pageName)
             return
+        print 'addPage %s' % pageName
         pageIndex = 0
         if len(self.pages):
             newIndex = len(self.pages)
             prevIndex = newIndex - 1
             if self.pages[prevIndex].pageName == TTLocalizer.NewsPageName:
+                print 'news'
                 self.pages.insert(prevIndex, page)
                 pageIndex = prevIndex
                 if self.currPageIndex >= pageIndex:
                     self.currPageIndex += 1
             else:
+                print 'else 1'
                 self.pages.append(page)
                 pageIndex = len(self.pages) - 1
         else:
+            print 'else 2'
             self.pages.append(page)
             pageIndex = len(self.pages) - 1
         page.setBook(self)
@@ -288,6 +293,10 @@ class ShtikerBook(DirectFrame, StateData.StateData):
             iconModels.detachNode()
             buttonPressedCommand = self.goToNewsPage
             extraArgs = [page]
+        elif pageName == TTLocalizer.GroupTrackerPageTitle:
+            iconModels = loader.loadModel('phase_3.5/models/gui/sos_textures')
+            iconGeom = iconModels.find('**/task')
+            iconModels.detachNode()
         if pageName == TTLocalizer.OptionsPageTitle:
             pageName = TTLocalizer.OptionsTabTitle
         rightSide = pageIndex < 16
