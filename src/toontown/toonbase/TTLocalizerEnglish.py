@@ -8541,6 +8541,8 @@ def getBuffPosterString(buffId):
 
 GroupTrackerPageTitle = 'Group Tracker'
 GroupTrackerListTitle = 'Groups'
+GroupTrackerEmpty = 'There are no boarding groups available'
+GroupTrackerLoading = 'Loading...'
 GroupTrackerCategoryToText = {
  0: 'Sellbot Factory Front',
  1: 'Sellbot Factory Side',

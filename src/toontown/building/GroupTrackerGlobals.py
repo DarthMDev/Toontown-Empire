@@ -7,6 +7,7 @@ LEADER_NAME = 0
 SHARD_NAME = 1
 CATEGORY = 2
 CURR_AVS = 3
+MEMBER_NAMES = 4
 
 # Category ID's
 

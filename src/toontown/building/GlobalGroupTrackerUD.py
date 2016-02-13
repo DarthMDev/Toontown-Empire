@@ -6,20 +6,29 @@ class GlobalGroupTrackerUD(GlobalOtpObjectUD):
 
     def announceGenerate(self):
         GlobalOtpObjectUD.announceGenerate(self)
-        self.leader2Group = {1000001: ['Flippy', 'Nuttyboro', 0, 3]}
+
+        # Maps a leaderId to the corresponding BoardingGroup.
+        self.leader2Group = {}
+
+        # Listeners recieve updates to their GroupTracker page.
         self.listeners = []
 
     def addGroup(self, leaderId, groupStruct):
         self.leader2Group[leaderId] = list(groupStruct)
 
-    def updateGroup(self, leaderId, category, currAvs):
+    def updateGroup(self, leaderId, category, currAvs, memberNames):
+        if leaderId not in self.leader2Group:
+            return
         self.leader2Group[leaderId][CATEGORY] = category
         self.leader2Group[leaderId][CURR_AVS] = currAvs
+        self.leader2Group[leaderId][MEMBER_NAMES] = memberNames
 
         for avId in self.listeners:
-            self.sendToAvatar(avId, 'updateGroup', [leaderId, category, currAvs])
+            self.sendToAvatar(avId, 'updateGroup', [leaderId, category, currAvs, memberNames])
 
     def removeGroup(self, leaderId):
+        if leaderId not in self.leader2Group:
+            return
         del self.leader2Group[leaderId]
 
     def requestGroups(self, avId):

@@ -532,8 +532,8 @@ class DistributedToonUD(DistributedObjectUD):
     def setStats(self, todo0):
         pass
 
-    def requestGroupsResponse(self, groups):
+    def requestGroupsResponse(self, leaderIds, groups):
         pass
 
-    def updateGroup(self, leaderId, category, currAvs):
+    def updateGroup(self, leaderId, category, currAvs, memberNames):
         pass

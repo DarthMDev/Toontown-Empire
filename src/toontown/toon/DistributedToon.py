@@ -2404,12 +2404,11 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                     ToontownGlobals.ToonReverseSpeed * ToontownGlobals.BMovementSpeedMultiplier,
                     ToontownGlobals.ToonRotateSpeed * ToontownGlobals.BMovementSpeedMultiplier)
 
-    def requestGroupsResponse(self, groups):
-        base.cr.globalGroupTracker.setGroupInfo(groups)
-        messenger.send('GroupTrackerResponse')
+    def requestGroupsResponse(self, leaderIds, groups):
+        base.cr.globalGroupTracker.setGroupInfo(leaderIds, groups)
 
-    def updateGroup(self, leaderId, category, currAvs):
-        base.cr.globalGroupTracker.updateGroup(leaderId, category, currAvs)
+    def updateGroup(self, leaderId, category, currAvs, memberNames):
+        base.cr.globalGroupTracker.updateGroup(leaderId, category, currAvs, memberNames)
 
     def setStats(self, stats):
         self.stats = stats

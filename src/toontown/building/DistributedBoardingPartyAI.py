@@ -402,6 +402,7 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
                             if leader:
                                 elevator.partyAvatarBoard(leader)
                                 wantDisableGoButton = True
+                                self.removeBroadcast(leaderId)
                             for avId in group[0]:
                                 if not avId == leaderId:
                                     avatar = simbase.air.doId2do.get(avId)
@@ -596,23 +597,42 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
             av = self.air.doId2do.get(leaderId)
             if av:
                 leaderName = av.name
-                currAvs = len(self.groupListDict[leaderId]) - 1
+                memberNames = []
+
+                for avId in self.groupListDict[leaderId][0]:
+                    if avId == leaderId:
+                        continue
+                    member = self.air.doId2do.get(avId)
+                    if member:
+                        memberNames.append(member.getName())
+
+                currAvs = len(memberNames)
                 shardName = self.air.distributedDistrict.name
                 category = ZONE_TO_CATEGORY_LIST[self.zoneId][0]
-                self.air.globalGroupTracker.addGroup(leaderId, leaderName, shardName, category, currAvs)
+        if currAvs == 0:
+            self.removeBroadcast(leaderId)
 
-    def updateBroadcast(self, leaderId, currAvs=None, category=None):
-        if not currAvs:
+        self.air.globalGroupTracker.updateGroup(leaderId, category, currAvs, memberNames)
+
+    def updateBroadcast(self, leaderId, currAvs=None, category=None, memberNames=None):
+        if not currAvs or not memberNames:
             group = self.groupListDict.get(leaderId)
+            memberNames = []
             if not group:
                 currAvs = 0
             else:
-                currAvs = len(group[0]) - 1
+                for avId in group[0]:
+                    av = self.air.doId2do.get(avId)
+                    if av:
+                        memberNames.append(av.getName())
+
+                currAvs = len(memberNames)
+
 
         if not category:
             category = ZONE_TO_CATEGORY_LIST[self.zoneId][0]
 
-        self.air.globalGroupTracker.updateGroup(leaderId, category, currAvs)
+        self.air.globalGroupTracker.updateGroup(leaderId, category, currAvs, memberNames)
 
     def removeBroadcast(self, leaderId):
         self.air.globalGroupTracker.removeGroup(leaderId)

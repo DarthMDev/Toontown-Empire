@@ -272,7 +272,6 @@ class GroupTrackerPage(ShtikerPage.ShtikerPage):
 
     def unload(self):
         self.scrollList.destroy()
-        self.groupInfo.destroy()
         self.groupInfoDistrict.destroy()
         self.playerList.destroy()
         self.groupInfoTitle.destroy()
@@ -281,7 +280,6 @@ class GroupTrackerPage(ShtikerPage.ShtikerPage):
             widget.destroy()
         self.playerWidgets = []
         del self.scrollList
-        del self.groupInfo
         del self.groupInfoDistrict
         del self.playerList
         del self.groupInfoTitle
