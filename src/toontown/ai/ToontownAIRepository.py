@@ -139,6 +139,8 @@ class ToontownAIRepository(ToontownInternalRepository):
             self.partyManager.generateWithRequired(2)
             self.globalPartyMgr = self.generateGlobalObject(
                 OTP_DO_ID_GLOBAL_PARTY_MANAGER, 'GlobalPartyManager')
+        self.globalGroupTracker =self.generateGlobalObject(
+            OTP_DO_ID_GLOBAL_GROUP_TRACKER, 'GlobalGroupTracker')
         #self.lobbyManager = DistributedLobbyManagerAI(self)
         #self.lobbyManager.generateWithRequired(2)
         #self.globalLobbyMgr = self.generateGlobalObject(

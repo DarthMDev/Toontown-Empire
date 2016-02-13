@@ -297,6 +297,7 @@ from toontown.building import DistributedCJElevator/AI
 from toontown.building import DistributedBBElevator/AI
 from toontown.building import DistributedBoardingParty/AI
 from toontown.building import DistributedTutorialInterior/AI
+from toontown.building import GlobalGroupTracker/AI/UD
 from toontown.estate import DistributedMailbox/AI
 from toontown.estate import DistributedFurnitureManager/AI
 from toontown.estate import DistributedFurnitureItem/AI
@@ -561,6 +562,13 @@ struct datetime {
   uint8 seconds;
 };
 
+struct BoardingGroup {
+    string leaderName;
+    string shardName;
+    uint8 category;
+    uint8 currAvs;
+};
+
 dclass ToontownDistrict : DistributedDistrict {
   setParentingRules(string, string) broadcast ram;
 };
@@ -767,6 +775,8 @@ dclass DistributedToon : DistributedPlayer {
   wipeStats() airecv ownsend;
   takeMoney(int16) airecv ownsend;
   attemptSubtractNPCFriend(uint32 npcId) ownsend airecv;
+  requestGroupsResponse(uint32 [], BoardingGroup []) ownrecv ram;
+  updateGroup(uint32 avId, uint8 category, uint8 currAvs) ownrecv ram;
 };
 
 dclass DistributedPartyGate : DistributedObject {
@@ -3253,4 +3263,15 @@ dclass TTEFriendsManager : DistributedObjectGlobal {
 };
 
 dclass ARGManager : DistributedObjectGlobal {
+};
+
+
+
+dclass GlobalGroupTracker : DistributedObjectGlobal {
+    addGroup(uint32 leaderId, BoardingGroup group);
+    updateGroup(uint32 leaderId, uint8 category, uint8 currAvs);
+    removeGroup(uint32 leaderId);
+    requestGroups(uint32 requesterId) airecv clsend;
+    doneRequesting(uint32 requesterId) airecv clsend;
+    test() airecv;
 };

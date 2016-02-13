@@ -2403,7 +2403,14 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                     ToontownGlobals.ToonJumpForce,
                     ToontownGlobals.ToonReverseSpeed * ToontownGlobals.BMovementSpeedMultiplier,
                     ToontownGlobals.ToonRotateSpeed * ToontownGlobals.BMovementSpeedMultiplier)
-    
+
+    def requestGroupsResponse(self, groups):
+        base.cr.globalGroupTracker.setGroupInfo(groups)
+        messenger.send('GroupTrackerResponse')
+
+    def updateGroup(self, leaderId, category, currAvs):
+        base.cr.globalGroupTracker.updateGroup(leaderId, category, currAvs)
+
     def setStats(self, stats):
         self.stats = stats
         if self == base.localAvatar:

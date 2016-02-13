@@ -9,6 +9,7 @@ from direct.fsm import State
 from direct.task import Task
 from direct.directnotify import DirectNotifyGlobal
 from toontown.building import BoardingPartyBase
+from toontown.building.GroupTrackerGlobals import ZONE_TO_CATEGORY_LIST
 GROUPMEMBER = 0
 GROUPINVITE = 1
 
@@ -222,6 +223,8 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
             self.avIdDict[inviterId] = inviterId
             self.avIdDict[inviteeId] = inviterId
             self.groupListDict[leaderId] = [[leaderId], [inviteeId], []]
+            self.updateBroadcast(leaderId, len(group[0]))
+            self.broadcastGroup(leaderId)
             self.addWacthAvStatus(leaderId)
             self.sendUpdateToAvatarId(inviteeId, 'postInvite', [leaderId, inviterId, False])
 
@@ -550,12 +553,13 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
             for dMemberId in dgroup[0]:
                 if dMemberId in self.avIdDict:
                     self.avIdDict.pop(dMemberId)
-
+            self.removeBroadcast(leaderId)
             self.notify.debug('postGroupDissolve')
             dgroup[0].insert(0, memberId)
             self.sendUpdate('postGroupDissolve', [memberId, leaderId, dgroup[0], kick])
         else:
             self.groupListDict[leaderId] = group
+            self.updateBroadcast(leaderId, len(group[0]))
             if post:
                 self.notify.debug('Calling postGroupInfo from removeFromGroup')
                 self.sendUpdate('postGroupInfo', [leaderId, group[0], group[1], group[2]])
@@ -575,6 +579,7 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
         for avId in memberList:
             if avId != leaderId:
                 self.sendUpdateToAvatarId(avId, 'postDestinationInfo', [offset])
+        self.updateBroadcast(leaderId, category=ZONE_TO_CATEGORY_LIST[self.zoneId][offset])
 
     def __isInElevator(self, avId):
         inElevator = False
@@ -585,3 +590,29 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
                     inElevator = True
 
         return inElevator
+
+    def broadcastGroup(self, leaderId):
+        if leaderId in self.groupListDict:
+            av = self.air.doId2do.get(leaderId)
+            if av:
+                leaderName = av.name
+                currAvs = len(self.groupListDict[leaderId]) - 1
+                shardName = self.air.distributedDistrict.name
+                category = ZONE_TO_CATEGORY_LIST[self.zoneId][0]
+                self.air.globalGroupTracker.addGroup(leaderId, leaderName, shardName, category, currAvs)
+
+    def updateBroadcast(self, leaderId, currAvs=None, category=None):
+        if not currAvs:
+            group = self.groupListDict.get(leaderId)
+            if not group:
+                currAvs = 0
+            else:
+                currAvs = len(group[0]) - 1
+
+        if not category:
+            category = ZONE_TO_CATEGORY_LIST[self.zoneId][0]
+
+        self.air.globalGroupTracker.updateGroup(leaderId, category, currAvs)
+
+    def removeBroadcast(self, leaderId):
+        self.air.globalGroupTracker.removeGroup(leaderId)
