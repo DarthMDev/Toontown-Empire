@@ -2,10 +2,67 @@ from toontown.shtiker import ShtikerPage
 from panda3d.core import TextNode, Vec4
 from direct.gui.DirectGui import DirectLabel, DirectFrame, DirectButton, DirectScrolledList, DGG
 from toontown.toonbase import TTLocalizer
+from toontown.building import GroupTrackerGlobals
 
 SUIT_ICON_COLORS = (Vec4(0.863, 0.776, 0.769, 1.0), Vec4(0.749, 0.776, 0.824, 1.0),
                     Vec4(0.749, 0.769, 0.749, 1.0), Vec4(0.843, 0.745, 0.745, 1.0))
 
+                    
+class GroupTrackerGroup(DirectFrame):
+    def __init__(self, parent, leaderName, shardName, category, currentAvatars, **kw):
+        self.leaderName = leaderName
+        self.shardName = shardName
+        self.category = category
+        self.currentAvatars = currentAvatars
+
+        if parent is None:
+            parent = aspect2d
+
+        text = TTLocalizer.GroupTrackerCategoryToText[self.category]
+        
+        optiondefs = (
+            ('text', text, None),
+            ('text_fg', (0.0, 0.0, 0.0, 1.0), None),
+            ('text_align', TextNode.ALeft, None),
+            ('text_pos', (0.0, 0.0, 0.0), None),
+            ('relief', None, None),
+            ('text_scale', 0.05, None)
+        )
+
+        self.defineoptions(kw, optiondefs)
+        DirectButton.__init__(self, parent)
+        self.initialiseoptions(GroupTrackerPlayer)
+        
+        self.playerCount = DirectLabel(parent=self, pos=(0.26, 0, 0.02), relief=None, text='', text_align=TextNode.ARight, text_scale=0.05, text_fg=(0, 0, 0, 1))
+
+        self.updatePlayerCount()
+        
+    def destroy(self):
+        if self.leaderImage:
+            self.leaderImage.destroy()
+            del self.leaderImage
+        
+        DirectButton.destroy(self)
+    
+    def updatePlayerCount(self):
+        maxPlayers = GroupTrackerGlobals.CATEGORY_TO_MAX_PLAYERS[self.category]
+        self.playerCount['text'] = str(len(self.currentAvatars)) + '/' + str(maxPlayers)
+        
+    def getLeader(self):
+        return self.leaderName
+    
+    def getDistrict(self):
+        return self.shardName
+    
+    def getTitle(self):
+        return TTLocalizer.GroupTrackerCategoryToText[self.category]
+    
+    def getCurrentPlayers(self):
+        return len(self.currentAvatars)
+    
+    def getMaxPlayers(self):
+        return GroupTrackerGlobals.CATEGORY_TO_MAX_PLAYERS[self.category]
+        
 class GroupTrackerPlayer(DirectButton):
     def __init__(self, parent, avId, name, isLeader, **kw):
         self.avId = avId
@@ -64,10 +121,9 @@ class GroupTrackerPage(ShtikerPage.ShtikerPage):
 
     def __init__(self):
         ShtikerPage.ShtikerPage.__init__(self)
-        self.groups = []
-        self.groupinfo = {}
-        self.players = []
+        self.groupWidgets = []
         self.playerWidgets = []
+        self.images = []
 
     def load(self):
         self.listXorigin = -0.02
@@ -112,27 +168,17 @@ class GroupTrackerPage(ShtikerPage.ShtikerPage):
                                             itemFrame_borderWidth=(0.01, 0.01), 
                                             numItemsVisible=15, 
                                             forceHeight=0.065, 
-                                            items=self.groups
+                                            items=self.groupWidgets
                                             )
                                             
         self.scrollTitle = DirectFrame(parent=self.scrollList, 
-                                       text='Groups', 
+                                       text=TTLocalizer.GroupTrackerListTitle, 
                                        text_scale=0.06, 
                                        text_align=TextNode.ACenter, 
                                        relief=None,
                                        pos=(self.buttonXstart, 0, self.itemFrameZorigin + 0.127)
                                        )
         
-        districtText = TTLocalizer.BoardingGroupDistrictInformation % {
-             'district': 'Gravity Falls'}
-        
-        self.players.append('Craig')
-        self.players.append('Craigy')
-        self.players.append('Malverde')
-        self.players.append('Maverdeee')
-        self.players.append('Bob')
-             
-        title = 'Cashbot Bullion Mint' #The text here will be the current selected place to teleport from boarding groups ex. Side Entrance, Bullion Mint
         self.playerList = DirectScrolledList(parent=self, 
                                             relief=None, 
                                             pos=(0.45, 0, 0.1), 
@@ -170,17 +216,17 @@ class GroupTrackerPage(ShtikerPage.ShtikerPage):
                                             )
                                             
         self.playerListTitle = DirectFrame(parent=self.playerList, 
-                                       text='Players [2/4]', 
+                                       text='', 
                                        text_scale=0.05, 
                                        text_align=TextNode.ACenter, 
                                        relief=None,
                                        pos=(0, 0, 0.08)
                                        )
-        self.groupInfoTitle = DirectLabel(parent=self, text=title, 
+        self.groupInfoTitle = DirectLabel(parent=self, text='', 
                                           text_scale=0.080, text_align=TextNode.ACenter,
                                           text_wordwrap=15, relief=None, pos=(0.45, 0, 0.5))
         self.groupInfoDistrict = DirectLabel(parent=self,
-                                     text=districtText,
+                                     text='',
                                      text_scale=0.050,
                                      text_align=TextNode.ACenter, 
                                      text_wordwrap=15, 
@@ -188,30 +234,30 @@ class GroupTrackerPage(ShtikerPage.ShtikerPage):
                                      pos=(0.45, 0, 0.4)
                                      )
 
-        # Loading group icons
-        suitIcons = loader.loadModel('phase_3/models/gui/cog_icons')
-        # All suit icons
-        self.bossbotIcon = suitIcons.find('**/CorpIcon')
-        self.bossbotIcon.setColor(SUIT_ICON_COLORS[0])
-        
-        self.lawbotIcon = suitIcons.find('**/LegalIcon')
-        self.lawbotIcon.setColor(SUIT_ICON_COLORS[1])
-        
-        self.cashbotIcon = suitIcons.find('**/MoneyIcon')
-        self.cashbotIcon.setColor(SUIT_ICON_COLORS[2])
-        
-        self.sellbotIcon = suitIcons.find('**/SalesIcon')
-        self.sellbotIcon.setColor(SUIT_ICON_COLORS[3])
-
-        boardingGroupIcons = loader.loadModel('phase_9/models/gui/tt_m_gui_brd_status')
-        self.leaderButtonImage = boardingGroupIcons.find('**/tt_t_gui_brd_statusLeader')
-
+                                     
         # Group Image:
-        self.groupIcon = DirectButton(parent=self, relief=None, state=DGG.DISABLED, image=(self.cashbotIcon, self.cashbotIcon, self.cashbotIcon), image_scale=(0.4, 1, 0.4), image2_color=Vec4(1.0, 1.0, 1.0, 0.75), pos=(0.45, 10, -0.5), command=self.doNothing)
+        self.groupIcon = DirectButton(parent=self, relief=None, state=DGG.DISABLED, image=None, image_scale=(0.4, 1, 0.4), image_color=Vec4(1.0, 1.0, 1.0, 0.75), pos=(0.45, 10, -0.5), command=self.doNothing)
         
-        self.updatePlayerList()
+        # Loading possible group icons
+        suitIcons = loader.loadModel('phase_3/models/gui/cog_icons')     
+        bossbotIcon = suitIcons.find('**/CorpIcon')
+        bossbotIcon.setColor(SUIT_ICON_COLORS[0])
+        self.images.append(bossbotIcon)
         
-        boardingGroupIcons.removeNode()
+        lawbotIcon = suitIcons.find('**/LegalIcon')
+        lawbotIcon.setColor(SUIT_ICON_COLORS[1])
+        self.images.append(lawbotIcon)
+
+        cashbotIcon = suitIcons.find('**/MoneyIcon')
+        cashbotIcon.setColor(SUIT_ICON_COLORS[2])
+        self.images.append(cashbotIcon)
+
+        sellbotIcon = suitIcons.find('**/SalesIcon')
+        sellbotIcon.setColor(SUIT_ICON_COLORS[3])
+        self.images.append(sellbotIcon)
+        
+        # Clean up
+        self.clearGroupInfo()
         suitIcons.removeNode()
         self.gui.removeNode()
         self.accept('GroupTrackerResponse', self.updatePage)
@@ -239,39 +285,99 @@ class GroupTrackerPage(ShtikerPage.ShtikerPage):
         base.cr.globalGroupTracker.requestGroups()
 
     def updatePage(self):
+        print('Updating Groups')
         groups = base.cr.globalGroupTracker.getGroupInfo()
-        print(groups)
+        self.setGroups(groups)
 
     def exit(self):
         ShtikerPage.ShtikerPage.exit(self)
         base.cr.globalGroupTracker.doneRequesting()
 
-    def doNothing(self):
-        pass
+        
+    def updateGroupInfo(self, groupWidget):
+        ''' Updates the Right Page of the Group Tracker Page with new Info '''
+        
+        # Update the Player List
+        self.setPlayers(groupWidget.getCurrentPlayers)
+        self.playerList.show()
+        
+        # Update the Player List Title
+        self.playerListTitle['text'] = ('Players ' + str(groupWidget.getCurrentPlayers) + '/' + str(groupWidget.getMaxPlayers) + ':')
+        self.playerListTitle.show()
+        
+        # Update the District
+        self.groupInfoDistrict['text'] = TTLocalizer.BoardingGroupDistrictInformation % { 'district' : groupWidget.getDistrict() }
+        self.groupInfoDistrict.show()
+        
+        # Update the Title
+        self.groupInfoTitle['text'] = groupWidget.getTitle()
+        self.groupInfoTitle.show()
+        
+        # Update the Image
+        self.groupIcon['image'] = self.images[GroupTrackerGlobals.CATEGORY_TO_IMAGE_ID[groupWidget.getCategory]]
+        self.groupIcon.show()
+    
+    def clearGroupInfo(self):
+        self.playerList.hide()
+        self.playerListTitle.hide()
+        self.groupInfoTitle.hide()
+        self.groupIcon.hide()
     
     def setPlayers(self, players):
-        self.players = players
-        self.updatePlayerList()
-    
-    def updatePlayerList(self):
-        if self.playerList is None:
-            return
-            
-        # Clear the List
-        for item in self.playerList['items']:
-            self.playerList.removeItem(item, refresh=False)
         
-        # Clear the widgets
+        # Clear the Widgets that were held in the listings
+        for playerWidget in self.playerWidgets:
+            playerWidget.destroy()
         self.playerWidgets = []
         
         # Make a player widget for each player
-        for player in self.players:
-            self.playerWidgets.append(GroupTrackerPlayer(parent=self, avId=1, name=player, isLeader=False))
+        for player in players:
+            self.playerWidgets.append(GroupTrackerPlayer(parent=self, avId=1, name=str(player), isLeader=False, text_bg=((0,0,0,0),(0,1,0,1),(0,1,0,1),(0,0,0,0))))
+            
+        self.updatePlayerList()
+    
+     
+    def setGroups(self, groups):
+        ''' Calls updateGroupList '''
+        
+        # Clear our Group Widgets
+        for group in self.groupWidgets:
+            group.destroy()
+        self.groupWidgets = []
+        
+        # Create a new group widget for each group
+        for group in groups:
+            groupWidget = GroupTrackerGroup(parent=self, leaderName=group[GroupTrackerGlobals.LEADER_NAME], shardName=group[GroupTrackerGlobals.SHARD_NAME], category=group[GroupTrackerGlobals.CATEGORY], currentAvatars=group[GroupTrackerGlobals.CURR_AVS], text_bg=((0,0,0,0),(0,1,0,1),(0,1,0,1),(0,0,0,0)))
+            groupWidget.bind(DGG.ENTER, self.updateGroupInfo, extraArgs=[groupWidget])
+            groupWidget.bind(DGG.EXIT, self.clearGroupInfo)
+            self.groupWidgets.append(groupWidget)
+                                              
+        self.updateGroupList()
+        
+    def updateGroupList(self):
+        if len(self.groupWidgets) == 0:
+            return
+        
+        # Clear the Group Listing
+        for item in self.scrollList['items']:
+            self.scrollList.removeItem(item, refresh=False)
+        
+        # Re-populate the Group Listing
+        for groupWidget in self.groupWidgets:
+            self.scrollList.addItem(groupWidget)
+        
+    def updatePlayerList(self):
+        if self.playerList is None or len(self.playerWidgets) == 0:
+            return
+            
+        # Clear the Player Listing
+        for item in self.playerList['items']:
+            self.playerList.removeItem(item, refresh=False)
+        
         
         # Re-Populate the List
         for player in self.playerWidgets:
             self.playerList.addItem(player)
-        
-        # Update the Player List Title
-        self.playerListTitle['text'] = ('Players ' + str(len(self.players)) + '/' + '8' + ':')
             
+    def doNothing(self):
+        pass
