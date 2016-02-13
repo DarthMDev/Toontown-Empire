@@ -134,6 +134,7 @@ CRBootedReasons = {100: 'You have been disconnected because someone else just lo
  105: 'Toontown Empire is now temporarily closed for maintenance. Everyone who was playing has been disconnected from the game.\n\nFor more information, please visit the Toontown Empire website.',
  124: 'Your installed files are out of date! Use the official launcher to download the newest version, or contact Toontown Empire Support if the problem persists.',
  153: 'The district you were playing on has been reset.  Everyone who was playing on that district has been disconnected.  However, you should be able to connect again and go right back into the game.',
+ 154: 'Toontown Empire is now temporarily closed for maintenance. Everyone who was playing has been disconnected from the game.\n\nFor more information, please visit the Toontown Empire website.\n\nWe are sorry and hope to be back real soon!',
  166: 'You were disconnected to prevent a district reset.'}
 CRBootedReasonUnknownCode = 'An unexpected problem has occurred (error code %s).  Your connection has been lost, but you should be able to connect again and go right back into the game.'
 CRTryConnectAgain = '\n\nTry to connect again?'
