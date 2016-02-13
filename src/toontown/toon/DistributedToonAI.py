@@ -163,6 +163,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.partyReplyInfoBases = []
         self.teleportOverride = 0
         self.buffs = []
+        self.wantGroupTracker = True
         self.redeemedCodes = []
         self.ignored = []
         self.reported = []
@@ -4304,6 +4305,9 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         if self.name != newName:
             self.b_setName(newName)
         return
+   
+    def setWantGroupTracker(self, wantGroupTracker):
+        self.wantGroupTracker = wantGroupTracker
 
 @magicWord(category=CATEGORY_STAFF, types=[str, int, int])
 def cheesyEffect(value, hood=0, expire=0):
