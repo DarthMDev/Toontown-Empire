@@ -6,11 +6,12 @@ class GlobalGroupTrackerAI(DistributedObjectGlobalAI):
     def announceGenerate(self):
         DistributedObjectGlobalAI.announceGenerate(self)
 
-    def addGroup(self, leaderId, leaderName, shardName, category, currAvs, memberNames):
-        self.sendUpdate('addGroup', [leaderId, [leaderName, shardName, category, currAvs, memberNames]])
+    def addGroupAI(self, leaderId, leaderName, shardName, category, memberIds, memberNames, show):
+        self.sendUpdate('addGroup', [leaderId, [leaderName, shardName, category, memberIds, memberNames, show]])
 
-    def updateGroup(self, leaderId, category, currAvs, memberNames):
-        self.sendUpdate('updateGroup', [leaderId, category, currAvs, memberNames])
-
-    def removeGroup(self, leaderId):
-        self.sendUpdate('removeGroup', [leaderId])
+    def updateGroupAI(self, leaderId, category, memberIds, memberNames, show):
+        self.sendUpdate('updateGroup', [leaderId, category, memberIds, memberNames, show])
+    
+    def showMe(self, show):
+        avId = self.air.getAvatarIdFromSender()
+        self.sendUpdate('showGroup', [avId, show])

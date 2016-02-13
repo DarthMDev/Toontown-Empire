@@ -2,6 +2,7 @@ from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
 from GroupTrackerGlobals import *
 from itertools import izip
 
+
 class GlobalGroupTracker(DistributedObjectGlobal):
     def announceGenerate(self):
         DistributedObjectGlobal.announceGenerate(self)
@@ -20,8 +21,15 @@ class GlobalGroupTracker(DistributedObjectGlobal):
     def getGroupInfo(self):
         return self.leader2Group.values()
 
-    def updateGroup(self, leaderId, category, currAvs, memberNames):
+    def updateGroup(self, leaderId, category, memberIds, memberNames, show):
+        if leaderId not in self.leader2Group:
+            return
         self.leader2Group[leaderId][CATEGORY] = category
-        self.leader2Group[leaderId][CURR_AVS] = currAvs
+        self.leader2Group[leaderId][MEMBER_IDS] = memberIds
         self.leader2Group[leaderId][MEMBER_NAMES] = memberNames
+        self.leader2Group[leaderId][SHOW] = show
         messenger.send('GroupTrackerResponse')
+        
+    def showMe(self, show):
+        self.sendUpdate('showMe', [show])
+    
