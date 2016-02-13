@@ -593,6 +593,8 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
         return inElevator
 
     def broadcastGroup(self, leaderId):
+        if not simbase.config.GetBool('want-grouptracker', False):
+            return
         if leaderId in self.groupListDict:
             av = self.air.doId2do.get(leaderId)
             if av:
@@ -615,6 +617,8 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
         self.air.globalGroupTracker.updateGroup(leaderId, category, currAvs, memberNames)
 
     def updateBroadcast(self, leaderId, currAvs=None, category=None, memberNames=None):
+        if not simbase.config.GetBool('want-grouptracker', False):
+            return
         if not currAvs or not memberNames:
             group = self.groupListDict.get(leaderId)
             memberNames = []
@@ -635,4 +639,6 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
         self.air.globalGroupTracker.updateGroup(leaderId, category, currAvs, memberNames)
 
     def removeBroadcast(self, leaderId):
+        if not simbase.config.GetBool('want-grouptracker', False):
+            return
         self.air.globalGroupTracker.removeGroup(leaderId)

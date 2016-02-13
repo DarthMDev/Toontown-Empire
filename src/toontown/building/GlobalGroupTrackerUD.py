@@ -15,6 +15,9 @@ class GlobalGroupTrackerUD(GlobalOtpObjectUD):
 
     def addGroup(self, leaderId, groupStruct):
         self.leader2Group[leaderId] = list(groupStruct)
+        
+        for avId in self.listeners:
+            self.requestGroupsResponse(avId)
 
     def updateGroup(self, leaderId, category, currAvs, memberNames):
         if leaderId not in self.leader2Group:
@@ -30,6 +33,9 @@ class GlobalGroupTrackerUD(GlobalOtpObjectUD):
         if leaderId not in self.leader2Group:
             return
         del self.leader2Group[leaderId]
+        
+        for avId in self.listeners:
+            self.requestGroupsResponse(avId)
 
     def requestGroups(self, avId):
         self.requestGroupsResponse(avId)

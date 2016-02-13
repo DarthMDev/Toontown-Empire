@@ -369,9 +369,10 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.addEventsPage()
         if WantNewsPage:
             self.addNewsPage()  
-        self.groupTracker = GroupTrackerPage.GroupTrackerPage()
-        self.groupTracker.load()
-        self.book.addPage(self.groupTracker, pageName=TTLocalizer.GroupTrackerPageTitle)
+        if base.wantGroupTracker:
+            self.groupTracker = GroupTrackerPage.GroupTrackerPage()
+            self.groupTracker.load()
+            self.book.addPage(self.groupTracker, pageName=TTLocalizer.GroupTrackerPageTitle)
         self.book.setPage(self.mapPage, enterPage=False)
         self.laffMeter = LaffMeter.LaffMeter(self.style, self.hp, self.maxHp)
         self.laffMeter.setAvatar(self)

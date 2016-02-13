@@ -38,9 +38,6 @@ class GroupTrackerGroup(DirectButton):
         self.updatePlayerCount()
         
     def destroy(self):
-        if self.leaderImage:
-            self.leaderImage.destroy()
-            del self.leaderImage
         if self.playerCount:
             self.playerCount.destroy()
             del self.playerCount
@@ -272,16 +269,16 @@ class GroupTrackerPage(ShtikerPage.ShtikerPage):
 
     def unload(self):
         self.scrollList.destroy()
-        self.groupInfo.destroy()
         self.groupInfoDistrict.destroy()
         self.playerList.destroy()
         self.groupInfoTitle.destroy()
         self.groupIcon.destroy()
         for widget in self.playerWidgets:
             widget.destroy()
+        for widget in self.groupWidgets:
+            widget.destroy()
         self.playerWidgets = []
         del self.scrollList
-        del self.groupInfo
         del self.groupInfoDistrict
         del self.playerList
         del self.groupInfoTitle
