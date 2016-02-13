@@ -777,7 +777,7 @@ dclass DistributedToon : DistributedPlayer {
   takeMoney(int16) airecv ownsend;
   attemptSubtractNPCFriend(uint32 npcId) ownsend airecv;
   requestGroupsResponse(uint32 [], BoardingGroup []) ownrecv ram;
-  updateGroup(uint32 avId, uint8 category, uint8 currAvs, string []) ownrecv ram;
+  updateGroup(uint32 avId, uint8 category, int8 currAvs, string []) ownrecv ram;
 };
 
 dclass DistributedPartyGate : DistributedObject {
@@ -3270,7 +3270,7 @@ dclass ARGManager : DistributedObjectGlobal {
 
 dclass GlobalGroupTracker : DistributedObjectGlobal {
     addGroup(uint32 leaderId, BoardingGroup group);
-    updateGroup(uint32 leaderId, uint8 category, uint8 currAvs, string []);
+    updateGroup(uint32 leaderId, uint8 category, int8 currAvs, string []);
     removeGroup(uint32 leaderId);
     requestGroups(uint32 requesterId) airecv clsend;
     doneRequesting(uint32 requesterId) airecv clsend;

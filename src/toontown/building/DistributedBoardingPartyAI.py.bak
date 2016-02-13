@@ -304,6 +304,7 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
                 # Tell group tracker this group updated
                 self.updateBroadcast(leaderId, show, category=ZONE_TO_CATEGORY_LIST[self.zoneId][offset])
                 return
+                return
             if self.hasActiveGroup(inviteeId):
                 self.sendUpdateToAvatarId(inviteeId, 'postAlreadyInGroup', [])
                 return

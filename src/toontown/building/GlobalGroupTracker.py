@@ -14,7 +14,7 @@ class GlobalGroupTracker(DistributedObjectGlobal):
         self.sendUpdate('doneRequesting', [base.localAvatar.doId])
 
     def setGroupInfo(self, leaderIds, groups):
-        self.leader2Group = dict(izip(leaderIds, groups))
+        self.leader2Group = dict(izip(leaderIds, [list(group) for group in groups]))
         messenger.send('GroupTrackerResponse')
 
     def getGroupInfo(self):

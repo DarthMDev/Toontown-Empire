@@ -15,6 +15,7 @@ class GroupTrackerGroup(DirectButton):
         self.category = category
         self.currentAvatars = currentAvatars
         self.memberNames = memberNames
+        self.playerCount = None
 
         if parent is None:
             parent = aspect2d
@@ -38,9 +39,10 @@ class GroupTrackerGroup(DirectButton):
         self.updatePlayerCount()
         
     def destroy(self):
-        if self.playerCount:
-            self.playerCount.destroy()
-            del self.playerCount
+        if hasattr(self, 'playerCount'):
+            if self.playerCount:
+                self.playerCount.destroy()
+                del self.playerCount
         
         DirectButton.destroy(self)
     
@@ -74,7 +76,7 @@ class GroupTrackerPlayer(DirectButton):
     def __init__(self, parent, avId, name, isLeader, **kw):
         self.avId = avId
         self.name = name
-        self.leader = isLeader
+        self.isLeader = isLeader
         self.leaderImage = None
 
         if parent is None:
@@ -97,25 +99,31 @@ class GroupTrackerPlayer(DirectButton):
         boardingGroupIcons = loader.loadModel('phase_9/models/gui/tt_m_gui_brd_status')
         self.leaderButtonImage = boardingGroupIcons.find('**/tt_t_gui_brd_statusLeader')
         self.leaderImage = DirectButton(parent=self, relief=None, state=DGG.DISABLED, image=(self.leaderButtonImage), image_scale=(0.06, 1.0, 0.06), pos=(-0.26, 0, 0.02), command=None)
-        self.setLeaderStatus(self.leader)
+        self.setLeaderStatus(self.isLeader)
         boardingGroupIcons.removeNode()
     
     def destroy(self):
-        if self.leaderImage:
-            self.leaderImage.destroy()
-            self.leaderImage = None
+        if hasattr(self, 'playerCount'):
+            if self.leaderImage:
+                self.leaderImage.destroy()
+                del self.leaderImage
         
         DirectButton.destroy(self)
     
     def setLeaderStatus(self, isLeader):
-        self.leader = isLeader
+        self.isLeader = isLeader
         
-        if self.leader and self.leaderImage is None:
-            self.leaderImage = DirectButton(parent=self, relief=None, state=DGG.DISABLED, image=(self.leaderButtonImage), image_scale=(0.06, 1.0, 0.06), pos=(-0.26, 0, 0.02), command=None)
-        if self.leader == False and self.leaderImage is not None:
-            self.leaderImage.destroy()
-            del self.leaderImage
+        if self.isLeader:
+            self.leaderImage.show()
+        if not self.isLeader:
+            self.leaderImage.hide()
     
+    def getLeader(self):
+        return self.isLeader
+    
+    def getName(self):
+        return self.name
+        
     def loadPlayerDetails(self):
         # TODO: Load player details based off avId for localAvatar
         pass
@@ -128,6 +136,14 @@ class GroupTrackerPage(ShtikerPage.ShtikerPage):
         self.groupWidgets = []
         self.playerWidgets = []
         self.images = []
+        self.scrollList = None
+        self.scrollTitle = None
+        self.playerList = None
+        self.playerListTitle = None
+        self.groupInfoTitle = None
+        self.groupInfoDistrict = None
+        self.statusMessage = None
+        self.groupIcon = None
 
     def load(self):
         self.listXorigin = -0.02
@@ -290,12 +306,17 @@ class GroupTrackerPage(ShtikerPage.ShtikerPage):
             self.statusMessage['text'] = TTLocalizer.GroupTrackerLoading
             self.statusMessage.show()
         ShtikerPage.ShtikerPage.enter(self)
+        self.setGroups([]) # CLEAR IT ALL
+        self.setPlayers([], 'Clear')# CLEAR IT ALL
         base.cr.globalGroupTracker.requestGroups()
         taskMgr.doMethodLater(3, self.displayNoGroups, self.uniqueName('timeout'))
 
     def displayNoGroups(self, task):
         self.statusMessage['text'] = TTLocalizer.GroupTrackerEmpty
         self.statusMessage.show()
+        
+        self.clearGroupInfo()
+        
         return task.done
 
     def updatePage(self):
@@ -308,8 +329,10 @@ class GroupTrackerPage(ShtikerPage.ShtikerPage):
         ShtikerPage.ShtikerPage.exit(self)
         base.cr.globalGroupTracker.doneRequesting()
 
-        
-    def updateGroupInfo(self, groupWidget, mouseEvent):
+    def updateGroupInfoEventHandle(self, groupWidget, mouseEvent):
+        self.updateGroupInfo(groupWidget)
+
+    def updateGroupInfo(self, groupWidget):
         ''' Updates the Right Page of the Group Tracker Page with new Info '''
         self.statusMessage.hide()
 
@@ -353,8 +376,20 @@ class GroupTrackerPage(ShtikerPage.ShtikerPage):
             isLeader = playerName == leaderName
             self.playerWidgets.append(GroupTrackerPlayer(parent=self, avId=1, name=playerName, isLeader=isLeader))
         self.updatePlayerList()
-    
-     
+
+    def reconsiderGroupInfo(self, groupWidget):
+        if self.playerWidgets is None or self.playerList['items'] == []:
+            return # No Info is being viewed at the moment since you cant have an empty group
+        
+        # We have to update if this group's leader is the leader in the playerlist being viewed right now
+        leaderName = groupWidget.getLeader()
+        
+        # Check all the players in the playerList being viewed for the same leader
+        for playerWidget in self.playerWidgets:
+            if playerWidget.getLeader():
+                if leaderName == playerWidget.getName():
+                    self.updateGroupInfo(groupWidget)
+
     def setGroups(self, groups):
         ''' Calls updateGroupList '''
         
@@ -365,21 +400,24 @@ class GroupTrackerPage(ShtikerPage.ShtikerPage):
         
         # Create a new group widget for each group
         for group in groups:
+            if group[GroupTrackerGlobals.CURR_AVS] == 0:
+                continue # We are using this to see if this group is dead
             groupWidget = GroupTrackerGroup(parent=self, leaderName=group[GroupTrackerGlobals.LEADER_NAME], shardName=group[GroupTrackerGlobals.SHARD_NAME], category=group[GroupTrackerGlobals.CATEGORY], currentAvatars=group[GroupTrackerGlobals.CURR_AVS], memberNames=group[GroupTrackerGlobals.MEMBER_NAMES])
-            groupWidget.bind(DGG.WITHIN, self.updateGroupInfo, extraArgs=[groupWidget])
+            groupWidget.bind(DGG.WITHIN, self.updateGroupInfoEventHandle, extraArgs=[groupWidget])
             self.groupWidgets.append(groupWidget)
-                                              
+            self.reconsiderGroupInfo(groupWidget)
+
         self.updateGroupList()
         
-    def updateGroupList(self):
-        if len(self.groupWidgets) == 0:
-            return
+    def updateGroupList(self): 
         self.statusMessage.hide()
+        if self.scrollList is None:
+            return
 
         # Clear the Group Listing
         for item in self.scrollList['items']:
             if item:
-                self.scrollList.removeItem(item)
+                self.scrollList.removeItem(item, refresh=True)
         self.scrollList['items'] = []
         
         # Re-populate the Group Listing
@@ -387,7 +425,7 @@ class GroupTrackerPage(ShtikerPage.ShtikerPage):
             self.scrollList.addItem(groupWidget, refresh=True)
         
     def updatePlayerList(self):
-        if self.playerList is None or len(self.playerWidgets) == 0:
+        if self.playerList is None:
             return
             
         # Clear the Player Listing
