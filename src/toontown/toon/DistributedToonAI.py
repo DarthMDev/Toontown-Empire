@@ -161,6 +161,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.hostedParties = []
         self.partiesInvitedTo = []
         self.partyReplyInfoBases = []
+        self.magicWordTeleportRequests = []
         self.teleportOverride = 0
         self.buffs = []
         self.wantGroupTracker = True
@@ -5343,3 +5344,14 @@ def unfreezeToon():
 
     target.sendUpdate('unfreezeToon', [])
     return 'Unfroze %s.' % target.getName()
+
+    def magicTeleportResponse(self, requesterId, hoodId):
+        toon = self.air.doId2do.get(requesterId)
+        if toon:
+            toon.magicTeleportInitiate(self.getDoId(), hoodId, self.getLocation()[1])
+
+    def magicTeleportInitiate(self, targetId, hoodId, zoneId):
+        if targetId not in self.magicWordTeleportRequests:
+            return
+        self.magicWordTeleportRequests.remove(targetId)
+        self.sendUpdate('magicTeleportInitiate', [hoodId, zoneId])

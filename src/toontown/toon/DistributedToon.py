@@ -2597,6 +2597,30 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         base.localAvatar.book.showButton()
         base.localAvatar.bFriendsList.show()
 
+    def magicTeleportRequest(self, requesterId):
+        self.sendUpdate('magicTeleportResponse', [requesterId, base.cr.playGame.getPlaceId()])
+
+    def magicTeleportInitiate(self, hoodId, zoneId):
+        loaderId = ZoneUtil.getBranchLoaderName(zoneId)
+        whereId = ZoneUtil.getToonWhereName(zoneId)
+
+        if ZoneUtil.isDynamicZone(zoneId) and hoodId in [ToontownGlobals.BossbotHQ, ToontownGlobals.LawbotHQ, ToontownGlobals.CashbotHQ, ToontownGlobals.SellbotHQ]:
+            whereId = 'cogHQBossBattle'
+        if zoneId in [ToontownGlobals.BossbotLobby, ToontownGlobals.LawbotLobby, ToontownGlobals.CashbotLobby, ToontownGlobals.SellbotLobby, ToontownGlobals.LawbotOfficeExt]:
+            how = 'walk'
+        else:
+            how = 'teleportIn'
+        requestStatus = [{
+            'loader': loaderId,
+            'where': whereId,
+            'how': how,
+            'hoodId': hoodId,
+            'zoneId': zoneId,
+            'shardId': None,
+            'avId': -1
+        }]
+        base.cr.playGame.getPlace().fsm.forceTransition('teleportOut', requestStatus)
+
 
 @magicWord(category=CATEGORY_STAFF)
 def globalTeleport():
