@@ -566,8 +566,9 @@ struct BoardingGroup {
     string leaderName;
     string shardName;
     uint8 category;
-    uint8 currAvs;
+    uint32[] memberIds;
     string[] avNames;
+    uint8 show;
 };
 
 dclass ToontownDistrict : DistributedDistrict {
@@ -776,8 +777,9 @@ dclass DistributedToon : DistributedPlayer {
   wipeStats() airecv ownsend;
   takeMoney(int16) airecv ownsend;
   attemptSubtractNPCFriend(uint32 npcId) ownsend airecv;
-  requestGroupsResponse(uint32 [], BoardingGroup []) ownrecv ram;
-  updateGroup(uint32 avId, uint8 category, int8 currAvs, string []) ownrecv ram;
+  requestGroupsResponse(uint32 [], BoardingGroup []) ownrecv;
+  updateGroup(uint32 avId, uint8 category, uint32 [], string [], uint8 show) ownrecv;
+  setWantGroupTracker(uint8) clsend airecv;
 };
 
 dclass DistributedPartyGate : DistributedObject {
@@ -3270,8 +3272,9 @@ dclass ARGManager : DistributedObjectGlobal {
 
 dclass GlobalGroupTracker : DistributedObjectGlobal {
     addGroup(uint32 leaderId, BoardingGroup group);
-    updateGroup(uint32 leaderId, uint8 category, int8 currAvs, string []);
-    removeGroup(uint32 leaderId);
+    updateGroup(uint32 leaderId, uint8 category, uint32 [], string [], uint8 show);
+    showGroup(uint32 leaderId, uint8 show);
+    showMe(uint8 show) airecv clsend;
     requestGroups(uint32 requesterId) airecv clsend;
     doneRequesting(uint32 requesterId) airecv clsend;
     test() airecv;
