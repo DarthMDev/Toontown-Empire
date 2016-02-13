@@ -219,6 +219,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             base.cr.trophyManager.d_requestTrophyScore()
         self.startBlink()
         self.startSmooth()
+        self.wantGroupTracker()
         self.accept('clientCleanup', self._handleClientCleanup)
 
     def announceGenerate(self):
@@ -2407,8 +2408,16 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def requestGroupsResponse(self, leaderIds, groups):
         base.cr.globalGroupTracker.setGroupInfo(leaderIds, groups)
 
-    def updateGroup(self, leaderId, category, currAvs, memberNames):
-        base.cr.globalGroupTracker.updateGroup(leaderId, category, currAvs, memberNames)
+    def updateGroup(self, leaderId, category, currAvs, memberNames, show):
+        base.cr.globalGroupTracker.updateGroup(leaderId, category, currAvs, memberNames, show)
+    
+    def wantGroupTracker(self):
+        wantGroupTracker = settings.get('grouptracker', False)
+        self.d_setWantGroupTracker(wantGroupTracker)
+        return wantGroupTracker
+    
+    def d_setWantGroupTracker(self, wantGroupTracker):
+        self.sendUpdate('setWantGroupTracker', [wantGroupTracker])
 
     def setStats(self, stats):
         self.stats = stats
