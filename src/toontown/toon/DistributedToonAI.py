@@ -5296,34 +5296,7 @@ def goto(avIdShort):
         return "Unable to teleport to target, they are not currently on this district."
     spellbook.getInvoker().magicWordTeleportRequests.append(avId)
     toon.sendUpdate('magicTeleportRequest', [spellbook.getInvoker().getDoId()])
- 
-@magicWord(category=CATEGORY_STAFF)
-def freezeToon():
-    target = spellbook.getTarget()
-    if target == spellbook.getInvoker():
-        return 'You can\'t freeze yourself!'
- 
-    target.sendUpdate('freezeToon', [])
-    return 'Froze %s.' % target.getName()
- 
-@magicWord(category=CATEGORY_STAFF)
-def unfreezeToon():
-    target = spellbook.getTarget()
-    if target == spellbook.getInvoker():
-        return 'You can\'t unfreeze yourself!'
- 
-    target.sendUpdate('unfreezeToon', [])
-    return 'Unfroze %s.' % target.getName()
- 
-@magicWord(category=CATEGORY_STAFF, types=[str])
-def warn(reason):
-    target = spellbook.getTarget()
-    if target == spellbook.getInvoker():
-        return 'You can\'t warn yourself!'
- 
-    target.sendUpdate('warnLocalToon', [reason])
-    return 'Warned %s for %s!' % (target.getName(), reason)
- 
+  
 @magicWord(category=CATEGORY_STAFF, types=[int])
 def pouch(value):
     target = spellbook.getTarget()
