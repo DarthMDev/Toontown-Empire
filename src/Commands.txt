@@ -15,6 +15,9 @@ GENERAL COMMANDS:
 ~fishingRod 4 = Gold Rod
 ~maxToon = Max Your Toon
 ~quests clear = Clear Toontasks
+~freezeToon
+~unfreezeToon
+~warn
 ~run = Run Faster
 ~sos # (1-100) (SOS NPC) = # SOS Of Your Selected NPC
 ~fires (number up to 255) = Amount Of Pink Slips You Want
