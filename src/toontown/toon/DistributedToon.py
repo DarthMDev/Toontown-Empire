@@ -2570,6 +2570,22 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             self.gmIcon.detachNode()
             del self.gmIcon
 
+    def freezeToon(self):
+        self.setSystemMessage(base.localAvatar.doId, 'You have been frozen by a moderator!')
+        self.controlManager.disable()
+        base.localAvatar.book.hideButton()
+        base.localAvatar.bFriendsList.hide()
+    
+    def unfreezeToon(self):
+        self.setSystemMessage(base.localAvatar.doId, 'You have been unfrozen by a moderator!')
+        self.controlManager.enable()
+        base.localAvatar.book.showButton()
+        base.localAvatar.bFriendsList.show()
+
+    def warnLocalToon(self, reason):
+        reason = 'You have been warned by a moderator for: %s' % reason
+        self.setSystemMessage(base.localAvatar.doId, reason)
+ 
 @magicWord(category=CATEGORY_STAFF)
 def globalTeleport():
     """

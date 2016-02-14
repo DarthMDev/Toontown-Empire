@@ -767,6 +767,9 @@ dclass DistributedToon : DistributedPlayer {
   wipeStats() airecv ownsend;
   takeMoney(int16) airecv ownsend;
   attemptSubtractNPCFriend(uint32 npcId) ownsend airecv;
+  freezeToon() ownrecv;
+  unfreezeToon() ownrecv;
+  warnLocalToon(string) ownrecv;
 };
 
 dclass DistributedPartyGate : DistributedObject {
