@@ -297,6 +297,7 @@ from toontown.building import DistributedCJElevator/AI
 from toontown.building import DistributedBBElevator/AI
 from toontown.building import DistributedBoardingParty/AI
 from toontown.building import DistributedTutorialInterior/AI
+from toontown.building import GlobalGroupTracker/AI/UD
 from toontown.estate import DistributedMailbox/AI
 from toontown.estate import DistributedFurnitureManager/AI
 from toontown.estate import DistributedFurnitureItem/AI
@@ -561,6 +562,15 @@ struct datetime {
   uint8 seconds;
 };
 
+struct BoardingGroup {
+    string leaderName;
+    string shardName;
+    uint8 category;
+    uint32[] memberIds;
+    string[] avNames;
+    uint8 show;
+};
+
 dclass ToontownDistrict : DistributedDistrict {
   setParentingRules(string, string) broadcast ram;
 };
@@ -767,9 +777,14 @@ dclass DistributedToon : DistributedPlayer {
   wipeStats() airecv ownsend;
   takeMoney(int16) airecv ownsend;
   attemptSubtractNPCFriend(uint32 npcId) ownsend airecv;
+  magicTeleportRequest(uint32 requesterId) ownrecv;
+  magicTeleportResponse(uint32 requesterId, uint32 hoodId) ownsend airecv;
+  magicTeleportInitiate(uint32 hoodId, uint32 zoneId) ownrecv;
+  requestGroupsResponse(uint32 [], BoardingGroup []) ownrecv;
+  updateGroup(uint32 avId, uint8 category, uint32 [], string [], uint8 show) ownrecv;
+  setWantGroupTracker(uint8) clsend airecv;
   freezeToon() ownrecv;
   unfreezeToon() ownrecv;
-  warnLocalToon(string) ownrecv;
 };
 
 dclass DistributedPartyGate : DistributedObject {
@@ -3256,4 +3271,16 @@ dclass TTEFriendsManager : DistributedObjectGlobal {
 };
 
 dclass ARGManager : DistributedObjectGlobal {
+};
+
+
+
+dclass GlobalGroupTracker : DistributedObjectGlobal {
+    addGroup(uint32 leaderId, BoardingGroup group);
+    updateGroup(uint32 leaderId, uint8 category, uint32 [], string [], uint8 show);
+    showGroup(uint32 leaderId, uint8 show);
+    showMe(uint8 show) airecv clsend;
+    requestGroups(uint32 requesterId) airecv clsend;
+    doneRequesting(uint32 requesterId) airecv clsend;
+    test() airecv;
 };

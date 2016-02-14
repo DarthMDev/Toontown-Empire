@@ -15,7 +15,6 @@ GROUPINVITE = 1
 
 class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, BoardingPartyBase.BoardingPartyBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBoardingPartyAI')
-    MEMBERS = 0
 
     def __init__(self, air, elevatorList, maxSize = 4):
         DistributedObjectAI.DistributedObjectAI.__init__(self, air)
@@ -305,6 +304,7 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
                 # Tell group tracker this group updated
                 self.updateBroadcast(leaderId, show, category=ZONE_TO_CATEGORY_LIST[self.zoneId][offset])
                 return
+                return
             if self.hasActiveGroup(inviteeId):
                 self.sendUpdateToAvatarId(inviteeId, 'postAlreadyInGroup', [])
                 return
@@ -521,14 +521,6 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
             if inviteeId not in group[0]:
                 group[0].append(inviteeId)
             self.groupListDict[leaderId] = group
-
-            # Check if we want to show this group
-            leader = self.air.doId2do.get(leaderId)
-            show = True
-            if leader:
-                show = leader.wantGroupTracker
-            # Let the Group Tracker know the groups updated.
-            self.updateBroadcast(leaderId, show)
             if post:
                 self.notify.debug('Calling postGroupInfo from addToGroup')
                 self.sendUpdate('postGroupInfo', [leaderId, group[0], group[1], group[2]])
@@ -577,16 +569,7 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
             self.sendUpdate('postGroupDissolve', [memberId, leaderId, dgroup[0], kick])
         else:
             self.groupListDict[leaderId] = group
-
-
-            # Check if we want to show this group
-            leader = self.air.doId2do.get(leaderId)
-            show = True
-            if leader:
-                show = leader.wantGroupTracker
-            # Let the Group Tracker know the groups updated.
-            self.updateBroadcast(leaderId, show)
-
+            self.updateBroadcast(leaderId, len(group[0]))
             if post:
                 self.notify.debug('Calling postGroupInfo from removeFromGroup')
                 self.sendUpdate('postGroupInfo', [leaderId, group[0], group[1], group[2]])
@@ -606,11 +589,7 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
         for avId in memberList:
             if avId != leaderId:
                 self.sendUpdateToAvatarId(avId, 'postDestinationInfo', [offset])
-        leader = self.air.doId2do.get(leaderId)
-        show = True
-        if leader:
-            show = leader.wantGroupTracker
-        self.updateBroadcast(leaderId, show)
+        self.updateBroadcast(leaderId, category=ZONE_TO_CATEGORY_LIST[self.zoneId][offset])
 
     def __isInElevator(self, avId):
         inElevator = False
@@ -628,49 +607,47 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
         if leaderId in self.groupListDict:
             av = self.air.doId2do.get(leaderId)
             if av:
-                show = av.wantGroupTracker
                 leaderName = av.name
                 memberNames = []
-                memberIds = []
 
-                for memberId in self.groupListDict[leaderId][self.MEMBERS]:
-                    if memberId != leaderId:
-                        member = self.air.doId2do.get(memberId)
-                        if member:
-                            memberNames.append(member.getName())
-                            memberIds.append(memberId)
+                for avId in self.groupListDict[leaderId][0]:
+                    if avId == leaderId:
+                        continue
+                    member = self.air.doId2do.get(avId)
+                    if member:
+                        memberNames.append(member.getName())
 
+                currAvs = len(memberNames)
                 shardName = self.air.distributedDistrict.name
                 category = ZONE_TO_CATEGORY_LIST[self.zoneId][0]
-                self.air.globalGroupTracker.addGroupAI(leaderId, leaderName, shardName, category, memberIds, memberNames, show)
+        if currAvs == 0:
+            self.removeBroadcast(leaderId)
 
-    def updateBroadcast(self, leaderId, show, memberIds=None, category=None, memberNames=None):
+        self.air.globalGroupTracker.updateGroup(leaderId, category, currAvs, memberNames)
+
+    def updateBroadcast(self, leaderId, currAvs=None, category=None, memberNames=None):
         if not simbase.config.GetBool('want-grouptracker', False):
             return
-        if leaderId not in self.groupListDict.keys():
-            return
-        
-        if not memberIds or not memberNames:
+        if not currAvs or not memberNames:
             group = self.groupListDict.get(leaderId)
             memberNames = []
-            memberIds = []
-            if group:
-                for avId in group[self.MEMBERS]:
+            if not group:
+                currAvs = 0
+            else:
+                for avId in group[0]:
                     av = self.air.doId2do.get(avId)
                     if av:
-                        memberIds.append(avId)
                         memberNames.append(av.getName())
+
+                currAvs = len(memberNames)
+
 
         if not category:
             category = ZONE_TO_CATEGORY_LIST[self.zoneId][0]
 
-        if len(memberIds) == 0:
-            self.removeBroadcast(leaderId)
-            return
-
-        self.air.globalGroupTracker.updateGroupAI(leaderId, category, memberIds, memberNames, show)
+        self.air.globalGroupTracker.updateGroup(leaderId, category, currAvs, memberNames)
 
     def removeBroadcast(self, leaderId):
         if not simbase.config.GetBool('want-grouptracker', False):
             return
-        self.air.globalGroupTracker.updateGroupAI(leaderId, category=0, memberIds=[], memberNames=[''], show=False)
+        self.air.globalGroupTracker.updateGroup(leaderId, 0, 0, [""])

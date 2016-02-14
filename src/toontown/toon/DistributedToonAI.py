@@ -164,6 +164,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.magicWordTeleportRequests = []
         self.teleportOverride = 0
         self.buffs = []
+        self.wantGroupTracker = True
         self.redeemedCodes = []
         self.ignored = []
         self.reported = []
@@ -4305,6 +4306,9 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         if self.name != newName:
             self.b_setName(newName)
         return
+   
+    def setWantGroupTracker(self, wantGroupTracker):
+        self.wantGroupTracker = wantGroupTracker
 
 @magicWord(category=CATEGORY_STAFF, types=[str, int, int])
 def cheesyEffect(value, hood=0, expire=0):
@@ -4319,7 +4323,7 @@ def cheesyEffect(value, hood=0, expire=0):
         if value not in OTPGlobals.CEName2Id:
             return 'Invalid cheesy effect value: %s' % value
         value = OTPGlobals.CEName2Id[value]
-    elif not 0 <= value <= 109:
+    elif not 0 <= value <= 17:
         return 'Invalid cheesy effect value: %d' % value
     if (hood != 0) and (not 1000 <= hood < ToontownGlobals.DynamicZonesBegin):
         return 'Invalid hood ID: %d' % hood
@@ -5350,3 +5354,31 @@ def staffButton(switch):
     else:
      return("You must have 1 for enable or 2 for disable in your Magic Word.")
 """
+@magicWord(category=CATEGORY_STAFF)
+def freezeToon():
+    target = spellbook.getTarget()
+    if target == spellbook.getInvoker():
+        return 'You can\'t freeze yourself!'
+
+    target.sendUpdate('freezeToon', [])
+    return 'Froze %s.' % target.getName()
+
+@magicWord(category=CATEGORY_STAFF)
+def unfreezeToon():
+    target = spellbook.getTarget()
+    if target == spellbook.getInvoker():
+        return 'You can\'t unfreeze yourself!'
+
+    target.sendUpdate('unfreezeToon', [])
+    return 'Unfroze %s.' % target.getName()
+
+    def magicTeleportResponse(self, requesterId, hoodId):
+        toon = self.air.doId2do.get(requesterId)
+        if toon:
+            toon.magicTeleportInitiate(self.getDoId(), hoodId, self.getLocation()[1])
+
+    def magicTeleportInitiate(self, targetId, hoodId, zoneId):
+        if targetId not in self.magicWordTeleportRequests:
+            return
+        self.magicWordTeleportRequests.remove(targetId)
+        self.sendUpdate('magicTeleportInitiate', [hoodId, zoneId])

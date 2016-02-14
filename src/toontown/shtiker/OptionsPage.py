@@ -832,6 +832,7 @@ class AdvancedOptionsTabPage(DirectFrame):
             settings['want-WASD'] = False
             base.localAvatar.controlManager.reload()
             base.localAvatar.chatMgr.reloadWASD()
+            base.localAvatar.controlManager.disable()
             base.localAvatar.setSystemMessage(0, 'WASD disabled.')
         else:
             base.wantWASD = True
