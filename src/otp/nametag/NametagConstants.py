@@ -218,8 +218,4 @@ WHISPER_COLORS = {
 }
 
 def getFriendColor(handle):
-    if handle.isAdmin():
-         return CCAdmin
-    elif settings['trueFriends'] and base.localAvatar.isTrueFriends(handle.doId):
-         return CCNormal
-    return CCSpeedChat
+    return CCNormal if base.localAvatar.isTrueFriends(handle.doId) else CCSpeedChat
