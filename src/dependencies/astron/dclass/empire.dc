@@ -191,7 +191,7 @@ dclass CentralLogger : DistributedObject {
   sendMessage(string(0-256), string(0-1024), uint32, uint32) clsend;
   logAIGarbage() airecv;
 };
-
+from toontown.ai import WelcomeValleyManager/AI
 from toontown.building import DistributedAnimatedProp/AI
 from toontown.toon import DistributedToon/AI/UD
 from toontown.safezone import DistributedTrolley/AI
@@ -579,6 +579,12 @@ dclass ToontownDistrictStats : DistributedObject {
   setDistrictId(uint32) broadcast required ram;
   setAvatarCount(uint32) broadcast required ram;
   setInvasionStatus(uint8) broadcast required ram;
+};
+
+dclass WelcomeValleyManager : DistributedObject {
+  clientSetZone(uint32) airecv clsend;
+  requestZoneIdMessage(uint32, uint16) airecv clsend;
+  requestZoneIdResponse(uint32, uint16);
 };
 
 dclass DistributedAnimatedProp : DistributedObject {
