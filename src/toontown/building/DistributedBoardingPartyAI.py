@@ -9,11 +9,13 @@ from direct.fsm import State
 from direct.task import Task
 from direct.directnotify import DirectNotifyGlobal
 from toontown.building import BoardingPartyBase
+from toontown.building.GroupTrackerGlobals import ZONE_TO_CATEGORY_LIST
 GROUPMEMBER = 0
 GROUPINVITE = 1
 
 class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, BoardingPartyBase.BoardingPartyBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBoardingPartyAI')
+    MEMBERS = 0
 
     def __init__(self, air, elevatorList, maxSize = 4):
         DistributedObjectAI.DistributedObjectAI.__init__(self, air)
@@ -222,6 +224,7 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
             self.avIdDict[inviterId] = inviterId
             self.avIdDict[inviteeId] = inviterId
             self.groupListDict[leaderId] = [[leaderId], [inviteeId], []]
+            self.broadcastGroup(leaderId)
             self.addWacthAvStatus(leaderId)
             self.sendUpdateToAvatarId(inviteeId, 'postInvite', [leaderId, inviterId, False])
 
@@ -289,9 +292,18 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
                     self.addToGroup(leaderId, memberId, 0)
                 # get rid of the old group (invitee is always the old leader)
                 self.groupListDict.pop(inviteeId)
+                self.removeBroadcast(inviteeId)
                 # notify everybody of their new group info
                 self.sendUpdateToAvatarId(inviterId, 'postInviteAccepted', [oldId])
                 self.sendUpdate('postGroupInfo', [leaderId, group[0], group[1], group[2]])
+                
+                # Check if we want to show this group
+                leader = self.air.doId2do.get(leaderId)
+                show = True
+                if leader:
+                    show = leader.wantGroupTracker
+                # Tell group tracker this group updated
+                self.updateBroadcast(leaderId, show, category=ZONE_TO_CATEGORY_LIST[self.zoneId][offset])
                 return
             if self.hasActiveGroup(inviteeId):
                 self.sendUpdateToAvatarId(inviteeId, 'postAlreadyInGroup', [])
@@ -399,6 +411,7 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
                             if leader:
                                 elevator.partyAvatarBoard(leader)
                                 wantDisableGoButton = True
+                                self.removeBroadcast(leaderId)
                             for avId in group[0]:
                                 if not avId == leaderId:
                                     avatar = simbase.air.doId2do.get(avId)
@@ -508,6 +521,14 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
             if inviteeId not in group[0]:
                 group[0].append(inviteeId)
             self.groupListDict[leaderId] = group
+
+            # Check if we want to show this group
+            leader = self.air.doId2do.get(leaderId)
+            show = True
+            if leader:
+                show = leader.wantGroupTracker
+            # Let the Group Tracker know the groups updated.
+            self.updateBroadcast(leaderId, show)
             if post:
                 self.notify.debug('Calling postGroupInfo from addToGroup')
                 self.sendUpdate('postGroupInfo', [leaderId, group[0], group[1], group[2]])
@@ -550,12 +571,22 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
             for dMemberId in dgroup[0]:
                 if dMemberId in self.avIdDict:
                     self.avIdDict.pop(dMemberId)
-
+            self.removeBroadcast(leaderId)
             self.notify.debug('postGroupDissolve')
             dgroup[0].insert(0, memberId)
             self.sendUpdate('postGroupDissolve', [memberId, leaderId, dgroup[0], kick])
         else:
             self.groupListDict[leaderId] = group
+
+
+            # Check if we want to show this group
+            leader = self.air.doId2do.get(leaderId)
+            show = True
+            if leader:
+                show = leader.wantGroupTracker
+            # Let the Group Tracker know the groups updated.
+            self.updateBroadcast(leaderId, show)
+
             if post:
                 self.notify.debug('Calling postGroupInfo from removeFromGroup')
                 self.sendUpdate('postGroupInfo', [leaderId, group[0], group[1], group[2]])
@@ -575,6 +606,11 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
         for avId in memberList:
             if avId != leaderId:
                 self.sendUpdateToAvatarId(avId, 'postDestinationInfo', [offset])
+        leader = self.air.doId2do.get(leaderId)
+        show = True
+        if leader:
+            show = leader.wantGroupTracker
+        self.updateBroadcast(leaderId, show)
 
     def __isInElevator(self, avId):
         inElevator = False
@@ -585,3 +621,56 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
                     inElevator = True
 
         return inElevator
+
+    def broadcastGroup(self, leaderId):
+        if not simbase.config.GetBool('want-grouptracker', False):
+            return
+        if leaderId in self.groupListDict:
+            av = self.air.doId2do.get(leaderId)
+            if av:
+                show = av.wantGroupTracker
+                leaderName = av.name
+                memberNames = []
+                memberIds = []
+
+                for memberId in self.groupListDict[leaderId][self.MEMBERS]:
+                    if memberId != leaderId:
+                        member = self.air.doId2do.get(memberId)
+                        if member:
+                            memberNames.append(member.getName())
+                            memberIds.append(memberId)
+
+                shardName = self.air.distributedDistrict.name
+                category = ZONE_TO_CATEGORY_LIST[self.zoneId][0]
+                self.air.globalGroupTracker.addGroupAI(leaderId, leaderName, shardName, category, memberIds, memberNames, show)
+
+    def updateBroadcast(self, leaderId, show, memberIds=None, category=None, memberNames=None):
+        if not simbase.config.GetBool('want-grouptracker', False):
+            return
+        if leaderId not in self.groupListDict.keys():
+            return
+        
+        if not memberIds or not memberNames:
+            group = self.groupListDict.get(leaderId)
+            memberNames = []
+            memberIds = []
+            if group:
+                for avId in group[self.MEMBERS]:
+                    av = self.air.doId2do.get(avId)
+                    if av:
+                        memberIds.append(avId)
+                        memberNames.append(av.getName())
+
+        if not category:
+            category = ZONE_TO_CATEGORY_LIST[self.zoneId][0]
+
+        if len(memberIds) == 0:
+            self.removeBroadcast(leaderId)
+            return
+
+        self.air.globalGroupTracker.updateGroupAI(leaderId, category, memberIds, memberNames, show)
+
+    def removeBroadcast(self, leaderId):
+        if not simbase.config.GetBool('want-grouptracker', False):
+            return
+        self.air.globalGroupTracker.updateGroupAI(leaderId, category=0, memberIds=[], memberNames=[''], show=False)

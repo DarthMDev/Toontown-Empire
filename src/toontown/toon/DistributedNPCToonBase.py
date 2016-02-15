@@ -135,3 +135,6 @@ class DistributedNPCToonBase(DistributedToon.DistributedToon):
 
     def setPositionIndex(self, posIndex):
         self.posIndex = posIndex
+        
+    def wantGroupTracker(self): # Override so we don't use this
+        pass

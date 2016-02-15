@@ -102,6 +102,7 @@ class ToonBase(OTPBase.OTPBase):
         self.wantPets = self.config.GetBool('want-pets', 1)
         self.wantBingo = self.config.GetBool('want-fish-bingo', 1)
         self.wantKarts = self.config.GetBool('want-karts', 1)
+        self.wantGroupTracker = self.config.GetBool('want-grouptracker', 0)
         self.inactivityTimeout = self.config.GetFloat('inactivity-timeout', ToontownGlobals.KeyboardTimeout)
         if self.inactivityTimeout:
             self.notify.debug('Enabling Panda timeout: %s' % self.inactivityTimeout)
@@ -138,6 +139,17 @@ class ToonBase(OTPBase.OTPBase):
         self.slowQuietZone = self.config.GetBool('slow-quiet-zone', 0)
         self.slowQuietZoneDelay = self.config.GetFloat('slow-quiet-zone-delay', 5)
         self.killInterestResponse = self.config.GetBool('kill-interest-response', 0)
+        
+        # group tracker prefs
+        print('setting group tracker setting')
+        if 'grouptracker' in settings:
+            self.showGroupTracker = settings.get('grouptracker', False)
+        else:
+            self.showGroupTracker = True
+        
+        settings['grouptracker'] = self.showGroupTracker
+        print('Group Tracker Settings:', self.showGroupTracker)
+
         tpMgr = TextPropertiesManager.getGlobalPtr()
         WLDisplay = TextProperties()
         WLDisplay.setSlant(0.3)

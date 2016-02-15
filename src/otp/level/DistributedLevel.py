@@ -95,7 +95,10 @@ class DistributedLevel(DistributedObject.DistributedObject, Level.Level):
         if self.entranceId in self.entranceId2entity:
             epEnt = self.entranceId2entity[self.entranceId]
             if moveLocalAvatar:
-                epEnt.placeToon(base.localAvatar, self.avIdList.index(base.localAvatar.doId), len(self.avIdList))
+                if base.localAvatar.getAdminAccess() >= 300 and base.localAvatar.doId not in self.avIdList:
+                    epEnt.placeToon(base.localAvatar, 0, len(self.avIdList))
+                else:
+                    epEnt.placeToon(base.localAvatar, self.avIdList.index(base.localAvatar.doId), len(self.avIdList))
             initialZoneEnt = self.getEntity(epEnt.getZoneEntId())
         elif self.EmulateEntrancePoint:
             self.notify.debug('unknown entranceId %s' % self.entranceId)

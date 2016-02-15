@@ -98,6 +98,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         state.addTransition('skipTutorialRequest')
         self.wantCogdominiums = base.config.GetBool('want-cogdominiums', 1)
         self.wantEmblems = base.config.GetBool('want-emblems', 0)
+        self.globalGroupTracker = self.generateGlobalObject(OTP_DO_ID_GLOBAL_GROUP_TRACKER, 'GlobalGroupTracker')
         if base.config.GetBool('tt-node-check', 0):
             for species in ToonDNA.toonSpeciesTypes:
                 for head in ToonDNA.getHeadList(species):
