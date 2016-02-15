@@ -149,7 +149,7 @@ class PickAToon:
                                         
         self.toon = Toon.Toon()
         self.toon.reparentTo(self.origin)
-        self.toon.setDNAString(ToonDNA.ToonDNA().makeNetString()) # initialize with garbage
+        #self.toon.setDNAString(ToonDNA.ToonDNA().makeNetString()) # initialize with garbage
         self.toon.hide()
         
         self.statusText = OnscreenText(pos=(0, -.8), text="", font=ToontownGlobals.getToonFont(),
