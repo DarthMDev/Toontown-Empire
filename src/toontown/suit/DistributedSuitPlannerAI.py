@@ -79,6 +79,8 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
             self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_MIN] +
             self.SuitHoodInfo[self.hoodInfoIdx][self.SUIT_HOOD_INFO_MAX]) / 2
         self.targetNumSuitBuildings = SuitBuildingGlobals.buildingMinMax[self.zoneId][0]
+        if ZoneUtil.isWelcomeValley(self.zoneId):
+            self.targetNumSuitBuildings = 0
         self.pendingBuildingTracks = []
         self.pendingBuildingHeights = []
         self.suitList = []
@@ -355,9 +357,13 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
             return False
         numSuitBuildings = len(self.buildingMgr.getSuitBlocks())
         if (random.random() * 100) < SuitBuildingGlobals.buildingChance[self.zoneId]:
-            return SuitBuildingGlobals.buildingMinMax[self.zoneId][1] - numSuitBuildings
+            bmax = SuitBuildingGlobals.buildingMinMax[self.zoneId][1]
+            if ZoneUtil.isWelcomeValley(self.zoneId):
+                bmax = 0
+            numNeeded = bmax - numSuitBuildings
         else:
-            return self.targetNumSuitBuildings - numSuitBuildings
+            numNeeded = self.targetNumSuitBuildings - numSuitBuildings
+        return numNeeded
 
     def newSuitShouldAttemptTakeover(self):
         if not self.SUITS_ENTER_BUILDINGS:
