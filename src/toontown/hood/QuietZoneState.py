@@ -72,7 +72,7 @@ class QuietZoneState(StateData.StateData):
         return 'setZoneComplete-%s' % (id(self),)
 
     def enter(self, requestStatus):
-        self.notify.debug('enter(requestStatus=' + str(requestStatus) + ')')
+        print('enter(requestStatus=' + str(requestStatus) + ')')
         self._requestStatus = requestStatus
         self._leftQuietZoneCallbacks = None
         self._setZoneCompleteCallbacks = None
@@ -223,7 +223,7 @@ class QuietZoneState(StateData.StateData):
                 self.gotZoneRedirect(newZoneId)
                 return
         if allowRedirect and ZoneUtil.isWelcomeValley(zoneId):
-            self.notify.info('Requesting AI redirect from zone %s.' % zoneId)
+            print('Requesting AI redirect from zone %s.' % zoneId)
             if base.slowQuietZone:
 
                 def rZI(task, zoneId = zoneId, self = self):
