@@ -151,10 +151,14 @@ class DistributedSuitBase(DistributedAvatar.DistributedAvatar, Suit.Suit, SuitBa
             self.propInSound = base.loadSfx('phase_5/audio/sfx/ENC_propeller_in.ogg')
         if self.propOutSound == None:
             self.propOutSound = base.loadSfx('phase_5/audio/sfx/ENC_propeller_out.ogg')
-        head = self.find('**/to_head')
-        if head.isEmpty():
+        if base.config.GetBool('want-new-cogs', 0):
+            head = self.find('**/to_head')
+            if head.isEmpty():
+                head = self.find('**/joint_head')
+        else:
             head = self.find('**/joint_head')
         self.prop.reparentTo(head)
+        return
 
     def detachPropeller(self):
         if self.prop:
@@ -165,6 +169,7 @@ class DistributedSuitBase(DistributedAvatar.DistributedAvatar, Suit.Suit, SuitBa
             self.propInSound = None
         if self.propOutSound:
             self.propOutSound = None
+        return
 
     def beginSupaFlyMove(self, pos, moveIn, trackName, walkAfterLanding=True):
         skyPos = Point3(pos)
@@ -209,6 +214,7 @@ class DistributedSuitBase(DistributedAvatar.DistributedAvatar, Suit.Suit, SuitBa
             self.prop.hide()
             propTrack = Parallel(SoundInterval(self.propOutSound, duration=waitTime + dur, node=self), Sequence(Func(self.prop.show), ActorInterval(self.prop, 'propeller', endTime=openTime, startTime=propDur), ActorInterval(self.prop, 'propeller', constrainedLoop=1, duration=propDur - openTime, startTime=spinTime, endTime=0.0), Func(self.detachPropeller)))
             return Parallel(ParallelEndTogether(lerpPosTrack, shadowTrack, fadeOutTrack), actInt, propTrack, name=self.taskName('trackName'))
+        return
 
     def enableBattleDetect(self, name, handler):
         if self.collTube:
@@ -227,6 +233,7 @@ class DistributedSuitBase(DistributedAvatar.DistributedAvatar, Suit.Suit, SuitBa
         if self.collNodePath:
             self.collNodePath.removeNode()
             self.collNodePath = None
+        return
 
     def enableRaycast(self, enable = 1):
         if not self.cTrav or not hasattr(self, 'cRayNode') or not self.cRayNode:
@@ -366,6 +373,7 @@ class DistributedSuitBase(DistributedAvatar.DistributedAvatar, Suit.Suit, SuitBa
 
                         if len(TTLocalizer.SillySurgeTerms) > absNumber:
                             self.HpTextGenerator.setText(str(number) + '\n' + TTLocalizer.SillySurgeTerms[absNumber])
+
                         else:
                             self.HpTextGenerator.setText(str(number) + '\n' + random.choice(TTLocalizer.SillySurgeTerms))
 

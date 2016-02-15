@@ -58,6 +58,7 @@ class Avatar(Actor, ShadowCaster):
         self.style = None
         self.understandable = 1
         self.setPlayerType(NametagGroup.CCNormal)
+        self.lastGhostMode = 0
         self.ghostMode = 0
         self.__chatParagraph = None
         self.__chatMessage = None

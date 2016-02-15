@@ -22,6 +22,24 @@ COLORS = (Vec4(0.917, 0.164, 0.164, 1),
  Vec4(0.977, 0.816, 0.133, 1))
 chooser_notify = DirectNotifyGlobal.directNotify.newCategory('AvatarChooser')
 
+PreloadModels = (
+    'phase_3/models/gui/pick_a_toon_gui.bam',
+    'phase_3/models/gui/quit_button.bam',
+    'phase_3/models/gui/tt_m_gui_pat_mainGui.bam'
+)
+
+def preload():
+    print 'Preloading the Pick-A-Toon UI...'
+
+
+    for modelPath in PreloadModels:
+        preloader.loadModel(modelPath)
+
+def unload():
+    for modelPath in PreloadModels:
+        preloader.unloadModel(modelPath)
+
+
 class AvatarChooser(StateData.StateData):
 
     def __init__(self, avatarList, doneEvent):
@@ -61,28 +79,43 @@ class AvatarChooser(StateData.StateData):
         self.languageButton.hide()
         self.pickAToonBG.reparentTo(hidden)
         base.setBackgroundColor(ToontownGlobals.DefaultBackgroundColor)
-        return None
 
     def load(self):
         if self.isLoaded == 1:
             return None
-        gui = loader.loadModel('phase_3/models/gui/pick_a_toon_gui')
-        gui2 = loader.loadModel('phase_3/models/gui/quit_button')
-        newGui = loader.loadModel('phase_3/models/gui/tt_m_gui_pat_mainGui')
-        self.pickAToonBG = newGui.find('**/tt_t_gui_pat_background')
-        self.pickAToonBG.reparentTo(hidden)
+
+        gui = preloader.getModel('phase_3/models/gui/pick_a_toon_gui.bam')
+        if gui is not None:
+            gui2 = preloader.getModel('phase_3/models/gui/quit_button.bam')
+            newGui = preloader.getModel(
+                'phase_3/models/gui/tt_m_gui_pat_mainGui.bam')
+        else:
+            gui = loader.loadModel('phase_3/models/gui/pick_a_toon_gui.bam')
+            gui2 = loader.loadModel('phase_3/models/gui/quit_button.bam')
+            newGui = loader.loadModel(
+                'phase_3/models/gui/tt_m_gui_pat_mainGui.bam')
+
+        self.pickAToonBG = newGui.find('**/tt_t_gui_pat_background').copyTo(hidden)
         self.pickAToonBG.setPos(0.0, 2.73, 0.0)
         self.pickAToonBG.setScale(1, 1, 1)
-        self.title = OnscreenText(TTLocalizer.AvatarChooserPickAToon, scale=TTLocalizer.ACtitle, parent=hidden, font=ToontownGlobals.getSignFont(), fg=(1, 0.9, 0.1, 1), pos=(0.0, 0.82))
+        self.title = OnscreenText(
+            TTLocalizer.AvatarChooserPickAToon, scale=TTLocalizer.ACtitle,
+            parent=hidden, font=ToontownGlobals.getSignFont(),
+            fg=(1, 0.9, 0.1, 1), pos=(0.0, 0.82))
         quitHover = gui.find('**/QuitBtn_RLVR')
-        self.quitButton = DirectButton(image=(quitHover, quitHover, quitHover), relief=None, text=TTLocalizer.AvatarChooserQuit, text_font=ToontownGlobals.getSignFont(), text_fg=(0.977, 0.816, 0.133, 1), text_pos=TTLocalizer.ACquitButtonPos, text_scale=TTLocalizer.ACquitButton, image_scale=1, image1_scale=1.05, image2_scale=1.05, scale=1.05, pos=(-0.25, 0, 0.075), command=self.__handleQuit)
+        self.quitButton = DirectButton(
+            image=(quitHover, quitHover, quitHover), relief=None,
+            text=TTLocalizer.AvatarChooserQuit,
+            text_font=ToontownGlobals.getSignFont(),
+            text_fg=(0.977, 0.816, 0.133, 1),
+            text_pos=TTLocalizer.ACquitButtonPos,
+            text_scale=TTLocalizer.ACquitButton, image_scale=1,
+            image1_scale=1.05, image2_scale=1.05, scale=1.05,
+            pos=(-0.25, 0, 0.075), command=self.__handleQuit)
         self.quitButton.reparentTo(base.a2dBottomRight)
         self.languageButton = DirectButton(relief=None, image=(quitHover, quitHover, quitHover), text=TTLocalizer.LanguageButtonText, text_font=ToontownGlobals.getSignFont(), text_fg=(0.977, 0.816, 0.133, 1), text_scale=TTLocalizer.AClanguageButton, text_pos=(0, -0.025), pos=(0.25, 0, 0.075), image_scale=1.05, image1_scale=1.05, image2_scale=1.05, scale=1.05, command=self.openLanguageGui)
         self.languageButton.reparentTo(base.a2dBottomLeft)
         self.languageButton.hide()
-        gui.removeNode()
-        gui2.removeNode()
-        newGui.removeNode()
         self.panelList = []
         used_position_indexs = []
         for av in self.avatarList:
@@ -195,13 +228,13 @@ class AvatarChooser(StateData.StateData):
         del self.languageButton
         self.pickAToonBG.removeNode()
         del self.pickAToonBG
+        unload()
         del self.avatarList
         self.ignoreAll()
         self.isLoaded = 0
         ModelPool.garbageCollect()
         TexturePool.garbageCollect()
         base.setBackgroundColor(ToontownGlobals.DefaultBackgroundColor)
-        return None
 
     def __handlePanelDone(self, panelDoneStatus, panelChoice = 0):
         self.doneStatus = {}

@@ -860,6 +860,9 @@ class SetNamePatternFSM(AvatarOperationFSM):
             parts.remove('')
         name = ' '.join(parts)
 
+        if name == '':
+            name = 'Toon'
+
         self.csm.air.dbInterface.updateObject(
             self.csm.air.dbId,
             self.avId,

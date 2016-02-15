@@ -16,14 +16,15 @@ import sys
 import tempfile
 import time
 
-import ToontownGlobals
-import ToontownLoader
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownLoader
 from otp.otpbase import OTPBase, OTPGlobals
 from otp.nametag.ChatBalloon import ChatBalloon
 from otp.nametag import NametagGlobals
 from otp.margins.MarginManager import MarginManager
 from toontown.toonbase import TTLocalizer, ToontownBattleGlobals
 from toontown.toontowngui import TTDialog
+from toontown.toonbase.Preloader import Preloader
 
 tempdir = tempfile.mkdtemp()
 vfs = VirtualFileSystem.getGlobalPtr()
@@ -94,6 +95,8 @@ class ToonBase(OTPBase.OTPBase):
         self.loader = ToontownLoader.ToontownLoader(self)
         __builtins__['loader'] = self.loader
         oldLoader.destroy()
+        self.preloader = Preloader()
+        __builtins__['preloader'] = self.preloader
         self.accept('PandaPaused', self.disableAllAudio)
         self.accept('PandaRestarted', self.enableAllAudio)
         self.wantPets = self.config.GetBool('want-pets', 1)
