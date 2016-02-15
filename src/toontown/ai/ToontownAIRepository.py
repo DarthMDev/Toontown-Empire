@@ -89,7 +89,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.wantTrackClsends = self.config.GetBool('want-track-clsends', False)
         self.wantTopToons = self.config.GetBool('want-top-toons', True)
         self.baseXpMultiplier = self.config.GetFloat('base-xp-multiplier', 1.0)
-
+        self.wantGroupTracker = self.config.GetBool('want-grouptracker', False)
         self.cogSuitMessageSent = False
 
     def createManagers(self):
@@ -139,6 +139,8 @@ class ToontownAIRepository(ToontownInternalRepository):
             self.partyManager.generateWithRequired(2)
             self.globalPartyMgr = self.generateGlobalObject(
                 OTP_DO_ID_GLOBAL_PARTY_MANAGER, 'GlobalPartyManager')
+        self.globalGroupTracker =self.generateGlobalObject(
+            OTP_DO_ID_GLOBAL_GROUP_TRACKER, 'GlobalGroupTracker')
         #self.lobbyManager = DistributedLobbyManagerAI(self)
         #self.lobbyManager.generateWithRequired(2)
         #self.globalLobbyMgr = self.generateGlobalObject(

@@ -58,6 +58,7 @@ class Avatar(Actor, ShadowCaster):
         self.style = None
         self.understandable = 1
         self.setPlayerType(NametagGroup.CCNormal)
+        self.lastGhostMode = 0
         self.ghostMode = 0
         self.__chatParagraph = None
         self.__chatMessage = None
@@ -111,6 +112,10 @@ class Avatar(Actor, ShadowCaster):
         if hasattr(base, 'localAvatar') and (self == base.localAvatar):
             self.understandable = 1
             self.setPlayerType(NametagGroup.CCNormal)
+        elif hasattr(self, 'adminAccess') and self.isAdmin():
+             self.understandable = 2
+             # make a colored nametag for admins
+             self.setPlayerType(NametagGroup.CCNonPlayer) 
         elif self.playerType == NametagGroup.CCSuit:
             self.understandable = 1
             self.setPlayerType(NametagGroup.CCSuit)

@@ -219,6 +219,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             base.cr.trophyManager.d_requestTrophyScore()
         self.startBlink()
         self.startSmooth()
+        self.wantGroupTracker()
         self.accept('clientCleanup', self._handleClientCleanup)
 
     def announceGenerate(self):
@@ -953,6 +954,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def setGhostMode(self, flag):
         if self.ghostMode != flag:
+            self.lastGhostMode = self.ghostMode
             self.ghostMode = flag
             if not hasattr(self, 'cr'):
                 return
@@ -2402,7 +2404,21 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
                     ToontownGlobals.ToonJumpForce,
                     ToontownGlobals.ToonReverseSpeed * ToontownGlobals.BMovementSpeedMultiplier,
                     ToontownGlobals.ToonRotateSpeed * ToontownGlobals.BMovementSpeedMultiplier)
+
+    def requestGroupsResponse(self, leaderIds, groups):
+        base.cr.globalGroupTracker.setGroupInfo(leaderIds, groups)
+
+    def updateGroup(self, leaderId, category, currAvs, memberNames, show):
+        base.cr.globalGroupTracker.updateGroup(leaderId, category, currAvs, memberNames, show)
     
+    def wantGroupTracker(self):
+        wantGroupTracker = settings.get('grouptracker', False)
+        self.d_setWantGroupTracker(wantGroupTracker)
+        return wantGroupTracker
+    
+    def d_setWantGroupTracker(self, wantGroupTracker):
+        self.sendUpdate('setWantGroupTracker', [wantGroupTracker])
+
     def setStats(self, stats):
         self.stats = stats
         if self == base.localAvatar:
@@ -2568,6 +2584,42 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if hasattr(self, 'gmIcon') and self.gmIcon:
             self.gmIcon.detachNode()
             del self.gmIcon
+
+    def freezeToon(self):
+        self.setSystemMessage(base.localAvatar.doId, 'You have been frozen by a moderator!')
+        self.controlManager.disable()
+        base.localAvatar.book.hideButton()
+        base.localAvatar.bFriendsList.hide()
+    
+    def unfreezeToon(self):
+        self.setSystemMessage(base.localAvatar.doId, 'You have been unfrozen by a moderator!')
+        self.controlManager.enable()
+        base.localAvatar.book.showButton()
+        base.localAvatar.bFriendsList.show()
+
+    def magicTeleportRequest(self, requesterId):
+        self.sendUpdate('magicTeleportResponse', [requesterId, base.cr.playGame.getPlaceId()])
+
+    def magicTeleportInitiate(self, hoodId, zoneId):
+        loaderId = ZoneUtil.getBranchLoaderName(zoneId)
+        whereId = ZoneUtil.getToonWhereName(zoneId)
+
+        if ZoneUtil.isDynamicZone(zoneId) and hoodId in [ToontownGlobals.BossbotHQ, ToontownGlobals.LawbotHQ, ToontownGlobals.CashbotHQ, ToontownGlobals.SellbotHQ]:
+            whereId = 'cogHQBossBattle'
+        if zoneId in [ToontownGlobals.BossbotLobby, ToontownGlobals.LawbotLobby, ToontownGlobals.CashbotLobby, ToontownGlobals.SellbotLobby, ToontownGlobals.LawbotOfficeExt]:
+            how = 'walk'
+        else:
+            how = 'teleportIn'
+        requestStatus = [{
+            'loader': loaderId,
+            'where': whereId,
+            'how': how,
+            'hoodId': hoodId,
+            'zoneId': zoneId,
+            'shardId': None,
+            'avId': -1
+        }]
+        base.cr.playGame.getPlace().fsm.forceTransition('teleportOut', requestStatus)
 
 @magicWord(category=CATEGORY_STAFF)
 def globalTeleport():

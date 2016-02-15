@@ -16,14 +16,15 @@ import sys
 import tempfile
 import time
 
-import ToontownGlobals
-import ToontownLoader
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownLoader
 from otp.otpbase import OTPBase, OTPGlobals
 from otp.nametag.ChatBalloon import ChatBalloon
 from otp.nametag import NametagGlobals
 from otp.margins.MarginManager import MarginManager
 from toontown.toonbase import TTLocalizer, ToontownBattleGlobals
 from toontown.toontowngui import TTDialog
+from toontown.toonbase.Preloader import Preloader
 
 tempdir = tempfile.mkdtemp()
 vfs = VirtualFileSystem.getGlobalPtr()
@@ -94,11 +95,14 @@ class ToonBase(OTPBase.OTPBase):
         self.loader = ToontownLoader.ToontownLoader(self)
         __builtins__['loader'] = self.loader
         oldLoader.destroy()
+        self.preloader = Preloader()
+        __builtins__['preloader'] = self.preloader
         self.accept('PandaPaused', self.disableAllAudio)
         self.accept('PandaRestarted', self.enableAllAudio)
         self.wantPets = self.config.GetBool('want-pets', 1)
         self.wantBingo = self.config.GetBool('want-fish-bingo', 1)
         self.wantKarts = self.config.GetBool('want-karts', 1)
+        self.wantGroupTracker = self.config.GetBool('want-grouptracker', 0)
         self.inactivityTimeout = self.config.GetFloat('inactivity-timeout', ToontownGlobals.KeyboardTimeout)
         if self.inactivityTimeout:
             self.notify.debug('Enabling Panda timeout: %s' % self.inactivityTimeout)
@@ -135,6 +139,17 @@ class ToonBase(OTPBase.OTPBase):
         self.slowQuietZone = self.config.GetBool('slow-quiet-zone', 0)
         self.slowQuietZoneDelay = self.config.GetFloat('slow-quiet-zone-delay', 5)
         self.killInterestResponse = self.config.GetBool('kill-interest-response', 0)
+        
+        # group tracker prefs
+        print('setting group tracker setting')
+        if 'grouptracker' in settings:
+            self.showGroupTracker = settings.get('grouptracker', False)
+        else:
+            self.showGroupTracker = True
+        
+        settings['grouptracker'] = self.showGroupTracker
+        print('Group Tracker Settings:', self.showGroupTracker)
+
         tpMgr = TextPropertiesManager.getGlobalPtr()
         WLDisplay = TextProperties()
         WLDisplay.setSlant(0.3)

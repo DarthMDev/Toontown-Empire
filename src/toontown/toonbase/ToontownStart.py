@@ -139,6 +139,7 @@ base.graphicsEngine.renderFrame()
 DirectGuiGlobals.setDefaultRolloverSound(base.loadSfx('phase_3/audio/sfx/GUI_rollover.ogg'))
 DirectGuiGlobals.setDefaultClickSound(base.loadSfx('phase_3/audio/sfx/GUI_create_toon_fwd.ogg'))
 DirectGuiGlobals.setDefaultDialogGeom(loader.loadModel('phase_3/models/gui/dialog_box_gui'))
+
 import TTLocalizer
 if base.musicManagerIsValid:
     music = base.loadMusic('phase_3/audio/bgm/tte_theme.ogg')
@@ -150,6 +151,26 @@ if base.musicManagerIsValid:
     DirectGuiGlobals.setDefaultClickSound(base.loadSfx('phase_3/audio/sfx/GUI_create_toon_fwd.ogg'))
 else:
     music = None
+
+
+
+from toontown.toon import Toon
+
+
+Toon.preload()
+
+
+from toontown.suit import Suit
+
+
+Suit.preload()
+
+
+from toontown.login import AvatarChooser
+
+
+AvatarChooser.preload()
+
 import ToontownLoader
 from direct.gui.DirectGui import *
 serverVersion = config.GetString('server-version', 'no_version_set')
@@ -158,8 +179,6 @@ print 'ToontownStart: Build Version:', buildVersion
 build = OnscreenText(buildVersion, pos=(-1.3, -0.975), scale=0.06, fg=Vec4(0, 0, 1, 0.6), align=TextNode.ALeft)
 build.setPos(0.033,0.025)
 build.reparentTo(base.a2dBottomLeft)
-from toontown.suit import Suit
-Suit.loadModels()
 loader.beginBulkLoad('init', TTLocalizer.LoaderLabel, 138, 0, TTLocalizer.TIP_NONE)
 from ToonBaseGlobal import *
 from direct.showbase.MessengerGlobal import *

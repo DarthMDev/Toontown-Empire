@@ -32,6 +32,7 @@ want-house-types #f
 want-gifting #t
 want-top-toons #f
 want-emblems #f
+want-grouptracker #t
 
 # Chat:
 want-whitelist #t

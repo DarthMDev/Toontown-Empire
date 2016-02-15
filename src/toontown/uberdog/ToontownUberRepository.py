@@ -40,6 +40,8 @@ class ToontownUberRepository(ToontownInternalRepository):
         self.centralLogger = simbase.air.generateGlobalObject(OTP_DO_ID_CENTRAL_LOGGER, 'CentralLogger')
         self.friendsManager = simbase.air.generateGlobalObject(OTP_DO_ID_TTE_FRIENDS_MANAGER, 'TTEFriendsManager')
         self.globalPartyMgr = simbase.air.generateGlobalObject(OTP_DO_ID_GLOBAL_PARTY_MANAGER, 'GlobalPartyManager')
+        self.globalGroupTracker = simbase.air.generateGlobalObject(
+            OTP_DO_ID_GLOBAL_GROUP_TRACKER, 'GlobalGroupTracker')
         if self.wantTopToons:
             self.topToonsMgr = TopToonsManagerUD(self)
 

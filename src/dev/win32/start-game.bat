@@ -19,7 +19,7 @@ set /P INPUT=Selection:
 if %INPUT%==1 (
     set TTE_GAMESERVER=127.0.0.1
 ) else if %INPUT%==2 (
-    set TTE_GAMESERVER=45.55.208.151
+    set TTE_GAMESERVER=104.131.65.72
 ) else if %INPUT%==4 (
     set TTE_GAMESERVER=127.0.0.1
 ) else if %INPUT%==5 (
