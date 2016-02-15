@@ -74,6 +74,10 @@ class SafeZoneLoader(StateData.StateData):
         self.fsm.request(stateName, [requestStatus])
 
     def createSafeZone(self, dnaFile):
+        self.geom = NodePath('')
+        self.nodeList = []
+        self.holidayPropTransforms = {}
+        self.animPropDict = {}
         if self.safeZoneStorageDNAFile:
             dnaBulk = DNABulkLoader(self.hood.dnaStore, (self.safeZoneStorageDNAFile,))
             dnaBulk.loadDNAFiles()
@@ -81,6 +85,7 @@ class SafeZoneLoader(StateData.StateData):
         if node.getNumParents() == 1:
             self.geom = NodePath(node.getParent(0))
             self.geom.reparentTo(hidden)
+            self.geom.flattenLight()
         else:
             self.geom = hidden.attachNewNode(node)
         self.makeDictionaries(self.hood.dnaStore)
