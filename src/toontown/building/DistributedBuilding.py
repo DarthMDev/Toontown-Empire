@@ -929,7 +929,7 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         return visZoneId
 
     def getInteractiveProp(self):
-        result = None
+        return None
         if self.interactiveProp:
             result = self.interactiveProp
         else:
