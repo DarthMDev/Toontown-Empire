@@ -245,7 +245,7 @@ class HoodMgr(DirectObject.DirectObject):
         hoodId = ZoneUtil.getCanonicalZoneId(hoodId)
         return ToontownGlobals.hoodNameMap[hoodId][-1]
 
-    def addLinkTunnelHooks(self, hoodPart, nodeList):
+    def addLinkTunnelHooks(self, hoodPart, nodeList, currentZoneId):
         tunnelOriginList = []
         for i in nodeList:
             linkTunnelNPC = i.findAllMatches('**/linktunnel*')
@@ -257,6 +257,8 @@ class HoodMgr(DirectObject.DirectObject):
                 zoneStr = nameParts[2]
                 hoodId = self.getIdFromName(hoodStr)
                 zoneId = int(zoneStr)
+                hoodId = ZoneUtil.getTrueZoneId(hoodId, currentZoneId)
+                zoneId = ZoneUtil.getTrueZoneId(zoneId, currentZoneId)
                 linkSphere = linkTunnel.find('**/tunnel_trigger')
                 if linkSphere.isEmpty():
                     linkSphere = linkTunnel.find('**/tunnel_sphere')

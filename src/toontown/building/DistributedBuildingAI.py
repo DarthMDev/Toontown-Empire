@@ -205,6 +205,7 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
         blockNumber = self.block
         dnaStore = self.air.dnaStoreMap[self.canonicalZoneId]
         zoneId = dnaStore.getZoneFromBlockNumber(blockNumber)
+        zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
         interiorZoneId = (zoneId - (zoneId%100)) + 500 + blockNumber
         return (zoneId, interiorZoneId)
 
@@ -271,11 +272,13 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
     def updateSavedBy(self, savedBy):
         if self.savedBy:
             for (avId, name, dna) in self.savedBy:
-                self.trophyMgr.removeTrophy(avId, self.numFloors)
+                if not ZoneUtil.isWelcomeValley(self.zoneId):
+                    self.trophyMgr.removeTrophy(avId, self.numFloors)
         self.savedBy = savedBy
         if self.savedBy:
             for (avId, name, dna) in self.savedBy:
-                self.trophyMgr.addTrophy(avId, name, self.numFloors)
+                if not ZoneUtil.isWelcomeValley(self.zoneId):
+                    self.trophyMgr.addTrophy(avId, name, self.numFloors)
 
     def enterWaitForVictors(self, victorList, savedBy):
         activeToons = []
