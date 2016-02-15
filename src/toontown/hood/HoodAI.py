@@ -42,6 +42,8 @@ class HoodAI:
         return zoneTable
 
     def getLocationName(self, zoneId):
+        if zoneId == 22000:
+            return 'Welcome Valley'
         lookupTable = ToontownGlobals.hoodNameMap
         isStreet = (zoneId%1000) != 0
         if isStreet:
