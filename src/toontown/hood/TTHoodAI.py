@@ -6,10 +6,16 @@ from toontown.toonbase import ToontownGlobals
 from toontown.ai import DistributedEffectMgrAI
 
 class TTHoodAI(HoodAI.HoodAI):
-    def __init__(self, air):
-        HoodAI.HoodAI.__init__(self, air,
-                               ToontownGlobals.ToontownCentral,
-                               ToontownGlobals.ToontownCentral)
+    def __init__(self, air, isWelcomeValley=False):
+        if isWelcomeValley:
+            HoodAI.HoodAI.__init__(self, air,
+                                   ToontownGlobals.WelcomeValleyBegin,
+                                   ToontownGlobals.ToontownCentral)
+        else:
+            HoodAI.HoodAI.__init__(self, air,
+                                   ToontownGlobals.ToontownCentral,
+                                   ToontownGlobals.ToontownCentral)
+
 
         self.trolley = None
 
