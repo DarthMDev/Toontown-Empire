@@ -502,8 +502,7 @@ class Actor(DirectObject, NodePath):
 
     def removeNode(self):
         if self.__geomNode and (self.__geomNode.getNumChildren() > 0):
-            assert self.notify.warning("called actor.removeNode() on %s without calling cleanup()" % self.getName())
-        NodePath.removeNode(self)
+			NodePath.removeNode(self)
 
     def clearPythonData(self):
         self.__commonBundleHandles = {}
