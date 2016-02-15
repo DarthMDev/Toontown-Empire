@@ -304,6 +304,13 @@ class ShardPage(ShtikerPage.ShtikerPage):
         curShardTuples = base.cr.listActiveShards()
         curShardTuples.sort(compareShardTuples)
         currentShardId = self.getCurrentShardId()
+
+        if base.cr.welcomeValleyManager:
+            curShardTuples.append((ToontownGlobals.WelcomeValleyToken,
+             TTLocalizer.WelcomeValley[-1],
+             0,
+             0,
+             0))
         currentShardId = self.getCurrentShardId()
         actualShardId = base.localAvatar.defaultShard
         actualShardName = None
@@ -405,17 +412,25 @@ class ShardPage(ShtikerPage.ShtikerPage):
         del self.confirm
 
     def choseShard(self, shardId):
-        if not base.localAvatar.defaultShard == shardId:
-            self.requestTeleport(base.localAvatar.lastHood, shardId)
+        zoneId = self.getCurrentZoneId()
+        canonicalHoodId = ZoneUtil.getCanonicalHoodId(base.localAvatar.lastHood)
+        currentShardId = self.getCurrentShardId()
 
-    def requestTeleport(self, hood, shardId):
-        canonicalHoodId = ZoneUtil.getCanonicalHoodId(hood)
-        try:
-            place = base.cr.playGame.getPlace()
-        except:
+        if shardId == currentShardId:
+            return
+        elif shardId == ToontownGlobals.WelcomeValleyToken:
+            self.doneStatus = {'mode': 'teleport', 'hood': ToontownGlobals.WelcomeValleyToken}
+            messenger.send(self.doneEvent)
+        elif shardId == base.localAvatar.defaultShard:
+            self.doneStatus = {'mode': 'teleport', 'hood': canonicalHoodId}
+            messenger.send(self.doneEvent)
+        else:
             try:
-                place = base.cr.playGame.hood.loader.place
+                place = base.cr.playGame.getPlace()
             except:
-                place = base.cr.playGame.hood.place
+                try:
+                    place = base.cr.playGame.hood.loader.place
+                except:
+                    place = base.cr.playGame.hood.place
 
-        place.requestTeleport(canonicalHoodId, canonicalHoodId, shardId, -1)
+            place.requestTeleport(canonicalHoodId, canonicalHoodId, shardId, -1)
