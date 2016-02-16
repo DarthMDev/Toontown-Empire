@@ -8,15 +8,75 @@ HEADS_INDEX = 2 # A list of heads
 HEAD_TEXTURE_INDEX = 3 # The texture to use for the head
 HEIGHT_INDEX = 4 # The height of the cog
 
-aSize = 6.06 # Size of body type 'a'
-bSize = 5.29 # Size of body type 'b'
-cSize = 4.14 # Size of body type 'c'
+#These are used for setting the cogs height in size events.
+Normal = 0
+Small = 1
+Big = 2
+
+
+if base.config.GetBool('want-tiny-cogs'):
+ heightindex = Small 
+ aSize = 12.12
+ bSize = 10.58
+ cSize = 8.28
+elif base.config.GetBool('want-big-cogs'):
+ heightindex = Big
+ aSize = 2.03
+ bSize = 2.795
+ cSize = 2.07 
+else:
+ heightindex = Normal
+ aSize = 6.06 # Size of body type 'a'
+ bSize = 5.29 # Size of body type 'b'
+ cSize = 4.14 # Size of body type 'c'
+ 
+if heightindex == Small:
+ #Sellbots
+ CCHeight = 2.315
+ TMHeight = 2.62
+ NDHeight = 2.99
+ GHHeight = 3.2
+ MSHeight = 3.35
+ TFHeight = 3.475
+ MHeight = 3.805
+ MRHHeight = 4.475
+ #Bossbots
+ FHeight = 2.44
+ PHeight = 2.5
+elif heightindex == Big:
+ #Sellbots
+ CCHeight = 9.26
+ TMHeight = 10.48
+ NDHeight = 11.96
+ GHHeight = 12.8
+ MSHeight = 13.4
+ TFHeight = 13.9
+ MHeight = 15.22
+ MRHHeight = 17.9
+ #Bossbots
+ FHeight = 9.76
+ PHeight = 10.0
+elif heightindex == Normal:
+ #Sellbots
+ CCHeight = 4.63
+ TMHeight = 5.24
+ NDHeight = 5.98
+ GHHeight = 6.4
+ MSHeight = 6.7
+ TFHeight = 6.95
+ MHeight = 7.61
+ MRHHeight = 8.95
+ #Bossbots
+ FHeight = 4.88
+ PHeight = 5.0
+else:
+ pass
 
 ColdCallerHead = VBase4(0.25, 0.35, 1.0, 1.0) # Head used by Cold Caller
 
             # Bossbots
-suitProperties = {'f': (4.0 / cSize, SuitDNA.corpPolyColor, ['flunky', 'glasses'], '', 4.88),
-                  'p': (3.35 / bSize, SuitDNA.corpPolyColor, ['pencilpusher'], '', 5.0),
+suitProperties = {'f': (4.0 / cSize, SuitDNA.corpPolyColor, ['flunky', 'glasses'], '', FHeight),
+                  'p': (3.35 / bSize, SuitDNA.corpPolyColor, ['pencilpusher'], '', PHeight),
                   'ym': (4.125 / aSize, SuitDNA.corpPolyColor, ['yesman'], '', 5.28),
                   'mm': (2.5 / cSize, SuitDNA.corpPolyColor, ['micromanager'], '', 3.25),
                   'ds': (4.5 / bSize, SuitDNA.corpPolyColor, ['beancounter'], '', 6.08),
@@ -42,12 +102,12 @@ suitProperties = {'f': (4.0 / cSize, SuitDNA.corpPolyColor, ['flunky', 'glasses'
                   'ls': (6.5 / bSize, VBase4(0.5, 0.85, 0.75, 1.0), ['loanshark'], '', 8.58),
                   'rb': (7.0 / aSize, SuitDNA.moneyPolyColor, ['yesman'], 'robber-baron.jpg', 8.95),
                   # Sellbots
-                  'cc': (3.5 / cSize, VBase4(0.55, 0.65, 1.0, 1.0), ['coldcaller'], '', 4.63),
-                  'tm': (3.75 / bSize, SuitDNA.salesPolyColor, ['telemarketer'], '', 5.24),
-                  'nd': (4.35 / aSize, SuitDNA.salesPolyColor, ['numbercruncher'], 'name-dropper.jpg', 5.98),
-                  'gh': (4.75 / cSize, SuitDNA.salesPolyColor, ['gladhander'], '', 6.4),
-                  'ms': (4.75 / bSize, SuitDNA.salesPolyColor, ['movershaker'], '', 6.7),
-                  'tf': (5.25 / aSize, SuitDNA.salesPolyColor, ['twoface'], '', 6.95),
-                  'm': (5.75 / aSize, SuitDNA.salesPolyColor, ['twoface'], 'mingler.jpg', 7.61),
-                  'mh': (7.0 / aSize, SuitDNA.salesPolyColor, ['yesman'], '', 8.95),
+                  'cc': (3.5 / cSize, VBase4(0.55, 0.65, 1.0, 1.0), ['coldcaller'], '', CCHeight),
+                  'tm': (3.75 / bSize, SuitDNA.salesPolyColor, ['telemarketer'], '', TMHeight),
+                  'nd': (4.35 / aSize, SuitDNA.salesPolyColor, ['numbercruncher'], 'name-dropper.jpg', NDHeight),
+                  'gh': (4.75 / cSize, SuitDNA.salesPolyColor, ['gladhander'], '', GHHeight),
+                  'ms': (4.75 / bSize, SuitDNA.salesPolyColor, ['movershaker'], '', MSHeight),
+                  'tf': (5.25 / aSize, SuitDNA.salesPolyColor, ['twoface'], '', TFHeight),
+                  'm': (5.75 / aSize, SuitDNA.salesPolyColor, ['twoface'], 'mingler.jpg', MHeight),
+                  'mh': (7.0 / aSize, SuitDNA.salesPolyColor, ['yesman'], '', MRHHeight),
                   }

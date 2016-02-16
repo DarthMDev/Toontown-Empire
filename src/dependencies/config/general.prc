@@ -98,6 +98,10 @@ want-lawbot-cogdo #t
 # Cog buildings:
 want-cogbuildings #t
 
+#Events
+want-tiny-cogs #f
+want-big-cogs #f
+
 # Optional:
 show-total-population #t
 want-mat-all-tailors #t
