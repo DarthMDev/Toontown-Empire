@@ -121,3 +121,7 @@ want-old-fireworks #t
 # In-game News:
 want-news-tab #t
 want-news-page #t
+
+# MongoDB:
+ want-mongo #t
+ want-mongo-client #t
