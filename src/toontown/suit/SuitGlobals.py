@@ -60,6 +60,13 @@ if heightindex == Small:
  RBHeight = 4.475
  #Lawbots
  BFHeight = 2.405
+ BHeight = 3.085
+ DTHeight = 2.815
+ ACHeight = 3.195
+ BSHeight = 3.355
+ SDHeight = 3.95
+ LEHeight = 4.135
+ BWHeight = 4.345
 elif heightindex == Big:
  #Sellbots
  CCHeight = 9.26
@@ -90,6 +97,13 @@ elif heightindex == Big:
  RBHeight = 17.90
  #Lawbots
  BFHeight = 9.62
+ BHeight = 12.34
+ DTHeight = 11.26
+ ACHeight = 12.78
+ BSHeight = 13.42
+ SDHeight = 15.8
+ LEHeight = 16.54
+ BWHeight = 17.38
 elif heightindex == Normal:
  #Sellbots
  CCHeight = 4.63
@@ -120,6 +134,13 @@ elif heightindex == Normal:
  RBHeight = 8.95
  #Lawbots
  BFHeight = 4.81
+ BHeight = 6.17
+ DTHeight = 5.63
+ ACHeight = 6.39
+ BSHeight = 6.71
+ SDHeight = 7.9
+ LEHeight = 8.27
+ BWHeight = 8.69
 else:
  pass
 
@@ -136,13 +157,13 @@ suitProperties = {'f': (4.0 / cSize, SuitDNA.corpPolyColor, ['flunky', 'glasses'
                   'tbc': (7.0 / aSize, VBase4(0.75, 0.95, 0.75, 1.0), ['bigcheese'], '', TBCHeight),
                   # Lawbots
                   'bf': (4.0 / cSize, SuitDNA.legalPolyColor, ['tightwad'], 'bottom-feeder.jpg', BFHeight),
-                  'b': (4.375 / bSize, VBase4(0.95, 0.95, 1.0, 1.0), ['movershaker'], 'blood-sucker.jpg', 6.17),
-                  'dt': (4.25 / aSize, SuitDNA.legalPolyColor, ['twoface'], 'double-talker.jpg', 5.63),
-                  'ac': (4.35 / bSize, SuitDNA.legalPolyColor, ['ambulancechaser'], '', 6.39),
-                  'bs': (4.5 / aSize, SuitDNA.legalPolyColor, ['backstabber'], '', 6.71),
-                  'sd': (5.65 / bSize, VBase4(0.5, 0.8, 0.75, 1.0), ['telemarketer'], 'spin-doctor.jpg', 7.9),
-                  'le': (7.125 / aSize, VBase4(0.25, 0.25, 0.5, 1.0), ['legaleagle'], '', 8.27),
-                  'bw': (7.0 / aSize, SuitDNA.legalPolyColor, ['bigwig'], '', 8.69),
+                  'b': (4.375 / bSize, VBase4(0.95, 0.95, 1.0, 1.0), ['movershaker'], 'blood-sucker.jpg', BHeight),
+                  'dt': (4.25 / aSize, SuitDNA.legalPolyColor, ['twoface'], 'double-talker.jpg', DTHeight),
+                  'ac': (4.35 / bSize, SuitDNA.legalPolyColor, ['ambulancechaser'], '', ACHeight),
+                  'bs': (4.5 / aSize, SuitDNA.legalPolyColor, ['backstabber'], '', BSHeight),
+                  'sd': (5.65 / bSize, VBase4(0.5, 0.8, 0.75, 1.0), ['telemarketer'], 'spin-doctor.jpg', SDHeight),
+                  'le': (7.125 / aSize, VBase4(0.25, 0.25, 0.5, 1.0), ['legaleagle'], '', LEHeight),
+                  'bw': (7.0 / aSize, SuitDNA.legalPolyColor, ['bigwig'], '', BWHeight),
                   # Cashbots
                   'sc': (3.6 / cSize, SuitDNA.moneyPolyColor, ['coldcaller'], '', SCHeight),
                   'pp': (3.55 / aSize, VBase4(1.0, 0.5, 0.6, 1.0), ['pennypincher'], '', PPHeight),

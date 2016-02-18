@@ -102,6 +102,10 @@ want-cogbuildings #t
 want-tiny-cogs #f
 want-big-cogs #f
 
+#This is for when suit sizes are changed and you want to
+#have the HP fit the cog's size.
+want-size-hp-modification #f
+
 # Optional:
 show-total-population #t
 want-mat-all-tailors #t
