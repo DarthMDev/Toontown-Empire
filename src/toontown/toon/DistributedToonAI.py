@@ -161,6 +161,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.hostedParties = []
         self.partiesInvitedTo = []
         self.partyReplyInfoBases = []
+        self.magicWordTeleportRequests = []
         self.teleportOverride = 0
         self.buffs = []
         self.wantGroupTracker = True
