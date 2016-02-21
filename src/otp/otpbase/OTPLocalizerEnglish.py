@@ -2334,3 +2334,13 @@ def timeElapsedString(timeDelta):
         return '%s minutes ago' % (timeDelta.seconds / 60)
 
 AsciiNotSupported = 'Sorry, but Toontown Empire does not support non-ASCII characters.'
+#With Names we can use ~disableGM To hide until next login
+#Change these to a more suitable name for each one ford
+AccessToString = {
+ 103: '\x01amaranth\x01Moderator\x02',
+ 200: '\x01caribbeanGreen\x01Artist\x02',
+ 502: '\x01amber\x01Staff\x02',
+ 504: '\x01androidGreen\x01Lead Staff\x02',
+ 508: '\x01cobalt\x01Developer\x02',
+ 701: '\x01azure\x01Leader\x02'
+}

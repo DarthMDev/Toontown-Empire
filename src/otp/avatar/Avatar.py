@@ -69,6 +69,7 @@ class Avatar(Actor, ShadowCaster):
         self.__chatSet = 0
         self.__chatLocal = 0
         self.__currentDialogue = None
+        self.wantAdminTag = True
 
     def delete(self):
         try:
@@ -173,6 +174,12 @@ class Avatar(Actor, ShadowCaster):
     def getType(self):
         return self.avatarType
 
+    def setWantAdminTag(self, bool):
+        self.wantAdminTag = bool
+    
+    def getWantAdminTag(self):
+        return self.wantAdminTag
+
     def setName(self, name):
         if hasattr(self, 'isDisguised') and self.isDisguised:
             return
@@ -194,8 +201,11 @@ class Avatar(Actor, ShadowCaster):
 
         self.nametag.setName(name)
 
-        if hasattr(self, 'adminAccess') and self.isAdmin():
+        if hasattr(self, 'adminAccess') and self.isAdmin() and self.getWantAdminTag():
             access = self.getAdminAccess()
+
+            if access in OTPLocalizer.AccessToString:
+                name += '\n\x01shadow\x01%s\x02' % OTPLocalizer.AccessToString[access]
 
         self.nametag.setDisplayName(name)
 
@@ -434,7 +444,7 @@ class Avatar(Actor, ShadowCaster):
             messenger.send('doneChatPage', [elapsed])
 
     def advancePageNumber(self):
-        if self.__chatAddressee == base.localAvatar.doId and (
+        if (self.__chatAddressee == base.localAvatar.doId) and (
             self.__chatPageNumber is not None) and (
             self.__chatPageNumber[0] == self.__chatParagraph):
             pageNumber = self.__chatPageNumber[1]
@@ -448,7 +458,7 @@ class Avatar(Actor, ShadowCaster):
                     self.b_setPageNumber(self.__chatParagraph, pageNumber)
 
     def __updatePageChat(self):
-        if self.__chatPageNumber is not None and (
+        if (self.__chatPageNumber is not None) and (
             self.__chatPageNumber[0] == self.__chatParagraph):
             pageNumber = self.__chatPageNumber[1]
             if pageNumber >= 0:

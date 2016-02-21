@@ -87,6 +87,7 @@ class MagicWordCategory:
 
 CATEGORY_UNKNOWN = MagicWordCategory('Unknown')
 CATEGORY_TRIAL = MagicWordCategory('Trial', defaultAccess=103)
+CATEGORY_ARTIST = MagicWordCategory('Artist Extra', defaultAccess=200) #This is just for name tags
 CATEGORY_STAFF = MagicWordCategory('Staff', defaultAccess=502)
 CATEGORY_LEAD_STAFF = MagicWordCategory('Lead Staff', defaultAccess=504)
 CATEGORY_DEVELOPER = MagicWordCategory('Developer', defaultAccess=508)
