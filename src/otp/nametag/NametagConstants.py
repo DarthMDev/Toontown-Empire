@@ -15,7 +15,6 @@ CCToonBuilding = 3
 CCSuitBuilding = 4
 CCHouseBuilding = 5
 CCSpeedChat = 6
-CCOrange = 7
 
 NAMETAG_COLORS = {
     CCNormal: (
@@ -115,21 +114,7 @@ NAMETAG_COLORS = {
         # Disable FG                    BG
         ((0.0, 0.6, 0.2, 1.0), (0.8, 0.8, 0.8, 0.5),  # Name
          (0.0, 0.0, 0.0, 1.0), (1.0, 1.0, 1.0, 1.0)), # Chat
-    ),
-    CCOrange: (
-         # Normal  FG                    BG
-        ((1.0, 0.35, 0.25, 1.0), (0.8, 0.8, 0.8, 0.5),  # Name
-         (0.0, 0.0, 0.0, 1.0), (1.0, 1.0, 1.0, 1.0)), # Chat
-         # Click   FG                    BG
-        ((1.0, 0.35, 0.25, 1.0), (0.2, 0.2, 0.2, 0.6),  # Name
-         (1.0, 0.5, 0.5, 1.0), (1.0, 1.0, 1.0, 1.0)), # Chat
-         # Hover   FG                    BG
-        ((1.0, 0.5, 0.56, 1.0), (1.0, 1.0, 1.0, 1.0),  # Name
-         (0.0, 0.6, 0.6, 1.0), (1.0, 1.0, 1.0, 1.0)), # Chat
-         # Disable FG                    BG
-        ((1.0, 0.35, 0.25, 1.0), (0.8, 0.8, 0.8, 0.5),  # Name
-         (0.0, 0.0, 0.0, 1.0), (1.0, 1.0, 1.0, 1.0)), # Chat
-     )
+    )
 }
 
 ARROW_COLORS = {
@@ -143,8 +128,7 @@ DEFAULT_WORDWRAPS = {
     CCToonBuilding: 8.5,
     CCSuitBuilding: 8.5,
     CCHouseBuilding: 10.0,
-    CCSpeedChat: 7.5,
-    CCOrange: 7.5
+    CCSpeedChat: 7.5
 }
 
 WTNormal = 0
@@ -219,3 +203,4 @@ WHISPER_COLORS = {
 
 def getFriendColor(handle):
     return CCNormal if base.localAvatar.isTrueFriends(handle.doId) else CCSpeedChat
+

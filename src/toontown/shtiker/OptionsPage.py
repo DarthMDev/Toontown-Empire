@@ -734,15 +734,14 @@ class AdvancedOptionsTabPage(DirectFrame):
         self.speed_chat_scale = 0.055
         self.cogLevel_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord), command=self.__doToggleCogLevelGui)
         self.cogLevel_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight))
-#        self.bugReportButton = DirectButton(parent=self, relief=None, text=TTLocalizer.BugReportButton, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text_pos=(0, -0.01), text_fg=(0, 0, 0, 1),
-#        command=self.showReportNotice, pos=(0.0, 0.0, -0.6), text_scale=(0.045))
+        self.bugReportButton = DirectButton(parent=self, relief=None, text=TTLocalizer.BugReportButton, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text_pos=(0, -0.01), text_fg=(0, 0, 0, 1),
+        command=self.showReportNotice, pos=(0.0, 0.0, -0.6), text_scale=(0.045))
         self.WASD_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - textRowHeight))
         self.WASD_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight), command=self.__doToggleWASD)
         self.teleport_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - 2 * textRowHeight))
         self.teleport_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - 2 * textRowHeight), command=self.__doToggleTeleport)
         self.news_label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - 3 * textRowHeight))
         self.news_toggleButton = DirectButton(parent=self, relief=None, image=button_image, image_scale=button_image_scale, text='', text_scale=news_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - 3 * textRowHeight), command=self.__doToggleNews)
-#        self.coloredTags_label = DirectLabel(parent=self, relief=None, text=TTLocalizer.OptionsPageColoredTags, text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=10, pos=(leftMargin, 0, textStartHeight - 4 * textRowHeight))
         gui.removeNode()
         guiButton.removeNode()
 
@@ -753,7 +752,6 @@ class AdvancedOptionsTabPage(DirectFrame):
         self.__setCogLevelGuiButton()
         self.__setTeleportButton()
         self.__setNewsButton()
-#        self.__setColoredTagsButton()
 
     def exit(self):
         self.ignore('confirmDone')
@@ -775,8 +773,6 @@ class AdvancedOptionsTabPage(DirectFrame):
         del self.teleport_toggleButton
         self.news_toggleButton.destory()
         del self.news_label
-#        self.coloredTags_toggleButton.destroy()
-#        del self.coloredTags_label
 
     def __doToggleCogLevelGui(self):
         messenger.send('wakeup')
@@ -804,20 +800,22 @@ class AdvancedOptionsTabPage(DirectFrame):
         if index not in [-1, base.localAvatar.nametagStyles.index(base.localAvatar.getNametagStyle())]:
             base.localAvatar.requestNametagStyle(base.localAvatar.nametagStyles[index])
 
-#    def destroyReportNotice(self):
-#        if hasattr(self, 'dialog'):
-#            self.dialog.destroy()
-#            del self.dialog
+    def destroyReportNotice(self):
+        if hasattr(self, 'dialog'):
+            self.dialog.destroy()
+            del self.dialog
 
-#    def showReportNotice(self):
-#        self.dialog = TTDialog.TTDialog(style=TTDialog.YesNo, text=TTLocalizer.BugReportNotice, command=self.confirmBugReport)
-#        self.dialog.show()
+    def showReportNotice(self):
+        self.dialog = TTDialog.TTDialog(style=TTDialog.YesNo, text=TTLocalizer.BugReportNotice, command=self.confirmBugReport)
+        self.dialog.show()
 
-#    def confirmBugReport(self, value):
-#        if value > 0:
-#            webbrowser.open(ToontownGlobals.BugReportSite, new=2, autoraise=True)
+    def confirmBugReport(self, value):
+        if value > 0:
+            webbrowser.open(ToontownGlobals.BugReportSite, new=2, autoraise=True)
 
-#        self.dialog.destroy()
+        self.dialog.destroy()
+
+
 
     def __doToggleWASD(self):
         messenger.send('wakeup')
