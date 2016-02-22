@@ -358,6 +358,34 @@ class LoginAccountFSM(OperationFSM):
                 self.notify.debug('Rejecting old token: %d, notAfter=%d' % (self.account.get('LAST_LOGIN_TS', 0), self.notAfter))
                 return self.__handleLookup({'success': False})
 
+
+        if self.account.get('STATS_ID', 0) == 0:
+            def handleAccountStatsCreated(accountStatsId, self=self):
+                if not accountStatsId:
+                    self.notify.warning('Database failed to construct an account states object!')
+                    self.demand('Kill', 'Your account stats object could not be created in the game database.')
+                    return
+
+                # Update the existing account with the stats id:
+                self.csm.air.dbInterface.updateObject(
+                    self.csm.air.dbId,
+                    self.accountId,
+                    self.csm.air.dclassesByName['AccountUD'],
+                    {'STATS_ID': accountStatsId})
+
+                self.account['STATS_ID'] = accountStatsId
+
+                self.demand('SetAccount')
+
+            # Create the account stats object
+            self.csm.air.dbInterface.createObject(
+                self.csm.air.dbId,
+                self.csm.air.dclassesByName['AccountStatsUD'],
+                {},
+                handleAccountStatsCreated)
+
+            return
+
         self.demand('SetAccount')
 
     def enterCreateAccount(self):
@@ -370,7 +398,8 @@ class LoginAccountFSM(OperationFSM):
             'LAST_LOGIN_TS': time.time(),
             'ACCOUNT_ID': str(self.userId),
             'ACCESS_LEVEL': self.accessLevel,
-            'CHAT_SETTINGS': [1, 1]
+            'CHAT_SETTINGS': [1, 1],
+            'STATS_ID': 0
         }
         self.csm.air.dbInterface.createObject(
             self.csm.air.dbId,
@@ -390,6 +419,30 @@ class LoginAccountFSM(OperationFSM):
 
         self.accountId = accountId
         self.csm.air.writeServerEvent('accountCreated', accountId)
+
+
+        # Now that the account is created, we can create the stats object as well:
+        self.csm.air.dbInterface.createObject(
+            self.csm.air.dbId,
+            self.csm.air.dclassesByName['AccountStatsUD'],
+            {},
+            self.__handleAccountStatsCreated)
+
+    def __handleAccountStatsCreated(self, accountStatsId):
+        if not accountStatsId:
+            self.notify.warning('Database failed to construct an account states object!')
+            self.demand('Kill', 'Your account stats object could not be created in the game database.')
+            return
+
+        # Update the account we just created with the proper stats id:
+        self.csm.air.dbInterface.updateObject(
+            self.csm.air.dbId,
+            self.accountId,
+            self.csm.air.dclassesByName['AccountUD'],
+            {'STATS_ID': accountStatsId})
+
+        # We are done, store the account id:
+
         self.demand('StoreAccountID')
 
     def enterStoreAccountID(self):
@@ -525,10 +578,12 @@ class CreateAvatarFSM(OperationFSM):
         # For use in calling name requests:
         self.accountID = self.account['ACCOUNT_ID']
 
-        self.avList = self.account['ACCOUNT_AV_SET']
-        # Sanitize:
-        self.avList = self.avList[:6]
-        self.avList += [0] * (6-len(self.avList))
+        def handleAccountStatsRecieved(dclass, fields, self=self):
+            if dclass != self.csm.air.dclassesByName['AccountStatsUD']:
+                self.demand('Kill', 'Your account stats object was not found in the database!')
+                return
+
+            self.accountStats = fields
 
         # Make sure the index is open:
         if self.avList[self.index]:
@@ -609,12 +664,24 @@ class AvatarOperationFSM(OperationFSM):
         # For use in calling name requests:
         self.accountID = self.account['ACCOUNT_ID']
 
-        self.avList = self.account['ACCOUNT_AV_SET']
-        # Sanitize:
-        self.avList = self.avList[:6]
-        self.avList += [0] * (6-len(self.avList))
+        def handleAccountStatsRecieved(dclass, fields, self=self):
+            if dclass != self.csm.air.dclassesByName['AccountStatsUD']:
+                self.demand('Kill', 'Your account stats object was not found in the database!')
+                return
 
-        self.demand(self.POST_ACCOUNT_STATE)
+            self.accountStats = fields
+
+            self.avList = self.account['ACCOUNT_AV_SET']
+            # Sanitize:
+            self.avList = self.avList[:6]
+            self.avList += [0] * (6-len(self.avList))
+
+            # We got the account stats, demand our next state:
+            self.demand(self.POST_ACCOUNT_STATE)
+
+        # Query the account stats:
+        self.csm.air.dbInterface.queryObject(
+            self.csm.air.dbId, self.account['STATS_ID'], handleAccountStatsRecieved)
 
 class GetAvatarsFSM(AvatarOperationFSM):
     notify = directNotify.newCategory('GetAvatarsFSM')
@@ -998,7 +1065,8 @@ class LoadAvatarFSM(AvatarOperationFSM):
         # Activate the avatar on the DBSS:
         self.csm.air.sendActivate(
             self.avId, 0, 0, self.csm.air.dclassesByName['DistributedToonUD'],
-            {'setAdminAccess': [self.account.get('ACCESS_LEVEL', 0)]})
+            {'setAdminAccess': [self.account.get('ACCESS_LEVEL', 0)],
+             'setAchievements': [self.accountStats['ACHIEVEMENTS'], self.accountStats['ACHIEVEMENT_POINTS']]})
 
         # Next, add them to the avatar channel:
         datagram = PyDatagram()
