@@ -11,6 +11,7 @@ from toontown.battle import BattleBase
 from panda3d.core import *
 import SuitDNA
 import random
+import time
 AllBossCogs = []
 
 class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
@@ -25,6 +26,7 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
         self.resetBattleCounters()
         self.looseToons = []
         self.involvedToons = []
+        self.startingToonCount = 0
         self.toonsA = []
         self.toonsB = []
         self.nearToons = []
@@ -44,6 +46,8 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
         self.attackCode = None
         self.attackAvId = 0
         self.hitCount = 0
+        self.startTime = 0
+        self.endTime = 0
         self.attackSpeed = 1
         AllBossCogs.append(self)
         return
@@ -88,6 +92,10 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
             self.acceptOnce(event, self.__handleUnexpectedExit, extraArgs=[avId])
 
     def removeToon(self, avId):
+
+                    if self.air.wantAchievements:
+                        self.air.achievementsManager.toonLostBossCog(avId, self.dept)
+
         if avId in self.looseToons:
             self.looseToons.remove(avId)
 
@@ -212,6 +220,7 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
                      toonId,
                      toon.getHp(),
                      toon.getMaxHp()))
+        self.startingToonCount = len(self.involvedToons) - 1
 
         self.resetBattles()
         self.barrier = self.beginBarrier('Elevator', self.involvedToons, 30, self.__doneElevator)
@@ -239,6 +248,8 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
                 toon.b_setCogIndex(-1)
 
     def enterBattleOne(self):
+        self.startTime = time.time()
+
         if self.battleA:
             self.battleA.startBattle(self.toonsA, self.suitsA)
         if self.battleB:
@@ -248,8 +259,15 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
         self.resetBattles()
 
     def enterReward(self):
+        self.endTime = int(time.time() - self.startTime)
+
         self.resetBattles()
         self.barrier = self.beginBarrier('Reward', self.involvedToons, BattleBase.BUILDING_REWARD_TIMEOUT, self.__doneReward)
+        if self.air.wantAchievements:
+            for toonId in self.involvedToons:
+                infoDict = {'toonCount': self.startingToonCount, 'time': self.endTime}
+                self.getExtraAchievementInfo(toonId, infoDict)
+                self.air.achievementsManager.toonDefeatedBossCog(toonId, self.dept, infoDict)
 
     def __doneReward(self, avIds):
         self.b_setState('Epilogue')
@@ -606,6 +624,9 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
 
     def doNextAttack(self, task):
         self.b_setAttackCode(ToontownGlobals.BossCogNoAttack)
+
+    def getExtraAchievementInfo(self, toonId, infoDict):
+        pass
 
     def b_setAttackSpeed(self, speed):
         self.setAttackSpeed(speed)

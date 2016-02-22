@@ -490,12 +490,6 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         DistributedBossCogAI.DistributedBossCogAI.enterEpilogue(self)
         self.d_setRewardId(self.rewardId)
 
-    def enterReward(self):
-        if self.air.wantAchievements:
-            for toonId in self.involvedToons:
-                self.air.achievementsManager.toonDefeatedCFO(toonId)
-
-        DistributedBossCogAI.DistributedBossCogAI.enterReward(self)
 
 @magicWord(category=CATEGORY_LEADER)
 def restartCraneRound():
