@@ -598,8 +598,7 @@ typedef int16 pair16[2];
 dclass AccountStats {
   uint16 ACHIEVEMENTS[] = [] db;
   uint16 ACHIEVEMENT_POINTS = 0 db;
-
-  uint32 HOURS_PLAYED = 0 db;
+  uint32 SECONDS_PLAYED = 0 db;
 
   uint32 COGS_DEFEATED = 0 db;
   uint32 FRIENDS_MADE = 0 db;

@@ -55,6 +55,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase.ToontownGlobals import *
 from toontown.friends.FriendHandle import FriendHandle
+from toontown.achievements.AchievementsGUI import AchievementsGUI
 
 WantNewsPage = config.GetBool('want-news-page', ToontownGlobals.DefaultWantNewsPageSetting)
 from toontown.toontowngui import NewsPageButtonManager
@@ -171,6 +172,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.questMap = None
             self.prevToonIdx = 0
             self.houseType = 0
+            self.achievementsGui = AchievementsGUI()
 
     def setDNA(self, dna):
         base.localAvatarStyle = dna
@@ -1756,6 +1758,12 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
     def hasPet(self):
         return self.petId != 0
 
+    def setAchievements(self, achievements, achievementPoints):
+        for achievementId in achievements:
+            if achievementId not in self.achievements:
+                self.achievementsGui.showAchievement(achievementId)
+
+        DistributedToon.DistributedToon.setAchievements(self, achievements, achievementPoints)
 
     def getPetDNA(self):
         if self.hasPet():
