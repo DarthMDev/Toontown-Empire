@@ -188,6 +188,9 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         if self.isPlayerControlled():
             messenger.send('avatarEntered', [self])
 
+            if self.air.wantAchievements:
+                self.air.achievementsManager.statsCache.toonGenerated(self)
+
         from toontown.toon.DistributedNPCToonBaseAI import DistributedNPCToonBaseAI
         if not isinstance(self, DistributedNPCToonBaseAI):
             self.sendUpdate('setDefaultShard', [self.air.districtId])
