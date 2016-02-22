@@ -41,7 +41,13 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         self.waitingForHelmet = 0
         self.avatarHelmets = {}
         self.bossMaxDamage = ToontownGlobals.CashbotBossMaxDamage
-        return
+
+        self.toonStuns = {}
+        self.toonDamageDict = {}
+        self.goonsHit = {}
+        self.safesHit = {}
+        self.helmetsRemoved = {}
+        self.finalHitId = None
 
     def generate(self):
         DistributedBossCogAI.DistributedBossCogAI.generate(self)
@@ -359,11 +365,21 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
             return
         if self.state != 'BattleThree':
             return
+
+        if avId not in self.toonDamageDict:
+            self.toonDamageDict[avId] = 0
+        self.toonDamageDict[avId] += damage
+
         self.b_setBossDamage(self.bossDamage + damage)
+
         if self.bossDamage >= self.bossMaxDamage:
+            self.finalHitId = avId
             self.b_setState('Victory')
         elif self.attackCode != ToontownGlobals.BossCogDizzy:
             if damage >= ToontownGlobals.CashbotBossKnockoutDamage:
+                if avId not in self.toonStuns:
+                    self.toonStuns[avId] = 0
+                self.toonStuns[avId] += 1
                 self.b_setAttackCode(ToontownGlobals.BossCogDizzy)
                 self.stopHelmets()
             else:
@@ -490,6 +506,10 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         DistributedBossCogAI.DistributedBossCogAI.enterEpilogue(self)
         self.d_setRewardId(self.rewardId)
 
+    def getExtraAchievementInfo(self, toonId, infoDict):
+        infoDict.update({'stuns': self.toonStuns.get(toonId, 0), 'damageDealt': self.toonDamageDict.get(toonId, 0),
+                         'goonsHit': self.goonsHit.get(toonId, 0), 'safesHit': self.safesHit.get(toonId, 0),
+                         'helmetsRemoved': self.helmetsRemoved.get(toonId, 0), 'finalHit': self.finalHitId == toonId})
 
 @magicWord(category=CATEGORY_LEADER)
 def restartCraneRound():
