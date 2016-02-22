@@ -6,6 +6,7 @@ from direct.gui.DirectGui import cleanupDialog
 from direct.directnotify import DirectNotifyGlobal
 from toontown.hood import Place
 from toontown.battle import BattlePlace
+from direct.fsm import *
 from direct.showbase import DirectObject
 from direct.fsm import StateData
 from direct.fsm import ClassicFSM, State
@@ -108,7 +109,23 @@ class Street(BattlePlace.BattlePlace):
         self.zone = ZoneUtil.getBranchZone(requestStatus['zoneId'])
 
         def __lightDecorationOn__():
-            geom = base.cr.playGame.getPlace().loader.geom
+            try:
+                geom = base.cr.playGame.getPlace().loader.geom
+            except:
+                loaderId = ZoneUtil.getBranchLoaderName(2000) # This Prevents A Wierd Crash and will teleport you to toontown central instead of crashing you the issue occurs if a toon is in the grey when been teleported to or in admins case if they are in ghost form and tp to someone in the grey this way we can prevent a crash
+                whereId = ZoneUtil.getToonWhereName(200)
+                how = 'teleportIn'
+                print ("This Should not happen.")
+                requestStatus = [{
+                'loader': loaderId,
+                'where': whereId,
+                'how': how,
+                'hoodId': 2000,
+                'zoneId': 2000,
+                'shardId': None,
+                'avId': -1
+                }]
+                base.cr.playGame.getPlace().fsm.forceTransition('teleportOut', requestStatus)
             self.halloweenLights = geom.findAllMatches('**/*light*')
             self.halloweenLights += geom.findAllMatches('**/*lamp*')
             self.halloweenLights += geom.findAllMatches('**/prop_snow_tree*')
