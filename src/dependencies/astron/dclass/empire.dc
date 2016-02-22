@@ -620,6 +620,11 @@ dclass AccountStats {
   uint32 CGFS_DEFEATED[3] = [0*3] db;
 
   uint32 VPS_DEFEATED = 0 db;
+  uint32 VP_DAMAGE_DONE = 0 db;
+  uint32 VPS_LOST = 0 db;
+  uint32 VP_STUNS = 0 db;
+  uint32 VP_FINAL_HITS = 0 db;
+
   uint32 CFOS_DFEEATED = 0 db;
   uint32 CJS_DEFEATED = 0 db;
   uint32 CEOS_DEFEATED = 0 db;
