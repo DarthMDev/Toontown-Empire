@@ -537,3 +537,7 @@ class DistributedToonUD(DistributedObjectUD):
 
     def updateGroup(self, leaderId, category, currAvs, memberNames):
         pass
+
+   
+    def setAchievements(self, achievements):
+        pass

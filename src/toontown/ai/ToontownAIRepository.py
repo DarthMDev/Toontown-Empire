@@ -13,6 +13,7 @@ from toontown.ai import PromotionManagerAI
 from toontown.ai.FishManagerAI import FishManagerAI
 from toontown.ai.NewsManagerAI import NewsManagerAI
 from toontown.ai.QuestManagerAI import QuestManagerAI
+from toontown.ai.AchievementsManagerAI import AchievementsManagerAI
 from toontown.ai.DistributedBlackCatMgrAI import DistributedBlackCatMgrAI
 from toontown.ai.DistributedReportMgrAI import DistributedReportMgrAI
 from toontown.building.DistributedBuildingQueryMgrAI import DistributedBuildingQueryMgrAI
@@ -87,6 +88,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.wantCogbuildings = self.config.GetBool('want-cogbuildings', True)
         self.wantCogdominiums = self.config.GetBool('want-cogdominiums', True)
         self.wantTrackClsends = self.config.GetBool('want-track-clsends', False)
+        self.wantAchievements = self.config.GetBool('want-achievements', True)
         self.wantTopToons = self.config.GetBool('want-top-toons', True)
         self.baseXpMultiplier = self.config.GetFloat('base-xp-multiplier', 1.0)
         self.wantGroupTracker = self.config.GetBool('want-grouptracker', False)
@@ -106,7 +108,8 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.tutorialManager.generateWithRequired(2)
         self.friendManager = FriendManagerAI(self)
         self.friendManager.generateWithRequired(2)
-        self.questManager = QuestManagerAI(self)       
+        self.questManager = QuestManagerAI(self)    
+        self.achievementsManager = AchievementsManagerAI(self)		
         self.banManager = BanManagerAI.BanManagerAI(self)
         self.suitInvasionManager = SuitInvasionManagerAI(self)
         self.blackCatMgr = DistributedBlackCatMgrAI(self)

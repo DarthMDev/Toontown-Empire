@@ -45,8 +45,10 @@ from toontown.shtiker import OptionsPage
 from toontown.shtiker import QuestPage
 from toontown.shtiker import ShardPage
 from toontown.shtiker import ShtikerBook
+from toontown.shtiker import AchievementsPage
 from toontown.shtiker import SuitPage
 from toontown.shtiker import TrackPage
+from toontown.achievements import AchievementGui
 from toontown.toon import ElevatorNotifier
 from toontown.toon import ToonDNA
 from toontown.toon.DistributedNPCToonBase import DistributedNPCToonBase
@@ -354,6 +356,11 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.fishPage.setAvatar(self)
         self.fishPage.load()
         self.book.addPage(self.fishPage, pageName=TTLocalizer.FishPageTitle)
+        if base.wantAchievements:
+            self.achievementsPage = AchievementsPage.AchievementsPage()
+            self.achievementsPage.setAvatar(self)
+            self.achievementsPage.load()
+            self.book.addPage(self.achievementsPage, pageName=TTLocalizer.AchievementsPageTitle)
         if base.wantKarts:
             self.addKartPage()
         if self.disguisePageFlag:
@@ -397,6 +404,8 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.accept('InputState-turnLeft', self.__toonMoved)
         self.accept('InputState-turnRight', self.__toonMoved)
         self.accept('InputState-slide', self.__toonMoved)
+
+        self.achievementGui = AchievementGui.AchievementGui()
 
         QuestParser.init()
         return
@@ -1750,6 +1759,17 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
 
     def hasPet(self):
         return self.petId != 0
+      
+    def setAchievements(self, achievements):
+        if base.wantAchievements:
+            if self.canEarnAchievements:
+                for achievementId in achievements:
+                    if not achievementId in self.achievements:
+                        self.achievementGui.earnAchievement(achievementId)
+            else:
+                self.canEarnAchievements = True
+        
+        DistributedToon.DistributedToon.setAchievements(self, achievements)
 
     def getPetDNA(self):
         if self.hasPet():

@@ -28,6 +28,7 @@ from toontown.racing import RaceGlobals
 from toontown.shtiker import CogPageGlobals
 from toontown.suit import SuitDNA, SuitInvasionGlobals
 from toontown.toon import NPCToons
+from toontown.achievements import Achievements
 from toontown.toonbase import TTLocalizer, ToontownBattleGlobals, ToontownGlobals
 from toontown.toonbase.ToontownGlobals import *
 from NPCToons import npcFriends
@@ -76,6 +77,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.experience = None
         self.petId = None
         self.quests = []
+        self.achievements = []
         self.cogs = []
         self.cogCounts = []
         self.NPCFriendsDict = {}
@@ -545,6 +547,9 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
         self.friendsList.append(friendId)
         self.air.questManager.toonMadeFriend(self)
+        
+        if self.air.wantAchievements:
+            self.air.achievementsManager.toonMadeFriend(self.doId)  
 
     def getBattleId(self):
         if self.battleId >= 0:
@@ -626,6 +631,47 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.resetNPCFriendsDict()
         for npcId in desiredNpcFriends:
             self.attemptAddNPCFriend(npcId)
+
+    
+    def setAchievements(self, achievements):
+        for i in xrange(len(achievements)):
+            if not achievements[i] in xrange(len(Achievements.AchievementsDict)):
+                print 'Unknown AchievementId %s'%(achievements[i])
+                del achievements[i]
+                
+        self.achievements = achievements
+        
+    def d_setAchievements(self, achievements):
+        for i in xrange(len(achievements)):
+            if not achievements[i] in xrange(len(Achievements.AchievementsDict)):
+                print 'Unknown AchievementId %s'%(achievements[i])
+                del achievements[i]
+                
+        self.sendUpdate('setAchievements', args=[achievements])
+        
+    def b_setAchievements(self, achievements):
+        self.setAchievements(achievements)
+        self.d_setAchievements(achievements)
+        
+    def getAchievements(self):
+        return self.achievements
+    
+    def addAchievement(self, achievementId):
+        if achievementId in xrange(len(Achievements.AchievementsDict)):
+            if not achievementId in self.achievements:
+                achievements = self.achievements
+                achievements.append(achievementId)
+                
+                self.b_setAchievements(achievements)
+                
+    def hasAchievement(self, achievementId):
+        if achievementId in self.achievements:
+            return 1
+        
+        return 0
+    
+    def getAchievements(self):
+        return self.achievements
 
     def isTrunkFull(self, extraAccessories = 0):
         numAccessories = (len(self.hatList) + len(self.glassesList) + len(self.backpackList) + len(self.shoesList)) / 3
@@ -5370,3 +5416,22 @@ def unfreezeToon():
             return
         self.magicWordTeleportRequests.remove(targetId)
         self.sendUpdate('magicTeleportInitiate', [hoodId, zoneId])
+
+
+@magicWord(category=CATEGORY_STAFF, types=[str, int])
+def achievements(command, achId):
+    invoker = spellbook.getInvoker()
+    if command.lower() == 'earn':
+        achievements = invoker.getAchievements()
+        achievements.append(achId)
+        
+        invoker.b_setAchievements(achievements)
+        return 'Earnt Achievement %s'%(achId)
+    elif command.lower() == 'remove':
+        achievements = invoker.getAchievements()
+        achievements.remove(achId)
+        
+        invoker.b_setAchievements(achievements)
+        return 'Removed Achievement %s'%(achId)        
+    else:
+        return "Unknown Command '%s'"%(command)
