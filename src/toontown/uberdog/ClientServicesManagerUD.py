@@ -359,6 +359,20 @@ class LoginAccountFSM(OperationFSM):
                 return self.__handleLookup({'success': False})
 
 
+
+                self.demand('SetAccount')
+
+            # Create the account stats object
+            self.csm.air.dbInterface.createObject(
+                self.csm.air.dbId,
+                self.csm.air.dclassesByName['AccountStats'],
+                {},
+                handleAccountStatsCreated)
+
+            return
+
+        self.account = fields
+
         if self.account.get('STATS_ID', 0) == 0:
             def handleAccountStatsCreated(accountStatsId, self=self):
                 if not accountStatsId:
@@ -387,7 +401,6 @@ class LoginAccountFSM(OperationFSM):
             return
 
         self.demand('SetAccount')
-
     def enterCreateAccount(self):
         self.account = {
             'ACCOUNT_AV_SET': [0] * 6,
@@ -398,12 +411,12 @@ class LoginAccountFSM(OperationFSM):
             'LAST_LOGIN_TS': time.time(),
             'ACCOUNT_ID': str(self.userId),
             'ACCESS_LEVEL': self.accessLevel,
-            'CHAT_SETTINGS': [1, 1],
-            'STATS_ID': 0
+            'STATS_ID': 0,
+            'CHAT_SETTINGS': [1, 1]
         }
         self.csm.air.dbInterface.createObject(
             self.csm.air.dbId,
-            self.csm.air.dclassesByName['AccountStats'],
+            self.csm.air.dclassesByName['AccountUD'],
             self.account,
             self.__handleCreate)
 
@@ -420,11 +433,10 @@ class LoginAccountFSM(OperationFSM):
         self.accountId = accountId
         self.csm.air.writeServerEvent('accountCreated', accountId)
 
-
         # Now that the account is created, we can create the stats object as well:
         self.csm.air.dbInterface.createObject(
             self.csm.air.dbId,
-            self.csm.air.dclassesByName['AccountStatsUD'],
+            self.csm.air.dclassesByName['AccountStats'],
             {},
             self.__handleAccountStatsCreated)
 
@@ -442,7 +454,6 @@ class LoginAccountFSM(OperationFSM):
             {'STATS_ID': accountStatsId})
 
         # We are done, store the account id:
-
         self.demand('StoreAccountID')
 
     def enterStoreAccountID(self):
@@ -569,7 +580,7 @@ class CreateAvatarFSM(OperationFSM):
             self.csm.air.dbId, self.target, self.__handleRetrieve)
 
     def __handleRetrieve(self, dclass, fields):
-            if dclass != self.csm.air.dclassesByName['AccountStats']:
+        if dclass != self.csm.air.dclassesByName['AccountUD']:
             self.demand('Kill', 'Your account object was not found in the database!')
             return
 
@@ -578,12 +589,10 @@ class CreateAvatarFSM(OperationFSM):
         # For use in calling name requests:
         self.accountID = self.account['ACCOUNT_ID']
 
-        def handleAccountStatsRecieved(dclass, fields, self=self):
-            if dclass != self.csm.air.dclassesByName['AccountStatsUD']:
-                self.demand('Kill', 'Your account stats object was not found in the database!')
-                return
-
-            self.accountStats = fields
+        self.avList = self.account['ACCOUNT_AV_SET']
+        # Sanitize:
+        self.avList = self.avList[:6]
+        self.avList += [0] * (6-len(self.avList))
 
         # Make sure the index is open:
         if self.avList[self.index]:
@@ -665,7 +674,7 @@ class AvatarOperationFSM(OperationFSM):
         self.accountID = self.account['ACCOUNT_ID']
 
         def handleAccountStatsRecieved(dclass, fields, self=self):
-            if dclass != self.csm.air.dclassesByName['AccountStatsUD']:
+            if dclass != self.csm.air.dclassesByName['AccountStats']:
                 self.demand('Kill', 'Your account stats object was not found in the database!')
                 return
 
