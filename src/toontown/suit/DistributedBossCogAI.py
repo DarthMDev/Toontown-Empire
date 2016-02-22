@@ -93,8 +93,8 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
 
     def removeToon(self, avId):
 
-                    if self.air.wantAchievements:
-                        self.air.achievementsManager.toonLostBossCog(avId, self.dept)
+        if self.air.wantAchievements:
+            self.air.achievementsManager.toonLostBossCog(avId, self.dept)
 
         if avId in self.looseToons:
             self.looseToons.remove(avId)

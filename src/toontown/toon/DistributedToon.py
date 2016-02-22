@@ -2341,6 +2341,9 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.achievements = achievements
         self.achievementPoints = achievementPoints   
 
+    def getAchievementPoints(self):
+        return self.achievementPoints
+
     def setBuffs(self, buffs):
         self.buffs = buffs
         self.applyBuffs()
