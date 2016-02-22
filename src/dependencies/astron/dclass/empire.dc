@@ -635,7 +635,18 @@ dclass AccountStats {
   uint32 CFO_FINAL_HITS = 0 db;
 
   uint32 CJS_DEFEATED = 0 db;
+  uint32 CJ_DAMAGE_DEALT = 0 db;
+  uint32 CJS_LOST = 0 db;
+  uint32 CJ_COGS_STUNNED = 0 db;
+  uint32 CJ_HAMMER_HITS = 0 db;
+  uint32 CJ_FINAL_HITS = 0 db;
+
   uint32 CEOS_DEFEATED = 0 db;
+  uint32 CEO_DAMAGE_DEALT = 0 db;
+  uint32 CEOS_LOST = 0 db;
+  uint32 CEO_GOLF_HITS = 0 db;
+  uint32 CEO_TREASURES_EATEN = 0 db;
+  uint32 CEO_FINAL_HITS = 0 db;
 
   uint32 FRIENDS_MADE = 0 db;
   uint32 QUESTS_COMPLETED = 0 db;
