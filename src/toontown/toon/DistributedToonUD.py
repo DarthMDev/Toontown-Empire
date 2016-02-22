@@ -539,5 +539,5 @@ class DistributedToonUD(DistributedObjectUD):
         pass
 
    
-    def setAchievements(self, achievements):
+    def setAchievements(self, todo0, todo1):
         pass

@@ -1,84 +1,209 @@
-import ShtikerPage
-from direct.gui.DirectGui import *
-from pandac.PandaModules import *
-from toontown.toonbase import TTLocalizer
+from panda3d.core import NodePath
+from panda3d.core import TextNode
+
+from direct.gui.DirectWaitBar import DirectWaitBar
+from direct.gui.DirectFrame import DirectFrame
+from direct.gui.DirectButton import DirectButton
+from direct.gui.DirectLabel import DirectLabel
+from direct.gui import DirectGuiGlobals as DGG
+
+from toontown.shtiker.ShtikerPage import ShtikerPage
+from toontown.achievements import Achievements
 from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 
-from toontown.achievements import AchievementsGlobals
 
-class AchievementsPage(ShtikerPage.ShtikerPage):
+gui = loader.loadModel('phase_3/models/gui/tt_m_gui_mat_mainGui')
+arrowUp = gui.find('**/tt_t_gui_mat_shuffleArrowUp')
+arrowDown = gui.find('**/tt_t_gui_mat_shuffleArrowDown')
+arrowRollover = gui.find('**/tt_t_gui_mat_shuffleArrowUp')
+arrowDisabled = gui.find('**/tt_t_gui_mat_shuffleArrowDisabled')
+gui.removeNode()
 
-    def __init__(self):
-        ShtikerPage.ShtikerPage.__init__(self)
-        self.avatar = None
-        self.achievements = []
+halfButtonScale = (0.6, 0.6, 0.6)
+halfButtonHoverScale = (0.7, 0.7, 0.7)
+halfButtonInvertScale = (-0.6, 0.6, 0.6)
+halfButtonInvertHoverScale = (-0.7, 0.7, 0.7)
 
-        self.gui = loader.loadModel('phase_3.5/models/gui/friendslist_gui')
-        self.accept(localAvatar.uniqueName('achievementsChange'), self.updatePage)
+
+class PageArrow(DirectButton):
+    def __init__(self, page, inverted=False, **kwargs):
+        self.page = page
+
+        if not inverted:
+            scales = (halfButtonScale, halfButtonHoverScale)
+            extraArgs = [-1]
+            pos = (-0.6, 0, 0.62)
+        else:
+            scales = (halfButtonInvertScale, halfButtonInvertHoverScale)
+            extraArgs = [1]
+            pos = (0.6, 0, 0.62)
+
+        optiondefs = (
+            ('relief', None, None),
+            ('image', (
+                arrowUp,
+                arrowDown,
+                arrowRollover,
+                arrowDisabled
+            ), None),
+            ('image_scale', scales[0], None),
+            ('image1_scale', scales[1], None),
+            ('image2_scale', scales[1], None),
+            ('extraArgs', extraArgs, None),
+            ('pos', pos, None),
+        )
+
+        self.defineoptions(kwargs, optiondefs)
+        DirectButton.__init__(self, page)
+        self.initialiseoptions(PageArrow)
+
+
+class AchievementList(DirectFrame):
+    def __init__(self, parent, **kwargs):
+        optiondefs = (
+            ('image', None, None),
+            ('relief', None, None),
+            ('frameColor', (1, 1, 1, 1), None),
+            ('image_scale', halfButtonInvertScale, None),
+            ('text_fg', (1, 1, 1, 1), None),
+        )
+
+        self.defineoptions(kwargs, optiondefs)
+        DirectFrame.__init__(self, parent)
+        self.initialiseoptions(AchievementList)
+
+        self.achievements = {}
+
+    def addAchievement(self, achievementId):
+        pass
+
+    def hasAchievement(self, achievementId):
+        return achievementId in self.achievements
+
+
+class AchievementCategory(NodePath):
+    def __init__(self, page, category):
+        NodePath.__init__(self, page.attachNewNode('achievement-category-%s' % category))
+
+        self.page = page
+        self.category = category
+        self.activeIds = []
+
+        self.label = None
+        self.achievementList = None
+
+    def update(self):
+        pass
 
     def load(self):
-        ShtikerPage.ShtikerPage.load(self)
-        self.avAchievements = localAvatar.achievements
-        self.title = DirectLabel(parent=self, relief=None, text=TTLocalizer.AchievementsPageTitle, text_scale=0.12, textMayChange=1, pos=(0, 0, 0.62))
+        self.label = DirectLabel(parent=self, relief=None, text=TTLocalizer.getAchievementCategory(self.category),
+                                 text_scale=0.08, textMayChange=0, pos=(0, 0, 0.6))
 
-        start_pos = LVecBase3(0.72, 1, -0.21)
-        seperation = LVecBase3(0.45, 0, 0.4)
+        self.achievementList = AchievementList(self)
 
-        cardModel = loader.loadModel('phase_3.5/models/gui/playingCard')
+    def unload(self):
+        self.label.destroy()
+        self.label = None
 
-        incButton = (self.gui.find('**/FndsLst_ScrollUp'),
-                     self.gui.find('**/FndsLst_ScrollDN'),
-                     self.gui.find('**/FndsLst_ScrollUp_Rllvr'),
-                     self.gui.find('**/FndsLst_ScrollUp'))
+        self.achievementList.destroy()
+        self.achievementList = None
 
-        self.scrollFrame = DirectScrolledFrame(parent=self, frameSize=(0, 1.5, -1.2, 0), pos=(-0.75, 1, 0.52),
-                                               canvasSize=(0, 1, -7, 0), frameColor=(0.85, 0.95, 1, 1))
-        for achievement in xrange(len(AchievementsGlobals.AchievementTitles)):
-            achievementFrame = DirectFrame(parent=self.scrollFrame.getCanvas(), image=DGG.getDefaultDialogGeom(), scale=(1.3, 0, 0.32),
-                                           relief=None, pos=(start_pos.x, 1, start_pos.z - seperation.z * achievement),
-                                           text=AchievementsGlobals.AchievementTitles[achievement], text_scale=(0.05, 0.13),
-                                           text_font=ToontownGlobals.getMinnieFont(), text_pos=(0, 0, 0))
 
-            self.achievements.append(achievementFrame)
+class AchievementsPage(ShtikerPage):
+    def __init__(self):
+        ShtikerPage.__init__(self)
 
-            if achievement in  self.avAchievements:
-                achievementFrame['text'] = AchievementsGlobals.AchievementTitles[achievement]
-                achievementFrame['text_pos'] = (0, 0.2, -0.2)
-            else:
-                achievementFrame['text'] = '???'
+        self.categories = []
+        self.currentCategoryIndex = None
 
-    def setAvatar(self, av):
-        self.avatar = av
-
-    def updatePage(self):
-        self.avAchievements = localAvatar.achievements
-
-        for achievement in self.achievements:
-            achievement.destroy()
-
-        del self.achievements
         self.achievements = []
+        self.achievementPoints = None
 
-        start_pos = LVecBase3(0.72, 1, -0.21)
-        seperation = LVecBase3(0.45, 0, 0.4)
+        self.leftArrow = None
+        self.rightArrow = None
 
-        for achievement in xrange(len(AchievementsGlobals.AchievementTitles)):
-            achievementFrame = DirectFrame(parent=self.scrollFrame.getCanvas(), image=DGG.getDefaultDialogGeom(), scale=(1.3, 0, 0.32),
-                                           relief=None, pos=(start_pos.x, 1, start_pos.z - seperation.z * achievement),
-                                           text=AchievementsGlobals.AchievementTitles[achievement], text_scale=(0.05, 0.13),
-                                           text_font=ToontownGlobals.getMinnieFont(), text_pos=(0, 0, 0))
+        self.pointsBar = None
+        self.levelText = None
 
-            self.achievements.append(achievementFrame)
+    def load(self):
+        self.leftArrow = PageArrow(self, command=self.arrowPressed)
+        self.rightArrow = PageArrow(self, inverted=True, command=self.arrowPressed)
 
-            if achievement in  self.avAchievements:
-                achievementFrame['text'] = AchievementsGlobals.AchievementTitles[achievement]
-                achievementFrame['text_pos'] = (0, 0.2, -0.2)
+        self.pointsBar = DirectWaitBar(parent=self, text='0/0', textMayChange=1, text_fg=(1, 1, 1, 0.75),
+                                       pos=(-0.05, 0, -0.62), scale=0.5, frameSize=(-1.46, 1.46, -0.06, 0.06),
+                                       frameColor=(77.0/255.0, 77.0/255.0, 77.0/255.0, 0.55),
+                                       barColor=(0.0/255.0, 162.0/255.0, 232.0/255.0, 1.0),
+                                       range=0, value=0)
 
-                currentAchievement = AchievementsGlobals.AchievementImages[achievement]
-                image = loader.loadModel(currentAchievement[0])
-                imageNode = image.find(currentAchievement[1])
-                imageNode.setColor(currentAchievement[2])
+        self.levelText = DirectLabel(parent=self, relief=None, pos=(0.75, 0, -0.656), text='0', textMayChange=True,
+                                     text_fg=(1, 1, 2, 0.85), text_shadow=(0, 0, 0, 5), text_align=TextNode.ACenter,
+                                     text_scale=0.1, text_font=ToontownGlobals.getSignFont())
 
-                img = OnscreenGeom(geom=imageNode, parent=achievementFrame, pos=(-0.3, 0, 0))
-            else:
-                achievementFrame['text'] = '???'
+        for category in Achievements.category2AchievementIds:
+            achievementCategory = AchievementCategory(self, category)
+            achievementCategory.load()
+            achievementCategory.hide()
+            self.categories.append(achievementCategory)
+
+    def showCategory(self, categoryIndex):
+        if self.currentCategoryIndex is not None:
+            self.categories[self.currentCategoryIndex].hide()
+
+        if categoryIndex == 0:
+            self.leftArrow['state'] = DGG.DISABLED
+        else:
+            self.leftArrow['state'] = DGG.NORMAL
+
+        if categoryIndex == len(self.categories) - 1:
+            self.rightArrow['state'] = DGG.DISABLED
+        else:
+            self.rightArrow['state'] = DGG.NORMAL
+
+        self.currentCategoryIndex = categoryIndex
+        self.categories[categoryIndex].show()
+
+    def unload(self):
+        for category in self.categories:
+            category.unload()
+
+        self.categories = []
+        self.currentCategoryIndex = None
+
+        self.achievements = []
+        self.achievementPoints = None
+
+        self.leftArrow.destroy()
+        self.leftArrow = None
+
+        self.rightArrow.destroy()
+        self.rightArrow = None
+
+        self.pointsBar.destroy()
+        self.pointsBar = None
+
+        self.levelText.destroy()
+        self.levelText = None
+
+        ShtikerPage.unload(self)
+
+    def enter(self):
+        if self.currentCategoryIndex is None:
+            self.showCategory(0)
+
+        ShtikerPage.enter(self)
+
+    def update(self, achievements, achievementPoints):
+        self.achievements = achievements
+        self.achievementPoints = achievementPoints
+
+        level = Achievements.getLevelFromPoints(achievementPoints)
+        self.levelText['text'] = str(level + 1)
+        
+        neededPoints = Achievements.getPointsForLevel(level)
+        self.pointsBar['text'] = '%s/%s' % (achievementPoints, neededPoints)
+        self.pointsBar['range'] = neededPoints
+        self.pointsBar['value'] = achievementPoints
+
+    def arrowPressed(self, direction):
+        self.showCategory(self.currentCategoryIndex + direction)

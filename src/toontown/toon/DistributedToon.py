@@ -162,7 +162,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.trueFriends = []
         self.specialInventory = [0, 0, 0, 0, 0]
         self.achievements = []
-        self.canEarnAchievements = False
+        self.achievementPoints = 0
 
     def disable(self):
         for soundSequence in self.soundSequenceList:
@@ -2337,9 +2337,9 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def setAnimalSound(self, index):
         self.animalSound = index
         
-    def setAchievements(self, achievements):
+    def setAchievements(self, achievements, achievementPoints):
         self.achievements = achievements
-        messenger.send(localAvatar.uniqueName('achievementsChange'))    
+        self.achievementPoints = achievementPoints   
 
     def setBuffs(self, buffs):
         self.buffs = buffs
