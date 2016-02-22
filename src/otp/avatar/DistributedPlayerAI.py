@@ -158,6 +158,27 @@ def maintenance(minutes):
 
     countdown(minutes)
 
+    
+@magicWord(category=CATEGORY_TRIAL)
+def disableGM():
+    """
+    Temporarily disable GM features.
+    """
+    target = spellbook.getTarget()
+
+
+    if hasattr(target, 'oldAccess'):
+        return 'GM features are already disabled!'
+
+    if not target.getAdminAccess():
+        return 'Target is not an admin!'
+    target.oldAccess = target.adminAccess
+    target.d_setAdminAccess(0)
+
+    return 'GM features are disabled! To Re Enable Please Log out and Back In'
+
+
+
 @magicWord(category=CATEGORY_LEADER, types=[str, str, int])
 def accessLevel(accessLevel, storage='PERSISTENT', showBadge=1):
     """

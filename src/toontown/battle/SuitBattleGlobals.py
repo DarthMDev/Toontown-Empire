@@ -35,7 +35,14 @@ def getSuitVitals(name, level = -1):
     dict['level'] = getActualFromRelativeLevel(name, level)
     if dict['level'] == 11:
         level = 0
-    dict['hp'] = data['hp'][level]
+    if base.config.GetBool('want-big-cogs') and base.config.GetBool('want-size-hp-modification'):
+     cogHP = data['hp'][level]
+     dict['hp'] = cogHP * 2
+    elif base.config.GetBool('want-tiny-cogs') and base.config.GetBool('want-size-hp-modification'):
+     cogHP = data['hp'][level]
+     dict['hp'] = cogHP / 2
+    else:
+     dict['hp'] = data['hp'][level]
     dict['def'] = data['def'][level]
     attacks = data['attacks']
     alist = []

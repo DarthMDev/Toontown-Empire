@@ -161,6 +161,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.hostedParties = []
         self.partiesInvitedTo = []
         self.partyReplyInfoBases = []
+        self.magicWordTeleportRequests = []
         self.teleportOverride = 0
         self.buffs = []
         self.wantGroupTracker = True
@@ -283,6 +284,21 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
         DistributedSmoothNodeAI.DistributedSmoothNodeAI.delete(self)
         DistributedPlayerAI.DistributedPlayerAI.delete(self)
+
+
+    def setAdminAccess(self, access):
+        self.adminAccess = access
+
+    def d_setAdminAccess(self, access):
+        self.sendUpdate('setAdminAccess', [access])
+
+    def b_setAdminAccess(self, access):
+        self.setAdminAccess(access)
+        self.d_setAdminAccess(access)
+
+    def getAdminAccess(self):
+        return self.adminAccess
+
 
     def handleLogicalZoneChange(self, newZoneId, oldZoneId):
         DistributedAvatarAI.DistributedAvatarAI.handleLogicalZoneChange(self, newZoneId, oldZoneId)
