@@ -172,6 +172,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.questMap = None
             self.prevToonIdx = 0
             self.houseType = 0
+            self.achievements = None
             self.achievementsGui = AchievementsGUI()
 
     def setDNA(self, dna):
@@ -1759,6 +1760,12 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         return self.petId != 0
 
     def setAchievements(self, achievements, achievementPoints):
+        if self.achievements is None:
+            self.achievements = []
+
+            DistributedToon.DistributedToon.setAchievements(self, achievements, achievementPoints)
+            return
+
         for achievementId in achievements:
             if achievementId not in self.achievements:
                 self.achievementsGui.showAchievement(achievementId)
