@@ -176,6 +176,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.nextKnockHeal = 0
         self.tfRequest = (0, 0)
         self.statsId = 0
+        self.startTime = 0
 
     def generate(self):
         DistributedPlayerAI.DistributedPlayerAI.generate(self)
@@ -189,6 +190,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             messenger.send('avatarEntered', [self])
 
             if self.air.wantAchievements:
+                self.startTime = time.time()
                 self.air.achievementsManager.statsCache.toonGenerated(self)
 
         from toontown.toon.DistributedNPCToonBaseAI import DistributedNPCToonBaseAI
@@ -235,6 +237,16 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def delete(self):
         if self.isPlayerControlled():
             messenger.send('avatarExited', [self])
+
+            if self.air.wantAchievements:
+                totalTime = time.time() - self.startTime
+
+                accountStats = self.air.achievementsManager.statsCache.getStats(self.doId)
+                accountStats['SECONDS_PLAYED'] += int(totalTime)
+
+                self.air.achievementsManager.modifyAccountStats(self.statsId,
+                                                                {'SECONDS_PLAYED': accountStats['SECONDS_PLAYED']})
+
         if simbase.wantPets:
             if self.isInEstate():
                 self.exitEstate()
