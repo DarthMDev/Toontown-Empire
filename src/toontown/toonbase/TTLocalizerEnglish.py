@@ -8545,7 +8545,15 @@ def getBuffPosterString(buffId):
 
 achievementInfo = {
     0: ("It's fun with friends",
-        'Make a friend')
+        'Make a friend'),
+    1: ('Storming the towers',
+        'Defeat the Sellbot VP'),
+    2: ('Crashing the vaults',
+        'Defeat the Cashbot CFO'),
+    3: ('Justice is blind',
+        'Defeat the Lawbot CJ'),
+    4: ('Downsized',
+        'Defeat the Bossbot CEO')
 }
 
 

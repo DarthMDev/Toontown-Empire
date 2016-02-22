@@ -1015,6 +1015,14 @@ def getCEO(toon):
     
     return None
 
+    def enterReward(self):
+        if self.air.wantAchievements:
+            for toonId in self.involvedToons:
+                self.air.achievementsManager.toonDefeatedCEO(toonId)
+
+        DistributedBossCogAI.DistributedBossCogAI.enterReward(self)
+
+
 @magicWord(category=CATEGORY_LEADER)
 def skipCEOBanquet():
     """
