@@ -8548,7 +8548,7 @@ achievementInfo = {
         'Make a friend'),
     1: ('Storming the towers',
         'Defeat the Sellbot VP'),
-    2: ('Crashing the vaults',
+    2: ('Market crash',
         'Defeat the Cashbot CFO'),
     3: ('Justice is blind',
         'Defeat the Lawbot CJ'),
@@ -8567,12 +8567,32 @@ achievementInfo = {
     10: ("Dreaming Goodbye's",
          "Complete Donald's Dreamland"),
     11: ('Task Master',
-         'Complete all classic toontasks')
+         'Complete all classic toontasks'),
+    12: ('SOLO VP',
+         'Solo the Sellbot VP'),
+    13: ('SOLO CFO',
+         'Solo the Cashbot CFO'),
+    14: ('SOLO CJ',
+         'Solo the Lawbot CJ'),
+    15: ('SOLO CEO',
+         'Solo the Bossbot CEO'),
+    16: ('Solo artist',
+         'Solo all 4 cog bosses')
 }
 
 
 def getAchievementInfo(achievementId):
     return achievementInfo[achievementId]
+
+achievementCategories = {
+    'misc': 'Miscellaneous',
+    'suit': 'Cog'
+}
+
+
+def getAchievementCategory(category):
+    return '%s Achievements' % achievementCategories.get(category)
+
 
 GroupTrackerPageTitle = 'Group Tracker'
 GroupTrackerListTitle = 'Groups'
