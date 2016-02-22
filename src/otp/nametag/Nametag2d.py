@@ -17,6 +17,7 @@ class Nametag2d(Nametag, MarginPopup):
 
         self.contents = self.CName|self.CSpeech
         self.chatWordWrap = 7.5
+        self.colorCode = None
 
         self.arrow = None
 
