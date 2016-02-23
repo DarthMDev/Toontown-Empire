@@ -13,6 +13,11 @@ class NametagGroup:
     CCHouseBuilding = CCHouseBuilding
     CCSpeedChat = CCSpeedChat
     CCOrange = CCOrange
+    CCStaffSF = CCStaffSF
+    CCStaff = CCStaff
+    CCRed = CCRed
+    CCBlue = CCBlue
+    CCGreen = CCGreen
 
     CHAT_TIMEOUT_MAX = 12.0
     CHAT_TIMEOUT_MIN = 4.0

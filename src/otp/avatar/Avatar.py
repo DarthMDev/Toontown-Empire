@@ -42,7 +42,6 @@ class Avatar(Actor, ShadowCaster):
         self.__nameVisible = 1
         self.nametag = NametagGroup()
         self.nametag.setAvatar(self)
-        self.nametag.setColorCode(CCNormal)
         self.nametag.setFont(OTPGlobals.getInterfaceFont())
         self.nametag.setSpeechFont(OTPGlobals.getInterfaceFont())
         self.nametag2dContents = Nametag.CName | Nametag.CSpeech
@@ -98,7 +97,7 @@ class Avatar(Actor, ShadowCaster):
       return True
      else:
       return False
-
+    
     def isProxy(self):
         return False
 
@@ -110,7 +109,7 @@ class Avatar(Actor, ShadowCaster):
         if self.isUnderstandable():
             self.nametag.setColorCode(self.playerType)
         else:
-            self.nametag.setColorCode(NametagGroup.CCNormal)
+            self.nametag.setColorCode(NametagGroup.CCNonPlayer)
         self.setNametagName()
 
     def considerUnderstandable(self):
@@ -119,10 +118,13 @@ class Avatar(Actor, ShadowCaster):
         if hasattr(base, 'localAvatar') and (self == base.localAvatar) and not self.isAdminCheck():
             self.understandable = 1
             self.setPlayerType(NametagGroup.CCNormal)
+        elif self.isAdminCheck() and settings['trueFriends'] and base.localAvatar.isTrueFriends(self.doId):
+             self.understandable = 2
+             self.setPlayerType(NametagGroup.CCStaffSF) 
         elif self.isAdminCheck():
              self.understandable = 2
              # make a colored nametag for admins
-             self.setPlayerType(NametagGroup.CCNonPlayer) 
+             self.setPlayerType(NametagGroup.CCStaff) 
         elif self.playerType == NametagGroup.CCSuit:
             self.understandable = 1
             self.setPlayerType(NametagGroup.CCSuit)
