@@ -512,7 +512,12 @@ def chooseSuitShot(attack, attackDuration):
     pbpText = attack['playByPlayText']
     displayName = TTLocalizer.SuitAttackNames[attack['name']]
     pbpTrack = pbpText.getShowInterval(displayName, 3.5)
-    return Parallel(camTrack, pbpTrack)
+    track = Parallel(camTrack, pbpTrack)
+    if diedTrack == None:
+        return track
+    pbpTrackDied = Sequence(pbpTrack, diedTrack)
+    mtrack = Parallel(track, pbpTrackDied)
+    return mtrack  
 
 def makeShot(x, y, z, h, p, r, duration, other = None, name = 'makeShot'):
     if other:

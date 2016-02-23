@@ -35,11 +35,13 @@ class Nametag(ClickablePopup):
         self.name = ''
         self.displayName = ''
         self.qtColor = VBase4(1,1,1,1)
-        self.colorCode = CCNormal
+        self.colorCode = None
         self.avatar = None
         self.icon = NodePath('icon')
 
         self.frame = (0, 0, 0, 0)
+        
+        self.testFg = (1,1,1,1)
 
         self.nameFg = (0,0,0,1)
         self.nameBg = (1,1,1,1)
@@ -54,6 +56,10 @@ class Nametag(ClickablePopup):
 
     def setContents(self, contents):
         self.contents = contents
+        self.update()
+
+    def setColorCode(self, code):
+        self.colorCode = code
         self.update()
 
     def setAvatar(self, avatar):

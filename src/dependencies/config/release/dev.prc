@@ -43,6 +43,7 @@ want-checkers #f
 want-house-types #t
 want-gifting #t
 want-top-toons #f
+want-grouptracker #t
 
 # Chat:
 want-whitelist #t

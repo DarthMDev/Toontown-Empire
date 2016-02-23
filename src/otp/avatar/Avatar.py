@@ -91,7 +91,13 @@ class Avatar(Actor, ShadowCaster):
 
     def isPet(self):
         return False
-
+        
+    def isAdminCheck(self):
+     if hasattr(self, 'adminAccess') and self.isAdmin():
+      return True
+     else:
+      return False
+    
     def isProxy(self):
         return False
 
@@ -109,13 +115,16 @@ class Avatar(Actor, ShadowCaster):
     def considerUnderstandable(self):
         if self.playerType in (NametagGroup.CCNormal, NametagGroup.CCSpeedChat):
             self.setPlayerType(NametagGroup.CCSpeedChat)
-        if hasattr(base, 'localAvatar') and (self == base.localAvatar):
+        if hasattr(base, 'localAvatar') and (self == base.localAvatar) and not self.isAdminCheck():
             self.understandable = 1
             self.setPlayerType(NametagGroup.CCNormal)
-        elif hasattr(self, 'adminAccess') and self.isAdmin():
+        elif self.isAdminCheck() and settings['trueFriends'] and base.localAvatar.isTrueFriends(self.doId):
+             self.understandable = 2
+             self.setPlayerType(NametagGroup.CCStaffSF) 
+        elif self.isAdminCheck():
              self.understandable = 2
              # make a colored nametag for admins
-             self.setPlayerType(NametagGroup.CCNonPlayer) 
+             self.setPlayerType(NametagGroup.CCStaff) 
         elif self.playerType == NametagGroup.CCSuit:
             self.understandable = 1
             self.setPlayerType(NametagGroup.CCSuit)

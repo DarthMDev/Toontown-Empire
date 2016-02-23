@@ -161,8 +161,10 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.hostedParties = []
         self.partiesInvitedTo = []
         self.partyReplyInfoBases = []
+        self.magicWordTeleportRequests = []
         self.teleportOverride = 0
         self.buffs = []
+        self.wantGroupTracker = True
         self.redeemedCodes = []
         self.ignored = []
         self.reported = []
@@ -282,6 +284,21 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
         DistributedSmoothNodeAI.DistributedSmoothNodeAI.delete(self)
         DistributedPlayerAI.DistributedPlayerAI.delete(self)
+
+
+    def setAdminAccess(self, access):
+        self.adminAccess = access
+
+    def d_setAdminAccess(self, access):
+        self.sendUpdate('setAdminAccess', [access])
+
+    def b_setAdminAccess(self, access):
+        self.setAdminAccess(access)
+        self.d_setAdminAccess(access)
+
+    def getAdminAccess(self):
+        return self.adminAccess
+
 
     def handleLogicalZoneChange(self, newZoneId, oldZoneId):
         DistributedAvatarAI.DistributedAvatarAI.handleLogicalZoneChange(self, newZoneId, oldZoneId)
@@ -4304,6 +4321,9 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         if self.name != newName:
             self.b_setName(newName)
         return
+   
+    def setWantGroupTracker(self, wantGroupTracker):
+        self.wantGroupTracker = wantGroupTracker
 
 @magicWord(category=CATEGORY_STAFF, types=[str, int, int])
 def cheesyEffect(value, hood=0, expire=0):
@@ -4318,7 +4338,7 @@ def cheesyEffect(value, hood=0, expire=0):
         if value not in OTPGlobals.CEName2Id:
             return 'Invalid cheesy effect value: %s' % value
         value = OTPGlobals.CEName2Id[value]
-    elif not 0 <= value <= 15:
+    elif not 0 <= value <= 17:
         return 'Invalid cheesy effect value: %d' % value
     if (hood != 0) and (not 1000 <= hood < ToontownGlobals.DynamicZonesBegin):
         return 'Invalid hood ID: %d' % hood
@@ -5285,13 +5305,13 @@ def setBadge(gmId):
 @magicWord(category=CATEGORY_STAFF, types=[int])
 def goto(avIdShort):
     """ Teleport to the avId specified. """
-    avId = 100000000+avIdShort # To get target doId.
+    avId = 100000000+avIdShort 
     toon = simbase.air.doId2do.get(avId)
     if not toon:
         return "Unable to teleport to target, they are not currently on this district."
     spellbook.getInvoker().magicWordTeleportRequests.append(avId)
     toon.sendUpdate('magicTeleportRequest', [spellbook.getInvoker().getDoId()])
-	
+  
 @magicWord(category=CATEGORY_STAFF, types=[int])
 def pouch(value):
     target = spellbook.getTarget()
@@ -5322,3 +5342,31 @@ def staffButton(switch):
     else:
      return("You must have 1 for enable or 2 for disable in your Magic Word.")
 """
+@magicWord(category=CATEGORY_STAFF)
+def freezeToon():
+    target = spellbook.getTarget()
+    if target == spellbook.getInvoker():
+        return 'You can\'t freeze yourself!'
+
+    target.sendUpdate('freezeToon', [])
+    return 'Froze %s.' % target.getName()
+
+@magicWord(category=CATEGORY_STAFF)
+def unfreezeToon():
+    target = spellbook.getTarget()
+    if target == spellbook.getInvoker():
+        return 'You can\'t unfreeze yourself!'
+
+    target.sendUpdate('unfreezeToon', [])
+    return 'Unfroze %s.' % target.getName()
+
+    def magicTeleportResponse(self, requesterId, hoodId):
+        toon = self.air.doId2do.get(requesterId)
+        if toon:
+            toon.magicTeleportInitiate(self.getDoId(), hoodId, self.getLocation()[1])
+
+    def magicTeleportInitiate(self, targetId, hoodId, zoneId):
+        if targetId not in self.magicWordTeleportRequests:
+            return
+        self.magicWordTeleportRequests.remove(targetId)
+        self.sendUpdate('magicTeleportInitiate', [hoodId, zoneId])

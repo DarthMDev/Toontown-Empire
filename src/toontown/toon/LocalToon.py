@@ -36,6 +36,7 @@ from toontown.shtiker import EventsPage
 from toontown.shtiker import FishPage
 from toontown.shtiker import GardenPage
 from toontown.shtiker import GolfPage
+from toontown.shtiker import GroupTrackerPage
 from toontown.shtiker import InventoryPage
 from toontown.shtiker import KartPage
 from toontown.shtiker import MapPage
@@ -368,6 +369,10 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.addEventsPage()
         if WantNewsPage:
             self.addNewsPage()  
+        if base.wantGroupTracker:
+            self.groupTracker = GroupTrackerPage.GroupTrackerPage()
+            self.groupTracker.load()
+            self.book.addPage(self.groupTracker, pageName=TTLocalizer.GroupTrackerPageTitle)
         self.book.setPage(self.mapPage, enterPage=False)
         self.laffMeter = LaffMeter.LaffMeter(self.style, self.hp, self.maxHp)
         self.laffMeter.setAvatar(self)

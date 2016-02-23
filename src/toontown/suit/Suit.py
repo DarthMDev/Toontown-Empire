@@ -8,9 +8,19 @@ from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.suit import SuitGlobals
 import SuitDNA, SuitHealthBar, string
 
-aSize = 6.06
-bSize = 5.29
-cSize = 4.14
+if base.config.GetBool('want-tiny-cogs'):
+ aSize = 12.12
+ bSize = 10.58
+ cSize = 8.28
+elif base.config.GetBool('want-big-cogs'):
+ aSize = 2.03
+ bSize = 2.795
+ cSize = 2.07 
+else:
+ aSize = 6.06 # Size of body type 'a'
+ bSize = 5.29 # Size of body type 'b'
+ cSize = 4.14 # Size of body type 'c'
+
 SuitDialogArray = []
 SkelSuitDialogArray = []
 AllSuits = (('walk', 'walk'), ('run', 'walk'), ('neutral', 'neutral'))

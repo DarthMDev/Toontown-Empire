@@ -1,6 +1,6 @@
 #!/bin/sh
 cd ../../../
-export PYTHONPATH=dependencies/linux:$PYTHONPATH
+
 # Define some constants for our AI server:
 MAX_CHANNELS=999999
 STATESERVER=4002

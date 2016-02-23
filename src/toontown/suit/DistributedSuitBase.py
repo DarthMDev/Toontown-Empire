@@ -151,9 +151,8 @@ class DistributedSuitBase(DistributedAvatar.DistributedAvatar, Suit.Suit, SuitBa
             self.propInSound = base.loadSfx('phase_5/audio/sfx/ENC_propeller_in.ogg')
         if self.propOutSound == None:
             self.propOutSound = base.loadSfx('phase_5/audio/sfx/ENC_propeller_out.ogg')
-        if base.config.GetBool('want-new-cogs', 0):
-            head = self.find('**/to_head')
-            if head.isEmpty():
+        head = self.find('**/to_head')
+        if head.isEmpty():
                 head = self.find('**/joint_head')
         else:
             head = self.find('**/joint_head')

@@ -40,6 +40,8 @@ CEPumpkin = 12
 CEBigWhite = 13
 CESnowMan = 14
 CEGreenToon = 15
+CETinyToon = 16
+CEGiantToon = 17
 CEGhost = 'g'
 CEName2Id = {
  'normal': CENormal,
@@ -57,10 +59,14 @@ CEName2Id = {
  'pumpkin': CEPumpkin,
  'bigwhite': CEBigWhite,
  'snowman': CESnowMan,
- 'greentoon': CEGreenToon
+ 'greentoon': CEGreenToon,
+ 'tinytoon': CETinyToon,
+ 'gianttoon': CEGiantToon
 }
+GiantToonScale = 2.3
 BigToonScale = 1.5
 SmallToonScale = 0.5
+TinyToonScale = 0.3
 GhostEffectName2Id = {
     'none': 3,
     'fade': 4,
