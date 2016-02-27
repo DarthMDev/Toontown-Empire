@@ -28,6 +28,9 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         self.doobers = []
         self.cagedToonNpcId = random.choice(NPCToons.HQnpcFriends.keys())
         self.bossMaxDamage = ToontownGlobals.SellbotBossMaxDamage
+        self.toonDamageDict = {}
+        self.finalHitId = None
+        self.toonStuns = {}
         self.recoverRate = 0
         self.recoverStartTime = 0
         self.punishedToons = []
@@ -59,6 +62,9 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         if self.attackCode != ToontownGlobals.BossCogDizzyNow:
             return
         bossDamage = min(self.getBossDamage() + bossDamage, self.bossMaxDamage)
+        if avId not in self.toonDamageDict:
+            self.toonDamageDict[avId] = 0
+        self.toonDamageDict[avId] += 1
         self.b_setBossDamage(bossDamage, 0, 0)
         if self.bossDamage >= self.bossMaxDamage:
             self.setState('NearVictory')
@@ -72,6 +78,9 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         currState = self.getCurrentOrNextState()
         if currState != 'BattleThree':
             return
+        if avId not in self.toonStuns:
+            self.toonStuns[avId] = 0
+        self.toonStuns[avId] += 1
         self.b_setAttackCode(ToontownGlobals.BossCogDizzyNow)
         self.b_setBossDamage(self.getBossDamage(), 0, 0)
 
@@ -99,8 +108,12 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
             self.__goodJump(avId)
 
     def finalPieSplat(self):
+        avId = self.air.getAvatarIdFromSender()
+        if not self.validate(avId, avId in self.involvedToons, 'finalPieSplat from unknown avatar'):
+            return
         if self.state != 'NearVictory':
             return
+        self.finalHitId = avId
         self.b_setState('Victory')
 
     def doNextAttack(self, task):
@@ -126,7 +139,6 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
             newRecoverRate = min(200, self.recoverRate * 1.2)
         else:
             newRecoverRate = 2
-        now = globalClock.getFrameTime()
         self.b_setBossDamage(self.getBossDamage(), newRecoverRate, now)
 
     def __doDirectedAttack(self):
@@ -399,8 +411,17 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
             return
         self.b_setAttackCode(ToontownGlobals.BossCogRecoverDizzyAttack)
 
+
+        
+    def enterIntroduction(self):
+        DistributedBossCogAI.DistributedBossCogAI.enterIntroduction(self)
+        
     def enterReward(self):
         DistributedBossCogAI.DistributedBossCogAI.enterReward(self)
+
+    def getExtraAchievementInfo(self, toonId, infoDict):
+        infoDict.update({'finalHit': toonId == self.finalHitId, 'damageDealt': self.toonDamageDict.get(toonId, 0),
+                         'stuns': self.toonStuns.get(toonId, 0)})
 
 @magicWord(category=CATEGORY_LEADER)
 def skipVP():

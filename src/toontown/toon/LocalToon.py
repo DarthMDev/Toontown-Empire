@@ -45,6 +45,7 @@ from toontown.shtiker import OptionsPage
 from toontown.shtiker import QuestPage
 from toontown.shtiker import ShardPage
 from toontown.shtiker import ShtikerBook
+from toontown.shtiker import AchievementsPage
 from toontown.shtiker import SuitPage
 from toontown.shtiker import TrackPage
 from toontown.toon import ElevatorNotifier
@@ -54,6 +55,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase.ToontownGlobals import *
 from toontown.friends.FriendHandle import FriendHandle
+from toontown.achievements.AchievementsGUI import AchievementsGUI
 
 WantNewsPage = config.GetBool('want-news-page', ToontownGlobals.DefaultWantNewsPageSetting)
 from toontown.toontowngui import NewsPageButtonManager
@@ -170,6 +172,9 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.questMap = None
             self.prevToonIdx = 0
             self.houseType = 0
+            self.achievements = None
+            self.achievementsPage = None
+            self.achievementsGui = AchievementsGUI()
 
     def setDNA(self, dna):
         base.localAvatarStyle = dna
@@ -271,6 +276,8 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         del self.fishPage
         del self.gardenPage
         del self.trackPage
+        if base.wantAchievements:
+            del self.achievementsPage
         del self.book
         if base.wantKarts:
             if hasattr(self, 'kartPage'):
@@ -354,6 +361,11 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.fishPage.setAvatar(self)
         self.fishPage.load()
         self.book.addPage(self.fishPage, pageName=TTLocalizer.FishPageTitle)
+        if base.wantAchievements:
+            self.achievementsPage = AchievementsPage.AchievementsPage()
+            self.achievementsPage.load()
+            self.achievementsPage.update(self.achievements, self.achievementPoints)
+            self.book.addPage(self.achievementsPage, pageName=TTLocalizer.AchievementsPageTitle)
         if base.wantKarts:
             self.addKartPage()
         if self.disguisePageFlag:
@@ -398,8 +410,8 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.accept('InputState-turnRight', self.__toonMoved)
         self.accept('InputState-slide', self.__toonMoved)
 
+
         QuestParser.init()
-        return
 
     if base.wantKarts:
 
@@ -1751,6 +1763,23 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
     def hasPet(self):
         return self.petId != 0
 
+    def setAchievements(self, achievements, achievementPoints):
+        if self.achievements is None:
+            self.achievements = []
+            if self.achievementsPage is not None:
+                self.achievementsPage.update(achievements, achievementPoints)
+
+            DistributedToon.DistributedToon.setAchievements(self, achievements, achievementPoints)
+            return
+
+        for achievementId in achievements:
+            if achievementId not in self.achievements:
+                self.achievementsGui.showAchievement(achievementId)
+        if self.achievementsPage is not None:
+            self.achievementsPage.update(achievements, achievementPoints)
+
+        DistributedToon.DistributedToon.setAchievements(self, achievements, achievementPoints)
+
     def getPetDNA(self):
         if self.hasPet():
             pet = base.cr.identifyFriend(self.petId)
@@ -1767,3 +1796,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
 
     def stopAprilToonsControls(self):
         self.controlManager.currentControls.setGravity(ToontownGlobals.GravityValue * 2.0)
+
+
+    def hasAchievement(self, achievementId):
+        return achievementId in self.achievements

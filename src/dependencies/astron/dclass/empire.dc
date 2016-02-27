@@ -34,6 +34,7 @@ dclass Account {
   uint16 ACCESS_LEVEL db;
   uint32 LAST_LOGIN_TS db;
   uint8[] CHAT_SETTINGS db;
+  uint32 STATS_ID db;
 };
 
 struct BarrierData {
@@ -593,6 +594,89 @@ dclass DistributedAnimatedProp : DistributedObject {
 
 typedef int16 pair16[2];
 
+dclass AccountStats {
+  uint16 ACHIEVEMENTS[] = [] db;
+  uint16 ACHIEVEMENT_POINTS = 0 db;
+  uint32 SECONDS_PLAYED = 0 db;
+
+  uint32 DAMAGE_DEALT = 0 db;
+  uint32 DAMAGE_TAKEN = 0 db;
+
+  uint32 DEATH_COUNT = 0 db;
+  uint32 TEAMMATES_DIED = 0 db;
+
+  uint32 COGS_DEFEATED[32] = [0*32] db;
+  uint32 V2S_DEFEATED = 0 db;
+  uint32 SKELECOGS_DEFEATED = 0 db;
+
+
+  uint32 BUILDINGS_COMPLETED[20] = [0*20] db;
+  uint32 BUILDING_FLOORS_COMPLETED = 0 db;
+
+  uint32 FACTORIES_DEFEATED[2] = [0*2] db;
+  uint32 MINTS_DEFEATED[3] = [0*3] db;
+  uint32 DAS_DEFEATED[4] = [0*4] db;
+  uint32 CGFS_DEFEATED[3] = [0*3] db;
+  uint32 CGF_PUZZLES_COMPLETED = 0 db;
+  uint32 CGF_MOLES_STOMPED = 0 db;
+
+  uint32 VPS_DEFEATED[8] = [0*8] db;
+  uint32 VP_TIMES[8] = [0*8] db;
+  uint32 VP_DAMAGE_DEALT = 0 db;
+  uint32 VPS_LOST = 0 db;
+  uint32 VP_STUNS = 0 db;
+  uint32 VP_FINAL_HITS = 0 db;
+
+  uint32 CFOS_DEFEATED[8] = [0*8] db;
+  uint32 CFO_TIMES[8] = [0*8] db;
+  uint32 CFO_DAMAGE_DEALT = 0 db;
+  uint32 CFOS_LOST = 0 db;
+  uint32 CFO_GOONS_HIT = 0 db;
+  uint32 CFO_SAFES_HIT = 0 db;
+  uint32 CFO_HELMETS_REMOVED = 0 db;
+  uint32 CFO_STUNS = 0 db;
+  uint32 CFO_FINAL_HITS = 0 db;
+
+  uint32 CJS_DEFEATED = 0 db;
+  uint32 CJ_TIMES[8] = [0*8] db;
+  uint32 CJ_DAMAGE_DEALT = 0 db;
+  uint32 CJS_LOST = 0 db;
+  uint32 CJ_COGS_STUNNED = 0 db;
+  uint32 CJ_FINAL_HITS = 0 db;
+  uint32 CJ_JURORS_SEATED = 0 db;
+
+  uint32 CEOS_DEFEATED[8] = [0*8] db;
+  uint32 CEO_TIMES[8] = [0*8] db;
+  uint32 CEO_DAMAGE_DEALT = 0 db;
+  uint32 CEOS_LOST = 0 db;
+  uint32 CEO_GOLF_HITS = 0 db;
+  uint32 CEO_SNACKS_EATEN = 0 db;
+  uint32 CEO_FINAL_HITS = 0 db;
+  uint32 CEO_COGS_SERVED = 0 db;
+  uint32 FIRES_EARNED = 0 db;
+
+  uint32 FRIENDS_MADE = 0 db;
+  uint32 FRIENDS_DELETED = 0 db;
+
+  uint32 MINIGAMES_PLAYED[18] = [0*18] db;
+
+  uint32 BEANS_EARNED = 0 db;
+  uint32 BEANS_SPENT = 0 db;
+
+
+  uint32 CATALOG_ITEMS_BOUGHT = 0 db;
+
+  uint32 GAGS_BOUGHT[49] = [0*49] db;
+  uint32 GAGS_DELETED[49] = [0*49] db;
+  uint32 GAGS_USED[49] = [0*49] db;
+
+  uint32 FISH_CAUGHT[70] = [0*70] db;
+  uint32 CAST_COUNT = 0 db;
+
+  uint32 CHAT_MESSAGES_SENT = 0 db;
+  uint32 QUESTS_COMPLETED = 0 db;
+};
+
 dclass DistributedToon : DistributedPlayer {
   setDNAString(blob) required broadcast ownrecv db;
   setMaxBankMoney(int16 maxMoney = 10000) required broadcast ownrecv db;
@@ -763,7 +847,10 @@ dclass DistributedToon : DistributedPlayer {
   setPartyCanStart(uint64) ownrecv airecv;
   setPartyStatus(uint64, uint8) ownrecv airecv;
   announcePartyStarted(uint64) ownrecv;
+  setAchievementBoosts(uint8 boostCount = 0) required ownrecv db; // We want this field to be sent before setAchievements
+  setAchievements(uint16[] = [], uint16 = 0) required ownrecv;
   setNeverStartedPartyRefunded(uint64, int8, uint16) ownrecv;
+  setStatsId(uint32) required;
   setAnimalSound(uint8 index) ram broadcast ownrecv;
   setBuffs(uint32[] = []) required ownrecv db;
   setRedeemedCodes(string [] = []) required ownrecv db;

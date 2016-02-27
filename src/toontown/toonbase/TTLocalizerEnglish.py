@@ -3308,6 +3308,7 @@ InventoryPageTrackFull = 'You have all the gags in the %s track.'
 InventoryPagePluralPoints = 'You will get a new\n%(trackName)s gag when you\nget %(numPoints)s more %(trackName)s points.'
 InventoryPageSinglePoint = 'You will get a new\n%(trackName)s gag when you\nget %(numPoints)s more %(trackName)s point.'
 InventoryPageNoAccess = 'You do not have access to the %s track yet.'
+AchievementsPageTitle = 'Achievements'
 NPCFriendPageTitle = 'SOS Toons'
 NPCFriendPageDelete = 'Delete'
 NPCFriendPageDeleteConfirmation = 'Are you sure you want to delete 1 of these SOS cards?'
@@ -8538,6 +8539,102 @@ def getBuffString(buffId, buffTime):
 
 def getBuffPosterString(buffId):
     return buffIdStrings[buffId][1]
+
+
+# Achievements
+
+achievementInfo = {
+    0: ("It's fun with friends",
+        'Make a friend'),
+    1: ('Storming the towers',
+        'Defeat the Sellbot VP'),
+    2: ('Market crash',
+        'Defeat the Cashbot CFO'),
+    3: ('Justice is blind',
+        'Defeat the Lawbot CJ'),
+    4: ('Downsized',
+        'Defeat the Bossbot CEO'),
+    5: ('Toons Of The World Start!',
+        'Complete Toontown Central'),
+    6: ('Ahoy!',
+        "Complete Donald's Dock"),
+    7: ('Flower Power',
+        'Complete Daisy Gardens'),
+    8: ('Musical Magic',
+        "Complete Minnie's Melodyland"),
+    9: ('Are We There Yeti?',
+        'Complete The Brrrgh'),
+    10: ("Dreaming Tasks",
+         "Complete Donald's Dreamland"),
+    11: ('Task Master',
+         'Complete all classic toontasks'),
+    12: ('SOLO VP',
+         'Solo the Sellbot VP'),
+    13: ('SOLO CFO',
+         'Solo the Cashbot CFO'),
+    14: ('SOLO CJ',
+         'Solo the Lawbot CJ'),
+    15: ('SOLO CEO',
+         'Solo the Bossbot CEO'),
+    16: ('One man army',
+         'Solo all 4 cog bosses'),
+    17: ('Evicted Cogs',
+         'Defeat a Cog Building'),
+    18: ('For sale? sold.',
+         'Defeat a Sellbot Building'),
+    19: ('High mortgage',
+         'Defeat a Cashbot Building'),
+    20: ('Legal troubles',
+         'Defeat a Lawbot Building'),
+    21: ('Fore-closure',
+         'Defeat a Bossbot Building'),
+    22: ('Snacked',
+         'Eat 50 snacks in the CEO'),
+    23: ('Stunner - 100',
+         'Stun the VP 100 times'),
+    24: ('Jury duty',
+         'Seat 50 jurors in the CJ'),
+    25: ('VP mastery',
+         'Get all the VP achievements'),
+    26: ('CFO mastery',
+         'Get all the CFO achievements'),
+    27: ('CJ mastery',
+         'Get all the CJ achievements'),
+    28: ('CEO mastery',
+         'Get all the CEO achievements'),
+    29: ('The real boss',
+         'Get all the Cog Boss achievements'),
+    30: ('Stunner - 1000',
+         'Stun the VP 1000 times'),
+    31: ('Stunner - 2000',
+         'Stun the VP 2000 times'),
+    32: ('Tasker - 1',
+         'Complete 1 ToonTask'),
+    33: ('Tasker - 10',
+         'Complete 10 ToonTasks'),
+    34: ('Tasker - 100',
+         'Complete 100 ToonTasks'),
+    35: ('Tasker - 250',
+         'Complete 250 ToonTasks'),
+    36: ('Tasker - 500',
+         'Complete 500 ToonTasks'),
+    37: ('Champion Tasker',
+         'Get all the ToonTask achievements')
+}
+
+
+def getAchievementInfo(achievementId):
+    return achievementInfo[achievementId]
+
+achievementClassifiers = {
+    'misc': 'Miscellaneous',
+    'quest': 'ToonTask',
+    'suit': 'Cog'
+}
+
+
+def getAchievementClassifier(classifier):
+    return '%s Achievements' % achievementClassifiers.get(classifier)
 
 GroupTrackerPageTitle = 'Group Tracker'
 GroupTrackerListTitle = 'Groups'
