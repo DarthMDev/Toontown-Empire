@@ -2,15 +2,17 @@ from panda3d.core import NodePath
 from panda3d.core import TextNode
 
 from direct.gui.DirectWaitBar import DirectWaitBar
-from direct.gui.DirectFrame import DirectFrame
 from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectLabel import DirectLabel
 from direct.gui import DirectGuiGlobals as DGG
 
 from toontown.shtiker.ShtikerPage import ShtikerPage
+from toontown.achievements.AchievementsGUI import AchievementNode
 from toontown.achievements import Achievements
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
+
+from collections import OrderedDict
 
 
 gui = loader.loadModel('phase_3/models/gui/tt_m_gui_mat_mainGui')
@@ -51,7 +53,7 @@ class PageArrow(DirectButton):
             ('image1_scale', scales[1], None),
             ('image2_scale', scales[1], None),
             ('extraArgs', extraArgs, None),
-            ('pos', pos, None),
+            ('pos', kwargs.get('pos') or pos, None),
         )
 
         self.defineoptions(kwargs, optiondefs)
@@ -59,65 +61,162 @@ class PageArrow(DirectButton):
         self.initialiseoptions(PageArrow)
 
 
-class AchievementList(DirectFrame):
-    def __init__(self, parent, **kwargs):
-        optiondefs = (
-            ('image', None, None),
-            ('relief', None, None),
-            ('frameColor', (1, 1, 1, 1), None),
-            ('image_scale', halfButtonInvertScale, None),
-            ('text_fg', (1, 1, 1, 1), None),
-        )
+class AchievementGroup(NodePath):
+    POS_LIST = [
+        (-0.435, 0, 0.41),
+        (0.435, 0, 0.41),
+        (-0.435, 0, 0.16),
+        (0.435, 0, 0.16),
+        (-0.435, 0, -0.09),
+        (0.435, 0, -0.09),
+        (-0.435, 0, -0.34),
+        (0.435, 0, -0.34)
+    ]
 
-        self.defineoptions(kwargs, optiondefs)
-        DirectFrame.__init__(self, parent)
-        self.initialiseoptions(AchievementList)
+    def __init__(self, parent, achievementIds):
+        NodePath.__init__(self, parent.attachNewNode('achievement-group-%s' % id(self)))
 
+        self.achievementIds = achievementIds
         self.achievements = {}
 
-    def addAchievement(self, achievementId):
-        pass
+    def load(self):
+        for i, achievementId in enumerate(self.achievementIds):
+            node = self.drawAchievement(achievementId, i)
+            self.achievements[achievementId] = (i, node)
+
+    def unload(self):
+        self.removeNode()
+
+    def update(self, achievementId):
+        index = self.achievements[achievementId][0]
+        self.achievements[achievementId][1].removeNode()
+
+        node = self.drawAchievement(achievementId, index, forceUnlocked=True)
+        self.achievements[achievementId] = (index, node)
+
+    def drawAchievement(self, achievementId, index, forceUnlocked=False):
+        locked = not base.localAvatar.hasAchievement(achievementId) if not forceUnlocked else False
+        faded = Achievements.getAchievementVisibility(achievementId) == Achievements.HIDDEN and locked
+
+        node = AchievementNode(achievementId, faded=faded, locked=locked)
+        node.setScale(0.2)
+        node.setPos(*self.POS_LIST[index])
+        node.reparentTo(self)
+        return node
 
     def hasAchievement(self, achievementId):
-        return achievementId in self.achievements
+        return achievementId in self.achievementIds
 
 
-class AchievementCategory(NodePath):
-    def __init__(self, page, category):
-        NodePath.__init__(self, page.attachNewNode('achievement-category-%s' % category))
+class AchievementGroupList:
+    def __init__(self, parent, achievementIds):
+        self.parent = parent
+        self.achievementIds = achievementIds
 
-        self.page = page
-        self.category = category
-        self.activeIds = []
+        self.groups = []
+        self.currentGroupIndex = None
 
-        self.label = None
-        self.achievementList = None
+        self.groupLabel = None
 
-    def update(self):
-        pass
+        self.leftArrow = None
+        self.rightArrow = None
 
     def load(self):
-        self.label = DirectLabel(parent=self, relief=None, text=TTLocalizer.getAchievementCategory(self.category),
+        self.groupLabel = DirectLabel(parent=self.parent, relief=None, text='0/0', text_scale=0.05,
+                                      textMayChange=1, pos=(0, 0, -0.555))
+
+        self.leftArrow = PageArrow(self.parent, command=self.arrowPressed, pos=(-0.105, 0, -0.54), scale=0.7)
+        self.rightArrow = PageArrow(self.parent, inverted=True, command=self.arrowPressed,
+                                    pos=(0.105, 0, -0.54), scale=0.7)
+
+        for achievementIds in [self.achievementIds[i:i+8] for i in xrange(0, len(self.achievementIds), 8)]:
+            group = AchievementGroup(self.parent, achievementIds)
+            group.load()
+            group.hide()
+            self.groups.append(group)
+
+        self.showGroup(0)
+
+    def unload(self):
+        for group in self.groups:
+            group.unload()
+
+        self.groups = []
+
+        self.groupLabel.destroy()
+        self.groupLabel = None
+
+        self.leftArrow.destroy()
+        self.leftArrow = None
+
+        self.rightArrow.destroy()
+        self.rightArrow = None
+
+    def update(self, achievementId):
+        for group in self.groups:
+            if group.hasAchievement(achievementId):
+                group.update(achievementId)
+                break
+
+    def showGroup(self, groupIndex):
+        if self.currentGroupIndex is not None:
+            self.groups[self.currentGroupIndex].hide()
+
+        if groupIndex == 0:
+            self.leftArrow['state'] = DGG.DISABLED
+        else:
+            self.leftArrow['state'] = DGG.NORMAL
+
+        if groupIndex == len(self.groups) - 1:
+            self.rightArrow['state'] = DGG.DISABLED
+        else:
+            self.rightArrow['state'] = DGG.NORMAL
+
+        self.groups[groupIndex].show()
+        self.currentGroupIndex = groupIndex
+
+        self.groupLabel['text'] = '%s/%s' % (groupIndex+1, len(self.groups))
+
+    def arrowPressed(self, direction):
+        self.showGroup(self.currentGroupIndex + direction)
+
+
+class AchievementClassifier(NodePath):
+    def __init__(self, page, classifier):
+        NodePath.__init__(self, page.attachNewNode('achievement-classifier-%s' % classifier))
+
+        self.page = page
+        self.classifier = classifier
+
+        self.label = None
+        self.achievementGroupList = None
+
+    def update(self, achievementId):
+        self.achievementGroupList.update(achievementId)
+
+    def load(self):
+        self.label = DirectLabel(parent=self, relief=None, text=TTLocalizer.getAchievementClassifier(self.classifier),
                                  text_scale=0.08, textMayChange=0, pos=(0, 0, 0.6))
 
-        self.achievementList = AchievementList(self)
+        self.achievementGroupList = AchievementGroupList(self, Achievements.getClassifierAchievements(self.classifier))
+        self.achievementGroupList.load()
 
     def unload(self):
         self.label.destroy()
         self.label = None
 
-        self.achievementList.destroy()
-        self.achievementList = None
+        self.achievementGroupList.unload()
+        self.achievementGroupList = None
 
 
 class AchievementsPage(ShtikerPage):
     def __init__(self):
         ShtikerPage.__init__(self)
 
-        self.categories = []
-        self.currentCategoryIndex = None
+        self.classifiers = OrderedDict()
+        self.currentClassifierIndex = None
 
-        self.achievements = []
+        self.achievementIds = []
         self.achievementPoints = None
 
         self.leftArrow = None
@@ -140,37 +239,37 @@ class AchievementsPage(ShtikerPage):
                                      text_fg=(1, 1, 2, 0.85), text_shadow=(0, 0, 0, 5), text_align=TextNode.ACenter,
                                      text_scale=0.1, text_font=ToontownGlobals.getSignFont())
 
-        for category in Achievements.category2AchievementIds:
-            achievementCategory = AchievementCategory(self, category)
-            achievementCategory.load()
-            achievementCategory.hide()
-            self.categories.append(achievementCategory)
+        for classifier in Achievements.classifier2AchievementIds:
+            achievementClassifier = AchievementClassifier(self, classifier)
+            achievementClassifier.load()
+            achievementClassifier.hide()
+            self.classifiers[classifier] = achievementClassifier
 
-    def showCategory(self, categoryIndex):
-        if self.currentCategoryIndex is not None:
-            self.categories[self.currentCategoryIndex].hide()
+    def showClassifier(self, classifierIndex):
+        if self.currentClassifierIndex is not None:
+            self.classifiers[self.classifiers.keys()[self.currentClassifierIndex]].hide()
 
-        if categoryIndex == 0:
+        if classifierIndex == 0:
             self.leftArrow['state'] = DGG.DISABLED
         else:
             self.leftArrow['state'] = DGG.NORMAL
 
-        if categoryIndex == len(self.categories) - 1:
+        if classifierIndex == len(self.classifiers) - 1:
             self.rightArrow['state'] = DGG.DISABLED
         else:
             self.rightArrow['state'] = DGG.NORMAL
 
-        self.currentCategoryIndex = categoryIndex
-        self.categories[categoryIndex].show()
+        self.currentClassifierIndex = classifierIndex
+        self.classifiers[self.classifiers.keys()[classifierIndex]].show()
 
     def unload(self):
-        for category in self.categories:
-            category.unload()
+        for classifier in self.classifiers:
+            self.classifiers[classifier].unload()
 
-        self.categories = []
-        self.currentCategoryIndex = None
+        self.classifiers = OrderedDict()
+        self.currentClassifierIndex = None
 
-        self.achievements = []
+        self.achievementIds = []
         self.achievementPoints = None
 
         self.leftArrow.destroy()
@@ -188,22 +287,30 @@ class AchievementsPage(ShtikerPage):
         ShtikerPage.unload(self)
 
     def enter(self):
-        if self.currentCategoryIndex is None:
-            self.showCategory(0)
+        if self.currentClassifierIndex is None:
+            self.showClassifier(0)
 
         ShtikerPage.enter(self)
 
     def update(self, achievements, achievementPoints):
-        self.achievements = achievements
+        if self.achievementIds:
+            newAchievementIds = [x for x in achievements if x not in self.achievementIds]
+            for achievementId in newAchievementIds:
+                classifier = Achievements.getAchievementClassifier(achievementId)
+                self.classifiers[classifier].update(achievementId)
+
+        self.achievementIds = achievements
         self.achievementPoints = achievementPoints
 
         level = Achievements.getLevelFromPoints(achievementPoints)
         self.levelText['text'] = str(level + 1)
         
         neededPoints = Achievements.getPointsForLevel(level)
+        previousPoints = Achievements.getPointsForLevel(level-1) if level > 0 else 0
+
         self.pointsBar['text'] = '%s/%s' % (achievementPoints, neededPoints)
-        self.pointsBar['range'] = neededPoints
-        self.pointsBar['value'] = achievementPoints
+        self.pointsBar['range'] = neededPoints - previousPoints
+        self.pointsBar['value'] = achievementPoints - previousPoints
 
     def arrowPressed(self, direction):
-        self.showCategory(self.currentCategoryIndex + direction)
+        self.showClassifier(self.currentClassifierIndex + direction)
