@@ -4644,8 +4644,10 @@ STOREOWNER_TOOKTOOLONG = 'Need more time to think?'
 STOREOWNER_GOODBYE = 'See you later!'
 STOREOWNER_NEEDJELLYBEANS = 'You need to ride the Trolley to get some Jellybeans.'
 STOREOWNER_GREETING = 'Choose what you want to buy.'
+STOREOWNER_SOS_GREETING = 'Buy a roll for a random SOS card!'
 STOREOWNER_BROWSING = 'You can browse, but you need a clothing ticket to buy.'
 STOREOWNER_BROWSING_JBS = 'You can browse, but you need at least 200 Jellybeans to buy.'
+STOREOWNER_NEEDJELLYBEANSSOS = "You need to get some Jellybeans. At minimum 5,000 Jellybeans."
 STOREOWNER_NOCLOTHINGTICKET = 'You need a clothing ticket to shop for clothes.'
 STOREOWNER_NOFISH = 'Come back here to sell fish to the Pet Shop for Jellybeans.'
 STOREOWNER_THANKSFISH = 'Thanks! The Pet Shop will love these. Bye!'
@@ -8726,6 +8728,12 @@ RestockFullLaffMessage = "You're already happy!"
 RestockLessLaffMessage = "Why would you want to be less happy than you are right now?"
 RestockNoMoneyMessage = "You don't have enough jellybeans for that!"
 RestockSuccessfulMessage = "You're welcome! Have fun!"
+
+RollNoMoneyGuiMessage = "\n\x01WLRed\x01Not enough jellybeans\x02"
+RollFullSosMessage = "You're already have 100 SOS Cards for this toon!"
+RollNoMoneyMessage = "You don't have enough jellybeans to buy a roll!"
+RollSuccessfulMessage = "You're welcome! Have fun with you new SOS Card!"
+
 InVP = ' in a V.P. Battle'
 InFieldOffice = ' in a Sellbot Field Office'
 CogPanelLevel = 'Level %s'
