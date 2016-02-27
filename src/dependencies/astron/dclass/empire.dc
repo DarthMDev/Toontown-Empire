@@ -847,6 +847,7 @@ dclass DistributedToon : DistributedPlayer {
   setPartyCanStart(uint64) ownrecv airecv;
   setPartyStatus(uint64, uint8) ownrecv airecv;
   announcePartyStarted(uint64) ownrecv;
+  setAchievementBoosts(uint8 boostCount = 0) required ownrecv db; // We want this field to be sent before setAchievements
   setAchievements(uint16[] = [], uint16 = 0) required ownrecv;
   setNeverStartedPartyRefunded(uint64, int8, uint16) ownrecv;
   setStatsId(uint32) required;

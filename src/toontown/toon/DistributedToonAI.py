@@ -79,6 +79,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.quests = []
         self.achievements = []
         self.achievementPoints = 0
+        self.achievementBoosts = 0
         self.cogs = []
         self.cogCounts = []
         self.NPCFriendsDict = {}
@@ -653,7 +654,14 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def setAchievements(self, achievements, achievementPoints):
         self.achievements = achievements
         self.achievementPoints = achievementPoints
-        
+
+        boosts = (Achievements.getLevelFromPoints(self.achievementPoints) + 1) / Achievements.BOOST_LEVEL
+        if boosts > self.achievementBoosts:
+            self.b_setMaxHp(self.maxHp + (boosts - self.achievementBoosts))
+            self.toonUp(self.maxHp)
+
+        self.b_setAchievementBoosts(boosts)
+
     def d_setAchievements(self, achievements, achievementPoints):
         self.sendUpdate('setAchievements', [achievements, achievementPoints])
         
@@ -4185,6 +4193,16 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getAnimalSound(self):
         return self.animalSound
+
+    def setAchievementBoosts(self, boostCount):
+        self.achievementBoosts = boostCount
+
+    def d_setAchievementBoosts(self, boostCount):
+        self.sendUpdate('setAchievementBoosts', [boostCount])
+
+    def b_setAchievementBoosts(self, boostCount):
+        self.setAchievementBoosts(boostCount)
+        self.d_setAchievementBoosts(boostCount)
 
     def addBuff(self, id, duration):
         buffCount = len(self.buffs)
