@@ -1,4 +1,4 @@
-from panda3d.core import NodePath, Vec4, TextNode
+from panda3d.core import NodePath, Vec4, TextNode, CardMaker, TransparencyAttrib
 
 from direct.interval.IntervalGlobal import LerpColorScaleInterval, Sequence, Func, Wait, Parallel
 
@@ -7,8 +7,9 @@ from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 
 
-achievementModel = loader.loadModel('phase_3.5/models/gui/achievement_set.egg')
-achievementSfx = base.loadSfx('phase_3.5/audio/sfx/poof_in.wav')
+achievementModel = loader.loadModel('phase_3.5/models/gui/achievement_set.bam')
+achievementSfx = base.loadSfx('phase_3.5/audio/sfx/poof_in.ogg')
+lockTexture = loader.loadTexture('phase_3.5/maps/achievement_lock.png')
 
 CategoryModels = {
     Achievements.BRONZE: achievementModel.find('**/achievement1'),
@@ -19,7 +20,7 @@ CategoryModels = {
 
 
 class AchievementNode(NodePath):
-    def __init__(self, achievementId):
+    def __init__(self, achievementId, faded=False, locked=False):
         NodePath.__init__(self, hidden.attachNewNode('achievement-%s-%s' % (achievementId, id(self))))
 
         self.achievementId = achievementId
@@ -27,6 +28,24 @@ class AchievementNode(NodePath):
 
         CategoryModels[self.category].copyTo(self)
 
+        if not faded:
+            self.generateAchievementInfo()
+
+            if locked:
+                cm = CardMaker('lock')
+                lock = self.attachNewNode(cm.generate())
+                lock.setTransparency(TransparencyAttrib.MAlpha)
+                lock.setTexture(lockTexture)
+                lock.setScale(0.35)
+                lock.setPos(1.5, 0, -0.025)
+                lock.setColorScale(0, 0, 0, 0.6)
+
+        if faded:
+            self.setColorScale(0, 0, 0, 0.1)
+
+        self.flattenStrong()
+
+    def generateAchievementInfo(self):
         acievementInfo = TTLocalizer.getAchievementInfo(self.achievementId)
 
         title = TextNode('title')
@@ -48,8 +67,6 @@ class AchievementNode(NodePath):
         descriptionNode = self.attachNewNode(description)
         descriptionNode.setScale(0.15)
         descriptionNode.setZ(-0.14)
-
-        self.flattenStrong()
 
 
 class AchievementPopup(NodePath):
