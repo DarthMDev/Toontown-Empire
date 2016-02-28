@@ -18,5 +18,5 @@ ROLL_SUCCESSFUL = 2
 RollMessages = {
  FULL_SOS: TTLocalizer.RollFullSosMessage,
  NOT_ENOUGH_MONEY: TTLocalizer.RollNoMoneyMessage,
- RESTOCK_SUCCESSFUL: TTLocalizer.RollSuccessfulMessage
+ ROLL_SUCCESSFUL: TTLocalizer.RollSuccessfulMessage
 }

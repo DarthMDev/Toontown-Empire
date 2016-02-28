@@ -2,7 +2,7 @@ from otp.nametag.NametagConstants import CFSpeech, CFTimeout
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.toon import NPCToons
 from DistributedNPCToonBase import DistributedNPCToonBase
-import SosShopGlobals, SosShopGui, time
+import SosShopGlobals, SosShopGui, time, random, math
 
 class DistributedNPCSos(DistributedNPCToonBase):
 
@@ -60,7 +60,8 @@ class DistributedNPCSos(DistributedNPCToonBase):
         elif state == SosShopGlobals.USER_CANCEL:
             self.setChatAbsolute(TTLocalizer.STOREOWNER_GOODBYE, CFSpeech|CFTimeout)
         elif state == SosShopGlobals.ROLL:
-            self.sendUpdate('roll')
+            count = random.randint(1, 5)
+            self.sendUpdate('roll', [count])
 
     def rollResult(self, state):
         if state in SosShopGlobals.RollMessages:
