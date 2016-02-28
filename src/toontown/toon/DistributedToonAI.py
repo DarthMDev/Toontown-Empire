@@ -63,6 +63,11 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     petId = None
 
     def __init__(self, air):
+        try:
+            self.DistributedToon_initialized
+            return
+        except:
+            self.DistributedToon_initialized = 1
         DistributedPlayerAI.DistributedPlayerAI.__init__(self, air)
         DistributedSmoothNodeAI.DistributedSmoothNodeAI.__init__(self, air)
 
@@ -236,6 +241,11 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         DistributedAvatarAI.DistributedAvatarAI.sendDeleteEvent(self)
 
     def delete(self):
+        try:
+            self.DistributedToon_deleted
+            return
+        except:
+            self.DistributedToon_deleted = 1
         if self.isPlayerControlled():
             messenger.send('avatarExited', [self])
 
