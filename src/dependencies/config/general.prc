@@ -125,3 +125,6 @@ want-old-fireworks #t
 # In-game News:
 want-news-tab #t
 want-news-page #t
+
+#achi
+want-achievements #t

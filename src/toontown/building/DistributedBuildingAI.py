@@ -293,6 +293,8 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
             if toon is not None:
                 self.air.questManager.toonKilledBuilding(toon, self.track, self.difficulty, self.numFloors, self.zoneId, 0)
                 toon.addStat(ToontownGlobals.STAT_BLDG)
+                if self.air.wantAchievements:
+                    self.air.achievementsManager.toonDefeatedBuilding(t, self.track, self.numFloors)
         for i in xrange(0, 4):
             victor = victorList[i]
             if (victor is None) or (victor not in self.air.doId2do):

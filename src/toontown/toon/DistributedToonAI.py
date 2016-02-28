@@ -28,6 +28,7 @@ from toontown.racing import RaceGlobals
 from toontown.shtiker import CogPageGlobals
 from toontown.suit import SuitDNA, SuitInvasionGlobals
 from toontown.toon import NPCToons
+from toontown.achievements import Achievements
 from toontown.toonbase import TTLocalizer, ToontownBattleGlobals, ToontownGlobals
 from toontown.toonbase.ToontownGlobals import *
 from NPCToons import npcFriends
@@ -76,6 +77,9 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.experience = None
         self.petId = None
         self.quests = []
+        self.achievements = []
+        self.achievementPoints = 0
+        self.achievementBoosts = 0
         self.cogs = []
         self.cogCounts = []
         self.NPCFriendsDict = {}
@@ -172,6 +176,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.fishBingoTutorialDone = False
         self.nextKnockHeal = 0
         self.tfRequest = (0, 0)
+        self.statsId = 0
+        self.startTime = 0
 
     def generate(self):
         DistributedPlayerAI.DistributedPlayerAI.generate(self)
@@ -183,6 +189,10 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
         if self.isPlayerControlled():
             messenger.send('avatarEntered', [self])
+
+            if self.air.wantAchievements:
+                self.startTime = time.time()
+                self.air.achievementsManager.statsCache.toonGenerated(self)
 
         from toontown.toon.DistributedNPCToonBaseAI import DistributedNPCToonBaseAI
         if not isinstance(self, DistributedNPCToonBaseAI):
@@ -228,6 +238,16 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def delete(self):
         if self.isPlayerControlled():
             messenger.send('avatarExited', [self])
+
+            if self.air.wantAchievements:
+                totalTime = time.time() - self.startTime
+
+                accountStats = self.air.achievementsManager.statsCache.getStats(self.doId)
+                accountStats['SECONDS_PLAYED'] += int(totalTime)
+
+                self.air.achievementsManager.modifyAccountStats(self.statsId,
+                                                                {'SECONDS_PLAYED': accountStats['SECONDS_PLAYED']})
+
         if simbase.wantPets:
             if self.isInEstate():
                 self.exitEstate()
@@ -545,6 +565,9 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
         self.friendsList.append(friendId)
         self.air.questManager.toonMadeFriend(self)
+        
+        if self.air.wantAchievements:
+            self.air.achievementsManager.toonMadeFriend(self.doId)  
 
     def getBattleId(self):
         if self.battleId >= 0:
@@ -626,6 +649,36 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.resetNPCFriendsDict()
         for npcId in desiredNpcFriends:
             self.attemptAddNPCFriend(npcId)
+
+    
+    def setAchievements(self, achievements, achievementPoints):
+        self.achievements = achievements
+        self.achievementPoints = achievementPoints
+
+        boosts = (Achievements.getLevelFromPoints(self.achievementPoints) + 1) / Achievements.BOOST_LEVEL
+        if boosts > self.achievementBoosts:
+            self.b_setMaxHp(self.maxHp + (boosts - self.achievementBoosts))
+            self.toonUp(self.maxHp)
+
+        self.b_setAchievementBoosts(boosts)
+
+    def d_setAchievements(self, achievements, achievementPoints):
+        self.sendUpdate('setAchievements', [achievements, achievementPoints])
+        
+    def b_setAchievements(self, achievements, achievementPoints):
+        self.setAchievements(achievements, achievementPoints)
+        self.d_setAchievements(achievements, achievementPoints)
+        
+    def getAchievements(self):
+        return self.achievements, self.achievementPoints
+    
+                
+    def hasAchievement(self, achievementId):
+        if achievementId in self.achievements:
+            return True
+        
+        return False
+    
 
     def isTrunkFull(self, extraAccessories = 0):
         numAccessories = (len(self.hatList) + len(self.glassesList) + len(self.backpackList) + len(self.shoesList)) / 3
@@ -1283,6 +1336,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getCogMerits(self):
         return self.cogMerits
+
 
     def b_promote(self, dept):
         oldMerits = CogDisguiseGlobals.getTotalMerits(self, dept)
@@ -4140,6 +4194,16 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def getAnimalSound(self):
         return self.animalSound
 
+    def setAchievementBoosts(self, boostCount):
+        self.achievementBoosts = boostCount
+
+    def d_setAchievementBoosts(self, boostCount):
+        self.sendUpdate('setAchievementBoosts', [boostCount])
+
+    def b_setAchievementBoosts(self, boostCount):
+        self.setAchievementBoosts(boostCount)
+        self.d_setAchievementBoosts(boostCount)
+
     def addBuff(self, id, duration):
         buffCount = len(self.buffs)
         if buffCount <= id:
@@ -4346,6 +4410,12 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
    
     def setWantGroupTracker(self, wantGroupTracker):
         self.wantGroupTracker = wantGroupTracker
+
+    def getStatsId(self):
+        return self.statsId
+
+    def setStatsId(self, statsId):
+        self.statsId = statsId
 
 @magicWord(category=CATEGORY_STAFF, types=[str, int, int])
 def cheesyEffect(value, hood=0, expire=0):
@@ -5392,3 +5462,22 @@ def unfreezeToon():
             return
         self.magicWordTeleportRequests.remove(targetId)
         self.sendUpdate('magicTeleportInitiate', [hoodId, zoneId])
+
+
+@magicWord(category=CATEGORY_STAFF, types=[str, int])
+def achievements(command, achId):
+    invoker = spellbook.getInvoker()
+    if command.lower() == 'earn':
+        achievements = invoker.getAchievements()
+        achievements.append(achId)
+        
+        invoker.b_setAchievements(achievements)
+        return 'Earnt Achievement %s'%(achId)
+    elif command.lower() == 'remove':
+        achievements = invoker.getAchievements()
+        achievements.remove(achId)
+        
+        invoker.b_setAchievements(achievements)
+        return 'Removed Achievement %s'%(achId)        
+    else:
+        return "Unknown Command '%s'"%(command)

@@ -3308,6 +3308,7 @@ InventoryPageTrackFull = 'You have all the gags in the %s track.'
 InventoryPagePluralPoints = 'You will get a new\n%(trackName)s gag when you\nget %(numPoints)s more %(trackName)s points.'
 InventoryPageSinglePoint = 'You will get a new\n%(trackName)s gag when you\nget %(numPoints)s more %(trackName)s point.'
 InventoryPageNoAccess = 'You do not have access to the %s track yet.'
+AchievementsPageTitle = 'Achievements'
 NPCFriendPageTitle = 'SOS Toons'
 NPCFriendPageDelete = 'Delete'
 NPCFriendPageDeleteConfirmation = 'Are you sure you want to delete 1 of these SOS cards?'
@@ -4643,8 +4644,10 @@ STOREOWNER_TOOKTOOLONG = 'Need more time to think?'
 STOREOWNER_GOODBYE = 'See you later!'
 STOREOWNER_NEEDJELLYBEANS = 'You need to ride the Trolley to get some Jellybeans.'
 STOREOWNER_GREETING = 'Choose what you want to buy.'
+STOREOWNER_SOS_GREETING = 'Buy a roll for a random SOS card!'
 STOREOWNER_BROWSING = 'You can browse, but you need a clothing ticket to buy.'
 STOREOWNER_BROWSING_JBS = 'You can browse, but you need at least 200 Jellybeans to buy.'
+STOREOWNER_NEEDJELLYBEANSSOS = "You need to get some Jellybeans. At minimum 5,000 Jellybeans."
 STOREOWNER_NOCLOTHINGTICKET = 'You need a clothing ticket to shop for clothes.'
 STOREOWNER_NOFISH = 'Come back here to sell fish to the Pet Shop for Jellybeans.'
 STOREOWNER_THANKSFISH = 'Thanks! The Pet Shop will love these. Bye!'
@@ -6344,7 +6347,7 @@ NPCToonNames = {20000: 'Tutorial Tom',
  7023: 'Bo Nanapeel',
  10001: 'Medic Manny',
  10002: "Good ol' Gil Giggles",
- 11001: 'Medic Marlson',
+ 11001: 'Sos Keeper Charles',
  12001: 'Medic Manson',
  12002: 'Mata Hairy',
  13001: 'Medic Mary',
@@ -8539,6 +8542,102 @@ def getBuffString(buffId, buffTime):
 def getBuffPosterString(buffId):
     return buffIdStrings[buffId][1]
 
+
+# Achievements
+
+achievementInfo = {
+    0: ("It's fun with friends",
+        'Make a friend'),
+    1: ('Storming the towers',
+        'Defeat the Sellbot VP'),
+    2: ('Market crash',
+        'Defeat the Cashbot CFO'),
+    3: ('Justice is blind',
+        'Defeat the Lawbot CJ'),
+    4: ('Downsized',
+        'Defeat the Bossbot CEO'),
+    5: ('Toons Of The World Start!',
+        'Complete Toontown Central'),
+    6: ('Ahoy!',
+        "Complete Donald's Dock"),
+    7: ('Flower Power',
+        'Complete Daisy Gardens'),
+    8: ('Musical Magic',
+        "Complete Minnie's Melodyland"),
+    9: ('Are We There Yeti?',
+        'Complete The Brrrgh'),
+    10: ("Dreaming Tasks",
+         "Complete Donald's Dreamland"),
+    11: ('Task Master',
+         'Complete all classic toontasks'),
+    12: ('SOLO VP',
+         'Solo the Sellbot VP'),
+    13: ('SOLO CFO',
+         'Solo the Cashbot CFO'),
+    14: ('SOLO CJ',
+         'Solo the Lawbot CJ'),
+    15: ('SOLO CEO',
+         'Solo the Bossbot CEO'),
+    16: ('One man army',
+         'Solo all 4 cog bosses'),
+    17: ('Evicted Cogs',
+         'Defeat a Cog Building'),
+    18: ('For sale? sold.',
+         'Defeat a Sellbot Building'),
+    19: ('High mortgage',
+         'Defeat a Cashbot Building'),
+    20: ('Legal troubles',
+         'Defeat a Lawbot Building'),
+    21: ('Fore-closure',
+         'Defeat a Bossbot Building'),
+    22: ('Snacked',
+         'Eat 50 snacks in the CEO'),
+    23: ('Stunner - 100',
+         'Stun the VP 100 times'),
+    24: ('Jury duty',
+         'Seat 50 jurors in the CJ'),
+    25: ('VP mastery',
+         'Get all the VP achievements'),
+    26: ('CFO mastery',
+         'Get all the CFO achievements'),
+    27: ('CJ mastery',
+         'Get all the CJ achievements'),
+    28: ('CEO mastery',
+         'Get all the CEO achievements'),
+    29: ('The real boss',
+         'Get all the Cog Boss achievements'),
+    30: ('Stunner - 1000',
+         'Stun the VP 1000 times'),
+    31: ('Stunner - 2000',
+         'Stun the VP 2000 times'),
+    32: ('Tasker - 1',
+         'Complete 1 ToonTask'),
+    33: ('Tasker - 10',
+         'Complete 10 ToonTasks'),
+    34: ('Tasker - 100',
+         'Complete 100 ToonTasks'),
+    35: ('Tasker - 250',
+         'Complete 250 ToonTasks'),
+    36: ('Tasker - 500',
+         'Complete 500 ToonTasks'),
+    37: ('Champion Tasker',
+         'Get all the ToonTask achievements')
+}
+
+
+def getAchievementInfo(achievementId):
+    return achievementInfo[achievementId]
+
+achievementClassifiers = {
+    'misc': 'Miscellaneous',
+    'quest': 'ToonTask',
+    'suit': 'Cog'
+}
+
+
+def getAchievementClassifier(classifier):
+    return '%s Achievements' % achievementClassifiers.get(classifier)
+
 GroupTrackerPageTitle = 'Group Tracker'
 GroupTrackerListTitle = 'Groups'
 GroupTrackerEmpty = 'There are no boarding groups available'
@@ -8629,6 +8728,12 @@ RestockFullLaffMessage = "You're already happy!"
 RestockLessLaffMessage = "Why would you want to be less happy than you are right now?"
 RestockNoMoneyMessage = "You don't have enough jellybeans for that!"
 RestockSuccessfulMessage = "You're welcome! Have fun!"
+
+RollNoMoneyGuiMessage = "\n\x01WLRed\x01Not enough jellybeans\x02"
+RollFullSosMessage = "You're already have 100 SOS Cards for this toon!"
+RollNoMoneyMessage = "You don't have enough jellybeans to buy a roll!"
+RollSuccessfulMessage = "You're welcome! Have fun with you new SOS Card!"
+
 InVP = ' in a V.P. Battle'
 InFieldOffice = ' in a Sellbot Field Office'
 CogPanelLevel = 'Level %s'
