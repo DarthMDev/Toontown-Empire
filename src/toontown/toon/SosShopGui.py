@@ -4,6 +4,8 @@ from otp.otpbase import OTPLocalizer
 from toontown.toonbase import ToontownGlobals, TTLocalizer, ToontownTimer
 import SosShopGlobals
 
+#TODO: Add Text For The Gui.
+
 class SosShopGui(DirectFrame):
 
     def __init__(self):
