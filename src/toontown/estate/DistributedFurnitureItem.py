@@ -58,7 +58,8 @@ class DistributedFurnitureItem(DistributedHouseItem.DistributedHouseItem, Distri
             self.item = CatalogItem.getItem(blob, store=CatalogItem.Customization)
             self.assign(self.loadModel())
             interior = self.furnitureMgr.getInteriorObject()
-            self.reparentTo(interior.interior)
+            if interior:
+                self.reparentTo(interior.interior)
 
     def loadModel(self):
         return self.item.loadModel()
