@@ -22,7 +22,6 @@ class SosShopGui(DirectFrame):
         self.cancelButton = DirectButton(parent=self, relief=None, image=(buttons.find('**/CloseBtn_UP'), buttons.find('**/CloseBtn_DN'), buttons.find('**/CloseBtn_Rllvr')), pos=(-0.2, 0, -0.5), text=OTPLocalizer.lCancel, text_scale=0.06, text_pos=(0, -0.1), command=self.__cancel, extraArgs=[SosShopGlobals.USER_CANCEL])
         self.okButton = DirectButton(parent=self, relief=None, image=(buttons.find('**/ChtBx_OKBtn_UP'), buttons.find('**/ChtBx_OKBtn_DN'), buttons.find('**/ChtBx_OKBtn_Rllvr')), pos=(0.2, 0, -0.5), text=OTPLocalizer.lOK, text_scale=0.06, text_pos=(0, -0.1), command=self.__restock)
         buttons.removeNode()
-        arrowGui.removeNode()
 
 
     def destroy(self):
@@ -31,16 +30,15 @@ class SosShopGui(DirectFrame):
         if self.timer:
             self.timer.destroy()
 
-        taskMgr.remove(self.taskName('runLaffCounter'))
         DirectFrame.destroy(self)
 
     def __cancel(self, state):
         self.destroy()
-        messenger.send('laffShopDone', [state, 0])
+        messenger.send('sosShopDone', [state, 0])
 
-    def __restock(self):
+    def __roll(self):
         self.destroy()
-        messenger.send('laffShopDone', [SosShopGlobals.RESTOCK, self.additionalLaff])
+        messenger.send('sosShopDone', [SosShopGlobals.ROLL)
 
 
     def __runTask(self, task):
@@ -49,22 +47,5 @@ class SosShopGui(DirectFrame):
         else:
             task.delayTime = max(0.05, task.delayTime * 0.75)
             task.prevTime = task.time
-            hitLimit = self.__updateLaffMeter(task.delta)
 
-            return Task.done if hitLimit else Task.cont
-
-    def __taskDone(self, event):
-        messenger.send('wakeup')
-        taskMgr.remove(self.taskName('runLaffCounter'))
-
-    def __taskUpdate(self, delta, event):
-        messenger.send('wakeup')
-
-        task = Task(self.__runTask)
-        task.delayTime = 0.4
-        task.prevTime = 0.0
-        task.delta = delta
-        hitLimit = self.__updateLaffMeter(delta)
-
-        if not hitLimit:
-            taskMgr.add(task, self.taskName('runLaffCounter'))
+            return Task.done  

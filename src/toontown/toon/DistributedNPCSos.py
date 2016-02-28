@@ -9,7 +9,7 @@ class DistributedNPCSos(DistributedNPCToonBase):
     def __init__(self, cr):
         DistributedNPCToonBase.__init__(self, cr)
         self.lastCollision = 0
-        self.laffDialog = None
+        self.sosDialog = None
 
     def disable(self):
         self.ignoreAll()
@@ -19,9 +19,9 @@ class DistributedNPCSos(DistributedNPCToonBase):
     def destroyDialog(self):
         self.clearChat()
 
-        if self.laffDialog:
-            self.laffDialog.destroy()
-            self.laffDialog = None
+        if self.sosDialog:
+            self.sosDialog.destroy()
+            self.sosDialog = None
     
     def initToonState(self):
         self.setAnimState('neutral', 0.9, None, None)
@@ -42,30 +42,26 @@ class DistributedNPCSos(DistributedNPCToonBase):
         self.lastCollision = time.time() + ToontownGlobals.NPCCollisionDelay
         self.lookAt(base.localAvatar)
         
-        if base.localAvatar.getHp() >= base.localAvatar.getMaxHp():
-            self.setChatAbsolute(TTLocalizer.RestockFullLaffMessage, CFSpeech | CFTimeout)
-            return
-        
         base.cr.playGame.getPlace().fsm.request('stopped')
         base.setCellsAvailable(base.bottomCells, 0)
         self.destroyDialog()
-        self.acceptOnce('laffShopDone', self.__laffShopDone)
-        self.laffDialog = LaffShopGui.LaffShopGui()
+        self.acceptOnce('sosShopDone', self.__sosShopDone)
+        self.sosDialog = SosShopGui.SosShopGui()
     
     def freeAvatar(self):
         base.cr.playGame.getPlace().fsm.request('walk')
         base.setCellsAvailable(base.bottomCells, 1)
     
-    def __laffShopDone(self, state, laff):
+    def __sosShopDone(self, state):
         self.freeAvatar()
 
-        if state == LaffRestockGlobals.TIMER_END:
+        if state == SosShopGlobals.TIMER_END:
             self.setChatAbsolute(TTLocalizer.STOREOWNER_TOOKTOOLONG, CFSpeech|CFTimeout)
-        elif state == LaffRestockGlobals.USER_CANCEL:
+        elif state == SosShopGlobals.USER_CANCEL:
             self.setChatAbsolute(TTLocalizer.STOREOWNER_GOODBYE, CFSpeech|CFTimeout)
-        elif state == LaffRestockGlobals.RESTOCK:
-            self.sendUpdate('restock', [laff])
+        elif state == SosShopGlobals.ROLL:
+            self.sendUpdate('roll')
 
-    def restockResult(self, state):
-        if state in LaffRestockGlobals.RestockMessages:
-            self.setChatAbsolute(LaffRestockGlobals.RestockMessages[state], CFSpeech | CFTimeout)
+    def rollResult(self, state):
+        if state in SosShopGlobals.RollMessages:
+            self.setChatAbsolute(SosShopGlobals.RollMessages[state], CFSpeech | CFTimeout)

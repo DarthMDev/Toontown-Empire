@@ -1,5 +1,5 @@
 from toontown.toonbase import ToontownGlobals
-import SosShopGlobals, DistributedNPCToonBaseAI, random, NPCToons
+import SosShopGlobals, DistributedNPCToonBaseAI, random, math, NPCToons
 
 class DistributedNPCSosAI(DistributedNPCToonBaseAI.DistributedNPCToonBaseAI):
 
@@ -16,13 +16,10 @@ class DistributedNPCSosAI(DistributedNPCToonBaseAI.DistributedNPCToonBaseAI):
         npcIdList = list(NPCIdList)
         npcId = random.choice(npcIdList)
                   
-
         if npcId not in NPCToons.npcFriends:
           continue
-         break
 
-         av.NPCFriendsDict[npcId] = count
-
+        av.NPCFriendsDict[npcId] = count
 
         if count > 100:
             self.sendUpdate('rollResult', [SosShopGlobals.FULL_SOS])

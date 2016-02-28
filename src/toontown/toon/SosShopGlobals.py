@@ -15,7 +15,7 @@ FULL_SOS = 0
 NOT_ENOUGH_MONEY = 1
 ROLL_SUCCESSFUL = 2
 
-RestockMessages = {
+RollMessages = {
  FULL_SOS: TTLocalizer.RollFullSosMessage,
  NOT_ENOUGH_MONEY: TTLocalizer.RollNoMoneyMessage,
  RESTOCK_SUCCESSFUL: TTLocalizer.RollSuccessfulMessage
