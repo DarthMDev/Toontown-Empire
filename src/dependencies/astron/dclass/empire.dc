@@ -873,6 +873,7 @@ dclass DistributedToon : DistributedPlayer {
   setWantGroupTracker(uint8) clsend airecv;
   freezeToon() ownrecv;
   unfreezeToon() ownrecv;
+  warnLocalToon(string) ownrecv;
 };
 
 dclass DistributedPartyGate : DistributedObject {

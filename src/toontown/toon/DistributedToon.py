@@ -2652,6 +2652,10 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         base.localAvatar.book.showButton()
         base.localAvatar.bFriendsList.show()
 
+    def warnLocalToon(self, reason):
+        reason = 'You have been warned by a moderator for: %s' % reason
+        self.setSystemMessage(base.localAvatar.doId, reason)
+
     def magicTeleportRequest(self, requesterId):
         self.sendUpdate('magicTeleportResponse', [requesterId, base.cr.playGame.getPlaceId()])
 

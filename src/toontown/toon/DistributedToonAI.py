@@ -5462,6 +5462,15 @@ def unfreezeToon():
     target.sendUpdate('unfreezeToon', [])
     return 'Unfroze %s.' % target.getName()
 
+@magicWord(category=CATEGORY_STAFF, types=[str])
+def warn(reason):
+    target = spellbook.getTarget()
+    if target == spellbook.getInvoker():
+        return 'You can\'t warn yourself!'
+
+    target.sendUpdate('warnLocalToon', [reason])
+    return 'Warned %s for %s!' % (target.getName(), reason)
+
     def magicTeleportResponse(self, requesterId, hoodId):
         toon = self.air.doId2do.get(requesterId)
         if toon:
