@@ -34,7 +34,7 @@ class SosShopGui(DirectFrame):
 
     def __cancel(self, state):
         self.destroy()
-        messenger.send('sosShopDone', [state, 0])
+        messenger.send('sosShopDone', [state])
 
     def __roll(self):
         self.destroy()
