@@ -1,5 +1,5 @@
 from toontown.toonbase import ToontownGlobals
-import SosShopGlobals, DistributedNPCToonBaseAI
+import SosShopGlobals, DistributedNPCToonBaseAI, random, NPCToons
 
 class DistributedNPCSosAI(DistributedNPCToonBaseAI.DistributedNPCToonBaseAI):
 
@@ -8,10 +8,23 @@ class DistributedNPCSosAI(DistributedNPCToonBaseAI.DistributedNPCToonBaseAI):
 
         if not av:
             return
+        
+        #Todo: Add all the Sos Card IDs to this list. It'll take a while.
+        NPCIdList = [2001, 2132, 2121, 2011, 3007, 1001, 3112, 1323, 2308, 4119, 4219, 4115, 1116, 2311, 4140, 3137]
+        
+        count = random.randint(1, 5)
+        npcIdList = list(NPCIdList)
+        npcId = random.choice(npcIdList)
+                  
 
-        newSos = av.getHp() + laff
+        if npcId not in NPCToons.npcFriends:
+          continue
+         break
 
-        if newSos > av.getMaxHp():
+         av.NPCFriendsDict[npcId] = count
+
+
+        if count > 100:
             self.sendUpdate('rollResult', [SosShopGlobals.FULL_SOS])
             return
 
@@ -22,5 +35,5 @@ class DistributedNPCSosAI(DistributedNPCToonBaseAI.DistributedNPCToonBaseAI):
             return
 
         av.takeMoney(cost)
-        av.toonUp(laff)
+        av.d_setNPCFriendsDict(av.NPCFriendsDict)
         self.sendUpdate('rollResult', [SosShopGlobals.RESTOCK_SUCCESSFUL])
