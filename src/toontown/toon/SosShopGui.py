@@ -20,7 +20,7 @@ class SosShopGui(DirectFrame):
         buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
         
         self.cancelButton = DirectButton(parent=self, relief=None, image=(buttons.find('**/CloseBtn_UP'), buttons.find('**/CloseBtn_DN'), buttons.find('**/CloseBtn_Rllvr')), pos=(-0.2, 0, -0.5), text=OTPLocalizer.lCancel, text_scale=0.06, text_pos=(0, -0.1), command=self.__cancel, extraArgs=[SosShopGlobals.USER_CANCEL])
-        self.okButton = DirectButton(parent=self, relief=None, image=(buttons.find('**/ChtBx_OKBtn_UP'), buttons.find('**/ChtBx_OKBtn_DN'), buttons.find('**/ChtBx_OKBtn_Rllvr')), pos=(0.2, 0, -0.5), text=OTPLocalizer.lOK, text_scale=0.06, text_pos=(0, -0.1), command=self.__restock)
+        self.okButton = DirectButton(parent=self, relief=None, image=(buttons.find('**/ChtBx_OKBtn_UP'), buttons.find('**/ChtBx_OKBtn_DN'), buttons.find('**/ChtBx_OKBtn_Rllvr')), pos=(0.2, 0, -0.5), text=OTPLocalizer.lOK, text_scale=0.06, text_pos=(0, -0.1), command=self.__roll)
         buttons.removeNode()
 
 
@@ -38,7 +38,7 @@ class SosShopGui(DirectFrame):
 
     def __roll(self):
         self.destroy()
-        messenger.send('sosShopDone', [SosShopGlobals.ROLL)
+        messenger.send('sosShopDone', [SosShopGlobals.ROLL])
 
 
     def __runTask(self, task):
