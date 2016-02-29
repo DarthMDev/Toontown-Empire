@@ -71,12 +71,6 @@ class DistributedBossbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         self.battleFourDuration = simbase.air.config.GetInt('battle-four-duration', 900)
         self.overtimeOneStart = float(self.overtimeOneTime) / self.battleFourDuration
         self.moveAttackAllowed = True
-        self.toonDamageDict = {}
-        self.golfHits = {}
-        self.snacksEaten = {}
-        self.finalHitId = None
-        self.cogsServed = {}
-
         self.chasingToon = False
         self.stunBuildup = 0
         self.numAngeredDiners = 0
@@ -307,12 +301,12 @@ class DistributedBossbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
             elif self.toonFoodStatus[avId] == None:
                 grantRequest = True
         if grantRequest:
-            if avId not in self.snacksEaten:
-                self.snacksEaten[avId] = 0
-            self.snacksEaten[avId] += 1
-
             self.toonFoodStatus[avId] = (beltIndex, foodNum)
-            self.sendUpdate('toonGotFood', [avId, beltIndex, foodIndex, foodNum])
+            self.sendUpdate('toonGotFood', [avId,
+             beltIndex,
+             foodIndex,
+             foodNum])
+        return
 
     def requestServeFood(self, tableIndex, chairIndex):
         grantRequest = False
@@ -326,13 +320,10 @@ class DistributedBossbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
                 if self.toonFoodStatus[avId]:
                     grantRequest = True
         if grantRequest:
-            if avId not in self.cogsServed:
-                self.cogsServed[avId] = 0
-            self.cogsServed[avId] += 1
-
             self.toonFoodStatus[avId] = None
             table.foodServed(chairIndex)
             self.sendUpdate('toonServeFood', [avId, tableIndex, chairIndex])
+        return
 
     def enterPrepareBattleThree(self):
         self.barrier = self.beginBarrier('PrepareBattleThree', self.involvedToons, ToontownGlobals.BossbotBossServingDuration + 1, self.__donePrepareBattleThree)
@@ -501,18 +492,12 @@ class DistributedBossbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         currState = self.getCurrentOrNextState()
         if currState != 'BattleFour':
             return
-
-        if avId not in self.toonDamageDict:
-            self.toonDamageDict[avId] = 0
-        self.toonDamageDict[avId] += bossDamage
-
         bossDamage *= 2
         if self.attackCode in (ToontownGlobals.BossCogDizzy, ToontownGlobals.BossCogDizzyNow):
             bossDamage *= 2
         bossDamage = min(self.getBossDamage() + bossDamage, self.bossMaxDamage)
         self.b_setBossDamage(bossDamage, 0, 0)
         if self.bossDamage >= self.bossMaxDamage:
-            self.finalHitId = avId
             self.b_setState('Victory')
         else:
             self.__recordHit(bossDamage)
@@ -601,11 +586,6 @@ class DistributedBossbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         currState = self.getCurrentOrNextState()
         if currState != 'BattleFour':
             return
-
-        if avId not in self.golfHits:
-            self.golfHits[avId] = 0
-        self.golfHits[avId] += 1
-
         now = globalClock.getFrameTime()
         self.addThreat(avId, speedDamage)
         newDamage = self.getSpeedDamage() + speedDamage
@@ -1013,11 +993,6 @@ class DistributedBossbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         self.moveAttackAllowed = not self.moveAttackAllowed
         return self.moveAttackAllowed
 
-    def getExtraAchievementInfo(self, toonId, infoDict):
-        infoDict.updates({'fires': self.battleDifficulty + 1, 'damageDealt': self.toonDamageDict.get(toonId, 0),
-                          'cogsServed': self.cogsServed.get(toonId, 0), 'snacksEaten': self.snacksEaten.get(toonId, 0),
-                          'golfHits': self.golfHits.get(toonId, 0), 'finalHit': self.finalHitId == toonId})
-
     def saySomething(self, chatString):
         self.sendUpdate('saySomething', [chatString])
 
@@ -1039,7 +1014,6 @@ def getCEO(toon):
                 return object
     
     return None
-
 
 @magicWord(category=CATEGORY_LEADER)
 def skipCEOBanquet():

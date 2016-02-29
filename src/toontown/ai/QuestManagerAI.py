@@ -211,9 +211,6 @@ class QuestManagerAI:
                 self.avatarConsiderProgressTier(av)
                 break
 
-        if self.air.wantAchievements:
-            self.air.achievementsManager.toonCompletedQuest(av.doId)
-
     def giveReward(self, av, questId, rewardId):
         # Give the reward.
         rewardClass = Quests.getReward(rewardId)
