@@ -1,249 +1,168 @@
-from toontown.quest import Quests
+from toontown.toonbase import ToontownGlobals
 
+ANY_LAFF = 138
+ANY_LEVEL = 13
+ANY_TYPE = 1
+COG = 0
+V2COG = 1
+SKELECOG = 2
 
-BRONZE = 0
-SILVER = 1
-GOLD = 2
-PLATINUM = 3
+class FriendAchievement():
 
-HIDDEN = 0
-VISIBLE = 1
-
-ANY = 0
-
-MAX_LEVEL = 20
-
-achievementScore = {
-    BRONZE: 200,
-    SILVER: 500,
-    GOLD: 1250,
-    PLATINUM: 3000
-}
-
-
-class Achievement:
-    NEEDS_STATS = True
-
-    def __init__(self, id):
-        self.id = id
-
-    def doAchievement(self, av):
-        if self.id in av.getAchievements()[0]:
-            return
-
-        accountStats = None
-
-        if self.NEEDS_STATS:
-            accountStats = simbase.air.achievementsManager.statsCache.getStats(av.doId)
-
-        self.handleAccountStats(av, accountStats)
-
-    def handleAccountStats(self, av, accountStats):
-        if self.hasComplete(av, accountStats):
-            self.handleComplete(av)
-
-    def hasComplete(self, av, accountStats):
-        return False
-
-    def handleComplete(self, av):
-        simbase.air.achievementsManager.toonCompletedAchievement(av, self.id)
-
-
-class HasRequiredAchievements(Achievement):
-    def __init__(self, id, achievementIds):
-        Achievement.__init__(self, id)
-
-        self.achievementIds = achievementIds
-
-    def meetsNeededAchievementIds(self, avAchievements):
-        for achievementId in self.achievementIds:
-            if achievementId not in avAchievements:
-                return False
-
-        return True
-
-    def hasComplete(self, av, accountStats):
-        return self.meetsNeededAchievementIds(accountStats['ACHIEVEMENTS'])
-
-
-class FriendAchievement(Achievement):
-    NEEDS_STATS = False
-
-    def __init__(self, id, neededFriends=ANY):
-        Achievement.__init__(self, id)
-
+    def __init__(self, neededFriends=1):
         self.neededFriends = neededFriends
 
-    def meetsNeededFriends(self, avFriends):
-        if self.neededFriends == ANY:
-            return True
+    def hasComplete(self, av):
+        avatarsFriends = av.getFriendsList()
 
-        return len(avFriends) >= self.neededFriends
+        if len(avatarsFriends) >= self.neededFriends:
+            return 1
 
-    def hasComplete(self, av, accountStats):
-        return self.meetsNeededFriends(av.getFriendsList())
+        return 0
 
+class TrolleyAchievement():
 
-class SuitAchievement(Achievement):
-    def __init__(self, id, dbEntry, needed=ANY):
-        Achievement.__init__(self, id)
+    def hasComplete(self, av):
+        return 1
 
-        self.needed = needed
-        self.dbEntry = dbEntry
+class SuitsAchievement():
 
-    def meetsNeeded(self, cogsDefeated):
-        if self.needed == ANY:
-            return True
+    def __init__(self, neededSuits=1, neededType=ANY_TYPE, revive=0, skele=0):
+        self.neededSuits = neededSuits
+        self.neededType = neededType
+        self.needRevive = revive
+        self.needSkele = skele
 
-        return cogsDefeated >= self.needed
+    def hasComplete(self, av):
+        avatarsRadar = av.getCogCount()
 
-    def hasComplete(self, av, accountStats):
-        return self.meetsNeeded(accountStats[self.dbEntry])
+        #ToontownGlobals.cog
 
+        return 0
 
-class BossCogAchievement(SuitAchievement):
-    def __init__(self, id, dbEntry, needed=ANY, players=ANY):
-        SuitAchievement.__init__(self, id, dbEntry, needed)
+class EstateAchievement():
 
-        self.players = players
+    def hasComplete(self, av):
+        return 1
 
-    def meetsNeeded(self, bossStats):
-        if self.needed == ANY:
-            return True
+class VPAchievement():
 
-        progress = 0
+    def __init__(self, neededLaff=ANY_LAFF, solo=False):
+        self.neededLaff = neededLaff
+        self.solo = solo
 
-        if self.players == ANY:
-            for x in bossStats:
-                progress += x
-        else:
-            progress = bossStats[self.players-1]
+    def hasComplete(self, laff, solo):
+        complete = 1
 
-        return progress >= self.needed
+        if self.neededLaff != ANY_LAFF:
+            if laff:
+                complete = 1
+            else:
+                complete = 0
 
-    def hasComplete(self, av, accountStats):
-        return self.meetsNeeded(accountStats[self.dbEntry])
+        if self.solo:
+            if solo:
+                complete = 1
+            else:
+                complete = 0
 
+        return complete
 
-class VPAchievement(BossCogAchievement):
-    def __init__(self, id, needed=ANY, players=ANY):
-        BossCogAchievement.__init__(self, id, 'VPS_DEFEATED', needed, players)
+class CFOAchievement():
 
+    def __init__(self, neededLaff=ANY_LAFF, solo=False):
+        self.neededLaff = neededLaff
+        self.solo = solo
 
-class CFOAchievement(BossCogAchievement):
-    def __init__(self, id, needed=ANY, players=ANY):
-        BossCogAchievement.__init__(self, id, 'CFOS_DEFEATED', needed, players)
+    def hasComplete(self, laff, solo):
+        complete = 1
 
+        if self.neededLaff != ANY_LAFF:
+            if laff:
+                complete = 1
+            else:
+                complete = 0
 
-class CJAchievement(BossCogAchievement):
-    def __init__(self, id, needed=ANY, players=ANY):
-        BossCogAchievement.__init__(self, id, 'CJS_DEFEATED', needed, players)
+        if self.solo:
+            if solo:
+                complete = 1
+            else:
+                complete = 0
 
+        return complete
 
-class CEOAchievement(BossCogAchievement):
-    def __init__(self, id, needed=ANY, players=ANY):
-        BossCogAchievement.__init__(self, id, 'CEOS_DEFEATED', needed, players)
+class CJAchievement():
 
+    def __init__(self, neededLaff=ANY_LAFF, solo=False):
+        self.neededLaff = neededLaff
+        self.solo = solo
 
-class QuestTierAchievement(Achievement):
-    NEEDS_STATS = False
+    def hasComplete(self, laff, solo):
+        complete = 1
 
-    def __init__(self, id, tier=ANY):
-        Achievement.__init__(self, id)
+        if self.neededLaff != ANY_LAFF:
+            if laff:
+                complete = 1
+            else:
+                complete = 0
 
-        self.tier = tier
+        if self.solo:
+            if solo:
+                complete = 1
+            else:
+                complete = 0
 
-    def meetsTier(self, tier):
-        if tier == ANY:
-            return True
+        return complete
 
-        return tier >= self.tier
+class CEOAchievement():
 
-    def hasComplete(self, av, accountStats):
-        return self.meetsTier(av.getRewardTier())
+    def __init__(self, neededLaff=ANY_LAFF, solo=False):
+        self.neededLaff = neededLaff
+        self.solo = solo
 
+    def hasComplete(self, laff, solo):
+        complete = 1
 
-# Next available achievement id: 17
-AchievementsDict = {
-    0: (FriendAchievement(0, neededFriends=1), BRONZE, VISIBLE),  # Make 1 friend
+        if self.neededLaff != ANY_LAFF:
+            if laff:
+                complete = 1
+            else:
+                complete = 0
 
-    1: (VPAchievement(1, needed=1), BRONZE, VISIBLE),  # Defeat 1 VP
-    12: (VPAchievement(12, needed=1, players=1), SILVER, VISIBLE),  # Solo the VP once
+        if self.solo:
+            if solo:
+                complete = 1
+            else:
+                complete = 0
 
-    2: (CFOAchievement(2, needed=1), BRONZE, VISIBLE),  # Defeat 1 CFO
-    13: (CFOAchievement(13, needed=1, players=1), GOLD, VISIBLE),  # Solo the CFO once
+        return complete
 
-    3: (CJAchievement(3, needed=1), BRONZE, VISIBLE),  # Defeat 1 CJ
-    14: (CJAchievement(14, needed=1, players=1), GOLD, VISIBLE),  # Solo the CJ once
+AchievementsDict = (FriendAchievement(),
+                    FriendAchievement(neededFriends=10),
+                    FriendAchievement(neededFriends=50),
+                    TrolleyAchievement(),
+                    EstateAchievement(),
+                    VPAchievement(),
+                    VPAchievement(neededLaff=1),
+                    VPAchievement(solo=True),
+                    VPAchievement(neededLaff=1, solo=True),
+                    CFOAchievement(),
+                    CFOAchievement(neededLaff=1),
+                    CFOAchievement(solo=True),
+                    CFOAchievement(neededLaff=1, solo=True),
+                    CJAchievement(),
+                    CJAchievement(neededLaff=1),
+                    CJAchievement(solo=True),
+                    CJAchievement(neededLaff=1, solo=True),
+                    CEOAchievement(),
+                    CEOAchievement(neededLaff=1),
+                    CEOAchievement(solo=True),
+                    CEOAchievement(neededLaff=1, solo=True))
 
-    4: (CEOAchievement(4, needed=1), BRONZE, VISIBLE),  # Defeat 1 CEO
-    15: (CEOAchievement(15, needed=1, players=1), GOLD, VISIBLE),  # Solo the CEO once
-
-    16: (HasRequiredAchievements(16, [12, 13, 14, 15]), PLATINUM, VISIBLE),  # Solo all the cog bosses
-
-    5: (QuestTierAchievement(5, tier=Quests.DD_TIER), BRONZE, VISIBLE),  # Complete TTC
-    6: (QuestTierAchievement(6, tier=Quests.DG_TIER), BRONZE, VISIBLE),  # Complete DD
-    7: (QuestTierAchievement(7, tier=Quests.MM_TIER), BRONZE, VISIBLE),  # Complete DG
-    8: (QuestTierAchievement(8, tier=Quests.BR_TIER), SILVER, VISIBLE),  # Complete MML
-    9: (QuestTierAchievement(9, tier=Quests.DL_TIER), SILVER, VISIBLE),  # Complete TB
-    10: (QuestTierAchievement(10, tier=Quests.ELDER_TIER), GOLD, VISIBLE),  # Complete DDL
-    11: (QuestTierAchievement(11, tier=Quests.ELDER_TIER), PLATINUM, VISIBLE)  # Complete all tasks
-}
-
-category2AchievementIds = {
-    'misc': [0, 5, 6, 7, 8, 9, 10, 11],
-    'suit': [1, 2, 3, 4, 12, 13, 14, 15, 16]
-}
-
-type2Achievements = {}
-levels = []
-totalPoints = 0
-
-for achievementId in AchievementsDict:
-    achievementClass = AchievementsDict[achievementId][0].__class__.__name__
-
-    if achievementClass not in type2Achievements:
-        type2Achievements[achievementClass] = []
-
-    type2Achievements[achievementClass].append(achievementId)
-    totalPoints += achievementScore[AchievementsDict[achievementId][1]]
-
-averagePoints = totalPoints / MAX_LEVEL
-for i in xrange(MAX_LEVEL):
-    levels.append(averagePoints * (i + 1))
-
-
-def getLevelFromPoints(points):
-    # Check if they are the max level.
-    if points == levels[len(levels)-1]:
-        return len(levels) - 1
-
-    # Iterate through all of the levels and determine what level they are.
-    for level, levelPoints in enumerate(levels):
-        if points < levelPoints:
-            return level
-
-
-def getPointsForLevel(level):
-    return levels[level]
-
+type2AchievementIds = {FriendAchievement: [0, 1, 2],
+                       TrolleyAchievement: [3],
+                       EstateAchievement: [4],
+                       VPAchievement: [5, 6, 7, 8]}
 
 def getAchievementsOfType(type):
-    return type2Achievements.get(type, [])
-
-
-def getAchievementScore(achievementId):
-    achievementType = AchievementsDict[achievementId][1]
-    return achievementScore[achievementType]
-
-
-def getAchievementClass(achievementId):
-    return AchievementsDict[achievementId][0]
-
-
-def getAchievementCategory(achievementId):
-    return AchievementsDict[achievementId][1]
-
-
-def doAchievement(achievementId, args):
-    AchievementsDict[achievementId][0].doAchievement(*args)
+    return type2AchievementIds.get(type)

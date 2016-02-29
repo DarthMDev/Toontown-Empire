@@ -763,7 +763,7 @@ dclass DistributedToon : DistributedPlayer {
   setPartyCanStart(uint64) ownrecv airecv;
   setPartyStatus(uint64, uint8) ownrecv airecv;
   announcePartyStarted(uint64) ownrecv;
-  setAchievements(uint16[] = [], uint16 = 0) required broadcast ownrecv db;
+  setAchievements(uint16[] = []) required broadcast ownrecv db;
   setNeverStartedPartyRefunded(uint64, int8, uint16) ownrecv;
   setAnimalSound(uint8 index) ram broadcast ownrecv;
   setBuffs(uint32[] = []) required ownrecv db;

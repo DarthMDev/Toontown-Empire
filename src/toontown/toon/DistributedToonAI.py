@@ -78,7 +78,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.petId = None
         self.quests = []
         self.achievements = []
-        self.achievementPoints = 0
         self.cogs = []
         self.cogCounts = []
         self.NPCFriendsDict = {}
@@ -634,31 +633,42 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.attemptAddNPCFriend(npcId)
 
     
-    def setAchievements(self, achievements, achievementPoints):
+    def setAchievements(self, achievements):
+        for i in xrange(len(achievements)):
+            if not achievements[i] in xrange(len(Achievements.AchievementsDict)):
+                print 'Unknown AchievementId %s'%(achievements[i])
+                del achievements[i]
+                
         self.achievements = achievements
-        self.achievementPoints = achievementPoints
         
-    def d_setAchievements(self, achievements, achievementPoints):
-        self.sendUpdate('setAchievements', [achievements, achievementPoints])
+    def d_setAchievements(self, achievements):
+        for i in xrange(len(achievements)):
+            if not achievements[i] in xrange(len(Achievements.AchievementsDict)):
+                print 'Unknown AchievementId %s'%(achievements[i])
+                del achievements[i]
+                
+        self.sendUpdate('setAchievements', args=[achievements])
         
-    def b_setAchievements(self, achievements, achievementPoints):
-        self.setAchievements(achievements, achievementPoints)
-        self.d_setAchievements(achievements, achievementPoints)
+    def b_setAchievements(self, achievements):
+        self.setAchievements(achievements)
+        self.d_setAchievements(achievements)
         
     def getAchievements(self):
-        return self.achievements, self.achievementPoints
+        return self.achievements
     
     def addAchievement(self, achievementId):
-        if achievementId not in self.achievements:
-            self.achievements.append(achievementId)
-            self.achievementPoints += Achievements.getAchievementScore(achievementId)
-            self.d_setAchievements(self.achievements, self.achievementPoints)
+        if achievementId in xrange(len(Achievements.AchievementsDict)):
+            if not achievementId in self.achievements:
+                achievements = self.achievements
+                achievements.append(achievementId)
+                
+                self.b_setAchievements(achievements)
                 
     def hasAchievement(self, achievementId):
         if achievementId in self.achievements:
-            return True
+            return 1
         
-        return False
+        return 0
     
     def getAchievements(self):
         return self.achievements

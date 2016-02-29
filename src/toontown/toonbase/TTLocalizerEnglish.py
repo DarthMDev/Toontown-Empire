@@ -8540,18 +8540,6 @@ def getBuffString(buffId, buffTime):
 def getBuffPosterString(buffId):
     return buffIdStrings[buffId][1]
 
-
-# Achievements
-
-achievementInfo = {
-    1: ("It's fun with friends",
-        'Make a friend')
-}
-
-
-def getAchievementInfo(achievementId):
-    return achievementInfo[achievementId]
-
 GroupTrackerPageTitle = 'Group Tracker'
 GroupTrackerListTitle = 'Groups'
 GroupTrackerEmpty = 'There are no boarding groups available'
