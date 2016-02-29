@@ -599,25 +599,7 @@ dclass AccountStats {
   uint16 ACHIEVEMENT_POINTS = 0 db;
   uint32 SECONDS_PLAYED = 0 db;
 
-  uint32 DAMAGE_DEALT = 0 db;
-  uint32 DAMAGE_TAKEN = 0 db;
-
-  uint32 DEATH_COUNT = 0 db;
-  unit32 TEAMMATES_DIED = 0 db;
-
-  uint32 COGS_DEFEATED[32] = [0*32] db;
-  uint32 V2S_DEFEATED = 0 db;
-  uint32 SKELECOGS_DFEEATED = 0 db;
-
-  uint32 GOONS_STOMPED = 0 db;
-
-  uint32 BUILDINGS_COMPLETED[20] = [0*20] db;
-  uint32 BUILDING_FLOORS_COMPLETED = 0 db;
-
-  uint32 FACTORIES_DEFEATED[2] = [0*2] db;
-  uint32 MINTS_DEFEATED[3] = [0*3] db;
-  uint32 DAS_DEFEATED[4] = [0*4] db;
-  uint32 CGFS_DEFEATED[3] = [0*3] db;
+  uint32 COGS_DEFEATED = 0 db;
 
   uint32 VPS_DEFEATED = 0 db;
   uint32 CFOS_DFEEATED = 0 db;
