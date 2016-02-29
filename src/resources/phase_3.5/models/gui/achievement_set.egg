@@ -5,6 +5,7 @@
 }
 <Texture> achievement_set_01 {
   "phase_3.5/maps/achievement_set_01.png"
+  <Scalar> alpha { dual }
   <Scalar> wrapu { repeat }
   <Scalar> wrapv { repeat }
   <Scalar> minfilter { linear_mipmap_linear }
