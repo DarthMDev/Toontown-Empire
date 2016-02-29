@@ -8544,7 +8544,7 @@ def getBuffPosterString(buffId):
 # Achievements
 
 achievementInfo = {
-    0: ("It's fun with friends",
+    1: ("It's fun with friends",
         'Make a friend')
 }
 
