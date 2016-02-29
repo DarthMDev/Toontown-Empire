@@ -603,7 +603,7 @@ dclass AccountStats {
   uint32 DAMAGE_TAKEN = 0 db;
 
   uint32 DEATH_COUNT = 0 db;
-  uint32 TEAMMATES_DIED = 0 db;
+  unit32 TEAMMATES_DIED = 0 db;
 
   uint32 COGS_DEFEATED[32] = [0*32] db;
   uint32 V2S_DEFEATED = 0 db;
@@ -622,15 +622,13 @@ dclass AccountStats {
   uint32 CGF_MOLES_STOMPED = 0 db;
 
   uint32 VPS_DEFEATED[8] = [0*8] db;
-  uint32 VP_TIMES[8] = [0*8] db;
   uint32 VP_DAMAGE_DONE = 0 db;
   uint32 VPS_LOST = 0 db;
   uint32 VP_STUNS = 0 db;
   uint32 VP_FINAL_HITS = 0 db;
-  uint32 SOS_EARNED = 0 db;
+  unit32 SOS_EARNED = 0 db;
 
   uint32 CFOS_DFEEATED[8] = [0*8] db;
-  uint32 CFO_TIMES[8] = [0*8] db;
   uint32 CFO_DAMAGE_DEALT = 0 db;
   uint32 CFOS_LOST = 0 db;
   uint32 GOONS_THROWN = 0 db;
@@ -641,7 +639,6 @@ dclass AccountStats {
   uint32 UNITES_EARNED = 0 db;
 
   uint32 CJS_DEFEATED = 0 db;
-  uint32 CJ_TIMES[8] = [0*8] db;
   uint32 CJ_DAMAGE_DEALT = 0 db;
   uint32 CJS_LOST = 0 db;
   uint32 CJ_COGS_STUNNED = 0 db;
@@ -650,7 +647,6 @@ dclass AccountStats {
   uint32 SUMMONS_EARNED = 0 db;
 
   uint32 CEOS_DEFEATED[8] = [0*8] db;
-  uint32 CEO_TIMES[8] = [0*8] db;
   uint32 CEO_DAMAGE_DEALT = 0 db;
   uint32 CEOS_LOST = 0 db;
   uint32 CEO_GOLF_HITS = 0 db;
