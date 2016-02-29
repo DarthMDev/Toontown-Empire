@@ -609,6 +609,7 @@ dclass AccountStats {
   uint32 V2S_DEFEATED = 0 db;
   uint32 SKELECOGS_DEFEATED = 0 db;
 
+  uint32 GOONS_STOMPED = 0 db;
 
   uint32 BUILDINGS_COMPLETED[20] = [0*20] db;
   uint32 BUILDING_FLOORS_COMPLETED = 0 db;
@@ -631,8 +632,8 @@ dclass AccountStats {
   uint32 CFO_TIMES[8] = [0*8] db;
   uint32 CFO_DAMAGE_DEALT = 0 db;
   uint32 CFOS_LOST = 0 db;
-  uint32 CFO_GOONS_HIT = 0 db;
-  uint32 CFO_SAFES_HIT = 0 db;
+  uint32 GOONS_THROWN = 0 db;
+  uint32 SAFES_THROWN = 0 db;
   uint32 CFO_HELMETS_REMOVED = 0 db;
   uint32 CFO_STUNS = 0 db;
   uint32 CFO_FINAL_HITS = 0 db;
@@ -642,17 +643,16 @@ dclass AccountStats {
   uint32 CJ_DAMAGE_DEALT = 0 db;
   uint32 CJS_LOST = 0 db;
   uint32 CJ_COGS_STUNNED = 0 db;
+  uint32 CJ_HAMMER_HITS = 0 db;
   uint32 CJ_FINAL_HITS = 0 db;
-  uint32 CJ_JURORS_SEATED = 0 db;
 
   uint32 CEOS_DEFEATED[8] = [0*8] db;
   uint32 CEO_TIMES[8] = [0*8] db;
   uint32 CEO_DAMAGE_DEALT = 0 db;
   uint32 CEOS_LOST = 0 db;
   uint32 CEO_GOLF_HITS = 0 db;
-  uint32 CEO_SNACKS_EATEN = 0 db;
+  uint32 CEO_TREASURES_EATEN = 0 db;
   uint32 CEO_FINAL_HITS = 0 db;
-  uint32 CEO_COGS_SERVED = 0 db;
   uint32 FIRES_EARNED = 0 db;
 
   uint32 FRIENDS_MADE = 0 db;
@@ -663,6 +663,7 @@ dclass AccountStats {
   uint32 BEANS_EARNED = 0 db;
   uint32 BEANS_SPENT = 0 db;
 
+  uint32 PIES_THROWN = 0 db;
 
   uint32 CATALOG_ITEMS_BOUGHT = 0 db;
 

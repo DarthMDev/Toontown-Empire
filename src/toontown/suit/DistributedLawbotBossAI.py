@@ -60,11 +60,7 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
         self.weightPerToon = {}
         self.cannonIndexPerToon = {}
         self.battleDifficulty = 0
-
-        self.toonDamageDict = {}
-        self.cogsStunned = {}
-        self.finalHitId = None
-        self.jurorsSeated = {}
+        return
 
     def delete(self):
         self.notify.debug('DistributedLawbotBossAI.delete')
@@ -101,15 +97,9 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
                 bossDamage = newWeight
         if self.bonusState and bossDamage <= 12:
             bossDamage *= ToontownGlobals.LawbotBossBonusWeightMultiplier
-
-        if avId not in self.toonDamageDict:
-            self.toonDamageDict[avId] = 0
-        self.toonDamageDict[avId] += bossDamage
-
         bossDamage = min(self.getBossDamage() + bossDamage, self.bossMaxDamage)
         self.b_setBossDamage(bossDamage, 0, 0)
         if self.bossDamage >= self.bossMaxDamage:
-            self.finalHitId = avId
             self.b_setState('Victory')
         else:
             self.__recordHit()
@@ -836,11 +826,6 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
             return
         if not self.state == 'BattleTwo':
             return
-
-        if avId not in self.jurorsSeated:
-            self.jurorsSeated[avId] = 0
-        self.jurorsSeated[avId] += 1
-
         self.chairs[chairIndex].b_setToonJurorIndex(npcToonIndex)
         self.chairs[chairIndex].requestToonJuror()
 
@@ -919,10 +904,6 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
         self.toonLevels = self.getToonDifficulty()
         self.b_setBattleDifficulty(self.toonLevels)
 
-    def getExtraAchievementInfo(self, toonId, infoDict):
-        infoDict.update({'finalHit': self.finalHitId == toonId, 'damageDealt': self.toonDamageDict.get(toonId, 0),
-                         'jurorsSeated': self.jurorsSeated.get(toonId, 0),
-                         'cogsStunned': self.cogsStunned.get(toonId, 0)})
 
 @magicWord(category=CATEGORY_LEADER)
 def skipCJ():

@@ -196,11 +196,6 @@ class DistributedCashbotBossGoonAI(DistributedGoonAI.DistributedGoonAI, Distribu
         self.validate(avId, impact <= 1.0, 'invalid hitBoss impact %s' % impact)
         if avId not in self.boss.involvedToons:
             return
-
-        if avId not in self.boss.goonsHit:
-            self.boss.goonsHit[avId] = 0
-        self.boss.goonsHit[avId] += 1
-
         if self.state == 'Dropped' or self.state == 'Grabbed':
             if not self.boss.heldObject:
                 damage = int(impact * 25 * self.scale)
