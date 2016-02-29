@@ -173,7 +173,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.prevToonIdx = 0
             self.houseType = 0
             self.achievements = None
-            self.achievementsPage = None
             self.achievementsGui = AchievementsGUI()
 
     def setDNA(self, dna):
