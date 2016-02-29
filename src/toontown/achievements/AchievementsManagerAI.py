@@ -3,7 +3,6 @@ from direct.fsm.FSM import FSM
 
 from toontown.achievements.AccountStatsFSM import FetchAccountStatsFSM
 from toontown.achievements import Achievements
-from toontown.toonbase import ToontownGlobals
 
 
 class AchievementOperationQueue:
@@ -158,29 +157,6 @@ class AchievementsManagerAI:
         pass
 
     """
-    Building Achievements
-    """
-
-    def toonDefeatedBuilding(self, avId, track, floorCount):
-        av = self.air.doId2do.get(avId)
-        if av is None:
-            return
-
-        index = (ToontownGlobals.cogDept2index[track] * 5) + floorCount
-
-        # Update the account stats
-        accountStats = self.statsCache.getStats(avId)
-        accountStats['BUILDINGS_COMPLETED'][index] += 1
-        accountStats['BUILDING_FLOORS_COMPLETED'] += floorCount + 1
-
-        self.modifyAccountStats(av.getStatsId(), {'BUILDINGS_COMPLETED': accountStats['BUILDINGS_COMPLETED'],
-                                                  'BUILDING_FLOORS_COMPLETED': accountStats['BUILDING_FLOORS_COMPLETED']})
-
-        possibleAchievements = Achievements.getAchievementsOfType('BuildingAchievement')
-        for achievementId in possibleAchievements:
-            Achievements.doAchievement(achievementId, [av])
-
-    """
     Boss Cog Achievements
     """
 
@@ -215,17 +191,42 @@ class AchievementsManagerAI:
         if bossDept == 's':
             accountStats['VPS_LOST'] += 1
             self.modifyAccountStats(av.getStatsId(), {'VPS_LOST': accountStats['VPS_LOST']})
+
+            possibleAchievements = Achievements.getAchievementsOfType('VPAchievement')
+            for achievementId in possibleAchievements:
+                Achievements.doAchievement(achievementId, [av])
+
         elif bossDept == 'm':
             accountStats['CFOS_LOST'] += 1
             self.modifyAccountStats(av.getStatsId(), {'CFOS_LOST': accountStats['CFOS_LOST']})
+
+            possibleAchievements = Achievements.getAchievementsOfType('CFOAchievement')
+            for achievementId in possibleAchievements:
+                Achievements.doAchievement(achievementId, [av])
+
         elif bossDept == 'l':
             accountStats['CJS_LOST'] += 1
             self.modifyAccountStats(av.getStatsId(), {'CJS_LOST': accountStats['CJS_LOST']})
+
+            possibleAchievements = Achievements.getAchievementsOfType('CJAchievement')
+            for achievementId in possibleAchievements:
+                Achievements.doAchievement(achievementId, [av])
+
         elif bossDept == 'c':
             accountStats['CEOS_LOST'] += 1
             self.modifyAccountStats(av.getStatsId(), {'CEOS_LOST': accountStats['CEOS_LOST']})
+
+            possibleAchievements = Achievements.getAchievementsOfType('CEOAchievement')
+            for achievementId in possibleAchievements:
+                Achievements.doAchievement(achievementId, [av])
+
         else:
             self.notify.warning('Avatar %s lost unknown boss: %s' % (avId, bossDept))
+            return
+
+        possibleAchievements = Achievements.getAchievementsOfType('HasRequiredAchievements')
+        for achievementId in possibleAchievements:
+            Achievements.doAchievement(achievementId, [av])
 
     def toonDefeatedVP(self, av, infoDict):
         # Update the account stats
@@ -248,7 +249,6 @@ class AchievementsManagerAI:
                                                   'VP_TIMES': accountStats['VP_TIMES']})
 
         possibleAchievements = Achievements.getAchievementsOfType('VPAchievement')
-        possibleAchievements.extend(Achievements.getAchievementsOfType('VPStunAchievement'))
         for achievementId in possibleAchievements:
             Achievements.doAchievement(achievementId, [av])
 
@@ -305,7 +305,6 @@ class AchievementsManagerAI:
                                                   'CJ_TIMES': accountStats['CJ_TIMES']})
 
         possibleAchievements = Achievements.getAchievementsOfType('CJAchievement')
-        possibleAchievements.extend(Achievements.getAchievementsOfType('CJJurorAchievement'))
         for achievementId in possibleAchievements:
             Achievements.doAchievement(achievementId, [av])
 
@@ -336,7 +335,6 @@ class AchievementsManagerAI:
                                                   'CEO_TIMES': accountStats['CEO_TIMES']})
 
         possibleAchievements = Achievements.getAchievementsOfType('CEOAchievement')
-        possibleAchievements.extend(Achievements.getAchievementsOfType('CEOSnackAchievement'))
         for achievementId in possibleAchievements:
             Achievements.doAchievement(achievementId, [av])
 
@@ -356,6 +354,5 @@ class AchievementsManagerAI:
         self.modifyAccountStats(av.getStatsId(), {'QUESTS_COMPLETED': accountStats['QUESTS_COMPLETED']})
 
         possibleAchievements = Achievements.getAchievementsOfType('QuestTierAchievement')
-        possibleAchievements.extend(Achievements.getAchievementsOfType('QuestCountAchievement'))
         for achievementId in possibleAchievements:
             Achievements.doAchievement(achievementId, [av])
