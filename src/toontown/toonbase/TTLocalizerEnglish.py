@@ -8554,17 +8554,17 @@ achievementInfo = {
         'Defeat the Lawbot CJ'),
     4: ('Downsized',
         'Defeat the Bossbot CEO'),
-    5: ('Toons Of The World Start!',
+    5: ('Grand Goodbye',
         'Complete Toontown Central'),
-    6: ('Ahoy!',
+    6: ('Bon Voyage!',
         "Complete Donald's Dock"),
-    7: ('Flower Power',
+    7: ('DG',
         'Complete Daisy Gardens'),
-    8: ('Musical Magic',
+    8: ('MM',
         "Complete Minnie's Melodyland"),
-    9: ('Are We There Yeti?',
+    9: ('You cold Yeti?',
         'Complete The Brrrgh'),
-    10: ("Dreaming Tasks",
+    10: ("Dreaming Goodbye's",
          "Complete Donald's Dreamland"),
     11: ('Task Master',
          'Complete all classic toontasks'),
@@ -8576,65 +8576,23 @@ achievementInfo = {
          'Solo the Lawbot CJ'),
     15: ('SOLO CEO',
          'Solo the Bossbot CEO'),
-    16: ('One man army',
-         'Solo all 4 cog bosses'),
-    17: ('Evicted Cogs',
-         'Defeat a Cog Building'),
-    18: ('For sale? sold.',
-         'Defeat a Sellbot Building'),
-    19: ('High mortgage',
-         'Defeat a Cashbot Building'),
-    20: ('Legal troubles',
-         'Defeat a Lawbot Building'),
-    21: ('Fore-closure',
-         'Defeat a Bossbot Building'),
-    22: ('Snacked',
-         'Eat 50 snacks in the CEO'),
-    23: ('Stunner - 100',
-         'Stun the VP 100 times'),
-    24: ('Jury duty',
-         'Seat 50 jurors in the CJ'),
-    25: ('VP mastery',
-         'Get all the VP achievements'),
-    26: ('CFO mastery',
-         'Get all the CFO achievements'),
-    27: ('CJ mastery',
-         'Get all the CJ achievements'),
-    28: ('CEO mastery',
-         'Get all the CEO achievements'),
-    29: ('The real boss',
-         'Get all the Cog Boss achievements'),
-    30: ('Stunner - 1000',
-         'Stun the VP 1000 times'),
-    31: ('Stunner - 2000',
-         'Stun the VP 2000 times'),
-    32: ('Tasker - 1',
-         'Complete 1 ToonTask'),
-    33: ('Tasker - 10',
-         'Complete 10 ToonTasks'),
-    34: ('Tasker - 100',
-         'Complete 100 ToonTasks'),
-    35: ('Tasker - 250',
-         'Complete 250 ToonTasks'),
-    36: ('Tasker - 500',
-         'Complete 500 ToonTasks'),
-    37: ('Champion Tasker',
-         'Get all the ToonTask achievements')
+    16: ('Solo artist',
+         'Solo all 4 cog bosses')
 }
 
 
 def getAchievementInfo(achievementId):
     return achievementInfo[achievementId]
 
-achievementClassifiers = {
+achievementCategories = {
     'misc': 'Miscellaneous',
-    'quest': 'ToonTask',
     'suit': 'Cog'
 }
 
 
-def getAchievementClassifier(classifier):
-    return '%s Achievements' % achievementClassifiers.get(classifier)
+def getAchievementCategory(category):
+    return '%s Achievements' % achievementCategories.get(category)
+
 
 GroupTrackerPageTitle = 'Group Tracker'
 GroupTrackerListTitle = 'Groups'
