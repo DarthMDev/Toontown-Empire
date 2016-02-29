@@ -8553,21 +8553,7 @@ achievementInfo = {
     3: ('Justice is blind',
         'Defeat the Lawbot CJ'),
     4: ('Downsized',
-        'Defeat the Bossbot CEO'),
-    5: ('Grand Goodbye',
-        'Complete Toontown Central'),
-    6: ('Bon Voyage!',
-        "Complete Donald's Dock"),
-    7: ('DG',
-        'Complete Daisy Gardens'),
-    8: ('MM',
-        "Complete Minnie's Melodyland"),
-    9: ('You cold Yeti?',
-        'Complete The Brrrgh'),
-    10: ("Dreaming Goodbye's",
-         "Complete Donald's Dreamland"),
-    11: ('Task Master',
-         'Complete all classic toontasks')
+        'Defeat the Bossbot CEO')
 }
 
 
