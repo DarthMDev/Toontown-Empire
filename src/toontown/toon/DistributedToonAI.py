@@ -648,6 +648,11 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def getAchievements(self):
         return self.achievements, self.achievementPoints
     
+    def addAchievement(self, achievementId):
+        if achievementId not in self.achievements:
+            self.achievements.append(achievementId)
+            self.achievementPoints += Achievements.getAchievementScore(achievementId)
+            self.d_setAchievements(self.achievements, self.achievementPoints)
                 
     def hasAchievement(self, achievementId):
         if achievementId in self.achievements:
