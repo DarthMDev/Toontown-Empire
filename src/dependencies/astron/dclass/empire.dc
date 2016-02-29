@@ -607,7 +607,6 @@ dclass AccountStats {
   uint32 CEOS_DEFEATED = 0 db;
 
   uint32 FRIENDS_MADE = 0 db;
-  uint32 QUESTS_COMPLETED = 0 db;
 };
 
 dclass DistributedToon : DistributedPlayer {
