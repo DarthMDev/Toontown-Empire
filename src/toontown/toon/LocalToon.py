@@ -361,7 +361,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         if base.wantAchievements:
             self.achievementsPage = AchievementsPage.AchievementsPage()
             self.achievementsPage.load()
-            self.achievementsPage.update(self.achievements, self.achievementPoints)
             self.book.addPage(self.achievementsPage, pageName=TTLocalizer.AchievementsPageTitle)
         if base.wantKarts:
             self.addKartPage()
@@ -1763,8 +1762,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
     def setAchievements(self, achievements, achievementPoints):
         if self.achievements is None:
             self.achievements = []
-            if self.achievementsPage is not None:
-                self.achievementsPage.update(achievements, achievementPoints)
 
             DistributedToon.DistributedToon.setAchievements(self, achievements, achievementPoints)
             return
@@ -1772,8 +1769,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         for achievementId in achievements:
             if achievementId not in self.achievements:
                 self.achievementsGui.showAchievement(achievementId)
-        if self.achievementsPage is not None:
-            self.achievementsPage.update(achievements, achievementPoints)
 
         DistributedToon.DistributedToon.setAchievements(self, achievements, achievementPoints)
 
