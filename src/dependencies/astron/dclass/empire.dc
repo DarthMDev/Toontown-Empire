@@ -626,14 +626,6 @@ dclass AccountStats {
   uint32 VP_FINAL_HITS = 0 db;
 
   uint32 CFOS_DFEEATED = 0 db;
-  uint32 CFO_DAMAGE_DEALT = 0 db;
-  uint32 CFOS_LOST = 0 db;
-  uint32 GOONS_THROWN = 0 db;
-  uint32 SAFES_THROWN = 0 db;
-  uint32 CFO_HELMETS_REMOVED = 0 db;
-  uint32 CFO_STUNS = 0 db;
-  uint32 CFO_FINAL_HITS = 0 db;
-
   uint32 CJS_DEFEATED = 0 db;
   uint32 CEOS_DEFEATED = 0 db;
 
