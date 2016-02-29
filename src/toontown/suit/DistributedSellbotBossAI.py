@@ -405,10 +405,6 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         DistributedBossCogAI.DistributedBossCogAI.enterIntroduction(self)
         
     def enterReward(self):
-        if self.air.wantAchievements:
-            for toonId in self.involvedToons:
-                self.air.achievementsManager.toonDefeatedVP(toonId)
-
         DistributedBossCogAI.DistributedBossCogAI.enterReward(self)
 
 @magicWord(category=CATEGORY_LEADER)

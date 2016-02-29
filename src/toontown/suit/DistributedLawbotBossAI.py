@@ -904,13 +904,6 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
         self.toonLevels = self.getToonDifficulty()
         self.b_setBattleDifficulty(self.toonLevels)
 
-    def enterReward(self):
-        if self.air.wantAchievements:
-            for toonId in self.involvedToons:
-                self.air.achievementsManager.toonDefeatedCJ(toonId)
-
-        DistributedBossCogAI.DistributedBossCogAI.enterReward(self)
-
 @magicWord(category=CATEGORY_LEADER)
 def skipCJ():
     """
