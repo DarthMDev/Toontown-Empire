@@ -73,6 +73,3 @@ want-news-tab #t
 want-news-page #t
 
 #want-mongo #t
-
-#achi
-want-achievements #t
