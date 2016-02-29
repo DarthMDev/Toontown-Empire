@@ -1329,29 +1329,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def getCogMerits(self):
         return self.cogMerits
 
-
-    def b_promote(self, dept):
-        oldMerits = CogDisguiseGlobals.getTotalMerits(self, dept)
-        self.incCogLevel(dept)
-        
-        if self.cogLevels[dept] < ToontownGlobals.MaxCogSuitLevel:
-            merits = self.getCogMerits()
-            
-            if not self.hasEPP(dept):
-                merits[dept] = 0
-            
-            else:
-                # If we have EPP, check if the merit count is too much (i.e. enough to promote again)
-                if oldMerits >= CogDisguiseGlobals.getTotalMerits(self, dept):
-                    # We have more merits than needed (i.e. promoting to another cog or earning laff)
-                    # Therefore:
-                    merits[dept] = 0
-                
-                else:
-                    merits[dept] = oldMerits
-            
-            self.d_setCogMerits(merits)
-                    
     def readyForPromotion(self, dept):
         merits = self.cogMerits[dept]
         totalMerits = CogDisguiseGlobals.getTotalMerits(self, dept)
