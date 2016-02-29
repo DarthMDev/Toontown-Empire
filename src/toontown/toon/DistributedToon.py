@@ -163,7 +163,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self.specialInventory = [0, 0, 0, 0, 0]
         self.achievements = []
         self.achievementPoints = 0
-        self.achievementBoosts = 0
 
     def disable(self):
         for soundSequence in self.soundSequenceList:
@@ -2341,8 +2340,6 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def setAchievements(self, achievements, achievementPoints):
         self.achievements = achievements
         self.achievementPoints = achievementPoints   
-    def setAchievementBoosts(self, boostCount):
-        self.achievementBoosts = boostCount
 
     def getAchievementPoints(self):
         return self.achievementPoints

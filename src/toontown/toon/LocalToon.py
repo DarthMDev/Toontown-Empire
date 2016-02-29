@@ -276,8 +276,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         del self.fishPage
         del self.gardenPage
         del self.trackPage
-        if base.wantAchievements:
-            del self.achievementsPage
         del self.book
         if base.wantKarts:
             if hasattr(self, 'kartPage'):
@@ -1796,7 +1794,3 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
 
     def stopAprilToonsControls(self):
         self.controlManager.currentControls.setGravity(ToontownGlobals.GravityValue * 2.0)
-
-
-    def hasAchievement(self, achievementId):
-        return achievementId in self.achievements
