@@ -8,16 +8,16 @@ class DistributedNPCSosAI(DistributedNPCToonBaseAI.DistributedNPCToonBaseAI):
 
         if not av:
             return
-        
-        #Todo: Add all the Sos Card IDs to this list. It'll take a while.
-        NPCIdList = [2001, 2132, 2121, 2011, 3007, 1001, 3112, 1323, 2308, 4119, 4219, 4115, 1116, 2311, 4140, 3137]
+            
+        #This does not include FO sos cards.
+        NPCIdList = [2001, 2132, 2121, 2011, 3007, 1001, 3112, 1323, 2308, 4119, 4219, 4115, 1116, 2311, 4140, 3137, 4327, 4230, 3135, 2208, 5124, 2003, 2126, 4007, 1315, 5207, 3129, 4125, 1329]
         
         count = amount
         npcIdList = list(NPCIdList)
         npcId = random.choice(npcIdList)
                   
         if npcId not in NPCToons.npcFriends:
-          pass
+          npcId = 2001
 
         av.NPCFriendsDict[npcId] = count
 
