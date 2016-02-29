@@ -175,7 +175,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.fishBingoTutorialDone = False
         self.nextKnockHeal = 0
         self.tfRequest = (0, 0)
-        self.statsId = 0
 
     def generate(self):
         DistributedPlayerAI.DistributedPlayerAI.generate(self)
@@ -4379,12 +4378,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
    
     def setWantGroupTracker(self, wantGroupTracker):
         self.wantGroupTracker = wantGroupTracker
-
-    def getStatsId(self):
-        return self.statsId
-
-    def setStatsId(self, statsId):
-        self.statsId = statsId
 
 @magicWord(category=CATEGORY_STAFF, types=[str, int, int])
 def cheesyEffect(value, hood=0, expire=0):

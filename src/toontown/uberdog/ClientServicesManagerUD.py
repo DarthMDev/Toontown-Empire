@@ -380,7 +380,7 @@ class LoginAccountFSM(OperationFSM):
             # Create the account stats object
             self.csm.air.dbInterface.createObject(
                 self.csm.air.dbId,
-                self.csm.air.dclassesByName['AccountStats'],
+                self.csm.air.dclassesByName['AccountStatsUD'],
                 {},
                 handleAccountStatsCreated)
 
@@ -403,7 +403,7 @@ class LoginAccountFSM(OperationFSM):
         }
         self.csm.air.dbInterface.createObject(
             self.csm.air.dbId,
-            self.csm.air.dclassesByName['AccountStats'],
+            self.csm.air.dclassesByName['AccountUD'],
             self.account,
             self.__handleCreate)
 
@@ -569,7 +569,7 @@ class CreateAvatarFSM(OperationFSM):
             self.csm.air.dbId, self.target, self.__handleRetrieve)
 
     def __handleRetrieve(self, dclass, fields):
-            if dclass != self.csm.air.dclassesByName['AccountStats']:
+        if dclass != self.csm.air.dclassesByName['AccountUD']:
             self.demand('Kill', 'Your account object was not found in the database!')
             return
 
@@ -1066,8 +1066,7 @@ class LoadAvatarFSM(AvatarOperationFSM):
         self.csm.air.sendActivate(
             self.avId, 0, 0, self.csm.air.dclassesByName['DistributedToonUD'],
             {'setAdminAccess': [self.account.get('ACCESS_LEVEL', 0)],
-             'setAchievements': [self.accountStats['ACHIEVEMENTS'], self.accountStats['ACHIEVEMENT_POINTS']],
-             'setStatsId': [self.account['STATS_ID']]})
+             'setAchievements': [self.accountStats['ACHIEVEMENTS'], self.accountStats['ACHIEVEMENT_POINTS']]})
 
         # Next, add them to the avatar channel:
         datagram = PyDatagram()

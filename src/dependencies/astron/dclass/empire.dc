@@ -463,6 +463,7 @@ from toontown.cogdominium import DistCogdoCraneCog/AI
 from toontown.parties.GlobalPartyManager/AI/UD import GlobalPartyManager/AI/UD
 //from toontown.uberdog.GlobalLobbyManager/AI/UD import GlobalLobbyManager/AI/UD
 from toontown.uberdog.ARGManager import ARGManager
+from toontown.achievements import AccountStats/AI/UD
 
 struct gardenSpecial {
   uint8 index;
@@ -781,7 +782,6 @@ dclass DistributedToon : DistributedPlayer {
   announcePartyStarted(uint64) ownrecv;
   setAchievements(uint16[] = [], uint16 = 0) required ownrecv;
   setNeverStartedPartyRefunded(uint64, int8, uint16) ownrecv;
-  setStatsId(uint32) required;
   setAnimalSound(uint8 index) ram broadcast ownrecv;
   setBuffs(uint32[] = []) required ownrecv db;
   setRedeemedCodes(string [] = []) required ownrecv db;
