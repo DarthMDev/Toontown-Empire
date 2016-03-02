@@ -1848,7 +1848,7 @@ dclass DistributedNPCLaffRestock : DistributedNPCToonBase {
 };
 
 dclass DistributedNPCSos : DistributedNPCToonBase {
-  roll(uint8) airecv clsend;
+  roll(uint8, int32, int8) airecv clsend; 
   rollResult(uint8) broadcast;
 };
 
