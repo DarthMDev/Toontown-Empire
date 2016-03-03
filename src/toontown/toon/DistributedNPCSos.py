@@ -52,8 +52,10 @@ class DistributedNPCSos(DistributedNPCToonBase):
         base.cr.playGame.getPlace().fsm.request('walk')
         base.setCellsAvailable(base.bottomCells, 1)
     
-    def __sosShopDone(self, state):
+    def __sosShopDone(self, state, cost, type):
         self.freeAvatar()
+        cost = cost
+        type = type
 
         if state == SosShopGlobals.TIMER_END:
             self.setChatAbsolute(TTLocalizer.STOREOWNER_TOOKTOOLONG, CFSpeech|CFTimeout)
@@ -61,7 +63,7 @@ class DistributedNPCSos(DistributedNPCToonBase):
             self.setChatAbsolute(TTLocalizer.STOREOWNER_GOODBYE, CFSpeech|CFTimeout)
         elif state == SosShopGlobals.ROLL:
             count = random.randint(1, 5)
-            self.sendUpdate('roll', [count])
+            self.sendUpdate('roll', [count, cost, type])
 
     def rollResult(self, state):
         if state in SosShopGlobals.RollMessages:

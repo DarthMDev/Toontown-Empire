@@ -6,6 +6,11 @@ from otp.ai.AIBaseGlobal import *
 
 class DistributedDoorAI(DistributedObjectAI.DistributedObjectAI):
     def __init__(self, air, blockNumber, doorType, doorIndex=0, lockValue=0, swing=3):
+        try:
+            self.DistributedDoor_initialized
+            return
+        except:
+            self.DistributedDoor_initialized = 1
         DistributedObjectAI.DistributedObjectAI.__init__(self, air)
         self.block = blockNumber
         self.swing = swing
@@ -49,6 +54,11 @@ class DistributedDoorAI(DistributedObjectAI.DistributedObjectAI):
         self.avatarsWhoAreExiting = {}
 
     def delete(self):
+        try:
+            self.DistributedDoor_deleted
+            return
+        except:
+            self.DistributedDoor_deleted = 1
         taskMgr.remove(self.uniqueName('door_opening-timer'))
         taskMgr.remove(self.uniqueName('door_open-timer'))
         taskMgr.remove(self.uniqueName('door_closing-timer'))
