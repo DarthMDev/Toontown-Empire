@@ -30,6 +30,13 @@ class ColorShop(StateData.StateData):
         self.toon = toon
         self.dna = toon.getStyle()
         colorList = self.getGenderColorList(self.dna)
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Entering Color Shop in Make a Toon.")
+         print("extlog: Attempting to print Colorlist for select gender below.")
+         try:
+          print(colorList)
+         except:
+          print("extlog: Failed to print Colorlist.")
         try:
             self.headChoice = colorList.index(self.dna.headColor)
             self.armChoice = colorList.index(self.dna.armColor)
@@ -190,6 +197,12 @@ class ColorShop(StateData.StateData):
         self.headChoice = (self.headChoice + offset) % length
         self.__updateScrollButtons(self.headChoice, length, self.headLButton, self.headRButton)
         newColor = colorList[self.headChoice]
+        if config.GetBool('want-extra-logs', True):
+         try:
+          print("extlog: Printing new Head color below.")
+          print(newColor)
+         except:
+          pass
         self.dna.headColor = newColor
         self.toon.swapToonColor(self.dna)
 
@@ -199,6 +212,12 @@ class ColorShop(StateData.StateData):
         self.armChoice = (self.armChoice + offset) % length
         self.__updateScrollButtons(self.armChoice, length, self.armLButton, self.armRButton)
         newColor = colorList[self.armChoice]
+        if config.GetBool('want-extra-logs', True):
+         try:
+          print("extlog: Printing new Arm color below.")
+          print(newColor)
+         except:
+          pass
         self.dna.armColor = newColor
         self.toon.swapToonColor(self.dna)
 
@@ -208,6 +227,12 @@ class ColorShop(StateData.StateData):
         self.gloveChoice = (self.gloveChoice + offset) % length
         self.__updateScrollButtons(self.gloveChoice, length, self.gloveLButton, self.gloveRButton)
         newColor = colorList[self.gloveChoice]
+        if config.GetBool('want-extra-logs', True):
+         try:
+          print("extlog: Printing new Glove color below.")
+          print(newColor)
+         except:
+          pass
         self.dna.gloveColor = newColor
         self.toon.swapToonColor(self.dna)
 
@@ -217,6 +242,12 @@ class ColorShop(StateData.StateData):
         self.legChoice = (self.legChoice + offset) % length
         self.__updateScrollButtons(self.legChoice, length, self.legLButton, self.legRButton)
         newColor = colorList[self.legChoice]
+        if config.GetBool('want-extra-logs', True):
+         try:
+          print("extlog: Printing new Leg color below.")
+          print(newColor)
+         except:
+          pass
         self.dna.legColor = newColor
         self.toon.swapToonColor(self.dna)
 
