@@ -736,7 +736,7 @@ class EventsPage(ShtikerPage.ShtikerPage):
     def getRssFeed(self):
         if self.gotRssFeed:
             return
-        self.rssFeed = feedparser.parse('http://www.wdwinfo.com/news/rss.xml') #change to our rss feed 
+        self.rssFeed = feedparser.parse('http://toontown-rewritten-expedition.webnode.com/rss/news-.xml') #change to our rss feed 
         feedText = []
 
         def addFeedText(unicodeText, textSize = 0.03, color = (0, 0, 0, 1), feedText = feedText):
