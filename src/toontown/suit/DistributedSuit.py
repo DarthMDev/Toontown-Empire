@@ -428,7 +428,10 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
 
     def enterFromSky(self, leg, time):
         if config.GetBool('want-extra-logs', True):
-         print("extlog: Suit requested to come from sky in " + time + "ticks.")
+         try:
+          print("extlog: Suit requested to come from sky in " % time)
+         except:
+          pass
         self.enableBattleDetect('fromSky', self.__handleToonCollision)
         self.loop('neutral', 0)
         if not self.verifySuitPlanner():
