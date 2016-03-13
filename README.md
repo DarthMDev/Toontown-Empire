@@ -1,5 +1,7 @@
 # Toontown Empire
 
+This Is The Live Game Server Branch Please do not merge to here as this will lead to in compatability to play on game server. Please speak to sever host and they will update it as and when the time is right so that users can connect
+
 The official repo for Toontown Empire, a new Toontown game based on Disney's Toontown Online.
 
 # Leads:
