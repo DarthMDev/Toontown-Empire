@@ -77,6 +77,8 @@ if 'loadDisplay' not in settings:
     settings['loadDisplay'] = 'pandagl'
 if 'toonChatSounds' not in settings:
     settings['toonChatSounds'] = True
+if 'antialiasing' not in settings:
+    settings['antialiasing'] = 0
 if 'language' not in settings:
     settings['language'] = 'English'
 if 'cogInterface' not in settings:
@@ -99,7 +101,14 @@ loadPrcFileData('Settings: fullscreen', 'fullscreen %s' % settings['fullscreen']
 loadPrcFileData('Settings: musicVol', 'audio-master-music-volume %s' % settings['musicVol'])
 loadPrcFileData('Settings: sfxVol', 'audio-master-sfx-volume %s' % settings['sfxVol'])
 loadPrcFileData('Settings: loadDisplay', 'load-display %s' % settings['loadDisplay'])
-
+if settings['antialiasing']:
+    loadPrcFileData('Settings: antialiasing',
+                    'framebuffer-multisample 1')
+    loadPrcFileData('Settings: antialiasing',
+                    'multisamples %s' % settings['antialiasing'])
+else:
+    loadPrcFileData('Settings: antialiasing',
+                    'framebuffer-multisample 0')
 import time
 import sys
 import random

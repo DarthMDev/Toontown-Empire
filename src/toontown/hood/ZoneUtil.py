@@ -147,6 +147,10 @@ def getCanonicalBranchZone(zoneId):
 def getCanonicalZoneId(zoneId):
     return zoneId
 
+def getTrueZoneId(zoneId, currentZoneId):
+        hoodId = getHoodId(zoneId)
+        offset = currentZoneId
+	return zoneId
 
 def getHoodId(zoneId):
     if tutorialDict:

@@ -244,6 +244,10 @@ class PhotoAlbumPage(ShtikerPage.ShtikerPage):
             PhotoDir = self.installPath + '/user/screenshots'
             os.startfile(PhotoDir)
             self.notify.debug(PhotoDir)
+        elif platform == 'linux2':
+            PhotoDir = self.installPath + '/user/screenshots'
+            os.system('xdg-open "%s"' % PhotoDir)
+            self.notify.debug(PhotoDir)
 
     def newScreenshot(self, filename):
         self.updateScrollList()

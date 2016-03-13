@@ -45,6 +45,11 @@ class OZSafeZoneLoader(SafeZoneLoader):
         waterfallPlacer = self.geom.find('**/waterfall*')
         binMgr = CullBinManager.getGlobalPtr()
         binMgr.addBin('water', CullBinManager.BTFixed, 29)
+        binMgr = CullBinManager.getGlobalPtr()
+        water = self.geom.find('**/water1*')
+        water.setTransparency(1)
+        water.setColorScale(1, 1, 1, 1)
+        water.setBin('water', 51, 1)
         pool = self.geom.find('**/pPlane5*')
         pool.setTransparency(1)
         pool.setColorScale(1.0, 1.0, 1.0, 1.0)
@@ -100,6 +105,10 @@ class OZSafeZoneLoader(SafeZoneLoader):
         self.waterfallActor.setPos(waterfallPlacer.getPos())
         self.accept('clientLogout', self._handleLogout)
 
+
+        self.constructionSign = loader.loadModel('phase_4/models/props/construction_sign.bam')
+        self.constructionSign.reparentTo(render)
+        self.constructionSign.setPosHpr(-47.941, -138.724, 0.122, 181, 0, 0)
     def exit(self):
         self.clearToonTracks()
         SafeZoneLoader.exit(self)
@@ -291,6 +300,8 @@ class OZSafeZoneLoader(SafeZoneLoader):
         self.geyserSoundNoToon.stop()
         self.geyserSoundNoToonInterval = None
         self.geyserSoundNoToon = None
+        self.constructionSign.removeNode()
+        self.constructionSign = None
 
     def enterPlayground(self, requestStatus):
         self.playgroundClass = OZPlayground

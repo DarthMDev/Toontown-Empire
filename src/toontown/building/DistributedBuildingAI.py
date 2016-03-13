@@ -27,6 +27,11 @@ from toontown.toonbase import ToontownGlobals
 
 class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
     def __init__(self, air, blockNumber, zoneId, trophyMgr):
+        try:
+            self.DistributedBuilding_initialized
+            return
+        except:
+            self.DistributedBuilding_initialized = 1
         DistributedObjectAI.DistributedObjectAI.__init__(self, air)
         self.block = blockNumber
         self.zoneId = zoneId
@@ -100,6 +105,11 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
         self.requestDelete()
 
     def delete(self):
+        try:
+            self.DistributedBuilding_deleted
+            return
+        except:
+            self.DistributedBuilding_deleted = 1
         self.cleanup()
         taskMgr.remove(self.taskName('suitbldg-time-out'))
         taskMgr.remove(self.taskName(str(self.block) + '_becomingToon-timer'))

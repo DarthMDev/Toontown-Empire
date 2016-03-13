@@ -280,6 +280,7 @@ from toontown.toon import DistributedNPCPetclerk/AI
 from toontown.toon import DistributedNPCKartClerk/AI
 from toontown.toon import DistributedNPCGlove/AI
 from toontown.toon import DistributedNPCLaffRestock/AI
+from toontown.toon import DistributedNPCSos/AI
 from toontown.building import DistributedKnockKnockDoor/AI
 from toontown.building import DistributedElevator/AI
 from toontown.building import DistributedElevatorFSM/AI
@@ -785,6 +786,7 @@ dclass DistributedToon : DistributedPlayer {
   setWantGroupTracker(uint8) clsend airecv;
   freezeToon() ownrecv;
   unfreezeToon() ownrecv;
+  warnLocalToon(string) ownrecv;
 };
 
 dclass DistributedPartyGate : DistributedObject {
@@ -1843,6 +1845,11 @@ dclass DistributedNPCKartClerk : DistributedNPCToonBase {
 dclass DistributedNPCLaffRestock : DistributedNPCToonBase {
   restock(uint8) airecv clsend;
   restockResult(uint8) broadcast;
+};
+
+dclass DistributedNPCSos : DistributedNPCToonBase {
+  roll(uint8, int32, int8) airecv clsend; 
+  rollResult(uint8) broadcast;
 };
 
 dclass DistributedNPCGlove : DistributedNPCToonBase {

@@ -136,10 +136,44 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         return self.getZoneId()
 
     def handleTeleportQuery(self, fromAvatar, toAvatar):
-        if toAvatar == localAvatar:
-            toAvatar.doTeleportResponse(fromAvatar, toAvatar, toAvatar.doId, 1, toAvatar.defaultShard, base.cr.playGame.getPlaceId(), self.getZoneId(), fromAvatar.doId)
+        if base.config.GetBool('want-tptrack', False):
+            if toAvatar == localAvatar:
+                toAvatar.doTeleportResponse(fromAvatar, toAvatar, toAvatar.doId, 1, toAvatar.defaultShard, base.cr.playGame.getPlaceId(), self.getZoneId(), fromAvatar.doId)
+            else:
+                self.notify.warning('handleTeleportQuery toAvatar.doId != localAvatar.doId' % (toAvatar.doId, localAvatar.doId))
         else:
-            self.notify.warning('handleTeleportQuery toAvatar.doId != localAvatar.doId' % (toAvatar.doId, localAvatar.doId))
+            fromAvatar.d_teleportResponse(toAvatar.doId, 1, toAvatar.defaultShard, base.cr.playGame.getPlaceId(), self.getZoneId())
+
+    def enablePeriodTimer(self):
+        if self.isPeriodTimerEffective():
+            if base.cr.periodTimerExpired:
+                taskMgr.doMethodLater(5, self.redoPeriodTimer, 'redoPeriodTimer')
+            self.accept('periodTimerExpired', self.periodTimerExpired)
+
+    def disablePeriodTimer(self):
+        taskMgr.remove('redoPeriodTimer')
+        self.ignore('periodTimerExpired')
+
+    def redoPeriodTimer(self, task):
+        messenger.send('periodTimerExpired')
+        return Task.done
+
+    def periodTimerExpired(self):
+        self.fsm.request('final')
+        if base.localAvatar.book.isEntered:
+            base.localAvatar.book.exit()
+            base.localAvatar.b_setAnimState('CloseBook', 1, callback=self.__handlePeriodTimerBookClose)
+        else:
+            base.localAvatar.b_setAnimState('TeleportOut', 1, self.__handlePeriodTimerExitTeleport)
+
+    def exitPeriodTimerExpired(self):
+        pass
+
+    def __handlePeriodTimerBookClose(self):
+        base.localAvatar.b_setAnimState('TeleportOut', 1, self.__handlePeriodTimerExitTeleport)
+
+    def __handlePeriodTimerExitTeleport(self):
+        base.cr.loginFSM.request('periodTimeout')
 
     def detectedPhoneCollision(self):
         self.fsm.request('phone')
@@ -605,25 +639,30 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         base.localAvatar.obscureMoveFurnitureButton(1)
         avId = requestStatus.get('avId', -1)
         if avId != -1:
-            if avId in base.cr.doId2do:
-                teleportDebug(requestStatus, 'teleport to avatar')
-                avatar = base.cr.doId2do[avId]
-                avatar.forceToTruePosition()
-                base.localAvatar.gotoNode(avatar)
-                base.localAvatar.b_teleportGreeting(avId)
-            else:
-                friend = base.cr.identifyAvatar(avId)
-                if friend == None:
-                    teleportDebug(requestStatus, 'friend not here, giving up')
-                    base.localAvatar.setSystemMessage(avId, OTPLocalizer.WhisperTargetLeftVisit % (friend.getName(),))
-                    friend.d_teleportGiveup(base.localAvatar.doId)
+
+            def doTeleport(avId, teleported):
+                if avId in base.cr.doId2do:
+                    teleportDebug(requestStatus, 'teleport to avatar')
+                    avatar = base.cr.doId2do[avId]
+                    avatar.forceToTruePosition()
+                    base.localAvatar.gotoNode(avatar)
+                    base.localAvatar.b_teleportGreeting(avId)
                 else:
-                    def doTeleport(task):
-                        avatar = base.cr.doId2do[friend.getDoId()]
-                        base.localAvatar.gotoNode(avatar)
-                        base.localAvatar.b_teleportGreeting(friend.getDoId())
-                        return task.done
-                    self.acceptOnce('generate-%d' % friend.getDoId(), lambda x: taskMgr.doMethodLater(1, doTeleport, uniqueName('doTeleport')))
+                    friend = base.cr.identifyAvatar(avId)
+                    if friend is not None:
+                        # The avatar might be in another zone or not generated yet.
+                        if not teleported:
+                            # Try again one more time.
+                            teleportDebug(requestStatus, 'Retrying teleport...')
+                            taskMgr.doMethodLater(0.2, doTeleport, uniqueName('doTeleport'), extraArgs=[avId, True])
+                            return
+
+                        teleportDebug(requestStatus, 'friend not here, giving up')
+                        base.localAvatar.setSystemMessage(avId, OTPLocalizer.WhisperTargetLeftVisit % (friend.getName(),))
+                        friend.d_teleportGiveup(base.localAvatar.doId)
+
+            taskMgr.doMethodLater(0.3, doTeleport, uniqueName('doTeleport'), extraArgs=[avId, False])
+
         base.transitions.irisIn()
         self.nextState = requestStatus.get('nextState', 'walk')
         base.localAvatar.attachCamera()

@@ -90,6 +90,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.wantTopToons = self.config.GetBool('want-top-toons', True)
         self.baseXpMultiplier = self.config.GetFloat('base-xp-multiplier', 1.0)
         self.wantGroupTracker = self.config.GetBool('want-grouptracker', False)
+        self.wantSosShop = self.config.GetBool('want-sosShop', False)
         self.cogSuitMessageSent = False
 
     def createManagers(self):

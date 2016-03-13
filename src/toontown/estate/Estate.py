@@ -83,6 +83,7 @@ class Estate(Place.Place):
         self.fog = Fog('EstateFog')
         taskMgr.add(self.__checkCameraUnderwater, 'estate-check-cam-underwater')
         path = self.loader.geom.find('**/Path')
+        path.setTransparency(TransparencyAttrib.MBinary, 1)
         path.setBin('ground', 10, 1)
         self.parentFSMState.addChild(self.fsm)
 

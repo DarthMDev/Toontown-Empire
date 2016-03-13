@@ -6,6 +6,7 @@ OL.SpeedChatStaticText = OL.SpeedChatStaticTextToontown.copy()
 for key in OL.SpeedChatStaticTextCommon.iterkeys():
     OL.SpeedChatStaticText[key] = OL.SpeedChatStaticTextCommon[key]
 
+
 commitmantst = 'kptmptest - removable'
 InterfaceFont = 'phase_3/models/fonts/ImpressBT.ttf'
 ToonFont = 'phase_3/models/fonts/ImpressBT.ttf'
@@ -3379,6 +3380,25 @@ EventsPageInvitedTabTitle = 'Party Invitations'
 EventsPageInvitedTabInvitationListTitle = 'Invitations'
 EventsPageInvitedTabActivityListTitle = 'Activities'
 EventsPageInvitedTabTime = '%s %s Toontown Time'
+EventsPageNewsTabName = 'News'
+EventsPageNewsTabTitle = 'News'
+EventsPageNewsDownloading = 'Retrieving News...'
+EventsPageNewsUnavailable = 'News not available. It has not yet been setup... Come Back Soon!'
+EventsPageNewsPaperTitle = 'TOONTOWN NEWS'
+EventsPageNewsLeftSubtitle = 'Still only 1 jellybean'
+EventsPageNewsRightSubtitle = 'Established toon-thousand one'
+NewsPageName = 'News'
+NewsPageImportError = 'Whoops! There is an issue loading the "Toon News ... for the Amused!" Please check back later.'
+NewsPageDownloadingNewsSubstr = 'Stay Tooned, while we bring you the latest issue of the \n"Toon News ... for the Amused!"'
+NewsPageDownloadingNews0 = NewsPageDownloadingNewsSubstr + ' %s%% Complete.'
+NewsPageDownloadingNews1 = NewsPageDownloadingNewsSubstr + ' %s%% Complete..'
+NewsPageDownloadingNews2 = NewsPageDownloadingNewsSubstr + ' %s%% Complete...'
+NewsPageErrorDownloadingFile = 'Whoops! Page %s is missing from "Toon News ... for the Amused!" Please check back later.'
+NewsPageErrorDownloadingFileCanStillRead = 'Whoops! Page %s \nis missing from the "Toon News ... for the Amused!" \nTurn the page to continue, while we work to get this page back.'
+NewsPageNoIssues = 'Whoops! The "Toon News ... for the Amused!" has gone missing! \nStay Tooned ... while we work to bring the news back!'
+IssueFrameThisWeek = 'this week'
+IssueFrameLastWeek = 'last week'
+IssueFrameWeeksAgo = '%d weeks ago'
 SelectedInvitationInformation = '%s is having a party on %s at %s Toontown Time.'
 PartyPlannerComingSoon = 'Coming Soon'
 PartyPlannerCantBuy = "Out Of Stock"
@@ -4643,8 +4663,10 @@ STOREOWNER_TOOKTOOLONG = 'Need more time to think?'
 STOREOWNER_GOODBYE = 'See you later!'
 STOREOWNER_NEEDJELLYBEANS = 'You need to ride the Trolley to get some Jellybeans.'
 STOREOWNER_GREETING = 'Choose what you want to buy.'
+STOREOWNER_SOS_GREETING = 'Buy a roll for a random SOS card!'
 STOREOWNER_BROWSING = 'You can browse, but you need a clothing ticket to buy.'
 STOREOWNER_BROWSING_JBS = 'You can browse, but you need at least 200 Jellybeans to buy.'
+STOREOWNER_NEEDJELLYBEANSSOS = "You need to get some Jellybeans. At minimum 5,000 Jellybeans."
 STOREOWNER_NOCLOTHINGTICKET = 'You need a clothing ticket to shop for clothes.'
 STOREOWNER_NOFISH = 'Come back here to sell fish to the Pet Shop for Jellybeans.'
 STOREOWNER_THANKSFISH = 'Thanks! The Pet Shop will love these. Bye!'
@@ -6344,7 +6366,7 @@ NPCToonNames = {20000: 'Tutorial Tom',
  7023: 'Bo Nanapeel',
  10001: 'Medic Manny',
  10002: "Good ol' Gil Giggles",
- 11001: 'Medic Marlson',
+ 11001: 'Sos Keeper Charles',
  12001: 'Medic Manson',
  12002: 'Mata Hairy',
  13001: 'Medic Mary',
@@ -8629,6 +8651,12 @@ RestockFullLaffMessage = "You're already happy!"
 RestockLessLaffMessage = "Why would you want to be less happy than you are right now?"
 RestockNoMoneyMessage = "You don't have enough jellybeans for that!"
 RestockSuccessfulMessage = "You're welcome! Have fun!"
+
+RollNoMoneyGuiMessage = "\n\x01WLRed\x01Not enough jellybeans\x02"
+RollFullSosMessage = "You're already have 100 SOS Cards for this toon!"
+RollNoMoneyMessage = "You don't have enough jellybeans to buy a roll!"
+RollSuccessfulMessage = "You're welcome! Have fun with you new SOS Card!"
+
 InVP = ' in a V.P. Battle'
 InFieldOffice = ' in a Sellbot Field Office'
 CogPanelLevel = 'Level %s'

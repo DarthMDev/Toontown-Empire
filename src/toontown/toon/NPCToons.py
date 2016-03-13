@@ -57,6 +57,7 @@ NPC_SPECIALQUESTGIVER = 9
 NPC_FLIPPYTOONHALL = 10
 NPC_SCIENTIST = 11
 NPC_GLOVE = 12
+NPC_SOS_SHOP = 13
 # NPC_LAFF_RESTOCK = 13
 QUEST_COUNTDOWN_TIME = 120
 CLERK_COUNTDOWN_TIME = 120
@@ -80,6 +81,7 @@ def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
     import DistributedNPCFlippyInToonHallAI
     import DistributedNPCScientistAI
     import DistributedNPCGloveAI
+    import DistributedNPCSosAI
     #import DistributedNPCLaffRestockAI
     canonicalZoneId, name, dnaType, gender, protected, type = desc
     if type == NPC_REGULAR:
@@ -108,8 +110,8 @@ def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
         npc = DistributedNPCScientistAI.DistributedNPCScientistAI(air, npcId)
     elif type == NPC_GLOVE:
         npc = DistributedNPCGloveAI.DistributedNPCGloveAI(air, npcId)
-    #elif type == NPC_LAFF_RESTOCK:
-        #npc = DistributedNPCLaffRestockAI.DistributedNPCLaffRestockAI(air, npcId)
+    elif type == NPC_SOS_SHOP:
+        npc = DistributedNPCSosAI.DistributedNPCSosAI(air, npcId)
     else:
         print 'Invalid NPC type: %s' % type
     npc.setName(name)
@@ -138,6 +140,8 @@ def createNpcsInZone(air, zoneId):
             continue
         elif npcDesc[5] == NPC_PARTYPERSON and not air.wantParties:
             continue
+        elif npcDesc[5] == NPC_GLOVE and not air.wantSosShop:
+            continue 
 
         npcs.append(createNPC(air, npcId, npcDesc, zoneId, posIndex=i))
 
@@ -862,7 +866,7 @@ NPCToonDict = {
  7023: (-1, lnames[7023], ('pss', 'sd', 'l', 'f', 9, 0, 9, 9, 0, 8, 0, 0, 11, 0), 'f', 0, NPC_REGULAR),
  #10001: (10000, lnames[10001], 'r', 'f', 0, NPC_LAFF_RESTOCK),
  10002: (-1, lnames[10002], ('sls', 'ss', 'm', 'm', 15, 0, 15, 15, 111, 27, 97, 27, 41, 27), 'm', 0, NPC_REGULAR),
- #11001: (11000, lnames[11001], 'r', 'm', 0, NPC_LAFF_RESTOCK),
+ 11001: (11000, lnames[11001], 'r', 'm', 0, NPC_SOS_SHOP),
  #12001: (12000, lnames[12001], 'r', 'm', 0, NPC_LAFF_RESTOCK),
  12002: (-1, lnames[12002], ('pls', 'ls', 'l', 'f', 3, 0, 3, 3, 111, 27, 98, 27, 45, 27), 'f', 0, NPC_REGULAR),
  #13001: (13000, lnames[13001], 'r', 'f', 0, NPC_LAFF_RESTOCK),
@@ -876,10 +880,8 @@ else:
     NPCToonDict[2001] = (2513, lnames[2001], ('dss', 'ms', 'm', 'm', 17, 0, 17, 17, 3, 3, 3, 3, 7, 2), 'm', 1, NPC_REGULAR)
 
 BlockerPositions = {TTLocalizer.Flippy: (Point3(207.4, 18.81, -0.475), 90.0)}
-#LaffRestockPositions = {lnames[11001]: ((-27.0, -170.0, -19.6), 215.0),
-                        #lnames[12001]: ((361.9, -394.4, -23.5), 120.0),
-                        #lnames[13001]: ((143.7, -381.4, -68.4), 0.0),
-                        #lnames[10001]: ((135.0, 128.8, 0.025), -212.8)}
+SosShopPositions = {lnames[11001]: ((-27.0, -170.0, -19.6), 215.0)}
+ 
 GlovePositions = {lnames[2021]: ((101, -14, 4), -305)}
 del lnames
 zone2NpcDict = {}
