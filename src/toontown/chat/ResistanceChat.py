@@ -63,12 +63,11 @@ resistanceDict = {
         ],
         'items': [0, 1, 2, 3, 4, 5, 6, 7]
     },
-    RESISTANCE_DANCE: {
-        'menuName': TTLocalizer.ResistanceDanceMenu,
-        'itemText': TTLocalizer.ResistanceDanceItem,
-        'chatText': TTLocalizer.ResistanceDanceChat,
-        'values': ['Dance'],
-        'items': [0]}}
+ RESISTANCE_DANCE: {'menuName': TTLocalizer.ResistanceDanceMenu,
+                     'itemText': TTLocalizer.ResistanceDanceItem,
+                     'chatText': TTLocalizer.ResistanceDanceChat,
+                     'values': ['Dance'],
+                     'items': [0]}}
 
 
 def encodeId(menuIndex, itemIndex):
@@ -193,9 +192,9 @@ def doEffect(textId, speakingToon, nearbyToons):
         effect = BattleParticles.loadParticleFile('resistanceEffectSparkle.ptf')
         fadeColor = VBase4(1, 0.5, 1, 1)
         for toonId in nearbyToons:
-			toon = base.cr.doId2do.get(toonId)
-        if toon and not toon.ghostMode:
-			toon.setAnimState('victory')
+            toon = base.cr.doId2do.get(toonId)
+            if toon and not toon.ghostMode:
+				toon.setAnimState('victory')
     else:
         return
     recolorToons = Parallel()
