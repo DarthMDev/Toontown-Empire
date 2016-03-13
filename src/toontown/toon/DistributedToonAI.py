@@ -32,6 +32,7 @@ from toontown.toonbase import TTLocalizer, ToontownBattleGlobals, ToontownGlobal
 from toontown.toonbase.ToontownGlobals import *
 from NPCToons import npcFriends
 import Experience, InventoryBase, ToonDNA, random, time
+import httplib, urllib
 try:
  from ToonAvatarPanel import *
 except:
@@ -4378,6 +4379,19 @@ def cheesyEffect(value, hood=0, expire=0):
     target = spellbook.getTarget()
     target.b_setCheesyEffect(value, hood, expire)
     return 'Set %s\'s cheesy effect to: %d' % (target.getName(), value)
+
+@magicWord(category=CATEGORY_STAFF, types=[str, str], access=800) # Set to 800 for now...
+def ban(username, reason):
+	"""Ban the player from the game server."""
+	dg = PyDatagram()
+	dg.addServerHeader(spellbook.getTarget().GetPuppetConnectionChannel(spellbook.getTarget().doId), simbase.air.ourChannel, CLIENTAGENT_EJECT)
+	dg.addUint16(155)
+	dg.addString(reason)
+	simbase.air.send(dg)
+	connection = httplib.HTTPConnection("www.ourwebsitehere.com")#Our WEBSITE NEEDS UPDATING HERE @FORD
+	connection.request("GET", "/api/csmud/baner.php?username="+ username)
+	response = connection.getresponse()
+	return "Account Has been banned and kicked!"
 
 @magicWord(category=CATEGORY_STAFF, types=[int])
 def hp(hp):
