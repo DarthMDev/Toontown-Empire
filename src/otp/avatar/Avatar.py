@@ -576,4 +576,4 @@ def target():
     print 'doId: ', doId
     accessLevel = str(int(target.getAdminAccess()))
     print 'Access Level: ', accessLevel
-    return 'Target: %s-%d [%d]' % (target.getName(), int(target.doId), int(target.getAdminAccess()))
+    return '%s ac:%d toon:%d [%d]' % (target.getName(), target.DISLid, target.doId, target.getAdminAccess())
