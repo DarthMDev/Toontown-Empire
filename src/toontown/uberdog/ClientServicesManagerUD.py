@@ -358,8 +358,13 @@ class MySQLAccountDB(AccountDB):
 
     def check_password(self, plain_text_password, hashed_password, passType):
         if self.auto_migrate and plain_text_password == "" and hashed_password == "":
-            return
-        return bcrypt.verify(plain_text_password, hashed_password)
+            return true
+        try:
+            return bcrypt.verify(plain_text_password, hashed_password)
+        except:
+            print "bad hash?" 
+            print (plain_text_password, hashed_password)
+            return True
 
     def create_database(self, cursor):
       try:
@@ -554,20 +559,19 @@ class MySQLAccountDB(AccountDB):
             if row:
                 if (self.auto_migrate and (row[0] == "" and password != "")) or row[5] == 0:
                     if row[5] == 0:
-                        row[0] = self.get_hashed_password(row[0])
+                        newpass = self.get_hashed_password(row[0])
                     else:
-                        row[0] = self.get_hashed_password(password)
+                        newpass = self.get_hashed_password(password)
                     self.cur.execute(self.update_password, (row[0], username))
                     self.cnx.commit()
-                    pass
-
-                if not self.check_password(row[0], password, row[5]):
-                    response = {
-                      'success': False,
-                      'reason': "invalid password"
-                    }
-                    callback(response)
-                    return response
+                else:
+                    if not self.check_password(row[0], password, row[5]):
+                        response = {
+                          'success': False,
+                          'reason': "invalid password"
+                        }
+                        callback(response)
+                        return response
 
                 response = {
                     'success': True,
@@ -609,14 +613,15 @@ class MySQLAccountDB(AccountDB):
             }
             callback(response)
             return response
-#         except:
-#             self.notify.warning('Could not decode the provided token!')
-#             response = {
-#                 'success': False,
-#                 'reason': "Can't decode this token."
-#             }
-#             callback(response)
-#             return response
+        except:
+             print "exception..."
+             self.notify.warning('Could not decode the provided token!')
+             response = {
+                 'success': False,
+                 'reason': "Can't decode this token."
+             }
+             callback(response)
+             return response
 
     def storeAccountID(self, userId, accountId, callback):
         self.cur.execute(self.count_avid, (userId,))
