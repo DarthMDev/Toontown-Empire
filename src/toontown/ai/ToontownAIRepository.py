@@ -124,6 +124,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.buildingQueryMgr = DistributedBuildingQueryMgrAI(self)
         self.buildingQueryMgr.generateWithRequired(2)
         self.topToonsMgr = TopToonsManagerAI(self)
+#        self.chatAgent = self.generateGlobalObject(OTP_DO_ID_CHAT_MANAGER, 'ChatAgent')
         if self.wantKarts:
             self.leaderboardMgr = LeaderboardMgrAI(self)
         if self.wantFishing:

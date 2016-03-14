@@ -4,7 +4,8 @@ from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.MsgTypes import *
 from otp.distributed import OtpDoGlobals
 from toontown.toonbase import TTLocalizer
- 
+import time
+
 BLACKLIST = TTLocalizer.Blacklist
 OFFENSE_MSGS = ('-- DEV CHAT -- word blocked: %s', 'Watch your language! This is your first offense. You said "%s".',
                 'Watch your language! This is your second offense. Next offense you\'ll get banned for 24 hours. You said "%s".')
@@ -28,7 +29,17 @@ class ChatAgentUD(DistributedObjectGlobalUD):
         DistributedObjectGlobalUD.announceGenerate(self)
  
         self.offenses = {}
- 
+        self.muted = {}
+
+    def muteAccount(self, account, howLong):
+        print ['muteAccount', account, howLong]
+        self.muted[account] = int(time.time()/60) + howLong
+
+    def unmuteAccount(self, account):
+        print ['unuteAccount', account]
+        if account in self.muted:
+            del self.muted[account]
+
     def chatMessage(self, message, chatMode):
         sender = self.air.getAvatarIdFromSender()
         if sender == 0:
@@ -36,6 +47,9 @@ class ChatAgentUD(DistributedObjectGlobalUD):
                                       'Account sent chat without an avatar', message)
             return
  
+        if sender in self.muted and int(time.time()/60) < self.muted[sender]:
+            return
+
         if chatMode == 0 and self.wantWhitelist:
             if self.detectBadWords(self.air.getMsgSender(), message):
                 return

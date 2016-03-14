@@ -41,6 +41,7 @@ from toontown.speedchat import TTSCDecoders
 from toontown.suit import SuitDNA
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.battle import BattleParticles
+from otp.ai import MagicWordManager
 
 if base.wantKarts:
     from toontown.racing.KartDNA import *
@@ -2725,3 +2726,30 @@ def FordTheWriter():
     av = spellbook.getTarget()
     av.setSystemMessage(1, "FordTheWriter is the creator of this project, Toontown Empire. He also Lead-Developer, Game-Developer, Server-Administrator, and Launcher Developer.")
 
+
+@magicWord(category=CATEGORY_STAFF, types=[int])
+def mute(minutes):
+    """
+    Mute the target
+    """
+    if not MagicWordManager.lastClickedNametag:
+        return "nobody selected"
+    target = MagicWordManager.lastClickedNametag
+    if spellbook.getInvokerAccess() <= target.getAdminAccess():
+        return "Must be of a higher access level then target"
+    base.cr.chatAgent.sendMuteAccount(target.doId, minutes)
+    return 'Mute request sent'
+
+@magicWord(category=CATEGORY_STAFF, types=[])
+def unmute():
+    """
+    Unmute the target
+    """
+    if not MagicWordManager.lastClickedNametag:
+        return "nobody selected"
+    target = MagicWordManager.lastClickedNametag
+    if spellbook.getInvokerAccess() <= target.getAdminAccess():
+        return "Must be of a higher access level then target"
+    print ['unmute', target.doId]
+    base.cr.chatAgent.sendUnmuteAccount(target.doId)
+    return 'Unmute request sent'

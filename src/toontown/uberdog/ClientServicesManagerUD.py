@@ -80,27 +80,28 @@ if accountDBType == 'remote':
 minAccessLevel = config.GetInt('min-access-level', 0)
 
 def executeHttpRequest(url, **extras):
-    # TO DO: THIS IS QUITE DISGUSTING
-    # MOVE THIS TO ToontownInternalRepository (this might be interesting for AI)
-    ##### USE PYTHON 2.7.9 ON PROD WITH SSL AND CLOUDFLARE #####
-    _data = {}
-    if len(extras.items()) != 0:
-        for k, v in extras.items():
-            _data[k] = v
-    signature = hashlib.sha512(json.dumps(_data) + apiSecret).hexdigest()
-    data = urllib.urlencode({'data': json.dumps(_data), 'hmac': signature})
-    cookie_jar = cookielib.LWPCookieJar()
-    cookie = urllib2.HTTPCookieProcessor(cookie_jar)
-    opener = urllib2.build_opener(cookie)
-    req = urllib2.Request('http://192.168.1.212/api/' + url, data,
-                          headers={"Content-Type" : "application/x-www-form-urlencoded"})
-    req.get_method = lambda: "POST"
-    try:
-        return opener.open(req).read()
-    except:
-        return None
+    print "executeHttpRequest: ", accountDBType, url, extras
 
-notify = directNotify.newCategory('ClientServicesManagerUD')
+    if accountDBType == 'remote':
+        timestamp = str(int(time.time()))
+        signature = hmac.new(accountServerSecret, timestamp, hashlib.sha256)
+        request = urllib2.Request(accountServerEndpoint + url)
+        request.add_header('User-Agent', 'TTI-CSM')
+        request.add_header('X-CSM-Timestamp', timestamp)
+        request.add_header('X-CSM-Signature', signature.hexdigest())
+        for k, v in extras.items():
+            request.add_header('X-CSM-' + k, v)
+        try:
+            return urllib2.urlopen(request).read()
+        except:
+            return None
+
+    if accountDBType == 'mysqldb':
+        if url == 'accounts/ban/':
+            print [extras['Id'], extras['Release'], extras['Reason']]
+        return None;
+
+    return None;
 
 def executeHttpRequestAndLog(url, **extras):
     # SEE ABOVE
@@ -352,7 +353,7 @@ class MySQLAccountDB(AccountDB):
     def get_hashed_password(self, plain_text_password):
         return bcrypt.encrypt(plain_text_password)
 
-    def check_password(self, plain_text_password, hashed_password, passType):
+    def check_password(self, plain_text_password, hashed_password):
         try:
             return bcrypt.verify(plain_text_password, hashed_password)
         except:
@@ -443,7 +444,7 @@ class MySQLAccountDB(AccountDB):
 
 
         self.count_account = ("SELECT COUNT(*) from Accounts")
-        self.select_account = ("SELECT password,accountId,accessLevel,status,date,rawPassword FROM Accounts where username = %s")
+        self.select_account = ("SELECT password,accountId,accessLevel,status,rawPassword FROM Accounts where username = %s")
         self.add_account = ("REPLACE INTO Accounts (username, password, accountId, accessLevel, rawPassword) VALUES (%s, %s, %s, %s, %s)")
         self.update_avid = ("UPDATE Accounts SET accountId = %s where username = %s")
         self.update_password = ("UPDATE Accounts SET password = %s, rawPassword = '1' where username = %s")
@@ -508,7 +509,7 @@ class MySQLAccountDB(AccountDB):
             self.cnx.commit()
 
             if row:
-                if not self.check_password(password, row[0], row[5]):
+                if not self.check_password(password, row[0]):
                     response = {
                       'success': False,
                       'reason': "invalid password"
@@ -537,16 +538,6 @@ class MySQLAccountDB(AccountDB):
 
         except mysql.connector.Error as err:
             print("mysql exception {}".format(err))
-            print response
-            response = {
-                'success': False,
-                'reason': "Can't decode this token."
-            }
-            callback(response)
-            return response
-        except:
-            print "exception..."
-            self.notify.warning('Could not decode the provided token!')
             response = {
                 'success': False,
                 'reason': "Can't decode this token."
@@ -554,6 +545,16 @@ class MySQLAccountDB(AccountDB):
             print response
             callback(response)
             return response
+#        except:
+#            print "exception..."
+#            self.notify.warning('Could not decode the provided token!')
+#            response = {
+#                'success': False,
+#                'reason': "Can't decode this token."
+#            }
+#            print response
+#            callback(response)
+#            return response
 
     def storeAccountID(self, userId, accountId, callback):
         self.cur.execute(self.count_avid, (userId,))
