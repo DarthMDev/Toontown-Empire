@@ -217,7 +217,6 @@ class MongoAccountDB(AccountDB):
 
     def get_hashed_password(self, plain_text_password):
         newpass = bcrypt.encrypt(plain_text_password)
-        print ("newpass: ", newpass)
         return newpass
  
     def check_password(self, plain_text_password, hashed_password):
@@ -354,11 +353,10 @@ class MySQLAccountDB(AccountDB):
         return bcrypt.encrypt(plain_text_password)
 
     def check_password(self, plain_text_password, hashed_password, passType):
-        print ("check_password: ", (plain_text_password, hashed_password))
         try:
             return bcrypt.verify(plain_text_password, hashed_password)
         except:
-            print "bad hash?" 
+            print ("bad hash: ", (plain_text_password, hashed_password))
             return False
 
     def create_database(self, cursor):
@@ -489,7 +487,6 @@ class MySQLAccountDB(AccountDB):
         return 'Success'
 
     def lookup(self, token, callback):
-        print ("lookup ", token)
         try:
             tokenList = token.split(':')
 
