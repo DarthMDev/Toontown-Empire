@@ -32,6 +32,7 @@ from toontown.toonbase import TTLocalizer, ToontownBattleGlobals, ToontownGlobal
 from toontown.toonbase.ToontownGlobals import *
 from NPCToons import npcFriends
 import Experience, InventoryBase, ToonDNA, random, time
+import httplib, urllib
 try:
  from ToonAvatarPanel import *
 except:
@@ -2586,27 +2587,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.d_setInventory(self.inventory.makeNetString())
         elif msgType == ResistanceChat.RESISTANCE_MONEY:
             self.addMoney(msgValue)
-        elif msgType == ResistanceChat.RESISTANCE_MERITS:
-            if msgValue == -1:
-                for i in xrange(len(SuitDNA.suitDepts)):
-                    self.doResistanceMerits(i)
-            else:
-                self.doResistanceMerits(msgValue)
-        elif msgType == ResistanceChat.RESISTANCE_TICKETS:
-            self.b_setTickets(self.getTickets() + msgValue)
 
-    def doResistanceMerits(self, dept):
-        if not CogDisguiseGlobals.isSuitComplete(self.cogParts, dept):
-            return
-
-        totalMerits = CogDisguiseGlobals.getTotalMerits(self, dept)
-        merits = self.cogMerits[dept]
-
-        if totalMerits == 0 or merits >= totalMerits:
-            return
-
-        self.cogMerits[dept] = min(totalMerits, merits + (totalMerits / 3))
-        self.b_setCogMerits(self.cogMerits)
 
     def squish(self, damage):
         self.takeDamage(damage)
@@ -4378,6 +4359,82 @@ def cheesyEffect(value, hood=0, expire=0):
     target = spellbook.getTarget()
     target.b_setCheesyEffect(value, hood, expire)
     return 'Set %s\'s cheesy effect to: %d' % (target.getName(), value)
+
+@magicWord(category=CATEGORY_STAFF, types=[str, str])
+def freeBldg(f = None, l = None):
+    """
+    Given a shopkeepr's firstname (f) and lastname (l), free
+    the shop associated with their id.
+    Examples:
+    ~freeBldg Connie Ferris
+    ~freeBldg Bootsy
+    """
+    
+    def _freeBldg(shopkeeperId, sp):
+        suitBuildings = sp.buildingMgr.getEstablishedSuitBlocks()
+        bldgInteriorZone = None
+        for zone, ids in NPCToons.zone2NpcDict.items():
+            if shopkeeperId in ids:
+                bldgInteriorZone = zone
+                break
+                
+        for b in suitBuildings:
+            building = sp.buildingMgr.getBuilding(b)
+            if bldgInteriorZone == building.zoneId + 500 + building.block:
+                if hasattr(building, 'elevator'):
+                    building.toonTakeOver()
+                    return NPCToons.getBuildingTitle(bldgInteriorZone)
+                else:
+                   return False
+                    
+    if f:
+        shopkeeper = f.title() + ' ' + l.title() if l else f.title()
+    else:
+        shopkeeper = None
+    av = spellbook.getInvoker()
+    zoneId = av.getLocation()[1]
+    streetId = ZoneUtil.getBranchZone(zoneId)
+    try:
+        sp = simbase.air.suitPlanners[streetId]
+    except KeyError:
+        return "You're not on a street!"
+        
+    shopkeepers = []
+    foundAnyCogBldgs = []
+    if shopkeeper:
+        for id, npcDesc in NPCToons.NPCToonDict.items():
+            if npcDesc[1] == shopkeeper:
+                shopkeepers.append(id)
+                break
+                
+    else:
+        for index in range(len(av.quests)):
+            toNpcId = av.quests[index][2]
+            if zoneId == NPCToons.getNPCZone(toNpcId):
+                shopkeepers.append(toNpcId)
+    
+    if not shopkeepers:
+        return 'Unable to find Building!'
+    else:
+        for id in shopkeepers:
+            foundAnyCogBldgs.append(_freeBldg(id, sp))
+            
+        if any((bldg for bldg in foundAnyCogBldgs)):
+            return 'Recovering: {0}'.format(foundAnyCogBldgs)
+        return 'Not a Cog building!'
+
+@magicWord(category=CATEGORY_STAFF, types=[str, str], access=800) # Set to 800 for now...
+def ban(username, reason):
+	"""Ban the player from the game server."""
+	dg = PyDatagram()
+	dg.addServerHeader(spellbook.getTarget().GetPuppetConnectionChannel(spellbook.getTarget().doId), simbase.air.ourChannel, CLIENTAGENT_EJECT)
+	dg.addUint16(155)
+	dg.addString(reason)
+	simbase.air.send(dg)
+	connection = httplib.HTTPConnection("www.ourwebsitehere.com")#Our WEBSITE NEEDS UPDATING HERE @FORD
+	connection.request("GET", "/api/csmud/baner.php?username="+ username)
+	response = connection.getresponse()
+	return "Account Has been banned and kicked!"
 
 @magicWord(category=CATEGORY_STAFF, types=[int])
 def hp(hp):

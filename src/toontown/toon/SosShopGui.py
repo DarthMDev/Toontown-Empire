@@ -33,8 +33,8 @@ class SosShopGui(DirectFrame):
         self.__updateStatusText(SosShopGlobals.MinimumState)
 
     def setupText(self):
-        self.info = DirectLabel(guiId='SosKeeperInfo', parent=self, relief=None, text="", text_align=TextNode.ALeft, text_scale=TTLocalizer.SRIStip, textMayChange=1, pos=(-0.6, 0.6, 0.5), text_fg=(0.4, 0.3, 0.2, 1), text_wordwrap=15)
-        self.status = DirectLabel(guiId='SosKeeperStatus', parent=self, relief=None, text="", text_align=TextNode.ALeft, text_scale=TTLocalizer.SREStip, textMayChange=1, pos=(-0.6, 0, -0.5), text_fg=(0.4, 0.3, 0.2, 1), text_wordwrap=15)
+        self.info = DirectLabel(guiId='SosKeeperInfo', parent=self, relief=None, text="", text_align=TextNode.ALeft, text_scale=TTLocalizer.SRIStip, textMayChange=1, pos=(-0.6, 0.6, 0.5), text_wordwrap=15)
+        self.status = DirectLabel(guiId='SosKeeperStatus', parent=self, relief=None, text="", text_align=TextNode.ALeft, text_scale=TTLocalizer.SREStip, textMayChange=1, pos=(-0.6, 0, -0.5), text_wordwrap=15)
     
     def setupButtons(self):
         buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')

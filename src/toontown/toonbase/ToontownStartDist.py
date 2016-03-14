@@ -37,4 +37,4 @@ for mount in mounts:
 __builtin__.dcStream = StringStream(game_data.DC)
 
 # Finally, start the game:
-import toontown.toonbase.ClientStart
+import toontown.toonbase.ToontownStart

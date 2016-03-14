@@ -140,6 +140,8 @@ def createNpcsInZone(air, zoneId):
             continue
         elif npcDesc[5] == NPC_PARTYPERSON and not air.wantParties:
             continue
+        elif npcDesc[5] == NPC_GLOVE and not air.wantSosShop:
+            continue 
 
         npcs.append(createNPC(air, npcId, npcDesc, zoneId, posIndex=i))
 
