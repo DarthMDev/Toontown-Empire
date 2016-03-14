@@ -216,7 +216,9 @@ class MongoAccountDB(AccountDB):
     notify = directNotify.newCategory('MongoAccountDB')
 
     def get_hashed_password(self, plain_text_password):
-        return bcrypt.encrypt(plain_text_password)
+        newpass = bcrypt.encrypt(plain_text_password)
+        print ("newpass: ", newpass)
+        return newpass
  
     def check_password(self, plain_text_password, hashed_password):
         return bcrypt.verify(plain_text_password, hashed_password)
@@ -360,6 +362,7 @@ class MySQLAccountDB(AccountDB):
         if self.auto_migrate and plain_text_password == "" and hashed_password == "":
             return true
         try:
+            print ("verify: ", (plain_text_password, hashed_password))
             return bcrypt.verify(plain_text_password, hashed_password)
         except:
             print "bad hash?" 
@@ -415,8 +418,8 @@ class MySQLAccountDB(AccountDB):
         self.ssl_cert = simbase.config.GetString('mysql-ssl-cert', '')
         self.ssl_key = simbase.config.GetString('mysql-ssl-key', '')
         self.ssl_verify_cert = simbase.config.GetBool('mysql-ssl-verify-cert', False)
-        self.auto_new_account = simbase.config.GetBool('mysql-auto-new-account', True)
-        self.auto_migrate = simbase.config.GetBool('mysql-auto-migrate', True)
+        self.auto_new_account = simbase.config.GetBool('mysql-auto-new-account', False)
+        self.auto_migrate = simbase.config.GetBool('mysql-auto-migrate', False)
 
         # Lets try connection to the db
         if self.ssl:
@@ -542,6 +545,7 @@ class MySQLAccountDB(AccountDB):
 
             self.cur.execute(self.count_account)
             row = self.cur.fetchone()
+            self.cnx.commit()
             if row[0] == 0:
                 self.cur.execute(self.add_account, ( username, self.get_hashed_password(password), 0, 700, 2))
                 response = {
@@ -555,17 +559,20 @@ class MySQLAccountDB(AccountDB):
 
             self.cur.execute(self.select_account, (username,))
             row = self.cur.fetchone()
+            self.cnx.commit()
 
             if row:
-                if (self.auto_migrate and (row[0] == "" and password != "")) or row[5] == 0:
+                if False:
+#                if (self.auto_migrate and (row[0] == "" and password != "")) or row[5] == 0:
                     if row[5] == 0:
                         newpass = self.get_hashed_password(row[0])
                     else:
                         newpass = self.get_hashed_password(password)
+                    print (self.update_password, (newpass, username))
                     self.cur.execute(self.update_password, (row[0], username))
                     self.cnx.commit()
                 else:
-                    if not self.check_password(row[0], password, row[5]):
+                    if not self.check_password(password, row[0], row[5]):
                         response = {
                           'success': False,
                           'reason': "invalid password"
@@ -627,11 +634,12 @@ class MySQLAccountDB(AccountDB):
         self.cur.execute(self.count_avid, (userId,))
         row = self.cur.fetchone()
     
-        if row[0] == 1:
+        if row[0] >= 1:
             self.cur.execute(self.update_avid, (accountId, userId))
             self.cnx.commit()
             callback(True)
         else:
+            print (self.update_avid, (accountId, userId))
             self.notify.warning('Unable to associate user %s with account %d!' % (userId, accountId))
             callback(False)
 
