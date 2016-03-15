@@ -209,6 +209,7 @@ SCMenuBattleGags = 'GAGS'
 SCMenuBattleTaunts = 'TAUNTS'
 SCMenuBattleStrategy = 'STRATEGY'
 SCMenuBoardingGroup = 'BOARDING'
+SCMenuSosShop = 'SOS SHOP'
 SCMenuParties = 'PARTIES'
 SCMenuAprilToons = "APRIL TOONS'"
 SCMenuCarol = 'CAROLING'
@@ -1745,7 +1746,13 @@ SpeedChatStaticTextToontown = {100: 'Hi!',
  30418: "It's the Boss!",
  30450: "It's easy to be green!",
  30451: 'Visit Green Bean Jeans and you can be green too!',
- 30452: "It's on Oak Street in Daisy Gardens."}
+ 30452: "It's on Oak Street in Daisy Gardens.",
+ 30453: "You can buy SOS Cards for a limited time!",
+ 30454: "Go to Sellbot HQ to buy some SOS Cards!",
+ 30455: "Did you know you can buy SOS cards for a limited time?",
+ 30456: "I can't wait to buy some SOS cards!",
+ 30457: "Where do you buy SOS Cards?",
+ 30458: "You can select multiple SOS Card packs all varying in price!"}
 SpeedChatStaticText = SpeedChatStaticTextCommon
 SCFactoryMeetMenuIndexes = (1903,
  1904,
@@ -2315,6 +2322,7 @@ WhiteListMenu = [-1, 'WHITELIST']
 SellbotInvasionMenuSections = [-1]
 SellbotFieldOfficeMenuSections = [-1, 'STRATEGY']
 IdesOfMarchMenuSections = [-1]
+SosShopMenuSections = [-1]
 
 def timeElapsedString(timeDelta):
     timeDelta = abs(timeDelta)

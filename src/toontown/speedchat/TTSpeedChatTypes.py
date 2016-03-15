@@ -89,4 +89,5 @@ WinterMenu = [
 
 HalloweenMenu = [(OTPLocalizer.HalloweenMenuSections[0], [30250, 30251, 30252, 10003])]
 IdesOfMarchMenu = [(OTPLocalizer.IdesOfMarchMenuSections[0], [30450, 30451, 30452])]
+SosShopMenu = [(OTPLocalizer.SosShopMenuSections[0], [30453, 30454, 30455, 30456, 30457, 30458])]
 SellbotInvasionMenu = [(OTPLocalizer.SellbotInvasionMenuSections[0], range(30400, 30404))]

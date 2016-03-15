@@ -57,6 +57,16 @@ Holidays = {
         'effectMessage': TTLocalizer.GreenToonEffectMsg,
         'effectDelay': 10
     },
+    ToontownGlobals.SOS_SHOP: {
+        'startMonth': 1,
+        'startDay': 1,
+        'endMonth': 12,
+        'endDay': 31,
+        'startMessage': TTLocalizer.SosShopStart,
+        'ongoingMessage': TTLocalizer.SosShopStart,
+        'endMessage': TTLocalizer.SosShopEnd,
+        'speedchatIndexes': [30453] #You can buy SOS Cards for a limited time!
+    },
     ToontownGlobals.CHRISTMAS: {
         'startMonth': 12,
         'startDay': 14,
