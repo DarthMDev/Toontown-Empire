@@ -17,6 +17,8 @@ import hashlib, hmac, json
 import anydbm, math, os
 import urllib2, time, urllib
 import cookielib, socket
+import datetime
+from datetime import datetime
 
 def rejectConfig(issue, securityIssue=True, retarded=True):
     print
@@ -47,6 +49,10 @@ apiSecret = accountServerSecret = config.GetString('api-key', 'dev')
 if accountDBType == 'mongodb':
     import pymongo
     import bcrypt
+    from pymongo import MongoClient
+
+if accountDBType == 'mongodev':
+    import pymongo
     from pymongo import MongoClient
 
 if accountDBType == 'mysqldb':
@@ -95,11 +101,6 @@ def executeHttpRequest(url, **extras):
             return urllib2.urlopen(request).read()
         except:
             return None
-
-    if accountDBType == 'mysqldb':
-        if url == 'accounts/ban/':
-            print [extras['Id'], extras['Release'], extras['Reason']]
-        return None;
 
     return None;
 
@@ -165,20 +166,14 @@ class AccountDB:
     def removeNameRequest(self, avId):
         pass
 
-    def lookup(self, data, callback):
-        userId = data['userId']
+    def lookup(self, username, callback):
+        pass  # Inheritors should override this.
 
-        data['success'] = True
-        data['accessLevel'] = max(data['accessLevel'], minAccessLevel)
+    def persistMessage(self, category, description, sender, receiver):
+        print ['persistMessage', category, description, sender, receiver]
 
-        if str(userId) not in self.dbm:
-            data['accountId'] = 0
-
-        else:
-            data['accountId'] = int(self.dbm[str(userId)])
-
-        callback(data)
-        return data
+    def persistChat(self, sender, message, channel):
+        pass
 
     def storeAccountID(self, userId, accountId, callback):
         self.dbm[str(userId)] = str(accountId)  # anydbm only allows strings.
@@ -192,12 +187,136 @@ class AccountDB:
 class DeveloperAccountDB(AccountDB):
     notify = directNotify.newCategory('DeveloperAccountDB')
 
-    def lookup(self, userId, callback):
-        return AccountDB.lookup(self, {'userId': userId,
-                                       'accessLevel': 0,
-                                       'notAfter': 0},
-                                callback)
+    def lookup(self, username, callback):
+        # Let's check if this user's ID is in your account database bridge:
+        if str(username) not in self.dbm:
 
+            # Nope. Let's associate them with a brand new Account object! We
+            # will assign them with 600 access just because they are a
+            # developer:
+            response = {
+                'success': True,
+                'userId': username,
+                'accountId': 0,
+                'accessLevel': min(600, minAccessLevel)
+            }
+            callback(response)
+            return response
+
+        else:
+
+            # We have an account already, let's return what we've got:
+            response = {
+                'success': True,
+                'userId': username,
+                'accountId': int(self.dbm[str(username)]),
+            }
+            callback(response)
+            return response
+
+
+# This is the same as the DeveloperAccountDB, except it doesn't automatically
+# give the user an access level of 600. Instead, the first user that is created
+# gets 700 access, and every user created afterwards gets 100 access:
+
+class LocalAccountDB(AccountDB):
+    notify = directNotify.newCategory('LocalAccountDB')
+
+    def lookup(self, username, callback):
+        # Let's check if this user's ID is in your account database bridge:
+        if str(username) not in self.dbm:
+
+            # Nope. Let's associate them with a brand new Account object!
+            response = {
+                'success': True,
+                'userId': username,
+                'accountId': 0,
+                'accessLevel': max((700 if not self.dbm.keys() else 100), minAccessLevel)
+            }
+
+            callback(response)
+            return response
+
+        else:
+
+            # We have an account already, let's return what we've got:
+            response = {
+                'success': True,
+                'userId': username,
+                'accountId': int(self.dbm[str(username)])
+            }
+            callback(response)
+            return response
+            
+class MongoDevAccountDB(AccountDB):
+    #This class is used for development, and NOT production.
+    # params:
+    #    mongodb-url   how to connect to the mongodb
+    #    mongodb-name  What db to use
+    #
+    # dependencies:
+    #    pip install PyMongo    
+
+    notify = directNotify.newCategory('MongoAccountDB')
+
+    def __init__(self, csm):
+        self.csm = csm
+
+        dburltest = simbase.config.GetString('mongodb-url', 'mongodb://localhost:27017')
+        self.client = MongoClient(dburltest)
+
+        dbnametest = simbase.config.GetString('mongodb-name', 'test')
+        self.db = self.client[dbnametest]
+
+        self.accounts = self.db.accountdb
+
+    def lookup(self, username, callback):
+        if accounts.count() == 0:
+            account = { "username": username, "accountId": 0, "accessLevel": 700}
+            accounts.insert(account)
+            response = {
+              'success': True,
+              'userId': username,
+              'accountId': 0,
+              'accessLevel': 700
+            }
+            callback(response)
+            return response
+
+        account = accounts.find_one({"username": username}) 
+
+        if account:
+            response = {
+              'success': True,
+              'userId': username,
+              'accountId': int(account["accountId"]),
+              'accessLevel': int(account["accessLevel"])
+            }
+            callback(response)
+            return response
+            
+
+        account = { "username": username, "accountId": 0, "accessLevel": 600}
+        accounts.insert(account)
+
+        response = {
+          'success': True,
+          'userId': username,
+          'accountId': 0,
+          'accessLevel': int(account["accessLevel"])
+        }
+
+        callback(response)
+        return response
+
+    def storeAccountID(self, userId, accountId, callback):
+        account = accounts.find_one({"username": userId})
+        if account:
+            accounts.update({"username": userId}, {"$set": {"accountId": accountId}})
+            callback(True)
+        else:
+            self.notify.warning('Unable to associate user %s with account %d!' % (userId, accountId))
+            callback(False)
 # Mongo implementation of the AccountDB
 #
 # This was never used in production and might possibly not work.
@@ -217,8 +336,8 @@ class MongoAccountDB(AccountDB):
     notify = directNotify.newCategory('MongoAccountDB')
 
     def get_hashed_password(self, plain_text_password):
-        newpass = bcrypt.encrypt(plain_text_password)
-        return newpass
+        return bcrypt.encrypt(plain_text_password)
+
  
     def check_password(self, plain_text_password, hashed_password):
         return bcrypt.verify(plain_text_password, hashed_password)
@@ -226,7 +345,7 @@ class MongoAccountDB(AccountDB):
     def __init__(self, csm):
         self.csm = csm
 
-        dburl = simbase.config.GetString('mongodb-url', 'mongodb://localhost:21021')
+        dburl = simbase.config.GetString('mongodb-url', 'mongodb://localhost:27017')
         self.client = MongoClient(dburl)
 
         dbname = simbase.config.GetString('mongodb-name', 'test')
@@ -351,7 +470,8 @@ class MySQLAccountDB(AccountDB):
     notify = directNotify.newCategory('MySQLAccountDB')
 
     def get_hashed_password(self, plain_text_password):
-        return bcrypt.encrypt(plain_text_password)
+        newpass = bcrypt.encrypt(plain_text_password)
+        return newpass
 
     def check_password(self, plain_text_password, hashed_password):
         try:
@@ -382,7 +502,7 @@ class MySQLAccountDB(AccountDB):
         for account in dbm.keys():
             accountid = dbm[account]
             print "%s maps to %s"%(account, accountid)
-            self.cur.execute(self.add_account, (account,  "", accountid, 0, 0))
+            self.cur.execute(self.add_account, (account,  "", accountid, 0))
         self.cnx.commit()
         dbm.close()
 
@@ -444,17 +564,17 @@ class MySQLAccountDB(AccountDB):
 
 
         self.count_account = ("SELECT COUNT(*) from Accounts")
-        self.select_account = ("SELECT password,accountId,accessLevel,status,rawPassword FROM Accounts where username = %s")
-        self.add_account = ("REPLACE INTO Accounts (username, password, accountId, accessLevel, rawPassword) VALUES (%s, %s, %s, %s, %s)")
+        self.select_account = ("SELECT password,accountId,accessLevel,status,canPlay,banRelease FROM Accounts where username = %s")
+        self.add_account = ("REPLACE INTO Accounts (username, password, accountId, accessLevel) VALUES (%s, %s, %s, %s)")
         self.update_avid = ("UPDATE Accounts SET accountId = %s where username = %s")
-        self.update_password = ("UPDATE Accounts SET password = %s, rawPassword = '1' where username = %s")
         self.count_avid = ("SELECT COUNT(*) from Accounts WHERE username = %s")
-
+        self.insert_avoid = ("INSERT IGNORE Toons SET accountId = %s,toonid=%s")
+        self.insert_message = ("INSERT IGNORE Messages SET time=%s,category=%s,description=%s,sender=%s,receiver=%s")
+        self.insert_chat = ("INSERT IGNORE ChatAudit SET time=%s,sender=%s,message=%s,channel=%s")
 
         self.select_name = ("SELECT status FROM NameApprovals where avId = %s")
         self.add_name_request = ("REPLACE INTO NameApprovals (avId, name, status) VALUES (%s, %s, %s)")
         self.delete_name_query = ("DELETE FROM NameApprovals where avId = %s")
-
 
         if self.auto_migrate:
             self.auto_migrate_semidbm()
@@ -470,6 +590,13 @@ class MySQLAccountDB(AccountDB):
         except:
             pass
 
+    def persistMessage(self, category, description, sender, receiver):
+        self.cur.execute(self.insert_message, (int(time.time()), str(category), description, sender, receiver))
+        self.cnx.commit()
+
+    def persistChat(self, sender, message, channel):
+        self.cur.execute(self.insert_chat, (int(time.time()), sender, message, channel))
+        self.cnx.commit()
 
     def addNameRequest(self, avId, name):
        self.cur.execute(self.add_name_request, (avId, name, "PENDING"))
@@ -486,6 +613,18 @@ class MySQLAccountDB(AccountDB):
     def removeNameRequest(self, avId):
         self.cur.execute(self.delete_name_query, (avId,))
         return 'Success'
+
+    def __handleRetrieve(self, dclass, fields):
+        if dclass != self.csm.air.dclassesByName['AccountUD']:
+            return
+        self.account = fields
+        if self.account:
+            self.avList = self.account['ACCOUNT_AV_SET']
+            print self.avList
+            for avId in self.avList:
+                if avId:
+                    self.cur.execute(self.insert_avoid, (self.accountid, avId))
+                    self.cnx.commit()
 
     def lookup(self, token, callback):
         try:
@@ -509,6 +648,13 @@ class MySQLAccountDB(AccountDB):
             self.cnx.commit()
 
             if row:
+                if row[4] == 0 and int(row[5]) > time.time():
+                    response = {
+                      'success': False,
+                      'reason': "banned"
+                    }
+                    callback(response)
+                    return response
                 if not self.check_password(password, row[0]):
                     response = {
                       'success': False,
@@ -516,6 +662,11 @@ class MySQLAccountDB(AccountDB):
                     }
                     callback(response)
                     return response
+
+                if row[1] != 0:
+                    self.account = None
+                    self.accountid = row[1]
+                    self.csm.air.dbInterface.queryObject(self.csm.air.dbId,  self.accountid, self.__handleRetrieve)
 
                 response = {
                     'success': True,
@@ -1483,12 +1634,15 @@ class ClientServicesManagerUD(DistributedObjectGlobalUD):
             self.accountDB = DeveloperAccountDB(self)
         elif accountDBType == 'mongodb':
             self.accountDB = MongoAccountDB(self)
+        elif accountDBType == 'mongodev':
+            self.accountDB = MongoDevAccountDB(self)
         elif accountDBType == 'mysqldb':
             self.accountDB = MySQLAccountDB(self)
         elif accountDBType == 'remote':
             self.accountDB = RemoteAccountDB(self)
         else:
             self.notify.error('Invalid accountdb-type: ' + accountDBType)
+
 
     def killConnection(self, connId, reason):
         datagram = PyDatagram()

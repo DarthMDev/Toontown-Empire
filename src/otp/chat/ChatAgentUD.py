@@ -81,6 +81,7 @@ class ChatAgentUD(DistributedObjectGlobalUD):
                                OtpDoGlobals.OTP_DO_ID_CLIENT_SERVICES_MANAGER,
                                sender, 1000000, [msg])
                     self.air.send(dg)
+                    self.air.csm.accountDB.persistChat(sender, message, self.air.ourChannel)
                     #self.air.banManager.ban(sender, 2, 'language')
                    
                 self.air.writeServerEvent('chat-offense', accountId, word=word, num=self.offenses[sender], msg=msg)
