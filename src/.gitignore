@@ -21,9 +21,11 @@ $RECYCLE.BIN/
 
 #Compiled Python Files
 #*.pyo
-#Compiled Game Files
+#Compiled Game Files and Folders
 *.mf
 *.bin
+/build
+
 
 # Windows shortcuts
 *.lnk

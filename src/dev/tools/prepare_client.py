@@ -2,6 +2,9 @@ from pandac.PandaModules import *
 import argparse
 import os
 
+os.chdir('../../')
+
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--build-dir', default='build',
                     help='The directory in which to store the build files.')
@@ -11,7 +14,6 @@ parser.add_argument('modules', nargs='*', default=['otp', 'toontown'],
                     help='The Toontown Empire modules to be included in the build.')
 args = parser.parse_args()
 
-os.chdir('../../../')
 print 'Preparing the client...'
 
 # Create a clean build directory for us to store our build material:
@@ -31,10 +33,10 @@ print 'buildVersion = {0}'.format(buildVersion)
 # Copy the provided Toontown modules:
 
 # All client and server files are included by default.
-includes = ('')
+includes = ('NonRepeatableRandomSourceUD.py', 'NonRepeatableRandomSourceAI.py')
 
 # This is a list of explicitly excluded files.
-excludes = ('')
+excludes = ('ServiceStart.py', 'ToontownUberRepository.py', 'ToontownAIRepository.py')
 
 def minify(f):
     """
