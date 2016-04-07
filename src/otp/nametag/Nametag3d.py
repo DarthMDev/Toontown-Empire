@@ -12,7 +12,6 @@ class Nametag3d(Nametag):
     SCALING_MAXDIST = math.pow(MAX_SCALE / SCALING_FACTOR, 2)
 
     BILLBOARD_OFFSET = 3.0
-    colorCode = None
     SHOULD_BILLBOARD = True
 
     IS_3D = True
