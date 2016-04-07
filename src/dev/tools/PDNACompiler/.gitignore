@@ -1,0 +1,6 @@
+# PLY
+parsetab.py
+
+# Bytecode
+*.pyc
+*.pyo

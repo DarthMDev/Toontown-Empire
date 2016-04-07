@@ -2,16 +2,6 @@ from toontown.catalog.CatalogItemList import CatalogItemList
 from toontown.catalog.CatalogFurnitureItem import CatalogFurnitureItem
 from toontown.catalog import CatalogItem
 
-try:
- from toontown.dna.common import *
-except:
- print("Failed to import common in DNAFurnitureReaderAI")
-
-try:
- from panda3d.core import ModelNode
-except:
- print("Failed to import ModelNode in DNAFurnitureReaderAI")
-
 # Mapping of DNA prop codes to furniture ID values. Use None to ignore a code.
 DNA2Furniture = {
     'house_interiorA': None,

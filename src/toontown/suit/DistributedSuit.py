@@ -25,7 +25,7 @@ from toontown.distributed.DelayDeletable import DelayDeletable
 from otp.nametag.NametagConstants import *
 from otp.chat.ChatGlobals import *
 from otp.nametag.NametagGlobals import *
-from toontown.suit.SuitLegList import *
+from libpandadna import *
 from toontown.toonbase import ToontownGlobals
 
 
@@ -223,9 +223,7 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
         self.pathLength = 0
         self.currentLeg = -1
         self.legList = None
-        if self.maxPathLen == 0:
-            return
-        if not self.verifySuitPlanner():
+        if self.maxPathLen == 0 or not self.verifySuitPlanner() or start not in self.sp.pointIndexes or end not in self.sp.pointIndexes:
             return
         self.startPoint = self.sp.pointIndexes[self.pathEndpointStart]
         self.endPoint = self.sp.pointIndexes[self.pathEndpointEnd]
@@ -331,7 +329,7 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
             return Task.done
         now = globalClock.getFrameTime()
         elapsed = now - self.pathStartTime
-        nextLeg = self.legList.getLegIndexAtTime(elapsed, self.currentLeg)
+        nextLeg = self.legList.getLegIndexAtTime(elapsed, 0)
         numLegs = self.legList.getNumLegs()
         if self.currentLeg != nextLeg:
             self.currentLeg = nextLeg
@@ -346,7 +344,7 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
         return Task.done
 
     def doPathLeg(self, leg, time):
-        self.fsm.request(leg.getTypeName(), [leg, time])
+        self.fsm.request(SuitLeg.getTypeName(leg.getType()), [leg, time])
         return 0
 
     def stopPathNow(self):
