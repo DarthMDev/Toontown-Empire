@@ -4,3 +4,7 @@ parsetab.py
 # Bytecode
 *.pyc
 *.pyo
+
+# DNA
+*.dna
+*.pdna
