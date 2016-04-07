@@ -374,6 +374,8 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
         possibles = []
         backup = []
 
+        if cogdoTakeover is None:
+            cogdoTakeover = False
         if toonBlockTakeover is not None:
             suit.attemptingTakeover = 1
             blockNumber = toonBlockTakeover

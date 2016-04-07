@@ -5,6 +5,7 @@ from toontown.toonbase import TTLocalizer, ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase.ToontownBattleGlobals import AvPropsNew
 
+
 class TrackShop(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('TrackShop')
 

@@ -6,6 +6,7 @@ OL.SpeedChatStaticText = OL.SpeedChatStaticTextToontown.copy()
 for key in OL.SpeedChatStaticTextCommon.iterkeys():
     OL.SpeedChatStaticText[key] = OL.SpeedChatStaticTextCommon[key]
 
+
 commitmantst = 'kptmptest - removable'
 InterfaceFont = 'phase_3/models/fonts/ImpressBT.ttf'
 ToonFont = 'phase_3/models/fonts/ImpressBT.ttf'
@@ -3308,7 +3309,6 @@ InventoryPageTrackFull = 'You have all the gags in the %s track.'
 InventoryPagePluralPoints = 'You will get a new\n%(trackName)s gag when you\nget %(numPoints)s more %(trackName)s points.'
 InventoryPageSinglePoint = 'You will get a new\n%(trackName)s gag when you\nget %(numPoints)s more %(trackName)s point.'
 InventoryPageNoAccess = 'You do not have access to the %s track yet.'
-AchievementsPageTitle = 'Achievements'
 NPCFriendPageTitle = 'SOS Toons'
 NPCFriendPageDelete = 'Delete'
 NPCFriendPageDeleteConfirmation = 'Are you sure you want to delete 1 of these SOS cards?'
@@ -3380,6 +3380,25 @@ EventsPageInvitedTabTitle = 'Party Invitations'
 EventsPageInvitedTabInvitationListTitle = 'Invitations'
 EventsPageInvitedTabActivityListTitle = 'Activities'
 EventsPageInvitedTabTime = '%s %s Toontown Time'
+EventsPageNewsTabName = 'News'
+EventsPageNewsTabTitle = 'News'
+EventsPageNewsDownloading = 'Retrieving News...'
+EventsPageNewsUnavailable = 'News not available. It has not yet been setup... Come Back Soon!'
+EventsPageNewsPaperTitle = 'TOONTOWN NEWS'
+EventsPageNewsLeftSubtitle = 'Still only 1 jellybean'
+EventsPageNewsRightSubtitle = 'Established toon-thousand one'
+NewsPageName = 'News'
+NewsPageImportError = 'Whoops! There is an issue loading the "Toon News ... for the Amused!" Please check back later.'
+NewsPageDownloadingNewsSubstr = 'Stay Tooned, while we bring you the latest issue of the \n"Toon News ... for the Amused!"'
+NewsPageDownloadingNews0 = NewsPageDownloadingNewsSubstr + ' %s%% Complete.'
+NewsPageDownloadingNews1 = NewsPageDownloadingNewsSubstr + ' %s%% Complete..'
+NewsPageDownloadingNews2 = NewsPageDownloadingNewsSubstr + ' %s%% Complete...'
+NewsPageErrorDownloadingFile = 'Whoops! Page %s is missing from "Toon News ... for the Amused!" Please check back later.'
+NewsPageErrorDownloadingFileCanStillRead = 'Whoops! Page %s \nis missing from the "Toon News ... for the Amused!" \nTurn the page to continue, while we work to get this page back.'
+NewsPageNoIssues = 'Whoops! The "Toon News ... for the Amused!" has gone missing! \nStay Tooned ... while we work to bring the news back!'
+IssueFrameThisWeek = 'this week'
+IssueFrameLastWeek = 'last week'
+IssueFrameWeeksAgo = '%d weeks ago'
 SelectedInvitationInformation = '%s is having a party on %s at %s Toontown Time.'
 PartyPlannerComingSoon = 'Coming Soon'
 PartyPlannerCantBuy = "Out Of Stock"
@@ -7370,6 +7389,9 @@ ResistanceToonupMenu = 'Toon-up'
 ResistanceToonupItem = '%s Toon-up'
 ResistanceToonupItemMax = 'Max'
 ResistanceToonupChat = 'Toons of the World, Toon-up!'
+ResistanceDanceMenu = 'Dance'
+ResistanceDanceItem = 'Make them %s'
+ResistanceDanceChat = 'Toons of the World, Dance with me!'
 ResistanceRestockMenu = 'Gag-up'
 ResistanceRestockItem = 'Gag-up %s'
 ResistanceRestockItemAll = 'All'
@@ -8128,8 +8150,10 @@ TrickOrTreatStart = 'Happy Halloween! Trick or treat throughout Toontown to get 
 TrickOrTreatEnd = 'Halloween is over. See you next year.'
 ExpandedClosetsStart = 'Attention Toons: For a limited time, Members can purchase the new 50 item Closet from the Cattlelog for the low price of 50 Jellybeans!'
 KartingTicketsHolidayStart = 'Get double tickets from Practice races at Goofy Speedway today!'
-IdesOfMarchStart = 'Toons go GREEN!'
-IdesOfMarchEnd = 'Hope you had fun being green.'
+IdesOfMarchStart = "Go green today Toons! Go to Oak Street at Daisy Gardens and get green!"
+IdesOfMarchEnd = 'Hope you had fun being green. Be sure to go green next year!'
+SosShopStart = "Go buy a SOS Card at Sellbot HQ today!"
+SosShopEnd = "The time to buy SOS Cards has ended!"
 LogoutForced = 'You have done something wrong\n and are being logged out automatically,\n additionally your account may be frozen.\n Try going on a walk outside, it is fun.'
 CountryClubToonEnterElevator = '%s \nhas jumped in the golf kart.'
 CountryClubBossConfrontedMsg = '%s is battling the Club President!'
@@ -8541,102 +8565,6 @@ def getBuffString(buffId, buffTime):
 
 def getBuffPosterString(buffId):
     return buffIdStrings[buffId][1]
-
-
-# Achievements
-
-achievementInfo = {
-    0: ("It's fun with friends",
-        'Make a friend'),
-    1: ('Storming the towers',
-        'Defeat the Sellbot VP'),
-    2: ('Market crash',
-        'Defeat the Cashbot CFO'),
-    3: ('Justice is blind',
-        'Defeat the Lawbot CJ'),
-    4: ('Downsized',
-        'Defeat the Bossbot CEO'),
-    5: ('Toons Of The World Start!',
-        'Complete Toontown Central'),
-    6: ('Ahoy!',
-        "Complete Donald's Dock"),
-    7: ('Flower Power',
-        'Complete Daisy Gardens'),
-    8: ('Musical Magic',
-        "Complete Minnie's Melodyland"),
-    9: ('Are We There Yeti?',
-        'Complete The Brrrgh'),
-    10: ("Dreaming Tasks",
-         "Complete Donald's Dreamland"),
-    11: ('Task Master',
-         'Complete all classic toontasks'),
-    12: ('SOLO VP',
-         'Solo the Sellbot VP'),
-    13: ('SOLO CFO',
-         'Solo the Cashbot CFO'),
-    14: ('SOLO CJ',
-         'Solo the Lawbot CJ'),
-    15: ('SOLO CEO',
-         'Solo the Bossbot CEO'),
-    16: ('One man army',
-         'Solo all 4 cog bosses'),
-    17: ('Evicted Cogs',
-         'Defeat a Cog Building'),
-    18: ('For sale? sold.',
-         'Defeat a Sellbot Building'),
-    19: ('High mortgage',
-         'Defeat a Cashbot Building'),
-    20: ('Legal troubles',
-         'Defeat a Lawbot Building'),
-    21: ('Fore-closure',
-         'Defeat a Bossbot Building'),
-    22: ('Snacked',
-         'Eat 50 snacks in the CEO'),
-    23: ('Stunner - 100',
-         'Stun the VP 100 times'),
-    24: ('Jury duty',
-         'Seat 50 jurors in the CJ'),
-    25: ('VP mastery',
-         'Get all the VP achievements'),
-    26: ('CFO mastery',
-         'Get all the CFO achievements'),
-    27: ('CJ mastery',
-         'Get all the CJ achievements'),
-    28: ('CEO mastery',
-         'Get all the CEO achievements'),
-    29: ('The real boss',
-         'Get all the Cog Boss achievements'),
-    30: ('Stunner - 1000',
-         'Stun the VP 1000 times'),
-    31: ('Stunner - 2000',
-         'Stun the VP 2000 times'),
-    32: ('Tasker - 1',
-         'Complete 1 ToonTask'),
-    33: ('Tasker - 10',
-         'Complete 10 ToonTasks'),
-    34: ('Tasker - 100',
-         'Complete 100 ToonTasks'),
-    35: ('Tasker - 250',
-         'Complete 250 ToonTasks'),
-    36: ('Tasker - 500',
-         'Complete 500 ToonTasks'),
-    37: ('Champion Tasker',
-         'Get all the ToonTask achievements')
-}
-
-
-def getAchievementInfo(achievementId):
-    return achievementInfo[achievementId]
-
-achievementClassifiers = {
-    'misc': 'Miscellaneous',
-    'quest': 'ToonTask',
-    'suit': 'Cog'
-}
-
-
-def getAchievementClassifier(classifier):
-    return '%s Achievements' % achievementClassifiers.get(classifier)
 
 GroupTrackerPageTitle = 'Group Tracker'
 GroupTrackerListTitle = 'Groups'

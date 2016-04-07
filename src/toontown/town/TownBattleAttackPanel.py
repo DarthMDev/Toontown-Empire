@@ -24,6 +24,8 @@ class TownBattleAttackPanel(StateData.StateData):
 
     def enter(self):
         StateData.StateData.enter(self)
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Entering Battle Inventory.")
         if not AttackPanelHidden:
             base.localAvatar.inventory.show()
         self.accept('inventory-selection', self.__handleInventory)
@@ -36,6 +38,8 @@ class TownBattleAttackPanel(StateData.StateData):
 
     def exit(self):
         StateData.StateData.exit(self)
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Exiting Battle Inventory.")
         self.ignore('inventory-selection')
         self.ignore('inventory-run')
         self.ignore('inventory-sos')

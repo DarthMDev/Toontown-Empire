@@ -59,6 +59,8 @@ class NewsManager(DistributedObject):
             base.localAvatar.chatMgr.chatInputSpeedChat.addAprilToonsMenu()
         elif id == ToontownGlobals.IDES_OF_MARCH:
             base.localAvatar.chatMgr.chatInputSpeedChat.addIdesOfMarchMenu()
+        elif id == ToontownGlobals.SOS_SHOP:
+            base.localAvatar.chatMgr.chatInputSpeedChat.addSosShopMenu()
         elif id == ToontownGlobals.HALLOWEEN:
             base.localAvatar.chatMgr.chatInputSpeedChat.addHalloweenMenu()
         elif id == ToontownGlobals.CHRISTMAS:
@@ -72,6 +74,8 @@ class NewsManager(DistributedObject):
             base.localAvatar.chatMgr.chatInputSpeedChat.removeAprilToonsMenu()
         elif id == ToontownGlobals.IDES_OF_MARCH:
             base.localAvatar.chatMgr.chatInputSpeedChat.removeIdesOfMarchMenu()
+        elif id == ToontownGlobals.SOS_SHOP:
+            base.localAvatar.chatMgr.chatInputSpeedChat.removeSosShopMenu()
         elif id == ToontownGlobals.HALLOWEEN:
             base.localAvatar.chatMgr.chatInputSpeedChat.removeHalloweenMenu()
         elif id == ToontownGlobals.CHRISTMAS:

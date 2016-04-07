@@ -28,11 +28,11 @@ from toontown.racing import RaceGlobals
 from toontown.shtiker import CogPageGlobals
 from toontown.suit import SuitDNA, SuitInvasionGlobals
 from toontown.toon import NPCToons
-from toontown.achievements import Achievements
 from toontown.toonbase import TTLocalizer, ToontownBattleGlobals, ToontownGlobals
 from toontown.toonbase.ToontownGlobals import *
 from NPCToons import npcFriends
 import Experience, InventoryBase, ToonDNA, random, time
+import httplib, urllib
 try:
  from ToonAvatarPanel import *
 except:
@@ -63,6 +63,11 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     petId = None
 
     def __init__(self, air):
+        try:
+            self.DistributedToon_initialized
+            return
+        except:
+            self.DistributedToon_initialized = 1
         DistributedPlayerAI.DistributedPlayerAI.__init__(self, air)
         DistributedSmoothNodeAI.DistributedSmoothNodeAI.__init__(self, air)
 
@@ -77,9 +82,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.experience = None
         self.petId = None
         self.quests = []
-        self.achievements = []
-        self.achievementPoints = 0
-        self.achievementBoosts = 0
         self.cogs = []
         self.cogCounts = []
         self.NPCFriendsDict = {}
@@ -176,8 +178,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.fishBingoTutorialDone = False
         self.nextKnockHeal = 0
         self.tfRequest = (0, 0)
-        self.statsId = 0
-        self.startTime = 0
 
     def generate(self):
         DistributedPlayerAI.DistributedPlayerAI.generate(self)
@@ -189,10 +189,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
         if self.isPlayerControlled():
             messenger.send('avatarEntered', [self])
-
-            if self.air.wantAchievements:
-                self.startTime = time.time()
-                self.air.achievementsManager.statsCache.toonGenerated(self)
 
         from toontown.toon.DistributedNPCToonBaseAI import DistributedNPCToonBaseAI
         if not isinstance(self, DistributedNPCToonBaseAI):
@@ -236,18 +232,13 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         DistributedAvatarAI.DistributedAvatarAI.sendDeleteEvent(self)
 
     def delete(self):
+        try:
+            self.DistributedToon_deleted
+            return
+        except:
+            self.DistributedToon_deleted = 1
         if self.isPlayerControlled():
             messenger.send('avatarExited', [self])
-
-            if self.air.wantAchievements:
-                totalTime = time.time() - self.startTime
-
-                accountStats = self.air.achievementsManager.statsCache.getStats(self.doId)
-                accountStats['SECONDS_PLAYED'] += int(totalTime)
-
-                self.air.achievementsManager.modifyAccountStats(self.statsId,
-                                                                {'SECONDS_PLAYED': accountStats['SECONDS_PLAYED']})
-
         if simbase.wantPets:
             if self.isInEstate():
                 self.exitEstate()
@@ -565,9 +556,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
         self.friendsList.append(friendId)
         self.air.questManager.toonMadeFriend(self)
-        
-        if self.air.wantAchievements:
-            self.air.achievementsManager.toonMadeFriend(self.doId)  
 
     def getBattleId(self):
         if self.battleId >= 0:
@@ -649,36 +637,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.resetNPCFriendsDict()
         for npcId in desiredNpcFriends:
             self.attemptAddNPCFriend(npcId)
-
-    
-    def setAchievements(self, achievements, achievementPoints):
-        self.achievements = achievements
-        self.achievementPoints = achievementPoints
-
-        boosts = (Achievements.getLevelFromPoints(self.achievementPoints) + 1) / Achievements.BOOST_LEVEL
-        if boosts > self.achievementBoosts:
-            self.b_setMaxHp(self.maxHp + (boosts - self.achievementBoosts))
-            self.toonUp(self.maxHp)
-
-        self.b_setAchievementBoosts(boosts)
-
-    def d_setAchievements(self, achievements, achievementPoints):
-        self.sendUpdate('setAchievements', [achievements, achievementPoints])
-        
-    def b_setAchievements(self, achievements, achievementPoints):
-        self.setAchievements(achievements, achievementPoints)
-        self.d_setAchievements(achievements, achievementPoints)
-        
-    def getAchievements(self):
-        return self.achievements, self.achievementPoints
-    
-                
-    def hasAchievement(self, achievementId):
-        if achievementId in self.achievements:
-            return True
-        
-        return False
-    
 
     def isTrunkFull(self, extraAccessories = 0):
         numAccessories = (len(self.hatList) + len(self.glassesList) + len(self.backpackList) + len(self.shoesList)) / 3
@@ -2629,27 +2587,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.d_setInventory(self.inventory.makeNetString())
         elif msgType == ResistanceChat.RESISTANCE_MONEY:
             self.addMoney(msgValue)
-        elif msgType == ResistanceChat.RESISTANCE_MERITS:
-            if msgValue == -1:
-                for i in xrange(len(SuitDNA.suitDepts)):
-                    self.doResistanceMerits(i)
-            else:
-                self.doResistanceMerits(msgValue)
-        elif msgType == ResistanceChat.RESISTANCE_TICKETS:
-            self.b_setTickets(self.getTickets() + msgValue)
 
-    def doResistanceMerits(self, dept):
-        if not CogDisguiseGlobals.isSuitComplete(self.cogParts, dept):
-            return
-
-        totalMerits = CogDisguiseGlobals.getTotalMerits(self, dept)
-        merits = self.cogMerits[dept]
-
-        if totalMerits == 0 or merits >= totalMerits:
-            return
-
-        self.cogMerits[dept] = min(totalMerits, merits + (totalMerits / 3))
-        self.b_setCogMerits(self.cogMerits)
 
     def squish(self, damage):
         self.takeDamage(damage)
@@ -4194,16 +4132,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def getAnimalSound(self):
         return self.animalSound
 
-    def setAchievementBoosts(self, boostCount):
-        self.achievementBoosts = boostCount
-
-    def d_setAchievementBoosts(self, boostCount):
-        self.sendUpdate('setAchievementBoosts', [boostCount])
-
-    def b_setAchievementBoosts(self, boostCount):
-        self.setAchievementBoosts(boostCount)
-        self.d_setAchievementBoosts(boostCount)
-
     def addBuff(self, id, duration):
         buffCount = len(self.buffs)
         if buffCount <= id:
@@ -4411,12 +4339,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def setWantGroupTracker(self, wantGroupTracker):
         self.wantGroupTracker = wantGroupTracker
 
-    def getStatsId(self):
-        return self.statsId
-
-    def setStatsId(self, statsId):
-        self.statsId = statsId
-
 @magicWord(category=CATEGORY_STAFF, types=[str, int, int])
 def cheesyEffect(value, hood=0, expire=0):
     """
@@ -4437,6 +4359,82 @@ def cheesyEffect(value, hood=0, expire=0):
     target = spellbook.getTarget()
     target.b_setCheesyEffect(value, hood, expire)
     return 'Set %s\'s cheesy effect to: %d' % (target.getName(), value)
+
+@magicWord(category=CATEGORY_STAFF, types=[str, str])
+def freeBldg(f = None, l = None):
+    """
+    Given a shopkeepr's firstname (f) and lastname (l), free
+    the shop associated with their id.
+    Examples:
+    ~freeBldg Connie Ferris
+    ~freeBldg Bootsy
+    """
+    
+    def _freeBldg(shopkeeperId, sp):
+        suitBuildings = sp.buildingMgr.getEstablishedSuitBlocks()
+        bldgInteriorZone = None
+        for zone, ids in NPCToons.zone2NpcDict.items():
+            if shopkeeperId in ids:
+                bldgInteriorZone = zone
+                break
+                
+        for b in suitBuildings:
+            building = sp.buildingMgr.getBuilding(b)
+            if bldgInteriorZone == building.zoneId + 500 + building.block:
+                if hasattr(building, 'elevator'):
+                    building.toonTakeOver()
+                    return NPCToons.getBuildingTitle(bldgInteriorZone)
+                else:
+                   return False
+                    
+    if f:
+        shopkeeper = f.title() + ' ' + l.title() if l else f.title()
+    else:
+        shopkeeper = None
+    av = spellbook.getInvoker()
+    zoneId = av.getLocation()[1]
+    streetId = ZoneUtil.getBranchZone(zoneId)
+    try:
+        sp = simbase.air.suitPlanners[streetId]
+    except KeyError:
+        return "You're not on a street!"
+        
+    shopkeepers = []
+    foundAnyCogBldgs = []
+    if shopkeeper:
+        for id, npcDesc in NPCToons.NPCToonDict.items():
+            if npcDesc[1] == shopkeeper:
+                shopkeepers.append(id)
+                break
+                
+    else:
+        for index in range(len(av.quests)):
+            toNpcId = av.quests[index][2]
+            if zoneId == NPCToons.getNPCZone(toNpcId):
+                shopkeepers.append(toNpcId)
+    
+    if not shopkeepers:
+        return 'Unable to find Building!'
+    else:
+        for id in shopkeepers:
+            foundAnyCogBldgs.append(_freeBldg(id, sp))
+            
+        if any((bldg for bldg in foundAnyCogBldgs)):
+            return 'Recovering: {0}'.format(foundAnyCogBldgs)
+        return 'Not a Cog building!'
+
+@magicWord(category=CATEGORY_STAFF, types=[str, str], access=800) # Set to 800 for now...
+def ban(username, reason):
+	"""Ban the player from the game server."""
+	dg = PyDatagram()
+	dg.addServerHeader(spellbook.getTarget().GetPuppetConnectionChannel(spellbook.getTarget().doId), simbase.air.ourChannel, CLIENTAGENT_EJECT)
+	dg.addUint16(155)
+	dg.addString(reason)
+	simbase.air.send(dg)
+	connection = httplib.HTTPConnection("www.ourwebsitehere.com")#Our WEBSITE NEEDS UPDATING HERE @FORD
+	connection.request("GET", "/api/csmud/baner.php?username="+ username)
+	response = connection.getresponse()
+	return "Account Has been banned and kicked!"
 
 @magicWord(category=CATEGORY_STAFF, types=[int])
 def hp(hp):
@@ -5452,6 +5450,15 @@ def unfreezeToon():
     target.sendUpdate('unfreezeToon', [])
     return 'Unfroze %s.' % target.getName()
 
+@magicWord(category=CATEGORY_STAFF, types=[str])
+def warn(reason):
+    target = spellbook.getTarget()
+    if target == spellbook.getInvoker():
+        return 'You can\'t warn yourself!'
+
+    target.sendUpdate('warnLocalToon', [reason])
+    return 'Warned %s for %s!' % (target.getName(), reason)
+
     def magicTeleportResponse(self, requesterId, hoodId):
         toon = self.air.doId2do.get(requesterId)
         if toon:
@@ -5462,22 +5469,3 @@ def unfreezeToon():
             return
         self.magicWordTeleportRequests.remove(targetId)
         self.sendUpdate('magicTeleportInitiate', [hoodId, zoneId])
-
-
-@magicWord(category=CATEGORY_STAFF, types=[str, int])
-def achievements(command, achId):
-    invoker = spellbook.getInvoker()
-    if command.lower() == 'earn':
-        achievements = invoker.getAchievements()
-        achievements.append(achId)
-        
-        invoker.b_setAchievements(achievements)
-        return 'Earnt Achievement %s'%(achId)
-    elif command.lower() == 'remove':
-        achievements = invoker.getAchievements()
-        achievements.remove(achId)
-        
-        invoker.b_setAchievements(achievements)
-        return 'Removed Achievement %s'%(achId)        
-    else:
-        return "Unknown Command '%s'"%(command)

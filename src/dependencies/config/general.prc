@@ -101,6 +101,7 @@ want-cogbuildings #t
 #Events
 want-tiny-cogs #f
 want-big-cogs #f
+want-sosShop #t
 
 #This is for when suit sizes are changed and you want to
 #have the HP fit the cog's size.
@@ -126,5 +127,6 @@ want-old-fireworks #t
 want-news-tab #t
 want-news-page #t
 
-#achi
-want-achievements #t
+# MongoDB:
+ want-mongo #t
+ want-mongo-client #t

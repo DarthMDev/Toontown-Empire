@@ -365,6 +365,7 @@ class TTChatInputSpeedChat(DirectObject.DirectObject):
         self.sellbotInvasionMenu = None
         self.sellbotFieldOfficeMenu = None
         self.idesOfMarchMenu = None
+        self.sosShopMenu = None
 
         def listenForSCEvent(eventBaseName, handler, self = self):
             eventName = self.speedChat.getEventName(eventBaseName)
@@ -908,4 +909,18 @@ class TTChatInputSpeedChat(DirectObject.DirectObject):
             del self.speedChat[i]
             self.idesOfMarchMenu.destroy()
             self.idesOfMarchMenu = None
+        return
+        
+    def addSosShopMenu(self):
+        if self.sosShopMenu == None:
+            self.sosShopMenu = SCMenuHolder(OTPLocalizer.SCMenuSosShop, menu=SCSpecialMenu(SosShopMenu))
+            self.speedChat[2:2] = [self.sosShopMenu]
+        return
+
+    def removeSosShopMenu(self):
+        if self.sosShopMenu:
+            i = self.speedChat.index(self.sosShopMenu)
+            del self.speedChat[i]
+            self.sosShopMenu.destroy()
+            self.sosShopMenu = None
         return

@@ -414,14 +414,22 @@ class DistributedSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
         if not base.localAvatar.wantBattles:
             return
         toonId = base.localAvatar.getDoId()
-        self.notify.debug('Distributed suit: requesting a Battle with ' + 'toon: %d' % toonId)
+        if config.GetBool('want-extra-logs', True):
+         print('extlog: DistributedSuit: Requesting a Battle with ' + 'Toon: %d' % toonId)
         self.d_requestBattle(self.getPos(), self.getHpr())
         self.setState('WaitForBattle')
 
     def setAnimState(self, state):
+        if config.GetBool('want-extra-logs', True):
+         print("extlog: Setting Cog State for a Cog to " + state)
         self.setState(state)
 
     def enterFromSky(self, leg, time):
+        if config.GetBool('want-extra-logs', True):
+         try:
+          print("extlog: Suit requested to come from sky in " % time)
+         except:
+          pass
         self.enableBattleDetect('fromSky', self.__handleToonCollision)
         self.loop('neutral', 0)
         if not self.verifySuitPlanner():

@@ -26,7 +26,7 @@ print 'Starting the deployment process...'
 
 # Stop the user if they are missing vital files:
 missingFiles = []
-for filename in ('deploy.json', 'infinitecipher'):
+for filename in ('deploy.json', 'empirecipher'):
     if sys.platform == 'win32':
         # On the Windows platform, if there is no extension, we must infer that
         # this is an executable file. Therefore, let's append '.exe':

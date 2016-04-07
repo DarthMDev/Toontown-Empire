@@ -1,5 +1,8 @@
-﻿from __future__ import unicode_literals
-
+﻿try:
+ from __future__ import unicode_literals
+else:
+ pass
+ 
 import sys
 reload(sys)
 sys.setdefaultencoding("latin-1")

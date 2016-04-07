@@ -133,28 +133,21 @@ class DistributedLawbotBossSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
         self.boss = lawbotBoss
 
     def hitByToon(self):
-        if self.stunned:
-            return
-
-        avId = self.air.getAvatarIdFromSender()
-
-        if avId not in self.boss.cogsStunned:
-            self.boss.cogsStunned[avId] = 0
-        self.boss.cogsStunned[avId] += 1
-
-        curTime = globalClockDelta.getRealNetworkTime()
-        deltaTime = curTime - self.timeProsecuteStarted
-        deltaTime /= 100.0
-        self.notify.debug('deltaTime = %f, curTime=%f, prosecuteStarted=%f' % (deltaTime, curTime, self.timeProsecuteStarted))
-        if deltaTime < self.timeToRelease:
-            taskName = self.uniqueName('ProsecutionHealsBoss')
-            taskMgr.remove(taskName)
-        self.sendUpdate('doStun', [])
-        self.setStun(True)
-        taskName = self.uniqueName('unstun')
-        taskMgr.doMethodLater(ToontownGlobals.LawbotBossLawyerStunTime, self.unStun, taskName)
-        if self.boss:
-            self.boss.checkForBonusState()
+        self.notify.debug('I got hit by a toon')
+        if not self.stunned:
+            curTime = globalClockDelta.getRealNetworkTime()
+            deltaTime = curTime - self.timeProsecuteStarted
+            deltaTime /= 100.0
+            self.notify.debug('deltaTime = %f, curTime=%f, prosecuteStarted=%f' % (deltaTime, curTime, self.timeProsecuteStarted))
+            if deltaTime < self.timeToRelease:
+                taskName = self.uniqueName('ProsecutionHealsBoss')
+                taskMgr.remove(taskName)
+            self.sendUpdate('doStun', [])
+            self.setStun(True)
+            taskName = self.uniqueName('unstun')
+            taskMgr.doMethodLater(ToontownGlobals.LawbotBossLawyerStunTime, self.unStun, taskName)
+            if self.boss:
+                self.boss.checkForBonusState()
 
     def setStun(self, val):
         self.stunned = val
