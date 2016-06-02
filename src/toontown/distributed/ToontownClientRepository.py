@@ -648,9 +648,10 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             if self.identifyFriend(friendId) == None:
                 return 0
 
-        if base.wantPets and base.localAvatar.hasPet():
-            if base.localAvatar.getPetId() not in self.friendsMap:
-                return 0
+        if hasattr(base, "localAvatar"):
+        	if base.wantPets and base.localAvatar.hasPet():
+            	 if base.localAvatar.getPetId() not in self.friendsMap:
+                	return 0
 
         return 1
 
