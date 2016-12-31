@@ -1,4 +1,4 @@
-# Project Altis
+# Toontown Empire
 The official repo for Toontown Empire, a new Toontown game based on Disney's Toontown Online.
 
 # Leads:
@@ -11,6 +11,3 @@ The official repo for Toontown Empire, a new Toontown game based on Disney's Too
 # Repo Rules and Regulations:
 
 When adding commits, don't push to master unless the code is tested and fully functional.
-
-# Do not edit README.md for any commit. ~FordTheWriter
-I'm tired of seeing 'developers' trying to gain commits by doing stupid and useless commits. Results of ignoring this will be determine by me in a private message.
