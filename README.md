@@ -9,7 +9,7 @@ The official repo for Toontown Empire, a new Toontown game based on Disney's Too
  4. CodeanGo(dubito) - leader after dynamite dissapeared
  5. MGRacer48 -  coder
  6. Dan(ponyboy837) -  coder
- 7. malverde - original coder
+ 7. malverde - coder
  8. jwcotejr(Jawhnl5) -  coder
  
 # Repo Rules and Regulations:
