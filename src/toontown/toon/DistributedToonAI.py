@@ -193,7 +193,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         from toontown.toon.DistributedNPCToonBaseAI import DistributedNPCToonBaseAI
         if not isinstance(self, DistributedNPCToonBaseAI):
             self.sendUpdate('setDefaultShard', [self.air.districtId])
-    
+
     def clearChat(self):
         self.sendUpdate('setTalk', ['.'])
 
@@ -978,7 +978,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.hp = min(self.hp, self.maxHp)
             if sendTotal:
                 self.d_setHp(self.hp)
-        
+
         if self.hp <= 0:
             self.addStat(ToontownGlobals.STAT_SAD)
 
@@ -1299,25 +1299,25 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def b_promote(self, dept):
         oldMerits = CogDisguiseGlobals.getTotalMerits(self, dept)
         self.incCogLevel(dept)
-        
+
         if self.cogLevels[dept] < ToontownGlobals.MaxCogSuitLevel:
             merits = self.getCogMerits()
-            
+
             if not self.hasEPP(dept):
                 merits[dept] = 0
-            
+
             else:
                 # If we have EPP, check if the merit count is too much (i.e. enough to promote again)
                 if oldMerits >= CogDisguiseGlobals.getTotalMerits(self, dept):
                     # We have more merits than needed (i.e. promoting to another cog or earning laff)
                     # Therefore:
                     merits[dept] = 0
-                
+
                 else:
                     merits[dept] = oldMerits
-            
+
             self.d_setCogMerits(merits)
-                    
+
     def readyForPromotion(self, dept):
         merits = self.cogMerits[dept]
         totalMerits = CogDisguiseGlobals.getTotalMerits(self, dept)
@@ -1467,11 +1467,11 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getMaxFishingRod(self):
         return self.maxFishingRod
-    
+
     def requestFishingRod(self, rodId):
         if not 0 <= rodId <= self.maxFishingRod:
             return
-        
+
         self.b_setFishingRod(rodId)
 
     def b_setFishingTrophies(self, trophyList):
@@ -1993,7 +1993,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def b_setEmoteAccess(self, bits):
         self.setEmoteAccess(bits)
         self.d_setEmoteAccess(bits)
- 
+
     def d_setEmoteAccess(self, bits):
         self.sendUpdate('setEmoteAccess', [bits])
 
@@ -2139,7 +2139,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getCatalogNotify(self):
         return (self.catalogNotify, self.mailboxNotify)
-    
+
     def addToDeliverySchedule(self, item, minutes=0):
         if config.GetBool('want-instant-delivery', False):
             minutes = 0
@@ -2156,8 +2156,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.sendUpdate('setDeliverySchedule', [onOrder.getBlob(store=CatalogItem.Customization | CatalogItem.DeliveryDate)])
 
     def d_setGiftSchedule(self, onGiftOrder):
-        self.sendUpdate('setGiftSchedule', [self.onGiftOrder.getBlob(store=CatalogItem.Customization | CatalogItem.DeliveryDate)])    
-    
+        self.sendUpdate('setGiftSchedule', [self.onGiftOrder.getBlob(store=CatalogItem.Customization | CatalogItem.DeliveryDate)])
+
     def setDeliverySchedule(self, onOrder, doUpdateLater = True):
         self.setBothSchedules(onOrder, None)
 
@@ -2241,7 +2241,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.b_setMailboxContents(self.mailboxContents + delivered)
         self.b_setCatalogNotify(self.catalogNotify, ToontownGlobals.NewItems)
         return Task.done
-    
+
     def __deliverPurchase(self, task):
         now = int(time.time() / 60 + 0.5)
         delivered, remaining = self.onOrder.extractDeliveryItems(now)
@@ -2484,7 +2484,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.stopToonUp()
         self.nextToonup = (healFrequency, self.indexOf(ToontownGlobals.TOONUP_PULSE_ZONES, ZoneUtil.getCanonicalHoodId(self.zoneId), 0) + 1)
         self.__waitForNextToonUp()
-    
+
     def indexOf(self, list, element, default):
         try:
             return list.index(element)
@@ -2587,6 +2587,10 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.d_setInventory(self.inventory.makeNetString())
         elif msgType == ResistanceChat.RESISTANCE_MONEY:
             self.addMoney(msgValue)
+        elif msgType == ResistanceChat.RESISTANCE_TICKETS:
+            self.b_setTickets(self.getTickets() + msgValue)
+        elif msgType == ResistanceChat.RESISTANCE_MERITS:
+            self.b_setCogMerits(self.getCogMerits() + msgValue)
 
 
     def squish(self, damage):
@@ -3165,7 +3169,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         building.toonTakeOver()
         self.notify.warning('toonTakeOverFromStreet %s %d' % (building.block,
          self.zoneId))
-        
+
         return ['success', building.doId]
 
     def doCogdoTakeOver(self, suitIndex):
@@ -3767,11 +3771,11 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def b_setPinkSlips(self, pinkSlips):
         self.specialInventory[0] = pinkSlips
         self.b_setSpecialInventory(self.specialInventory)
-    
+
     def b_setCrateKeys(self, crateKeys):
         self.specialInventory[1] = crateKeys
         self.b_setSpecialInventory(self.specialInventory)
-    
+
     def b_setSpecialInventory(self, specialInventory):
         self.d_setSpecialInventory(specialInventory)
         self.setSpecialInventory(specialInventory)
@@ -3784,7 +3788,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getPinkSlips(self):
         return self.specialInventory[0]
-    
+
     def getCrateKeys(self):
         return self.specialInventory[1]
 
@@ -3798,7 +3802,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             amount = 0
         pinkSlips = max(self.getPinkSlips() - amount, 0)
         self.b_setPinkSlips(pinkSlips)
-    
+
     def addCrateKeys(self, amountToAdd):
         self.b_setCrateKeys(min(self.getCrateKeys() + amountToAdd, 255))
 
@@ -3817,7 +3821,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getNametagStyle(self):
         return self.nametagStyle
-    
+
     def b_setNametagStyles(self, nametagStyles):
         self.d_setNametagStyles(nametagStyles)
         self.setNametagStyles(nametagStyles)
@@ -3827,7 +3831,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def setNametagStyles(self, nametagStyles):
         self.nametagStyles = nametagStyles
-    
+
     def addNametagStyle(self, nametagStyle):
         if nametagStyle in self.nametagStyles:
             return
@@ -3837,7 +3841,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getNametagStyles(self):
         return self.nametagStyles
-    
+
     def requestNametagStyle(self, nametagStyle):
         if nametagStyle not in self.nametagStyles:
             return
@@ -4203,14 +4207,14 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def b_setTrueFriends(self, trueFriends):
         self.setTrueFriends(trueFriends)
         self.d_setTrueFriends(trueFriends)
-    
+
     def isTrueFriends(self, avId):
         return avId in self.trueFriends
-    
+
     def addTrueFriend(self, avId):
         if avId in self.trueFriends:
             return
-        
+
         self.trueFriends.append(avId)
         self.b_setTrueFriends(self.trueFriends)
 
@@ -4229,7 +4233,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getNextKnockHeal(self):
         return self.nextKnockHeal
-    
+
     def setTFRequest(self, tfRequest):
         self.tfRequest = tfRequest
 
@@ -4242,7 +4246,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def getTFRequest(self):
         return self.tfRequest
-    
+
     def b_setStats(self, stats):
         self.d_setStats(stats)
         self.setStats(stats)
@@ -4252,20 +4256,20 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def setStats(self, stats):
         self.stats = stats
-    
+
     def getStats(self):
         return self.stats
-    
+
     def getStat(self, index):
         return self.stats[index]
-    
+
     def addStat(self, index, amount=1):
         if amount <= 0:
             return
 
         self.stats[index] += amount
         self.d_setStats(self.stats)
-    
+
     def wipeStats(self):
         self.stats = [0] * 22
         self.d_setStats(self.stats)
@@ -4335,7 +4339,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         if self.name != newName:
             self.b_setName(newName)
         return
-   
+
     def setWantGroupTracker(self, wantGroupTracker):
         self.wantGroupTracker = wantGroupTracker
 
@@ -4369,7 +4373,7 @@ def freeBldg(f = None, l = None):
     ~freeBldg Connie Ferris
     ~freeBldg Bootsy
     """
-    
+
     def _freeBldg(shopkeeperId, sp):
         suitBuildings = sp.buildingMgr.getEstablishedSuitBlocks()
         bldgInteriorZone = None
@@ -4377,7 +4381,7 @@ def freeBldg(f = None, l = None):
             if shopkeeperId in ids:
                 bldgInteriorZone = zone
                 break
-                
+
         for b in suitBuildings:
             building = sp.buildingMgr.getBuilding(b)
             if bldgInteriorZone == building.zoneId + 500 + building.block:
@@ -4386,7 +4390,7 @@ def freeBldg(f = None, l = None):
                     return NPCToons.getBuildingTitle(bldgInteriorZone)
                 else:
                    return False
-                    
+
     if f:
         shopkeeper = f.title() + ' ' + l.title() if l else f.title()
     else:
@@ -4398,7 +4402,7 @@ def freeBldg(f = None, l = None):
         sp = simbase.air.suitPlanners[streetId]
     except KeyError:
         return "You're not on a street!"
-        
+
     shopkeepers = []
     foundAnyCogBldgs = []
     if shopkeeper:
@@ -4406,19 +4410,19 @@ def freeBldg(f = None, l = None):
             if npcDesc[1] == shopkeeper:
                 shopkeepers.append(id)
                 break
-                
+
     else:
         for index in range(len(av.quests)):
             toNpcId = av.quests[index][2]
             if zoneId == NPCToons.getNPCZone(toNpcId):
                 shopkeepers.append(toNpcId)
-    
+
     if not shopkeepers:
         return 'Unable to find Building!'
     else:
         for id in shopkeepers:
             foundAnyCogBldgs.append(_freeBldg(id, sp))
-            
+
         if any((bldg for bldg in foundAnyCogBldgs)):
             return 'Recovering: {0}'.format(foundAnyCogBldgs)
         return 'Not a Cog building!'
@@ -5395,13 +5399,13 @@ def setBadge(gmId):
 @magicWord(category=CATEGORY_STAFF, types=[int])
 def goto(avIdShort):
     """ Teleport to the avId specified. """
-    avId = 100000000+avIdShort 
+    avId = 100000000+avIdShort
     toon = simbase.air.doId2do.get(avId)
     if not toon:
         return "Unable to teleport to target, they are not currently on this district."
     spellbook.getInvoker().magicWordTeleportRequests.append(avId)
     toon.sendUpdate('magicTeleportRequest', [spellbook.getInvoker().getDoId()])
-  
+
 @magicWord(category=CATEGORY_STAFF, types=[int])
 def pouch(value):
     target = spellbook.getTarget()
@@ -5417,7 +5421,7 @@ def exp(track, amt):
     av.b_setExperience(av.experience.makeNetString())
     return "Set %s exp to %d successfully." % (track, amt)
 
-# TODO: Not completed because of ToonAvatarPanel error! 
+# TODO: Not completed because of ToonAvatarPanel error!
 
 """
 @magicWord(category=CATEGORY_STAFF, types=[int])
