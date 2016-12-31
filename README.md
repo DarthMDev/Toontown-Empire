@@ -3,12 +3,14 @@ The official repo for Toontown Empire, a new Toontown game based on Disney's Too
 
 # staff:
  
- 1. Dynamite- Original Fouder, Original Team Leader, and Game Developer
- 2. Xikyl- Original Art Director, Original Texture, and Original Graphic Artist
- 3. Spike- Original original Community Manager, original Lead Moderator, original Creative Director
- 4. CodeanGo(dubito) - The guy who disbanded this project :/
- 5. MGRacer48 - original coder
- 
+ 1. Dynamite-  Fouder,  Team Leader, and Game Developer
+ 2. Xikyl- Art Director, Texture, and  Graphic Artist
+ 3. Spike- Community Manager,  Lead Moderator, Creative Director
+ 4. CodeanGo(dubito) - leader after dynamite dissapeared
+ 5. MGRacer48 -  coder
+ 6. Dan(ponyboy837) -  coder
+ 7. malverde - original coder
+ 8. jwcotejr(Jawhnl5) -  coder
  
 # Repo Rules and Regulations:
 
@@ -20,4 +22,6 @@ I like to thank TTR for bringing back toontown and being the start of it all
 I also like to thank disney for making toontown online
 I like to thank jesse schell for keeping toontown alive and supporting the toontown community
 I also like to thank toontown stride for their source code(that is the base of TTE)
-- mgracer48 coder for TTE until it got disbanded
+I also like to thank the above staff for making this game possible and dynamite for giving me the opportunity to work for this project
+-mgracer48 coder for TTE until it got disbanded
+
