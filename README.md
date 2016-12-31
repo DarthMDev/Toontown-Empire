@@ -8,7 +8,6 @@ The official repo for Toontown Empire, a new Toontown game based on Disney's Too
  3. Spike- Original original Community Manager, original Lead Moderator, original Creative Director
  4. CodeanGo(dubito) - The guy who disbanded this project :/
  5. MGRacer48 - original coder
- 6. Josh Zimmer(spiderlover) - original coder
  
  
 # Repo Rules and Regulations:
