@@ -31,14 +31,16 @@ resistanceDict = {
         'chatText': TTLocalizer.ResistanceToonupChat,
         'values': [10, 20, 40, 80, -1],
         'items': [0, 1, 2, 3, 4]
-    },
+},
+
     RESISTANCE_MONEY: {
         'menuName': TTLocalizer.ResistanceMoneyMenu,
         'itemText': TTLocalizer.ResistanceMoneyItem,
         'chatText': TTLocalizer.ResistanceMoneyChat,
         'values': [100, 200, 400, 800],
         'items': [0, 1, 2, 3]
-    },
+},
+
     RESISTANCE_RESTOCK: {
         'menuName': TTLocalizer.ResistanceRestockMenu,
         'itemText': TTLocalizer.ResistanceRestockItem,
@@ -62,23 +64,27 @@ resistanceDict = {
             TTLocalizer.MovieNPCSOSSquirt,
             TTLocalizer.MovieNPCSOSDrop,
             TTLocalizer.MovieNPCSOSAll
-        ],
+],
         'items': [0, 1, 2, 3, 4, 5, 6, 7]
-    },
- RESISTANCE_DANCE: {'menuName': TTLocalizer.ResistanceDanceMenu,
-                     'itemText': TTLocalizer.ResistanceDanceItem,
-                     'chatText': TTLocalizer.ResistanceDanceChat,
-                     'values': ['Dance'],
-                     'items': [0]}}
+},
 
-RESISTANCE_TICKETS: {
+    RESISTANCE_DANCE: {
+        'menuName': TTLocalizer.ResistanceDanceMenu,
+        'itemText': TTLocalizer.ResistanceDanceItem,
+        'chatText': TTLocalizer.ResistanceDanceChat,
+        'values': ['Dance'],
+        'items': [0]
+},
+
+    RESISTANCE_TICKETS: {
         'menuName': TTLocalizer.ResistanceTicketsMenu,
-        'itemText': TTLocalizer.ResitanceTicketsItem,
+        'itemText': TTLocalizer.ResistanceTicketsItem,
         'chatText': TTLocalizer.ResistanceTicketsChat,
         'values': [200, 400, 800, 2000],
         'items': [0, 1, 2, 3]
-    },
-RESISTANCE_MERITS: {
+},
+
+    RESISTANCE_MERITS: {
     'menuName': TTLocalizer.ResistanceMeritsMenu,
     'itemText': TTLocalizer.ResistanceMeritsItem,
     'chatText': TTLocalizer.ResistanceMeritsChat,
@@ -86,6 +92,9 @@ RESISTANCE_MERITS: {
     'items': [0,1,2,3]
 
 }
+
+}
+
 def encodeId(menuIndex, itemIndex):
     textId = menuIndex * 100
     textId += resistanceDict[menuIndex]['items'][itemIndex]

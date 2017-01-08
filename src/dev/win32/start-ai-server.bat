@@ -32,4 +32,6 @@ cd ../../
 	--astron-ip %ASTRON_IP% ^
 	--eventlogger-ip %EVENTLOGGER_IP% ^
 	--district-name "%DISTRICT_NAME%"
+pause
 goto main
+
