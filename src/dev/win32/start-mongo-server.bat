@@ -1,10 +1,11 @@
 @echo off
 title TTE MongoDB
 
-cd ../../../
+cd ../../dependencies/MongoDB/Server/3.0/mongodb
 
 :main
-"src/dependencies/MongoDB\Server\3.0\bin\mongod.exe" --dbpath src/dependencies/MongoDB/GardeningDatabase
+"C:\Program Files\MongoDB\Server\3.4\bin\mongod.exe" --dbpath .\
 
 
 pause
+goto main

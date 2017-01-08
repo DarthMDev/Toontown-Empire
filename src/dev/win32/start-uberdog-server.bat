@@ -28,5 +28,7 @@ cd ../../
 	--stateserver %STATESERVER% ^
 	--astron-ip %ASTRON_IP% ^
 	--eventlogger-ip %EVENTLOGGER_IP%
+pause
 goto main
+
 
